@@ -1,0 +1,61 @@
+<!--pages/store_pay/pay_center/pay_center.wxml-->
+<import src="/wxParse/wxParse.wxml" />
+<view id="top" class="pay_center_page">
+  <view class="user_info" style="background:{{brand_info.style.bg_color}}">
+    <view class="user_number">{{code_data.qr_pay_code}}</view>
+    <!-- <view class="edit_msg">
+      <image src="{{brand_info.icon_url}}store_pay/edit_icon.png" mode="widthFix" />
+    </view> -->
+    <btns class="header_img_stay" wx:if="{{!isLogin}}" isLogin="{{isLogin}}" bindclickcallback="getUserInfo">
+      登录
+    </btns>
+    <view class="header_img_stay" wx:else>
+      <image src="{{userData.portrait_path}}" mode="widthFix" class="header_img" />
+    </view>
+    <!-- <view class="user_name">{{userData.UserName}}</view> --> 
+    <view class="user_vals">
+      <!-- <navigator url="url" class="user_vals_link">
+          <view>余额</view>
+          <text>4</text>
+          <text class="line"></text>
+      </navigator> -->
+      <navigator url="/pages/micro_mall/integral/my_integral" class="user_vals_link" hover-class="none">
+        <view>积分</view>
+        <text>{{userData.Points || 0}}</text>
+        <text class="line"></text>
+      </navigator>
+      <navigator url="/pages/micro_mall/coupon/my_coupon" class="user_vals_link" hover-class="none">
+        <view>优惠券</view>
+        <text>{{userData.canUseCouponNum || 0}}</text>
+        <text class="line"></text>
+      </navigator>
+      <navigator url="/pages/store_pay/store_pay_history/history_list" class="user_vals_link" hover-class="none">
+        <view>交易记录</view>
+        <text>{{record}}</text>
+      </navigator>
+    </view>
+  </view>
+  <!-- <view class="store_link">
+    <navigator url="/pages/store_pay/pay_code/qr_code" hover-class="none" class="store_link_item store_pay_link">
+      <view class="store_link_item_c">
+        <image src="{{brand_info.icon_url}}store_pay/scan_code.png" mode="widthFix" />
+        <view class="txt">店铺支付</view>
+      </view>
+    </navigator>
+
+    <navigator url="../store_pay_history/history_list" hover-class="none" class="store_link_item">
+      <view class="store_link_item_c">
+        <image src="{{brand_info.icon_url}}store_pay/history_icon.png" mode="widthFix" />
+        <view class="txt">店铺零售订单</view>
+      </view>
+    </navigator> 
+  </view> -->
+</view>
+<view class="box" style="height:calc(100% - 325rpx)">
+  <pay_code id="pay_code_id"></pay_code>  
+</view>
+
+<!-- <scroll-view scroll-y class="box" style="height:calc(100% - 325rpx)"> 
+</scroll-view> -->
+<!--登录界面-->
+<!-- <loginPage id="loginPage" bindloginCallback="loginCallback"></loginPage> -->

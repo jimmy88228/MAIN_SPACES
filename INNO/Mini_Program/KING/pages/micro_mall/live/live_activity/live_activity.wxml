@@ -1,0 +1,73 @@
+<view>
+  <form>
+    <view>
+      <view class="cover_img_area" >
+        <image class="cover_img" src="{{actInfo.activeImage}}" catchtap="joinLive" mode="widthFix"/>
+      </view>
+      <view class="live_act">
+        <view class="act_cont">
+          <view class="act_rule" catchtap="showRule">活动规则</view>
+          <view class="act_name">{{actInfo.activityName}}</view>
+          <view class="act_time">活动时间：{{actInfo.fromTimeStr}} - {{actInfo.toTimeStr}}</view>
+          <view class="act_state_view">
+            <view class="act_progress">
+              <view class="a_progress">
+                <view class="a_p_active" style="{{'max-width:100%;width:' + percentage + '%;'}}"><text class="active_point"></text></view>
+              </view>
+            </view>
+          </view>
+          <view class="join_view">
+            <view class="join_user_area">
+              <view class="join_view_l">{{totalCount > 0 ? '已邀请'+ totalCount +'人' : '还没邀请好友'}}</view>
+              <view class="join_user_list" catchtap="showJoinList">
+                <view class="join_user_item" wx:for="{{visitRecord}}" wx:if="{{index < 7}}" wx:key="index">
+                  <image src="{{item.portraitPath}}" class="user_icon" mode="aspectFill"/>
+                </view>
+                <view class="join_more" wx:if="{{visitRecord.length > 7}}">
+                  <text class="_more"></text>
+                  <text class="_more"></text>
+                  <text class="_more"></text>
+                </view>
+              </view>
+            </view>
+            <view class="join_view_r">{{actInfo.maxRequestNumber}}人</view>
+          </view>
+          <view class="invite_area">
+            <block>
+              <button class="invite_f no_start" wx:if="{{actInfo.status == 0}}">活动即将开始</button>
+              <button class="invite_f" open-type="share" wx:elif="{{actInfo.status == 1}}">邀请好友观看直播，赢好礼</button>
+              <button class="invite_f is_end" wx:elif="{{actInfo.status == 2}}">活动已结束</button>
+            </block>
+          </view>
+        </view>
+        <view class="act_bonus_list">
+          <view class="act_bonus_t">活动福利</view>
+          <view class="act_bonus_l">
+            <scroll-view class="act_bonus_scroll" scroll-x="{{true}}">
+              <view class="bonus_items">
+                <view class="bonus_item" wx:for="{{bonusList}}" wx:key="index">
+                  <view class="bonus_item_c" >
+                    <view>
+                      <view class="bonus_name">{{item.conditionName}}</view>
+                      <view class="bonus_tip">
+                        <block wx:if="{{item.isReceiveBenefit}}">已领取</block>
+                        <block wx:else>{{totalCount > item.requestNumber ? '领券中' : '邀请' + item.requestNumber + '人'}}</block>
+                      </view>
+                    </view>
+                    <view class="is_select" wx:if="{{item.isReceiveBenefit}}"></view>
+                  </view>
+                </view>
+              </view>
+            </scroll-view>
+          </view>
+        </view>
+      </view>
+    </view>
+  </form>
+</view>
+<joinPop id="joinPop" joinData="{{visitRecord}}"></joinPop>
+<joinTip id="joinTip" isLogin="{{isLogin}}" helpData="{{helpData}}" bindjoinLiveEvent="joinLive"></joinTip>
+<rule id="actRule" activityRule="{{actInfo.activityRule}}"></rule>
+ <!--首页-->
+<pageHome id="pageHome"></pageHome>
+<livePop id="livePop" isLogin="{{isLogin}}" bindjoinLiveEvent="joinLive"></livePop>

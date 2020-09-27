@@ -1,0 +1,34 @@
+/* pages/micro_mall/invoice/list/list.wxss */
+page{
+  height: 100%;
+}
+.main{
+  height: 100%;
+}
+.header{
+  display: flex;
+  width: 100%;
+  height: 150rpx;
+  box-shadow: 0 10rpx 20rpx 1px rgba(0, 0, 0, 0.05);
+  position: relative;
+  z-index: 2;
+}
+.h_tab{
+  width: 50%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.img_head{
+  width: 50rpx;
+  height: 50rpx;
+  /* background: gray; */
+}
+.h_text{
+  padding-left: 20rpx;
+}
+.l_box{
+  width: 100%;
+  height: calc(100% - 150rpx);
+}

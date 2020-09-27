@@ -1,0 +1,24 @@
+<view wx:if="{{showRefresh}}" class="center-box anim-fade-in anim-delay">
+    <loading-view class="center-box-item" />
+</view>
+<block wx:elif="{{isAttached}}">
+    <view wx:if="{{!isLogin}}" class="center-box anim-fade-in">
+        <auth-view class="center-box-item" msg="登录后查看奖品" bindauthed="onAuthed" />
+    </view>
+    <scroll-view wx:else enable-flex="true" class="prize-list anim-slide-in-up" refresher-enabled
+        refresher-default-style="white" bindrefresherrefresh="onRefresh" bindscrolltolower="onScrolltolower"
+        refresher-triggered="{{triggered}}" scroll-y>
+        <view wx:if="{{list&&list.length > 0}}" class="list_box">
+            <view class="prize-list-cell " wx:for="{{list}}" wx:key="id" bindtap="jumpAction"
+                data-url="/pages/winprize/winprize?lotteryRecordId={{item.id}}">
+                <text class="title newline">{{item.title}}</text>
+                <view class="type">{{item.level}}</view>
+                <view class="date">{{item.createTime}}</view>
+            </view>
+            <more-view wx:if="{{list.length>15}}" data="{{ {loading:showLoadMore,end:isEnd} }}" />
+        </view>
+        <view wx:else class="center-box anim-fade-in">
+            <view class="center-box-item">你暂时还没有奖品哦</view>
+        </view>
+    </scroll-view>
+</block>

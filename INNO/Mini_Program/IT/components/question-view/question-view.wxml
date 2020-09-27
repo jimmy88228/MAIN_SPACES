@@ -1,0 +1,16 @@
+<view class="question-view">
+    <block wx:for="{{questions}}" wx:for-item="q" wx:key="id">
+        <input-list wx:if="{{q.type=='LIST'}}" id="field{{q.id}}" class="question-item" name="{{q.name}}" value="{{q.value}}" placeHolder="{{q.placeHolder}}" data-question="{{q}}" bindchange="onOptionsChange">
+            <input-list-item wx:for="{{q.options}}" wx:for-item="op" wx:key="index" value="{{index}}" content="{{op.name}}" />
+        </input-list>
+        <input-grid wx:elif="{{q.type=='GRID'}}" id="field{{q.id}}" class="question-item" name="{{q.name}}" value="{{q.value}}" data-question="{{q}}" bindchange="onOptionsChange">
+            <input-grid-item wx:for="{{q.options}}" wx:for-item="op" wx:key="index" value="{{index}}" content="{{op.name}}" />
+        </input-grid>
+        <input-text wx:elif="{{q.type=='NAME'}}" id="field{{q.id}}"  class="question-item" type="NAME"  name="{{q.name}}" value="{{q.value}}" placeHolder="{{q.placeHolder}}" data-question="{{q}}" bindchange="onChange"></input-text>
+        <input-text wx:elif="{{q.type=='PHONE'}}" id="field{{q.id}}" class="question-item" type="PHONE" name="{{q.name}}" value="{{q.value}}" placeHolder="{{q.placeHolder}}" data-question="{{q}}" bindchange="onChange"></input-text>
+        <input-text wx:elif="{{q.type=='NUMBER'}}" id="field{{q.id}}" class="question-item" type="NUMBER" name="{{q.name}}" value="{{q.value}}" placeHolder="{{q.placeHolder}}" data-question="{{q}}" bindchange="onChange"></input-text>
+        <input-text wx:elif="{{q.type=='PASSWORD'}}" id="field{{q.id}}" class="question-item" type="PASSWORD" name="{{q.name}}" value="{{q.value}}" placeHolder="{{q.placeHolder}}" data-question="{{q}}" bindchange="onChange"></input-text>
+        <input-text wx:elif="{{q.type=='ID_CARD'}}" id="field{{q.id}}" class="question-item" type="ID_CARD" name="{{q.name}}" value="{{q.value}}" placeHolder="{{q.placeHolder}}" data-question="{{q}}" bindchange="onChange"></input-text>
+        <input-text wx:else id="field{{q.id}}" class="question-item" name="{{q.name}}" value="{{q.value}}" data-question="{{q}}" bindchange="onTextChange"></input-text>
+    </block>
+</view>

@@ -1,0 +1,57 @@
+{
+    "pages": [
+        "pages/index/index",
+        "pages/record/record",
+        "pages/detail/detail",
+        "pages/message/message",
+        "pages/winprize/winprize",
+        "pages/web/web",
+        "pages/mine/mine",
+        "pages/activity/past-list/past-list",
+        "pages/chosen-one/chosen-one"
+    ],
+    "usingComponents": {
+        "page-nav": "/components/page-nav/page-nav",
+        "loading-view": "/components/loading-view/loading-view",
+        "more-view": "/components/more-view/more-view",
+        "auth-view": "/components/auth-view/auth-view",
+        "auth-button": "/components/auth-button/auth-button",
+        "dialog": "/components/dialog/dialog",
+        "dialog-auth": "/components/dialog-auth/dialog-auth",
+        "ad-layout": "/components/layout/layout"
+    },
+    "tabBar": {
+        "borderStyle": "white",
+        "color": "#b2b2b2",
+        "selectedColor": "#fff",
+        "backgroundColor": "#fff",
+        "list": [
+            {
+                "pagePath": "pages/index/index",
+                "text": "",
+                "iconPath": "./static/images/tab-bar/home.png",
+                "selectedIconPath": "./static/images/tab-bar/home-active.png"
+            },
+            {
+                "pagePath": "pages/message/message",
+                "text": "",
+                "iconPath": "./static/images/tab-bar/message.png",
+                "selectedIconPath": "./static/images/tab-bar/message-active.png"
+            },
+            {
+                "pagePath": "pages/mine/mine",
+                "text": "",
+                "iconPath": "./static/images/tab-bar/user.png",
+                "selectedIconPath": "./static/images/tab-bar/user-active.png"
+            }
+        ]
+    },
+    "window": {
+        "backgroundColor": "#fff",
+        "backgroundTextStyle": "dark",
+        "navigationBarBackgroundColor": "#fff",
+        "navigationBarTitleText": "",
+        "navigationBarTextStyle": "black"
+    },
+    "sitemapLocation": "sitemap.json"
+}

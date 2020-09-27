@@ -1,0 +1,34 @@
+<!--pages/micro_mall/lottery/lottery_record/lottery_record.wxml-->
+<view class="header">新获得的奖品一般在1-5分钟内自动到账喔</view>
+<view class="line"></view>
+<view class="record" hidden="{{!signs}}">
+    <view class="record_item" wx:for="{{winningRecord}}" wx:key="index">
+        <view class="record_header">
+            <view class="create_time">中奖时间 {{item.createTime}}</view>
+        </view>
+        <view class="record_bottom">
+            <view>
+                <image mode="widthFix" src="{{item.prizeImg}}" class="prize_img"/>
+                <view class="prize_name">{{item.prizeName}}</view>
+            </view>
+            <button 
+                class="item_btn"
+                style="background: {{item.bg}};" 
+                data-path="{{item.path}}" 
+                data-prize-type="{{item.prizeType}}"
+                data-record-id="{{item.winningRecordId}}"
+                data-activity-id="{{item.activityId}}"
+                data-status="{{item.status}}"
+                data-main-order-id="{{item.mainOrderId}}"
+                data-express-no="{{item.expressNo}}"
+                bindtap="jumpPage">{{item.tips}}</button>
+        </view>
+    </view>
+</view>
+<!-- <view class='filtrate {{toShow?"isShow":"isHide"}}'>
+    <view class='filtrate_content' catchtap='handle_filtrate' data-type="1">快递配送</view>
+    <view class='filtrate_content' catchtap='handle_filtrate' data-type="2">门店自提</view>
+    <view class='filtrate_cancel' catchtap='handle_filtrate' style='background:{{brand_info.style.bg_color}};}}' data-type="3">取消</view>
+</view> -->
+<!-- <view class='black_bg {{toShow?"isShow":"isHide"}}' catchtouchmove='_noFn' catchtap='filtrate'></view> -->
+<view class="empty_data" hidden="{{signs}}">3个月内没有中奖记录哦~</view>

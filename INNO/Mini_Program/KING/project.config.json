@@ -1,0 +1,942 @@
+{
+	"description": "项目配置文件",
+	"packOptions": {
+		"ignore": []
+	},
+	"setting": {
+		"urlCheck": true,
+		"es6": true,
+		"enhance": true,
+		"postcss": false,
+		"preloadBackgroundData": false,
+		"minified": true,
+		"newFeature": true,
+		"coverView": true,
+		"nodeModules": true,
+		"autoAudits": false,
+		"showShadowRootInWxmlPanel": true,
+		"scopeDataCheck": false,
+		"uglifyFileName": true,
+		"checkInvalidKey": true,
+		"checkSiteMap": true,
+		"uploadWithSourceMap": true,
+		"babelSetting": {
+			"ignore": [],
+			"disablePlugins": [],
+			"outputPath": ""
+		}
+	},
+	"compileType": "miniprogram",
+	"libVersion": "2.12.1",
+	"appid": "wx101250e441594925",
+	"projectname": "KING_NEW",
+	"debugOptions": {
+		"hidedInDevtools": []
+	},
+	"isGameTourist": false,
+	"simulatorType": "wechat",
+	"simulatorPluginLibVersion": {},
+	"condition": {
+		"search": {
+			"current": -1,
+			"list": []
+		},
+		"conversation": {
+			"current": -1,
+			"list": []
+		},
+		"plugin": {
+			"current": -1,
+			"list": []
+		},
+		"game": {
+			"currentL": -1,
+			"list": []
+		},
+		"gamePlugin": {
+			"current": -1,
+			"list": []
+		},
+		"miniprogram": {
+			"current": -1,
+			"list": [
+				{
+					"id": 0,
+					"name": "pages/micro_mall/sk/activity-sk/activity-sk",
+					"pathName": "pages/micro_mall/sk/activity-sk/activity-sk",
+					"query": "groupId=17&activityId=442&shareType=SECKILL_GOODS",
+					"scene": null
+				},
+				{
+					"id": 1,
+					"name": "分销活动_INNO",
+					"pathName": "pages/micro_mall/distribution_center/activity/activity",
+					"query": "type=activity&user=https://wx.qlogo.cn/mmopen/vi_32/V5Q9iapkWRXaBNiaDTPnCeQXKmvMsYx1qibvicHZnUyeu0Iv52dsPuf7TexMLmvdjn1WNwnUXqSIGPjMZZFz87r9bg/132",
+					"scene": null
+				},
+				{
+					"id": -1,
+					"name": "v_index",
+					"pathName": "pages/micro_mall/video_shopping/v_index/index",
+					"query": "",
+					"scene": null
+				},
+				{
+					"id": -1,
+					"name": "pages/micro_mall/video_shopping/v_page/index",
+					"pathName": "pages/micro_mall/video_shopping/v_page/index",
+					"query": "",
+					"scene": 1035,
+					"referrerInfo": {
+						"appId": "wx001"
+					}
+				},
+				{
+					"id": -1,
+					"name": "pages/micro_mall/shopping/shopping_cart",
+					"pathName": "pages/micro_mall/shopping/shopping_cart",
+					"query": "",
+					"scene": null
+				},
+				{
+					"id": -1,
+					"name": "pages/micro_mall/stores/store_map",
+					"pathName": "pages/micro_mall/stores/store_map",
+					"query": "store_name=深圳茂业正装&place=23.096318,113.332854&city=广东/广州/海珠区&store_id=28523&distinct=undefined&phone=0&latlon=23.096318,113.332854&addr=undefined&lat=23.096318&lon=113.332854&loc_f=0",
+					"scene": null
+				},
+				{
+					"id": -1,
+					"name": "goods_collocation",
+					"pathName": "pages/micro_mall/goods_collocation/goods_collocation",
+					"query": "package_id=33",
+					"scene": null
+				},
+				{
+					"id": -1,
+					"name": "pages/micro_mall/goods_collocation/goods_collocation",
+					"pathName": "pages/micro_mall/goods_collocation/goods_collocation",
+					"query": "package_id=34",
+					"scene": null
+				},
+				{
+					"id": -1,
+					"name": "pages/micro_mall/stores/store_map",
+					"pathName": "pages/micro_mall/stores/store_map",
+					"query": "store_name=%E5%8A%B2%E6%B5%AA%E5%BE%AE%E5%95%86%E5%9F%8E&place=23.13343%2C113.3215&city=%E5%9B%9B%E5%B7%9D%2F%E6%88%90%E9%83%BD%2F%E9%9D%92%E7%BE%8A%E5%8C%BA&store_id=2798&distinct=68.1%E5%85%AC%E9%87%8C&phone=0&latlon=23.13343%2C113.3215&addr=1%E5%8F%B7&lat=23.13343&lon=113.3215&loc_f=0",
+					"scene": null
+				},
+				{
+					"id": 9,
+					"name": "pages/micro_mall/goods/goods_info",
+					"pathName": "pages/micro_mall/goods/goods_info",
+					"query": "goods_id=37930&color_id=0",
+					"scene": null
+				},
+				{
+					"id": 10,
+					"name": "GOODS_INFO_INNO",
+					"pathName": "pages/micro_mall/goods/goods_info",
+					"query": "goods_id=29168&issued_id=0&shareType=NORMAL_GOODS&fromUser=57261c62e80da1e&staffCode=13160675066",
+					"scene": null
+				},
+				{
+					"id": -1,
+					"name": "pages/micro_mall/my_store_mod/qr_code",
+					"pathName": "pages/micro_mall/my_store_mod/qr_code",
+					"query": "goods_id=27120&color_id=0",
+					"scene": null
+				},
+				{
+					"id": -1,
+					"name": "pages/micro_mall/store_mod/qr_code",
+					"pathName": "pages/micro_mall/store_mod/qr_code",
+					"query": "goods_id=27120&color_id=0",
+					"scene": null
+				},
+				{
+					"id": -1,
+					"name": "分销活动",
+					"pathName": "pages/micro_mall/distribution_center/activity/activity",
+					"query": "type=activity&user=https://wx.qlogo.cn/mmopen/vi_32/V5Q9iapkWRXaBNiaDTPnCeQXKmvMsYx1qibvicHZnUyeu0Iv52dsPuf7TexMLmvdjn1WNwnUXqSIGPjMZZFz87r9bg/132",
+					"scene": null
+				},
+				{
+					"id": 15,
+					"name": "order_info_IN",
+					"pathName": "pages/micro_mall/order/order_info",
+					"query": "order_sn=001742003131831067643533&order_id=14247",
+					"scene": null
+				},
+				{
+					"id": -1,
+					"name": "pages/micro_mall/user/user",
+					"pathName": "pages/micro_mall/user/user",
+					"query": "",
+					"scene": null
+				},
+				{
+					"id": 17,
+					"name": "拼团详情_INNO",
+					"pathName": "pages/micro_mall/point/point_goods_detail/point_goods_detail",
+					"query": "goods_id=25597&color_id=0",
+					"scene": null
+				},
+				{
+					"id": -1,
+					"name": "pages/micro_mall/distribution_center/distribution_service/distribution_guest_detail/distribution_guest_detail",
+					"pathName": "pages/micro_mall/distribution_center/distribution_service/distribution_guest_detail/distribution_guest_detail",
+					"query": "",
+					"scene": null
+				},
+				{
+					"id": -1,
+					"name": "pages/micro_mall/distribution_center/activity/activity",
+					"pathName": "pages/micro_mall/distribution_center/activity/activity",
+					"query": "type=goods&user=https://wx.qlogo.cn/mmopen/vi_32/V5Q9iapkWRXaBNiaDTPnCeQXKmvMsYx1qibvicHZnUyeu0Iv52dsPuf7TexMLmvdjn1WNwnUXqSIGPjMZZFz87r9bg/132",
+					"scene": null
+				},
+				{
+					"id": -1,
+					"name": "pages/micro_mall/goods/goods_info",
+					"pathName": "pages/micro_mall/goods/goods_info",
+					"query": "goods_id=25597&color_id=0",
+					"scene": null
+				},
+				{
+					"id": -1,
+					"name": "pages/micro_mall/order/order_list",
+					"pathName": "pages/micro_mall/order/order_list",
+					"query": "orderType=all",
+					"scene": null
+				},
+				{
+					"id": -1,
+					"name": "pages/micro_mall/shopping/shopping_cart",
+					"pathName": "pages/micro_mall/shopping/shopping_cart",
+					"query": "",
+					"scene": null
+				},
+				{
+					"id": 23,
+					"name": "order_info_KINGCODE",
+					"pathName": "pages/micro_mall/order/order_info",
+					"query": "order_sn=001602006011019588733065&order_id=23190",
+					"scene": null
+				},
+				{
+					"id": -1,
+					"name": "shipping_info_物流",
+					"pathName": "pages/micro_mall/shipping_info/shipping_info",
+					"query": "orderId=14259",
+					"scene": null
+				},
+				{
+					"id": -1,
+					"name": "distribution_take_out",
+					"pathName": "pages/micro_mall/distribution_center/distribution_brokerage/distribution_take_out/distribution_take_out",
+					"query": "balance=0",
+					"scene": null
+				},
+				{
+					"id": 26,
+					"name": "pages/micro_mall/order/order_list",
+					"pathName": "pages/micro_mall/order/order_list",
+					"query": "",
+					"scene": null
+				},
+				{
+					"id": 27,
+					"name": "pages/micro_mall/index/index",
+					"pathName": "pages/micro_mall/index/index",
+					"query": "",
+					"scene": 1047
+				},
+				{
+					"id": -1,
+					"name": "pages/micro_mall/index/index",
+					"pathName": "pages/micro_mall/index/index",
+					"query": "shareType=PAGE_SHARE&fromUser=57261c62e80da1e&staffCode=13160675066",
+					"scene": null
+				},
+				{
+					"id": -1,
+					"name": "pages/micro_mall/collageGroup/my_collage_detail",
+					"pathName": "pages/micro_mall/collageGroup/my_collage_detail",
+					"query": "activity_id=15&user_activity_id=6182&captain_id=66451",
+					"scene": null
+				},
+				{
+					"id": -1,
+					"name": "pages/micro_mall/collageGroup/my_collage_detail",
+					"pathName": "pages/micro_mall/collageGroup/my_collage_detail",
+					"query": "activity_id=15&user_activity_id=6182&captain_id=66451&shareType=COLLAGE_GROUP&fromUser=57261c62e80da1e&staffCode=13160675066",
+					"scene": null
+				},
+				{
+					"id": -1,
+					"name": "砍价_INNO",
+					"pathName": "pages/micro_mall/bargain/goods/goods_detail",
+					"query": "activityId=2035",
+					"scene": null
+				},
+				{
+					"id": 31,
+					"name": "goods-info-sk_inno",
+					"pathName": "pages/micro_mall/sk/goods-info-sk/goods-info-sk",
+					"query": "groupId=17&activityId=442&shareType=SECKILL_GOODS&goodsId=16458",
+					"scene": null
+				},
+				{
+					"id": -1,
+					"name": "pages/micro_mall/sk/orders-sk/order-confirm",
+					"pathName": "pages/micro_mall/sk/orders-sk/order-confirm",
+					"query": "goodsId=36831&activityId=1060&akId=2526&storeId=28517&shippingType=1",
+					"scene": null
+				},
+				{
+					"id": -1,
+					"name": "pages/micro_mall/sk/orders-sk/order-status",
+					"pathName": "pages/micro_mall/sk/orders-sk/order-status",
+					"query": "order_id=9903&first=1&type=订单详情",
+					"scene": null
+				},
+				{
+					"id": -1,
+					"name": "pages/micro_mall/stores/store_nav",
+					"pathName": "pages/micro_mall/stores/store_nav",
+					"query": "store_id=28517&loc_f=0&goods_id=36831&goodsNum=1",
+					"scene": null
+				},
+				{
+					"id": -1,
+					"name": "pages/micro_mall/user_info/user_info",
+					"pathName": "pages/micro_mall/user_info/user_info",
+					"query": "",
+					"scene": null
+				},
+				{
+					"id": -1,
+					"name": "砍价_KING",
+					"pathName": "pages/micro_mall/bargain/index/bargain_index",
+					"query": "",
+					"scene": null
+				},
+				{
+					"id": 38,
+					"name": "自定页_KING",
+					"pathName": "pages/micro_mall/custom_page/custom_page",
+					"query": "page_id=1164",
+					"scene": null
+				},
+				{
+					"id": 39,
+					"name": "自定页2_KING",
+					"pathName": "pages/micro_mall/custom_page/custom_page",
+					"query": "page_id=1164",
+					"scene": null
+				},
+				{
+					"id": -1,
+					"name": "预售列表",
+					"pathName": "pages/micro_mall/plugins/presale/presale_activity_list",
+					"query": "",
+					"scene": null
+				},
+				{
+					"id": 41,
+					"name": "预售订单_KING",
+					"pathName": "pages/micro_mall/plugins/presale/presale_buy_info",
+					"query": "activityGoodsId=288&activityId=116&goodsNumber=1&delta=2",
+					"scene": null
+				},
+				{
+					"id": -1,
+					"name": "point_coupon_detail",
+					"pathName": "pages/micro_mall/point/point_coupon_detail/point_coupon_detail",
+					"query": "",
+					"scene": null
+				},
+				{
+					"id": -1,
+					"name": "砍价_KING",
+					"pathName": "pages/micro_mall/bargain/index/bargain_index",
+					"query": "",
+					"scene": null
+				},
+				{
+					"id": 44,
+					"name": "bargain_detail_KING",
+					"pathName": "pages/micro_mall/bargain/bargain/bargain_detail",
+					"query": "userActivityId=6461",
+					"scene": null
+				},
+				{
+					"id": -1,
+					"name": "qr_code",
+					"pathName": "pages\\micro_mall\\store_mod\\qr_code",
+					"query": "",
+					"scene": null
+				},
+				{
+					"id": 46,
+					"name": "qr_code",
+					"pathName": "pages/micro_mall/store_mod/qr_code",
+					"query": "",
+					"scene": null
+				},
+				{
+					"id": -1,
+					"name": "my_store_mod",
+					"pathName": "pages/micro_mall/my_store_mod/qr_code",
+					"query": "",
+					"scene": null
+				},
+				{
+					"id": 48,
+					"name": "砍价_INNO",
+					"pathName": "pages/micro_mall/bargain/bargain/bargain_detail",
+					"query": "userActivityId=6481",
+					"scene": null
+				},
+				{
+					"id": 49,
+					"name": "goods_info_KING",
+					"pathName": "pages/micro_mall/goods/goods_info",
+					"query": "goods_id=25547&color_id=6896",
+					"scene": null
+				},
+				{
+					"id": -1,
+					"name": "sk_info_inno",
+					"pathName": "pages/micro_mall/sk/goods-info-sk/goods-info-sk",
+					"query": "goodsId=36831&activityId=1060&groupId=15",
+					"scene": null
+				},
+				{
+					"id": 51,
+					"name": "pages/micro_mall/goods/goods_info",
+					"pathName": "pages/micro_mall/goods/goods_info",
+					"query": "goods_id=39952&color_id=0",
+					"scene": null
+				},
+				{
+					"id": -1,
+					"name": "pages/micro_mall/point/point_goods_detail/point_goods_detail",
+					"pathName": "pages/micro_mall/point/point_goods_detail/point_goods_detail",
+					"query": "goodsId=25516&mkGoodsId=9",
+					"scene": null
+				},
+				{
+					"id": -1,
+					"name": "pages/micro_mall/sk/goods-info-sk/goods-info-sk",
+					"pathName": "pages/micro_mall/sk/goods-info-sk/goods-info-sk",
+					"query": "goodsId=26853&activityId=2067&groupId=12",
+					"scene": null
+				},
+				{
+					"id": -1,
+					"name": "distribution_service/rank/rank",
+					"pathName": "pages/micro_mall/distribution_center/distribution_service/rank/rank",
+					"query": "userActivityId=6481",
+					"scene": null
+				},
+				{
+					"id": -1,
+					"name": "分销中心",
+					"pathName": "pages/micro_mall/distribution_center/distribution_center",
+					"query": "",
+					"scene": null
+				},
+				{
+					"id": -1,
+					"name": "guest_follows",
+					"pathName": "pages/micro_mall/distribution_center/distribution_service/guest_follows/guest_follows",
+					"query": "",
+					"scene": null
+				},
+				{
+					"id": 56,
+					"name": "custom_page",
+					"pathName": "pages/micro_mall/custom_page/custom_page",
+					"query": "page_id=1210",
+					"scene": null
+				},
+				{
+					"id": -1,
+					"name": "distribution_guest_detail",
+					"pathName": "pages/micro_mall/distribution_center/distribution_service/distribution_guest_detail/distribution_guest_detail",
+					"query": "page_id=284",
+					"scene": null
+				},
+				{
+					"id": -1,
+					"name": "sk_受邀",
+					"pathName": "pages/micro_mall/sk/activity-sk/activity-sk",
+					"query": "groupId=0&activityId=3074&target=1&shareType=SECKILL_HELP&fromUser=bd12e9a50d95aaa",
+					"scene": null
+				},
+				{
+					"id": 60,
+					"name": "lottery",
+					"pathName": "pages/micro_mall/lottery/lottery",
+					"query": "activityId=1017",
+					"scene": null
+				},
+				{
+					"id": 61,
+					"name": "pages/micro_mall/order/apply_return",
+					"pathName": "pages/micro_mall/order/apply_return",
+					"query": "order_id=23190&product_id=71197&goods_id=39952&rec_id=24447&valet=0&is_user=0",
+					"scene": null
+				},
+				{
+					"id": 62,
+					"name": "order_info",
+					"pathName": "pages/micro_mall/order/order_info",
+					"query": "order_sn= 000172008111758408687584&order_id=274170",
+					"scene": null
+				},
+				{
+					"id": 63,
+					"name": "send",
+					"pathName": "pages/micro_mall/coupon_center/send/send",
+					"query": "",
+					"scene": null
+				},
+				{
+					"id": -1,
+					"name": "issue_invoice",
+					"pathName": "pages/micro_mall/invoice/issue_invoice/issue_invoice",
+					"query": "",
+					"scene": null
+				},
+				{
+					"id": 65,
+					"name": "invoice_detail",
+					"pathName": "pages/micro_mall/invoice/invoice_detail/detail",
+					"query": "",
+					"scene": null
+				},
+				{
+					"id": -1,
+					"name": "order_info order_info",
+					"pathName": "pages/micro_mall/order/order_info",
+					"query": "order_sn=001602006051655129855127&order_id=23250",
+					"scene": null
+				},
+				{
+					"id": -1,
+					"name": "invoice_detail",
+					"pathName": "pages/micro_mall/invoice/invoice_detail/detail",
+					"query": "order_sn=001602006051655129855127&order_id=23250",
+					"scene": null
+				},
+				{
+					"id": -1,
+					"name": "invoice_detail",
+					"pathName": "pages/micro_mall/invoice/invoice_detail/detail",
+					"query": "order_sn=001602006051655129855127&order_id=23250",
+					"scene": null
+				},
+				{
+					"id": -1,
+					"name": "title_manager",
+					"pathName": "pages/micro_mall/invoice/title_manager/title_manager",
+					"query": "",
+					"scene": null
+				},
+				{
+					"id": -1,
+					"name": "goods-info-sk",
+					"pathName": "pages/micro_mall/sk/goods-info-sk/goods-info-sk",
+					"query": "goodsId=27005&activityId=3074&groupId=12",
+					"scene": null
+				},
+				{
+					"id": -1,
+					"name": "order-confirm_sk",
+					"pathName": "pages/micro_mall/sk/orders-sk/order-confirm",
+					"query": "goodsId=27005&activityId=3074&akId=2589&storeId=0&shippingType=2",
+					"scene": null
+				},
+				{
+					"id": 72,
+					"name": "order_info",
+					"pathName": "pages/micro_mall/order/order_info",
+					"query": "order_sn=001602006091456274926596&order_id=24305",
+					"scene": null
+				},
+				{
+					"id": -1,
+					"name": "presale_activity_detail_king",
+					"pathName": "pages/micro_mall/plugins/presale/presale_activity_detail",
+					"query": "goods_id=39952&color_id=0",
+					"scene": null
+				},
+				{
+					"id": 74,
+					"name": "order_confirm_king",
+					"pathName": "pages/micro_mall/bargain/bargain/order_confirm",
+					"query": "userActivityId=7507",
+					"scene": null
+				},
+				{
+					"id": 75,
+					"name": "qr_code_店铺支付",
+					"pathName": "pages/store_pay/pay_code/qr_code",
+					"query": "",
+					"scene": null
+				},
+				{
+					"id": -1,
+					"name": "热门活动_KING",
+					"pathName": "pages/micro_mall/distribution_center/activity/activity",
+					"query": "type=activity&user=https%3A%2F%2Fwx.qlogo.cn%2Fmmopen%2Fvi_32%2FV5Q9iapkWRXaBNiaDTPnCeQXKmvMsYx1qibvicHZnUyeu0Iv52dsPuf7TexMLmvdjn1WbibrDoxGLkIRyiaHhXtJYsLg%2F132",
+					"scene": null
+				},
+				{
+					"id": -1,
+					"name": "lottery_record",
+					"pathName": "pages/micro_mall/lottery/lottery_record/lottery_record",
+					"query": "",
+					"scene": null
+				},
+				{
+					"id": -1,
+					"name": "contact_page",
+					"pathName": "pages/micro_mall/customer_service/contact_page",
+					"query": "",
+					"scene": null
+				},
+				{
+					"id": 79,
+					"name": "pages/micro_mall/coupon_center/receive/receive",
+					"pathName": "pages/micro_mall/coupon_center/receive/receive",
+					"query": "shareId=48",
+					"scene": null
+				},
+				{
+					"id": -1,
+					"name": "pages/micro_mall/coupon_center/send/send",
+					"pathName": "pages/micro_mall/coupon_center/send/send",
+					"query": "",
+					"scene": null
+				},
+				{
+					"id": -1,
+					"name": "pages/micro_mall/coupon/my_coupon",
+					"pathName": "pages/micro_mall/coupon/my_coupon",
+					"query": "shareId=45",
+					"scene": null
+				},
+				{
+					"id": -1,
+					"name": "pages/micro_mall/invoice/invoice_list/list",
+					"pathName": "pages/micro_mall/invoice/invoice_list/list",
+					"query": "",
+					"scene": null
+				},
+				{
+					"id": 83,
+					"name": "issue_manager",
+					"pathName": "pages/micro_mall/invoice/issue_manager/issue_manager",
+					"query": "type=invoice",
+					"scene": null
+				},
+				{
+					"id": -1,
+					"name": "order_info_inno",
+					"pathName": "pages/micro_mall/order/order_info",
+					"query": "order_sn=001742005201118220405893&order_id=22078",
+					"scene": null
+				},
+				{
+					"id": 85,
+					"name": "pages/micro_mall/invoice/invoice_detail/detail",
+					"pathName": "pages/micro_mall/invoice/invoice_detail/detail",
+					"query": "id=1",
+					"scene": null
+				},
+				{
+					"id": 86,
+					"name": "pages/micro_mall/invoice/invoice_detail/detail",
+					"pathName": "pages/micro_mall/invoice/invoice_detail/detail",
+					"query": "id=6",
+					"scene": null
+				},
+				{
+					"id": 87,
+					"name": "pages/micro_mall/comment/mobile_order_comment/mobile_order_comment",
+					"pathName": "pages/micro_mall/comment/mobile_order_comment/mobile_order_comment",
+					"query": "order_id=23249",
+					"scene": null
+				},
+				{
+					"id": 88,
+					"name": "pages/micro_mall/comment/comment_edit/comment_edit",
+					"pathName": "pages/micro_mall/comment/comment_edit/comment_edit",
+					"query": "order_id=23250&goods_id=25631&goods_sn=KINGCODE025631&goods_type=0",
+					"scene": null
+				},
+				{
+					"id": 89,
+					"name": "pages/micro_mall/comment/mobile_order_comment/mobile_order_comment",
+					"pathName": "pages/micro_mall/comment/mobile_order_comment/mobile_order_comment",
+					"query": "order_id=23255",
+					"scene": null
+				},
+				{
+					"id": -1,
+					"name": "pages/micro_mall/goods/goods_info",
+					"pathName": "pages/micro_mall/goods/goods_info",
+					"query": "goods_id=39952&color_id=0",
+					"scene": null
+				},
+				{
+					"id": -1,
+					"name": "pages/micro_mall/category/category",
+					"pathName": "pages/micro_mall/category/category",
+					"query": "",
+					"scene": null
+				},
+				{
+					"id": -1,
+					"name": "pages/micro_mall/seeding_grass",
+					"pathName": "pages/micro_mall/seeding_grass/index_page/index_page",
+					"query": "id=6",
+					"scene": null
+				},
+				{
+					"id": 92,
+					"name": "pages\\micro_mall\\grass_navigate\\index_page\\index_page",
+					"pathName": "pages\\micro_mall\\grass_navigate\\index_page\\index_page",
+					"query": "id=6",
+					"scene": null
+				},
+				{
+					"id": -1,
+					"name": "pages\\micro_mall\\grass_navigate\\index_page\\index_page",
+					"pathName": "pages\\micro_mall\\grass_navigate\\index_page\\index_page",
+					"query": "id=6",
+					"scene": null
+				},
+				{
+					"id": 95,
+					"name": "积分商城详情_KING",
+					"pathName": "pages/micro_mall/point/point_goods_detail/point_goods_detail",
+					"query": "goodsId=25516&mkGoodsId=9",
+					"scene": null
+				},
+				{
+					"id": -1,
+					"name": "拼团详情_KING",
+					"pathName": "pages/micro_mall/collageGroup/activity_goods_detail",
+					"query": "activity_id=1027",
+					"scene": null
+				},
+				{
+					"id": -1,
+					"name": "助力详情_KING",
+					"pathName": "pages/micro_mall/sk/goods-info-sk/goods-info-sk",
+					"query": "goodsId=27132&activityId=3073&groupId=12",
+					"scene": null
+				},
+				{
+					"id": 98,
+					"name": "预售详情_KING",
+					"pathName": "pages/micro_mall/plugins/presale/presale_activity_detail",
+					"query": "activity_id=132",
+					"scene": null
+				},
+				{
+					"id": -1,
+					"name": "砍价详情_KING",
+					"pathName": "pages/micro_mall/bargain/goods/goods_detail",
+					"query": "activityId=2036",
+					"scene": null
+				},
+				{
+					"id": -1,
+					"name": "pages/micro_mall/coupon/my_coupon",
+					"pathName": "pages/micro_mall/coupon/my_coupon",
+					"query": "",
+					"scene": null
+				},
+				{
+					"id": -1,
+					"name": "pages/micro_mall/lottery/lottery",
+					"pathName": "pages/micro_mall/lottery/lottery",
+					"query": "activityId=2",
+					"scene": null
+				},
+				{
+					"id": -1,
+					"name": "pages/micro_mall/coupon_center/send/send",
+					"pathName": "pages/micro_mall/coupon_center/send/send",
+					"query": "",
+					"scene": null
+				},
+				{
+					"id": -1,
+					"name": "商品详情_ZZLD",
+					"pathName": "pages/micro_mall/goods/goods_info",
+					"query": "goods_id=13027&color_id=0",
+					"scene": null
+				},
+				{
+					"id": -1,
+					"name": "red_balance",
+					"pathName": "pages/micro_mall/red_packet/red_balance/red_balance",
+					"query": "",
+					"scene": null
+				},
+				{
+					"id": 105,
+					"name": "buy_KING",
+					"pathName": "pages/micro_mall/buy/buy",
+					"query": "rec_str=62650&store_id=0",
+					"scene": null
+				},
+				{
+					"id": -1,
+					"name": "pages/micro_mall/collageGroup/activity_goods_detail",
+					"pathName": "pages/micro_mall/collageGroup/activity_goods_detail",
+					"query": "activity_id=2044",
+					"scene": null
+				},
+				{
+					"id": -1,
+					"name": "pages/micro_mall/red_packet/red_details/red_details",
+					"pathName": "pages/micro_mall/red_packet/red_details/red_details",
+					"query": "",
+					"scene": null
+				},
+				{
+					"id": 108,
+					"name": "店铺订单_King",
+					"pathName": "pages/micro_mall/order/erp_order_info",
+					"query": "order_sn=202007070005",
+					"scene": null
+				},
+				{
+					"id": 109,
+					"name": "pages/micro_mall/point/point_goods_detail/point_goods_detail",
+					"pathName": "pages/micro_mall/point/point_goods_detail/point_goods_detail",
+					"query": "goodsId=26889&mkGoodsId=1032",
+					"scene": null
+				},
+				{
+					"id": -1,
+					"name": "pages/micro_mall/point/point_settlement/integral_settlement",
+					"pathName": "pages/micro_mall/point/point_settlement/integral_settlement",
+					"query": "shippingType=1&storeId=28517",
+					"scene": null
+				},
+				{
+					"id": -1,
+					"name": "distribution_orders_lists--INNO",
+					"pathName": "pages/micro_mall/distribution_center/distribution_orders_lists/distribution_orders_lists",
+					"query": "currentIndex=0&type=commission",
+					"scene": null
+				},
+				{
+					"id": 112,
+					"name": "register_type",
+					"pathName": "pages/micro_mall/register/register_type/register_type",
+					"query": "",
+					"scene": null
+				},
+				{
+					"id": -1,
+					"name": "register_type",
+					"pathName": "pages/micro_mall/register/register_type/register_type",
+					"query": "",
+					"scene": null
+				},
+				{
+					"id": -1,
+					"name": "register_type",
+					"pathName": "pages/micro_mall/register/register_type/register_type",
+					"query": "",
+					"scene": null
+				},
+				{
+					"id": -1,
+					"name": "pages/micro_mall/distribution_center/activity/activity",
+					"pathName": "pages/micro_mall/distribution_center/activity/activity",
+					"query": "",
+					"scene": null
+				},
+				{
+					"id": -1,
+					"name": "pages/micro_mall/index/index",
+					"pathName": "pages/micro_mall/index/index",
+					"query": "",
+					"scene": 1044,
+					"shareInfo": {
+						"groupName": "测试模拟群1",
+						"shareName": "oouRHszEr2Odx1tyoISgb25QLEEbrMTPoz6H-AVO2LY@cr4dev",
+						"shareKey": "tz5M9BO8ShyPKYFzF2lyuRI5walhx4sUUo9-RGvT2zwGuky8RIPbJtfQJT2F5MTGX3bd8SIJvZb3COhgj36d4g~~"
+					}
+				},
+				{
+					"id": -1,
+					"name": "pages/micro_mall/coupon/my_coupon",
+					"pathName": "pages/micro_mall/coupon/my_coupon",
+					"query": "",
+					"scene": null
+				},
+				{
+					"id": -1,
+					"name": "pages/micro_mall/classify/classify_page",
+					"pathName": "pages/micro_mall/classify/classify_page",
+					"query": "",
+					"scene": null
+				},
+				{
+					"id": -1,
+					"name": "种草",
+					"pathName": "pages/micro_mall/grass_navigate/index_page/index_page",
+					"query": "",
+					"scene": null
+				},
+				{
+					"id": -1,
+					"name": "pages/micro_mall/buy/buy",
+					"pathName": "pages/micro_mall/buy/buy",
+					"query": "rec_str=62694&store_id=0",
+					"scene": null
+				},
+				{
+					"id": -1,
+					"name": "pages/micro_mall/live/live_square_new/live_square_new",
+					"pathName": "pages/micro_mall/live/live_square_new/live_square_new",
+					"query": "",
+					"scene": null
+				},
+				{
+					"id": 121,
+					"name": "热销商品",
+					"pathName": "pages/micro_mall/distribution_center/activity/activity",
+					"query": "type=activity&user=&shareType=STAFF_ACTIVITY&fromUser=57261c62e80da1e&staffCode=13160675066",
+					"scene": null
+				},
+				{
+					"id": 122,
+					"name": "pages/micro_mall/point/point_goods_list/point_goods_list",
+					"pathName": "pages/micro_mall/point/point_goods_list/point_goods_list",
+					"query": "type=goods&shareType=PAGE_SHARE&fromUser=bd12e9a50d95aaa&staffCode=13160675066",
+					"scene": null
+				},
+				{
+					"id": -1,
+					"name": "pages/micro_mall/order/erp_order_info",
+					"pathName": "pages/micro_mall/order/erp_order_info",
+					"query": "order_sn=202007070005",
+					"scene": null
+				}
+			]
+		}
+	}
+}

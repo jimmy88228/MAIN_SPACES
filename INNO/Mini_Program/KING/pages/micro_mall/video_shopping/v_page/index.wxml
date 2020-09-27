@@ -1,0 +1,69 @@
+<!--pages/micro_mall/video_shopping/v_page/index.wxml-->
+<import src="/pages/component/css3/loading/loading.wxml"/>
+<import src="/pages/component/css3/sliding_tip/sliding.wxml"/>
+<view class="main" wx:if="{{!hidePage && showPage}}">
+  <top_bar></top_bar>
+  <view class="loading_box" wx:if="{{initLoadingAnim}}">
+    <template is="loadingId"/>
+  </view>
+  <view bindtouchend='handleEnd' class="sliding_box slid_top" wx:if="{{showGuide}}">
+    <template is="slidingId" data="{{data:guideData}}"/>
+  </view>
+  <image hidden="{{!showPause}}" catchtap="pauseTap" data-index="{{cur_v}}" class="img_pause" src="{{v_pause}}" mode="aspectFit"></image>
+  <like id="like"></like>
+  <v_video
+    id="v_video"
+    bindonChange="onChange"
+    bindonFinish="onFinish"
+    binddoubleTap="doubleTap"
+    bindsingleTap="singleTap"
+    bindonPause="onPause"
+    bindonPlay="onPlay"
+    has-more="{{hasMore}}"
+    >
+  </v_video> 
+  <view class="v_info">
+    <view class="bg"></view>
+    <view class="title_box">
+      <view class="title {{v_arr[cur_v].t_roll?'t_roll':''}}" style="--t_roll_width:{{v_arr[cur_v].t_roll_width}}">{{v_arr[cur_v].title}}</view>
+    </view>
+    <view class="hide_t" id="title">{{v_arr[cur_v].title}}</view>
+    <view class="btn_box">
+      <image bindtap="onTap" data-type="home" src="{{v_home}}" mode="aspectFit" class="img img_home"></image>
+      <btns wx:if="{{v_arr[cur_v].posterPicture}}" isLogin="{{isLogin}}" bindclickcallback="onTap" customData="{{typeData}}" class="img img_button" style="padding:0;">
+        <image src="{{v_share}}" mode="aspectFit" class="img img_share"></image>
+      </btns>
+      <button wx:else hover-class="none" open-type="share" bindtap="onTap" data-type="share" form-type="submit" class="img img_button">
+        <image src="{{v_share}}" mode="aspectFit" class="img img_share"></image>
+      </button>
+      <btns wx:if="{{!isLogin}}" isLogin="{{isLogin}}" bindclickcallback="loginBack">
+        <image src="{{v_no_like}}" bindtap="onTap" data-type="onLike" mode="aspectFit" class="img img_no_like"></image>
+      </btns>
+      <block wx:else>
+        <image wx:if="{{v_arr[cur_v].is_like}}" bindtap="onTap" data-type="onLike" src="{{v_like}}" mode="aspectFit" class="img img_like"></image>
+        <image wx:else src="{{v_no_like}}" bindtap="onTap" data-type="onLike" mode="aspectFit" class="img img_no_like"></image>
+      </block>
+    </view>
+  </view>
+
+  <goods_list id="goods_list" class="g_l_box {{goods_list_len<=3?'auto':''}}" bindpopupShow="popupShow"></goods_list>
+  <popup isLogin="{{isLogin}}" bindsizeSelect="sizeSelect" bindcolorSelect="colorSelect" bindnumTap="numTap" bindskuConfirm="skuConfirm" bindcartJump="cartJump" id="popup" mask-bg="transparent" ></popup>
+</view>
+
+<view class="main" wx:elif="{{hidePage && showPage}}">
+  <top_bar></top_bar>
+  <view class="msg_box _f">
+    <image class="img_empty" src="{{v_empty}}" mode="aspectFit"></image>    
+    <view class="empty_text">新的视频正在制作中，先逛逛商场吧</view>
+    <view catchtap="onTap"  data-type="home" class="btn_empty">去商场</view>
+  </view>
+</view>
+
+<share 
+id="shareModule" 
+shareType="NORMAL_ROW"  
+bindchooseShareType="chooseShareType" 
+bindcheckIfStaffDstbCallBack="checkIfStaffDstbCallBack"></share>
+<!--分享图-->
+<shareImg id="shareImg" allData="{{allData}}"></shareImg>
+

@@ -1,0 +1,130 @@
+// pages/micro_mall/send_goods/store_list.js
+import Utils from "../../../support/utils/utils";
+const app = getApp();
+Page(app.BTAB({
+    data: {
+        iconUrl: app.Conf.ICON_URL,
+        keyword: "",
+        storeList: [],
+        isEmpty: false,
+        noContent: true,
+        isFocus: false
+    },
+    onReady: function () {
+        let search = this.data.brand_info.icon_url + "micro_mall/search_icon.png";
+        let selected = this.data.brand_info.icon_url + "micro_mall/return_active.png";
+        let unselected = this.data.brand_info.icon_url + "micro_mall/return.png";
+        let resetImg = this.data.brand_info.icon_url + "micro_mall/comment_edit/remove_btn_icon.png";
+        this.setData({
+            search,
+            selected,
+            unselected,
+            resetImg
+        });
+    },
+    onShow: function () {
+        reset.call(this);
+        loadData.call(this);
+    },
+    onReachBottom: function () {
+        if (this.hasMore) {
+            loadData.call(this);
+        } else {
+            app.SMH.showToast({
+                "title": "已经到底啦！"
+            });
+        }
+    },
+    synchroInput(e) {
+        let curVal = e.detail.value;
+        this.setData({
+            keyword: curVal
+        });
+    },
+    searchStore() {
+        this.setData({
+            isFocus: false
+        });
+        controlClick.call(this, () => {
+            reset.call(this);
+            loadData.call(this);
+        });
+    },
+    selectStore(e) {
+        let index = e.currentTarget.dataset.index;
+        let storeId = e.currentTarget.dataset.storeId || 0;
+        this.setData({
+            currIndex: index
+        });
+        this.pageDialog = this.pageDialog || this.selectComponent("#pageDialog");
+        this.pageDialog.setTitle("确认选取该店铺吗？");
+        this.pageDialog.setTwoBtn({
+            name: "取消",
+        }, {
+            name: "确认",
+            tap: function () {
+                wx.redirectTo({
+                    url: `/pages/micro_mall/send_goods/send_goods_code?storeId=${storeId}`,
+                });
+            }
+        });
+        this.pageDialog.show();
+    },
+    clearContent() {
+        this.setData({
+            keyword: "",
+            isFocus: true
+        });
+    }
+}))
+
+function loadData() {
+    return app.UserApi.getBindStoreList({
+        params: {
+            userToken: app.LM.userToken,
+            brandCode: app.Conf.BRAND_CODE,
+            pageIndex: this.page,
+            pageSize: app.Conf.PAGE_SIZE,
+            searchStr: this.data.keyword
+        },
+        other: {
+            isShowLoad: true
+        }
+    }).then(res => {
+        let data = res.data;
+        if (res.code == 1) {
+            let currentPage = this.data.storeList;
+            let totalCount = data.totalCount;
+            let newData = data.dataList;
+            if (this.page > 1) {
+                newData = currentPage.concat(newData);
+            }
+            this.setData({
+                storeList: newData,
+                totalCount: data.totalCount,
+                noContent: false
+            });
+            if (this.data.storeList.length === totalCount) {
+                this.hasMore = false;
+            } 
+            let isEmpty = this.data.storeList.length === 0 ? true : false;
+            this.setData({
+                isEmpty
+            });
+            return Promise.resolve(data);
+        } else {
+            return Promise.reject(res);
+        }
+    }).finally(() => {
+        this.page += 1;
+    });
+}
+
+function reset() {
+    this.hasMore = true;
+    this.page = 1;
+}
+
+let controlClick = Utils.debounce(fn => {
+    fn();
+}, 400);

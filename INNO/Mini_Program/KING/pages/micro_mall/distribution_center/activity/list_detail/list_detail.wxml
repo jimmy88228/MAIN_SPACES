@@ -1,0 +1,88 @@
+<view class='input_box' hidden='{{!showInput}}'>
+    <!-- <view class='input_box' hidden='{{!showInput}}'> -->
+    <view class='input_content' style='opacity:{{showInput?"1;":"0"}}'>
+        <input value='{{value}}' placeholder='请输入商品关键词' class='search_input' placeholder-class='change_style' bindinput='getSearchGoods' bindconfirm='handleClick' />
+        <image bindtap='handleClick' data-current="{{current}}" src="{{search}}" mode="aspectFit" class='icon_search' />
+    </view>
+</view>
+
+<view class="list_detail" style='height:calc(100% - {{tabHeight}}rpx)'>
+    <swiper current="{{current}}" bindchange="swiperChange" class='swiper_box'>
+        <swiper-item class='swiper_item' wx:for="{{tabs}}" wx:key="id" wx:for-index="swiperIndex">
+            <view class='input_box' hidden="{{true || swiperIndex==1 || showInput}}">
+                <view class='filter_box' catchtap='clickInput' style='opacity:{{showInput?"0;":"1"}}'>
+                    <view class='filter_text'>搜 索</view>
+                    <image mode='aspectFit' src='{{acty_filter}}' class='filter_image'></image>
+                </view>
+            </view>
+            <scroll-view wx:if="{{!none[swiperIndex]}}" lower-threshold="70" bindscrolltolower="handleScroll" data-num="{{swiperIndex}}" class='scroll_box' scroll-y style='height:{{swiperIndex==0?scrollHeight+";padding-top:"+filterHeight+"rpx;":"100%"}}'>
+                <block wx:for="{{dataList[swiperIndex]}}" wx:key="id2" wx:for-item="list_item" wx:for-index="listIndex">
+                    <view class='content_box {{swiperIndex==1?"min":""}}'>
+                        <view class='head'>
+                            <image class='img_goods_head' mode="aspectFit" src="{{headerImg}}"></image>
+                            <view class='head_right'>
+                                <view class='goods_time'>{{list_item.createTime}}</view>
+                            </view>
+                        </view>
+                        <view class="activity_cont">
+                            <text class='label' selectable='true'>{{list_item.activityTitle}}</text>
+                            <text class='text' selectable='true' data-value="{{list_item.activityTitle}}\n{{list_item.activityDescription}}" bindlongpress='copy'>{{list_item.activityDescription}}</text> 
+                            <text class='copy_text' catchtap='copy' style="{{'background-color:'+brand_info.style.bg_color}}" data-value="{{list_item.activityTitle}}\n{{list_item.activityDescription}}">一键复制文字</text>
+                        </view>
+                        <view wx:if="{{swiperIndex==0}}" class='imgs_box' style='{{list_item.detailImgUrlList.length>4?"width:100%":""}}'>
+                            <view class='img_sing_box' wx:for="{{list_item.detailImgUrlList}}" wx:for-item="pics_item" wx:key="id3" wx:for-index="pic_index">
+                                <image bindtap='handlePreview' data-list-index="{{listIndex}}" data-pic-index="{{pic_index}}" class='img_sort' mode="aspectFill" src="{{pics_item}}"></image>
+                            </view>
+                        </view>
+                        <view wx:if="{{swiperIndex==1}}" class='imgs_box' style='{{list_item.detailImgUrlList.length>4?"width:100%":""}}'>
+                            <view class='img_sing_box' wx:for="{{list_item.detailImgUrlList}}" wx:for-item="pics_item2" wx:for-index="pic_index2" wx:key="id4">
+                                <image bindtap='handlePreview' data-list-index="{{listIndex}}" data-pic-index="{{pic_index2}}" class='img_sort' mode="aspectFill" src="{{pics_item2}}"></image>
+                            </view>
+                        </view>
+                        <view wx:if="{{swiperIndex==0}}" class='' style='color:{{brand_info.style.font_color}};'>
+                            <text class='rmb_char'>¥</text>
+                            <text class='price'>{{list_item.goodsAmount}}</text>
+                            <view class="market_price" wx:if="{{list_item.marketPrice>0 && list_item.marketPrice != list_item.goodsAmount}}">¥{{list_item.marketPrice}}</view>
+                            <view>
+                                <text wx:if="{{(swiperIndex==0) && (list_item.minCommissionAmount != list_item.maxCommissionAmount)}}" style="background:{{light_bg_color}};" class='profit'>预计收益¥{{list_item.minCommissionAmount}} - ¥{{list_item.maxCommissionAmount}}</text>
+                                <text wx:elif="{{(swiperIndex==0) && (list_item.minCommissionAmount == list_item.maxCommissionAmount) && (list_item.maxCommissionAmount>0)}}" class='profit'>预计收益¥{{list_item.maxCommissionAmount}}</text>
+                            </view>
+                        </view>
+                        <view class="goodsSn" wx:if="{{list_item.goodsSn}}">{{list_item.goodsSn}}</view>
+                        <image bindtap='jump' data-num="{{listIndex}}" data-type='goods' class='img_module' wx:if="{{swiperIndex==0}}" mode="widthFix" src="{{staff_car}}"></image>
+                        <image bindtap='jump' data-num="{{listIndex}}" data-type='acty' class='img_module' mode="widthFix" wx:else src="{{acty_jump}}"></image>
+                        <button class='img_share_button' bindtap='handleShare' data-activity-id="{{list_item.activityId}}" data-pic="{{list_item.shareImage || list_item.detailImgUrlList[0]}}" data-num="{{listIndex}}" hover-class='none'>
+                            <image class='img_share' mode="widthFix" src="{{staff_share}}"></image>
+                        </button>
+                    </view>
+                    <view class='bg_f6'></view>
+                </block>
+                <view class="more-view-box {{dataList[swiperIndex].length<=0?'_empty':''}}">
+                    <more-view data="{{ {loading:isLoading[swiperIndex],end:!hasMore[swiperIndex]} }}"></more-view>
+                </view>
+            </scroll-view>
+            <view wx:else class='none'>没有找到任何结果</view>
+        </swiper-item>
+    </swiper>
+</view>
+
+<view class='share_box {{filter ? "isShow":"isHide"}}'>
+    <button 
+    open-type='share' 
+    hover-class='none' 
+    data-action-activity-id="{{actionActivityId}}" 
+    class='share_box_text top' 
+    data-related-id="{{dataList[current][choose].relatedId}}" 
+    bindtap='cancleShare' 
+    data-pic="{{currentPic}}"
+    data-title="{{currentGoods}}" 
+    data-related-type="{{dataList[current][choose].relatedType}}"
+    data-related-url="{{dataList[current][choose].relatedUrl}}"
+    data-type="{{current}}">发送给微信好友/群</button>
+    <view class='share_box_text' catchtap='handleSaveImages' data-num="{{choose}}">分享微信朋友圈</view>
+    <view class='bottom'></view>
+    <view class='share_box_text bottom2' catchtap='handleShare'>取消</view>
+</view>
+<view class='black_bg {{filter?"isShow":"isHide"}}' catchtap='handleShare'></view>
+<alert id="alertModule"></alert>
+<shareImg id="shareImg" allData="{{allData}}" only-save="{{true}}" img-list="{{arr}}" bind:handle_draw="handle_draw"></shareImg>

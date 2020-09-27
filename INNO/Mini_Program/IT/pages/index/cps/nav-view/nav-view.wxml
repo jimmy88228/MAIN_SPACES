@@ -1,0 +1,8 @@
+<view class="nav-stay" style="{{navStayStyle}}"></view>
+<view class="nav fixed" style="{{navStyle}}">
+    <view class="nav-bg" style="opacity:{{mOpacity}};"></view>
+    <view class="nav-body">
+        <image class="nav-logo {{bigLogo?'big':''}}" style="{{logoStyle}}" src="/static/images/common/logo.png"
+            mode="aspectFill" />
+    </view>
+</view>

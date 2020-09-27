@@ -1,0 +1,83 @@
+<!--pages/micro_mall/invoice/issue_title/issue_tittle.wxml--> 
+<view class="main">
+  <view class="box">  
+    <!-- 抬头类型 -->
+    <msg class="" id="title_type" title="{{msgManager.title_type}}">
+        <view slot="right" class="right title_type_box">
+          <view wx:for="{{title_type_data}}" wx:key="index" class="_flex title_type_item" catchtap="onTap" data-type="title_type" data-index="{{index}}">
+            <image src="{{cur_title_type == index?return_active:return_img}}" class="img_select" mode="aspectFit"></image>
+            <view>{{item}}</view>
+          </view>
+        </view>
+    </msg>
+    
+    <block>
+      <!-- 发票抬头 -->
+      <msg class="" id="invoice_title" title="{{msgManager.invoice_title}}">
+          <view slot="right" class="right invoice_title_box" catchtap="onTap" data-type="invoice_title">
+            <input class="invoice_input" bindinput="onTapInput" data-type="invoice_title" placeholder="抬头名称或极速开票六位代码" placeholder-class="plc_font"></input>
+          </view>
+      </msg>
+
+      <!-- 税号 -->
+      <msg class="" id="invoice_tax_num" title="{{msgManager.invoice_tax_num}}">
+          <view slot="right" class="right invoice_tax_num_box">
+            <input class="invoice_input" bindinput="onTapInput" data-type="invoice_tax_num" placeholder="纳税人识别号或社会统一征信代码" placeholder-class="plc_font"></input>
+          </view>
+      </msg> 
+    </block> 
+  </view>
+  
+  <!-- 单位选填信息 -->
+  <view hidden="{{cur_title_type==0}}" class="box">
+    <msg class="" id="invoice_bank" title="{{msgManager.invoice_bank}}">
+        <view slot="right" class="right invoice_bank_box">
+          <input class="invoice_input" bindinput="onTapInput" data-type="invoice_bank" placeholder="选填" placeholder-class="plc_font"></input>
+        </view>
+    </msg> 
+    <msg class="" id="invoice_account" title="{{msgManager.invoice_account}}">
+        <view slot="right" class="right invoice_account_box">
+          <input class="invoice_input" bindinput="onTapInput" data-type="invoice_account" placeholder="选填" placeholder-class="plc_font"></input>
+        </view>
+    </msg> 
+    <msg class="" id="invoice_address" title="{{msgManager.invoice_address}}">
+        <view slot="right" class="right invoice_address_box">
+          <input class="invoice_input" bindinput="onTapInput" data-type="invoice_address" placeholder="选填" placeholder-class="plc_font"></input>
+        </view>
+    </msg> 
+    <msg class="" id="invoice_phone" title="{{msgManager.invoice_phone}}">
+        <view slot="right" class="right invoice_phone_box">
+          <input class="invoice_input" bindinput="onTapInput" data-type="invoice_phone" placeholder="选填" placeholder-class="plc_font"></input>
+        </view>
+    </msg> 
+  </view>
+
+  <!-- 个人信息 -->
+  <view class="box">
+    <msg class="" id="invoice_msg" title="{{msgManager.invoice_msg}}">
+        <view slot="right" class="right invoice_msg_box">
+          <input class="invoice_input" bindinput="onTapInput" data-type="invoice_msg" placeholder="请输入手机号" placeholder-class="plc_font"></input>
+        </view>
+    </msg> 
+    <msg class="" id="invoice_email" title="{{msgManager.invoice_email}}">
+        <view slot="right" class="right invoice_email_box">
+          <input class="invoice_input" bindinput="onTapInput" data-type="invoice_email" placeholder="选填" placeholder-class="plc_font"></input>
+        </view>
+    </msg> 
+  </view>
+
+    <!-- 设置单位默认 -->
+  <view class="box" catchtap="onTap" data-type="invoice_default">
+    <msg class="" id="invoice_default" title="{{msgManager.invoice_default}}">
+        <view slot="right" class="right invoice_default_box">
+          <view class="_flex invoice_default_item">
+            <image src="{{cur_invoice_default?return_active:return_img}}" style="padding-right:0;" class="img_select" mode="aspectFit"></image>
+          </view>
+        </view>
+    </msg>
+  </view> 
+
+  <view class="btn_box {{isIphoneX?'fix_iphoneX':''}}">
+    <button hover-class="none" class="btn" style="background:{{brand_info.style.bg_color}};" catchtap="onTap" data-type="confirm">确认</button>
+  </view>
+</view>

@@ -1,0 +1,40 @@
+<window class="window" ext-class="window-ext">
+	<view class="main" style="{{boxStyle}}">
+    <view style="{{setStyle}}">
+      <view class="store_detail">
+        <view>
+          <view class="s_name">{{storeInfo.storeName}}</view>
+          <view class="s_address">{{storeInfo.storeArea}} {{storeInfo.storeAddress}}</view>
+        </view>
+        <view class="change_store" catchtap="changeStore">
+          <image class="change_s_icon" src="{{brand_info.default_icon_url}}contact_guide/change_s.png" mode="aspectFill"/>
+        </view>
+      </view>
+      <view class="contact_staff">
+        <block wx:if="{{storeInfo.staffList.length > 0}}">
+          <view class="c_s_tip">联系店员</view>
+          <view class="c_s_list">
+            <view class="c_s_item" wx:for="{{storeInfo.staffList}}" wx:key="index">
+              <image class="c_s_head" src="{{item.staffPhoto}}" mode="aspectFill"/>
+              <view class="c_s_name">{{item.staffName}}</view>
+              <view class="CS_icon">
+                <view class="CS_btn">
+                  <contactPluginCell 
+                  class="contact_cell"
+                  data-index="{{index}}"
+                  catchtap="startmessage"
+                  bind:completemessage="completemessage"
+                  plugid="{{item.customerService}}"></contactPluginCell>
+                </view>
+                <image class="chat_icon" src="{{brand_info.default_icon_url}}contact_guide/chat.png" mode="aspectFill"/>
+              </view>
+            </view>
+          </view>
+        </block>
+        <block wx:else>
+          <view class="has_no_data">暂无导购</view>
+        </block>
+      </view>
+    </view>
+  </view>
+</window>

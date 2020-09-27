@@ -1,0 +1,9 @@
+<view class="active_tip">
+	<view class="active_tip_hover {{!show ? 'hide' : ''}}" bindtouchstart="hideTip"></view>
+    <image
+        id="touchBtn"
+        src="/images/chic/apply_tip.png"
+        mode="widthFix"
+        class="tip_btn {{show ? 'show' : ''}}"
+        bindtap="toggleTip"></image>
+</view>

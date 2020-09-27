@@ -1,0 +1,142 @@
+<form bindsubmit="formAction" report-submit="true">
+	<view class='main {{isIphoneX ? "ipx_p_b" : ""}} {{customTab ? "customTab" : ""}}'>
+		<view class='header'>
+			<view hidden='{{search_value || current_focus}}' class='search mr_5' catchtap='handle_focus' style="border:1px solid {{brand_info.style.bg_color}};">
+				<image class='img_search mr_5' src="{{search_gray}}" mode='aspectFit'></image>
+				<view class='ml_5 font_24 C_rgba333'>搜索</view>
+			</view>
+			<view class='input_box_style mr_5' hidden='{{!search_value && !current_focus}}' style="border:1px solid {{brand_info.style.bg_color}};">
+				<image data-value-type="search_value" catchtap='handle_confirm' class='img_search ml_5 mr_5' src="{{search_gray}}" mode='aspectFit'></image>
+				<input bindconfirm='handle_confirm' bindfocus='handle_focus' bindblur="handle_blur" focus='{{current_focus}}' class='search_input mr_5' bindinput='handle_input' placeholder-class='placeholderStyle' placeholder='请输入关键字' value='{{search_value}}' data-value-type="search_value">
+				</input>
+			</view>
+			<btns class="header_right_stay" hidden='{{current_focus}}' isLogin="{{isLogin}}" customData="{{publishData}}" bindclickcallback="jump">
+				<view class='header_right'>
+					<image class='img_publish ml_10 mr_10' src="{{grass_publish}}" mode='aspectFit'></image>
+					<view class='header_text bold' style='color:{{brand_info.style.font_color}}'>发帖</view>
+				</view>
+			</btns>
+			<view class='header_right' hidden='{{!current_focus}}' data-type="cancel" catchtap='handle_blur'>
+				<image class='img_publish ml_10 mr_10' src="{{resetImg}}" mode='aspectFit'></image>
+				<view class='header_text bold C_7f'>重置</view>
+			</view>
+		</view>
+		<view class='nav_bar'>
+			<scroll-view scroll-x class='scroll' scroll-left="{{goLeft}}" bindscrolltolower="handle_scroll_nav">
+				<view class='nav_box'>
+					<view wx:for="{{nav_box}}" wx:for-index="nav_num" wx:key="id" style='color:{{currentNavShow==nav_num?brand_info.style.font_color + ";" + "font-size:32rpx;font-weight:bold;padding:0;": "#999999"}}' class='nav_box_item' catchtap='handle_nav' data-id="{{item.id}}" data-num="{{nav_num}}">{{item.name}}</view>
+					<view class='nav_line' style='background:{{brand_info.style.bg_color}};left: {{leftWidth * currentNavShow}}rpx'></view>
+				</view>
+			</scroll-view>
+			<view class='search_text' catchtap='filtrate'>
+				<view class='line'></view>
+				<image class='img_search' src="{{grass_search}}" mode='aspectFit'></image>
+				<view class='nav_search C_7f font_24'>筛选</view>
+			</view>
+		</view>
+		<view class="l_box">
+			<list id='list' current="{{currentNav}}" tabData="{{nav_box}}" isSwiper bindswiperChange="swiperChange" bindscrolltolower="handle_scroll" bindrefresherrefresh="refresh">
+				<!-- 下拉刷新 -->
+				<!-- <view class='img_load_box' style='' hidden='{{!showLoadImg}}'>
+					<image src='{{loadImg}}' style='transform:rotate({{moveRoAction}}deg)' class='img_load' mode='aspectFit'></image>
+				</view> -->
+				<view slot="data{{lIndex}}" class="" wx:for="{{nav_box}}" wx:for-item="lItem" wx:for-index="lIndex" wx:key="lIndex">
+					<block wx:if="{{nav_box[lIndex].show_style == 0}}">
+						<view class='content_box row_box'>
+							<view class="row_c_box" wx:for="{{nav_box[lIndex].data3}}" wx:key="index" wx:for-item="row_item">
+								<view class="row_img_box">
+									<view class="row_img_style_box single">
+									<!-- <view wx:for="{{row_item.media_type==0?row_item.pubImages.length>0?row_item.pubImages:[1]:[1]}}" class="row_img_style_box {{(row_item.pubImages.length > 1 && row_item.media_type == 0)?'':'single'}}" wx:key="index" wx:for-item="row_img_item"> -->
+											<block wx:if="{{row_item.media_type==0}}">
+													<block wx:if="{{row_item.pubImages.length>0}}">
+															<image src="{{detailInfo.imgDomain + row_item.pubImages[0].img_path}}" mode="heightFix" class="row_img"></image> 
+													</block>
+													<block wx:else>
+															<image src="{{row_item.cover_path}}" mode="heightFix" class="row_img"></image>
+													</block>
+											</block>
+											<block wx:else>
+													<image src="{{row_item.cover_path}}" mode="heightFix" class="row_img"></image>
+													<image class='img_video' src="{{videoImg}}" mode="aspectFit"></image>
+											</block>
+									</view>
+								</view>
+
+								<view class='item_text font_26'>{{row_item.pub_title}}</view>
+								<view class='item_info C_7f'>
+									<view class='C_0 font_22'>
+										<image class="item_user_head" lazy-load="{{true}}" src="{{row_item.portrait_path}}" mode="aspectFit" />
+										<text class="v_m">{{row_item.real_name}}</text>
+									</view>
+									<view class='item_info_right'>
+										<image class='img_like' src="{{row_item.hasLike==0?grass_like:grass_like_active}}" mode='aspectFit'></image>
+										<view class='font_22'>{{row_item.likes}}</view>
+									</view>
+								</view>
+								<button class='formButton' hover-class='none' form-type="submit" catchtap='jump' data-id="{{row_item.id}}" data-type="article_detail" data-url="/pages/micro_mall/seeding_grass/article_detail/article_detail"></button>
+							</view>
+						</view>
+					</block>
+					<block wx:else>
+						<view class='content_box'>
+							<view class='float float_left'>
+								<view class='content_item' wx:for="{{nav_box[lIndex].data}}" wx:for-item="row_item" wx:key="index">
+									<image wx:if="{{row_item.media_type==0}}" class='img_goods' src="{{row_item.cover_path}}" mode="widthFix"></image>
+									<view class='img_video_box' wx:if="{{row_item.media_type==1}}">
+										<image class='img_video_src' lazy-load="{{true}}" mode='aspectFill' src="{{row_item.cover_path}}"></image>
+										<image class='img_video' src="{{videoImg}}" mode="aspectFill"></image>
+									</view>
+									<view class='item_text font_26'>{{row_item.pub_title}}</view>
+									<view class='item_info C_7f'>
+										<view class='C_0 font_22'>
+											<image class="item_user_head" lazy-load="{{true}}" src="{{row_item.portrait_path}}" mode="aspectFit" />
+											<text class="v_m">{{row_item.real_name}}</text>
+										</view>
+										<view class='item_info_right'>
+											<image class='img_like' src="{{row_item.hasLike==0?grass_like:grass_like_active}}" mode='aspectFit'></image>
+											<view class='font_22'>{{row_item.likes}}</view>
+										</view>
+									</view>
+									<button class='formButton' hover-class='none' form-type="submit" catchtap='jump' data-id="{{row_item.id}}" data-type="article_detail" data-url="/pages/micro_mall/seeding_grass/article_detail/article_detail"></button>
+								</view>
+							</view>
+
+							<view class='float'>
+								<view class='content_item' wx:for="{{nav_box[lIndex].data2}}" wx:key="index" wx:for-item="row_item">
+									<image wx:if="{{row_item.media_type==0}}" class='img_goods' src="{{row_item.cover_path}}" mode="widthFix"></image>
+									<view class='img_video_box' wx:if="{{row_item.media_type==1}}">
+										<image class='img_video_src' lazy-load="{{true}}" mode='widthFix' src="{{row_item.cover_path}}"></image>
+										<image class='img_video' src="{{videoImg}}" mode="widthFix"></image>
+									</view>
+									<view class='item_text font_26'>{{row_item.pub_title}}</view>
+									<view class='item_info C_7f'>
+										<view class='C_0 font_22'>
+											<image class="item_user_head" lazy-load="{{true}}" src="{{row_item.portrait_path}}" mode="aspectFit" />
+											<text class="v_m">{{row_item.real_name}}</text>
+										</view>
+										<view class='item_info_right'>
+											<image class='img_like' src="{{row_item.hasLike==0?grass_like:grass_like_active}}" mode='aspectFit'></image>
+											<view class='font_22'>{{row_item.likes}}</view>
+										</view>
+									</view>
+									<button class='formButton' hover-class='none' form-type="submit" catchtap='jump' data-id="{{row_item.id}}" data-type="article_detail" data-url="/pages/micro_mall/seeding_grass/article_detail/article_detail"></button>
+								</view>
+							</view>
+						</view>
+					</block>
+					<view hidden='{{!nav_box[lIndex].loaded || (nav_box[lIndex].data.length > 0 || nav_box[lIndex].data2.length > 0 || nav_box[lIndex].data3.length>0)}}' class='no_data_area'>
+						暂时还没有数据
+					</view>
+				</view>
+			</list>
+		</view>
+	 
+	</view>
+	<view class='filtrate {{filter?"isShow":"isHide"}} {{ customTab ? "customTab" : ""}} {{isIphoneX ? "ipx_p_b" : ""}}'>
+		<view class='filtrate_content' catchtap='handle_filtrate' style='{{currentFiltrate==1?"font-weight:bold; color:" + brand_info.style.font_color + "" : ""}}' data-filtrate="1">点赞量</view>
+		<view class='filtrate_content' style='{{currentFiltrate==2?"font-weight:bold; color:" + brand_info.style.font_color + "" : ""}}' catchtap='handle_filtrate' data-filtrate="2">评论量</view>
+		<view class='filtrate_content noborder' style='{{currentFiltrate==3?"font-weight:bold; color:" + brand_info.style.font_color + "" : ""}}' catchtap='handle_filtrate' data-filtrate="3">浏览量</view>
+		<view class='filtrate_cancel' catchtap='handle_filtrate' data-filtrate="0" style='background:{{brand_info.style.bg_color}};}}'>取消</view>
+	</view>
+	<view class='black_bg {{filter?"isShow":"isHide"}}' catchtouchmove='_noFn' catchtap='filtrate'></view>
+</form>

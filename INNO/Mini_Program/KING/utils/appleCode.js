@@ -1,0 +1,108 @@
+import LM from "../helper/manager/login-manager.js"
+import Conf from "../conf.js"
+import SMH from "../helper/show-msg-helper.js"
+import { BarCodeApi, UserApi} from "../helper/manager/http-manager.js"
+function appletCode(data) {
+  /**
+   * data = {
+   *    goodsInfo:{
+   *      opKind: //user_share_page(自定义页面)， user_share_pin（拼团），user_share_pr（预售），staff_personal（店员分享）,new_user_share(普通我的二维码)，user_share(正常)
+   *    },
+   *    scene,
+   *    path,
+   *    createType,
+   *    extend_id
+   * }
+   * 
+  */
+  let page = getCurrentPages().pop();
+  let info = data.info || {};
+  let path = info.path || page.route;
+  let goodsInfo = info.goodsInfo ||{};
+  let opKind = info.opKind || '';
+  let scene = data.scene;//页面需要带上的参数
+  console.log('进来生成二维码',opKind,data);
+  if (opKind == 'STORE_STAFF' || opKind == 'NEW_USER_SHARE'){
+  // let goodsInfo = data.goodsInfo;
+  // let scene = data.scene;//页面需要带上的参数
+  // if (goodsInfo && goodsInfo.opKind && goodsInfo.opKind == 'STORE_STAFF' || goodsInfo.opKind == 'NEW_USER_SHARE'){
+    return getWxCodeForWap.call(this, data);
+  }else{
+    let extendParam = {}
+    if(opKind == 'STAFF_ACTIVITY' || opKind == 'STAFF_GOODS'){//分销活动，热销商品增加额外参数
+      extendParam = {
+        "extendParam1": scene.staffCode || "",
+        "extendParam2": goodsInfo.actionActivityId || 0,
+        "extendParam3": scene.goods_id || 0
+      }
+      extendParam = JSON.parse(JSON.stringify(extendParam));
+    }
+    return BarCodeApi.getWxCode({
+      data: {
+        "userToken": LM.userToken,
+        "brandCode": Conf.BRAND_CODE,
+        "scene": JSON.stringify(scene || {}),
+        "path": Conf.is_onlyUserCenter == 1 ? Conf.MEMBER_INDEX : path,
+        "width": "750",
+        "createType": info.createType || 3,
+        "opKind": info.opKind || "user_share",
+        "isBackGround": 0,
+        "extend_id": info.extend_id || "",
+        "transPage": Conf.STARTUP_PAGE,
+        ...extendParam
+      }, other: { isShowLoad: false }
+    }).then(e => {
+      if (e.code == "1") {
+        return Promise.resolve(e.data);
+      } 
+    SMH.showToast({
+        'title': e.msg || "生成小程序码错误"
+    })
+      return Promise.resolve('');
+    }).catch((e)=>{
+        return Promise.resolve('');
+    })
+ 
+  }
+ }
+
+
+function getWxCodeForWap(data={}) {   //公众号二维码
+  /**
+   * data = {
+   *    storeId : 店铺ID
+   *    reqId   : 店员ID 
+   *    opKind  : STORE_STAFF
+   * }
+   * 
+  */ 
+
+  let info = data.info || {};
+  let goodsInfo = info.goodsInfo || {};
+  let opKind = info.opKind || '';
+  let scene = data.scene;//页面需要带上的参数
+
+  // let goodsInfo = data.goodsInfo;
+  // let scene = data.scene || {}; //页面需要带上的参数
+  return UserApi.getWxCodeForWap({
+    data: {
+      "userToken": LM.userToken,
+      "brandCode": Conf.BRAND_CODE,
+      "storeId": scene.store_id||0,
+      "reqId": scene.staff_id||0,
+      "opKind": opKind,
+    }, other: { isShowLoad: false }
+  }).then(e => { 
+      if (e.code == "1") {
+        return Promise.resolve(e.data);
+      }
+      SMH.showToast({
+          'title': e.msg || "生成二维码错误"
+      })
+      return Promise.resolve('');
+    }).catch((e) => {
+      return Promise.resolve('');
+    })
+}
+ 
+export default appletCode

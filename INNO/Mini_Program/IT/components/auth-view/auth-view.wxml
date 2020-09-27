@@ -1,0 +1,6 @@
+<view class="auth-view">
+    <view wx:if="{{msg}}" class="auth-view-msg">{{msg}}</view>
+    <auth-button class="auth-view-btn btn-white" auth openType="getUserInfo" bindauthed="onAuthed">
+        授权登录
+    </auth-button>
+</view>

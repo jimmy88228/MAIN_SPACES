@@ -1,0 +1,28 @@
+<!--pages/micro_mall/sign/app/rule/rule.wxml-->
+<window class="window" ext-class="window-ext">
+    <view class="sign_rule_popup" style="{{boxStyle}}">
+        <from bindsubmit="formAction" report-submit="true">
+            <view class='reward_wrapper'>
+                <image mode="widthFix" class="reward" src="{{signImg}}"/>
+            </view>
+            <view>
+                <view class="sign">签到成功</view>
+                <view class="sign_tips" wx:if="{{ruleList.continuousDays}}"><text wx:if="{{ruleList.continuousDays > 1}}">连续</text>签到{{ruleList.continuousDays}}天，+{{ruleList.totalGiftPoint}}积分</view>
+                <view class="bound_tips" wx:if="{{ruleList.totalGiftBonus}}">奖励{{ruleList.totalGiftBonus}}张优惠券</view>
+            </view>
+        </from>
+        <navigator 
+        open-type="switchTab" 
+        url="/pages/micro_mall/user/user" 
+        class="sign_jump_area" 
+        hover-class="none" 
+        >
+        <view 
+        style="{{'border-color:' + brand_info.style.bg_color + ';color:' + brand_info.style.font_color + ';'}}"
+        class="sign_jump">返回个人中心</view>
+        </navigator>
+        <view class="close" bindtap="cancel">
+            <view class='icon'></view>
+        </view>
+    </view>
+</window>

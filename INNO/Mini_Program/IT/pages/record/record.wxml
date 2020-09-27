@@ -1,0 +1,24 @@
+<wxs module="tabs">
+    module.exports = [
+        { name: "抽签码", cp: "code-list" },
+        { name: "我的奖品", cp: "prize-list" }
+    ]
+</wxs>
+
+<view class="title-bar">
+    <view wx:for="{{tabs}}" wx:for-item="n" wx:for-index="i" wx:key="i" class="title {{index == i ? 'selected' : '' }}">
+        {{n.name}}
+    </view>
+</view>
+<view class="title-bar title-bar-fixed">
+    <view wx:for="{{tabs}}" wx:for-item="n" wx:for-index="i" wx:key="i" class="title {{index == i ? 'selected' : '' }}"
+        data-index="{{i}}" bindtap="onTabTap">
+    </view>
+</view>
+<swiper class="record-swiper" current='{{index}}' bindchange="onPageChange">
+    <swiper-item class="record-item" wx:for="{{tabs}}" wx:for-item="n" wx:for-index="i" wx:key="i">
+        <code-list class="record-cev" show="{{isShow&&(index == i)}}" wx:if="{{n.cp=='code-list'}}"></code-list>
+        <prize-list class="record-cev" show="{{isShow&&(index == i)}}" wx:elif="{{n.cp=='prize-list'}}">
+        </prize-list>
+    </swiper-item>
+</swiper>

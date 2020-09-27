@@ -1,0 +1,94 @@
+<view class="orderInfoPage" hidden="{{isShow}}">
+    <view class="orderInfoTit orderBox  top0" style='background:linear-gradient(-53deg,{{brand_info.style.bg_color}},{{bg_color}})'>
+        <view class="itemR">
+            <view class="orderStatus">已完成</view>
+            <view class="order_sn">订单编号 {{erp_info.order_sn}}</view>
+            <view class="createTime">下单时间 {{erp_info.add_time}}</view>
+        </view>
+    </view>
+    <view class="orderGoods orderBox">
+        <text class="tit">商品详情</text>
+        <view class="orderGood" wx:for="{{erp_info.goods_list}}" wx:for-item='goods_info' wx:key="index" bindtap='jump_detail' data-id="{{goods_info.goods_id}}">
+            <view class="goods_info_box">
+                <image class="img_goods" src="{{empty_url}}" mode="aspectFit" wx:if="{{goods_info.goods_img == ''}}"/>
+                <image class="img_goods" src="{{goods_info.goods_img}}" mode="aspectFit" wx:else/>                
+            </view>
+            <view class="good_msg">
+                <view class="good_name">{{goods_info.goods_name}}</view>
+                <view class="good_info">
+                    <view class="gsSn" wx:if="{{goods_info.goods_sn}}">货号：{{goods_info.goods_sn}}</view>
+                    <view class="csName" wx:if="{{goods_info.size_name}}">{{goods_info.size_name}}</view>
+                    <view class="csName {{goods_info.size_name && goods_info.color_name ? 'csName_mid':''}}" wx:if="{{goods_info.size_name}}">{{goods_info.size_name && goods_info.color_name?',':''}}</view>
+                    <view class="csName {{goods_info.size_name && goods_info.color_name ? 'csName_right':''}}">{{goods_info.color_name ? goods_info.color_name : '规格一'}}</view>
+                    <view class="good_count" style='padding-left: 3rpx;'>x {{goods_info.qty}}</view>
+                </view>
+                <view class='money_bottom'>
+                    <view class="font_w font_28" style="color:{{brand_info.style.font_color}}">
+                        <view class="font_28 RMB" >¥ </view>
+                        <text>{{goods_info.price}}</text>
+                    </view>
+                </view>
+            </view>
+        </view>
+
+    </view>
+    <view class="orderBox">
+        <text class="tit">资费详情</text>
+        <view class="tit_box">
+            <text class="row_tit">商品件数</text>{{erp_info.qty}}件
+        </view>
+        <view class="tit_box">
+            <text class="row_tit">商品总价</text>¥{{erp_info.order_amount}}
+        </view>
+    </view>
+
+    <view class="orderBox">
+        <view class="sub_tit info_item">
+        <text class="info_key">会员编号：</text>
+        <text class="info_val">{{erp_info.cardno}}</text>
+        </view>
+        <view class="info_item">
+        <text class="info_key">下单店铺：</text>
+        <text class="info_val">{{erp_info.store_name}}</text>
+        </view>
+        <view class="order_code_area">
+        <canvas canvas-id="barcode" style="width: {{realWidth}}px; height: {{realHeight}}px;margin:0 auto;"/>
+        <text class='order_sn'>{{erp_info.order_sn}}</text>
+        </view>
+    </view>
+
+    <cover-view 
+    class="btn_box flex_global flex_al_c flex_e"
+    style="color:{{brand_info.style.font_color}}">
+        <cover-view
+        style="--theme_color:{{brand_info.style.bg_color}}"
+        bindtap="onTurnBack"
+        class="btn b_c_ef font_24 b_1">返回列表</cover-view> 
+        <cover-view
+        wx:if="{{erp_info.is_allow_electric==1 && erp_info.electric_task_id==0 && erp_info.order_amount>0}}"
+        style="--theme_color:{{brand_info.style.bg_color}}"
+        bindtap="onTap" data-type="issue_invoice" data-order-sn="{{erp_info.order_sn}}"
+        class="btn b_c_ef font_24 b_1">申请开票</cover-view>
+        <cover-view
+        wx:if="{{erp_info.electric_task_id}}"
+        style="--theme_color:{{brand_info.style.bg_color}}"
+        bindtap="onTap" data-type="detail_invoice" data-order-sn="{{erp_info.order_sn}}"
+        class="btn b_c_ef font_24 b_1">查看发票</cover-view>
+        <cover-view
+        wx:if="{{erp_info.can_comment_goods=='1'}}"
+        style="--theme_color:{{brand_info.style.bg_color}}"
+        bindtap="toComment" data-order-sn="{{erp_info.order_sn}}"
+        class="btn b_c_ef font_24 b_1">去评价</cover-view> 
+    </cover-view>
+    <!-- <cover-view class="btn_box flex_global flex_al_c flex_e" wx:else>
+        <button
+            class="turnBack"
+            style="background-color:{{brand_info.style.bg_color}}"
+            bindtap="onTurnBack"
+            >返回订单列表</button>
+    </cover-view>     -->
+</view>
+<!--客服-->
+<cs></cs>
+<!--首页-->
+<pageHome id="pageHome"></pageHome>

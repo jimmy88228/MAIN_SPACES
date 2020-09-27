@@ -1,0 +1,2 @@
+<question-view questions="{{questions}}"></question-view>
+<spec-view  specs-data="{{specsData}}"></spec-view>

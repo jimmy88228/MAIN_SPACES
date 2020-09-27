@@ -1,0 +1,7 @@
+<view class="group-main" style="{{mainStyle.value}}">
+    <block wx:for="{{childs}}" wx:key="index">
+        <img-layout layout-data="{{item}}" wx:if="{{item.type == 'Img'}}"></img-layout>
+        <gallery-layout layout-data="{{item}}" wx:elif="{{item.type == 'Gallery'}}"></gallery-layout>
+        <group-layout layout-data="{{item}}" wx:elif="{{item.type == 'Group'}}"></group-layout>
+    </block>
+</view>

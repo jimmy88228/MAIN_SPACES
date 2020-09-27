@@ -1,0 +1,6 @@
+{
+    "navigationBarTitleText": "限时特惠",
+    "usingComponents": {
+        "search": "/pages/component/search/s_view"
+    }
+}

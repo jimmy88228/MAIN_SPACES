@@ -1,0 +1,122 @@
+<!-- <page-nav id="nav-bar" opacity="{{opacityVal}}" mode="{{isShowAuthPopup?'None':'Auto'}}" /> -->
+<view wx:if="{{showRefresh}}" class="center-box anim-fade-in anim-delay">
+    <loading-view class="center-box-item" />
+</view>
+<view wx:elif="{{isAttached}}" class="filter-view {{isShowAuthPopup?'filter':''}}">
+    <view class="detail-main {{act.status >= 2?'':'after'}}">
+        <view class="main-slide-area sticky-area" id="sticky-area">
+            <view class="detail-slide-box anim-fade-in">
+                <swiper class="detail-slide" bindchange="swiperChange" autoplay="{{act.pictures.length>1}}">
+                    <block wx:for="{{act.pictures}}" wx:key="*this">
+                        <swiper-item>
+                            <image class="detail-slide-image" mode="aspectFill" src="{{item}}" />
+                        </swiper-item>
+                    </block>
+                </swiper>
+            </view>
+            <view class="s-points anim-slide-in-up" wx:if="{{act.pictures.length > 1}}">
+                <text wx:for="{{act.pictures}}" wx:key="index"
+                    class="s-point {{swiperCurrent == index ? 'active' : ''}}"></text>
+            </view>
+            <view class="code-box anim-slide-in-up" wx:if="{{act.status < 3 && progress > 1 }}">
+                <view class="tip">专属抽签码</view>
+                <view class="codes">
+                    <view wx:for="{{codes}}" wx:key="*this">{{item}}</view>
+                </view>
+                <view class="samm">关注 I.T官方微信</view>
+                <view class="samm">搜寻：IT官方服务号，获知更多品牌资讯</view>
+            </view>
+        </view>
+        <view class="detail-box anim-slide-in-up">
+            <view class="detail-box-stay" style="opacity:{{progress > 1 ? detailOpacity : 1}};">
+                <view class="detail-body">
+                    <text class="goods-name newline">{{act.name}}</text>
+                    <view class="goods-price">{{act.unit||''}} {{act.priceRange}}</view>
+                    <view class="menu-bar">
+                        <button class="menu btn-plain" hover-class="btn-hover" bindtap="jumpAction"
+                            data-url="/pages/record/record">
+                            查看战绩
+                        </button>
+                        <block wx:if="{{act.ruleArtId>0}}">
+                            <view class="sp"></view>
+                            <button class="menu btn-plain" hover-class="btn-hover" bindtap="jumpAction"
+                                data-url="/pages/web/web?id={{act.ruleArtId}}">
+                                活动规则
+                            </button>
+                        </block>
+                    </view>
+                    <view wx:if="{{act.status < 3}}" class="progress {{act.hasExtraCode>0?'':'noshare'}}">
+                        <view class="item {{progress>1?'enable':''}}">
+                            <view class="line"></view>
+                            <view class="point"></view>
+                            <view class="tip">
+                                <view class="tap">抽奖登记</view>
+                                <view class="state">{{progress>1?'已登记':'还未登记'}}</view>
+                            </view>
+                        </view>
+                        <view class="item {{progress>1?'enable':''}}">
+                            <view class="line"></view>
+                            <view class="point"></view>
+                            <view class="tip">
+                                <view class="tap">抽取签码</view>
+                                <view class="state">{{progress>1?'已抽取':'待抽取'}}</view>
+                            </view>
+                        </view>
+                        <view class="item {{progress>2?'enable':''}}" wx:if="{{act.hasExtraCode>0}}">
+                            <view class="line"></view>
+                            <view class="point"></view>
+                            <view class="tip">
+                                <view class="tap">传递好运</view>
+                                <view class="state">{{progress>2?'已传递':'未传递'}}</view>
+                            </view>
+                        </view>
+                        <view class="item {{progress>1?'enable':''}}" wx:else>
+                            <view class="line"></view>
+                            <view class="point"></view>
+                            <view class="tip">
+                                <view class="tap">关注IT官方微信</view>
+                                <view class="state">获取最新资讯</view>
+                            </view>
+                        </view>
+                    </view>
+                    <view class="detail-info">
+                        <view class="title">详细信息</view>
+                        <parser-view class="content" html="{{actHtmlDetails}}" gesture-zoom lazy-load selectable
+                            show-with-animation use-anchor use-cache>
+                        </parser-view>
+                        <!-- <rich-text class="content" nodes="{{actHtmlDetails}}"></rich-text> -->
+                    </view>
+                </view>
+            </view>
+            <view class="layout-box" wx:if="{{layoutData.length>0}}">
+                <view class="layout-title flex-b-w">
+                    <view class="layout-left">RECOMMEND</view>
+                    <view class="layout-right">相关推荐</view>
+                </view>
+                <ad-layout id="layout" data="{{layoutData}}"></ad-layout>
+            </view>
+        </view>
+    </view>
+    <view class="bottom-bar" wx:if="{{act.status == 1}}">
+        <button wx:if="{{progress==1}}" class="btn-white" hover-class="btn-hover" bindtap="toEnrollCheckAuth">
+            抽签登记
+        </button>
+        <block wx:elif="{{progress>1}}">
+            <button wx:if="{{act.hasExtraCode>0}}" class="btn-white" hover-class="btn-hover" bindtap="toEnroll">
+                更多抽签码
+            </button>
+            <button class="btn-white" hover-class="btn-hover" open-type="share">
+                传递好运
+            </button>
+        </block>
+    </view>
+    <view class="bottom-bar disable-status" wx:elif="{{act.status == 0}}">活动即将开始</view>
+    <view class="hideBox"></view> <!-- 兼容ios层级错乱 -->
+</view>
+<dialog wx:if="{{useDialog}}" id="dialog"></dialog>
+<dialog-auth wx:if="{{useAuthDialog}}" id="dialog-auth"></dialog-auth>
+<dialog-no-win wx:if="{{useNoSuccDialog}}" activity-id="{{act.id}}" id="dialog-no-succ"></dialog-no-win>
+<popup-enroll wx:if="{{useEnrollPopup}}" id="popup-enroll" goods-name="{{act.name}}" price-range="{{act.priceRange}}"
+    price-unit="{{act.unit}}" picture="{{goods.picture}}"></popup-enroll>
+<popup-enroll-info wx:if="{{useEnrollInfoPopup}}" id="popup-enroll-info"></popup-enroll-info>
+<popup-authorize wx:if="{{useAuthPopup}}" id="popup-auth" maskBg="none"></popup-authorize>

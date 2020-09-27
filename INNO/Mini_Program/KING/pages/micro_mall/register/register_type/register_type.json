@@ -1,0 +1,7 @@
+{
+  "navigationBarTitleText": "选择会员注册类型",
+  "usingComponents": {
+    "btns": "/pages/component/buttons/btns",
+    "tips_box": "/pages/micro_mall/register/help/tips_box"
+  }
+}

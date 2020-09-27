@@ -1,0 +1,28 @@
+<view wx:if="{{showRefresh}}" class="center-box anim-fade-in anim-delay">
+	<loading-view class="center-box-item" />
+</view>
+<block wx:elif="{{isAttached}}">
+	<view wx:if="{{list.length > 0}}" class="activity-list">
+		<view class="cell-list" wx:for="{{list}}" wx:for-item="yItem" wx:for-index="yIndex" wx:key="yIndex">
+			<view class="cell-year" wx:if="{{yItem.showYear}}">{{yItem.year}}</view>
+			<view class="activity-list-cell " wx:for="{{yItem.months}}" wx:for-item="mItem" wx:for-index="mIndex"
+				wx:key="mIndex">
+				<view class="cell-head">
+					<view class="c-head-l">{{mItem.monthStr}}{{mItem.month}}</view>
+					<view class="c-head-s">共{{mItem.count}}款</view>
+				</view>
+				<view class="act-list">
+					<view class="act-item" wx:for="{{mItem.acts}}" wx:key="index"
+						data-url="/pages/detail/detail?activityId={{item.id}}" catchtap="jumpAction">
+						<image class="item-img" src="{{item.picture}}" mode="aspectFill" lazy-load />
+						<view class="item-time">{{item.date}}</view>
+					</view>
+				</view>
+			</view>
+		</view>
+		<more-view wx:if="{{count> 12}}" data="{{ {loading:showLoadMore,end:isEnd} }}" />
+	</view>
+	<view wx:else class="center-box">
+		<view class="center-box-item">暂时还没有活动</view>
+	</view>
+</block>

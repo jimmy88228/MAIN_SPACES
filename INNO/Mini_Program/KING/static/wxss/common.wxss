@@ -1,0 +1,74 @@
+page {
+    --bg-color: #f7f7f7;
+    --card-bg-color: white;
+    --main-color: #000;
+    --sub-color: #7f7f7f;
+    --tips-color: #b2b2b2;
+    --line-color: #eee;
+    --button-title-color: #333;
+}
+.btn,
+.btn-plain {
+    margin: 0;
+    position: unset;
+    box-sizing: unset;
+    display: inline-block;
+    background: none;
+    border: none;
+    border-radius: 0;
+    padding-top: 0;
+    padding-left: 0;
+    padding-bottom: 0;
+    padding-right: 0;
+    line-height: unset;
+    text-align: center;
+    font-size: 30rpx;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+.btn {
+    color: var(--button-title-color);
+}
+.btn::after {
+    border: none;
+}
+.btn {
+    display: block;
+    color: #fff;
+    height: 90rpx;
+    line-height: 90rpx;
+    border: none;
+    background-color: #000;
+}
+.btn-black {
+    line-height: 90rpx;
+    background-color: #000;
+    color: #fff;
+    font-size: 26rpx;
+    text-align: center;
+    position: fixed;
+    left: 8rpx;
+    right: 8rpx;
+    bottom: 8rpx;
+}
+
+.empty-box {
+    font-size: 24rpx;
+    color: #b2b2b2;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    position: absolute;
+    top: 40%;
+    left: 50%;
+    transform: translate(-50%, -40%);
+}
+
+.empty-box image {
+    width: 60rpx;
+    height: 60rpx;
+    margin-bottom: 30rpx;
+}

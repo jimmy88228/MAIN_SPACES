@@ -1,0 +1,6 @@
+{
+    "navigationBarTitleText": "收益明细",
+    "usingComponents": {
+      "filter": "/pages/micro_mall/distribution_center/distribution_brokerage/filter/filter"
+    }
+}

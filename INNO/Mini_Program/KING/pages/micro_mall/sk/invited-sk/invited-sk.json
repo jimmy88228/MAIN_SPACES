@@ -1,0 +1,8 @@
+{
+  "component": true,
+  "usingComponents": {
+      "window": "/ui/cps/window/window",
+      "progress_bar": "/pages/component/progress_bar/progress_bar",
+      "btns": "/pages/component/buttons/btns"
+  }
+}

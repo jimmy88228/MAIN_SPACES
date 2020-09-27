@@ -1,0 +1,34 @@
+<view class='main'>
+    <view class='decoration' style='background:{{brand_info.style.bg_color}}'></view>
+    <view class='title '>我的销量</view>
+    <view class='box'>
+        <view class='content' bindtap='jump' data-num="0">
+            <view class='money'>
+                <text class='priceLeft'>¥</text>
+                <text class='priceRight'>{{_value[0]}}</text>
+            </view>
+            <view class='name '>累计销售</view>
+        </view>
+        <view class='content' bindtap='jump' data-num="1">
+            <view class='money'>
+                <text class='priceLeft'>¥</text>
+                <text class='priceRight'>{{_value[1]}}</text>
+            </view>
+            <view class='name '>月销售</view>
+        </view>
+        <view class='content' bindtap='jump' data-num="2">
+            <view class='money'>
+                <text class='priceLeft'>¥</text>
+                <text class='priceRight'>{{_value[2]}}</text>
+            </view>
+            <view class='name '>周销售</view>
+        </view>
+        <view class='content' bindtap='jump' data-num="3">
+            <view class='money'>
+                <text class='priceLeft'>¥</text>
+                <text class='priceRight'>{{_value[3]}}</text>
+            </view>
+            <view class='name '>邀请奖励</view>
+        </view>
+    </view>
+</view>

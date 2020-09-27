@@ -1,0 +1,1 @@
+<cartList id="cartListModule" options="{{options}}" customTab="{{customTab}}" hasCustomData="{{hasCustomData}}"></cartList>

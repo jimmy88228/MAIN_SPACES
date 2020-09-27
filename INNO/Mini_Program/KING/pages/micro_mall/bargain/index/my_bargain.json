@@ -1,0 +1,8 @@
+{
+    "navigationBarTitleText": "我的砍价",
+    "enablePullDownRefresh": true,
+    "backgroundColor": "#000000",
+    "usingComponents": {
+        "tabbar": "/pages/component/custom/tabBar_bargain"
+    }
+}

@@ -1,0 +1,200 @@
+{
+	"description": "项目配置文件。",
+	"setting": {
+		"urlCheck": false,
+		"es6": true,
+		"enhance": true,
+		"postcss": true,
+		"preloadBackgroundData": false,
+		"minified": true,
+		"newFeature": true,
+		"coverView": true,
+		"autoAudits": false,
+		"showShadowRootInWxmlPanel": false,
+		"scopeDataCheck": false,
+		"uglifyFileName": true,
+		"checkInvalidKey": true,
+		"checkSiteMap": false,
+		"uploadWithSourceMap": true,
+		"useMultiFrameRuntime": true,
+		"useApiHook": false,
+		"babelSetting": {
+			"ignore": [],
+			"disablePlugins": [],
+			"outputPath": ""
+		},
+		"bundle": true,
+		"useIsolateContext": true,
+		"useCompilerModule": true,
+		"userConfirmedUseCompilerModuleSwitch": false,
+		"packNpmManually": false,
+		"packNpmRelationList": []
+	},
+	"compileType": "miniprogram",
+	"libVersion": "2.11.2",
+	"appid": "wx3441bef68387bf1a",
+	"projectname": "IT_NEW",
+	"isGameTourist": false,
+	"simulatorType": "wechat",
+	"simulatorPluginLibVersion": {},
+	"condition": {
+		"search": {
+			"current": -1,
+			"list": []
+		},
+		"conversation": {
+			"current": -1,
+			"list": []
+		},
+		"plugin": {
+			"current": -1,
+			"list": []
+		},
+		"game": {
+			"currentL": -1,
+			"list": []
+		},
+		"gamePlugin": {
+			"current": -1,
+			"list": []
+		},
+		"miniprogram": {
+			"current": -1,
+			"list": [
+				{
+					"id": 0,
+					"name": "中奖",
+					"pathName": "pages/winprize/winprize",
+					"query": "rewardId=1",
+					"scene": null
+				},
+				{
+					"id": 1,
+					"name": "抽签码",
+					"pathName": "pages/record/record",
+					"query": "",
+					"scene": null
+				},
+				{
+					"id": 2,
+					"name": "详情",
+					"pathName": "pages/detail/detail",
+					"query": "activityId=50&fromUserId=5",
+					"scene": null
+				},
+				{
+					"id": 3,
+					"name": "消息",
+					"pathName": "pages/message/message",
+					"query": "",
+					"scene": null
+				},
+				{
+					"id": -1,
+					"name": "中奖页",
+					"pathName": "pages/winprize/winprize",
+					"query": "rewardId=6085",
+					"scene": null
+				},
+				{
+					"id": 5,
+					"name": "pages/detail/detail",
+					"pathName": "pages/detail/detail",
+					"query": "activityId=60&friEnrollId=1985729",
+					"scene": null
+				},
+				{
+					"id": -1,
+					"name": "测试",
+					"pathName": "pages/test/slideTest/test",
+					"query": "",
+					"scene": null
+				},
+				{
+					"id": -1,
+					"name": "测试弹框",
+					"pathName": "pages/test/test",
+					"query": "",
+					"scene": null
+				},
+				{
+					"id": -1,
+					"name": "pages/web/web",
+					"pathName": "pages/web/web",
+					"query": "",
+					"scene": null
+				},
+				{
+					"id": -1,
+					"name": "活动列表",
+					"pathName": "pages/activity/list/list",
+					"query": "",
+					"scene": null
+				},
+				{
+					"id": 10,
+					"name": "活动详情",
+					"pathName": "pages/detail/detail",
+					"query": "activityId=50",
+					"scene": null
+				},
+				{
+					"id": 11,
+					"name": "奖项",
+					"pathName": "pages/winprize/winprize",
+					"query": "rewardId=10",
+					"scene": null
+				},
+				{
+					"id": -1,
+					"name": "优惠券",
+					"pathName": "pages/coupon/coupon-detail",
+					"query": "rewardId=10",
+					"scene": null
+				},
+				{
+					"id": -1,
+					"name": "天选之子",
+					"pathName": "pages/chosen-one/chosen-one",
+					"query": "",
+					"scene": null
+				},
+				{
+					"id": -1,
+					"name": "pages/mine/mine",
+					"pathName": "pages/mine/mine",
+					"query": "",
+					"scene": null
+				},
+				{
+					"id": -1,
+					"name": "pages/record/record",
+					"pathName": "pages/record/record",
+					"query": "rewardId=10",
+					"scene": null
+				},
+				{
+					"id": -1,
+					"name": "pages/winprize/winprize",
+					"pathName": "pages/winprize/winprize",
+					"query": "lotteryRecordId=1",
+					"scene": null
+				},
+				{
+					"id": -1,
+					"name": "pages/activity/past-list/past-list",
+					"pathName": "pages/activity/past-list/past-list",
+					"query": "",
+					"scene": null
+				},
+				{
+					"id": 18,
+					"name": "pages/chosen-one/chosen-one",
+					"pathName": "pages/chosen-one/chosen-one",
+					"query": "activityId=4",
+					"scene": null
+				}
+			]
+		}
+	}
+}
