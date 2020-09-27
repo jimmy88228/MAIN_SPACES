@@ -200,7 +200,6 @@ export default {
             }) 
         },
         loadData() {
-            console.log('活动',this.isAdd,this.actId)
             if(this.isAdd || !this.actId){
                 !this.isAdd && !this.actId && this.showError("活动信息异常");
                 return Promise.reject();
