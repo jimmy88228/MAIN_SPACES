@@ -1,0 +1,155 @@
+.ivu-menu {
+    z-index: 0;
+}
+.ivu-menu:after {
+    display: none !important;
+}
+.ivu-menu .ivu-menu-item {
+    border: none !important;
+}
+.ivu-menu.ivu-menu-light .ivu-menu-item,
+.ivu-menu.ivu-menu-light .ivu-menu-submenu-title {
+    color: #aaa;
+}
+.ivu-menu.ivu-menu-light .ivu-menu-item:hover {
+    background: rgba(255, 255, 255, 0.1);
+    color: #aaa;
+}
+.ivu-menu.ivu-menu-light .ivu-menu-submenu .ivu-menu-item:hover:not(.ivu-menu-item-active) {
+    color: #aaa;
+    background: rgba(255, 255, 255, 0.1) !important;
+}
+
+.ivu-menu.ivu-menu-light .ivu-menu-opened .ivu-menu-submenu-title {
+    color: #aaa;
+    background: rgba(255, 255, 255, 0.1);
+}
+
+.ivu-menu.ivu-menu-light .ivu-menu-submenu-title:hover {
+    color: #aaa;
+    background: rgba(255, 255, 255, 0.1);
+}
+
+.ivu-menu.ivu-menu-light .ivu-menu-item-active:not(.ivu-menu-submenu),
+.ivu-menu.ivu-menu-light .ivu-menu-submenu.ivu-menu-item-active .ivu-menu-submenu-title,
+.ivu-menu.ivu-menu-light .ivu-menu-submenu .ivu-menu-item-active {
+    color: #fff;
+    background: rgba(255, 255, 255, 0.1);
+}
+.ivu-menu.ivu-menu-light .ivu-menu-submenu.ivu-menu-item-active .ivu-menu-submenu-title {
+    color: #fff;
+    background: rgba(255, 255, 255, 0.1);
+}
+
+.ivu-menu.ivu-menu-vertical,
+.ivu-menu.ivu-menu-vertical .ivu-menu-item,
+.ivu-menu.ivu-menu-vertical .ivu-menu-submenu,
+.ivu-menu.ivu-menu-vertical .ivu-menu-submenu-title,
+.ivu-menu.ivu-menu-vertical .ivu-menu-submenu .ivu-menu-item {
+    background: transparent;
+    z-index: 0;
+    padding: 0;
+    padding: 0, 0;
+    padding: 0, 0, 0, 0;
+    padding-left: 0;
+    padding-top: 0;
+    padding-right: 0;
+    padding-bottom: 0;
+    transition: background, color 0.4s, 0.4s;
+}
+
+.ivu-menu.ivu-menu-vertical .ivu-menu-submenu.ivu-menu-opened {
+    background: transparent;
+}
+
+.ivu-menu.ivu-menu-vertical .ivu-menu-item,
+.ivu-menu.ivu-menu-vertical .ivu-menu-submenu-title,
+.ivu-menu.ivu-menu-vertical .ivu-menu-submenu,
+.ivu-menu.ivu-menu-vertical .ivu-menu-submenu .ivu-menu-item {
+    width: 100%;
+}
+
+.ivu-menu.ivu-menu-vertical .ivu-menu-item:not(.ivu-menu-submenu),
+.ivu-menu.ivu-menu-vertical .ivu-menu-submenu-title,
+.ivu-menu.ivu-menu-vertical .ivu-menu-submenu .ivu-menu-item {
+    height: 50px;
+    line-height: 50px;
+}
+
+.ivu-menu.ivu-menu-vertical .ivu-menu-submenu .ivu-menu-item {
+    padding-left: 16px !important;
+}
+
+.ivu-menu.ivu-menu-vertical .ivu-menu-submenu .ivu-menu-submenu-title-icon {
+    display: inline-block;
+    line-height: 50px;
+    position: static;
+    top: 0;
+    margin-right: 16px;
+    height: 50px;
+}
+
+.ivu-menu.ivu-menu-vertical .ivu-menu-item-active:not(.ivu-menu-submenu) {
+    background: #2d8cf0 !important;
+}
+
+.ivu-menu.ivu-menu-horizontal,
+.ivu-menu.ivu-menu-horizontal .ivu-menu-item,
+.ivu-menu.ivu-menu-horizontal .ivu-menu-submenu,
+.ivu-menu.ivu-menu-horizontal .ivu-menu-submenu-title,
+.ivu-menu.ivu-menu-horizontal .ivu-menu-submenu .ivu-menu-item {
+    background: transparent;
+    z-index: 0;
+    padding: 0;
+    padding: 0, 0;
+    padding: 0, 0, 0, 0;
+    padding-left: 0;
+    padding-top: 0;
+    padding-right: 0;
+    padding-bottom: 0;
+    transition: background, color 0.4s, 0.4s;
+}
+.ivu-menu.ivu-menu-horizontal .ivu-menu-item,
+.ivu-menu.ivu-menu-horizontal .ivu-menu-submenu-title,
+.ivu-menu.ivu-menu-horizontal .ivu-menu-submenu {
+    height: 100%;
+}
+.ivu-menu.ivu-menu-horizontal .ivu-menu-item:not(.ivu-menu-submenu),
+.ivu-menu.ivu-menu-horizontal .ivu-menu-submenu-title {
+    padding: 0 20px;
+}
+.ivu-menu.ivu-menu-horizontal .ivu-select-dropdown .ivu-menu-item {
+    height: 40px;
+    line-height: 40px;
+    text-align: left;
+}
+.ivu-table-wrapper,
+.ivu-tabs {
+    width: 100%;
+}
+
+.ivu-upload,
+.ivu-upload-drag,
+.ivu-upload:hover,
+.ivu-upload-drag:hover {
+    border: none;
+}
+
+.ivu-menu.ivu-menu-horizontal .ivu-select-dropdown .ivu-menu-drop-list .ivu-menu-item {
+    color: #515a6e;
+}
+
+.ivu-menu.ivu-menu-horizontal .ivu-select-dropdown .ivu-menu-drop-list .ivu-menu-item:hover {
+    color: #aaa;
+    background: rgba(255, 255, 255, 0.1) !important;
+}
+
+.ivu-menu .ivu-menu-item,
+.ivu-menu .ivu-menu-submenu {
+    border: none !important;
+    background: none !important;
+}
+
+.ivu-menu .ivu-menu-submenu.ivu-menu-item-active .ivu-menu-submenu-title {
+    background: none !important;
+}

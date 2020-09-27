@@ -1,0 +1,14 @@
+export default [
+    {
+        name: "Sales",
+        title: "营销活动",
+        icon: "icon-activity",
+        childs: ["SecKill"]
+    },
+    {
+        name: "Content",
+        title: "内容管理",
+        icon: "icon-content",
+        childs: ["CustomLayout", "Article"]
+    }
+];

@@ -1,0 +1,24 @@
+const ChosenOne = r => require.ensure([], () => r(require("@/models/chosen-one/pages/index")), "chosenOne");
+const menuInfos = {
+    menu: "ChosenOne"
+};
+const routes = [{
+    name: "ChosenOne",
+    path: "/chosenOne",
+    component: ChosenOne,
+    meta: {
+        ...menuInfos,
+        title: "天选之子"
+    }
+}];
+
+const menus = [{
+    name: "ChosenOne",
+    title: "天选之子",
+    icon: "icon-goods",
+    to: "ChosenOne"
+    }];
+export default {
+    routes,
+    menus
+};

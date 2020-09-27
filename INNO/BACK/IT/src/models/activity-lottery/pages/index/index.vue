@@ -1,0 +1,174 @@
+<template>
+    <div class="cev-root bg-page spin-box">
+        <div class="cev-root" v-bar>
+            <div class="bg-shadow padding20 list-box">
+                <div class="cev-toolbar">
+                    <div class="left">
+                        <Input class="inputable" placeholder="请输入搜索内容" v-model="keywords" clearable/>
+                        <Button type="primary" @click="e=>loadData()">
+                            <i class="iconfont min r5 icon-search"></i>搜索
+                        </Button>
+                    </div>
+                    <div class="right">
+                        <Button type="primary" @click="createAct">
+                            <i class="iconfont min r5 icon-add"></i>创建活动
+                        </Button>
+                    </div>
+                </div>
+                <Table ref="table" class="table" :columns="columns" :data="list" border>
+                    <template slot="detail" slot-scope="p">
+                        <div class="flex-">
+                            <img class="item-table-inline-img" :src="p.row.picture" />
+                            <span class="padding20">{{ p.row.name }}</span>
+                        </div>
+                    </template>
+                    <template slot="enable" slot-scope="p">
+                        <span>{{ p.row.enable ? '展示中' : '未展示'}}</span>
+                    </template>
+                    <template slot="state" slot-scope="p">
+                        <span>{{ actStateConf[p.row.state] }}</span>
+                    </template>
+                    <template slot="announceTime" slot-scope="p">
+                        <span>{{ p.row.announceTime ? '已开奖' : '待开奖'}}</span>
+                    </template>
+                    <template slot="pushState" slot-scope="p">
+                        <span>{{ p.row.pushState ? '已推送' : '未推送'}}</span>
+                    </template>
+                    <template slot="action" slot-scope="p">
+                        <div class="margin10"><Button class="item-table-action" type="primary" size="small" @click="editAct(p.row.id)">编辑</Button></div>
+                        <div class="margin10"><Button class="item-table-action" type="primary" @click="getRule(p.row.id)" size="small" >开奖设置</Button></div>
+                        <div class="margin10"><Button class="item-table-action" type="primary" size="small" @click="getEnroll(p.row.id)">报名列表</Button></div>
+                        <div class="margin10">
+                            <Poptip confirm title="确定删除该活动" @on-ok="removeAct(p.row)">
+                                <Button class="item-table-action" size="small" type="primary" >删除</Button>
+                            </Poptip>
+                        </div>
+                    </template>
+                </Table>
+                <Page
+                    v-if="showPage"
+                    :total="count"
+                    :current="pageIndex"
+                    :page-size="pageSize"
+                    :page-size-opts="pageSizeOpts"
+                    @on-change="e=>loadData(e)"
+                    @on-page-size-change="handlePageSizeChange"
+                    show-sizer
+                    show-elevator
+                    show-total
+                    transfer
+                ></Page>
+            </div>
+        </div>
+        <Spin v-if="loading" class="spin" size="large" fix></Spin>
+    </div>
+</template>
+
+<script>
+import { MainApi } from "@/helper/manager/http-manager";
+import ListPageMixin from "@/helper/mixin/list-page";
+import Mixin from "./mixin";
+export default {
+    name: "ActivityLottery",
+    mixins: [ListPageMixin, Mixin],
+    components: {},
+    data() {
+        return {
+            keywords: "",
+            actStateConf: {
+                0: "未开始",
+                1: "进行中",
+                2: "已过期",
+                3: "已关闭"
+            }
+        };
+    },
+    mounted() {
+        this.loadData();
+    },
+    methods: {
+        onLoadData(index, data) {
+            this.loading = true;
+            MainApi.activityList({
+                data: {
+                    stime: "",
+                    etime: "",
+                    keywords: this.keywords,
+                    orderBy: "",
+                    ...data
+                }
+            }).then(res => {
+                if (res.code === "1") {
+                    this.pageIndex = index;
+                    this.data = res.data;
+                } else {
+                    return Promise.reject(res.msg);
+                }
+            })
+            .catch(msg => {
+                this.$Message.error(msg || "加载失败");
+            })
+            .finally(() => {
+                this.loading = false;
+            });
+        },
+        removeAct(item) {
+            if (!parseInt(item.id)) return;
+            this.loading = true;
+            MainApi.deleteDrawActivity({
+                data: {
+                    activityId: item.id
+                }
+            }).then(res => {
+                if (res.code === "1") {
+                    this.$Message.success("删除成功");
+                    this.list.splice(item._index ,1);
+                } else {
+                    return Promise.reject(res.msg);
+                }
+            })
+            .catch(msg => {
+                this.$Message.error(msg || "加载失败");
+            })
+            .finally(() => {
+                this.loading = false;
+            });
+        },
+        createAct() {
+            this.$router.push({
+                name: "ActivityNew",
+                query: {
+                    id: 0
+                }
+            });
+        },
+        editAct(id) {
+            if (!id) return;
+            this.$router.push({
+                name: "ActivityEdit",
+                query: {
+                    actId: id
+                }
+            });
+        },
+        getRule(id) {
+            if (!id) return;
+            this.$router.push({
+                name: "RuleList",
+                query: {
+                    actId: id
+                }
+            });
+        },
+        getEnroll(id) {
+            if (!id) return;
+            this.$router.push({
+                name: "EnrollList",
+                query: {
+                    actId: id
+                }
+            });
+        }
+    }
+};
+</script>
