@@ -1,0 +1,207 @@
+page {
+    background-color: #EFEFEF;
+}
+
+.my_collage_detail {
+    margin-top:10rpx;
+    padding-bottom: 90rpx;
+}
+
+.detail_area {
+    padding-left: 30rpx;
+}
+
+._area_title {
+    padding: 27rpx 0px 27rpx 0;
+}
+
+.my_collage_info {
+    padding: 0 0 30rpx 0;
+}
+
+.activity_img {
+    width: 215rpx;
+    /* width: 160rpx; */
+}
+
+.activity_img_stay {
+    width: 100%;
+}
+
+.activity_img_stay .img {
+    width: 100%;
+    padding-top: 100%;
+    position: relative;
+}
+
+.activity_img_stay .img image {
+    display: block;
+    width: 100%;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    -moz-transform: translate(-50%, -50%);
+}
+
+.activity_info {
+    padding-left: 30rpx;
+    position: relative;
+    vertical-align: top;
+}
+
+.activity_name {
+    margin-bottom: 14rpx;
+    margin-top: 16rpx;
+    box-sizing:border-box;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+    overflow: hidden;
+    text-align:left;
+}
+
+.collage_price {
+    position: absolute;
+    bottom: 6rpx;
+    left: 30rpx;
+    font-weight: 600;
+}
+
+.collage_market_price {
+    margin-bottom: 16rpx;
+}
+
+.warn_i_icon {
+    /* width:20rpx;
+  height:20rpx;
+  line-height:20rpx; */
+    padding: 0px 8rpx;
+    line-height: normal;
+    text-align: center;
+    margin-right: 6rpx;
+}
+
+.collage_state {
+    padding-top: 24rpx;
+    padding-bottom: 60rpx;
+    padding-right: 24rpx;
+}
+
+.collage_operate {
+    position: fixed;
+    left: 0px;
+    bottom: 0px;
+    height: 90rpx;
+    padding: 8rpx 15rpx;
+    background-color: #fff;
+    border-top: 1rpx solid #efefef;
+}
+
+.collage_operate_b {
+    border: 1rpx solid;
+    border-radius: 3px;
+    overflow: hidden;
+}
+
+.collage_operate button {
+    border-radius: 0px;
+    height: 90rpx;
+    line-height: 90rpx;
+    display: inline-block;
+}
+
+.collage_operate_l {
+    width: 412rpx;
+    /* width: 375rpx; */
+    position: relative;
+}
+
+.collage_operate_l .operate_btn {
+    display:inline-flex;
+    text-align:center;
+    width: 50%;
+}
+.operate_btns{
+  width:100%;
+}
+.operate_txt{
+  display:flex;
+  justify-content: center;
+  align-items: center;
+  width:100%;
+  height:90rpx;
+}
+
+.collage_operate_l .g_v_line {
+    width: 1px;
+    height: 44rpx;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    -moz-transform: translate(-50%, -50%);
+}
+
+.collage_operate_r {
+    width: 309rpx;
+}
+
+.collage_operate_r button {
+    width: 100%;
+}
+
+.collage_rule {
+    margin-bottom: 23rpx;
+}
+
+.collage_status_time {
+    margin-top: 40rpx;
+}
+
+.collage_state_tip {
+    margin-top: 24rpx;
+}
+
+.user_join_item {
+    padding-top: 16rpx;
+    padding-bottom: 19rpx;
+}
+
+.user_portrait_area {
+    width: 84rpx;
+}
+
+.user_portrait {
+    width: 68rpx;
+    height: 68rpx;
+    border-radius: 100%;
+}
+
+.user_portrait image {
+    display: block;
+    width: 100%;
+}
+
+.right {
+    margin-right: 15rpx;
+}
+
+.colonel_buttom {
+    padding: 7rpx 10rpx;
+    /* margin-left: 15rpx; */
+    border-radius: 6rpx;
+}
+
+.create_time {
+    margin-top: 12rpx;
+}
+
+.tabbar_btn_bg {
+    background-color: #fff;
+}
+
+.lineStyle {
+    /* opacity: 0.5; */
+    font-weight: 300;
+}

@@ -1,0 +1,29 @@
+<!--pages/micro_mall/selfGet/self_get_set.wxml-->
+<view class="self_get_page">
+  <view class="input_box d_flex">
+    <view class="inline_b limit_w">联系人:</view>
+    <view class="flex1 input_item">
+      <input type="text" placeholder='收货人' value="{{contact}}" data-key='contact' bindinput='onInputSync' />
+      <button class="quick_get" catchtap='getWeixinAddress' hover-class='none' style="{{brand_info.style.font_color ? 'background-color:'+brand_info.style.bg_color+';' : ''}}">快捷获取</button>
+    </view>
+  </view>
+  <view class="input_box d_flex">
+    <view class="inline_b limit_w">手机号码:</view>
+    <view class="flex1 input_item">
+      <input type="text" type="number" maxlength='11' placeholder='请输入手机号码' value="{{mob_phone}}" data-key='mob_phone' bindinput='onInputSync' />
+      
+    </view>
+  </view>
+  <view class="input_box d_flex">
+    <view class="inline_b limit_w">取货店铺:</view>
+    <view class="flex1 input_item store_input">
+      <text class="inline_b">{{select_store.name}}</text>
+      <!-- <button catchtap="goSelectStore" hover-class='none' data-url="/pages/micro_mall/stores/store_nav?select_store_id={{select_store.id || 0}}&loc_f={{loc_f}}&key_word={{select_store.key_word}}" class="select_store" style="{{brand_info.style.font_color ? 'background-color:'+brand_info.style.bg_color+';' : ''}}">选择门店</button> -->
+    </view>
+  </view>
+  <view class="page_main_btn">
+    <button class="l_default_btn" catchtap='submitStore' style="{{brand_info.style.font_color ? 'background-color:'+brand_info.style.bg_color+';' : ''}}">确定</button>
+  </view>
+</view>
+
+<dialog id="pageDialog" marsk="{{marskValue}}"></dialog>

@@ -1,0 +1,8 @@
+{
+  "navigationBarTitleText": "拼团详情",
+  "enablePullDownRefresh": true,
+  "backgroundColor": "#EFEFEF",
+  "usingComponents": {
+    "btns": "/pages/component/buttons/btns"
+  }
+}

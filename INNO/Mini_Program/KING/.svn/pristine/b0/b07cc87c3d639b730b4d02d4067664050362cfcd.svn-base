@@ -1,0 +1,7 @@
+{
+  "backgroundColor": "#ffffff",
+  "usingComponents": {
+        "dialog": "../../../../ui/cps/dialog/dialog",
+        "btns":"../../../component/buttons/btns"
+  }
+}

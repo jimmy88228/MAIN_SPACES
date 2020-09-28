@@ -1,0 +1,7 @@
+<!--pages/micro_mall/custom_page/custom_page.wxml-->
+<view class="index_page {{isIphoneX ? 'ipx_p_b' : ''}} {{customTab ? 'customTab' : ''}}">
+<pageTab class="page_tab" hideContact="{{true}}" id="pageTab" bindpageShareSaving='pageShareSaving' bindvideoplay="videoPlay" actData="{{act_data}}" custom-tab="{{customTab}}" ></pageTab>
+</view>
+ <!--首页-->
+<pageHome id="pageHome"></pageHome>
+

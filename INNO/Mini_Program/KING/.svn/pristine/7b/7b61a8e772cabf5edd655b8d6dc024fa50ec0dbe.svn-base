@@ -1,0 +1,85 @@
+.bg{
+  position:fixed;
+  top: 0;
+  left: 0;
+  z-index: 21;
+  background: rgba(0, 0, 0, 0.7);
+  opacity: 0;
+  transition: opacity 0.32s;
+  width: 100%;
+  height: 100%;
+}
+.bg.active{
+  opacity: 1;
+}
+.module_box{
+  font-size: 28rpx;
+  width: 100%;
+  height: 82%;
+  box-sizing: border-box;
+  padding: 40rpx 20rpx 0 20rpx;
+  background: #fff;
+  position: fixed;
+  left: 0;
+  bottom: 0;
+  z-index: 22;
+  transform: translateY(100%);
+  transition: transform 0.32s;
+}
+.module_box.active{
+  transform: translateY(0%);
+}
+.close_area {
+    position: absolute;
+    top: 0px;
+    right: 0px;
+    padding: 25rpx;
+}
+
+.close_icon {
+    width: 30rpx;
+    height:30rpx;
+    display: block;
+}
+._t_a{
+  text-align: center;
+}
+._bold{
+  font-weight: bold;
+}
+._C_7f{
+  color: #7f7f7f;
+}
+.title{
+  padding-bottom: 6rpx;
+  font-size: 30rpx;
+}
+.tips{
+  font-size: 24rpx;
+  padding-bottom: 10rpx;
+}
+.box{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10rpx 0;
+  padding-bottom: 40rpx;
+}
+.total{
+  padding-top: 60rpx;
+  padding-bottom: 4rpx;
+  font-size: 30rpx;
+}
+.sum{
+  padding-bottom: 0;
+}
+.sum_text{
+  font-size: 30rpx;
+}
+.tip{
+  padding-left: 4rpx;
+  font-size: 24rpx;
+}
+._p{
+  padding: 0 4rpx;
+}

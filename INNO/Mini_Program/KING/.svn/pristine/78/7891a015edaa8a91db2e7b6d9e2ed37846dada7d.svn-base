@@ -1,0 +1,19 @@
+<!--pages/goods/popup/service.wxml-->
+<window class="window" ext-class="window-ext">
+  <view class="service_popup" style="{{boxStyle}}">
+    <from bindsubmit="formAction" report-submit="true">
+      <swiper 
+      class="ads_swiper test_ads_swiper" 
+      wx:if="{{memberRight.length > 0}}" 
+      current="{{current}}" 
+      next-margin="250rpx" 
+      bindchange="changeSwiper">
+        <swiper-item class="ads_swiper_item {{current == index ? 'current' : ''}}" wx:for="{{memberRight}}" wx:key="index">
+          <view class="ads_swiper_item_stay">
+            <image src="{{item.picture}}" style="{{item.picture ? '' : 'background-color:#fff;' }}" mode="aspectFit"/>
+          </view>
+        </swiper-item>
+      </swiper>
+    </from>
+  </view>
+</window>

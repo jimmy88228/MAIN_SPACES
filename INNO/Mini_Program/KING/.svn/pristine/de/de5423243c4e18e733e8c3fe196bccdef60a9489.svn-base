@@ -1,0 +1,49 @@
+/* pages/micro_mall/questionnaire/upload/upload.wxss */
+ 
+@import "../header/header.wxss";
+.box{
+  padding: 30rpx;
+  box-sizing: border-box;
+}
+.choose_box{
+  display: flex;
+  align-items: center;
+}
+.choose,.img_choose{
+  width: 150rpx;
+  height: 150rpx;
+  box-sizing: border-box;
+  border: 1px solid #efefef;
+  position: relative;
+}
+.img_choose._n_b{
+  border: 0;
+}
+.row{
+  width: 80%;
+  height: 4rpx; 
+}
+.column{
+  height: 80%;
+  width: 4rpx; 
+}
+.c_style{
+  background: #efefef;
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%,-50%);
+}
+.c_title{
+  display: flex;
+  justify-content: space-between;
+  font-size: 24rpx;
+  line-height: 24rpx;
+  padding-bottom: 20rpx;
+}
+.img_choose{
+  position: relative;
+  width: 150rpx;
+  height: 150rpx; 
+  padding-left: 20rpx;
+}

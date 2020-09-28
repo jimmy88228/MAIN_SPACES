@@ -1,0 +1,39 @@
+<view class="main">
+  <!--多个切换-->
+  <block wx:if="{{isSwiper}}">
+    <swiper 
+    class="swiper_area" 
+    bindchange="swiperChange"
+    current="{{_current}}" 
+    > 
+      <swiper-item 
+      class="swiper_item" 
+      wx:for="{{tabData}}" 
+      wx:key="index">
+        <scroll-view 
+        class="scroll_box"
+        scroll-y="{{true}}"
+        refresher-enabled="{{true}}"
+        refresher-triggered="{{refreshTriggered}}"
+        bindscrolltolower="scrolltolower"
+        bindrefresherrefresh="refresherrefresh"
+        >
+          <slot name="data{{index}}"></slot>
+        </scroll-view>
+      </swiper-item>
+    </swiper>
+  </block>
+  <!--单个操作-->
+  <block wx:else>
+    <scroll-view 
+    class="scroll_box" 
+    scroll-y="{{true}}" 
+    refresher-enabled="{{true}}"
+    refresher-triggered="{{refreshTriggered}}"
+    bindscrolltolower="scrolltolower"
+    bindrefresherrefresh="refresherrefresh"
+    >
+      <slot name="data"></slot>
+    </scroll-view>
+  </block>
+</view>

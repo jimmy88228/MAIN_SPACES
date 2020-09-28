@@ -1,0 +1,23 @@
+.hide_page{
+  width:100%;
+  height:100%;
+  box-sizing:border-box;
+  position:relative;
+}
+.index_page{
+  padding-top:90rpx;
+  width:100%;
+  height:100%;
+  box-sizing:border-box;
+  position:relative;
+  /* position:absolute; */
+  /* top:0px;
+  left:0px; */
+}
+.index_page image{
+  display:block;
+}
+.page_tab{
+  width:100%;
+  height:100%;
+}

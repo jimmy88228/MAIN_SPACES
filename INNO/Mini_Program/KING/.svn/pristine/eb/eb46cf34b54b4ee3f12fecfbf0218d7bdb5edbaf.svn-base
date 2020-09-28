@@ -1,0 +1,46 @@
+/* pages/micro_mall/prepaid/prepaid_card_erp_detail.wxss */
+.card_val_area{
+  position:fixed;
+  top:0px;
+  left:0px;
+  width:100%;
+  height:346rpx;
+  background-position:cennter center;
+  background-repeat:no-repeat;
+  background-size:100% 100%;
+  box-sizing:border-box;
+  padding:20rpx;
+  color:#fff;
+}
+.card_val_tit{
+  margin-top:40rpx;
+}
+.card_val{
+  margin-top:40rpx;
+}
+.card_recode{
+  padding-top:346rpx;
+}
+.card_recode_item{
+  padding:42rpx 42rpx 36rpx 45rpx;
+  border-bottom:1px solid #e6e6e6;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  font-size:0;
+}
+.recode_row{
+  /* padding:5rpx 0px; */
+}
+.creat_time{
+  margin-bottom:12rpx;
+  font-size:22rpx;
+}
+.remark{
+  font-size:26rpx;
+}
+.change_amount{
+  font-weight:bold;
+  font-size:30rpx;
+  color:#1F1A17;
+}
