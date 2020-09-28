@@ -1,0 +1,24 @@
+.compute_pop{
+  position:fixed;
+  top:50%;
+  left:50%;
+  max-width:80%;
+  padding:20rpx;
+  border-radius:10rpx;
+  background-color:#fff;
+  transform: translate(-50%,-50%);
+}
+.pop_cont{
+  white-space:nowrap;
+}
+.pop_t{
+  display:inline-block;
+  /* vertical-align: middle; */
+}
+.loader{
+  display:inline-block;
+  /* vertical-align: middle; */
+}
+.percent{
+  margin-left:10rpx;
+}

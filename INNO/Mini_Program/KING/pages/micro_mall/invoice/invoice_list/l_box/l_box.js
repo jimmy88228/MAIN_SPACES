@@ -1,0 +1,96 @@
+// pages/micro_mall/invoice/invoice_list/l_box/l_box.js
+const app = getApp();
+Component(app.BTAB({
+  properties: {
+
+  }, 
+  data: {
+    tab:[{id:1,text:"已开具发票"},{id:2,text:"申请中发票"},{id:3,text:"已作废发票"}],
+    cur_index:1,
+    params_index:0,
+    list:[[],[],[],[]],
+    empty:[false,true]
+  }, 
+  methods: {
+    init(){
+      init.call(this);
+      loadData.call(this);
+    },
+    onTap(e){
+      let dataset = e.currentTarget.dataset||{};
+      let type = dataset.type||"";
+      if(type=="tab"){
+        let index = dataset.index||0;
+        if(this.data.cur_index!=index){
+          this.setData({
+            cur_index:index
+          })
+          if(this.hasMore[index] && this.data.list[index] && this.data.list[index].length==0){
+            loadData.call(this);
+          }
+        }
+      }else if(type=="detail"){
+        let id = dataset.id||0;
+        wx.navigateTo({
+          url: `/pages/micro_mall/invoice/invoice_detail/detail?id=${id}`,
+        })
+      }
+    },
+    handle_scroll(e){
+      console.log('handle_scroll',this.hasMore[this.data.cur_index],e);
+      if(this.hasMore[this.data.cur_index]){
+        loadData.call(this);
+      }else{
+        app.SMH.showToast({
+          title:"没有更多了"
+        })
+      }
+    }
+  }
+}))
+
+
+
+function loadData(){
+  return app.ElectricApi.getElectricKpTaskList({
+    params:{
+      taskStatus:this.data.cur_index||1,
+      userToken:app.LM.userToken,
+      brandCode:app.Conf.BRAND_CODE,
+      pageIndex:this.page[this.data.cur_index],
+      pageSize:app.Conf.PAGE_SIZE
+    },other:{
+      isShowLoad:true
+    }
+  }).then(res=>{
+    if(res.code=='1'){
+      let data = res.data||{};
+      let list = data.list||[];
+      let totalCount = data.totalCount || 0;
+      let emptyBool = false;
+      let cur = this.data.cur_index;
+      if(this.page[cur] == 1 && list.length==0){
+        emptyBool = true;
+      }
+      this.hasMore[cur] = this.page[cur] * app.Conf.PAGE_SIZE < totalCount;
+      this.page[cur] += 1;
+      this.setData({
+        [`list[${cur}]`]:[...this.data.list[cur],...list],
+        [`empty[${cur}]`]:emptyBool,
+      })
+    }
+  })
+}
+
+function init(){ 
+  let tab = this.data.tab||[];
+  this.page = [];
+  this.hasMore = [];
+  this.isLoading = [];
+  this.data.list = [[],[],[],[]];
+  tab.forEach((item,index)=>{
+    this.page[index+1]=1;
+    this.hasMore[index+1]=true;
+    this.isLoading[index+1]=false;
+  })
+}

@@ -1,0 +1,7 @@
+{
+  "component": true,
+  "usingComponents": {
+    "window": "/ui/cps/window/window",
+    "couponList": "/pages/micro_mall/goods/module/coupon/list"
+  }
+}

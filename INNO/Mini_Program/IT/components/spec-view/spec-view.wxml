@@ -1,0 +1,18 @@
+<view class="spec-view">
+    <block wx:for="{{specs}}" wx:for-item="spec" wx:for-index="specIndex" wx:key="specIndex">
+        <view class="spec-name">{{spec.name}}</view>
+        <view id="spec-values-{{spec.id}}" class="spec-values">
+            <block wx:for="{{spec.values}}" wx:for-item="specValue" wx:for-index="specValueIndex"
+                wx:key="specValueIndex">
+                <view wx:if="{{specValue.disabled}}" class="spec-value disabled">
+                    <view class="newline spec-value-text">{{specValue.value||''}}</view>
+                </view>
+                <view wx:else class="spec-value enable {{specValue.selected ? 'selected' : ''}}"
+                    hover-class="{{specValue.selected? '' : 'btn-hover'}}"
+                    data-position="{{ {specId:spec.id,specValueId:specValue.id} }}" catchtap="clickSpecValue">
+                    <view class="newline spec-value-text">{{specValue.value||''}}</view>
+                </view>
+            </block>
+        </view>
+    </block>
+</view>

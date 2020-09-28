@@ -1,0 +1,10 @@
+{
+    "enablePullDownRefresh": true,
+    "usingComponents": {
+        "dialog-no-win": "./cps/dialog-no-win/dialog-no-win",
+        "popup-enroll": "./cps/popup-enroll/popup-enroll",
+        "popup-enroll-info": "./cps/popup-enroll-info/popup-enroll-info",
+        "popup-authorize": "./cps/popup-authorize/popup-authorize",
+        "parser-view": "/common/support/components/parser/parser"
+    }
+}

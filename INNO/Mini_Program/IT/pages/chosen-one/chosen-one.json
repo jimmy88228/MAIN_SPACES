@@ -1,0 +1,7 @@
+{
+    "navigationStyle": "custom",
+    "enablePullDownRefresh": true,
+    "usingComponents": {
+        "parser-view": "/common/support/components/parser/parser"
+    }
+}

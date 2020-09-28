@@ -1,0 +1,8 @@
+{
+    "navigationBarTitleText": "砍价",
+    "enablePullDownRefresh": true,
+    "usingComponents": {
+        "tabbar": "/pages/component/custom/tabBar_bargain",
+        "search":"/pages/component/search/s_view"
+    }
+}

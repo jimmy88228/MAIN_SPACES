@@ -1,0 +1,42 @@
+.prize-list {
+    width: 100%;
+    height: 100%;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+}
+
+.list_box {
+    padding: 0 30rpx;
+    box-sizing: border-box;
+}
+
+.prize-list-cell {
+    margin-top: 25rpx;
+    background-color: white;
+    box-sizing: border-box;
+    padding: 30rpx 35rpx;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+.prize-list-cell .title {
+    flex: 1 0;
+    font-weight: bold;
+    padding-right: 20rpx;
+    display: flex;
+}
+
+.prize-list-cell .type {
+    flex: none;
+}
+
+.prize-list-cell .date {
+    font-size: 22rpx;
+    flex: none;
+    margin-top: 25rpx;
+    width: 100%;
+    color: var(--text-tips-color);
+}

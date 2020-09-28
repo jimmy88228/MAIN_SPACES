@@ -1,0 +1,34 @@
+{
+    "rules": [
+        {
+            "action": "allow",
+            "page": "pages/index/index",
+            "matching": "inclusive"
+        },
+        {
+            "action": "allow",
+            "page": "pages/detail/detail",
+            "params": [
+                "activityId"
+            ],
+            "matching": "inclusive"
+        },
+        {
+            "action": "allow",
+            "page": "pages/chosen-one/chosen-one",
+            "params": [
+                "activityId"
+            ],
+            "matching": "inclusive"
+        },
+        {
+            "action": "allow",
+            "page": "pages/activity/past-list/past-list",
+            "matching": "inclusive"
+        },
+        {
+            "action": "disallow",
+            "page": "*"
+        }
+    ]
+}

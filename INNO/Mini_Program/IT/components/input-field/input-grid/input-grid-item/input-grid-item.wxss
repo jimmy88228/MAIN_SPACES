@@ -1,0 +1,37 @@
+:host {
+    flex: none;
+    max-width: 100%;
+    min-width: 110rpx;
+    height: 110rpx;
+    margin-top: -1rpx;
+    margin-left: -1rpx;
+}
+
+.input-grid-item {
+    width: 100%;
+    height: 100%;
+    border: 1px solid #eee;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 10rpx;
+    box-sizing: border-box;
+    color: var(--text-main-color);
+}
+
+.input-grid-item.chose {
+    background-color: #000;
+    color: white;
+}
+
+.input-grid-item .text {
+    max-width: 100%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    font-size: 24rpx;
+}
+
+.btn-hover {
+    background-color: rgba(0, 0, 0, 0.1);
+}

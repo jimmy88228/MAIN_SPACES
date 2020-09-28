@@ -1,0 +1,21 @@
+<view class="main goods_list_main">
+    <view class="header_module">
+        <view class="user_module b_b">
+            <view class="bg_color" style='background:{{brand_info.style.bg_color}}'></view>
+            <view class="clone_color"></view>
+            <view class="user_info" style='color:{{brand_info.style.font_color}}'>
+                <image src="{{memberInfo.portrait_path}}" mode="widthFix" class="user_img relative"></image>
+                <text class="inline_b v_m relative">当前可用积分</text>
+                <text class="inline_b v_m point font_w relative">{{memberInfo.Points}}</text>
+            </view>
+            <button catchtap='jump_record' class='record font_24' hover-class='none' style='background:{{brand_info.style.bg_color}};'>兑换记录</button>
+        </view>
+        <view class="ordertTab oh">
+            <view class="fl orderTabTit {{currentIndex == index ? 'current' : 'C_7f'}}" style="{{ currentIndex == index  ? 'color: '+brand_info.style.font_color+';border-color:'+brand_info.style.font_color+';' : '' }}" wx:for="{{tabList}}" wx:key="id" data-index="{{index}}" catchtap="changeTab">
+                <text>{{item.value}}</text>
+                <view class='lines' wx:if="{{currentIndex == index}}" style="background: {{brand_info.style.font_color}}"></view> 
+            </view>
+        </view>
+    </view>
+    <goods-list class="goods_list {{currentIndex==0?'background0':'background1'}}" id="integralMall"></goods-list>
+</view>

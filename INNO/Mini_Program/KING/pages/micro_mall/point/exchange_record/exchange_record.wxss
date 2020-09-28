@@ -1,0 +1,25 @@
+.record_list {
+  padding: 14rpx 0;
+}
+
+.record_item {
+  background: #fff;
+  padding: 0 25rpx;
+}
+
+.record_item + .record_item {
+  margin-top: 14rpx;
+}
+
+.record_info {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 104rpx;
+}
+
+.record_date {
+  display: flex;
+  align-items: center;
+  height: 76rpx;
+}

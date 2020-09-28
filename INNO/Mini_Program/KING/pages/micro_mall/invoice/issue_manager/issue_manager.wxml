@@ -1,0 +1,183 @@
+<!--pages/micro_mall/invoice/issue_manager/issue_manager.wxml-->
+<block wx:if="{{showMsg}}">
+  <view class="main" wx:if="{{showType=='invoice'}}">
+    <view class="box">
+      <!-- 发票类型 -->
+      <msg class="" id="invoice_type" title="{{msgManager.invoice_type}}" from-type="{{fromType}}">
+          <view slot="right" class="right invoice_type_box">
+            电子发票
+          </view>
+      </msg>
+
+      <!-- 抬头类型 -->
+      <msg class="" id="title_type" title="{{msgManager.title_type}}" from-type="{{fromType}}">
+          <view slot="right" class="right title_type_box">
+            <view wx:for="{{title_type_data}}" wx:key="id" class="_flex title_type_item" catchtap="onTap" data-type="title_type" data-index="{{item.id}}">
+              <image src="{{cur_title_type == item.id?return_active:return_img}}" class="img_select" mode="aspectFit"></image>
+              <view>{{item.name}}</view>
+            </view>
+          </view>
+      </msg>
+      
+      <!-- 发票抬头 -->
+      <msg class="" id="invoice_title" title="{{msgManager.invoice_title}}" from-type="{{fromType}}">
+          <view slot="right" class="right invoice_title_box" catchtap="onTap" data-type="invoice_title">
+            <view class="invoice_title_name" wx:if="{{defaultTitle}}">{{invoiceData.name}}</view>
+            <image src="{{rightbutton}}" mode="aspectFit" class="img_right"></image>
+            <!-- <view class="arrow"></view> -->
+          </view>
+      </msg>
+
+      <!-- 税号 -->
+      <view hidden="{{cur_title_type=='PERSON'}}">
+        <msg class="" id="invoice_tax_num" title="{{msgManager.invoice_tax_num}}" from-type="{{fromType}}">
+            <view slot="right" class="right invoice_tax_num_box">
+              <view class="{{invoiceData.code?'':'line'}}">{{invoiceData.code}}</view>
+            </view> 
+        </msg> 
+      </view>
+    </view>
+
+    <view class="box">
+      <!-- 短信通知 -->
+      <msg class="" id="invoice_msg" title="{{msgManager.invoice_msg}}" from-type="{{fromType}}">
+          <view slot="right" class="right invoice_msg_box">
+            <input value="{{invoiceData.drawerPhone}}" class="invoice_input" bindinput="onTapInput" data-set_data="drawerPhone" data-type="invoice_msg" placeholder="请输入手机号" placeholder-class="plc_font"></input>
+          </view>
+      </msg> 
+      <!-- 邮件通知 -->
+      <msg class="" id="invoice_email" title="{{msgManager.invoice_email}}" from-type="{{fromType}}">
+          <view slot="right" class="right invoice_email_box">
+            <input value="{{invoiceData.drawerEmail}}" class="invoice_input" bindinput="onTapInput" data-set_data="drawerEmail" data-type="invoice_email" placeholder="选填" placeholder-class="plc_font"></input>
+          </view>
+      </msg> 
+      <view class="dotted_box" wx:if="{{cur_title_type=='COMPANY'}}">
+        <view class="dotted"></view>
+      </view>
+      <view class="units" hidden="{{cur_title_type=='PERSON'}}">
+        <!-- 开户银行 -->
+        <msg class="" id="invoice_bank" title="{{msgManager.invoice_bank}}" from-type="{{fromType}}">
+            <view slot="right" class="right invoice_fill_text invoice_bank_box">
+              <view class="{{invoiceData.bank?'':'line'}}">{{invoiceData.bank}}</view>
+            </view>
+        </msg> 
+        <!-- 企业账号 -->
+        <msg class="" id="invoice_account" title="{{msgManager.invoice_account}}" from-type="{{fromType}}">
+            <view slot="right" class="right invoice_fill_text invoice_account_box">
+                <view class="{{invoiceData.bankAccount?'':'line'}}">{{invoiceData.bankAccount}}</view>
+            </view>
+        </msg> 
+        <!-- 企业地址 -->
+        <msg class="" id="invoice_address" title="{{msgManager.invoice_address}}" from-type="{{fromType}}">
+            <view slot="right" class="right invoice_fill_text invoice_address_box">
+                <view class="{{invoiceData.address?'':'line'}}">{{invoiceData.address}}</view>
+            </view>
+        </msg> 
+        <!-- 企业电话 -->
+        <msg class="" id="invoice_phone" title="{{msgManager.invoice_phone}}" from-type="{{fromType}}">
+            <view slot="right" class="right invoice_fill_text invoice_phone_box">
+                <view class="{{invoiceData.phone?'':'line'}}">{{invoiceData.phone}}</view>
+            </view>
+        </msg>
+      </view>
+    </view> 
+
+    <view class="box" wx:if="{{price || price === 0}}">
+      <!-- 发票金额 -->
+      <msg class="" id="invoice_price" title="{{msgManager.invoice_price}}" from-type="{{fromType}}">
+          <view slot="right" class="right invoice_price_box">
+            <view class="invoice_price_text">¥{{price}}</view>
+          </view>
+      </msg>
+    </view>
+
+    <view class="btn_box {{isIphoneX?'fix_iphoneX':''}}">
+      <button hover-class="none" class="btn" style="background:{{brand_info.style.bg_color}};" catchtap="onTap" data-type="confirm">确认申请</button>
+    </view>
+  </view>
+
+  <view class="main" wx:elif="{{showType=='title'}}">
+    <view class="box">  
+      <!-- 抬头类型 -->
+      <msg class="" id="title_type" title="{{msgManager.title_type}}">
+          <view slot="right" class="right title_type_box">
+            <view wx:for="{{title_type_data}}" wx:key="id" class="_flex title_type_item" catchtap="onTap" data-type="title_type" data-index="{{item.id}}">
+              <image src="{{cur_title_type == item.id?return_active:return_img}}" class="img_select" mode="aspectFit"></image>
+              <view>{{item.name}}</view>
+            </view>
+          </view>
+      </msg>
+      
+      <block>
+        <!-- 发票抬头 -->
+        <msg class="" id="invoice_title" title="{{msgManager.invoice_title}}">
+            <view slot="right" class="right invoice_title_box2" catchtap="onTap" data-type="invoice_title">
+              <input value="{{invoiceData.name}}" class="invoice_input" bindinput="onTapInput" data-type="invoice_title" placeholder="抬头名称或极速开票六位代码" placeholder-class="plc_font"></input>
+            </view>
+        </msg>
+
+        <!-- 税号 -->
+        <view hidden="{{cur_title_type=='PERSON'}}">
+          <msg class="" id="invoice_tax_num" title="{{msgManager.invoice_tax_num}}">
+              <view slot="right" class="right invoice_tax_num_box">
+                <input value="{{invoiceData.code}}" class="invoice_input" bindinput="onTapInput" data-type="invoice_tax_num" placeholder="纳税人识别号或统一社会信用代码" placeholder-class="plc_font"></input>
+              </view>
+          </msg> 
+        </view>
+      </block> 
+    </view>
+    
+    <!-- 单位选填信息 -->
+    <view hidden="{{cur_title_type=='PERSON'}}" class="box">
+      <msg class="" id="invoice_bank" title="{{msgManager.invoice_bank}}">
+          <view slot="right" class="right invoice_bank_box">
+            <input value="{{invoiceData.bank}}" class="invoice_input" bindinput="onTapInput" data-type="invoice_bank" placeholder="必填" placeholder-class="plc_font"></input>
+          </view>
+      </msg> 
+      <msg class="" id="invoice_account" title="{{msgManager.invoice_account}}">
+          <view slot="right" class="right invoice_account_box">
+            <input value="{{invoiceData.bankAccount}}" class="invoice_input" bindinput="onTapInput" data-type="invoice_account" placeholder="必填" placeholder-class="plc_font"></input>
+          </view>
+      </msg> 
+      <msg class="" id="invoice_address" title="{{msgManager.invoice_address}}">
+          <view slot="right" class="right invoice_address_box">
+            <input value="{{invoiceData.address}}" class="invoice_input" bindinput="onTapInput" data-type="invoice_address" placeholder="必填" placeholder-class="plc_font"></input>
+          </view>
+      </msg> 
+      <msg class="" id="invoice_phone" title="{{msgManager.invoice_phone}}">
+          <view slot="right" class="right invoice_phone_box">
+            <input value="{{invoiceData.phone}}" class="invoice_input" bindinput="onTapInput" data-type="invoice_phone" placeholder="必填" placeholder-class="plc_font"></input>
+          </view>
+      </msg> 
+    </view>
+
+    <!-- 个人信息 -->
+    <view class="box">
+      <msg class="" id="invoice_msg" title="{{msgManager.invoice_msg}}">
+          <view slot="right" class="right invoice_msg_box">
+            <input value="{{invoiceData.drawerPhone}}" class="invoice_input" bindinput="onTapInput" data-type="invoice_msg" placeholder="请输入手机号" placeholder-class="plc_font"></input>
+          </view>
+      </msg> 
+      <msg class="" id="invoice_email" title="{{msgManager.invoice_email}}">
+          <view slot="right" class="right invoice_email_box">
+            <input value="{{invoiceData.drawerEmail}}" class="invoice_input" bindinput="onTapInput" data-type="invoice_email" placeholder="选填" placeholder-class="plc_font"></input>
+          </view>
+      </msg> 
+    </view>
+
+      <!-- 设置单位默认 -->
+    <view class="box" catchtap="onTap" data-type="invoice_default">
+      <msg class="" id="invoice_default" title="{{msgManager.invoice_default}}">
+          <view slot="right" class="right invoice_default_box">
+            <view class="_flex invoice_default_item">
+              <image src="{{cur_invoice_default?return_active:return_img}}" style="padding-right:0;" class="img_select" mode="aspectFit"></image>
+            </view>
+          </view>
+      </msg>
+    </view> 
+
+    <view class="btn_box {{isIphoneX?'fix_iphoneX':''}}">
+      <button hover-class="none" class="btn" style="background:{{brand_info.style.bg_color}};" catchtap="onTap" data-type="confirm">确认</button>
+    </view>
+  </view>
+</block>

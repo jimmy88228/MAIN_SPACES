@@ -1,0 +1,6 @@
+{
+    "navigationBarTitleText": "预售活动-结算",
+    "usingComponents": {
+        "dialog": "../../../../ui/cps/dialog/dialog"
+    }
+}

@@ -1,0 +1,15 @@
+@import "../input-field.wxss";
+
+:host {
+    height: auto;
+    width: 100%;
+    display: block;
+}
+
+.input-grid-item-box {
+    flex: none;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    margin-top: 20rpx;
+}

@@ -1,0 +1,69 @@
+<view hidden="{{showImg == 0}}">
+  <view hidden="{{showImg == -1}}">
+      <view class='fixed_posi'>
+          <view class='search_wrapper'>
+              <view class='input'>
+                  <image src="{{url}}" mode="aspectFit" class='icon_search'/>
+                  <input type='text' bindinput='synchroInput' val="{{keyword}}" placeholder='请输入城市，街道，店铺名称' placeholder-class="common_place" class='input_content'  bindconfirm="searchStore"/>
+              </view>
+              <button type='button' class="toSearch" style="background:{{brand_info.style.bg_color}};" bindtap="searchStore">搜索</button>
+          </view>
+      </view>
+    <view class='map_wrapper'>
+      <map 
+      id="map"
+      class="map"
+      longitude="{{currlocation.o_longitude}}"
+      latitude="{{currlocation.o_latitude}}"
+      scale="14"
+      markers="{{markers}}"
+      show-location="{{loc_f==0}}"></map>
+      <!-- {{item.productNum > 0 || select_store.store_id == '' ? 'getAddrMap' : ''}} -->
+      <view class="store_lists">
+          <view
+          class="store_item"
+          wx:for="{{viewData}}"
+          wx:key="index"
+          style="{{select_store.store_id != '' ? '' : ''}}">
+            <view class="select_area" catchtap="{{select_store.store_id != '' && !(item.isShowProductNumber == 1 && item.productNum <= 0) ? 'getAddrMap':''}}" data-store_sub="{{index}}" data-click-type="selected">
+              <view class="select_item" wx:if="{{select_store.store_id != ''}}">
+                <view class="saleUp" wx:if="{{item.isShowProductNumber == 1 && item.productNum <= 0}}">无货</view>
+                <view 
+                wx:else
+                class="radio_select" 
+                data-store_sub="{{index}}" 
+                data-click-type="selected"
+                catchtap="getAddrMap" 
+                >
+                    <image src="{{brand_info.icon_url}}micro_mall/return_active.png" class="radio_icon" mode="aspectFit" wx:if="{{item.id == select_store.store_id}}" />
+                    <image src="{{brand_info.icon_url}}micro_mall/return.png" class="radio_icon" mode="aspectFit" wx:else />
+                </view>
+                <!-- <view class="num_tip " wx:if="{{item.isShowProductNumber == 1}}">{{item.productNum < 10 ? '库存紧张':''}}</view> -->
+              </view>
+              <!-- <view></view> -->
+            
+              <view class="store_item_name">
+                  <view class="stroe_name">{{item.name}}</view>
+                  <view class="stroe_address">{{item.area_name}}<block wx:if="{{item.address}}">/{{item.address}}</block></view>
+              </view>
+            </view>
+            <view class='store_item_dis' data-store_sub="{{index}}" catchtap="getAddrMap" >
+              <view>
+                <view class="store_item_distance">{{item.sort_str}}</view>
+                <view class="font_22">查看详情</view>
+              </view>
+                <!-- <image src="{{btn_url}}" mode="aspectFit" class='store_pic'/> -->
+            </view>
+          </view>
+          
+          <view class="has_no_data" wx:if="{{viewData.length == 0}}">{{select_store.store_id != '' ? '该订单商品没有可选店铺！' : '暂没可选店铺！'}}</view>
+      </view>
+      </view>
+      <cover-view class='stopPanel' wx:if="{{viewData.length == 0}}"></cover-view>
+  </view>
+  <view class="empty_state" hidden="{{showImg == 1}}">
+    <view class="empty_txt">
+      <button class="author_btn" hover-class="none" catchtap="authorizeData">请重新授权定位</button>
+    </view>
+  </view>
+</view>

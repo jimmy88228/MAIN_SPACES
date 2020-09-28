@@ -1,0 +1,8 @@
+{
+  "component": true,
+  "usingComponents": {
+    "custom_module": "/pages/component/custom/custom_module",
+    "carousel": "/pages/component/custom/module_branches/carousel",
+    "advertise": "/pages/component/custom/module_branches/advertise"   
+  }
+}
