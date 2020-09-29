@@ -87,6 +87,7 @@ export default {
         this.isAdd = !!Number(this.$route.meta.isAdd);
         this.actId = this.$route.query.actId || 0;
         this.moduleNode = LayoutUtils.createRootNode();
+        this.mainData.startTime = 123;
         this.getRuleList();
         this.loadData();
     },
