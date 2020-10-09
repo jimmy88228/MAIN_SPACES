@@ -48,7 +48,7 @@
 </template>
 <script>
 import EditItem from "@/support/components/edit-item";
-import { MainApi } from "../../../helper/manager/http-manager";
+import { MainApi } from "@/helper/manager/http-manager";
 import Editor from "@/components/editor/index";
 import StringHelper from "@/helper/utils/string-util";
 import UploadImage from "@/components/upload-img-group";
