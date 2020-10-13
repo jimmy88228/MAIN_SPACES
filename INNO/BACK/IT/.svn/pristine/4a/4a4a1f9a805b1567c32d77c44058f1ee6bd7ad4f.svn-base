@@ -697,11 +697,7 @@ function addDrawActvityReq(data) {
             if (res.code === "1") {
                 if (res.data) {
                     this.$Message.success("添加成功");
-                    // this.loadData(res.data);
-                    let timer = setTimeout(() => {
-                        this.back();
-                        clearTimeout(timer);
-                    },500);
+                    this.loadData(res.data);
                 }
             } else {
                 return Promise.reject(res.msg);
@@ -725,11 +721,7 @@ function updateDrawActivityReq(data) {
             if (res.code === "1") {
                 if (res.data) {
                     this.$Message.success("编辑成功");
-                    // this.loadData(res.data);
-                    let timer = setTimeout(() => {
-                        this.back();
-                        clearTimeout(timer);
-                    },500);
+                    this.loadData(res.data);
                 }
             } else {
                 return Promise.reject(res.msg);
