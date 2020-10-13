@@ -34,8 +34,7 @@
 
 .wp-row {
     margin-top: 60rpx;
-    padding-left: 58rpx;
-    padding-right: 58rpx;
+    padding: 0 30rpx 30rpx 58rpx;
 }
 
 .wp-body>.wp-row:first-child {

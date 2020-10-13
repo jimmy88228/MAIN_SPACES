@@ -116,12 +116,12 @@ Component({
         },
         attachedView(delay) {
             this.onAttached && this.onAttached();
-            let style = this.animStyle || DefAnims;
+            let style = DefAnims;
             this.showAnim(style, style.delay || delay);
         },
         detachedView() {
             this.onDetached && this.onDetached();
-            return this.hideAnim(this.animStyle || DefAnims);
+            return this.hideAnim(DefAnims);
         }
     }
 });

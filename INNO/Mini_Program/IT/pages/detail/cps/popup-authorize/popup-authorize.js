@@ -1,6 +1,7 @@
 import { createBehavior } from "../../../../components/window/anim-helper";
 import LM from "../../../../common/manager/login-manager";
 import Smm from "../../../../common/helper/show-msg-helper";
+import Utils from "../../../../common/utils/util"
 const mainStyles = {
     enterTo: "transition: opacity 600ms ease-in-out;",
     leaveTo: "opacity: 0; transition: opacity 300ms ease-in-out;",
@@ -53,20 +54,26 @@ Component({
         },
         toFollow() {
             this.tryFollowed = true;
+            //this.followUrl = "https://mp.weixin.qq.com/s?__biz=MzIwNzYzMDY2OA==&mid=2247483658&idx=1&sn=3e180a5a61602c79807604d326434800&chksm=970e3929a079b03fc6d8d983207e4340745800dc4e468283e9de74fa3e98298d452d648fbb09&token=1932226663&lang=zh_CN#rd"
             wx.navigateTo({
                 url: `/pages/web/web?url=${encodeURIComponent(this.followUrl)}`
             });
         },
         onForceFollowedTap() {
-            getConditionStatus(LM.token, this.activityId).then(data => {
-                if (data.isFollow) {
-                    this.isFollow = true;
-                    this.changeStep();
-                } else {
-                    Smm.showToast({ title: "请先关注公众号" });
-                    wx.MyAnims.jumpScale(this, "#how-to-follow");
-                }
-            }).showError();
+            this.forceThrottle || (this.forceThrottle = Utils.debounce(
+                ()=>
+                    getConditionStatus(LM.token, this.activityId).then(data => {
+                        if (data.isFollow) {
+                            this.isFollow = true;
+                            this.changeStep();
+                        } else {
+                            Smm.showToast({ title: "请先关注公众号" });
+                            wx.MyAnims.jumpScale(this, "#how-to-follow");
+                        }
+                    }).showError(),
+                350
+            ))
+            this.forceThrottle();
         },
         onGuideFollowedTap() {
             this.isFollow = true;
@@ -88,6 +95,11 @@ Component({
             });
             if (step >= 10) {
                 this.ok = true;
+                if(this.followType == 2){
+                    wx.nextTick(()=>{
+                        this.onCloseTap();
+                    })
+                }
             }
         },
         onCloseTap() {

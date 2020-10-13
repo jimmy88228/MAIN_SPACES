@@ -52,11 +52,14 @@
 	background-color: rgba(127, 127, 127, 0.05);
 }
 
-.back-icon {
+.back-i {
 	width: 35rpx;
 	height: 35rpx;
 }
-
+.back-i-lg{
+	width: 58rpx;
+	height: 59rpx;
+}
 .custom-content-box {
 	display: inline-block;
 }

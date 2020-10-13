@@ -12,7 +12,7 @@
             <view class="prize-list-cell " wx:for="{{list}}" wx:key="id" bindtap="jumpAction"
                 data-url="/pages/winprize/winprize?lotteryRecordId={{item.id}}">
                 <text class="title newline">{{item.title}}</text>
-                <view class="type">{{item.level}}</view>
+                <view class="type">{{item.level}}等奖</view>
                 <view class="date">{{item.createTime}}</view>
             </view>
             <more-view wx:if="{{list.length>15}}" data="{{ {loading:showLoadMore,end:isEnd} }}" />

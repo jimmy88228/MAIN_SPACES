@@ -19,7 +19,6 @@ Component({
             this.setData({
                 dataArray: this.initData(data)
             });
-            console.log('dataArray',this.data.dataArray)
         },
 
         initData(arr) {

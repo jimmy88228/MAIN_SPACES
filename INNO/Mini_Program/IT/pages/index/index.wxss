@@ -35,7 +35,7 @@ page {
     display: inline-block;
     font-size: 32rpx;
     font-weight: bold;
-    margin-top: 20rpx;
+    margin-top: 40rpx;
     margin-bottom: 20rpx;
     margin-left: 36rpx;
 }
@@ -47,11 +47,15 @@ page {
 .openning-box {
     display: block;
     padding: 20rpx;
+    padding-bottom: 50rpx;
     background: #FFFFFF;
     box-shadow: 0 2rpx 10rpx 3rpx rgba(0, 0, 0, 0.05);
     border-radius: 10rpx;
     box-sizing: border-box;
     overflow: hidden;
+}
+.openning-box:last-child{
+    padding-bottom: 20rpx;
 }
 
 .openning-img-box {

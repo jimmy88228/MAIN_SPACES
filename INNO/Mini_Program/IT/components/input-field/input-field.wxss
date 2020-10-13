@@ -14,10 +14,13 @@
     flex: none;
     color: var(--text-sub-color);
     font-size: 26rpx;
+    min-width: 110rpx;
+    max-width: 200rpx;
+    padding-right: 10rpx;
 }
 
 .input-field-input {
-    margin-left: 25rpx;
+    /* margin-left: 25rpx; */
     height: 88rpx;
     flex: 1;
     border: 1rpx solid #eee;

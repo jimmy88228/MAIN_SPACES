@@ -1,12 +1,12 @@
-<!-- <page-nav id="nav-bar" opacity="{{opacityVal}}" mode="{{isShowAuthPopup?'None':'Auto'}}" /> -->
+<page-nav id="nav-bar" opacity="{{opacityVal}}" mode="{{isShowAuthPopup?'None':'Auto'}}" />
 <view wx:if="{{showRefresh}}" class="center-box anim-fade-in anim-delay">
     <loading-view class="center-box-item" />
 </view>
 <view wx:elif="{{isAttached}}" class="filter-view {{isShowAuthPopup?'filter':''}}">
     <view class="detail-main {{act.status >= 2?'':'after'}}">
-        <view class="main-slide-area sticky-area" id="sticky-area">
+        <view class="main-slide-area sticky-area" id="sticky-area" style="top:{{navigationBarHeight}}px;">
             <view class="detail-slide-box anim-fade-in">
-                <swiper class="detail-slide" bindchange="swiperChange" autoplay="{{act.pictures.length>1}}">
+                <swiper bindtap="onTap" class="detail-slide" bindchange="swiperChange" autoplay="{{act.pictures.length>1}}">
                     <block wx:for="{{act.pictures}}" wx:key="*this">
                         <swiper-item>
                             <image class="detail-slide-image" mode="aspectFill" src="{{item}}" />

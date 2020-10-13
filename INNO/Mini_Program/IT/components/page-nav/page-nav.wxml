@@ -4,7 +4,7 @@
         <cover-view class="nav-bg" style="opacity:{{mOpacity}};"></cover-view>
         <cover-view class="nav-body">
             <cover-view class="back-link" hover-class="back-link-hover" wx:if="{{hasBack}}" bindtap="toBack">
-                <cover-image class="back-icon" src="/static/images/common/nav-back-icon-{{backMode.i}}.png"
+                <cover-image class="{{backMode.c}}" src="/static/images/common/nav-back-icon-{{backMode.i}}.png"
                     mode="widthFix">
                 </cover-image>
             </cover-view>
@@ -22,7 +22,7 @@
         <view class="nav-bg" style="opacity:{{mOpacity}};"></view>
         <view class="nav-body">
             <view class="back-link" hover-class="back-link-hover" wx:if="{{hasBack}}" bindtap="toBack">
-                <image class="back-icon" src="/static/images/common/nav-back-icon-{{backMode.i}}.png" mode="widthFix">
+                <image class="{{backMode.c}}" src="/static/images/common/nav-back-icon-{{backMode.i}}.png" mode="widthFix">
                 </image>
             </view>
             <view class="custom-content-box">

@@ -15,11 +15,12 @@ navStayStyle = navStyle = `height: ${navigationBarHeight}px; `;
 navStyle += `padding-top: ${statusBarHeight}px; `;
 
 const BackMode = {
-    Auto: { m: "Auto", },
-    None: { m: "None", },
-    Back: { m: "Back", i: "back" },
-    Home: { m: "Home", i: "home" },
-    HoldUp: { m: "HoldUp", i: "back" },
+    Auto: { m: "Auto", c:"back-i"},
+    None: { m: "None", c:"back-i"},
+    Back: { m: "Back", i: "back", c:"back-i" },
+    Back_Sec: { m: "Back", i: "back_sec", c:"back-i-lg" },
+    Home: { m: "Home", i: "home", c:"back-i" },
+    HoldUp: { m: "HoldUp", i: "back", c:"back-i" },
 };
 
 Component({

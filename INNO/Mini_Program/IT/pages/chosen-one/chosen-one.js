@@ -15,6 +15,7 @@ Page.BasePage({
         navH: SIH.navigationBarHeight || 100
     },
     onLoad(options) {
+        wx.hideShareMenu();
         this.activityId = options.activityId;
         Object.defineProperties(this, {
             navBar: { get: () => this.findView("#nav-bar") },

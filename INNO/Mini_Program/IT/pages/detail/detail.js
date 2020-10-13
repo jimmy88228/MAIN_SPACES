@@ -75,7 +75,6 @@ Page.BasePage({
             return;
         return getLayout(adLayoutId).then(data => {
             data && this.setData({ layoutData: data });
-            console.log('layoutData',this.data.layoutData)
         });
     },
     loadActivityDetail() {
@@ -158,7 +157,7 @@ Page.BasePage({
                         if (!isBindPhone || (followType > 0 && !isFollow)) {
                             this.showAuthPupop({
                                 activityId, isLogin: true, isBindPhone, followType, followUrl, isFollow,
-                                callBack: () => wx.setStorage({ key, data: 1 })
+                                callBack: () => {wx.setStorage({ key, data: 1 }); return this.toEnrollCheckAuth();}
                             });
                         } else {
                             wx.setStorage({ key, data: 1 });
@@ -169,7 +168,7 @@ Page.BasePage({
             } else {
                 this.showAuthPupop({
                     activityId, followType, followUrl,
-                    callBack: () => wx.setStorage({ key, data: 1 })
+                    callBack: () => {wx.setStorage({ key, data: 1 }); return this.toEnrollCheckAuth();}
                 });
             }
         }).showError();
@@ -269,6 +268,13 @@ Page.BasePage({
         let detail = e.detail || {};
         this.setData({
             swiperCurrent: detail.current || 0
+        })
+    },
+    onTap(e){
+        let act = this.data.act||{};
+        wx.previewImage({
+            current: act.pictures[this.data.swiperCurrent] || '', 
+            urls: act.pictures||[] 
         })
     }
 });

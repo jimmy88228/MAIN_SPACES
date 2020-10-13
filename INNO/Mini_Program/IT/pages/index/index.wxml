@@ -25,14 +25,7 @@
                 </view>
             </view>
         </view>
-    </block>
-    <view wx:else class="empty-main">
-        <view class="empty-line"></view>
-        <view class="empty-title newline">我们将即时更新\n活动</view>
-        <view class="empty-tip">请搜索微信号：IT官方服务号</view>
-        <view class="empty-tip">关注I.T官方微信</view>
-        <view class="empty-tip">即时获取更多限量商品咨询及购买信息</view>
-    </view>
+    </block> 
     <!-- 即将发售 -->
     <block wx:if="{{saleList.length > 0}}">
         <view class="group-title">即将发售</view>
@@ -62,6 +55,13 @@
             </view>
         </scroll-view>
     </block>
+    <view wx:if="{{actList.length <= 0 && saleList.length <= 0}}" class="empty-main">
+        <view class="empty-line"></view>
+        <view class="empty-title newline">我们将即时更新\n活动</view>
+        <view class="empty-tip">请搜索微信号：IT官方服务号</view>
+        <view class="empty-tip">关注I.T官方微信</view>
+        <view class="empty-tip">即时获取更多限量商品咨询及购买信息</view>
+    </view>
     <!-- 往期 -->
     <block wx:if="{{periodList.length > 0}}">
         <view class="group-title period-title flex-b-w">

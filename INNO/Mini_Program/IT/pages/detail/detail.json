@@ -1,5 +1,6 @@
 {
     "enablePullDownRefresh": true,
+    "navigationStyle": "custom",
     "usingComponents": {
         "dialog-no-win": "./cps/dialog-no-win/dialog-no-win",
         "popup-enroll": "./cps/popup-enroll/popup-enroll",
