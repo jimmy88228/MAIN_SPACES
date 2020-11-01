@@ -7,9 +7,9 @@
             <EditItem name="布局名" label="必填">
                 <Input slot="edit" size="large" v-model="layoutName" clearable/>
             </EditItem>
-            <!-- <EditItem name="索引名" label="必填">
+            <EditItem name="索引名" label="非必填">
                 <Input slot="edit" size="large" v-model="layoutIndexName" clearable/>
-            </EditItem> -->
+            </EditItem>
             <div class="cev-toolbar end">
                 <Button size="large" type="primary" @click="gotoAdd">
                     <i class="iconfont min r5 icon-add"></i>添加模块
@@ -86,10 +86,10 @@ export default {
         },
         layoutIndexName: {
             get() {
-                return this.mainData.indexName || "默认索引";
+                return this.mainData.indexName || "";
             },
             set(val) {
-                this.mainData = { indexName: val || "默认索引" };
+                this.mainData = { indexName: val || "" };
             }
         }
     },
@@ -217,10 +217,10 @@ export default {
                 this.$Message.error("布局名不能为空");
                 return;
             }
-            if (this.layoutIndexName === "") {
-                this.$Message.error("索引名不能为空");
-                return;
-            }
+            // if (this.layoutIndexName === "") {
+            //     this.$Message.error("索引名不能为空");
+            //     return;
+            // }
             this.loading = true;
             MainApi.updateLayout({
                 data: {

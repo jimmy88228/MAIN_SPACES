@@ -3,9 +3,9 @@
         <EditItem name="布局名称" label="必填">
             <Input slot="edit" size="large" v-model="layoutName" clearable/>
         </EditItem>
-        <!-- <EditItem name="索引名" label="必填">
+        <EditItem name="索引名" label="非必填">
             <Input slot="edit" size="large" v-model="layoutIndexName" clearable/>
-        </EditItem> -->
+        </EditItem>
         <div class="cev-toolbar end">
             <Button size="large" type="primary" @click="submit">确认</Button>
         </div>
@@ -22,7 +22,7 @@ export default {
     data() {
         return {
             layoutName: "",
-            layoutIndexName: "默认索引"
+            layoutIndexName: ""
         };
     },
 

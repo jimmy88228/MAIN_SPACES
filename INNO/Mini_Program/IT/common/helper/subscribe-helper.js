@@ -126,7 +126,13 @@ function setSub(userToken, type, keyId, isSub, list = null) {
 	let brandCode = Conf.BRAND_CODE;
 	return SubApi.setSub({
 		params: { userToken },
-		data: { brandCode, type, keyId: keyId || 0, isSub: isSub ? 1 : 0, list }
+		data: {
+			brandCode,
+			type,
+			keyId: keyId || 0,
+			isSub: isSub ? 1 : 0,
+			// list
+		}
 	}).netData();
 };
 

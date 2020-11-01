@@ -75,7 +75,11 @@ export default {
                         img.style.width = "100%";
                         img.style.height = "auto";
                         return img;
-                    }
+                    },
+                    paste_block_drop: true,
+                    force_br_newlines : true,
+                    force_p_newlines : true,
+                    forced_root_block : '<p>',
                 });
             });
         },
@@ -92,11 +96,9 @@ export default {
             }
         },
         setContent(val) {
-            console.log("setContent", val)
             this.hold = val;
             if (this.status === CHANGED) return (this.status = INPUT);
             if (this.editor && this.editor.initialized) {
-                
                 this.editor.setContent(this.hold || "");
             }
         },

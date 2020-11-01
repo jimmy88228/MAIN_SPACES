@@ -7,9 +7,6 @@
                             <div class="tabs-page">
                                 <div class="edit-body cev-max-width">
                                     <div class="edit-title">活动信息</div>
-                                    <EditItem name="活动图片" description="">
-                                        <UploadImage slot="edit" :imgs.sync="mainData.picture" type="SPECIAL_ACTIVITY" single></UploadImage>
-                                    </EditItem>
                                     <EditItem name="活动名称" label="必填">
                                         <Input class="input-large" slot="edit" size="large" v-model="mainData.activityName" clearable/>
                                     </EditItem>
@@ -23,7 +20,7 @@
                                             <Option :value="item.id" v-for="(item, index) in ruleList" :key="index">{{ item.name }}</Option>
                                         </Select>
                                     </EditItem>
-                                    <EditItem name="活动详情" full>
+                                    <EditItem name="活动公告"  full label="没有参与资格的用户进入后浏览到的内容">
                                         <div slot="edit">
                                             <Editor ref="editor" v-model="mainData.content"></Editor>
                                         </div>
@@ -31,9 +28,14 @@
                                 </div>
                             </div>
                         </TabPane>
-                        <TabPane label="编辑模块" name="detail">
-                            <div class="edit-title cev-max-width module_title">自定义页编辑</div>
-                            <ModuleEditPanel :module-node="moduleNode" class="cev-max-width module_box"/>
+                        <TabPane label="活动详情" name="detail">
+                                <div class="cev-max-width">
+                                    <EditItem name="活动图片" description="">
+                                        <UploadImage slot="edit" :imgs.sync="mainData.picture" type="SPECIAL_ACTIVITY" single></UploadImage>
+                                    </EditItem>
+                                </div>
+                                <div class="edit-title cev-max-width module_title" style="margin:20px auto;">自定义页编辑</div>
+                                <ModuleEditPanel :module-node="moduleNode" class="cev-max-width module_box"/>
                         </TabPane>
                     </Tabs>
             </div>
@@ -263,52 +265,12 @@ export default {
                     height:calc(100vh - 220px);
                     overflow-y: scroll;
                     overflow-x: hidden;
-                    .close-icon{
-                        position:absolute;
-                        top:0px;
-                        right:0px;
-                        transform: translate(50%,-50%);
-                        opacity: 0;
-                        cursor: pointer;
-                    }
-                    .spec-group{
-                        margin:10px 0px;
-                        min-width:900px;
-                        .ivu-card{
-                            border:1px solid #efefef;
-                        }
-                        .s-val-area{
-                            align-items: flex-start;
-                            .s-val-box{
-                                flex-wrap: wrap;
-                                padding:0;
-                            }
-                        }
-                        .spec-box{
-                            position:relative;
-                            margin-right:20px;
-                            margin-bottom:10px;
-                        }
-                        .spec-box:hover{
-                            .close-icon{
-                                opacity: 1;
-                            }
-                        }
-                    }
-                    .spec-group:hover .ivu-card-body > .close-icon{
-                        opacity: 1;
-                    }
-                    .spec-detail{
-                        min-width:900px;
-                    }
-                }
+                } 
             }
+            
         }
     }
     .module_box{
         height: 90%;
-    }
-    .tabs-page .module_title{
-        margin: 20px auto;
     }
 </style>

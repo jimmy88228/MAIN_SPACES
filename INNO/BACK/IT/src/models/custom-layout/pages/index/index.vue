@@ -131,10 +131,10 @@ export default {
                 this.$Message.error("布局名不能为空");
                 return;
             }
-            if (layoutNames.layoutIndexName === "") {
-                this.$Message.error("索引名不能为空");
-                return;
-            }
+            // if (layoutNames.layoutIndexName === "") {
+            //     this.$Message.error("索引名不能为空");
+            //     return;
+            // }
             this.loading = true;
             MainApi.addLayout({
                 data: {

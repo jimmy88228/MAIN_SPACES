@@ -4,15 +4,15 @@
             <div class="bg-shadow padding20">
                 <div class="cev-max-width">
                     <div class="edit-body">
-                        <EditItem name="标题" description="最多50个字">
+                        <EditItem name="标题" label="必填" description="最多50个字">
                             <Input size="large" class="inputable" slot="edit" v-model="title" clearable/>
                         </EditItem>
-                        <!-- <EditItem name="索引名" description="最多20个字">
+                        <EditItem name="索引名" label="非必填" description="最多20个字">
                             <Input size="large" class="inputable" slot="edit" v-model="name" clearable/>
-                        </EditItem> -->
-                        <!-- <EditItem name="编辑者" description="最多20个字">
+                        </EditItem>
+                        <EditItem name="编辑者" label="非必填" description="最多20个字">
                             <Input size="large" class="inputable" slot="edit" v-model="author" clearable/>
-                        </EditItem> -->
+                        </EditItem>
                         <EditItem name="内容" full>
                             <Editor slot="edit" ref="editor" v-model="content"></Editor>
                         </EditItem>
@@ -64,18 +64,18 @@ export default {
         },
         name: {
             get() {
-                return this.mainData.name || "默认索引名";
+                return this.mainData.name || "";
             },
             set(val) {
-                this.mainData = { name: val || "默认索引名" };
+                this.mainData = { name: val || "" };
             }
         },
         author: {
             get() {
-                return this.mainData.author || "默认作者";
+                return this.mainData.author || "";
             },
             set(val) {
-                this.mainData = { author: val || "默认作者" };
+                this.mainData = { author: val || "" };
             }
         },
         content: {

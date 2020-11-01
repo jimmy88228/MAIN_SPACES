@@ -30,7 +30,7 @@ export default {
         font-size: 14px;
         > .edit-item-name {
             overflow: hidden;
-            width: 100px;
+            min-width: 100px;
             display: flex;
             flex-direction: column;
             align-items: flex-start;

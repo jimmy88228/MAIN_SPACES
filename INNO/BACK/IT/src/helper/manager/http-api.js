@@ -236,6 +236,10 @@ const ActivityApi = {
     pushDrawActivityResult: {
         u: "/Activity/PushDrawActivityResult",
         a: "post"
+    },
+    drawActivityAnnounce: {
+        u: "/Activity/DrawActivityAnnounce",
+        a: "post"
     }
 };
 const EnrollApi = {
