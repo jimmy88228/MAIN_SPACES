@@ -4,7 +4,7 @@ export default {
             columns: [
                 {
                     title: "账号",
-                    key: "accounts",
+                    key: "account",
                     minWidth: 150
                 },
                 {

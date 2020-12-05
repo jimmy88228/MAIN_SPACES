@@ -446,5 +446,5 @@ export default {
 };
 
 export const WebApiList = {
-    redirectArt: "/ArtApi/Redirect"
+    redirectArt: "/Api/Redirect/Art"
 };

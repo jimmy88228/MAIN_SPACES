@@ -22,6 +22,7 @@
         "json2csv": "^5.0.3",
         "sortablejs": "^1.7.0",
         "tinymce": "^4.9.2",
+        "view-design": "^4.0.0",
         "vue-router": "^3.0.1"
     },
     "devDependencies": {

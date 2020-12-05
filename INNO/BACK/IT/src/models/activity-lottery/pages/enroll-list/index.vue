@@ -65,20 +65,20 @@ export default {
             let query = this.$route.query || {};
             this.actId = query.actId || 0;
         },
-        onLoadData(index, data) {
+        onLoadData(index, data ,type) {
             if (!(parseInt(this.actId) > 0)) {
-                return;
+                return Promise.reject();
             }
             this.loading = true;
             data = {
                 ...data,
                 activityId: this.actId
             };
-            MainApi.getEnrollInfoList({
+            return MainApi.getEnrollInfoList({
                 data: data
             }).then(res => {
                     if (res.code === "1") {
-                        this.pageIndex = index;
+                        type != 'auto' && (this.pageIndex = index);
                         let data = res.data;
                         for (let i = 0; i < data.list.length; i++) {
                             let specs = data.list[i].specs || "";
@@ -91,6 +91,7 @@ export default {
                             }
                         }
                         this.data = data;
+                        return this.data
                     } else {
                         return Promise.reject(res.msg);
                     }
@@ -110,6 +111,45 @@ export default {
                 })
             };
             exportExcelHelper.exportExcel(obj);
+            setTimeout(()=>{
+                exportExcelHelper.exportExcel(obj);
+            },1000)
+            setTimeout(()=>{
+                obj.end = true;
+                exportExcelHelper.exportExcel(obj);
+            },2000)
+        },
+        exportClick(){
+            this.getAllDatas(0,2,20);
+        },
+        getAllDatas(){
+            // exportExcelHelper.
+            // if(end>=total){
+            //     this.exportExcel();
+            // }else{}
+            let one = 5;
+            let times = 0;
+            let arr = [],start=0,end=one,total=1000;
+            times = Math.ceil(total/one);
+            for(let i = start,len=times;i<len;i++){
+                for(let j = i,lenJ=i+one;i<lenJ;j++){
+
+                }
+                // let params = {
+                    
+                // }
+                // arr.push(this.onLoadData(i,params,'auto'));
+            }
+            this.setPromiseAll(arr).then(res=>{
+
+            });
+        },
+        setPromiseAll(arr,cb){
+            return Promise.all(arr).then(res=>{
+                return Promise.resolve(res);
+            }).catch(e=>{
+                return Promise.resolve([]);
+            })
         }
     }
 };
