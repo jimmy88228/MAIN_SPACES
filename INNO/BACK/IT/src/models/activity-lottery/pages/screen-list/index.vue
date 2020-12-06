@@ -55,6 +55,7 @@
       </div>
     </div>
     <Spin v-if="loading" class="spin" size="large" fix></Spin>
+    <progressView :viewShow="exportLoad" :animShow="exportClass" :percent="percentVal"></progressView>
   </div>
 </template>
 
@@ -64,6 +65,8 @@ import ListPageMixin from "@/helper/mixin/list-page";
 import StringHelper from "@/helper/utils/string-util";
 import Mixin from "./mixin";
 import exportExcelHelper from "@/support/exportExcel/exportExcel";
+import progressView from "@/components/progress-view";
+let model = 5,pSize = 1000;
 export default {
   name: "ScreenList",
   mixins: [ListPageMixin, Mixin],
@@ -72,7 +75,11 @@ export default {
     return {
       keywords: "",
       selectData: [],
-      isSelectAll: false
+      isSelectAll: false,
+      exportDataList:[],
+      exportLoad:false,
+      exportClass:false,
+      percentVal:10,
     };
   },
   mounted() {
@@ -86,9 +93,9 @@ export default {
       this.ruleId = query.ruleId;
       this.title = query.title;
     },
-    onLoadData(index, data) {
+    onLoadData(index, data,type) {
       if (!(parseInt(this.actId) > 0)) return;
-      this.loading = true;
+      type != 'export' && (this.loading = true);
       data = {
         activityId: this.actId,
         etime: "",
@@ -101,7 +108,7 @@ export default {
       })
         .then(res => {
           if (res.code === "1") {
-            this.pageIndex = index;
+            type != 'export' && (this.pageIndex = index);
             let data = res.data;
             let list = data.list || [];
             let canSelectNum = 0;
@@ -116,6 +123,12 @@ export default {
                     : specs[j];
                 }
               }
+              if(type == 'export'){
+                data.list[i].codes = exportExcelHelper.csvTransform(data.list[i].codes); 
+                data.list[i].id_card = exportExcelHelper.csvTransform(data.list[i].id_card);
+                data.list[i].mobile_phone = exportExcelHelper.csvTransform(data.list[i].mobile_phone);
+                data.list[i].create_time = exportExcelHelper.csvTransform(data.list[i].create_time); 
+              }
               // 可选
               if (parseInt(list[i].lottery_id) > 0) {
                 list[i]._disabled = true;
@@ -123,9 +136,13 @@ export default {
                 canSelectNum++;
               }
             }
-            this.canSelectNum = canSelectNum;
-            this.data = data;
+            
+            type != 'export' && (this.canSelectNum = canSelectNum);
+            type != 'export' && (this.data = JSON.parse(JSON.stringify(data)));
           } else {
+            if(type == 'export'){
+                return Promise.resolve([]);
+            }
             return Promise.reject(res.msg);
           }
         })
@@ -135,7 +152,7 @@ export default {
           }
         })
         .finally(() => {
-          this.loading = false;
+          type != 'export' && (this.loading = false);
         });
     },
     getAllList() {
@@ -184,8 +201,35 @@ export default {
         datas: this.list,
         colums: columns
       };
-      exportExcelHelper.exportExcel(obj);
-    }
+      exportExcelHelper.exportCsv(obj);
+    },
+    exportClick(){
+          let start = 0, end=model, total = this.total||0;
+          if(!total || this.exportLoad)return
+          if(this.exportDataList && this.exportDataList.length == total){
+              this.exportExcel();
+              return
+          }
+          exportExcelHelper.getList({start,end,model,pSize,total,fnc:this.promiseModel,that:this}).then(res=>{
+              this.exportDataList = res;
+              console.log('resres',res)
+              this.exportExcel();
+          });
+      },
+      promiseModel({start,end}){
+          let _arr = [];
+          for(let i = start,len=end;i<len;i++){
+              let _params = {
+                      activityId: this.actId,
+                      keywords: "",
+                      orderBy: "",
+                      pageIndex:i+1,
+                      pageSize: pSize,
+              }
+              _arr.push(this.onLoadData(i,_params,'export')); 
+          }
+          return _arr;
+      },
   }
 };
 function activiePrize(enrollIds) {

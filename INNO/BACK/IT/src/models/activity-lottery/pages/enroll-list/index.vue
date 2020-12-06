@@ -10,7 +10,7 @@
                         </Button>
                     </div>
                     <div class="right">
-                        <Button type="primary" @click="exportExcel">
+                        <Button type="primary" @click="exportClick">
                             <i class="iconfont min r5 icon-add"></i>导出名单
                         </Button>
                     </div>
@@ -39,6 +39,7 @@
             </div>
         </div>
         <Spin v-if="loading" class="spin" size="large" fix></Spin>
+        <progressView :viewShow="exportLoad" :animShow="exportClass" :percent="percentVal"></progressView>
     </div>
 </template>
 
@@ -47,13 +48,22 @@ import { MainApi } from "@/helper/manager/http-manager";
 import ListPageMixin from "@/helper/mixin/list-page";
 import Mixin from "./mixin";
 import exportExcelHelper from "@/support/exportExcel/exportExcel";
-
+import progressView from "@/components/progress-view";
+let model = 5,pSize = 1000;
 export default {
     name: "EnrollList",
     mixins: [ListPageMixin, Mixin],
     components: { },
     data() {
-        return {};
+        return {
+            exportDataList:[],
+            exportLoad:false,
+            exportClass:false,
+            percentVal:10,
+        };
+    },
+    components: {
+        progressView,
     },
     mounted() {
         this.initParam();
@@ -69,7 +79,7 @@ export default {
             if (!(parseInt(this.actId) > 0)) {
                 return Promise.reject();
             }
-            this.loading = true;
+            type != 'export' && (this.loading = true);
             data = {
                 ...data,
                 activityId: this.actId
@@ -78,8 +88,9 @@ export default {
                 data: data
             }).then(res => {
                     if (res.code === "1") {
-                        type != 'auto' && (this.pageIndex = index);
+                        type != 'export' && (this.pageIndex = index);
                         let data = res.data;
+                        this.total || (this.total = data.count || 0);
                         for (let i = 0; i < data.list.length; i++) {
                             let specs = data.list[i].specs || "";
                             if (specs) {
@@ -89,68 +100,68 @@ export default {
                                     data.list[i].specsStr = data.list[i].specsStr ? data.list[i].specsStr + "; " + specs[j] : specs[j];
                                 }
                             }
+                            if(type == 'export'){
+                                data.list[i].id_card = exportExcelHelper.csvTransform(data.list[i].id_card);
+                                data.list[i].mobile_phone = exportExcelHelper.csvTransform(data.list[i].mobile_phone);
+                                data.list[i].codes = exportExcelHelper.csvTransform(data.list[i].codes); 
+                            }
                         }
-                        this.data = data;
-                        return this.data
+                        type != 'export' && (this.data = JSON.parse(JSON.stringify(data)));
+                        return data.list
                     } else {
+                        if(type == 'export'){
+                            return Promise.resolve([]);
+                        }
                         return Promise.reject(res.msg);
                     }
                 }).catch(msg => {
                     this.$Message.error(msg || "加载失败");
+                    return Promise.reject(msg);
                 }).finally(() => {
-                    this.loading = false;
+                     type != 'export' && (this.loading = false);
                 });
         },
         checkDetail(id) {},
         exportExcel() {
             let obj = {
                 name: "报名表格",
-                datas: this.list,
+                datas: this.exportDataList || this.list,
                 colums: this.columns.filter(item => {
                     return item.key !== "action";
                 })
             };
-            exportExcelHelper.exportExcel(obj);
-            setTimeout(()=>{
-                exportExcelHelper.exportExcel(obj);
-            },1000)
-            setTimeout(()=>{
-                obj.end = true;
-                exportExcelHelper.exportExcel(obj);
-            },2000)
+            exportExcelHelper.exportCsv(obj);
         },
         exportClick(){
-            this.getAllDatas(0,2,20);
-        },
-        getAllDatas(){
-            // exportExcelHelper.
-            // if(end>=total){
-            //     this.exportExcel();
-            // }else{}
-            let one = 5;
-            let times = 0;
-            let arr = [],start=0,end=one,total=1000;
-            times = Math.ceil(total/one);
-            for(let i = start,len=times;i<len;i++){
-                for(let j = i,lenJ=i+one;i<lenJ;j++){
-
-                }
-                // let params = {
-                    
-                // }
-                // arr.push(this.onLoadData(i,params,'auto'));
+            let start = 0, end=model, total = this.total||0;
+            if(!total || this.exportLoad)return
+            if(this.exportDataList && this.exportDataList.length == total){
+                this.exportExcel();
+                return
             }
-            this.setPromiseAll(arr).then(res=>{
-
+            exportExcelHelper.getList({start,end,model,pSize,total,fnc:this.promiseModel,that:this}).then(res=>{
+                this.exportDataList = res;
+                this.exportExcel();
             });
         },
-        setPromiseAll(arr,cb){
-            return Promise.all(arr).then(res=>{
-                return Promise.resolve(res);
-            }).catch(e=>{
-                return Promise.resolve([]);
-            })
-        }
+        promiseModel({start,end}){
+            let _arr = [];
+            for(let i = start,len=end;i<len;i++){
+                let _params = {
+                        activityId: this.actId,
+                        keywords: "",
+                        orderBy: "",
+                        pageIndex:i+1,
+                        pageSize: pSize,
+                }
+                _arr.push(this.onLoadData(i,_params,'export')); 
+            }
+            return _arr;
+        },
     }
 };
 </script>
+
+<style lang="less" scoped>
+ 
+</style>

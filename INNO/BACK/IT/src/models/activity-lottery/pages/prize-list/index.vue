@@ -6,7 +6,7 @@
                     <div class="left">
                     </div>
                     <div class="right">
-                        <Button type="primary" @click="exportExcel()">导出名单</Button>
+                        <Button type="primary" @click="exportClick">导出名单</Button>
                     </div>
                 </div>
                 <Table ref="table" class="table" :columns="columns" :data="list" border>
@@ -30,6 +30,7 @@
             </div>
         </div>
         <Spin v-if="loading" class="spin" size="large" fix></Spin>
+        <progressView :viewShow="exportLoad" :animShow="exportClass" :percent="percentVal"></progressView>
     </div>
 </template>
 
@@ -39,13 +40,18 @@ import ListPageMixin from "@/helper/mixin/list-page";
 import StringHelper from "@/helper/utils/string-util";
 import Mixin from "./mixin";
 import exportExcelHelper from "@/support/exportExcel/exportExcel";
-
+import progressView from "@/components/progress-view";
+let model = 5,pSize = 1000;
 export default {
     name: "ActivityLottery",
     mixins: [ListPageMixin, Mixin],
     components: {},
     data() {
         return {
+            exportDataList:[],
+            exportLoad:false,
+            exportClass:false,
+            percentVal:10,
             keywords: ""
         };
     },
@@ -60,10 +66,10 @@ export default {
             let query = this.$route.query || {};
             this.actId = query.actId || 0;
         },
-        onLoadData(index, data) {
+        onLoadData(index, data,type) {
             if (!(parseInt(this.actId) > 0)) return new Promise.reject();
-            this.loading = true;
-            MainApi.getLotteryUserList({
+            type != 'export' && (this.loading = true);
+            return MainApi.getLotteryUserList({
                 data: {
                     activityId: this.actId,
                     stime: "",
@@ -74,21 +80,33 @@ export default {
                 }
             }).then(res => {
                     if (res.code === "1") {
-                        this.pageIndex = index;
+                        type != 'export' && (this.pageIndex = index);
                         let data = res.data || {};
+                        this.total = data.count||0;
                         for (let i = 0; i < data.list.length; i++) {
                             let item = data.list[i];
                             for (let j = 0; j < item.items.length; j++) {
                                 let markKey = item.items[j].markKey;
                                 item[markKey] = item.items[j].value;
+                                if(type == 'export'){
+                                    markKey == "mobile_phone" && (item[markKey] = exportExcelHelper.csvTransform(item[markKey]));
+                                    markKey == "id_card" && (item[markKey] = exportExcelHelper.csvTransform(item[markKey]));
+                                }
                             }
                             for (let j = 0; j < item.specValList.length; j++) {
                                 let specId = item.specValList[j].specId;
                                 item["spec_" + specId] = item.specValList[j].specVal;
-                            };
+                            }; 
+                            if(type == 'export'){
+                                    item.enrollCode = exportExcelHelper.csvTransform(item.enrollCode);
+                            }
                         }
-                        this.data = data;
+                        type != 'export' && (this.data = JSON.parse(JSON.stringify(data)));
+                        return data.list;
                     } else {
+                        if(type == 'export'){
+                            return Promise.resolve([]);
+                        }
                         return Promise.reject(res.msg);
                     }
                 }).catch(msg => {
@@ -96,7 +114,7 @@ export default {
                         this.$Message.error(msg || "加载失败");
                     };
                 }).finally(() => {
-                    this.loading = false;
+                    type != 'export' && (this.loading = false);
                 });
         },
         getListHead() {
@@ -171,12 +189,38 @@ export default {
         exportExcel() {
             let obj = {
                 name: "中奖名单",
-                datas: this.list,
+                datas: this.exportDataList || this.list,
                 colums: this.columns.filter(item => {
                     return item.key !== "action";
                 })
             };
-            exportExcelHelper.exportExcel(obj);
+            exportExcelHelper.exportCsv(obj);
+        }, 
+        exportClick(){
+            let start = 0, end=model, total = this.total||0;
+            if(!total || this.exportLoad)return
+            if(this.exportDataList && this.exportDataList.length == total){
+                this.exportExcel();
+                return
+            }
+            exportExcelHelper.getList({start,end,model,pSize,total,fnc:this.promiseModel,that:this}).then(res=>{
+                this.exportDataList = res;
+                this.exportExcel();
+            });
+        },
+        promiseModel({start,end}){
+            let _arr = [];
+            for(let i = start,len=end;i<len;i++){
+                let _params = {
+                        activityId: this.actId,
+                        keywords: "",
+                        orderBy: "",
+                        pageIndex:i+1,
+                        pageSize: pSize,
+                }
+                _arr.push(this.onLoadData(i,_params,'export')); 
+            }
+            return _arr;
         },
         getHeadFilter(arr = [], except = []) {
             let filter = [];

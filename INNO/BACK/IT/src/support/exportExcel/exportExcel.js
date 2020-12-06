@@ -25,6 +25,17 @@ export default {
       el.click();
       document.body.removeChild(el);
     },
+    csvTransform(val,type){
+      val = '="' + val + '"';
+      return val;
+    },
+    getList({result,start,end,model,pSize,total,fnc,cb,that}){
+      that.exportLoad = true;
+      setTimeout(()=>{
+        that.exportClass = true;
+      },300)
+      return setPromiseAll(...arguments);
+    }
 }
 
 function getDatas(sheetData,colums,len,extra){
@@ -39,10 +50,10 @@ function getDatas(sheetData,colums,len,extra){
         sheetHeader.push(colums[i].title),
         columnWidths.push(len||DFLen)
       )
-      extra.type == "csv" && sheetCsvFilter.push({
-        label:colums[i].title,
-        value:colums[i].key,
-      })
+      extra.type == "csv" && 
+      (
+        sheetCsvFilter.push({label:colums[i].title,value:colums[i].key})
+      )
   }
   if(extra.type == "excel" && extra.lenArr){ //lenArr：表格长度数组自定义
     columnWidths = extra.lenArr;
@@ -63,4 +74,40 @@ function getDownloadHref (data,type="") {
 function getNowDate(){
   let date = new Date();
   return dateUtil.format(dateUtil.parse(date.toLocaleDateString()),"yyyyMMdd") + date.getHours() + date.getMinutes() +  date.getSeconds();
+}
+
+function setPromiseAll({result=[],start,end,model,pSize,total,fnc,cb,that}){
+  let _arr = [];
+  end*pSize > total && (end = Math.ceil(total/pSize));
+  let nowNum = end*pSize;
+  that.percentVal = parseInt((nowNum/that.total<0.1? 0.1 : nowNum/that.total) * 100);
+  that.percentVal >= 100 && (that.percentVal = 100);
+  try{
+     _arr = fnc && fnc({start,end});
+      if(!_arr || _arr.length<1)return
+  }catch(e){
+      console.log('fnc catch',e)
+      return
+  }
+  return Promise.all(_arr).then(res=>{
+      for(let j = 0,lenJ=res.length;j<lenJ;j++){
+          result = result.concat(res[j]);
+      }
+      if(end*pSize >= total){
+          that.percentVal = 100;
+          that.exportClass = false;
+          setTimeout(()=>{
+            that.exportLoad = false;
+          },300)
+          console.log('结束',end,total,that.exportDataList,result);
+          cb && cb(result);
+          return result
+      }
+      start = end;
+      end += model;
+      return setPromiseAll({result,start,end,model,pSize,total,fnc,cb,that});
+  }).catch(e=>{
+      console.log('all catch',e); 
+      return setPromiseAll({result,start,end,model,pSize,total,fnc,cb,that});
+  })
 }
