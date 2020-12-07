@@ -10,7 +10,7 @@
             <Button type="primary" @click="e=>loadData()">
               <i class="iconfont min r5 icon-search"></i>搜索
             </Button>
-            <Button type="primary" @click="e=>exportExcel()">导出名单</Button>
+            <Button type="primary" @click="e=>exportClick()">导出名单</Button>
           </div>
         </div>
         <Table
@@ -82,6 +82,9 @@ export default {
       percentVal:10,
     };
   },
+  components: {
+      progressView,
+  },
   mounted() {
     this.initParams();
     this.loadData();
@@ -103,7 +106,7 @@ export default {
         orderBy: "",
         ...data
       };
-      MainApi.getEnrollInfoList({
+      return MainApi.getEnrollInfoList({
         data: data
       })
         .then(res => {
@@ -111,6 +114,7 @@ export default {
             type != 'export' && (this.pageIndex = index);
             let data = res.data;
             let list = data.list || [];
+            this.total || (this.total = data.count||0);
             let canSelectNum = 0;
             for (let i = 0; i < list.length; i++) {
               // 规格
@@ -124,11 +128,12 @@ export default {
                 }
               }
               if(type == 'export'){
-                data.list[i].codes = exportExcelHelper.csvTransform(data.list[i].codes); 
-                data.list[i].id_card = exportExcelHelper.csvTransform(data.list[i].id_card);
-                data.list[i].mobile_phone = exportExcelHelper.csvTransform(data.list[i].mobile_phone);
-                data.list[i].create_time = exportExcelHelper.csvTransform(data.list[i].create_time); 
+                list[i].codes = exportExcelHelper.csvTransform(list[i].codes); 
+                list[i].id_card = exportExcelHelper.csvTransform(list[i].id_card);
+                list[i].mobile_phone = exportExcelHelper.csvTransform(list[i].mobile_phone);
+                list[i].create_time = exportExcelHelper.csvTransform(list[i].create_time); 
               }
+              console.log('data.list',data.list)
               // 可选
               if (parseInt(list[i].lottery_id) > 0) {
                 list[i]._disabled = true;
@@ -139,6 +144,7 @@ export default {
             
             type != 'export' && (this.canSelectNum = canSelectNum);
             type != 'export' && (this.data = JSON.parse(JSON.stringify(data)));
+            return data.list
           } else {
             if(type == 'export'){
                 return Promise.resolve([]);
@@ -198,13 +204,14 @@ export default {
       columns.unshift({ "key": "user_name", "title": "报名人信息" });
       let obj = {
         name: "筛选表格",
-        datas: this.list,
+        datas: this.exportDataList||this.list,
         colums: columns
       };
       exportExcelHelper.exportCsv(obj);
     },
     exportClick(){
           let start = 0, end=model, total = this.total||0;
+          console.log('进来',total,this.exportLoad)
           if(!total || this.exportLoad)return
           if(this.exportDataList && this.exportDataList.length == total){
               this.exportExcel();
@@ -216,20 +223,20 @@ export default {
               this.exportExcel();
           });
       },
-      promiseModel({start,end}){
-          let _arr = [];
-          for(let i = start,len=end;i<len;i++){
-              let _params = {
-                      activityId: this.actId,
-                      keywords: "",
-                      orderBy: "",
-                      pageIndex:i+1,
-                      pageSize: pSize,
-              }
-              _arr.push(this.onLoadData(i,_params,'export')); 
-          }
-          return _arr;
-      },
+    promiseModel({start,end}){
+        let _arr = [];
+        for(let i = start,len=end;i<len;i++){
+            let _params = {
+                    activityId: this.actId,
+                    keywords: "",
+                    orderBy: "",
+                    pageIndex:i+1,
+                    pageSize: pSize,
+            }
+            _arr.push(this.onLoadData(i,_params,'export')); 
+        }
+        return _arr;
+    },
   }
 };
 function activiePrize(enrollIds) {

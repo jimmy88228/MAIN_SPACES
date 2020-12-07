@@ -55,6 +55,9 @@ export default {
             keywords: ""
         };
     },
+    components: {
+        progressView,
+    },
     mounted() {
         this.initParams();
         this.getListHead().finally(() => {
@@ -82,7 +85,7 @@ export default {
                     if (res.code === "1") {
                         type != 'export' && (this.pageIndex = index);
                         let data = res.data || {};
-                        this.total = data.count||0;
+                        this.total || (this.total = data.count||0);
                         for (let i = 0; i < data.list.length; i++) {
                             let item = data.list[i];
                             for (let j = 0; j < item.items.length; j++) {

@@ -1,51 +1,61 @@
 <template>
     <div class="bg-page cev-root spin-box flex-column">
-        <div class="cev-root bg-shadow padding10 flex-auto tabs-box">
+        <div class="cev-root bg-shadow padding10 flex-auto tabs-box" v-bar>
             <div class="edit-body cev-max-width">
-                <EditItem name="奖项名称" label="必填">
-                    <Input slot="edit" size="large" v-model="ruleName" clearable/>
-                </EditItem>
-                <EditItem name="奖项类型" label="必填">
-                    <Select slot="edit" size="large" v-model="ruleType" >
-                        <Option v-for="item in ruleTypeList" :value="item.value" :key="item.label">{{ item.label }}</Option>
-                    </Select>
-                </EditItem>
-                <EditItem name="奖项规则" label="必填">
-                    <div slot="edit">
-                        <div v-if="ruleType == 'COUPON'">
-                            <Upload action="/"
-                            :show-upload-list="false"
-                            :before-upload="handleBeforeUpload"
-                            >
-                                <Button icon="ios-cloud-upload-outline">{{ couponFile.name || "导入券码" }}</Button>
-                            </Upload>
-                            <!-- <a href="#" >下载模板</a> -->
+                <Row>
+                    <Col class="" span="12">
+                        <div class="edit-body">
+                            <EditItem name="奖项名称" label="必填">
+                                <Input slot="edit" size="large" v-model="ruleName" clearable/>
+                            </EditItem>
+                            <EditItem name="奖项类型" label="必填">
+                                <Select slot="edit" size="large" v-model="ruleType" >
+                                    <Option v-for="item in ruleTypeList" :value="item.value" :key="item.label">{{ item.label }}</Option>
+                                </Select>
+                            </EditItem>
+                            <EditItem name="奖项规则" label="必填">
+                                <div slot="edit">
+                                    <div v-if="ruleType == 'COUPON'">
+                                        <Upload action="/"
+                                        :show-upload-list="false"
+                                        :before-upload="handleBeforeUpload"
+                                        >
+                                            <Button icon="ios-cloud-upload-outline">{{ couponFile.name || "导入券码" }}</Button>
+                                        </Upload>
+                                        <!-- <a href="#" >下载模板</a> -->
+                                    </div>
+                                    <div v-else-if="ruleType == 'GOODS'" class="flex-">
+                                        <Checkbox size="large" :value="checkAllRule" @click.prevent.native="handleCheckAll">全选</Checkbox>
+                                        <CheckboxGroup v-model="specIds">
+                                            <Checkbox size="large" v-for="item in goodsRuleList" :label="item.id" :key="item.id">{{ item.specName }}</Checkbox>
+                                        </CheckboxGroup>
+                                    </div>
+                                </div>
+                            </EditItem>
+                            <EditItem name="备注事项" label="必填" description="请于xxxx年xx月xx日前，去往门店购买" v-if="ruleType == 'GOODS'">
+                                <div slot="edit">
+                                    <Input size="large" placeholder="" v-model="usageTips" clearable />
+                                </div>
+                            </EditItem>
+                            <EditItem name="奖品等级" label="必填">
+                                <div slot="edit">
+                                    <Select size="large" v-model="prizeLevel" >
+                                        <Option v-for="item in prizeLevelList" :value="item.id" :key="item.id">{{ item.value }}</Option>
+                                    </Select>
+                                </div>
+                            </EditItem>
                         </div>
-                        <div v-else-if="ruleType == 'GOODS'" class="flex-">
-                            <Checkbox size="large" :value="checkAllRule" @click.prevent.native="handleCheckAll">全选</Checkbox>
-                            <CheckboxGroup v-model="specIds">
-                                <Checkbox size="large" v-for="item in goodsRuleList" :label="item.id" :key="item.id">{{ item.specName }}</Checkbox>
-                            </CheckboxGroup>
+                    </Col>
+                    <Col span="12" class="">
+                        <div class="edit-body">
+                            <EditItem name="奖项说明" label="必填">
+                                <div slot="edit">
+                                    <Editor ref="editor" v-model="ruleDetail"></Editor>
+                                </div>
+                            </EditItem>
                         </div>
-                    </div>
-                </EditItem>
-                <EditItem name="备注事项" label="必填" description="请于xxxx年xx月xx日前，去往门店购买" v-if="ruleType == 'GOODS'">
-                    <div slot="edit">
-                        <Input size="large" placeholder="" v-model="usageTips" clearable />
-                    </div>
-                </EditItem>
-                <EditItem name="奖品等级" label="必填">
-                    <div slot="edit">
-                        <Select size="large" v-model="prizeLevel" >
-                            <Option v-for="item in prizeLevelList" :value="item.id" :key="item.id">{{ item.value }}</Option>
-                        </Select>
-                    </div>
-                </EditItem>
-                <EditItem name="奖项说明" label="必填">
-                    <div slot="edit">
-                        <Editor ref="editor" v-model="ruleDetail"></Editor>
-                    </div>
-                </EditItem>
+                    </Col>
+                </Row>
             </div>
         </div>
         <div class="bg-bottom-toolbar flex-fixed padding10">

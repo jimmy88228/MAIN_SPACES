@@ -24,7 +24,8 @@ export default {
     data() {
         return {
             editorId: "",
-            status: INIT
+            status: INIT,
+            stayHtml: "<p></p>"
         };
     },
     watch: {
@@ -81,6 +82,16 @@ export default {
                     force_p_newlines : true,
                     forced_root_block : '<p>',
                 });
+                //
+                setTimeout(()=>{
+                    //根据ID获取要操控元素
+                    let deptObjs = document.getElementById(this.editorId +"_ifr").contentWindow.document.body;
+                    //判断此元素是否存在
+                    if(deptObjs != null){
+                        //设置该元素的样式或其他属性
+                        deptObjs.setAttribute('style',' padding-bottom: 30px !important;'); //!important用来提升指定样式条目的应用优先权
+                    }
+                },500)
             });
         },
         destroy() {
@@ -90,6 +101,7 @@ export default {
             }
         },
         callChange(content) {
+            content = content + this.stayHtml;
             if (content !== this.hold) {
                 this.hold = content;
                 this.$emit("input", this.hold || "");

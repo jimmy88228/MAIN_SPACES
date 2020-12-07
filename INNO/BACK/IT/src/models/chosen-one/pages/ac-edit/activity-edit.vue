@@ -4,20 +4,28 @@
             <div class="tabs">
                     <Tabs :value="currentTab" type="card" @on-click="selectTab">
                         <TabPane label="基础设置" name="base" >
-                            <div class="tabs-page">
+                            <div class="tabs-page" v-bar>
                                 <div class="edit-body cev-max-width">
                                     <div class="edit-title">活动信息</div>
                                     <EditItem name="活动名称" label="必填">
                                         <Input class="input-large" slot="edit" size="large" v-model="mainData.activityName" clearable/>
                                     </EditItem>
                                     <EditItem name="活动时间" label="必填">
-                                        <span slot="edit">
-                                            <DatePicker class="inputable date-selecter-range" size="large" type="datetimerange" placeholder="活动时间" v-model="activityTime"></DatePicker>
-                                        </span>
+                                        <div slot="edit">
+                                            <date-select 
+                                            ref="dateSelect" 
+                                            :startTime="mainData.startTime" 
+                                            :endTime="mainData.endTime" 
+                                            :isHandleLimit="mainData.activityId"
+                                            @sT="handleStart"  
+                                            @eT="handleEnd" 
+                                            class="space-nowrap" />
+                                            <!-- <DatePicker class="inputable date-selecter-range" size="large" type="datetimerange" placeholder="活动时间" v-model="activityTime"></DatePicker> -->
+                                        </div>
                                     </EditItem>
                                     <EditItem name="活动规则" label="必填">
                                         <Select slot="edit" style="width:100px;" v-model="mainData.ruleArticleId">
-                                            <Option :value="item.id" v-for="(item, index) in ruleList" :key="index">{{ item.name }}</Option>
+                                            <Option :value="item.id" v-for="(item, index) in ruleList" :key="index">{{ item.title }}</Option>
                                         </Select>
                                     </EditItem>
                                     <EditItem name="活动公告"  full label="没有参与资格的用户进入后浏览到的内容">
@@ -29,13 +37,17 @@
                             </div>
                         </TabPane>
                         <TabPane label="活动详情" name="detail">
-                                <div class="cev-max-width">
-                                    <EditItem name="活动图片" description="">
-                                        <UploadImage slot="edit" :imgs.sync="mainData.picture" type="SPECIAL_ACTIVITY" single></UploadImage>
-                                    </EditItem>
+                            <div class="tabs-page" v-bar>
+                                <div class="tabs-page">
+                                    <div class="cev-max-width">
+                                        <EditItem name="活动图片" description="">
+                                            <UploadImage slot="edit" :imgs.sync="mainData.picture" type="SPECIAL_ACTIVITY" single></UploadImage>
+                                        </EditItem>
+                                    </div>
+                                    <div class="edit-title cev-max-width module_title" style="margin:20px auto;">自定义页编辑</div>
+                                    <ModuleEditPanel :module-node="moduleNode" class="cev-max-width module_box"/>
                                 </div>
-                                <div class="edit-title cev-max-width module_title" style="margin:20px auto;">自定义页编辑</div>
-                                <ModuleEditPanel :module-node="moduleNode" class="cev-max-width module_box"/>
+                            </div>
                         </TabPane>
                     </Tabs>
             </div>
@@ -57,6 +69,7 @@ import UploadImage from "@/components/upload-img-group";
 import ModuleEditPanel from "@/models/custom-layout/components/panel-module-edit";
 import dateUtil from "@/helper/utils/date-util";
 import LayoutUtils from "@/models/custom-layout/components/helper/utils.js";
+import DateSelect from "@/components/date-select/index"
 
 export default {
     name: "ActvityEdit",
@@ -84,7 +97,7 @@ export default {
         };
     },
 
-    components: { EditItem, Editor, UploadImage, ModuleEditPanel },
+    components: { EditItem, Editor, UploadImage, ModuleEditPanel, DateSelect },
     mounted() {
         this.isAdd = !!Number(this.$route.meta.isAdd);
         this.actId = this.$route.query.actId || 0;
@@ -209,6 +222,7 @@ export default {
             }
             let _data = { activityId: this.actId };
             return this.netData(MainApi, "postSpecialDetails", _data).then(res => {
+                this.mainData.activityId = res.activityId;
                 this.mainData.picture = res.picture || "";
                 this.mainData.activityName = res.name || "";
                 this.mainData.content = res.detail || "";
@@ -240,6 +254,12 @@ export default {
                     }).finally(() => {
                         this.loading = false;
                     });
+        },
+        handleStart(val){
+            this.mainData.startTime = val;
+        },
+        handleEnd(val){
+            this.mainData.endTime = val;
         }
     }
 };

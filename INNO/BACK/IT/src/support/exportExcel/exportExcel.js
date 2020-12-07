@@ -98,7 +98,7 @@ function setPromiseAll({result=[],start,end,model,pSize,total,fnc,cb,that}){
           that.exportClass = false;
           setTimeout(()=>{
             that.exportLoad = false;
-          },300)
+          },500)
           console.log('结束',end,total,that.exportDataList,result);
           cb && cb(result);
           return result

@@ -4,7 +4,7 @@
             <div class="tabs">
                 <Tabs value="base" type="card">
                     <TabPane label="基础设置" name="base" >
-                        <div class="tabs-page">
+                        <div class="tabs-page" v-bar>
                             <div class="edit-body cev-max-width">
                                 <div class="edit-title">活动信息</div>
                                 <EditItem name="活动主图" label="必填">
@@ -16,7 +16,17 @@
                                     <Input slot="edit" size="large" v-model="actInfo.name" clearable/>
                                 </EditItem>
                                 <EditItem name="活动时间" label="必填">
-                                    <DatePicker slot="edit" :options="options" type="datetimerange" v-model="timeRange" placeholder="选择活动时间" style="width: 350px"></DatePicker>
+                                    <div slot="edit">
+                                        <date-select 
+                                        ref="dateSelect" 
+                                        :startTime="actInfo.startTime" 
+                                        :endTime="actInfo.endTime" 
+                                        :isHandleLimit="actInfo.activityId"
+                                        @sT="handleStart"  
+                                        @eT="handleEnd"   
+                                        class="space-nowrap" />
+                                        <!-- <DatePicker :options="options" type="datetimerange" v-model="timeRange" placeholder="选择活动时间" style="width: 350px"></DatePicker> -->
+                                    </div>
                                 </EditItem>
                                 <EditItem name="展示状态" label="必填">
                                     <RadioGroup slot="edit" v-model="actInfo.showType" size="large">
@@ -30,7 +40,7 @@
                                 </EditItem>
                                 <EditItem name="活动规则" label="必填">
                                     <Select slot="edit" style="width:100px;" v-model="actInfo.ruleArticleId">
-                                        <Option :value="item.id" v-for="(item, index) in ruleList" :key="index">{{ item.name }}</Option>
+                                        <Option :value="item.id" v-for="(item, index) in ruleList" :key="index">{{ item.title }}</Option>
                                     </Select>
                                 </EditItem>
                                 <EditItem name="关联广告位">
@@ -48,7 +58,7 @@
                                     <div slot="edit">
                                         <div>
                                             <div class="store_item margin10" v-for="(item, index) in storeList.list" :key="index">
-                                                <Input size="large" v-model="storeList.list[index]" clearable/>
+                                                <Input size="large" v-model="storeList.list[index]" @on-change="changeStore(index)" clearable/>
                                                 <Icon size="20" type="ios-close-circle" class="close-icon" @click="addDelStore(index)" />
                                             </div>
                                         </div>
@@ -102,7 +112,7 @@
                         </div>
                     </TabPane>
                     <TabPane label="活动详情" name="detail">
-                        <div class="tabs-page">
+                        <div class="tabs-page" v-bar>
                             <div class="edit-body cev-max-width">
                                 <EditItem name="顶部轮播图">
                                     <div slot="edit">
@@ -137,11 +147,12 @@ import StringHelper from "@/helper/utils/string-util";
 import MyDate from "@/helper/utils/date-util";
 import UploadImage from "@/components/upload-img-group";
 import ListPageMixin from "@/helper/mixin/list-page";
+import DateSelect from "@/components/date-select/index"
 import Mixin from "./mixin";
 
 export default {
     name: "ActvityEdit",
-    mixins: [ListPageMixin, Mixin],
+    mixins: [ListPageMixin, Mixin ],
     data() {
         return {
             isTest: false,
@@ -194,7 +205,7 @@ export default {
             specLimit: 2
         };
     },
-    components: { EditItem, Editor, UploadImage },
+    components: { EditItem, Editor, UploadImage, DateSelect },
     mounted() {
         this.initParam();
         this.getLayoutList();
@@ -202,15 +213,15 @@ export default {
         this.loadData();
     },
     computed: {
-        timeRange: {
-            get() {
-                return [this.actInfo.startTime, this.actInfo.endTime];
-            },
-            set(val) {
-                this.actInfo.startTime = (val[0] && MyDate.format(val[0])) || "";
-                this.actInfo.endTime = (val[1] && MyDate.format(val[1])) || "";
-            }
-        }
+        // timeRange: {
+        //     get() {
+        //         return [this.actInfo.startTime, this.actInfo.endTime];
+        //     },
+        //     set(val) {
+        //         this.actInfo.startTime = (val[0] && MyDate.format(val[0])) || "";
+        //         this.actInfo.endTime = (val[1] && MyDate.format(val[1])) || "";
+        //     }
+        // }
     },
     watch: {
        specList: {
@@ -414,6 +425,11 @@ export default {
                 this.storeList.list = list;
             }
         },
+        changeStore(index){
+            let val = (this.storeList && this.storeList.list[index]) || "";
+            val =  val.replace(/(^\s*)|(\s*$)/g, "");
+            if(this.storeList) this.storeList.list[index] = val;
+        },
         addSpecType() {
             let specList = this.specList || [];
             if (specList.length > this.specLimit) return;
@@ -498,6 +514,12 @@ export default {
         },
         back() {
             this.$router.back();
+        },
+        handleStart(val){
+            this.actInfo.startTime = val;
+        },
+        handleEnd(val){
+            this.actInfo.endTime = val;
         }
     }
 };
