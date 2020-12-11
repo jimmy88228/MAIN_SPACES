@@ -18,15 +18,15 @@
                             </Col>
                         </Row>
                         <Row class="row">
-                            <Col class="col" span="8">
+                            <Col class="col" span="12">
                             <Cell title="注册IP" :extra="userInfo.ip" />
                             </Col>
-                            <Col class="col" span="8">
-                            <Cell title="注册时间" :extra="userInfo.regTime" />
+                            <Col class="col" span="12">
+                            <Cell title="注册时间" :extra="userInfo.createTime" />
                             </Col>
-                            <Col class="col" span="8">
+                            <!-- <Col class="col" span="8">
                             <Cell title="最近登录时间" :extra="userInfo.lastLoginTime" />
-                            </Col>
+                            </Col> -->
                         </Row>
                         </Col>
                         <Col class="col img-avatar-box" span="2">

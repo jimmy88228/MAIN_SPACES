@@ -247,6 +247,10 @@ const EnrollApi = {
         u: "/Enroll/GetEnrollInfoList",
         a: "post"
     },
+    getEnrollInfoListData: {
+        u: "/Enroll/GetEnrollInfoListData",
+        a: "post"
+    },
     getEnrollInfoListBySpec: {
         u: "/Enroll/GetEnrollInfoListBySpec",
         a: "post"
@@ -422,6 +426,10 @@ const SpecialActivityApi = {
     },
     postChannelExcel: {
         u: "/SpecialActivity/PostChannelExcel",
+        a: "post"
+    },
+    pushSpecialResult: {
+        u: "/SpecialActivity/PushSpecialActivityResult",
         a: "post"
     }
 

@@ -10,10 +10,14 @@
                         </Button>
                     </div>
                     <div class="right">
+                        <Poptip confirm title="是否推送资格通知" @on-ok="sendResult">
+                            <Button type="primary" >推送通知</Button>
+                        </Poptip>
                         <Upload
                             :before-upload="handleBeforeUpload"
                             :format="format"  action="/"
                             :on-format-error="handleFormatError"
+                            class="_upload"
                             >
                             <Button type="primary">
                                 <i class="iconfont min r5 icon-add"></i>导入名单
@@ -153,7 +157,22 @@ export default {
                 this.$Message.success("删除成功");
                 this.list.splice(item._index, 1);
             });
+        },
+        sendResult(e){
+            this.loading = true;
+            let _data = { data: { activityId: this.actId} };
+            return this.diyNetData(MainApi, "pushSpecialResult", _data).then(res => {
+                this.$Message.success("推送成功");
+            }); 
         }
     }
 };
-</script>
+</script> 
+
+<style lang="less">
+._upload{
+    ul{
+        margin: 0;
+    }
+}
+</style>

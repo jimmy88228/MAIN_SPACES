@@ -96,9 +96,9 @@ export default {
       this.ruleId = query.ruleId;
       this.title = query.title;
     },
-    onLoadData(index, data,type) {
+    onLoadData(index, data,excel) {
       if (!(parseInt(this.actId) > 0)) return;
-      type != 'export' && (this.loading = true);
+      !excel && (this.loading = true);
       data = {
         activityId: this.actId,
         etime: "",
@@ -111,7 +111,7 @@ export default {
       })
         .then(res => {
           if (res.code === "1") {
-            type != 'export' && (this.pageIndex = index);
+            !excel && (this.pageIndex = index);
             let data = res.data;
             let list = data.list || [];
             this.total || (this.total = data.count||0);
@@ -127,13 +127,12 @@ export default {
                     : specs[j];
                 }
               }
-              if(type == 'export'){
+              if(excel){
                 list[i].codes = exportExcelHelper.csvTransform(list[i].codes); 
                 list[i].id_card = exportExcelHelper.csvTransform(list[i].id_card);
                 list[i].mobile_phone = exportExcelHelper.csvTransform(list[i].mobile_phone);
                 list[i].create_time = exportExcelHelper.csvTransform(list[i].create_time); 
               }
-              console.log('data.list',data.list)
               // 可选
               if (parseInt(list[i].lottery_id) > 0) {
                 list[i]._disabled = true;
@@ -142,11 +141,11 @@ export default {
               }
             }
             
-            type != 'export' && (this.canSelectNum = canSelectNum);
-            type != 'export' && (this.data = JSON.parse(JSON.stringify(data)));
+            !excel && (this.canSelectNum = canSelectNum);
+            !excel && (this.data = JSON.parse(JSON.stringify(data)));
             return data.list
           } else {
-            if(type == 'export'){
+            if(excel){
                 return Promise.resolve([]);
             }
             return Promise.reject(res.msg);
@@ -158,7 +157,7 @@ export default {
           }
         })
         .finally(() => {
-          type != 'export' && (this.loading = false);
+          !excel && (this.loading = false);
         });
     },
     getAllList() {
@@ -211,7 +210,6 @@ export default {
     },
     exportClick(){
           let start = 0, end=model, total = this.total||0;
-          console.log('进来',total,this.exportLoad)
           if(!total || this.exportLoad)return
           if(this.exportDataList && this.exportDataList.length == total){
               this.exportExcel();
@@ -219,7 +217,6 @@ export default {
           }
           exportExcelHelper.getList({start,end,model,pSize,total,fnc:this.promiseModel,that:this}).then(res=>{
               this.exportDataList = res;
-              console.log('resres',res)
               this.exportExcel();
           });
       },
@@ -232,8 +229,9 @@ export default {
                     orderBy: "",
                     pageIndex:i+1,
                     pageSize: pSize,
+                    nonCount:1,
             }
-            _arr.push(this.onLoadData(i,_params,'export')); 
+            _arr.push(this.onLoadData(i,_params,true)); 
         }
         return _arr;
     },

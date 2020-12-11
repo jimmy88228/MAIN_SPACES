@@ -69,9 +69,9 @@ export default {
             let query = this.$route.query || {};
             this.actId = query.actId || 0;
         },
-        onLoadData(index, data,type) {
+        onLoadData(index, data,excel) {
             if (!(parseInt(this.actId) > 0)) return new Promise.reject();
-            type != 'export' && (this.loading = true);
+            !excel && (this.loading = true);
             return MainApi.getLotteryUserList({
                 data: {
                     activityId: this.actId,
@@ -83,7 +83,7 @@ export default {
                 }
             }).then(res => {
                     if (res.code === "1") {
-                        type != 'export' && (this.pageIndex = index);
+                        !excel && (this.pageIndex = index);
                         let data = res.data || {};
                         this.total || (this.total = data.count||0);
                         for (let i = 0; i < data.list.length; i++) {
@@ -91,7 +91,7 @@ export default {
                             for (let j = 0; j < item.items.length; j++) {
                                 let markKey = item.items[j].markKey;
                                 item[markKey] = item.items[j].value;
-                                if(type == 'export'){
+                                if(excel){
                                     markKey == "mobile_phone" && (item[markKey] = exportExcelHelper.csvTransform(item[markKey]));
                                     markKey == "id_card" && (item[markKey] = exportExcelHelper.csvTransform(item[markKey]));
                                 }
@@ -100,14 +100,14 @@ export default {
                                 let specId = item.specValList[j].specId;
                                 item["spec_" + specId] = item.specValList[j].specVal;
                             }; 
-                            if(type == 'export'){
+                            if(excel){
                                     item.enrollCode = exportExcelHelper.csvTransform(item.enrollCode);
                             }
                         }
-                        type != 'export' && (this.data = JSON.parse(JSON.stringify(data)));
+                        !excel && (this.data = JSON.parse(JSON.stringify(data)));
                         return data.list;
                     } else {
-                        if(type == 'export'){
+                        if(excel){
                             return Promise.resolve([]);
                         }
                         return Promise.reject(res.msg);
@@ -117,7 +117,7 @@ export default {
                         this.$Message.error(msg || "加载失败");
                     };
                 }).finally(() => {
-                    type != 'export' && (this.loading = false);
+                    !excel && (this.loading = false);
                 });
         },
         getListHead() {
@@ -220,8 +220,9 @@ export default {
                         orderBy: "",
                         pageIndex:i+1,
                         pageSize: pSize,
+                        nonCount:1,
                 }
-                _arr.push(this.onLoadData(i,_params,'export')); 
+                _arr.push(this.onLoadData(i,_params,true)); 
             }
             return _arr;
         },
