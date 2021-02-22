@@ -1,0 +1,55 @@
+<view class="goods_comment">
+    <view class="desc_tit  high_praise font_24 " style="color:{{brand_info.style.font_color}};background:{{brand_info.style.comment_bg_color}}">
+        <!-- <view class="ab_bg_color" style='background:{{brand_info.style.bg_color}}; opacity:0.1;z-index:-1'></view> -->
+        <text style='opacity:1'>好评度</text>
+        <text style="font-weight:600;opacity:1">{{favCommentRatio}}</text>
+        <view>
+        </view>
+    </view>
+    <view class="comment_list">
+        <view class="comment_item" wx:for="{{commentList}}" wx:for-item="commentItem" wx:key="order_id" wx:for-index="itemIndex">
+            <view class="comment_info">
+                <view class="user_img_box">
+                    <image src="{{commentItem.portrait_path}}" class="user_img" mode="widthFix"></image>
+                </view>
+                <view class="user_name font_20">{{commentItem.real_name}}</view>
+                <view class="score_box">
+                    <!-- <image wx:for="{{commentItem.score}}" wx:key="{{index}}" src="{{brand_info.icon_url}}micro_mall/comment_edit/{{item ? 'start_icon_active.png' : 'start_icon.png'}}" class="start" mode="widthFix" data-index="{{index}}" bindtap="handleScore"></image> -->
+                    <image wx:for="{{commentItem.score}}" wx:key="index" src="{{item ? start_icon_active : start_icon}}" class="start" mode="widthFix" data-index="{{index}}" bindtap="handleScore"></image>
+                </view>
+            </view>
+            <view class="comment_content font_26">{{commentItem.comment_content}}</view>
+            <view class="order_goods_info font_22">
+                <text>{{commentItem.goods_attr}}</text>
+                <view class="time">{{commentItem.create_time}}</view>
+            </view>
+            <view class="goods_share_img_list">
+                <view class="goods_share_img_item" wx:for="{{commentItem.imgList}}" wx:key="index">
+                    <image src="{{item}}" mode="aspectFit" data-itemindex="{{itemIndex}}" data-imgindex="{{index}}" bindtap="handleShowBigImg"></image>
+                </view>
+            </view>
+            <view class="reply_msg_view" wx:if="{{commentItem.reply_msg}}">
+              <view class="table reply_msg_table font_18">
+                <view class="table_cell t_l reply_msg_tip">
+                  <text class="tip_line" style="background-color:{{brand_info.style.bg_color}};"></text>
+                  <text class="tip_txt">官方回复</text>
+                </view>
+                <view class="table_cell t_r reply_msg_time">{{commentItem.reply_time}}</view>
+              </view>
+              <view class="reply_msg_cont font_24">{{commentItem.reply_msg}}</view>
+            </view>
+        </view>
+
+
+    </view>
+    <view class="big_img_hover" wx:if="{{showBigImg}}" bindtap="handlehideBigImg">
+        <swiper duration="320" current="{{bigImgIndex}}" indicator-dots="{{true}}" class="img_swiper">
+            <block wx:for="{{bigImgList}}" wx:key="index">
+                <swiper-item>
+                    <image src="{{item}}" class="slide_image" mode="aspectFit" />
+                </swiper-item>
+            </block>
+        </swiper>
+    </view>
+
+</view>

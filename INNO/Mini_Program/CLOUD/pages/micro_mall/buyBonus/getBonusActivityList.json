@@ -1,0 +1,6 @@
+{
+  "navigationBarTitleText": "礼包中心",
+  "usingComponents": {
+    "btns": "/pages/component/buttons/btns"
+  }
+}

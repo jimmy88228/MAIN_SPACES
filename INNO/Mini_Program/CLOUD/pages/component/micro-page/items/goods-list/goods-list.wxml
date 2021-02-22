@@ -1,0 +1,27 @@
+<!--pages/component/micro-page/items/goods-list/goods-list.wxml-->
+<view class="main">
+  <view class="tab-box">
+    <block wx:if="{{showTab}}" wx:for="{{_data.goodsGroup}}" wx:key="index">
+      <view class="tab-item">
+        <view class="tab-name">{{item.name}},{{index}}</view>
+        <!-- <view></view> -->
+      </view>
+    </block>
+  </view>
+  <block wx:if="{{listIndex == curTab}}" wx:for="{{listData}}" wx:key="index" wx:for-item="listItem" wx:for-index="listIndex">
+    <view class="list-box {{listIndex != curTab?'A':'B'}}">
+      <block wx:for="{{listItem.goodsList}}"  wx:key="index" wx:for-item="listGoods" wx:for-index="listGoodsIndex">
+        <view class="list-item list-item-{{_data.layout}}">
+          <view class="list-img-box">
+            <image src="{{listGoods.goods_thumb}}" mode="aspectFit" class="list-img"></image>
+          </view>
+          <view class="list-msg-box">
+            <view class="list-msg-name">{{listGoods.name}}</view>
+            <view class="list-msg-sale-price char">{{listGoods.sale_price}}</view>
+            <view class="list-msg-market-price char">{{listGoods.market_price}}</view>
+          </view>
+        </view>
+      </block> 
+    </view> 
+  </block>
+</view>

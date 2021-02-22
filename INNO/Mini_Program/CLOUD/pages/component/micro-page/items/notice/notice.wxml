@@ -1,0 +1,27 @@
+<!--pages/component/micro-page/items/notice/notice.wxml-->
+<view class="main">
+  <view class="icon-box" wx:if="{{true||showIcon}}">
+    <image src="{{}}" mode="aspectFit" class="icon"></image>
+  </view>
+  <swiper
+  wx:if="{{_data.textList.length>0}}" 
+  class="swiper_box" 
+  current-item-id="{{index}}" 
+  circular="{{playMode.circular}}"
+  vertical="{{playMode.vertical}}" 
+  autoplay="{{playMode.autoplay}}" 
+  interval="{{playMode.interval}}" 
+  duration="{{playMode.duration}}"
+  easing-function="{{playMode.easing}}"
+  bindchange="toogle">
+  <block wx:for="{{_data.textList}}" wx:key="index">
+    <swiper-item catchtouchmove="_noFn" class="test2">
+      <!-- <image src="{{item.portraitPath}}" mode="widthFit" class="user_icon"
+        style="{{currentSwiper==index?opacity_show:opacity_hide}}"></image> -->
+      <view class="top_content" style="{{currentSwiper==index?playMode.opacity_show:playMode.opacity_hide}}">
+        <view class="text">{{item.text}}</view>
+      </view>
+    </swiper-item>
+  </block>
+</swiper>
+</view>

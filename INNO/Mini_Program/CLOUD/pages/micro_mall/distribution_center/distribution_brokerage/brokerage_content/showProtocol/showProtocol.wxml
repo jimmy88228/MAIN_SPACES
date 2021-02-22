@@ -1,0 +1,24 @@
+<!--pages/micro_mall/distribution_center/distribution_brokerage/brokerage_content/showProtocol/showProtocol.wxml-->
+<window class="window" ext-class="window-ext">
+	<view class="main" style="{{boxStyle}}"> 
+    <view class="content">
+      <view class="header _flex_c">
+        {{content.article_title}}        
+      </view>
+      <scroll-view class="scroll_box" scroll-y >
+        <view class="scroll_content">
+          <rich-text space="nbsp" nodes="{{content.article_content}}"></rich-text>
+        </view>
+      </scroll-view>
+      <view class="footer _flex_c" bindtap="confirm">
+        我已阅读并同意
+      </view>
+      <view class="close_box _flex_c" bindtap="close">
+        <view class="close">
+          <view class="row line"></view>
+          <view class="col line"></view>
+        </view>
+      </view>
+    </view>
+	</view>
+</window>

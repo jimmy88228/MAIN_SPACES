@@ -1,0 +1,9 @@
+{
+  "usingComponents": {
+    "rich":"/pages/micro_mall/questionnaire/rich/rich",
+    "survey":"/pages/micro_mall/questionnaire/survey/survey",
+    "upload":"/pages/micro_mall/questionnaire/upload/upload",
+    "vote":"/pages/micro_mall/questionnaire/vote/vote",
+    "btns": "/pages/component/buttons/btns"
+  }
+}

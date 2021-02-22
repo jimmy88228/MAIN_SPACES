@@ -1,0 +1,71 @@
+<!--pages/micro_mall/coupon/get_coupon.wxml-->
+<form bindsubmit="formAction" report-submit="true">
+  <view class="get_coupon_page">
+    <view class="give_user_info">
+      <view class="give_user_header">
+        <image src="{{shareUserInfo.portrait_path}}" mode="aspectFit" />
+      </view>
+      <view class="give_user_name">{{shareUserInfo.real_name}}</view>
+      <text class="give_tip">分享了一张优惠券给你</text>
+    </view>
+    <!-- <navigator class="brand_icon" hover-class='none'>
+      <image src="{{brand_info.icon_url}}micro_mall/brand_icon.jpg"  mode="widthFix"/>
+    </navigator> -->
+    <!-- <view class="send_tip">Hi!猜你用的上，把我的送给你啦！</view> -->
+    <view class="shareCoupon">
+      <view class="couponTxt" wx:if="{{page_info.bonus_info.is_hide_money_show == 0}}">
+        <block wx:if="{{page_info.bonus_info.bonus_type == 4}}">
+          <view class="couponValue">{{page_info.bonus_info.discountStr || page_info.bonus_info.discount}}</view>
+          <view class="valueUnit">折</view>
+        </block>
+        <block wx:else>
+          <view class="couponValue">{{page_info.bonus_info.type_money}}</view>
+          <view class="valueUnit">元</view>
+        </block>
+      </view>
+      <!--背景图 ↓-->
+      <view class="coupon_bg_area">
+        <block wx:if="{{page_info.bonus_info.image_main}}">
+          <image src="{{page_info.bonus_info.image_main}}" mode="aspectFill" class="couponImage" />
+        </block>
+        <block wx:else>
+          <image src="{{brand_info.icon_url}}micro_mall/coupon/storeBonus.jpg" wx:if="{{page_info.bonus_info.sendType == 4 || page_info.bonus_info.sendType == 5}}" class="couponImage" mode="aspectFill"/>
+          <image  src="{{brand_info.icon_url}}micro_mall/coupon/onlineBonus.jpg" wx:else class="couponImage" mode="aspectFill"/>
+        </block>
+      </view>
+    </view>
+    <block wx:if="{{!isReceive}}">
+      <view class="bonus_btn">
+
+        
+        <!-- <button wx:if="{{isLogin}}" hover-class='none' form-type="submit" class="get_bonus_btn font_26" catchtap="getReceiveBonus"  style="background:{{brand_info.style.bg_color}};">马上领券</button>
+        <button wx:else hover-class='none' form-type="submit" class="get_bonus_btn font_26" open-type='getUserInfo' bindgetuserinfo="getReceiveBonus"  style="background:{{brand_info.style.bg_color}};">马上领券</button> -->
+        <btns
+        class="bonus_btns"
+        isLogin="{{isLogin}}"
+        bindclickcallback="getReceiveBonus"
+        >
+          <view class="get_bonus_btn font_26" style="background:{{brand_info.style.bg_color}};">
+          马上领券
+          </view>
+        </btns>
+
+
+      </view>
+    </block>
+    <block wx:else>
+      <view class="bonus_btn">
+        <button hover-class='none' form-type="submit" class="get_bonus_btn bg_B2B2B2">{{isReceiveState}}</button>
+      </view>
+    </block>
+  </view>
+  <dialog id="pageDialog"></dialog>
+  <pageHome id="pageHome"></pageHome>
+</form>
+<!-- <view class="get_bonus_state" bindtap="closeState" wx:if="{{receiveState.s_switch}}">
+  <view class="get_state_cont">
+    <image class="state_img"  src="{{brand_info.icon_url}}micro_mall/coupon/get_failure_pic.jpg" mode="widthFix"/>
+    <view class="font_60 font_w">领取失败</view>
+    <view class="state_cont">{{receiveState.cont}}</view>
+  </view>
+</view> -->

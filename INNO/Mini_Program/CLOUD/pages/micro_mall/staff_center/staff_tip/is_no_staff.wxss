@@ -1,0 +1,28 @@
+page{
+  background:#fff;
+}
+.login_view{
+  position:relative;
+}
+.login_view_bg{
+  width:100%;
+  height:810rpx;
+  display:block;
+}
+.login_view_cont{
+  position:absolute;
+  top:217rpx;
+  left:50%;
+  transform: translateX(-50%);
+}
+.login_view_logo{
+  width:283rpx;
+  height:283rpx;
+  display:block;
+  margin:0 auto;
+}
+.operate_btn{
+  margin-top:30rpx;
+  font-size:28rpx;
+  font-weight:bold;
+}

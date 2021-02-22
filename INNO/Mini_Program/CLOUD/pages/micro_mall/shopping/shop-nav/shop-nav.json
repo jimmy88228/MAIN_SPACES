@@ -1,0 +1,6 @@
+{
+  "component": true,
+  "usingComponents": {
+    "page-nav":"/pages/component/page-nav/page-nav"
+  }
+}

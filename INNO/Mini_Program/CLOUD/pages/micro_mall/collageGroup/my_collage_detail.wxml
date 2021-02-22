@@ -1,0 +1,176 @@
+<!--pages/micro_mall/collageGroup/my_collage_detail.wxml-->
+<view class="my_collage_detail">
+
+    <!-- <view class="stay_line"></view> -->
+    <view class="detail_area bg_fff">
+        <view class="_area_title font_26 C_7f">商品详情</view>
+        <view class="table my_collage_info">
+            <view class="table_cell t_l activity_img">
+                <view class="activity_img_stay b_1 ">
+                    <view class="img oh">
+                        <image src="{{goods_info.goods_img}}" mode="widthFix" />
+                    </view>
+                </view>
+            </view>
+            <view class="table_cell t_l activity_info">
+                <view class="activity_name font_24 g_row">{{goods_info.goods_name}}</view>
+                <view class="font_24 C_7f">{{goods_info.goods_attr}}</view>
+                <!-- <view class="activity_name font_24 g_row">{{goods_info.share_title}}</view> -->
+                <view class="collage_price g_row" style='color:{{brand_info.style.font_color}};'>
+                    <text class="font_24 inline_b v_base" style='font-weight:300'>拼团价</text>
+                    <view class="inline_b v_base collage_price_num">
+                        <text class="font_28" style='margin-right:3rpx;margin-left:3rpx'>¥</text>
+                        <text class="font_28 bold collage_sale_price">{{goods_info.sale_price}}</text>
+                    </view>
+                    <view class="t_line_t lineStyle font_24 placeholder">
+                        <!-- <text class='font_22' style='display:inline-flex'>原价</text> -->
+                        <text style='display:inline-flex'>¥</text>{{goods_info.market_pirce}}</view> 
+                </view>
+            </view>
+        </view>
+    </view>
+    <view class="stay_line"></view>
+    <!--活动状态-->
+    <view class="detail_area t_c collage_state bg_fff">
+        <view class="t_r collage_rule">
+            <view class="inline_b">
+                <text class="warn_i_icon radius_00 b_c_B2B2B2 C_B2B2B2 C_7f b_1 inline_b v_m font_18 bold">i</text>
+                <navigator url="activity_rule?activity_id={{goods_info.activity_id}}" class="inline_b v_m s font_22 C_7f">活动规则</navigator>
+            </view>
+        </view>
+        <view style='color:{{brand_info.style.font_color}};'>
+            <view wx:if="{{goods_info.status == 1 && goods_info.diff_mans >0}}">
+                <view class="font_32 is_open_collage_txt bold">已开团，离成团还差
+                    <text class=" mr_5 ml_5">{{goods_info.diff_mans}}</text>人！</view>
+                <view class="font_24 collage_state_tip C_7f">快去邀请好友参团吧</view>
+                <view class="font_22 collage_status_time C_333 ">
+                    <text class="inline_b v_m">剩余</text>
+                    <view class="inline_b v_m bold font_30  mr_10 ml_10" style='white-space:pre-wrap;'>
+                        <text wx:if="{{count_down.day>0}}"> {{count_down.day}}天 : </text>
+                        <text> {{count_down.hour}} : </text>
+                        <text> {{count_down.min}} : </text>
+                        <text> {{count_down.sec}} </text>
+                    </view>
+                    <text class="inline_b v_m">结束</text>
+                </view>
+
+            </view>
+            <view wx:elif="{{goods_info.status == 2}}">
+                <block wx:if="{{goods_info.is_user_joined}}">
+                    <view class=" font_32 bold">拼团成功
+                    </view>
+                    <view class="font_20 C_7f collage_state_tip">正在等待商家发货</view>
+                </block>
+                <block wx:else>
+                    <view class=" font_32 bold">该团已满啦</view>
+                    <view class="font_20 C_7f collage_state_tip">赶紧开个新团，自己当团长</view>
+                </block>
+            </view>
+            <view wx:elif="{{goods_info.status == 3}}">
+                <view class=" font_32">该团已失效</view>
+                <view class="font_20 C_7f collage_state_tip">赶紧开个新团，自己当团长</view>
+            </view>
+            <view wx:elif="{{goods_info.status == 4}}">
+                <view class=" font_32">参团失败，被人抢先一步了！</view>
+                <view class="font_20 C_7f collage_state_tip">赶紧开个新团，自己当团长</view>
+            </view>
+        </view>
+    </view>
+    <view class="stay_line"></view>
+    <!--参团记录-->
+    <view class="detail_area user_join_area bg_fff">
+        <view class="_area_title b_b C_7f">参团记录</view>
+        <view class="user_join_list">
+            <view class="table b_b user_join_item" wx:for="{{user_join_list}}" wx:key="index">
+                <view class="table_cell user_portrait_area">
+                    <view class="user_portrait bg_EFEFEF oh">
+                        <image src="{{item.user_portrait}}" mode="widthFix" />
+                    </view>
+                </view>
+                <view class="table_cell">
+                    <view class="font_0">
+                        <text class="font_24 C_333 real_name inline_b v_m {{item.real_name?'right':''}}" >{{item.real_name}} </text>
+                        <text class="colonel_buttom font_18 inline_b v_m  C_fff" style='background-color:{{brand_info.style.bg_color}}' wx:if="{{item.is_captain >0}}">团长大人</text>
+                    </view>
+                    <text class="font_22 create_time C_7f">{{item.create_time}}</text>
+                </view>
+            </view>
+        </view>
+    </view>
+</view>
+<view class="collage_operate table font_0">
+    <view style='border-color:{{brand_info.style.bg_color}};' class='collage_operate_b'>
+        <view class="table_cell collage_operate_l " style='color:{{brand_info.style.font_color}};'>
+          <view class="operate_btn font_28">
+            <btns 
+            class="operate_btns"
+            isLogin="{{isLogin}}"
+            style='color:{{brand_info.style.font_color}};'
+            customData="{{customData.type1}}"
+            bindclickcallback="getUserInfo"
+            >
+            <view class="operate_txt">拼团订单</view>
+            </btns>
+          </view>
+            <!-- <button class="font_28 " hover-class="none" wx:if="{{isLogin}}" data-type="1" catchtap='loginCallback' style='color:{{brand_info.style.font_color}};'>拼团订单</button>
+            <button class="font_28 " wx:else data-type="1" open-type='getUserInfo' hover-class="none" bindgetuserinfo="getUserInfo" wx:else style='color:{{brand_info.style.font_color}};'>拼团订单</button> -->
+
+            <text class="g_v_line " style='background-color:{{brand_info.style.bg_color}}'></text>
+
+
+            <!-- <button class="font_28 " hover-class="none" wx:if="{{isLogin}}" data-type="2" catchtap='loginCallback' style='color:{{brand_info.style.font_color}};'>更多拼团</button>
+            <button class="font_28 " hover-class="none" wx:else data-type="2" open-type='getUserInfo' bindgetuserinfo="getUserInfo" wx:else style='color:{{brand_info.style.font_color}};'>更多拼团</button> -->
+            <view class="operate_btn font_28">
+              <btns 
+              class="operate_btns"
+              isLogin="{{isLogin}}"
+              style='color:{{brand_info.style.font_color}};'
+              customData="{{customData.type2}}"
+              bindclickcallback="getUserInfo"
+              >
+              <view class="operate_txt">更多拼团</view>
+              </btns>
+            </view>
+
+        </view>
+        <view class="table_cell collage_operate_r C_fff" style='background-color:{{brand_info.style.bg_color}}'>
+            <view wx:if="{{goods_info.status==1}}">
+                <button class="font_28 C_fff" hover-class="none" open-type="share" wx:if="{{goods_info.is_user_joined==1}}" catchtap='shareCollage'>邀请好友参团</button>
+
+
+                <!-- <button class="font_28 C_fff" hover-class="none" wx:elif='{{isLogin}}' data-type="3" catchtap='loginCallback'>立即参团</button>
+                <button class="font_28 C_fff" hover-class="none" data-type="3" open-type='getUserInfo' bindgetuserinfo="getUserInfo" wx:else>立即参团</button> -->
+                <btns 
+                wx:else
+                class="operate_btns"
+                isLogin="{{isLogin}}"
+                class="operate_btn font_28 C_fff"
+                style='color:{{brand_info.style.font_color}};'
+                customData="{{customData.type3}}"
+                bindclickcallback="getUserInfo"
+                >
+                <view class="operate_txt C_fff">立即参团</view>
+                </btns>
+
+            </view>
+            <view wx:else>
+
+
+                <!-- <button class="font_28 C_fff" hover-class="none" wx:if='{{isLogin}}' data-type="4" catchtap='loginCallback'>开新团</button>
+                <button class="font_28 C_fff" hover-class="none" data-type="4" open-type='getUserInfo' bindgetuserinfo="getUserInfo" wx:else>开新团</button> -->
+                <btns 
+                class="operate_btns"
+                class="operate_btn font_28 C_fff"
+                style='color:{{brand_info.style.font_color}};'
+                customData="{{customData.type4}}"
+                bindclickcallback="getUserInfo"
+                >
+                <view class="operate_txt C_fff">开新团</view>
+                </btns>
+
+            </view>
+        </view>
+    </view>
+</view>
+<!--授权弹框-->
+<!-- <modal id="custom_modal"></modal> -->

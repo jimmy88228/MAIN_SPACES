@@ -1,0 +1,11 @@
+{
+    "navigationBarTitleText": "活动详情",
+    "backgroundColor": "#F5F5F5",
+    "usingComponents": {
+        "btns":"/pages/component/buttons/btns",
+        "share": "/pages/micro_mall/goods/popup/share",
+        "shareImg": "/pages/micro_mall/goods/popup/shareImg",
+        "commission":"/pages/component/commission/commission",
+        "specPop":"/pages/component/pop/specPop"
+    }
+}

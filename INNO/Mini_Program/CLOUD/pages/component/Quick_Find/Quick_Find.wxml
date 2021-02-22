@@ -1,0 +1,28 @@
+<!--pages/component/Quick_Find/Quick_Find.wxml-->
+<view class="main">
+  <!-- 列表 -->
+  <scroll-view 
+        id="scroll" scroll-top="{{scrollTop}}" 
+        bindlistTap="listTap" class="scroll" 
+        bindscroll="{{showIndex?'':'scroll'}}" 
+        scroll-y="{{true}}" 
+        bindfirstNodeBack="firstNodeBack"
+        >
+        <slot name="list"></slot>
+  </scroll-view>
+
+  <!-- 右侧导航 -->
+  <view 
+        class="nav" 
+        catchtouchmove="touchMove"    
+        catchtouchstart="touchMove"
+        bindfirstNodeBack="firstNodeBack"
+        catchtouchend="touchEnd"
+        >
+        <slot name="quick"></slot> 
+  </view>
+  <!-- 右侧长按 -->
+  <view class="indexs {{showIndex?'showIndex':''}}">
+    <view class="key">{{cur_key}}</view>
+  </view>
+</view>

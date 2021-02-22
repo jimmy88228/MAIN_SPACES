@@ -1,0 +1,7 @@
+/* pages/micro_mall/sk/activity-sk/rule/rule.wxss */
+page{
+  background: #fff;
+}
+.rule_box{
+  padding: 20rpx;
+}

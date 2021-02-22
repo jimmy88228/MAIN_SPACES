@@ -1,0 +1,10 @@
+<!--pages/component/micro-page/items/text-header/text-header.wxml-->
+<view class="main text-align-{{_data.textAlign}} color-{{textColor}}">
+  <view class="box">
+    <view class="name font-size-{{_data.nameFontSize}}">{{_data.name}}</view>
+    <view class="more-text-box">
+      <view class="more-text" wx:if="{{_data.showMore}}">{{_data.showMoreText}}</view>
+    </view>
+  </view>
+  <view class="desc" wx:if="{{_data.desc}}">{{_data.desc}}标题头内容标题头内容标题头内容标题头内容</view>
+</view>

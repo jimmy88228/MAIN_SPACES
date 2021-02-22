@@ -1,0 +1,104 @@
+<!--pages/micro_mall/sk/orders-sk/order-confirm.wxml-->
+<form bindsubmit="formAction" report-submit="true">
+  <view class="main {{isIphoneX?'i_p_box':''}}" hidden="{{!showPage}}">
+    <view class="time_tip" wx:if="{{orderInfo.orderExpireSpanTrans>0}}">
+      请在{{orderInfo.orderExpireSpanTrans}}分钟内完成订单支付，逾时订单将失效
+    </view>
+    <view class="box p_b_n" wx:if="{{shippingType==2}}">
+      <view class="title">收货地址</view>
+      <view class="address" bindtap="jump" data-type="adr">
+        <image src="{{sk_address}}" mode="aspectFit" class="img_adress i_a_l"></image>
+        <image src="{{rightbutton}}" mode="aspectFit" class="img_adress i_a_r"></image>
+        <view class="a_msg">
+          <block wx:if="{{orderInfo.userAddress && orderInfo.userAddress.userAddressId}}">
+            <view class="a_n_p">
+              <text>{{orderInfo.userAddress.consignee}}</text>
+              <text>{{orderInfo.userAddress.mobile}}</text>
+            </view>
+            <view class="a_a_d">{{orderInfo.userAddress.address}}</view>
+          </block>
+          <block wx:else>
+            <view class="_C_7f noneAdr">请选择地址</view>
+          </block>
+        </view>
+      </view>
+    </view>
+    <block wx:if="{{shippingType==1 && storeId}}">
+      <view class="box">
+        <view class="self_get_title title">自提店铺</view>
+        <view class="self_get_adr">{{orderInfo.storeInfo.storeName}}</view>
+      </view>
+      <view class="box" catchtap="jump" data-type="selfGet">
+      <!-- <view class="box" style="padding-top:20rpx;"> -->
+        <view class="title s_g_msg_title" style="{{!store_data.contact && !store_data.mob_phone?'padding-bottom:0;border:none;':''}}"><text wx:if="{{!store_data.contact && !store_data.mob_phone}}">请填写</text><text>收货人信息</text><image src="{{rightbutton}}" mode="aspectFit" class="img_adress i_a_r"></image></view>
+        <view class="s_g_msg" wx:if="{{store_data.contact || store_data.mob_phone}}"><text style="padding-right:20rpx;">{{store_data.contact}}</text><text class="mob_phone">{{store_data.mob_phone}}</text></view>
+      </view>
+    </block>
+     
+    <view class="box">
+      <view class="title">商品详情</view>
+      <view class="goods" wx:for="{{orderInfo.goods}}" wx:key="index">
+        <view class="img_goods_box">
+          <image src="{{item.picture}}" mode="aspectFit" class="img_goods"></image>
+        </view>
+        <view class="msg">
+          <view class="m_title">{{item.goodsName}}</view>
+          <view class="sku">{{item.goodsAttr}}</view>
+          <view class="price_box">
+            <view class="price">
+              <text class="unit">{{item.price}}</text>
+              <text class="p_sm unit_sm _C_7f">{{item.marketPrice}}</text>
+            </view>
+            <view class="count">x{{item.goodsNumber}}</view>
+          </view>
+        </view>
+      </view>
+    </view>
+
+    <view class="box coupon_box" wx:if="{{orderInfo.bonusInfo.canUseBonus == 1}}" catchtap="{{orderInfo.bonusInfo.usableCount > 0?'onTap':''}}" data-type="couponClick">
+      <view class="cp_title">优惠券</view>
+      <view class="cp_box_right {{orderInfo.bonusInfo.usableCount > 0? 'cp_right':''}}">
+        <block wx:if="{{orderInfo.bonusInfo.usableCount > 0}}">
+            <block wx:if="{{couponList.length > 0}}">
+              <view wx:for="{{couponList}}" wx:key="index" class="cp_tip" style="background:{{ac_conf.theme_color}};">
+                  使用{{item.bonus_type == "4" ? item.discountStr + "折" : (item.type_money || item.typeMoney) + "元"}}{{item.type_name || item.typeName}}
+              </view>
+            </block>
+            <block wx:else>
+                <view class="cp_tip" style="background:{{ac_conf.theme_color}};">
+                  {{orderInfo.bonusInfo.usableCount}}张可用
+                </view>
+            </block>
+          <image src="{{rightbutton}}" mode="aspectFit" class="cp_right_icon"></image>
+        </block>
+        <block wx:else>
+          <view class="cp_tip_none">没有可用优惠券</view>
+        </block>
+      </view>
+    </view>
+    <view class="box p_t_n p_b_n">
+      <view class="pay_msg">
+        <view>商品总计</view>
+        <view>共{{orderInfo.goodsNumber}}件 ￥{{orderInfo.price}}</view>
+      </view>
+      <view class="pay_msg">
+        <view class="_C_7f">优惠券抵扣</view>
+        <view>{{orderInfo.discountPrice>0?'-':''}}￥{{orderInfo.discountPrice||0}}</view>
+      </view>
+      <view class="pay_msg">
+        <view class="_C_7f">订单运费</view>
+        <view>￥{{orderInfo.factFreight}}</view>
+      </view>
+      <view class="pay_msg _bold">
+        <view>实际支付</view>
+        <view style="color:{{ac_conf.theme_color}}">￥{{orderInfo.orderFactPrice}}</view>
+      </view>
+    </view>
+    <view class="btn_buy_box {{isIphoneX?'ipx_b':''}}">
+      <button hover-class="none" form-type="submit" class="btn_buy" style="background:{{ac_conf.theme_color}}" isLogin="{{isLogin}}" bindtap="buy">
+        <view>使用微信支付{{orderInfo.orderFactPrice}}元</view>
+      </button>
+    </view>
+ 
+  </view>
+</form>

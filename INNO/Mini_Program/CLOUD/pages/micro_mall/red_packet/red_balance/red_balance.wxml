@@ -1,0 +1,18 @@
+<nav_bar title="" page-type="normal" id="nav_bar" bindinit="nav_init" diyStyle="{{diyStyle}}"></nav_bar>
+<view class="packet_cover">
+    <view class="p_cover"></view>
+</view>
+<view class="packet_coin_area">
+    <view class="packet_coin flex_global flex_c flex_al_c">
+        <image class="packet_logo" src="{{redpack_logo}}" mode="aspectFit"/>
+    </view>
+</view>
+<view class="packet_cont">
+    <view class="total_txt">红包总额</view>
+    <view class="total_val"><text class="val_m">¥</text><text class="val_v">{{balance_info.sum}}</text></view>
+    <view class="total_tip" wx:if="{{balance_info.un_amount>0}}">红包总额中¥{{balance_info.un_amount}}待生效</view>
+</view>
+<view class="user_operate">
+    <navigator hover-class="none" url="/pages/micro_mall/red_packet/red_details/red_details" class="check_details">查看红包明细</navigator>
+    <navigator hover-class="none" class="check_rule" url="/pages/micro_mall/agreet_page/agreet?type=REDPACK">无门槛·可叠加 红包规则</navigator>
+</view>  

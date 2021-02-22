@@ -1,0 +1,15 @@
+{
+  "navigationStyle":"custom",
+	"usingComponents": {
+    "indexHeader":"/pages/component/indexHead/indexHeader",
+    "pageTab": "/pages/component/custom/pageTab/pageTab",
+    "micro-page": "/pages/component/micro-page/micro-mix/box/box",
+    "pagePop":"/pages/component/pop/pagePop",
+     "storesForA":"/pages/component/indexHead/storesForA",
+     "btnFollow":"/pages/component/btnFollow/btnFollow",
+     "page-nav": "/pages/component/page-nav/page-nav",
+     "snow":"/pages/component/css3/snow/snow",
+     "welcome":"/pages/component/pop/welcome/welcome"
+	},
+  "backgroundColor": "#ffffff"
+}

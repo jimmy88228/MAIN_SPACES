@@ -1,0 +1,6 @@
+{
+  "component": true,
+  "usingComponents": {
+    "fill":"/pages/component/input-fill/fill/fill"
+  }
+}

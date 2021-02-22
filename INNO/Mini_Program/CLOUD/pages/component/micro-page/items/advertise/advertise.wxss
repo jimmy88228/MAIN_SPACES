@@ -1,0 +1,23 @@
+/* pages/component/micro-page/items/advertise/advertise.wxss */
+.list {
+  display: flex;
+  width: 100%;
+  align-items: center;
+}
+.list.scroll{
+  height: 500rpx;
+}
+.list.warp{
+  flex-wrap: wrap;
+}
+.list-item {
+  /* flex: 1; */
+  flex-shrink: 0;
+}
+.list-img{
+  width: 100%;
+  position: relative;
+}
+.map_area{
+  position: absolute;
+}

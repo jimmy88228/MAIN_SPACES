@@ -1,0 +1,92 @@
+<!--pages/component/custom/pageTab/pageTab.wxml-->
+<view class="page_component" hidden="{{!isTabPage||hidePage}}">
+  <view class="ads_box {{hasAdsData?'':'hide_module'}}">
+    <embed_custom_module type="navAds" class="ads" id="adsId"></embed_custom_module>
+  </view>
+  <view class="stickyBox {{type=='inline'?'noSticky':''}}" style="{{stickyTop ? 'top:' + stickyTop + 'rpx' : ''}}" id="stickyBox">
+    <scroll-view scroll-x class="scroll {{type=='inline'?'inline':''}}" scroll-with-animation="{{true}}" scroll-into-view="{{cur_view}}">
+      <view class="page_tab d_flex">
+        <view 
+        class="p_tab_item flex1 {{tabCurr == index ? 'current' : ''}}" 
+        catchtap="changeSwiper" 
+        data-index="{{index}}"  
+        wx:for="{{navList}}" 
+        wx:key="index"
+        data-page-id="{{item.pageId}}"
+        id="tab{{index}}"
+        >
+        <view class="p_tab_txt">{{item.navName}}</view>
+        <view class="tab_line"></view>
+        </view>
+      </view>
+    </scroll-view>
+  </view>
+   
+  <view style="min-height:{{minH}}px">
+    <view data-page-id="{{item.pageId}}" wx:for="{{navList}}" wx:key="index" wx:for-index="index_num" hidden="{{tabCurr!=index_num}}" class="page_swiper {{noScroll?'noScroll':''}}">
+        <view data-type="tabs" class="page_scroll {{isIphoneX ? 'ipx_p_b' : ''}}">
+          <view style="{{assistHoldStyle}}">
+            <custom_module 
+            bindshareSaving="shareSaving" 
+            id="custom{{item.pageId}}" 
+            isLogin="{{isLogin}}"
+            bindvideoPlay="videoPlay"  
+            bindhandle_loaded="handle_loaded"  
+            actData="{{actData}}"
+            showSalesVolume="{{showSalesVolume}}"
+            sysConf="{{sysConf}}" 
+            bindreflashId="handleReflash"
+            autoShow="{{autoShow}}"
+            ></custom_module>
+          </view>
+        </view>
+    </view>
+  </view> 
+</view>
+
+
+<view class="page_component no_tab_page {{noScroll?'noScroll':''}}" hidden="{{isTabPage||hidePage}}">
+  <!-- 节点跳转 -->
+  <!-- <scroll-view wx:if="{{nodeShow}}" class="node_scroll" scroll-with-animation="{{true}}" scroll-into-view="{{toView}}" scroll-x="{{true}}"	> 
+   <view class="node_box">
+     <view 
+      class="node_p_tab_item flex1 {{currentNode == item.moduleId ? 'current' : ''}}" 
+      catchtap="changeNode" 
+      id="node_{{item.moduleId}}"
+      data-index="{{index}}"  
+      wx:for="{{navList_node}}" 
+      wx:key="index"
+      data-page-id="{{item.pageId}}"
+      data-module-id="{{item.moduleId}}"
+      >
+      <view class="node_p_tab_txt">{{item.moduleId}}</view>
+      </view>
+   </view> 
+  </scroll-view>  -->
+  
+  <view class="page_scroll {{nodeShow?'nodeShow':''}} {{isIphoneX ? 'ipx_p_b' : ''}}">
+    <view style="{{assistHoldStyle}}">
+      <custom_module 
+      id="custom" 
+      bindshareSaving="shareSaving" 
+      bindvideoPlay="videoPlay" 
+      isLogin="{{isLogin}}"
+      actData="{{actData}}"
+      showSalesVolume="{{showSalesVolume}}"
+      sysConf="{{sysConf}}"
+      bindnodeInfo="nodeInfo"
+      autoShow="{{autoShow}}"
+      ></custom_module>
+    </view>
+  </view>
+</view>  
+
+<button_share wx:if="{{!isHideShare}}" id="button_share" isLogin="{{isLogin}}" is_home_page="{{isHomePage}}" url_value="{{url_value}}" page_id_value="{{page_id_value}}" custom-tab="{{customTab}}" set-share="{{setShare}}"></button_share>
+<!--客服-->
+<block wx:if="{{!hideContact}}">
+  <cs sysConf="{{sysConf}}" cardInfo="{{cardInfo}}"></cs>
+</block>
+<!--助力-->
+<couponAssist id="couponAssist" isLogin="{{isLogin}}" is_home_page="{{isHomePage}}" bindsetTabStyle="setTabStyle" page-id="{{page_id_value}}" share_bg="{{url_value}}"></couponAssist>
+<btnBackTop id="btnBackTop" bindbackTopTap="backTopTap"></btnBackTop>
+<adsPop class="adsPop" pop-data="{{adsPop}}"></adsPop>

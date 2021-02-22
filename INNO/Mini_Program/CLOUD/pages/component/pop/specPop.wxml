@@ -1,0 +1,8 @@
+<!--pages/component/pop/specPop.wxml-->
+<window class="window" ext-class="window-ext">
+	<view class="main" style="{{boxStyle}}">
+    <slot name="head"></slot>
+    <slot></slot>
+    <slot name="footer"></slot>
+  </view>
+</window>

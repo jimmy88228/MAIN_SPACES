@@ -1,0 +1,4 @@
+<!--pages/component/micro-page/items/rich-text/rich-text.wxml-->
+<view class="main">
+  <rich-text space="ensp" nodes="{{htmlNodes}}"></rich-text>
+</view>

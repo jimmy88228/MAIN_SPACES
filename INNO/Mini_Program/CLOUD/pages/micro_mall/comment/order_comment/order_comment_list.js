@@ -1,0 +1,91 @@
+// pages/micro_mall/comment/order_comment/order_comment_list.js
+let app = getApp();
+Page(app.BP({
+
+  /**
+   * 页面的初始数据
+   */
+  data: {
+    myCommentList:[],
+  },
+  page:0,
+  hasMore:true,
+  /**
+   * 生命周期函数--监听页面加载
+   */
+  onLoad: function (options) {
+
+  },
+
+  /**
+   * 生命周期函数--监听页面显示
+   */
+  onShow: function () {
+    getMyCommentList.call(this);
+  },
+
+  /**
+   * 生命周期函数--监听页面隐藏
+   */
+  onHide: function () {
+
+  },
+
+  /**
+   * 生命周期函数--监听页面卸载
+   */
+  onUnload: function () {
+
+  },
+
+  /**
+   * 页面相关事件处理函数--监听用户下拉动作
+   */
+  onPullDownRefresh: function () {
+
+  },
+
+  /**
+   * 页面上拉触底事件的处理函数
+   */
+  onReachBottom: function () {
+    if(this.hasMore){
+      getMyCommentList.call(this);
+    }else{
+      app.SMH.showToast({
+        "title":"已经到底啦！"
+      })
+    }
+  },
+
+  /**
+   * 用户点击右上角分享
+   */
+  onShareAppMessage: function () {
+
+  }
+}))
+function getMyCommentList(){
+  this.page = this.page + 1;
+  return app.GoodsApi.getMyCommentList({
+    params:{
+      pageIndex: this.page,
+      pageSize: app.Conf.PAGE_SIZE,
+    },
+    other:{isShowLoad:true}
+  }).then( e=>{
+    if(e.code == "1"){
+      let data = e.data;
+      let myCommentList = this.data.myCommentList; 
+      if(data.length == 0){
+        this.hasMore = false;
+      }
+      myCommentList = myCommentList.concat(data);
+      this.setData({
+        myCommentList: myCommentList
+      })
+      return Promise.resolve(e);
+    }
+    return Promise.reject();
+  })
+}
