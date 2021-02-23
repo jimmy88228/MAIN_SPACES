@@ -114,7 +114,8 @@ function transformData(list) {
             statusName: statusNames[item.status],
             code: item.code,
             createTime: MyDate.formatStr(item.createTime, "yyyy.MM.dd"),
-            userRewardId: item.userRewardId
+            userRewardId: item.userRewardId,
+            lotteryRecordId: item.lotteryRecordId
         };
     });
 }

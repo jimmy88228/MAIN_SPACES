@@ -92,13 +92,13 @@ export const SubApis = {
 //网页伪静态资源
 export const WebApis = {
     //文章页
-    redirectArt: "/Redirect/GetArtByIdOrName",
+    redirectArt: "/Api/Redirect/Art",
     //活动详情信息
-    getActDetails: "/Redirect/ActDetails?activityId={activityId}",
+    getActDetails: "/Api/Redirect/DrawActDetails?activityId={activityId}",
     //奖品使用详情信息
-    getLotteryUsegeDetails: "/Redirect/LotteryUsegeDetails?ruleId={ruleId}",
+    getLotteryUsegeDetails: "/Api/Redirect/LotteryDetails?ruleId={ruleId}",
     //专场活动详情信息
-    getSpecialActivityDetails: "/Redirect/SpecialActivityDetails?activityId={activityId}"
+    getSpecialActivityDetails: "/Api/Redirect/SpecialActDetails?activityId={activityId}"
 };
 
 //日志收集

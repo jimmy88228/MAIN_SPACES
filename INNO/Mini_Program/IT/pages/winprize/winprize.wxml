@@ -62,11 +62,7 @@
             </view>
             <view class="cp-body anim-slide-in-up">
                 <view class="cp-row">
-                    <view class="cp-title">ESHOP商城优惠券</view>
-                    <view class="cp-cont">{{info.code}}</view>
-                </view>
-                <view class="cp-row">
-                    <view class="cp-title">优惠券码</view>
+                    <view class="cp-title">ESHOP商城优惠券码</view>
                     <view class="cp-cont">{{info.expand.couponCode||""}}</view>
                 </view>
                 <view class="cp-row" style="border:0 none;">

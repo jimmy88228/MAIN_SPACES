@@ -157,7 +157,7 @@ Page.BasePage({
                         if (!isBindPhone || (followType > 0 && !isFollow)) {
                             this.showAuthPupop({
                                 activityId, isLogin: true, isBindPhone, followType, followUrl, isFollow,
-                                callBack: () => {wx.setStorage({ key, data: 1 }); return this.toEnrollCheckAuth();}
+                                callBack: () => {wx.setStorageSync(key,1); return this.toEnrollCheckAuth();}
                             });
                         } else {
                             wx.setStorage({ key, data: 1 });
@@ -168,7 +168,7 @@ Page.BasePage({
             } else {
                 this.showAuthPupop({
                     activityId, followType, followUrl,
-                    callBack: () => {wx.setStorage({ key, data: 1 }); return this.toEnrollCheckAuth();}
+                    callBack: () => {wx.setStorageSync(key,1); return this.toEnrollCheckAuth();}
                 });
             }
         }).showError();

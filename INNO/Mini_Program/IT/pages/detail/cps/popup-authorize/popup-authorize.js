@@ -54,7 +54,6 @@ Component({
         },
         toFollow() {
             this.tryFollowed = true;
-            //this.followUrl = "https://mp.weixin.qq.com/s?__biz=MzIwNzYzMDY2OA==&mid=2247483658&idx=1&sn=3e180a5a61602c79807604d326434800&chksm=970e3929a079b03fc6d8d983207e4340745800dc4e468283e9de74fa3e98298d452d648fbb09&token=1932226663&lang=zh_CN#rd"
             wx.navigateTo({
                 url: `/pages/web/web?url=${encodeURIComponent(this.followUrl)}`
             });
@@ -65,6 +64,7 @@ Component({
                     getConditionStatus(LM.token, this.activityId).then(data => {
                         if (data.isFollow) {
                             this.isFollow = true;
+                            this.forceFollowedTap = true;
                             this.changeStep();
                         } else {
                             Smm.showToast({ title: "请先关注公众号" });
@@ -83,7 +83,7 @@ Component({
             let step = 0;
             if (!this.isLogin) step = 1;
             else if (!this.isBindPhone) step = 2;
-            else if (this.followType > 0 && !this.isFollow) step = 3;
+            else if ((this.followType > 0 && !this.isFollow) || (this.followType == 2 && !this.forceFollowedTap)) step = 3;
             else step = 10;
             this.setData({
                 step: step,

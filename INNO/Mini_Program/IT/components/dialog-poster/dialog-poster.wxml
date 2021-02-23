@@ -1,26 +1,28 @@
 <window class="window">
     <view class="dl-dialog {{info.status?'dl-dialog-long':''}}" style="{{mainStyle}}" catchtouchmove="noAction">
         <image class="dl-goods-img" src="{{info.picture}}" mode="aspectFit"></image>
-        <view class="dl-box">
-            <image class="dl-l dl-promini-logo" src="{{qrCode}}" mode="aspectFit"></image>
-            <view class="dl-r">
-                <view class="dl-title rich-name">
-                    <view>{{info.title}}</view>
+        <view style="background:#fff;">
+            <view class="dl-box">
+                <image class="dl-l dl-promini-logo" src="{{qrCode}}" mode="aspectFit"></image>
+                <view class="dl-r">
+                    <view class="dl-title rich-name">
+                        <view>{{info.title}}</view>
+                    </view>
+                    <text class="dl-code">抽签码 {{info.code}}</text>
+                    <block wx:if="{{mode=='list'&&info.status}}">
+                        <view class="dl-line"></view>
+                        <text class="dl-status">{{info.status==1?'恭喜活动购买资格':(info.status==2?'未获得购买资格':'')}}</text>
+                    </block>
                 </view>
-                <text class="dl-code">抽签码 {{info.code}}</text>
-                <block wx:if="{{mode=='list'&&info.status}}">
-                    <view class="dl-line"></view>
-                    <text class="dl-status">{{info.status==1?'未获得购买资格':(info.status==2?'恭喜活动购买资格':'')}}</text>
-                </block>
             </view>
-        </view>
-        <view class="dl-btn-group {{(mode=='list'&&info.status==2&&info.lotteryRecordId>0)?'two-btn':''}}">
-            <view class="dl-btn btn" data-type="confirm" bindtap="onSavePosterTap">
-                保存到手机
-            </view>
-            <view class="dl-btn btn btn-detail" bindtap="jumpAction"
-                data-url="/pages/winprize/winprize?lotteryRecordId={{info.lotteryRecordId}}">
-                查看详情
+            <view class="dl-btn-group {{(mode=='list'&&info.status==1&&info.lotteryRecordId>0)?'two-btn':''}}">
+                <view class="dl-btn btn" data-type="confirm" bindtap="onSavePosterTap">
+                    保存到手机
+                </view>
+                <view class="dl-btn btn btn-detail" bindtap="jumpAction"
+                    data-url="/pages/winprize/winprize?lotteryRecordId={{info.lotteryRecordId}}">
+                    查看详情
+                </view>
             </view>
         </view>
     </view>

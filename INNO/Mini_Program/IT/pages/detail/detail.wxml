@@ -30,20 +30,22 @@
         <view class="detail-box anim-slide-in-up">
             <view class="detail-box-stay" style="opacity:{{progress > 1 ? detailOpacity : 1}};">
                 <view class="detail-body">
-                    <text class="goods-name newline">{{act.name}}</text>
-                    <view class="goods-price">{{act.unit||''}} {{act.priceRange}}</view>
-                    <view class="menu-bar">
-                        <button class="menu btn-plain" hover-class="btn-hover" bindtap="jumpAction"
-                            data-url="/pages/record/record">
-                            查看战绩
-                        </button>
-                        <block wx:if="{{act.ruleArtId>0}}">
-                            <view class="sp"></view>
+                    <view class="p_r_10">
+                        <text class="goods-name newline">{{act.name}}</text>
+                        <view class="goods-price">{{act.unit||''}} {{act.priceRange}}</view>
+                        <view class="menu-bar">
                             <button class="menu btn-plain" hover-class="btn-hover" bindtap="jumpAction"
-                                data-url="/pages/web/web?id={{act.ruleArtId}}">
-                                活动规则
+                                data-url="/pages/record/record">
+                                查看战绩
                             </button>
-                        </block>
+                            <block wx:if="{{act.ruleArtId>0}}">
+                                <view class="sp"></view>
+                                <button class="menu btn-plain" hover-class="btn-hover" bindtap="jumpAction"
+                                    data-url="/pages/web/web?id={{act.ruleArtId}}">
+                                    活动规则
+                                </button>
+                            </block>
+                        </view>
                     </view>
                     <view wx:if="{{act.status < 3}}" class="progress {{act.hasExtraCode>0?'':'noshare'}}">
                         <view class="item {{progress>1?'enable':''}}">
@@ -79,7 +81,7 @@
                             </view>
                         </view>
                     </view>
-                    <view class="detail-info">
+                    <view class="detail-info p_r_10" wx:if="{{actHtmlDetails}}">
                         <view class="title">详细信息</view>
                         <parser-view class="content" html="{{actHtmlDetails}}" gesture-zoom lazy-load selectable
                             show-with-animation use-anchor use-cache>
@@ -88,7 +90,7 @@
                     </view>
                 </view>
             </view>
-            <view class="layout-box" wx:if="{{layoutData.length>0}}">
+            <view class="layout-box p_r_10" wx:if="{{layoutData.length>0}}">
                 <view class="layout-title flex-b-w">
                     <view class="layout-left">RECOMMEND</view>
                     <view class="layout-right">相关推荐</view>

@@ -23,7 +23,7 @@
     /* margin-left: 25rpx; */
     height: 88rpx;
     flex: 1;
-    border: 1rpx solid #eee;
+    border: 1rpx solid #b2b2b2;
     padding: 0 15rpx;
     font-size: 24rpx;
     color: var(--text-main-color);

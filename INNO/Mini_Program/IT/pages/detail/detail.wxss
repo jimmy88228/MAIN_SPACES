@@ -4,7 +4,7 @@
 }
 
 .detail-main.after {
-    padding-bottom: 130rpx;
+    /* padding-bottom: 130rpx; */
 }
 
 .filter-view {
@@ -65,7 +65,7 @@
 .detail-box {
     width: 100%;
     box-sizing: border-box;
-    padding: 20rpx;
+    padding: 20rpx 20rpx 20rpx 30rpx;
     position: relative;
     z-index: 4;
     overflow-x: hidden;
@@ -110,7 +110,6 @@
 .detail-info {
     display: block;
     margin-top: 30rpx;
-    padding: 0 20rpx;
     box-sizing: border-box;
 }
 
@@ -123,8 +122,10 @@
     display: block;
     margin-top: 15rpx;
     font-family: none;
+    text-align: left;
 }
-
+.layout-box{
+}
 .bottom-bar {
     background-color: white;
     position: sticky;
@@ -298,16 +299,18 @@
 }
 
 .layout-title {
-    padding: 20rpx 0;
+    padding: 40rpx 0 20rpx 0;
     font-weight: bold;
 }
 
 .layout-left {
     font-size: 48rpx;
+    line-height: 48rpx;
 }
 
 .layout-right {
     font-size: 32rpx;
+    line-height: 32rpx;
 }
 
 .hideBox{
@@ -318,5 +321,9 @@
     left: 0;
     bottom: 0; 
     padding: 20rpx 40rpx;
+    box-sizing: border-box;
+}
+.p_r_10{
+    padding-right: 10rpx;
     box-sizing: border-box;
 }

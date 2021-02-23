@@ -24,7 +24,12 @@ export default Behavior({
                         path += "/" + path;
                     }
                     wx.navigateTo({
-                        url: path
+                        url: path,
+                        fail:()=>{
+                            wx.switchTab({
+                              url: path,
+                            })
+                        }
                     });
                     break;
                 case "Outer":

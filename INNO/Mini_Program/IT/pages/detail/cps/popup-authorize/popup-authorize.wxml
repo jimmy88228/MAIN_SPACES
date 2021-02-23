@@ -16,7 +16,7 @@
                 <image wx:if="{{step>1}}" src="/static/images/common/tick-ok.png" mode="aspectFit" class="img-ok">
                 </image>
                 <view class="-step">STEP1</view>
-                <view class="-tip" id="jimmy" bindtap="jimmy">授权个人信息</view>
+                <view class="-tip">授权个人信息</view>
                 <auth-button class="btn-black auth-btn" hover-class="btn-hover" wx:if="{{step==1}}"
                     openType="getUserInfo" auth bindauthed="onAuthed">
                     点击授权</auth-button>

@@ -28,7 +28,7 @@ Page.BasePage({
         this.isInited = true;
     },
     onShow() {
-        if (this.isInited && this.checkLoginChange()) {//登录状态改变时刷新
+        if (this.isInited && (this.checkLoginChange() || this.canShow)) {//登录状态改变时刷新
             this.loadData();
         }
     },

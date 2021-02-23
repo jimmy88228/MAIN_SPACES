@@ -1,4 +1,5 @@
 import { createBehavior } from "../../../../components/window/anim-helper";
+const app = getApp();
 Component({
     options: {
         styleIsolation: "apply-shared"

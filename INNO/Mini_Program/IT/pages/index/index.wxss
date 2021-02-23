@@ -1,6 +1,10 @@
 page {
     background-color: var(--bg-color);
 }
+.main{
+    position: relative;
+    z-index: 1;
+}
 
 .ad-layout {
     width: 100%;
@@ -47,16 +51,13 @@ page {
 .openning-box {
     display: block;
     padding: 20rpx;
-    padding-bottom: 50rpx;
+    margin-bottom: 40rpx;
     background: #FFFFFF;
     box-shadow: 0 2rpx 10rpx 3rpx rgba(0, 0, 0, 0.05);
     border-radius: 10rpx;
     box-sizing: border-box;
     overflow: hidden;
-}
-.openning-box:last-child{
-    padding-bottom: 20rpx;
-}
+} 
 
 .openning-img-box {
     position: relative;
@@ -138,6 +139,7 @@ page {
 .sale-img {
     width: 100%;
     height: 100%;
+    border-radius: 10rpx;
 }
 
 .sale-txt-box {

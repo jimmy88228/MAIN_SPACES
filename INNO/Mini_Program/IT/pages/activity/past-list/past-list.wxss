@@ -56,7 +56,9 @@ page {
 .act-list {
 	display: flex;
 	flex-wrap: wrap;
-	padding: 0px 8rpx;
+	box-sizing: border-box;
+	justify-content: space-between;
+	padding: 0 16rpx;
 }
 .activity-list-cell:last-child .act-list{
 	padding-bottom: 74rpx;
@@ -68,10 +70,11 @@ page {
 .act-item {
 	width: 350rpx;
 	height: 350rpx;
-	margin: 8rpx;
+	margin: 8rpx 0;
 	position: relative;
 	border-radius: 6rpx;
 	overflow: hidden;
+	/* box-shadow: 0 0 15rpx 0px rgba(127,127,127,0.2); */
 }
 
 .item-img {

@@ -87,7 +87,11 @@ function transformPreSaleActs(data) {
 
 function transformActs(data) {
     data && data.forEach(item => {
-        item.date = `${MyDate.formatStr(item.startTime, "yyyy.MM.dd")}-${MyDate.formatStr(item.endTime, "MM.dd")}`;
+        if(MyDate.formatStr(item.startTime, "yyyy.MM.dd") != MyDate.formatStr(item.endTime, "yyyy.MM.dd")){
+            item.date = `${MyDate.formatStr(item.startTime, "yyyy.MM.dd")}-${MyDate.formatStr(item.endTime, "MM.dd")}`;
+        }else{
+            item.date = MyDate.formatStr(item.startTime, "yyyy.MM.dd");
+        }
     });
     return data;
 }

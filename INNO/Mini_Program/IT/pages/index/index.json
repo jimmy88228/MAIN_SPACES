@@ -1,7 +1,5 @@
 {
     "enablePullDownRefresh": true,
-    "navigationStyle": "custom",
     "usingComponents": {
-        "nav-view": "./cps/nav-view/nav-view"
     }
 }

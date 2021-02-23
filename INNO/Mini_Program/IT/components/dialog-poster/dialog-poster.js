@@ -102,7 +102,9 @@ Component({
             });
         },
         save(canvas) {
-            return PosterUtil.canvasToAlbum({ canvas: canvas, fileType: "jpg" }).catch(() => {
+            return PosterUtil.canvasToAlbum({ canvas: canvas, fileType: "jpg" }).then(res=>{
+                Smm.showToast({ title: "保存成功" });
+            }).catch(() => {
                 Smm.showToast({ title: "保存到相册失败" });
                 return Promise.reject();
             });
@@ -144,7 +146,7 @@ function createAnim(animParam) {
 function createPosterData(obj) {
     let title = obj.title;
     title && (title = title.replace(/<[^>]+>/g, ""));
-    return [{
+    let arr = [{
         type: "image",
         src: obj.picture,
         mode: "aspectFit",
@@ -170,7 +172,7 @@ function createPosterData(obj) {
         width: 330,
         lineHeight: 35,
         letterSpacing: 1,
-        lineClamp: 3,
+        lineClamp: obj.status == 1 ? 2 : 3,
         textOverflow: "ellipsis",
         fontWeight: "bold",
         fontFamily: "'HelveticaNeueLT Std Blk Cn'"
@@ -180,11 +182,36 @@ function createPosterData(obj) {
         color: '#000',
         fontSize: 24,
         x: 170,
-        y: 715,
+        y: obj.status == 1 ? 655 : 715,
         width: 330,
         letterSpacing: 1,
         lineClamp: 1,
         fontWeight: "bold",
         fontFamily: "'HelveticaNeueLT Std Blk Cn'"
     }];
+    if(obj.status == 1){
+        arr.push({
+            type: "image",
+            src: "",
+            mode: "aspectFit",
+            x: 170,
+            y: 705,
+            width: 35,
+            height: 2,
+            backgroundColor: "#000"
+        },{
+            type: "text",
+            text: `恭喜活动购买资格`,
+            color: '#000',
+            fontSize: 24,
+            x: 170,
+            y: 725,
+            width: 330,
+            letterSpacing: 1,
+            lineClamp: 1,
+            fontWeight: "normal",
+            fontFamily: "'HelveticaNeueLT Std Blk Cn'"
+        })
+    }
+    return arr;
 }
