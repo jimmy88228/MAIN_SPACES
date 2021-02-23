@@ -1,0 +1,7 @@
+<!--pages/component/custom/qy_bar_code/qy_code.wxml-->
+<view class="code_img">
+  <view class="pay_code_view">
+    <canvas class="pay_code" canvas-id='payCode'></canvas>
+  </view>
+</view>
+<slot name="extra"></slot>

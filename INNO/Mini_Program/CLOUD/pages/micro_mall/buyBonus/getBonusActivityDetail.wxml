@@ -1,0 +1,101 @@
+<!--pages/micro_mall/buyBonus/getBonusActivitDetail.wxml-->
+<import src="/wxParse/wxParse.wxml" />
+<view hidden="{{!showData}}" class="bg_fff bonus_activity_details">
+  <view class="activity_img_area">
+    <!-- <view class="activity_img_stay ">
+      <image src="{{activity_info.imgUrl}}" class="activity_img" mode="aspectFit"/>
+    </view> -->
+    <image src="{{activity_info.imgUrl}}" class="activity_img" mode="aspectFit" />
+  </view>
+  <view class="activity_info">
+    <view class="activity_info_stay">
+      <view style="color:{{brand_info.style.bc_color.font_color}};" class="bold activity_price">
+        <text class="font_28 money_char">¥</text>
+        <text class="font_38">{{activity_info.price}}</text>
+      </view>
+
+      <view class="activity_name">
+        <text class="font_32 bold inline_b v_m">{{activity_info.activityName}}</text>
+        <text style="color:{{brand_info.style.bc_color.font_color}};border-color:{{brand_info.style.bc_color.font_color}};" class="b_1 radius_4  font_20 t_c limit_buy_tip v_m inline_b">限购</text>
+      </view>
+    </view>
+  </view>
+
+
+  <!-- <view class="activity_explain C_7f font_22">
+    <view class="activity_bonus_conut">礼包含券（{{activity_info.bonusCount}}）</view>
+    <view class="activity_bonus_name">{{activity_info.bonusNameList}}</view>
+  </view> 
+  <view class="activity_desc">
+    <view class="bg_B2B2B2 activity_desc_stay">
+      <image src="{{activity_info.descImgUrl}}" mode="widthFix" />
+    </view>
+  </view> -->
+  <view class="titile">礼包详情</view>
+
+  <view class="bonus_box">
+    <act_bonus id="act_bonus"></act_bonus>
+  </view>
+  <view wx:if="{{activity_info.active_desc}}" class="titile">商品详情</view>
+  <view class="template_box" wx:if="{{activity_info.active_desc}}">
+    <template is="wxParse" data="{{wxParseData:article.nodes}}" />
+  </view>
+</view>
+
+<view class="page_fixed_btn table bg_fff">
+  <view class="table_cell a_home_link t_c" bindtap="toHome">
+    <view class="img_box">
+      <image class="img_home" src="{{g_home}}" mode="aspectFit"></image>
+    </view>
+    <!-- <view class="a_home_link_img" style="background-image:url('{{brand_info.icon_url}}micro_mall/g_home.png')"></view> -->
+    <view class="txt font_20">首页</view>
+  </view>
+  <view class="table_cell a_buy_btn font_30" style="background:{{activity_info.canBuy == 0?'#DDDDDD':brand_info.style.bc_color.font_color}};">
+    <btns isLogin="{{isLogin}}" disabled="{{activity_info.canBuy == 0 || !showData}}" bindclickcallback="getBuyClick">
+      {{activity_info.canBuy == 0 ? '不可购买' : '立即购买'}}
+    </btns>
+    <!-- <button class="bg_DE0016 font_24 radius_4" bindtap="getBuyClick" wx:if="{{activity_info.canBuy > 0}}">立即购买</button>
+    <button class="bg_DDDDDD font_24 radius_4" wx:else>不可购买</button> -->
+  </view>
+</view>
+<!--购买弹框-->
+<view class="{{show_buy ? '': 'hide'}}">
+  <view class="buy_info_bg {{buy_animate ? 'isshow' : 'ishide'}}" catchtouchmove="_noFn" catchtap='buyPopAnimate'></view>
+  <view class="buy_info_cont bg_fff {{buy_animate ? 'isshow' : 'ishide'}}" catchtouchmove="_noFn">
+    <view class="table C_7f b_b pay_msg_table font_26">
+      <view class="table_cell t_l">支付金额</view>
+      <view class="table_cell t_r">
+        <text class="" style="color:{{brand_info.style.bc_color.font_color}};">{{activity_info.price}}</text>
+        <text>元</text>
+      </view>
+    </view>
+    <view class="table b_b pay_way_table font_26">
+      <view class="table_cell t_l">
+        <image class="pay_way_icon v_m" src="{{brand_info.default_icon_url}}wechat_pay1x.png" mode="widthFix" />
+        <text class="v_m">微信支付</text>
+      </view>
+      <view class="table_cell radio_select_cell t_r font_0">
+        <view class="radio_select" catchtap='changeSelect'>
+          <image src="{{brand_info.icon_url}}micro_mall/return_active.png" class="radio_icon" mode="widthFix" wx:if="{{select_pay_way}}" />
+          <image src="{{brand_info.icon_url}}micro_mall/return.png" class="radio_icon" mode="widthFix" wx:else/>
+        </view>
+      </view>
+    </view>
+    <view class="pay_way_btn">
+
+      <button hover-class="none" style="background:{{select_pay_way?brand_info.style.bc_color.font_color:'#DDDDDD'}};" class="font_30 C_fff" catchtap='confirmBuy'>确认支付</button>
+    </view>
+  </view>
+</view>
+
+<view class="loadBg" wx:if="{{showLoad}}" catchtouchmove="_noFn" catchtap="_noFn"></view>
+<view class="showMsg" wx:if="{{showLoad}}">
+  <block wx:if="{{showLoad}}">
+    <text>订单同步中</text>
+    <text class="bold">{{loadingText}}</text>
+  </block>
+  <block wx:if="{{showMsg}}">
+    <text>{{result}}</text>
+  </block>
+</view>
+<dialog id="pageDialog"></dialog>

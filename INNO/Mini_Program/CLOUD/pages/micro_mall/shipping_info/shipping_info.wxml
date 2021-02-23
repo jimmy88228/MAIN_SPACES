@@ -1,0 +1,55 @@
+<view class="shipping_info_main main {{tab.length>1?'tab_show':''}}" hidden="{{!isReady}}">
+  <view class="box" wx:if="{{tab.length>1}}">
+    <view class="tab_text"><text>订单共{{tab.length||0}}个包裹</text><view class="t_t_line"></view></view>
+    <scroll-view scroll-x class="scroll">
+      <view class="tab_box">
+        <view class="tab_item" catchtap="onTap" data-type="click_tap" data-cur-num="{{index}}" data-invoice-no="{{item.invoiceNo}}" data-ship-name="{{item.shippingName}}" wx:for="{{tab}}" wx:key="index">
+          <view class="invoiceName {{item.invoiceNo == cur_no?'bold':''}}" style="{{item.invoiceNo == cur_no?'color:#333;':''}}">{{item.invoiceName}}</view>
+          <view class="line" wx:if="{{item.invoiceNo == cur_no}}"></view>
+        </view>
+      </view>
+    </scroll-view>
+  </view>
+  <view class="invoiceMsg d_flex">
+    <view class="msg_box">
+      <view class="invoice_box">
+        <view class="invoice_text">运单号</view>
+        <view class="invoice">{{cur_no}}</view>
+        <view class="copy" catchtap="onTap" data-type="copy">复制</view> 
+      </view>
+      <view class="invoice_box">
+        <view class="invoice_text">承运人</view>
+        <view class="invoice">{{cur_ship_name}}</view>
+      </view>
+      <view class="invoice_box last">
+        <view class="invoice_text">共{{tab[curNum].detailList.length||0}}件</view>
+          <view class="img_box">
+            <block wx:for="{{tab[curNum].detailList}}" wx:key="index" wx:if="{{index <= 3 && !unfold || unfold}}">
+              <view class="img_p_box">
+                <image src="{{item.goodsImage}}" class="img_goods" mode="aspectFit"></image>
+              </view>
+            </block>
+          </view>
+      </view>
+      <view class="btn_unfold" wx:if="{{tab[curNum].detailList.length>4}}" catchtap="onTap" data-type="unfold">{{unfold?'收起':'展开'}}</view>
+    </view>
+     
+  </view>
+  <view class="shipping_item {{index == 0 ? 'C_000' : 'C_7f'}}" wx:for="{{logisticsList}}" wx:key="time">
+    <view class="time_box">
+      <view class="date">{{item.date}}</view>
+      <view class="time">{{item.time}}</view>
+    </view>
+    <view class="shipping_detail_info {{index == 0 ? 'font_28' : 'font_26'}}">
+      <view>{{item.context}}</view>
+    </view>
+  </view>
+  <view class="empty_state" wx:if="{{logisticsList <= 0}}">
+    <image class="empty_icon" src="{{iconUrl}}/empty/shipping_empty.png" mode="widthFix" />
+    <view class="empty_txt _empty">
+      <view>本订单物流信息由物流公司提供，如无更新，</view>
+      <view>建议到相关物流公司官网查询！</view>
+    </view>
+    
+  </view>
+</view>

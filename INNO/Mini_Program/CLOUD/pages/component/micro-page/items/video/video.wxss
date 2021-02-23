@@ -1,0 +1,5 @@
+/* pages/component/micro-page/items/video/video.wxss */
+.video{
+  width: 100%;
+  height: 422rpx;
+}

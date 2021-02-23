@@ -1,0 +1,5 @@
+{
+  "usingComponents": {
+    "pageTab": "/pages/component/custom/pageTab/pageTab"
+  }
+}

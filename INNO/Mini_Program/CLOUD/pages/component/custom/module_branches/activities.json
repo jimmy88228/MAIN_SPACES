@@ -1,0 +1,7 @@
+{
+  "component": true,
+  "usingComponents": {
+      "btns": "/pages/component/buttons/btns",
+      "marqueeView": "/pages/component/custom/marquee_view"
+  }
+}

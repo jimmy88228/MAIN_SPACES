@@ -1,0 +1,183 @@
+const app = getApp();
+Page(app.BP({
+  data: {
+    commonList:[],
+    customList:[],
+    keyList: {
+      USER_FORM_INFO_FLAG_POST_CODE: "邮编",
+      USER_FORM_INFO_FLAG_MOBILE: "手机号",
+      USER_FORM_INFO_FLAG_SEX: "性别",
+      USER_FORM_INFO_FLAG_NAME: "姓名",
+      USER_FORM_INFO_FLAG_BIRTHDAY: "生日",
+      USER_FORM_INFO_FLAG_IDCARD: "身份证",
+      USER_FORM_INFO_FLAG_EMAIL: "邮箱",
+      USER_FORM_INFO_FLAG_LOCATION: "详细地址",
+      USER_FORM_INFO_FLAG_EDUCATION_BACKGRO: "教育背景",
+      USER_FORM_INFO_FLAG_INDUSTRY: "行业",
+      USER_FORM_INFO_FLAG_INCOME: "收入",
+      USER_FORM_INFO_FLAG_HABIT: "兴趣爱好"
+    },
+  },
+  encrypt_code:{},
+  onLoad(options) {
+    this.options = options || {};
+    console.log("页面的options",options);
+  },
+  onShow() {
+    loadMemberInfo.call(this,this.options)
+  },
+  onHide() {
+
+  },
+  onUnload() {
+
+  },
+  activeCard(){
+    activeMemberCard.call(this);
+  }
+}))
+function loadMemberInfo(options = {}){
+  if (options.card_id && options.encrypt_code){
+    let card_id = options.card_id;
+    let encrypt_code = options.encrypt_code;
+    if (card_id && encrypt_code) {
+      getWxMemebrCardInfo.call(this, options);
+    }
+  }else{
+    beforeOpenCardReqInfo.call(this);
+  }
+}
+//
+function beforeOpenCardReqInfo(_extraData){
+    let card_info = app.CardM.card_info || {};
+    let referrerInfo = card_info.referrerInfo || {};
+    let extraData = referrerInfo.extraData || {};
+    if(_extraData){
+      extraData = {
+        ...extraData,
+        ..._extraData
+      }
+      referrerInfo.extraData = extraData;
+      app.CardM.updateCardInfo("referrerInfo", referrerInfo);
+    }
+    if (!extraData.activate_ticket){
+      app.SMH.showToast({
+        "title":"无效activate_ticket"
+      })
+      return;
+    }
+    let submitUrl = extraData.wx_activate_after_submit_url || "";
+    let urlArr = submitUrl.split("?") || [];
+    let paramsArr = urlArr[1] && urlArr[1].split("&") || [];
+    let jsonData = {}
+    for (let i = 0; i < paramsArr.length; i++) {
+      let item = paramsArr[i].split("=") || [];
+      jsonData[item[0]] = decodeURIComponent(item[1])
+    }
+    extraData = {
+      ...extraData,
+      ...jsonData
+    }
+    console.log(extraData, "extraData");
+    getOpenCardReqInfo.call(this, extraData);
+}
+// 开卡回调---获取用户信息
+function getOpenCardReqInfo(extraData) {
+  this.extraData = extraData || {};
+  return app.MemberCardApi.getOpenCardRequestInfo({
+    data: {
+      activate_ticket: decodeURIComponent(extraData.activate_ticket || ""),
+      encrypt_code: extraData.encrypt_code,
+      card_id: extraData.card_id,
+      open_id: extraData.openid,
+      code: extraData.code
+    },
+    other: {
+      isShowLoad: true
+    }
+  }).then(res => {
+    if (res.code == 1) {
+      let data = res.data;
+      this.setData({
+        commonList: data.common_field_list,
+        customList: data.custom_field_list
+      })
+      return Promise.resolve(res);
+    }
+    return Promise.reject();
+  })
+}
+//激活会员卡回调--获取用户信息extraData { encrypt_code , card_id , openid }
+function getWxMemebrCardInfo(extraData){
+  console.log(extraData,"extraData-=-=-=-=-");
+  return app.MemberCardApi.getWxMemebrCardInfo({
+    data:{
+      encrypt_code: extraData.encrypt_code ? decodeURIComponent(extraData.encrypt_code) : "",
+      card_id: extraData.card_id || "",
+    },other:{
+      isShowLoad:true
+    }
+  }).then(res => {
+    if (res.code == 1) {
+      let data = res.data || {};
+      extraData.activate_ticket = data.activate_ticket || "";
+      extraData.code = data.code || "";
+      this.extraData = extraData;
+      if (data.other_info){
+        let memeberInfo = JSON.parse(data.other_info) || {};
+        this.setData({
+          commonList: memeberInfo.common_field_list || [],
+          customList: memeberInfo.custom_field_list || []
+        })
+      }else{//没有返回用户信息
+        
+        beforeOpenCardReqInfo.call(this, extraData);
+      }
+      return Promise.resolve(res);
+    }
+    app.SMH.showToast({
+      "title": res.msg
+    })
+    return Promise.reject();
+  })
+}
+
+//激活
+/**
+ * card_id
+ * userToken
+ * brandCode
+ * code
+*/
+function activeMemberCard(){
+  let extraData = this.extraData || {};
+  return app.MemberCardApi.activeMemberCard({
+    data:{
+      card_id: extraData.card_id,
+      code: extraData.code,
+    },
+    other:{
+      isShowLoad:true
+    }
+  }).then(res=>{
+    if(res.code == 1){
+      app.SMH.showToast({
+        "title": res.msg 
+      })
+      let user_infos = app.StorageH.get("USER_INFOS") || {};
+      user_infos.isOpenCard = true; 
+      app.StorageH.set("USER_INFOS", user_infos)
+      let _timer = setTimeout(()=>{
+        clearTimeout(_timer);
+        wx.switchTab({
+          url: '/pages/micro_mall/user/user',
+        })
+      },500)
+      return Promise.resolve();
+    }
+    app.SMH.showToast({
+      "title":res.msg
+    })
+    return Promise.reject();
+  })
+}

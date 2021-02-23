@@ -1,0 +1,122 @@
+<!--pages/micro_mall/coupon_center/receive/receive.wxml-->
+<view class="receive_page">
+  <view class="receive_bg">
+    <image class="receive_bg_icon" src="{{receiveInfo.actImage}}" mode="widthFix" />
+    <!-- <image class="receive_bg_icon" src="{{receiveInfo.actImage}}" mode="aspectFit" /> -->
+    <view class="receive_head">
+      <!-- <view class="r_h_title">抢内部神券，直达最低价</view>
+      <view class="r_h_tip">GOSO内部限量福利，领券直达低价</view> -->
+      <view class="swiper_hold">
+        <swiper 
+        class="notice_list" 
+        vertical="{{true}}"
+        autoplay="{{true}}"
+        circular="{{true}}"
+        bindchange="swiperChange"
+        >
+          <swiper-item class="notice_item" wx:for="{{recordList}}" wx:key="index">
+            <view class="notice_item_stay">
+              <view class="n_item">
+                <image class="n_i_icon" src="{{item.portraitPath}}" mode="aspectFit"/>
+                <view class="n_i_txt">{{item.realName}} 成功领用了1张券</view>
+              </view>
+            </view>
+          </swiper-item>
+        </swiper>
+        <view class="no_touch" catchtouchstart="noFunc" catchtouchmove="noFunc"></view>
+      </view>
+    </view>
+  </view>
+  
+  <view class="receice_cont">
+    <view class="bonus_area">
+      <view class="box">
+          <view class="box_cont">
+            <view class="c_coupon_box">
+              <image class="c_coupon_bg" src="{{receiveInfo.couponInfo.image_main}}" mode="aspectFill" />
+              <view class="c_group_label">社群专享</view>
+              <view class="c_price_box">
+                <block wx:if="{{receiveInfo.couponInfo.is_hide_money_show != 1}}">
+                  <view class="c_price">
+                    <block wx:if="{{receiveInfo.couponInfo.bonus_type == 4}}">
+                      <text class="c_price_ft">{{receiveInfo.couponInfo.discountStr}}</text><text>折</text>
+                      </block>
+                    <block wx:else>
+                      <text>¥</text><text class="c_price_ft">{{receiveInfo.couponInfo.type_money}}</text>
+                    </block>
+                  </view>
+                  <view class="c_price_tip">
+                      <block wx:if="{{receiveInfo.couponInfo.bonus_type == 4 }}">
+                        <block wx:if="{{receiveInfo.couponInfo.min_amount != receiveInfo.couponInfo.max_amount}}">
+                          满{{receiveInfo.couponInfo.min_amount}} ~ {{receiveInfo.couponInfo.max_amount}}可用
+                        </block>
+                      </block>
+                      <block wx:else>
+                        满{{receiveInfo.couponInfo.min_goods_amount}}可用
+                      </block>
+                  </view>
+                  <view class="c_split"></view>
+                </block>
+              </view>
+              <text class="c_name">{{receiveInfo.couponInfo.is_show_name == 1 ? receiveInfo.couponInfo.type_name : ''}}</text>
+            </view>  
+            <view class="btn_box">
+              <block wx:if="{{receiveInfo.status == 0}}">
+                <block><!--授权, 订阅-->
+                  <button class="btn" wx:if="{{isLogin}}" catchtap="receiveCoupon">
+                    马上领取
+                  </button>
+                  <btn
+                  isLogin="{{false}}" 
+                  bindclickcallback="loginCallback"
+                  wx:else>
+                  </btn>
+                </block>
+                <view class="s_count">
+                  <view class="progress">
+                    <text class="pro_val" style="{{'width:' + receiveInfo.sendPercen + '%'}}"></text>
+                  </view>
+                  <view>剩余{{receiveInfo.surplusPercen}}%</view>
+                </view>
+              </block>
+              <block wx:elif="{{receiveInfo.status == 1}}"><!--领取成功-->
+                <view class="receive_btn">{{status[receiveInfo.status]}}</view>
+                <view class="btn check_btn" catchtap="jumpAction" data-url="/pages/micro_mall/coupon/my_coupon">查看优惠券</view>
+                <image class="receive_box_icon" src="{{brand_info.default_icon_url}}staff_coupon/is_receive.png" mode="widthFix" />
+              </block>
+              <block wx:else>
+                <view class="invalid_btn" wx:if="{{receiveInfo.status == 2}}">{{status[receiveInfo.status]}}</view>
+                <image class="invalid_box_icon" wx:elif="{{receiveInfo.status == 3}}" src="{{brand_info.default_icon_url}}staff_coupon/is_invalid.png" mode="widthFix" />
+              </block>
+            </view>
+          </view>
+          <view class="tips_detail_box {{ activieTaskId == receiveInfo.taskId ? 'active':''}}">
+            <view class="useLimitStay">
+              <view class="limit">
+                  <text wx:if="{{receiveInfo.couponInfo.send_type == 5 }}">通用券</text>
+                  <text wx:elif="{{receiveInfo.couponInfo.send_type == 4}}">限线下门店使用</text>
+                  <text wx:elif="{{receiveInfo.couponInfo.send_type == 3}}">限线下店铺使用</text>
+                  <text wx:else>限线上微商城使用</text>
+              </view>
+              <text class="tips_detail" wx:if="{{receiveInfo.couponInfo.bonus_desc}}">{{receiveInfo.couponInfo.bonus_desc}}</text>
+            </view>
+          </view>
+          <view class="tips" catchtap="showDesc" data-task-id="{{receiveInfo.taskId}}">
+            <view class="t_title_box">
+              <view class="t_title">{{receiveInfo.status == 1 ? '使用日期' : '领取日期'}}{{receiveInfo.fromTimeStr}} - {{receiveInfo.toTimeStr}}</view>
+              <view class="t_header">
+                <view class="t_tip">使用说明</view>
+                <view class="arrow"></view>
+                <view class="arrow_hide"></view>
+              </view> 
+            </view> 
+          </view>
+        </view>
+    </view>
+    <view>
+      <pageTab id="pageTab" hideContact="{{true}}" type="inline" set-share="{{false}}"></pageTab>
+    </view>
+  </view>
+</view>
+<receiveFail id="receiveFail" sendUser="{{sendUser}}"></receiveFail>
+<pageHome id="pageHome"></pageHome>

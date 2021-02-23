@@ -1,0 +1,25 @@
+<!--pages/component/custom/page_button_mod/choose.wxml-->
+<window class="window" ext-class="window-ext">
+  <from bindsubmit="formAction" report-submit="true">
+    <view class="service_popup {{customTab?isIphoneX?'_xpb':'_pb':''}}" style="{{boxStyle}}">
+      <view class="tip f_c">选择操作</view>
+      <view class="choose_box f_c">
+        <view 
+        class="share_item f_c"
+        wx:for="{{shareList}}" 
+        wx:key="index"
+        wx:if="{{item.showed}}">
+          <block>
+            <button 
+              catchtap="chooseType" 
+              hover-class='none'
+              class="share_item_btn"
+              data-share-id="{{item.shareId}}">
+              {{item.shareTip}}
+            </button>
+          </block>
+        </view> 
+      </view>
+    </view> 
+  </from>
+</window>

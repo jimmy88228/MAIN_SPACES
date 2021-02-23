@@ -1,0 +1,26 @@
+.active_tip_hover {
+	position: fixed;
+    z-index: 999;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+}
+
+.active_tip_hover.hide {
+	display: none;
+}
+
+.tip_btn {
+    position: fixed;
+    right: -180rpx;
+    bottom: 3%;
+    transition: right .24s;
+    width: 237rpx;
+	z-index: 1000;
+}
+
+.tip_btn.show {
+    right: 0;
+}
+

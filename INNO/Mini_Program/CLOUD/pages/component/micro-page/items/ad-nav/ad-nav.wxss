@@ -1,0 +1,31 @@
+/* pages/component/micro-page/items/ad-nav/ad-nav.wxss */
+/* pages/component/micro-page/items/advertise/advertise.wxss */
+.list {
+  display: flex;
+  width: 100%;
+  align-items: center;
+}
+.list.scroll{
+  height: 500rpx;
+}
+.list.warp{
+  flex-wrap: wrap;
+}
+.list-item {
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.list-img{
+  width: 100%;
+  position: relative;
+}
+.list-img.circle{
+  width: 80%;
+  border-radius: 50%;
+}
+.title{
+  margin-top: 8rpx;
+  font-size: 24rpx;
+}

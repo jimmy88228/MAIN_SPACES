@@ -1,0 +1,163 @@
+import ScanH from "../../../helper/handle/scanHandleParams"
+let app = getApp();
+Component(app.BTAB({
+    properties: {
+      top:{
+        type: Number,
+        value:0,
+      }
+    },
+
+  data: {
+    /*引入菜单的所需数据*/
+    // left_menu_data: {},
+    // first_level: [],
+    // second_level: [],
+    // third_level: [],
+    // select_first: false,
+    // select_second: false,
+    // select_first_id: '',
+    // select_second_id: '',
+    // select_third_id: '',
+    // //
+    // select_first: false,
+    // brand_info: {},
+    // //
+    // sys_config: {},
+    // borderColor: "",
+    // bgColor: "",
+    // showImg: true,
+    // search_url: "",
+    // menu_url: "",
+    // ver: app.version
+    style: 0
+  },
+  ready() {
+    let searchStr = this.data.brand_info.icon_url + "micro_mall/search_icon.png";
+    let menuStr = this.data.brand_info.icon_url + "micro_mall/left_menu.png";
+    let default_scan = this.data.brand_info.default_icon_url + "default_scan.png";
+    this.setData({
+      search_url: searchStr,
+      menu_url: menuStr,
+      default_scan:default_scan
+    });
+  },
+  /**
+   * 组件的方法列表
+   */
+  methods: {
+    getSearchGoods() {
+      wx.navigateTo({
+        url: '../search/search_goods',
+      })
+    },
+    toStore() {
+      app.AS.checkAuthorize('scope.userLocation', () => {
+        wx.navigateTo({
+          url: '/pages/micro_mall/stores/store_nav'
+        })
+      }, () => {
+        app.SMH.showToast({
+          title: "无法获取地理位置"
+        })
+      });
+    },
+    scan(e) {
+      ScanH.scanAction.call(this,result => {
+        scanAction.call(this, result);
+      });
+    },
+    init() {
+      goodsSearchStyle.call(this);
+    }
+  }
+}))
+//数组转jSON
+function createObjKeyVal(obj, key) {
+  if (obj instanceof Array) {
+    let json = {},
+      firstLevel = {};
+    for (let i in obj) {
+      let Id = obj[i][key];
+      json[Id] = obj[i];
+      if (obj[i].Level == "1") {
+        let CateId = obj[i]["CateId"]
+        firstLevel[CateId] = obj[i];
+      }
+    }
+    this.setData({
+      first_level: firstLevel
+    })
+    return json;
+  }
+}
+
+function goodsSearchStyle() {
+  let params = {
+    brandCode: app.Conf.BRAND_CODE
+  }
+  return app.RunApi.go('GoodsApi', 'goodsSearchStyle', params, {
+    diy: true
+  }).then(res => {
+    if (res.code == 1) {
+      let data = res.data;
+      if (data) {
+        this.setData({
+          brandIcon: data.brandIcon || '',
+          searchIcon: data.searchIcon || '',
+          storeIcon: data.storeIcon || '',
+          scanIcon: data.scanIcon || '',
+          style: data.styleType || 1
+        })
+      } else {
+        this.setData({
+          style: 0
+        })
+      }
+    }
+  })
+}
+ 
+function scanAction(result){
+  if(typeof(result) == "string"){
+    getGoodsScanInfo.call(this, result);
+  }else{
+    if(result.goods_id){
+      wx.navigateTo({
+        url: `/pages/micro_mall/goods/goods_info?goods_id=${result.goods_id||0}&color_id=${result.color_id||0}`,
+      })
+    }
+  }
+}
+function getGoodsScanInfo(result){
+  return app.GoodsApi.getGoodsScanInfo({
+    params:{
+      searchVal: result||""
+    },other:{
+      isShowLoad:true
+    }
+  }).then(res=>{
+    if(res.code == 1){
+      let data = res.data||{};
+      if(data){
+        wx.navigateTo({
+          url: `/pages/micro_mall/goods/goods_info?goods_id=${data.goodsId||0}&color_id=${data.colorId||0}`,
+        })
+      }
+      return Promise.resolve(res);
+    }
+    this.pageDialog = this.pageDialog || this.selectComponent("#pageDialog");
+    this.pageDialog.setTitle("温馨提示");
+    this.pageDialog.setTouchCancel(true);
+    this.pageDialog.setCentent(res && res.msg || "商品信息异常");
+    this.pageDialog.setSingleBtn(
+      {
+        name: "确定",
+        tap: () => {
+          this.pageDialog.dismiss();
+        }
+      }
+    )
+    this.pageDialog.show();
+  })
+}

@@ -1,0 +1,23 @@
+.nav_edit{
+  overflow: hidden;
+  width:100rpx;
+}
+.nav_edit_stay{
+  width:200%;
+  font-size:0px;
+  display:flex;
+  flex-wrap:nowrap;
+  transition: transform .32s;
+}
+.nav_edit_stay.editing{
+  transform: translateX(-50%);
+}
+.edit_item{
+  padding:5rpx 10rpx;
+  width:50%;
+  box-sizing: border-box;
+  white-space:nowrap;
+  flex-shrink: 0;
+  text-align: center;
+  font-size:26rpx;
+}

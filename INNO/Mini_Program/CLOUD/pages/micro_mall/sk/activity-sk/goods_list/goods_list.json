@@ -1,0 +1,7 @@
+{
+  "component": true,
+  "usingComponents": {
+    "progress_bar": "/pages/component/progress_bar/progress_bar",
+    "btns":"/pages/component/buttons/btns"
+  }
+}

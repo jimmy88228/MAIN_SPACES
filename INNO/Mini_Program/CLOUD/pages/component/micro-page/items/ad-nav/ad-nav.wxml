@@ -1,0 +1,25 @@
+<!--pages/component/micro-page/items/ad-nav/ad-nav.wxml-->
+<view class="main">
+  <block wx:if="{{_data.open_slide}}">
+    <list refresh="{{false}}" scroll-x="{{true}}" scroll-y="{{false}}" >
+      <view slot="data" class="list scroll">
+        <block wx:for="{{_data.items}}" wx:key="index">
+          <view class="list-item" style="width:{{100/_data.row}}%;">
+            <image class="list-img {{_data.icon_shape}}" mode="widthFix"  src="{{item.image}}"></image>
+            <view class="title">{{item.title}}</view>
+          </view>
+        </block>
+      </view>
+    </list>
+  </block>
+  <block wx:else>
+    <view class="list warp">
+      <block wx:for="{{_data.items}}" wx:key="index">
+        <view class="list-item" style="width:{{100/_data.row}}%;">
+          <image class="list-img {{_data.icon_shape}}" mode="widthFix" src="{{item.image}}"></image>
+          <view class="title">{{item.title}}</view>
+        </view>
+      </block>
+    </view>
+  </block>
+</view>

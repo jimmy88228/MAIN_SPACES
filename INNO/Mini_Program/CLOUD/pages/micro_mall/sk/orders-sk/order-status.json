@@ -1,0 +1,7 @@
+{
+  "backgroundColor": "#fbfbfb",
+  "usingComponents": {
+      "orderSync": "/pages/micro_mall/sk/orders-sk/order-sync/order-sync",
+      "dialog": "/ui/cps/dialog/dialog"    
+  }
+}

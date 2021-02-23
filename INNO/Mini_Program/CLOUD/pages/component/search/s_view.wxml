@@ -1,0 +1,12 @@
+<!--pages/component/search/s_order.wxml-->
+<view class="box {{ searchType +'_box'}}">
+  <view class="box_area {{ searchType +'_box_area'}}" style="{{'border-color:' + brand_info.style.bg_color}}">
+    <view class="img_s_box" catchtap="onTap" data-type="confirm">
+      <image src="{{img_search}}" mode="aspectFit" class="img_search"></image>
+    </view>
+    <input placeholder="{{ placeText || '' }}" placeholder-class="_placeholder" value="{{o_s_val}}" class="input_style" data-key="o_s_val" bindinput="onInput" bindconfirm="onTap" data-type="confirm"></input>
+    <view class="btn_search_box" wx:if="{{searchType == 'order' && !hideBtn}}">
+      <button hover-class="none" catchtap="onTap" data-type="confirm" class="btn_search">搜索</button>
+    </view>
+  </view>
+</view>

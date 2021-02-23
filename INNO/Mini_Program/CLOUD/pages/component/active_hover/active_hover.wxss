@@ -1,0 +1,53 @@
+.active_hover {
+    position: fixed;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    z-index: 1001;
+    background: rgba(0, 0, 0, .7);
+}
+
+.notice_box {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    box-sizing: border-box;
+    padding: 46rpx 66rpx;
+    background: #fff;
+    border-radius: 10rpx;
+    text-align: center;
+}
+
+.mini_code {
+    width: 216rpx;
+    margin: auto;
+}
+
+.hover_title {
+    margin: 30rpx auto;
+    font-size: 30rpx;
+    font-weight: bolder;
+}
+
+.hover_text {
+    line-height: 2;
+    white-space: nowrap;
+}
+
+.tip {
+    color: #7f7f7f;
+    font-size: 18rpx;
+    margin: 10rpx auto 40rpx auto;
+}
+
+.closed_btn {
+    display: inline-block;
+    font-size: 22rpx;
+    
+    border: 1px solid #7f7f7f;
+    border-radius: 10rpx;
+    padding: 0 46rpx;
+    line-height: 62rpx;
+}

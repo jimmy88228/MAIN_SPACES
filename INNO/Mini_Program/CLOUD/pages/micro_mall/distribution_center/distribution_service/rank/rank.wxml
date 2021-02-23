@@ -1,0 +1,64 @@
+<!--pages/micro_mall/distribution_center/distribution_service/rank/rank.wxml-->
+<view class="main">
+	<view class="content_box" id="content_box">
+		<view class="msg_box">
+      <view class="select_box">
+        <view class="clickBox {{show_sel_op?'c_b_fixed':''}}" catchtap="onTap" data-type="selectShow"></view>
+        <view class="select">{{cur_select == 0?'全部销售':'所在门店'}}</view>
+        <view class="arrow_select"></view>
+        <view class="s_option_box" style="{{show_sel_op?'opacity:1;':''}}" hidden="{{!show_sel_box}}">
+          <block wx:for="{{options}}" wx:key="index">
+            <view class="o_item" catchtap="onTap" data-index="{{index}}" data-type="selectOption">
+              {{item}}
+            </view>
+          </block>
+        </view>
+      </view>
+      <view class="time_box">
+        <view class="t_title">时间筛选</view>
+        <block wx:for="{{timeList}}" wx:key="index">
+          <view class="t_item" catchtap="onTap" data-type="selectTime" data-index="{{index}}" style="{{index==cur_time?'color:' + high_light + ';border-color:' + high_light :''}}">{{item}}</view>
+        </block>
+      </view>
+    </view>
+		<view class="u_info_box">
+			<view class="user">
+        <view class="line_r"></view>
+				<image src="{{userInfo.portrait_path}}" class="img_user" mode="aspectFit"></image>
+				<view class="u_name">{{userInfo.dstb_staff_name}}</view>
+			</view>
+			<view class="u_rank_i">
+        <block wx:if="{{rankInfo.curr_amount == 0 && rankInfo.curr_rank == 0}}">
+          <view class="u_r_box u_r_empty">暂无销售额</view>
+        </block>
+        <block wx:else>
+          <view class="u_r_box" wx:for="{{u_rank_info}}" wx:key="index">
+            <view class="u_r_title">{{item}}</view>
+            <view class="u_r_detail">
+              <view class="rank_now">{{index==0?rankInfo.curr_rank:rankInfo.curr_amount}}</view>
+              <block wx:if="{{index==0 && rankInfo.showChange}}">
+                <view class="r_arrow_box">
+                  <block wx:if="{{rankInfo.change!=0}}">
+                    <view class="r_arrow_up" wx:if="{{rankInfo.change>0}}"></view>
+                    <view class="r_arrow {{rankInfo.change>0?'up_bg_color':'down_bg_color'}}"></view> 
+                    <view class="r_arrow_down" wx:if="{{rankInfo.change<0}}"></view>
+                  </block>
+                  <!-- <block wx:else>
+                    <view class="r_no_change" style="margin:0 2rpx 0 6rpx;">--</view>
+                  </block> -->
+                </view>
+                <view class="rank_change" wx:if="{{index==0}}">
+                  <text wx:if="{{rankInfo.change!=0}}" class="r_c_detail {{rankInfo.change>0 ? 'up_color':'down_color'}}">{{rankInfo.change>0?'上升':'下滑'}}{{rankInfo.changeVal}}</text>
+                  <text wx:elif="{{rankInfo.change==0}}" class="r_no_change">-- 持平</text>
+                </view>
+              </block>
+            </view>
+          </view>
+        </block>
+			</view>
+		</view>
+	</view>
+	<view class="list">
+		<r_list id="r_list" list="{{rankList}}" empty="{{empty}}" bindpaging="paging"></r_list>
+	</view>
+</view>

@@ -1,0 +1,10 @@
+{
+  "navigationBarTitleText": "订单结算",
+  "usingComponents": {
+        "dialog": "/ui/cps/dialog/dialog",
+        "cs": "/pages/component/cs/custom_service",
+        "Valet":"/pages/micro_mall/buy/modules/Valet/Valet",
+        "redPopup":"/pages/micro_mall/buy/modules/redPopup/redPopup",
+        "choose-coupon":"/pages/micro_mall/buy/modules/chooseCoupon/buy_coupon"
+  }
+}

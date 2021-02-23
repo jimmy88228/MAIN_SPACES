@@ -1,0 +1,8 @@
+<template name="search">
+  <view class="search_box flex_global flex_c flex_al_c">
+    <view class="search_content flex_global flex_al_c" style="border:1px solid {{brand_info.style.nav_border_color}}" bindtap='getSearchGoods'>
+      <image src="{{searchStr}}" mode="aspectFit" class="icon_search"></image>
+      <input type='text' placeholder='请输入商品关键词' class='search_input' placeholder-class='change_style'  disabled='true'/>
+    </view>
+  </view>
+</template>

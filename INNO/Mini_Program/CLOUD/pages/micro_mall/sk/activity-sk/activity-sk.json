@@ -1,0 +1,21 @@
+{
+  "navigationBarTitleText": "秒杀活动",
+  "backgroundColor": "#F8F8F8",
+  "usingComponents": {
+    "dialog": "/ui/cps/dialog/dialog",
+    "progress_bar":"/pages/component/progress_bar/progress_bar",
+    "btns":"/pages/component/buttons/btns",
+    "invited_sk":"/pages/micro_mall/sk/invited-sk/invited-sk",
+    "nav_bar":"/pages/micro_mall/sk/activity-sk/nav_bar/nav_bar",
+    "friends":"/pages/micro_mall/sk/activity-sk/friends/friends",
+    "dynamic_btn":"/pages/component/dynamic_btn/dynamic_btn",
+    "orderSync": "/pages/micro_mall/sk/orders-sk/order-sync/order-sync",
+    "goods_list":"/pages/micro_mall/sk/activity-sk/goods_list/goods_list",
+    "tabbar": "/pages/component/custom/tabBarMod",
+    "share":"/pages/micro_mall/goods/popup/share",
+    "shareImg": "/pages/micro_mall/goods/popup/shareImg",
+    "pageHome": "/pages/component/sceneOperate/pageHome",
+    "embed_custom_module": "/pages/component/custom/embed_custom/embed_custom",
+    "guide_follow": "../popup/guide/follow"
+  }
+}

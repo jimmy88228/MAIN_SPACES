@@ -1,0 +1,75 @@
+<form bindsubmit="formAction" report-submit="true">
+  <view class="goods_module module_type{{page_module_list.moduleStyles}}  {{showInit?'mb_10':''}} ">
+    <!--商品列表-->
+    <block wx:if="{{page_module_list.moduleStyles != 4}}">
+      <view 
+      class="goods_item " 
+      style="{{(page_module_list.moduleStyles == 1 || (page_module_list.moduleStyles == 3 && g_item.index % 3  == 0)) ? 'width:100%;' : ''}}"  
+      wx:for="{{showInit?initArr:m_data}}" 
+      wx:for-item="g_item" 
+      wx:for-index="g_index"
+      wx:key="g_index"
+      wx:if="{{showInit || (g_item.goods_img || g_item.goods_thumb)}}"
+      >
+    <!-- <block wx:if="{{page_module_list.moduleStyles != 4}}">
+      <view class="goods_item " style="{{(page_module_list.moduleStyles == 1 || (page_module_list.moduleStyles == 3 && g_item.index % 3  == 0)) ? 'width:100%;' : ''}}" wx:if="{{g_item.goods_id}}" wx:for="m_data" wx:for-item="g_item" wx:for-index="g_index"
+        wx:key="g_index"> -->
+        <view class="goods_item_stay">
+          <view class="good_img_stay {{showInit?'initStyle':''}}">
+            <view class="good_img {{sysConf.goods_image_size == '4-3' ? 'ratio_3_4':''}}">
+              <image src="{{g_item.goods_img || g_item.goods_thumb}}" lazy-load="{{true}}" mode="aspectFit" />
+            </view>
+            <!--买点-->
+            <view class="property_box" wx:if="{{g_item.goods_brief}}">
+              <view class="property">{{g_item.goods_brief}}</view>
+            </view>
+            <!--买点-->
+          </view>
+          <view class="goods_info">
+            <view class="tag_img_list" wx:if="{{tagList && tagList[g_item.goods_id]}}">
+              <block wx:for="{{tagList[g_item.goods_id]}}" wx:key="id" wx:for-item="tag" wx:if="{{tagVal && tagVal[tag] && tagVal[tag].height}}">
+                <image class="tag_img" src="{{tag}}"  style='width:{{tagVal[tag].width}}rpx;height:{{tagVal[tag].height}}rpx;' mode='aspectFit'></image>
+              </block>
+            </view> 
+            
+            <view class="good_name {{showInit?'initStyle textInit':''}}" wx:if="{{page_module_list.showGoodsName == 1}}">{{g_item.goods_name}}</view>
+            <!-- <view class="good_name" wx:if="{{g_item.config_value.showGoodsName == 1}}">{{g_item.goods_name}}</view> -->
+            <!-- <view class="good_sku" wx:if="{{g_item.config_value.showGoodsPrice == 1}}"> -->
+            <view class="good_sku" wx:if="{{page_module_list.showGoodsPrice == 1}}">
+              <view class="present_p {{showInit?'initStyle textInit half':''}}" style="color:{{brand_info.style.font_color || default_bg}}">
+                <text wx:if="{{!showInit}}" class="RMB">¥</text>
+                <text>{{g_item.shop_price || g_item.price}}</text>
+                <text wx:if="{{ g_item.integral > 0 }}"> + {{g_item.integral || g_item.old_integral}} 积分</text>
+              </view>
+              <view class="">
+                <view class="text_crossed original_p {{showInit?'initStyle textInit half':''}}"wx:if="{{ (g_item.price && g_item.price != g_item.market_price) || (g_item.shop_price && g_item.shop_price != g_item.market_price) }}">
+                  <view wx:if="{{!showInit}}" class="font_22 RMB_line">¥</view>{{g_item.market_price}}</view>
+              </view>
+              <view class="sales_vol_box" wx:if="{{showSalesVolume && page_module_list.moduleStyles==6}}">
+                <text class="sales_vol_title">销量</text><text>{{g_item.salesVolumeStr}}</text>
+              </view>
+            </view>
+            <view class="sales_vol_box" wx:if="{{showSalesVolume && page_module_list.moduleStyles!=6}}">
+              <text class="sales_vol_title">销量</text><text>{{g_item.salesVolumeStr}}</text>
+            </view>
+          </view>
+        </view>
+        <button 
+        class="btn_link" 
+        data-goods_id="{{g_item.goods_id}}" 
+        data-color_id="{{g_item.color_id}}" 
+        bindtap="goLink" 
+        data-func_type="{{page_module_list.catType || 'GOODS'}}"
+        data-related_id="{{page_module_list.catId}}" 
+        form-type="submit"
+        data-tag="{{page_module_list.tag}}"
+        ></button>
+      </view>
+    </block>
+
+    <!--商品滚动-->
+    <block wx:else>
+      <marqueeView id="marquee" sysConf="{{sysConf}}" showSalesVolume="{{showSalesVolume}}"></marqueeView>
+    </block>
+  </view>
+</form>

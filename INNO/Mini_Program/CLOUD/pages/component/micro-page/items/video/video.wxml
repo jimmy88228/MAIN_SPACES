@@ -1,0 +1,14 @@
+<!--pages/component/micro-page/items/video/video.wxml-->
+<view class="main">
+  <video  
+    class="video"
+    src="{{videoData.src}}"
+    duration="{{videoData.duration}}"
+    controls="{{videoData.controls||false}}"
+    muted="{{videoData.muted||''}}"
+    loop="{{videoData.loop||''}}"
+    autoplay="{{videoData.autoplay||''}}"
+    show-fullscreen-btn="{{videoData.show_fullscreen_btn||''}}"
+  >
+  </video>
+</view>

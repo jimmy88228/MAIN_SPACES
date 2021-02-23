@@ -1,0 +1,9 @@
+{
+    "navigationBarTitleText": "预售活动",
+    "enablePullDownRefresh": true,
+    "usingComponents": {
+        "tabbar": "/pages/component/custom/tabBar",
+        "search": "/pages/component/search/s_view"
+    }
+}
+ 
