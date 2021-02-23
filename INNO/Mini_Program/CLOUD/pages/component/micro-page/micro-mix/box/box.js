@@ -482,6 +482,7 @@ function throttlingFn(fn,params){
 }
 
 function checkBackTop(top=0){
+  return
   if (top >= this.windowHeight){
     if (!this.showBackTop){
       this.showBackTop = true;

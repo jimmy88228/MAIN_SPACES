@@ -39,5 +39,15 @@ Component(app.BTAB({
         listData: group
       })
     },
+    onTap(e){
+      let dataset = e.currentTarget.dataset||{};
+      let type = dataset.type||"";
+      if(type == 'tab'){
+        let curTab = dataset.index||0;
+        this.setData({
+          curTab
+        })
+      }
+    },
   }
 }))
