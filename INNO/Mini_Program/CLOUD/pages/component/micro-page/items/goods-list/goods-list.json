@@ -1,6 +1,6 @@
 {
   "component": true,
   "usingComponents": {
-    "swiper-mod":"/pages/component/micro-page/items/component/swiper/swiper"
+    "swiper-mod":"/pages/component/micro-page/items/component/goods-swiper/swiper"
   }
 }

@@ -1,0 +1,34 @@
+<!--pages/component/micro-page/items/component/ad-swiper/swiper.wxml-->
+<view class="main" wx:if="{{swiperData.length>0}}">
+  <swiper 
+    class="swiper"
+    style="height:{{swiperH}}px;"
+    autoplay="{{swiperData.length>1?autoplay:false}}"
+    current="{{current}}"
+    interval="{{interval}}"
+    duration="{{duration}}"
+    circular="{{circular}}"
+    vertical="{{vertical}}"
+    bindchange="onChange"
+    display-multiple-items="{{itemData.layoutRow}}"
+  >
+    <block wx:for="{{swiperData}}" wx:key="index" wx:for-item="listGoods" wx:for-index="listGoodsIndex">
+      <swiper-item>
+        <view class="list-item list-item-{{itemData.layout}}" id="swiperId">
+          <view class="list-img-box">
+            <image src="{{listGoods.img}}" mode="aspectFit" class="list-img">
+              <!--热点区域-->
+              <block wx:if="{{listGoods.poster_map && listGoods.poster_map.length>0}}">
+                <view wx:for="{{listGoods.poster_map}}" wx:for-item="map_item" wx:for-index="map_index" wx:key="map_index"
+                  class="map_area"
+                  style="top:{{map_item.y}}rpx;left:{{map_item.x}}rpx;width:{{map_item.w}}rpx;height:{{map_item.h}}rpx;"
+                  data-link="{{map_item.link}}" catchtap="goLink">
+                </view>
+              </block>
+            </image>
+          </view>
+        </view>
+      </swiper-item>
+    </block>
+  </swiper>
+</view>

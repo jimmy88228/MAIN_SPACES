@@ -132,9 +132,10 @@ Component(app.BTAB({
         let current = this.data.tabCurr;
         let navList = this.data.navList || []; 
         let _options = {
-          'page_id': navList[current].pageId
+          'page_id': navList[current].page_id
         };
-        this.currentId = navList[current].pageId;
+        console.log('navList',navList,current,_options)
+        this.currentId = navList[current].page_id;
         this.current_customName = "custom" + this.currentId;
         this[this.current_customName] = this[this.current_customName] || this.selectComponent("#" + this.current_customName);
         getItemData.call(this, _options, true);
@@ -288,7 +289,8 @@ function getCustomTabRequest(ops = {}) {
       let isTabPage = false,page_id = 0;
       let showNav = false;
       console.log('navList',navList)
-      this.isHomePage = data.is_index && this.thisPage.route == "pages/micro_mall/index/index" ? true : false;
+      this.isHomePage = this.thisPage.route == "pages/micro_mall/index/index" ? true : false;
+      // this.isHomePage = data.is_index && this.thisPage.route == "pages/micro_mall/index/index" ? true : false;
       if (navList.length == 0) { //不是tab页面
         page_id = data.page_id;
         navList.push({
@@ -301,7 +303,8 @@ function getCustomTabRequest(ops = {}) {
         showNav = true;
       } else {
         navList[0].page_id = 7;
-        navList[1].page_id = 7;
+        navList[1].page_id = 9;
+        //jimmy temp
         page_id = navList[0].page_id;
         isTabPage = true;
         showNav = true;
@@ -394,6 +397,7 @@ function getItemData(_options, isTabPage) {
       this[oldName] && typeof(this[oldName].unListen) == "function" && this[oldName].unListen();
     }
     this.oldPageId = page_id;
+    console.log('customName',customName,this.customName)
     this[customName].getCustomData(_options, this.isHomePage, lockTime, this.baseW * Tab_H)
   } else {
     lockTime = true;
@@ -404,7 +408,6 @@ function getItemData(_options, isTabPage) {
   //
   // this.couponAssist = this.couponAssist || this.selectComponent("#couponAssist");
   // this.couponAssist.getData(this.currentId);
-
   //
   
 }

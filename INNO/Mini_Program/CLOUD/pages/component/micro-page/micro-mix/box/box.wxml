@@ -34,7 +34,7 @@
 
   <!-- 导航对应的单页面 -->
   <view class="content-box">
-    <block 
+    <view 
       hidden="{{tabCurr != index_num}}" 
       wx:for="{{navList}}" 
       wx:for-index="index_num" 
@@ -58,7 +58,7 @@
             >
         </content>
       </view>
-    </block>
+    </view>
   </view>
 
 </view>

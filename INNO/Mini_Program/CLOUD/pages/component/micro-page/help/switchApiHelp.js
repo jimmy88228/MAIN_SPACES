@@ -22,7 +22,7 @@ function SwitchApi({code,setting,data,index,extend,sr_t,Limit_S}) {
           if(Array.isArray(images)){
             for(let i =0,len=images.length;i<len;i++){
               if(Array.isArray(images[i].poster_map)){
-                mapData(images[i].poster_map,setting.row||1);
+                mapData(images[i].poster_map,setting);
               }
             }
           }
@@ -405,35 +405,17 @@ function initParams({index = 0, bindType = 0, data = {}, extend = {},sr_t,Limit_
   return params
 }
 
-function mapData(data = [],row) { //热点处理
+function mapData(data = [],setting) { //热点处理
+  if(setting.type == 't2'){ //暂时只有一行一个
+    setting.row = 1;
+  }
+  let row = setting.row;
   data.forEach((item, index) => {
     item.x = transRpx(item.map_x)/row;
     item.y = 0;
     // transRpx(item.map_y);
     item.w = transRpx(item.map_width)/row;
     item.h = transRpx(item.map_height)/row;
-    // let extend_content = item.extend_content || "";
-    // let func_type = item.func_type || "";
-    // item.customData = {
-    //   func_type: func_type,
-    //   related_id: item.related_id || '',
-    //   link_url: item.link_url,
-    //   stringJump: extend_content,
-    //   tag: item.rd_tag || item.tag,
-    //   goods_id: item.goods_id,
-    //   page_id: item.page_id
-    // }
-    // if (extend_content && func_type == "RD") {
-    //   let map_data = extend_content.replace(/'/g, '"');
-    //   map_data = JSON.parse(map_data);
-    //   for (let k in map_data) {
-    //     map_data[k].x = map_data[k].x * 100;
-    //     map_data[k].y = map_data[k].y * 100;
-    //     map_data[k].w = map_data[k].ex * 100 - map_data[k].x;
-    //     map_data[k].h = map_data[k].ey * 100 - map_data[k].y;
-    //   }
-    //   item.map_data = map_data;
-    // }
   })
 }
 

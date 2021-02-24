@@ -6,8 +6,9 @@ Component(app.BTAB({
       type: Array,
       value: [],
       observer: function (n, o) {
-        if (!this.readyed) return
-        this.init(n);
+        // console.log('???',n,this.readyed)
+        // if (!this.readyed) return
+        n && this.init(n);
       }
     },
     _data: {
@@ -17,6 +18,10 @@ Component(app.BTAB({
         if (!this.readyed || !n) return
         this.initData(n);
       }
+    },
+    type:{
+      type:String,
+      value:""
     }
   },
   attached() {
@@ -27,11 +32,13 @@ Component(app.BTAB({
     current: 0,
     interval: 5000,
     duration: 500,
-    circular: false,
+    circular: true,
     vertical: false
   },
   ready() {
-    this.initHeight();
+    setTimeout(()=>{
+      this.initHeight();
+    },500)
   },
   methods: {
     init(data) {
@@ -45,7 +52,10 @@ Component(app.BTAB({
       console.log('initData swiper', data)
       let _data = data || {};
       let layoutRow = 0;
-      let layout = _data.layout;
+      let layout = _data.layout || "";
+      if(this.data.type == 'ad'){
+        layout = 'one';
+      }
       switch (layout) {
         case "one":
           layoutRow = 1;
