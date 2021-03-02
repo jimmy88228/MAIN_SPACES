@@ -301,7 +301,7 @@ function getEnrollState(userToken, activityId) {
 function getLotteryRecord(userToken, enrollId) {
     return app.DrawApi.getLotteryRecord({
         params: { userToken, enrollId }
-    }).netData();
+    }).netData(false);
 }
 
 function createHelp(userToken, friEnrollId) {

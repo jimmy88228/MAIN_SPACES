@@ -15,7 +15,7 @@
         data-index="{{i}}" bindtap="onTabTap">
     </view>
 </view>
-<swiper class="record-swiper" current='{{index}}' bindchange="onPageChange">
+<swiper class="record-swiper" current='{{current}}' bindchange="onPageChange">
     <swiper-item class="record-item" wx:for="{{tabs}}" wx:for-item="n" wx:for-index="i" wx:key="i">
         <code-list class="record-cev" show="{{isShow&&(index == i)}}" wx:if="{{n.cp=='code-list'}}"></code-list>
         <prize-list class="record-cev" show="{{isShow&&(index == i)}}" wx:elif="{{n.cp=='prize-list'}}">

@@ -1,6 +1,7 @@
 Page.BasePage({
     data: {
         index: 0,
+        current:0,
         isShow: false,
     },
     onShow() {
@@ -12,7 +13,7 @@ Page.BasePage({
     onTabTap(e) {
         let index = e.currentTarget.dataset.index;
         this.setData({
-            index: index
+            current: index
         });
     },
     onPageChange(e) {
