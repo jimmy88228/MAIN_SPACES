@@ -1,0 +1,6 @@
+{
+  "navigationBarTitleText": "编辑地址",
+  "usingComponents": {
+    "areaSelect": "/pages/component/address/areaSelect"
+  }
+}

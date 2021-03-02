@@ -1,0 +1,11 @@
+<!--pages/component/micro-page/items/text-header/text-header.wxml-->
+<view class="main text-align-{{_data.textAlign}} color-{{textColor}}">
+  <view class="box">
+    <view class="name font-size-{{_data.nameFontSize}}">{{_data.name}}</view>
+    <view class="more-text-box" wx:if="{{_data.showMore}}" catchtap="linkJump" data-type="text" data-data="{{_data.showMoreLink}}">
+      <view class="more-text" wx:if="{{_data.showMoreStyle == 'style1' || _data.showMoreStyle == 'style2'}}">{{_data.showMoreText}}</view>
+      <view class="more-icon" wx:if="{{_data.showMoreStyle == 'style2' || _data.showMoreStyle == 'style3'}}"></view>
+    </view>
+  </view>
+  <view class="desc" wx:if="{{_data.desc}}">{{_data.desc}}</view>
+</view>

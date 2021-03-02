@@ -1,0 +1,40 @@
+/* pages/component/micro-page/items/ad-nav/ad-nav.wxss */
+/* pages/component/micro-page/items/advertise/advertise.wxss */
+.list {
+  display: flex;
+  width: 100%;
+  align-items: center;
+}
+.list.scroll{
+  /* height: 500rpx; */
+}
+.list.warp{
+  flex-wrap: wrap;
+}
+.list-item {
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.list-img{
+  /* width: 90rpx;
+  height: 90rpx; */
+  width: 100%;
+  position: relative;
+}
+.list-img.limit{
+  width: 110rpx;
+  height: 110rpx;
+}
+.list-img.limit.small{
+  width: 90rpx;
+  height: 90rpx;
+}
+.list-img.limit.circle{
+  border-radius: 50%;
+}
+.title{
+  line-height: 32rpx;
+  font-size: 24rpx;
+}

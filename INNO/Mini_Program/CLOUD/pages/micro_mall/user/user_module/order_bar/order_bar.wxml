@@ -1,0 +1,41 @@
+<view class="user_area" wx:if="{{setting.is_enable}}">
+    <!-- <view class="user_area_bg">
+        <image lazy-load="{{true}}" src="" mode="widthFix" />
+    </view> -->
+    <view class="user_area_cont" 
+    style="margin-top:{{setting.marginTop || 0}}rpx;margin-bottom:{{setting.marginBottom || 0}}rpx;padding-left:{{setting.paddingLeftRight || 0}}rpx;padding-right:{{setting.paddingLeftRight || 0}}rpx;background-image: url({{setting.backgroundImage}});background-color: {{setting.backgroundColor}};background-position: {{setting.backgroundPosition}};">
+        <view class="area_cont_title">
+            <view class="area_title ">
+                <text class="title_vertical" style="border-color:{{brand_info.style.bg_color}};"></text>{{setting.title}}
+            </view>
+            <text class="txt_tip">{{setting.tip}}</text>
+            <view class="all_order_tip">
+                <text class="all_order_tip_text" style="background-image:url({{brand_info.icon_url}}micro_mall/rightbutton.png);">查看全部</text>
+            </view>
+            <button 
+            class="btn_link" 
+            bindtap='funcJump' 
+            form-type="submit"
+            data-key="allOrder"
+            ></button>
+        </view>
+        <view class="area_cont">
+            <view class="order_area">
+                <view  class="order_item" wx:for="{{setting.list}}" wx:key="index" wx:if="{{item.is_enable}}">
+                    <text class="num_tip" wx:if="{{userOrderCount[codeKey[item.code]] > 0 }}" style="color:{{brand_info.style.font_color}};border-color:{{brand_info.style.bg_color}};">{{userOrderCount[codeKey[item.code]]}}</text>
+                    <view class="user_func_stay">
+                        <image lazy-load="{{true}}" class="order_icon" src="{{item.icon}}" mode="widthFix" />
+                    </view>
+                    <view>{{item.name}}</view>
+                    <view class="txt_tip" wx:if="item.tip">{{item.tip}}</view>
+                    <button 
+                    class="btn_link" 
+                    data-key="{{item.code}}"
+                    bindtap='funcJump'
+                    form-type="submit" 
+                    ></button>
+                </view>
+            </view>
+        </view>
+    </view>
+</view>

@@ -1,0 +1,90 @@
+<view class="" wx:if="{{!fromType}}">
+	<swiper class="marquee_swiper {{installData.length==0 || !installData?'initStyle':''}}" autoplay="{{isOnlyOne > 2 ? true : false}}" display-multiple-items="{{isOnlyOne > 1 ? 2 : 1}}" circular="true" interval="3000" duration="1200" style="{{swiperH ? 'height:'+ swiperH+'px;' : ''}}">
+		<swiper-item class="marquee_item {{isOnlyOne == 1 ? 'onlyOne_item' : ''}} {{activite_item ? 'activite_item' : ''}}" wx:for="{{installData}}" wx:for-index="index_num" wx:key="index" wx:if="{{item.goods_id || baseInfo.bindType == '10'|| baseInfo.bindType == '12'}}">
+			<view class="goods_item_stay" id="init_H{{index_num}}">
+				<!--图片-->
+				<view class="good_img_area {{sysConf.goods_image_size == '4-3' ? 'ratio_3_4': ''}}">
+					<image class="good_img" src="{{item.goods_thumb}}" mode="aspectFit" lazy-load="{{true}}" />
+					<block wx:if="{{activite_item}}">
+						<view class="act_tip" style="background-color:{{brand_info.style.font_color || default_bg}};" wx:if="{{baseInfo.bindType == '7'}}">秒杀</view>
+						<view class="act_tip" style="background-color:{{brand_info.style.font_color || default_bg}};" wx:elif="{{baseInfo.bindType == '8'}}">拼团</view>
+						<view class="act_tip" style="background-color:{{brand_info.style.font_color || default_bg}};" wx:elif="{{baseInfo.bindType == '10'}}">预售</view>
+						<view class="act_tip" style="background-color:{{brand_info.style.font_color || default_bg}};" wx:elif="{{baseInfo.bindType == '11'}}">积分</view>
+						<view class="act_tip" style="background-color:{{brand_info.style.font_color || default_bg}};" wx:elif="{{baseInfo.bindType == '12'}}">砍价</view>
+						<view class="a_g_border" style="border-color:{{brand_info.style.bg_color || default_bg}};"></view>
+					</block>
+				</view>
+				<!--sku-->
+				<view class="goods_info">
+					<view class="good_name" wx:if="{{baseInfo.showGoodsName == 1}}">{{item.goods_name}}</view>
+					<!-- <view wx:if="{{item.goods_brief}}" class="property">{{item.goods_brief}}</view> -->
+					<view class="join_mans_tip" style="border-color:{{brand_info.style.bg_color || default_bg}};color:{{brand_info.style.bg_color || default_bg}};" wx:if="{{item.join_mans}}">{{item.join_mans}}人团</view>
+					<view class="good_sku {{(activite_item) ? '' : 'v_t'}}" wx:if="{{baseInfo.showGoodsPrice == 1}}">
+						<view class="good_price">
+							<view class="present_p" style="color:{{brand_info.style.font_color || default_bg}};">
+								<view style="color:#333;" wx:if="{{activite_item}}">{{baseInfo.bindType == 7 ? '秒杀价' : baseInfo.bindType == '8'?'拼团价':baseInfo.bindType == '10'?'预售价':baseInfo.bindType == '11'? item.integral>0? item.integral + '积分':'兑换价' :baseInfo.bindType == '12'?'最低砍至':''}}</view>
+								<text class="bold">¥{{item.shop_price ? item.shop_price : item.price}}</text>
+								<!-- <text wx:if="{{ item.integral > 0 }}"> + {{item.integral}} 积分</text> -->
+							</view>
+							<view class="text_crossed_box">
+								<view class="text_crossed original_p" wx:if="{{ (item.price && item.price != item.market_price) || (item.shop_price && item.shop_price != item.market_price) }}">¥{{item.market_price}}</view>
+							</view>
+							<view wx:if="{{showSalesVolume && (baseInfo.bindType == '1' || baseInfo.bindType == '2')}}" class="sales_vol_title">
+								<text class="">销量</text><text>{{item.salesVolume}}</text>
+							</view>
+						</view>
+
+						<view class="act_btn_view" wx:if="{{activite_item}}">
+							<button class="act_btn" style="background-color:{{brand_info.style.font_color || default_bg}};" wx:if="{{baseInfo.bindType == '7' && baseInfo.showBuyButtom == '1'}}">马上秒</button>
+							<button class="act_btn" style="background-color:{{brand_info.style.font_color || default_bg}};" wx:if="{{baseInfo.bindType != '7' && activite_item && baseInfo.showBuyButtom == '1'}}">
+								<view>
+									<view>{{baseInfo.bindType == '8'?'立即拼团':baseInfo.bindType == '10'?'立即预购':baseInfo.bindType == '11'?'立即兑换':baseInfo.bindType == '12'?'发起砍价':''}}</view>
+									<view class="count_down">
+										<text>距{{act_count_down[item.activity_id].active == 0 ?"开始":"结束"}}</text>
+										<text wx:if="{{act_count_down[item.activity_id].day != 0}}">{{act_count_down[item.activity_id].day || "0"}}天</text>
+										<text>{{act_count_down[item.activity_id].hour || "00" }}:</text>
+										<text>{{act_count_down[item.activity_id].min || "00"}}:</text>
+										<text>{{act_count_down[item.activity_id].sec || "00"}}</text>
+									</view>
+								</view>
+							</button>
+						</view>
+					</view>
+				</view>
+			</view>
+			<button class="btn_link" form-type='submit' data-module_type="{{baseInfo.bindType}}" data-activity_id="{{item.activity_id || baseInfo.currentId || 0}}" data-goods_id="{{item.goods_id || 0}}" data-issue_id="{{item.activity_id || baseInfo.currentId || 0}}" data-func_type="{{baseInfo.bindType || 'GOOD'}}" data-related_id="{{baseInfo.catId}}" data-tag="{{baseInfo.tag}}" data-mk_goods_id="{{item.mk_goods_id}}" catchtap="pageJump"></button>
+		</swiper-item>
+	</swiper>
+</view>
+<view class="" wx:elif="{{fromType == 'classify'}}">
+	<swiper class="marquee_swiper {{installData.length==0 || !installData?'initStyle':''}}" autoplay="{{isOnlyOne > 2 ? true : false}}" display-multiple-items="{{isOnlyOne > 1 ? 2 : 1}}" circular="true" interval="3000" duration="1200" style="{{swiperH ? 'height:'+ swiperH+'px;' : ''}}">
+		<block wx:for="{{installData}}" wx:for-index="index_num" wx:key="index" wx:if="{{!noneObj[item.goods_id].hide}}">
+			<swiper-item class="marquee_item {{isOnlyOne == 1 ? 'onlyOne_item' : ''}} {{baseInfo.bind_type == 8 || baseInfo.bind_type == 10 || baseInfo.bind_type == 11 ? 'activite_item' : ''}}">
+				<view class="goods_item_stay" id="init_H{{index_num}}">
+					<view class="good_img_area {{sysConf.goods_image_size == '4-3' ? 'ratio_3_4': ''}}">
+						<image class="good_img" src="{{item.goods_thumb || item.goods_thumb2 || item.img_path}}" mode="aspectFit" lazy-load="{{true}}" />
+					</view>
+					<view class="goods_info">
+						<view class="good_name" wx:if="{{baseInfo.show_goods_name == 1}}">{{details[item.goods_id].goods_name}}</view>
+						<view class="good_sku {{(baseInfo.bind_type == 8 || baseInfo.bind_type == 10 || baseInfo.bind_type == 11) ? '' : 'v_t'}}" wx:if="{{baseInfo.show_goods_price == 1}}">
+							<view class="good_price">
+								<view class="present_p" style="color:{{brand_info.style.font_color || default_bg}};">
+									<!-- <text class="money_char bold">¥</text> -->
+									<text class="bold">¥{{details[item.goods_id].shop_price ? details[item.goods_id].shop_price : details[item.goods_id].price}}</text>
+								</view>
+								<view class="text_crossed_box">
+									<view class="text_crossed original_p" wx:if="{{ (details[item.goods_id].price && details[item.goods_id].price != details[item.goods_id].market_price) || (details[item.goods_id].shop_price && details[item.goods_id].shop_price != details[item.goods_id].market_price) }}">¥{{details[item.goods_id].market_price}}</view>
+								</view>
+								<view wx:if="{{showSalesVolume && (baseInfo.bindType == '1' || baseInfo.bindType == '2')}}" class="sales_vol_title">
+									<text class="">销量</text><text>{{item.salesVolume}}</text>
+								</view>
+							</view>
+						</view>
+					</view>
+				</view>
+				<button class="btn_link" form-type='submit' data-module_type="{{baseInfo.bind_type}}" data-activity_id="{{details[item.goods_id].activity_id || baseInfo.activity_id || 0}}" data-goods_id="{{details[item.goods_id].goods_id || 0}}" data-issue_id="{{details[item.goods_id].activity_id || baseInfo.activity_id || 0}}" data-func_type="{{baseInfo.bindType || 'GOOD'}}" data-related_id="{{baseInfo.catId}}" data-tag="{{baseInfo.tag}}" catchtap="pageJump"></button>
+			</swiper-item>
+		</block>
+
+	</swiper>
+</view>

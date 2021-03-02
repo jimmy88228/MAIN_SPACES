@@ -1,0 +1,13 @@
+<view class="active_hover" wx:if="{{show}}">
+    <view class="notice_box">
+        <image
+            src="{{miniCodeImgUrl}}"
+            mode="widthFix"
+            class="mini_code"></image>
+        <view class="hover_title">HI~CHIC贵宾</view>
+        <view class="hover_text">欢迎体验歌莉娅小程序</view>
+        <view class="hover_text">您可直接下单购买歌莉娅最新商品！</view>
+        <view class="tip">·小程序由INNO提供技术支持</view>
+        <view class="closed_btn" bindtap="closedHover">立即体验</view>
+    </view>
+</view>

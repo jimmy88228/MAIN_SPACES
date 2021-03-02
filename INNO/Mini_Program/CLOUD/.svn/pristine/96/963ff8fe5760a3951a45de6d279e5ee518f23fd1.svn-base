@@ -1,0 +1,684 @@
+<form bindsubmit="formAction" report-submit="true">
+    <view class="shopping_page">
+      <view class="shooping_page_stay {{ isIphoneX ? 'ipx_p_b' : ''}} {{customTab ? 'customTab' : ''}}">
+      <!--头部编辑-->
+      <!-- <view class="top_operation">
+          <view class="select_all" bindtap="selectedAll" wx:if="{{edit_all}}">
+              <image src="{{ls_icon2}}" class="radio_select" mode="aspectFit" wx:if="{{select_all}}" />
+              <image src="{{ls_icon1}}" class="radio_select" mode="aspectFit" wx:else/>
+              <text style='margin-left:12rpx;color:#1B1B1B;' class="font_26">全选</text>
+          </view>
+
+          <view class="edit_carts" bindtap="editCartEvent">
+              <view class="edit_carts_stay {{edit_all ? 'editing' : ''}}">
+                  <button class="edit_all edit_item" form-type="submit" hover-class='none'>
+                      <text style='color:#1B1B1B;' class="font_26">编辑全部</text>
+                  </button>
+                  <button class="edit_complete edit_item" form-type="submit" hover-class='none'>
+                      <image src="{{brand_info.icon_url}}micro_mall/ok_info_all.png" mode="widthFix" />
+                      <text>完成</text>
+                  </button>
+              </view>
+          </view>
+      </view> -->
+
+      <!-- <view class="carts_list">
+          <view 
+          class="c_list_item {{list_item.type+'_item'}}" 
+          wx:for="{{cartArrJson}}"  
+          wx:key="list_type" 
+          wx:for-item="list_item" 
+          wx:for-index="list_type">
+            <view 
+            class="way_item" 
+            wx:for="{{list_item.items}}" 
+            wx:for-item="way_item" 
+            wx:key="way_index" 
+            wx:for-index="way_index"
+            >
+              <block>
+                <view 
+                class="items_title" 
+                wx:if="{{way_item.type == 'noSelfget' && list_item.type == 'wxapp' && way_item.items.length > 0}}">
+                  <view 
+                  class="select_radio" 
+                  data-plc-index="{{list_type}}" 
+                  data-type-index="{{way_index}}"
+                  data-type="{{way_item.type}}"
+                  data-channel="{{list_item.type}}"
+                  bindtap="itemSelect">
+                      <image src="{{ls_icon2}}" class="radio_select" mode="aspectFit" wx:if="{{way_item.select}}" />
+                      <image src="{{ls_icon1}}" class="radio_select " mode="aspectFit" wx:else />
+                  </view>
+                  <text class="items_title_txt C_7f" style="padding:20rpx;">微商城 - 快递配送</text>
+                </view>
+              </block>
+              <view class="list_type_cont {{way_item.type+'Cont'}}">
+                <view 
+                class="shop_carts_list" 
+                wx:for="{{way_item.items}}" 
+                wx:for-item="carts" 
+                wx:for-index="carts_i" 
+                wx:key="carts_i">
+                  <view class="cart_list_type">
+                    <block wx:if="{{list_item.type == 'wxapp'}}">
+                      <view class="items_title" wx:if="{{carts.isBackage}}">
+                        <view 
+                        class="select_radio" 
+                        data-plc-index="{{list_type}}" 
+                        data-type-index="{{way_index}}"
+                        data-carts-i="{{carts_i}}"
+                        data-type="{{way_item.type}}"
+                        data-channel="{{list_item.type}}"
+                        bindtap="itemSelect">
+                            <image src="{{ls_icon2}}" class="radio_select" mode="aspectFit" wx:if="{{carts.select}}" />
+                            <image src="{{ls_icon1}}" class="radio_select " mode="aspectFit" wx:else />
+                        </view>
+                        <view class="items_title_txt V">
+                          <text class="C_7f">套餐商品</text>
+                          <text 
+                          class="change_shipping_btn" 
+                          catchtap="changeShipping"
+                          data-key="{{carts.id}}"
+                          >{{carts.storeName || '快递配送'}}</text>
+                        </view>
+                      </view>
+                      <view class="items_title" wx:elif="{{carts.isSelfget}}">
+                        <view 
+                          class="select_radio" 
+                          data-plc-index="{{list_type}}" 
+                          data-type-index="{{way_index}}"
+                          data-carts-i="{{carts_i}}"
+                          data-type="{{way_item.type}}"
+                          data-channel="{{list_item.type}}"
+                          bindtap="itemSelect">
+                              <image src="{{ls_icon2}}" class="radio_select" mode="aspectFit" wx:if="{{carts.select}}" />
+                              <image src="{{ls_icon1}}" class="radio_select " mode="aspectFit" wx:else />
+                          </view>
+                          <view class="items_title_txt">
+                            <text class="C_7f">微商城 - 门店自提</text>
+                          </view>
+                      </view>
+                    </block>
+                    <block wx:elif="{{list_item.type == 'mwin'}}">
+                      <view class="items_title" wx:if="{{carts.isStore}}">
+                          <view 
+                          class="select_radio" 
+                          data-plc-index="{{list_type}}" 
+                          data-type-index="{{way_index}}"
+                          data-carts-i="{{carts_i}}"
+                          data-type="{{way_item.type}}"
+                          data-channel="{{list_item.type}}"
+                          bindtap="itemSelect">
+                              <image src="{{ls_icon2}}" class="radio_select" mode="aspectFit" wx:if="{{carts.select}}" />
+                              <image src="{{ls_icon1}}" class="radio_select " mode="aspectFit" wx:else />
+                          </view>
+                          <text class="items_title_txt">云货架-{{carts.storeName || "店铺名"}}</text>
+                        </view>
+                    </block>
+                    <view 
+                    class="shop_carts_item {{item.is_invalid == 1 || (item.number > item.product_number || item.product_number == 0) ? 'invalid_item' : ''}}" 
+                    wx:for="{{cartJson[carts.id]}}"
+                    wx:key="index">
+                        <view 
+                        wx:if="{{!carts.isBackage && list_item.type == 'wxapp' && item.isSelfGet != '2'}}" 
+                        class="noselfget_change change_shipping_btn" 
+                        data-index="{{index}}"
+                        data-key="{{carts.id}}"
+                        catchtap="changeShipping">{{ carts.isSelfget ? carts.storeName : '快递配送'}}</view>
+                        <view class="carts_item_cont">
+                            <view 
+                            class="select_radio {{item.extend_field1 && item.extend_id != '1' ? 'invalidOpacity' : '' }}" >
+                                <image 
+                                src="{{ls_icon2}}" 
+                                class="radio_select" 
+                                mode="aspectFit" 
+                                wx:if="{{carts.items[index].select}}" />
+                                <image 
+                                src="{{ls_icon1}}" 
+                                class="radio_select" 
+                                mode="aspectFit" 
+                                wx:else />
+                                <button
+                                data-plc-index="{{list_type}}" 
+                                data-type-index="{{way_index}}"
+                                data-carts-i="{{carts_i}}"
+                                data-index="{{index}}"
+                                data-is-backage="{{carts.isBackage}}"
+                                data-type="{{way_item.type}}"
+                                data-channel="{{list_item.type}}"
+                                data-is_invalid="{{item.is_invalid}}"
+                                class="form_id_btn"
+                                form-type='submit' 
+                                catchtap="{{item.extend_field1 && item.extend_id != '1' ? '' : 'singleSelectConfirm'}}"></button>
+                            </view>
+                            <view 
+                            catchtap='{{item.is_invalid== 0 ? "goDetail" : ""}}' 
+                            data-url="/pages/micro_mall/goods/goods_info?goods_id={{item.goods_id}}&color_id={{item.img_color}}{{item.goods_type == '5' ? '&issued_id=' + item.extend_id : ''}}" 
+                            class="goods_info_link">
+                                <view class="goods_img_box {{sys_config.goods_image_size == '4-3' ? 'ratio_3_4' : ''}}">
+                                    <image src="{{item.goods_img || item.thumb2_url}}" mode="aspectFit" />
+                                    <view class="invalid_block" wx:if="{{item.is_invalid == 1 || (item.number > item.product_number || item.product_number == 0)}}">
+                                      <block wx:if="{{item.is_invalid == 1}}">
+                                        <view class="invalid_text">下 架</view>
+                                      </block>
+                                      <block wx:elif="{{item.number > item.product_number || item.product_number == 0}}">
+                                        <view class="invalid_text">售 罄</view>
+                                      </block>
+                                      <image class="invalid_icon" src="{{brand_info.default_icon_url}}invalid.png" />
+                                    </view>
+                                </view>
+                            </view>
+                              <scroll-view 
+                              bindscroll="handleScoll"  
+                              scroll-x="{{item.extend_field1 ? false : true}}" 
+                              class="goods_edit" 
+                              scroll-with-animation="{{scrollAnimation}}" 
+                              scroll-left="{{edit_states[item.rec_id].showDelete}}" >
+                                <view 
+                                bindtouchmove='{{item.extend_field1 ? "noFun":"handleMove"}}'  
+                                bindtouchstart='{{item.extend_field1 ? "noFun":"handleStart"}}' 
+                                bindtouchend='{{item.extend_field1 ? "noFun":"handleEnd"}}'  
+                                data-rec-id="{{item.rec_id}}"
+                                class="goods_edit_list"   
+                                style='{{edit_states[item.rec_id].edit ? "" : "width:calc(100% + 106rpx)"}}'>
+                                    <view 
+                                    class="goods_edit_item {{item.isLimitBuy==1?'b_b_none':''}}" 
+                                    style='{{edit_states[item.rec_id].edit ? "" : "width:calc(100% - 106rpx);"}}' > 
+                                        <view wx:if="{{item.is_invalid==1}}" class='is_invalid'></view>
+                                        <view class="goods_name name_padding font_24">{{item.goods_name}}</view>
+                                        <view class="product_sn C_7f font_22">{{item.goods_sn}}</view>
+                                        <view class="goods_style C_7f font_22" style=''>{{item.goods_attr}}</view>
+                                        <view class="bottom_location ">
+                                          <view class="inline_b" wx:if="{{item.isSelfGet == '1' && (shipConfig == '1,2' || shipConfig == '1')}}">
+                                            <button 
+                                            class="self_get_tip" 
+                                            style="{{brand_info.style.bg_color ? 'background-color:' + brand_info.style.bg_color+';' : ''}}" 
+                                            hover-class='none' 
+                                            >限门店自提</button>
+                                          </view>
+                                          <block wx:if="{{item.is_invalid == 1 || (item.number > item.product_number || item.product_number == 0)}}">
+                                            <view>
+                                              <text class="invalid_tip" wx:if="{{item.is_invalid == 1}}">商品已不能购买</text>
+                                              <text class="invalid_tip" wx:elif="{{item.number > item.product_number || item.product_number == 0}}">商品库存不足</text>
+                                            </view>
+                                          </block>
+                                          <block wx:else>
+                                            <view class="table">
+                                              <view class="table_cell">
+                                                <view class="shop_price" style="color:{{brand_info.style.font_color}};">
+                                                    <text class="">¥{{item.goods_type == 1 ? item.goods_price : item.exchange_price }}</text>
+                                                    <text wx:if="{{item.integral > 0}}">+{{item.integral}} 积分 </text>
+                                                </view>
+                                                <block wx:if="{{(item.goods_type == 1 && item.market_price != item.goods_price) || (item.goods_type != 1 && item.market_price != item.exchange_price)}}">
+                                                    <view class="box_price font_22">
+                                                        <text class="" style='text-decoration: line-through;'>¥{{item.market_price}}</text>
+                                                        <text wx:if="{{item.old_integral > 0}}" style='text-decoration: line-through;'>+{{item.old_integral}}积分</text>
+                                                    </view>
+                                                </block>
+                                              </view>
+                                              <view class="table_cell t_r" wx:if="{{item.is_invalid != 1 && (!(item.number > item.product_number) || item.product_number != 0)}}">
+                                              
+                                                <view class="count_operation">
+                                                    <view class="reduce_btn">
+                                                        <image 
+                                                        src="{{g_reduce}}" 
+                                                        mode="aspectFit" 
+                                                        wx:if="{{item.number > 1 && !item.extend_field1}}"  
+                                                        data-index="{{index}}" 
+                                                        data-rec-id="{{item.rec_id}}"
+                                                        data-key="{{carts.id}}" 
+                                                        catchtap="reduceGoodsNum" />
+                                                        <image src="{{g_reduce_none}}" mode="aspectFit" wx:else />
+                                                    </view>
+                                                    <view class="count_input">
+                                                      <block wx:if="{{item.extend_field1}}">{{item.number}}</block>
+                                                      <block wx:else>
+                                                        <input 
+                                                        type="number"
+                                                        data-index="{{index}}" 
+                                                        data-rec-id="{{item.rec_id}}"
+                                                        data-key="{{carts.id}}" 
+                                                        data-input-type="goodsNumer"
+                                                        bindblur="inputGoodsNum"
+                                                        class="input_number"
+                                                        confirm-type="done"
+                                                        value="{{item.number}}"/>
+                                                      </block>
+                                                    </view>
+                                                    <view class="add_btn">
+                                                        <image 
+                                                        src="{{g_add}}" 
+                                                        mode="aspectFit" 
+                                                        data-index="{{index}}"
+                                                        data-rec-id="{{item.rec_id}}" 
+                                                        data-key="{{carts.id}}" 
+                                                        wx:if="{{(item.number < item.product_number) && !item.extend_field1}}"  
+                                                        catchtap="addGoodsNum" />
+                                                        <image src="{{g_add_none}}" mode="aspectFit" wx:else  />
+                                                    </view>
+                                                </view>
+
+                                              </view>
+                                            </view>
+                                          </block>
+                                          
+                                        </view>
+                                      <view 
+                                      class='delete' 
+                                      bindtap="delectShoppingCart" 
+                                      data-rec-id="{{item.rec_id}}"
+                                      style='{{"background:"+brand_info.style.bg_color+";"}} {{edit_states[item.rec_id].edit?"opacity:0;width:0;":"opacity:1"}}'>删除</view>
+                                    </view>
+                                </view>
+                              <view class="limit_times" wx:if="{{item.isLimitBuy==1}}">该商品限购数量{{item.limitTimes}}</view>
+                            </scroll-view>
+                        </view>
+                    </view>
+                    <view class="stay_line" ></view>
+                  </view>
+                </view>
+                
+              </view>
+              <view class="stay_line"></view>
+            </view>
+          </view>
+          <view class="has_no_cart" wx:if="{{!hasData}}">
+              <image src="{{brand_info.icon_url}}micro_mall/shopping_cart/cart_no_goods.png" mode="aspectFit" />
+              <view class="txt">购物车空空如也，去逛逛吧~</view>
+          </view>
+      </view> -->
+      <view class="carts_list">
+          <view 
+          class="c_list_item"
+          wx:for="{{cartArr}}"  
+          wx:key="list_type" 
+          wx:for-item="list_item" 
+          wx:for-index="list_index">
+            <!-- <view 
+            class="way_item" 
+            wx:for="{{list_item.items}}" 
+            wx:for-item="way_item" 
+            wx:key="way_index"
+            wx:for-index="way_index"
+            > -->
+              <block>
+                <view 
+                class="items_title">
+                  <view 
+                  class="select_radio" 
+                  data-plc-index="{{list_index}}" 
+                  data-type-index="{{way_index}}"
+                  data-type="{{way_item.type}}"
+                  data-channel="{{list_item.type}}"
+                  data-module-index="{{list_index}}"
+                  data-id="{{list_item.id}}"
+                  bindtap="itemSelect">
+                      <image src="{{ls_icon2}}" class="radio_select" mode="aspectFit" wx:if="{{list_item.select}}" />
+                      <image src="{{ls_icon1}}" class="radio_select " mode="aspectFit" wx:else />
+                  </view>
+                  <view class="items_title_txt">
+                    <block wx:if="{{list_item.onLine}}">
+                      微商城 - {{list_item.storeId ? list_item.storeName : '快递配送'}}
+                    </block>
+                    <block wx:else>
+                      云货架 - {{list_item.storeName}}
+                    </block>
+                  </view>
+                </view>
+              </block>
+              <view class="list_type_cont "><!--{{way_item.type+'Cont'}}-->
+                <view 
+                class="shop_carts_list" 
+                wx:for="{{list_item.items}}" 
+                wx:for-item="carts" 
+                wx:for-index="carts_i" 
+                wx:key="carts_i">
+                  <view class="cart_list_type">
+                    <view class="items_title" wx:if="{{goodsJson[item.recId].extend_field1}}">
+                      <view class="items_title_txt V">
+                        <text class="C_7f">套餐商品</text>
+                      </view>
+                    </view>
+                    <view class="items_title prom_items_title" wx:else>
+                        <!-- <view 
+                        class="select_radio" 
+                        data-carts-index="{{carts_i}}"
+                        data-module-index="{{list_index}}"
+                        data-id="{{carts.id}}"
+                        bindtap="itemSelect">
+                            <image src="{{ls_icon2}}" class="radio_select" mode="aspectFit" wx:if="{{carts.select}}" />
+                            <image src="{{ls_icon1}}" class="radio_select " mode="aspectFit" wx:else />
+                        </view> -->
+                        <view class="items_title_txt prom_title" wx:if="{{promJson[carts.ruleId].tip1Arr || promJson[carts.ruleId].tip2Arr.length > 0}}">
+                          <view class="i_t_tip">优惠</view>
+                          <view class="tip_row">
+                            <view class="prom_tip1" wx:if="{{promJson[carts.ruleId].tip1Arr || promJson[carts.ruleId].ruleNickName}}">
+                              <block wx:if="{{promJson[carts.ruleId].ruleNickName}}">
+                                {{promJson[carts.ruleId].ruleNickName}}
+                              </block>
+                              <block wx:else>
+                                <block wx:for="{{promJson[carts.ruleId].tip1Arr}}" wx:for-item="tipItem" wx:for-index="tipIndex" wx:key="tipIndex" wx:if="{{tipItem.txt}}">{{tipItem.txt}}</block>
+                              </block>
+                            </view>
+                            <view class="font_0">
+                              <view 
+                              class="gift_item" 
+                              wx:for="{{promJson[carts.ruleId].tip1Arr}}" 
+                              wx:for-item="tipItem" 
+                              wx:for-index="tipIndex" 
+                              wx:key="tipIndex"
+                              wx:if="{{tipItem.txt && promJson[carts.ruleId].ruleNickName}}" >{{tipItem.tip}}</view>
+                              <view class="gift_item" wx:for="{{promJson[carts.ruleId].tip2Arr}}" wx:for-item="giftItem" wx:for-index="giftIndex" wx:if="{{giftItem}}" wx:key="giftIndex">{{giftItem}}</view>
+                            </view>
+                          </view>
+                          <view class="get_prom" data-rule-id="{{carts.ruleId}}" catchtap="getPromDetail">
+                            <text>凑单</text>
+                            <text class="more_arrow"></text>
+                          </view>
+                        </view>
+                    </view>
+                    <view 
+                    class="shop_carts_item " 
+                    wx:for="{{carts.items}}"
+                    wx:key="index">
+                        <view class="carts_item_cont">
+                            <view 
+                            class="select_radio {{goodsJson[item.recId].extend_field1 && goodsJson[item.recId].extend_id != '1' ? 'invalidOpacity' : '' }}" >
+                                <image 
+                                src="{{ls_icon2}}" 
+                                class="radio_select" 
+                                mode="aspectFit" 
+                                wx:if="{{item.select}}" />
+                                <image 
+                                src="{{ls_icon1}}" 
+                                class="radio_select" 
+                                mode="aspectFit" 
+                                wx:else />
+                                <button
+                                data-carts-index="{{carts_i}}"
+                                data-module-index="{{list_index}}"
+                                data-index="{{index}}"
+                                data-is-backage="{{item.isBackage}}"
+                                data-is_invalid="{{goodsJson[item.recId].is_invalid}}"
+                                data-id="{{item.id}}"
+                                class="form_id_btn"
+                                form-type='submit' 
+                                catchtap="{{goodsJson[item.recId].extend_field1 && goodsJson[item.recId].extend_id != '1' ? '' : 'singleSelectConfirm'}}"></button>
+                            </view>
+                            <view 
+                            catchtap='{{goodsJson[item.recId].is_invalid== 0 ? "goDetail" : ""}}' 
+                            data-url="/pages/micro_mall/goods/goods_info?goods_id={{goodsJson[item.recId].goods_id}}&color_id={{goodsJson[item.recId].img_color}}{{goodsJson[item.recId].goods_type == '5' ? '&issued_id=' + goodsJson[item.recId].extend_id : ''}}" 
+                            class="goods_info_link">
+                                <view class="goods_img_box {{sys_config.goods_image_size == '4-3' ? 'ratio_3_4' : ''}}">
+                                    <image src="{{goodsJson[item.recId].goods_img || item.thumb2_url}}" mode="aspectFit" />
+                                    <view class="invalid_block" wx:if="{{goodsJson[item.recId].is_invalid == 1 || (goodsJson[item.recId].number > goodsJson[item.recId].product_number || goodsJson[item.recId].product_number == 0)}}">
+                                      <block wx:if="{{goodsJson[item.recId].is_invalid == 1}}">
+                                        <view class="invalid_text">下 架</view>
+                                      </block>
+                                      <block wx:elif="{{goodsJson[item.recId].number > goodsJson[item.recId].product_number || goodsJson[item.recId].product_number == 0}}">
+                                        <view class="invalid_text">售 罄</view>
+                                      </block>
+                                      <image class="invalid_icon" src="{{brand_info.default_icon_url}}invalid.png" />
+                                    </view>
+                                </view>
+                            </view>
+                              <scroll-view 
+                              bindscroll="handleScoll"  
+                              scroll-x="{{goodsJson[item.recId].extend_field1 ? false : true}}" 
+                              class="goods_edit" 
+                              scroll-with-animation="{{scrollAnimation}}" 
+                              scroll-left="{{edit_states[goodsJson[item.recId].rec_id].showDelete}}" >
+                                <view 
+                                bindtouchmove='{{goodsJson[item.recId].extend_field1 ? "noFun":"handleMove"}}'  
+                                bindtouchstart='{{goodsJson[item.recId].extend_field1 ? "noFun":"handleStart"}}' 
+                                bindtouchend='{{goodsJson[item.recId].extend_field1 ? "noFun":"handleEnd"}}'  
+                                data-rec-id="{{goodsJson[item.recId].rec_id}}"
+                                class="goods_edit_list"   
+                                style='{{edit_states[item.rec_id].edit ? "" : "width:calc(100% + 106rpx)"}}'>
+                                    <view 
+                                    class="goods_edit_item {{goodsJson[item.recId].isLimitBuy==1?'b_b_none':''}}" 
+                                    style='{{edit_states[goodsJson[item.recId].rec_id].edit ? "" : "width:calc(100% - 106rpx);"}}' > 
+                                        <view wx:if="{{goodsJson[item.recId].is_invalid==1}}" class='is_invalid'></view>
+                                        <view class="goods_bonus">
+                                          <view class="goods_name">{{goodsJson[item.recId].goods_name}}</view>
+                                          <view class="receive_point" catchtap="getCouponList" data-goods-id="{{goodsJson[item.recId].goods_id}}" wx:if="{{goodsJson[item.recId].existsBonusActivity}}">领券</view>
+                                        </view>
+					<view class="product_sn C_7f font_22">{{goodsJson[item.recId].goods_sn}}</view>
+                                        <view class="goods_style C_7f font_22" style=''>{{goodsJson[item.recId].goods_attr}}</view>
+                                        <view>
+                                          <view 
+                                          wx:if="{{!(goodsJson[item.recId].extend_field1 && goodsJson[item.recId].extend_id)}}"
+                                          class="change_shipping_btn" 
+                                          data-key="{{item.recId}}"
+                                          catchtap="changeShipping">
+                                            {{ carts.storeId ? carts.storeName : '快递配送'}}
+                                            <text class="down_a"></text>
+                                          </view>
+                                        </view>
+                                        <view class="bottom_location">
+                                          <view class="inline_b" wx:if="{{goodsJson[item.recId].isSelfGet == '1' && (shipConfig == '1,2' || shipConfig == '1')}}">
+                                            <button 
+                                            class="self_get_tip" 
+                                            style="{{brand_info.style.bg_color ? 'background-color:' + brand_info.style.bg_color+';' : ''}}" 
+                                            hover-class='none' 
+                                            >限门店自提</button>
+                                          </view>
+                                          <block wx:if="{{goodsJson[item.recId].is_invalid == 1 || (goodsJson[item.recId].number > goodsJson[item.recId].product_number || goodsJson[item.recId].product_number == 0)}}">
+                                            <view>
+                                              <text class="invalid_tip" wx:if="{{goodsJson[item.recId].is_invalid == 1}}">商品已不能购买</text>
+                                              <text class="invalid_tip" wx:elif="{{goodsJson[item.recId].number > goodsJson[item.recId].product_number || goodsJson[item.recId].product_number == 0}}">商品库存不足</text>
+                                            </view>
+                                          </block>
+                                          <block wx:else>
+                                            <view class="table">
+                                              <view class="table_cell">
+                                                <view class="shop_price" style="color:{{brand_info.style.font_color}};">
+                                                    <text class="">¥{{goodsJson[item.recId].goods_type == 1 ? goodsJson[item.recId].goods_price : goodsJson[item.recId].exchange_price }}</text>
+                                                    <text wx:if="{{goodsJson[item.recId].integral > 0}}">+{{goodsJson[item.recId].integral}} 积分 </text>
+                                                </view>
+                                                <block wx:if="{{(goodsJson[item.recId].goods_type == 1 && goodsJson[item.recId].market_price != goodsJson[item.recId].goods_price) || (goodsJson[item.recId].goods_type != 1 && goodsJson[item.recId].market_price != goodsJson[item.recId].exchange_price)}}">
+                                                    <view class="box_price">
+                                                        <text class="" style='text-decoration: line-through;'>¥{{goodsJson[item.recId].market_price}}</text>
+                                                        <text wx:if="{{goodsJson[item.recId].old_integral > 0}}" style='text-decoration: line-through;'>+{{goodsJson[item.recId].old_integral}}积分</text>
+                                                    </view>
+                                                </block>
+                                              </view>
+                                              <view class="table_cell t_r" wx:if="{{goodsJson[item.recId].is_invalid != 1 && (!(goodsJson[item.recId].number > goodsJson[item.recId].product_number) || goodsJson[item.recId].product_number != 0)}}">
+                                              
+                                                <view class="count_operation">
+                                                    <view class="reduce_btn">
+                                                        <image 
+                                                        src="{{g_reduce}}" 
+                                                        mode="aspectFit" 
+                                                        wx:if="{{goodsJson[item.recId].number > 1 && !goodsJson[item.recId].extend_field1}}"  
+                                                        data-index="{{index}}" 
+                                                        data-rec-id="{{goodsJson[item.recId].rec_id}}"
+                                                        data-key="{{carts.id}}" 
+                                                        catchtap="reduceGoodsNum" />
+                                                        <image src="{{g_reduce_none}}" mode="aspectFit" wx:else />
+                                                    </view>
+                                                    <view class="count_input">
+                                                      <block wx:if="{{goodsJson[item.recId].extend_field1}}">{{goodsJson[item.recId].number}}</block>
+                                                      <block wx:else>
+                                                        <input 
+                                                        type="number"
+                                                        data-index="{{index}}" 
+                                                        data-rec-id="{{goodsJson[item.recId].rec_id}}"
+                                                        data-key="{{carts.id}}" 
+                                                        data-input-type="goodsNumer"
+                                                        bindblur="inputGoodsNum"
+                                                        class="input_number"
+                                                        confirm-type="done"
+                                                        value="{{goodsJson[item.recId].number}}"/>
+                                                      </block>
+                                                    </view>
+                                                    <view class="add_btn">
+                                                        <image 
+                                                        src="{{g_add}}" 
+                                                        mode="aspectFit" 
+                                                        data-index="{{index}}"
+                                                        data-rec-id="{{goodsJson[item.recId].rec_id}}" 
+                                                        data-key="{{carts.id}}" 
+                                                        wx:if="{{(goodsJson[item.recId].number < goodsJson[item.recId].product_number) && !goodsJson[item.recId].extend_field1}}"  
+                                                        catchtap="addGoodsNum" />
+                                                        <image src="{{g_add_none}}" mode="aspectFit" wx:else  />
+                                                    </view>
+                                                </view>
+
+                                              </view>
+                                            </view>
+                                          </block>
+                                          
+                                        </view>
+                                      <view 
+                                      class='delete' 
+                                      bindtap="delectShoppingCart" 
+                                      data-rec-id="{{goodsJson[item.recId].rec_id}}"
+                                      style='{{"background:"+brand_info.style.bg_color+";"}} {{edit_states[goodsJson[item.recId].rec_id].edit?"opacity:0;width:0;":"opacity:1"}}'>删除</view>
+                                    </view>
+                                </view>
+                              <view class="limit_times" wx:if="{{goodsJson[item.recId].isLimitBuy==1}}">该商品限购数量{{goodsJson[item.recId].limitTimes}}</view>
+                            </scroll-view>
+                        </view>
+                    </view>
+                    <view class="stay_line" ></view>
+                  </view>
+                </view>
+                
+              </view>
+              <view class="stay_line"></view>
+            <!-- </view> -->
+          </view>
+          <view class="has_no_cart" wx:if="{{!hasData}}">
+              <image src="{{brand_info.icon_url}}micro_mall/shopping_cart/cart_no_goods.png" mode="aspectFit" />
+              <view class="txt">购物车空空如也，去逛逛吧~</view>
+          </view>
+      </view>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+      
+      <!--结算展示 ↓-->
+      <view class="operate_fixed {{ isIphoneX ? 'ipx_p_b' : ''}} {{customTab ? 'customTab' : ''}}" >
+          <view class="operate_fixed_stay {{edit_all ? 'editing' : ''}}">
+              <view class="operate_fixed_item table">
+                  <view class="operate_item_stay total_show_view table_cell" catchtap="{{total_count.promotionInfo.discountAmount > 0 ? 'promotion_detail' : ''}}" >
+                  
+                      <view class="total">
+                          <text style='line-height:26rpx;'>合计</text>
+                          <view class="total_val" style="color:{{brand_info.style.font_color}};">
+                              <text class="bold">¥{{total_count.money || '0.00'}}</text>
+                              <text class="bold" wx:if="{{total_count.integral > 0}}">+{{total_count.integral}}</text>
+                              <text class="font_24 bold" wx:if="{{total_count.integral > 0}}">积分</text>
+                          </view>
+                          <text class="C_7f font_20 tip">(不含运费)</text>
+                      </view>
+
+                      <view 
+                      wx:if="{{total_count.promotionInfo.discountAmount > 0}}" 
+                      class="total promote" 
+                      style="color:{{brand_info.style.font_color}};">
+                          <text class="txt">优惠金额</text>
+                          <view class="txt total_val promote">
+                              <text class="">¥{{total_count.promotionInfo.discountAmount || '0.00'}}</text>
+                          </view>
+                          <view class="txt pro_detail" >
+                            <text class="pro_detail_txt">优惠明细</text>
+                            <view class="arrow" >
+                              <text class="arrow_row" style="background-color:{{brand_info.style.font_color}};"></text>
+                              <text class="arrow_line" style="background-color:{{brand_info.style.font_color}};"></text>
+                            </view>
+                          </view>
+                      </view>
+
+                      <!--抵扣-->
+                      <!-- <view class="font_24 C_a1 deduction_view" wx:if="{{total_count.discount_money > 0}}">
+                          <text>已减</text>
+                          <text class="bold"> ¥{{total_count.discount_money}} </text>
+                      </view> -->
+                  </view>
+
+                  <view class="operate_item_stay table_cell operate_total_btns">
+                      <!-- <button form-type='submit' class="go_settle default_btn_bg font_28" style="{{total_count.cart_num > 0 ? 'background:'+brand_info.style.bg_color+';color:#fff;' : 'background:#EFEFEF;color:#7f7f7f;'}}" bindtap="goSettleEvent">结算
+                          <text wx:if="{{total_count.cart_num > 0}}">({{total_count.cart_num}})</text>
+                      </button> -->
+                      <view 
+                      class="go_settle default_btn_bg font_28"
+                      style="{{total_count.cart_num > 0 ? 'background:'+brand_info.style.bg_color+';color:#fff;' : 'background:#EFEFEF;color:#7f7f7f;'}}"
+                      >
+                        <btns 
+                        class="go_settle_btn"
+                        btnType="buy"
+                        disabled="{{!(total_count.cart_num > 0 || total_count.warn)}}"
+                        isLogin="{{isLogin}}"
+                        bindclickcallback="goSettleEvent"
+                        >
+                        <view class="settle_btn_cont">
+                          <view>
+                          结算
+                          <text wx:if="{{total_count.cart_num > 0}}">（{{total_count.cart_num}}）</text>
+                          </view>
+                          <view class="check_discount" wx:if="{{total_count.cart_num > 0}}">点击结算查看更多优惠</view>
+                        </view>
+                        </btns>
+                      </view>
+                  </view>
+              </view>
+              <view class="operate_fixed_item table">
+                  <view class="clear_carts_operate table_cell">
+                      <button class="clear_up" form-type='submit' style="{{total_count.cart_num > 0 ? 'background:'+brand_info.style.bg_color+';color:#fff;' : 'background:#bbb;color:#fff;'}}" catchtap="delectShoppingCart">删除</button>
+                  </view>
+              </view>
+          </view>
+      </view>
+      <!--结算展示 ↑-->
+      <!--购物车广告-->
+      <!-- <view class="shopping_ads" wx:if="{{hasAds}}">
+        <view class="ad_tip">
+          <text class="l_line">
+          </text>
+          <text class="ad_tip_txt">可能你想要</text>
+          <text class="r_line">
+          </text>
+        </view>
+        <view class="ad_cont">
+          <embed_custom_module id="embedId"></embed_custom_module>
+        </view>
+      </view> -->
+      <view class="shopping_ads" >
+        <view class="ad_tip" wx:if="{{hasCustomData}}">
+            <text class="l_line">
+            </text>
+            <text class="ad_tip_txt">可能你想要</text>
+            <text class="r_line">
+            </text>
+          </view>
+        <pageTab id="pageTab" hideContact="{{true}}" type="inline" bindgetPageDataCallback='getPageDataCallback' set-share="{{setShare}}"></pageTab>
+      </view>
+    </view>
+  </view>
+</form>
+
+<!--登录界面-->
+<dialog id="pageDialog"></dialog>
+<tips_window id="tips_window" tipsArr="{{failArr}}"></tips_window>
+<loginPage id="loginPage" bindloginCallback="loginCallback"></loginPage>
+<toasts id="toasts_bar"></toasts>
+<shipPop id="shipPop" changeShipInfo="{{changeShipInfo}}" bindchangeCallback="changeCallback"></shipPop>
+<promotion style="width:100%;height:100%;" id="promotion"></promotion>
+<couponList class="coupon_list" id="couponList" isLogin="{{isLogin}}"></couponList>
+<!--客服-->
+<cs></cs>

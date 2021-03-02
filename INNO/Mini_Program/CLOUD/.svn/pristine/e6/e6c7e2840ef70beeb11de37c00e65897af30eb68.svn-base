@@ -1,0 +1,32 @@
+<!--pages/component/pop/card_code/card_code.wxml-->
+<window class="window" ext-class="window-ext">
+	<view class="card_code_content" catchtouchmove="_noFn" style="{{boxStyle}}">
+		<view class="card_code">
+			<block wx:if="{{type == 'dynamicCode'}}">
+                <view class="content_box">
+                    <view class="tips">您的动态码</view>
+                    <view wx:if="{{getCodeVaild}}">
+                        <view class="codes" style="color: {{isInvaild ? '#acacac' : '#000'}}">{{captcha}}</view>
+                        <view class="count_down">{{countDown}}</view>
+                    </view>
+                    <view wx:else class="invalid">
+                        无有效验证码
+                    </view>
+                </view>
+                <button hover-class="none" class="confirm" catchtap="cancel">确认</button>
+			</block>
+			<block wx:else>
+                <view class="content_box">
+                    <view class="tips">查看口令</view>
+                    <view wx:if="{{getCodeVaild}}">
+                        <view class="codes" style="color: {{isInvaild ? '#acacac' : '#000'}}">{{captcha}}</view>
+                        <view class="count_down">{{countDown}}</view>
+                    </view>
+                    <view wx:else class="invalid">
+                        无有效验证码
+                    </view>
+                </view>
+			</block>
+		</view>
+	</view>
+</window>

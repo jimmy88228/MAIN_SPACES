@@ -1,0 +1,70 @@
+import CheckUpdateTimer from "../../../../../helper/manager/check-update-timer";
+import userJump from "../userJumpHandle";
+const app = getApp();
+Component(app.BTAB({
+  properties: {
+    setting: {
+      type: Object,
+      value: {}
+    },
+    sysConf: {
+      type: Object,
+      value: {}
+    },
+    sessionFrom: {
+      type: Object,
+      value: {}
+    },
+  },
+  options: {
+    styleIsolation: 'apply-shared'
+  },
+  attached() {
+  },
+  detached() {
+  },
+  data: {
+    assetsObj: {}
+  },
+  ready(){},
+  observers: {
+    'setting': function(setting){
+      if(setting.is_enable){
+        checkTips.call(this);
+        this.getThisPage().getUserInfoHandle().then(userData=>{
+          this.setData({
+            userData: userData
+          })
+        })
+      }
+    }
+  },
+  methods: {
+    funcJump(e){
+      let dataset = e.currentTarget.dataset || {};
+      let userData = this.data.userData || {};
+      if(dataset.key == "redpack"){
+        dataset.redpack_amount_sum = userData.redpack_amount_sum;
+        dataset.unusable_redpack_amount = userData.unusable_redpack_amount;
+      } else if(dataset.key == "balance"){
+        dataset.account_balance = userData.account_balance;
+      } else if(dataset.key == "distribution"){
+        dataset.MobileNo = userData.MobileNo || "";
+      }
+      userJump.jump(dataset, this.properties.sysConf);
+    }
+  }
+}))
+function checkTips(){
+  CheckUpdateTimer.checkTimer('rankTip').then(res=>{
+    this.setData({
+      showRankTip:true
+    })
+  }).catch(e=>{
+    if(this.data.showRankTip){
+      this.setData({
+        showRankTip:false
+      })
+    }
+  })
+}

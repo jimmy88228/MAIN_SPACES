@@ -1,0 +1,14 @@
+{
+  "component": true,
+  "usingComponents": {
+    "marqueeView": "/pages/component/custom/marquee_view",
+    "btns": "/pages/component/buttons/btns",
+    "carousel":"/pages/component/custom/module_branches/carousel",
+    "advertise":"/pages/component/custom/module_branches/advertise",
+    "activities":"/pages/component/custom/module_branches/activities",
+    "multiActivities":"/pages/component/custom/module_branches/multiActivities",
+    "goodsList":"/pages/component/custom/module_branches/goodsList",
+    "more-view":"/pages/component/more-view/more-view",
+    "userCard": "/pages/component/custom/module_branches/userCard"
+    }
+}

@@ -1,0 +1,45 @@
+.main{
+  padding: 30rpx;
+  box-sizing: border-box;
+}
+.box{
+  display:flex;
+  justify-content: space-between;
+  padding: 0 0 30rpx 0;
+}
+.name{
+
+}
+.more-text{
+  font-size: 24rpx;
+}
+.more-text-box{
+  display: flex;
+  align-items: center;
+}
+.more-icon{
+  width: 12rpx;
+  height: 12rpx;
+  background-color: transparent;
+  border-right: 1px solid #171717;
+  border-bottom: 1px solid #171717;
+  position: relative;
+  transform: rotate(-45deg);
+}
+
+/* 通配 */
+.text-align-left{
+  text-align: left;
+}
+.text-align-center{
+  text-align: center;
+}
+.font-size-16{
+  font-size: 30rpx;
+}
+.font-size-14{
+  font-size: 26rpx;
+}
+.font-size-12{
+  font-size: 24rpx;
+}

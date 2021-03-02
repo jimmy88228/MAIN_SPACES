@@ -1,0 +1,9 @@
+{
+  "navigationBarTitleText": "购物车",
+  "backgroundColor": "#F2F2F2",
+  "navigationStyle": "custom",
+  "usingComponents": {
+    "cartList": "./cart_list/cart_list",
+    "shopNav": "./shop-nav/shop-nav"
+  }
+}

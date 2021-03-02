@@ -1,0 +1,483 @@
+import {
+  qrcode_custom,
+  barcode_custom
+} from "../../../utils/goComplete/index.js"
+import WxApi from '../../../helper/wx-api-helper.js'
+const app = getApp();
+Component(app.BTAB({
+  options: {
+    addGlobalClass: true,
+  },
+  properties: {
+
+  },
+  data: {
+    code_data: {
+      qr_pay_code: ''
+    },
+    show_pay_pop: '',
+    orderInfo: {},
+    rule: {},
+    //优惠券
+    bonus_info: {},
+    select_bonus: {
+      type_money: 0,
+    },
+    //积分
+    pointInfo: {},
+    usePoint: false,
+    //余额
+    balanceInfo: {
+      canUsebalance: 0,
+      account_balance: 0
+    },
+    useBalance: false,
+    //储值卡
+    prepaidInfo: {},
+    usePrepaid: false,
+    //支付
+    paymentList: {},
+    payId: 0,
+  },
+  attached() {
+    this.beforeInfo = {
+      payment_id: 0,
+      // pay_id: 0, //
+      // offline_sn: '', //
+      // bonus_id: '',
+      // user_point: 0,
+      // is_user_balance: 0,
+      // is_user_point: 0,
+      // prepaid_cardid: '',
+      storeId: '', //
+      // prepaid_card_money: 0,
+      payment_status: 0,
+    };
+    this.refresh_timer = null;
+    this.check_timer = null;
+    this.refresh_time = 60000;
+    this.check_time = 3000;
+    let applet_logo = this.data.brand_info.logo_path + "micro_mall/applet_logo.png";
+    this.setData({
+      applet_logo: applet_logo || ''
+    })
+    console.log('attached', this.beforeInfo, this.refresh_timer, this.check_timer, this.refresh_time, this.check_time)
+  }, 
+  /**
+   * 组件的方法列表
+   */
+  methods: {
+    onLoadFn() {
+      getPayCode.call(this);
+    },
+    onUnloadFn() {
+      unListen.call(this);
+    },  
+    refreshCode() {
+      getPayCode.call(this);
+    },
+    showPayInfo(is_show = false) {
+      this.setData({
+        show_pay_pop: "isshow"
+      })
+    },
+    closePayInfo() {
+      this.setData({
+        show_pay_pop: 'ishide'
+      })
+      getPayCode.call(this);
+      this.check_timer = setInterval(() => {
+        getOfflineOrderInfo.call(this);
+      }, this.check_time);
+    },
+    /**
+     * 使用积分
+     */
+    usePoint: function() {
+      if (this.clicking) return;
+      let usePoint = this.data.usePoint;
+      this.setData({
+        usePoint: !usePoint
+      });
+      getJiesuan.call(this);
+    },
+    /**使用余额 */
+    useBalanceHandle() {
+      if (this.clicking) return;
+      let useBalance = this.data.useBalance;
+      if (useBalance) {
+        useBalance = false;
+      } else {
+        useBalance = true;
+      }
+      this.setData({
+        useBalance: useBalance
+      });
+      getJiesuan.call(this);
+    },
+    /**
+     * 使用储值卡
+     */
+    usePrepaid: function() {
+      if (this.clicking) return;
+      let usePrepaid = this.data.usePrepaid;
+      this.setData({
+        usePrepaid: !usePrepaid
+      })
+      getJiesuan.call(this);
+
+    },
+    /**
+     * 选择优惠券
+     */
+    selectBouns: function() {
+      if (this.clicking) return;
+      let bonus_info = this.data.bonus_info || {}
+      if (parseInt(bonus_info.canUseCouponNum) > 0) {
+        let userChoiceData = app.StorageH.get("userChoiceData") || {};
+        let use_bonus = userChoiceData.use_coupon || {};
+        let select_bonus = this.data.select_bonus || {};
+        if (select_bonus.bonus_id == use_bonus.bonus_id) {
+          return;
+        }
+        this.setData({
+          select_bonus: use_bonus
+        })
+        getJiesuan.call(this);
+      }
+    },
+    /**
+     * 选择支付方式
+     */
+    selectPayMode: function(e) {
+      if (this.clicking) return;
+      let payId = e.currentTarget.dataset.payId;
+      this.setData({
+        payId: payId
+      });
+      getJiesuan.call(this);
+    },
+    confirmToPay: function() {
+      updateOrderInfo.call(this);
+    },
+    joinWxActivity(){
+      joinWxCouponActivity.call(this);
+    }
+  },
+  pageLifetimes: {
+    show() {
+      _onShowFn.call(this);
+    },
+    hide() {
+      unListen.call(this);
+    }
+  },
+}))
+
+
+function _onShowFn() {
+  if (!(this.data.show_pay_pop == "isshow")) {
+    getPayCode.call(this);
+  } else {
+    //是否选择优惠券
+    this.selectBouns();
+  }
+}
+
+function unListen() {
+  clearInterval(this.check_timer);
+  clearInterval(this.refresh_timer);
+}
+
+
+//获取二维码
+function getPayCode() {
+  var that = this;
+  return app.SmktPayApi.getPayCode({
+    params: {
+    }
+  }).then(e => {
+    if (e.code == "1") {
+      let data = e.data;
+      var qr_pay_code = e.data;
+      var code_data = {
+        qr_pay_code: qr_pay_code
+      }
+      this.setData({
+        code_data: code_data
+      });
+      qrcode_custom('payCode', qr_pay_code, 450, 450,this);
+      barcode_custom('barCanvas', qr_pay_code, 500, 150,this);
+      clearInterval(this.refresh_timer);
+      clearInterval(this.check_timer);
+      this.refresh_timer = setInterval(function () {
+        getPayCode.call(that);
+      }, this.refresh_time);
+      this.check_timer = setInterval(function () {
+        getOfflineOrderInfo.call(that);
+      }, this.check_time);
+      return Promise.resolve(data);
+    }
+    return Promise.reject();
+  })
+}
+//获取扫码状态
+function getOfflineOrderInfo() {
+  let qr_pay_code = this.data.code_data.qr_pay_code;
+  return app.SmktPayApi.getOfflineOrderInfo({
+    params: {
+      pay_barcode: qr_pay_code,
+    },
+    other: {
+      isShowLoad: false
+    }
+  }).then(e => {
+    if (e.code == "1") {
+      let data = e.data || {};
+      let payment_id = data.payment_id;
+
+      if (payment_id) {
+        wx.showLoading({
+          "title": "获取支付信息..."
+        });
+        this.beforeInfo.payment_status = data.payment_status;
+        this.beforeInfo.storeId = data.store_id;
+        this.beforeInfo.payment_id = data.payment_id;
+        //停止刷新二维码
+        clearInterval(this.refresh_timer);
+        clearInterval(this.check_timer);
+        if (data.payment_status) { 
+          jump.call(this, data.payment_id, 'result');
+          return;
+        }
+        getJiesuan.call(this);
+      }
+      return Promise.resolve();
+    }
+    return Promise.reject();
+  })
+}
+
+function getOrderStatus(is_topay = false) {
+  let beforeInfo = this.beforeInfo || {};
+  let payment_id = beforeInfo.payment_id;
+  if (!payment_id) return;
+  return app.SmktPayApi.getOrderStatus({
+    params: {
+      paymentId: payment_id,
+      brandCode: app.Conf.BRAND_CODE,
+    },
+    other: {
+      isShowLoad: true
+    }
+  }).then(e => {
+    if (e.code == "1") {
+      let pay_status = e.data; 
+      jump.call(this, payment_id)
+      return Promise.resolve();
+    }
+    return Promise.reject();
+  })
+}
+
+function getJiesuan() {
+  let beforeInfo = this.beforeInfo || {};
+  let select_bonus = this.data.select_bonus || {};
+  this.clicking = true;
+  return app.SmktPayApi.postOfflineJieSuanList({
+    data: {
+      paymentId: beforeInfo.payment_id,
+      bonusId: select_bonus.bonus_id || 0,//beforeInfo.bonus_id,
+      IsUsePoint: this.data.usePoint ? 1 : 0,
+      prepaidCardIds: "",
+      isUseStoredValue: this.data.usePrepaid ? 1 : 0,
+      storeId: beforeInfo.storeId,
+      IsUseBalance: this.data.useBalance ? 1 : 0,
+    },
+    other: {
+      isShowLoad: true
+    }
+  }).then(e => {
+    if (e.code == "1") {
+      let payId = this.data.payId;
+      let data = e.data || {};
+      let pay_info = data.pay_info;
+      let bonus_info = data.bonusEntity;
+      this.data.select_bonus.type_money = bonus_info.canUseCouponMoney;
+      let orderInfo = data.orderinfoEntity;
+      orderInfo.all_amount = (parseFloat(orderInfo.order_amount || 0) + parseFloat(orderInfo.discount_amount || 0)).toFixed(2);
+      let paymentList = data.payList;
+      if (!payId) {
+        payId = paymentList[0].pay_id;
+      }
+      //设置请求参数
+      beforeInfo.payment_status = orderInfo.payment_status;
+      beforeInfo.payment_id = orderInfo.payment_id;
+      beforeInfo.storeId = data.post_store_id;
+      this.beforeInfo = beforeInfo || {};
+      //
+      let balanceInfo = data.balanceEntity || {};
+      if (!(balanceInfo.canUsebalance && parseFloat(balanceInfo.canUsebalance) > 0)) {
+        this.setData({
+          useBalance: false
+        })
+      }
+      let pointInfo = data.userPointEntity || {};
+      if (!(pointInfo.allowPoint && parseFloat(pointInfo.allowPoint) > 0)) {
+        this.setData({
+          usePoint: false
+        })
+      }
+      let prepaidInfo = data.storedValueEntity || {};
+      if (!(prepaidInfo.canUseStoredValue && parseFloat(prepaidInfo.canUseStoredValue) > 0)) {
+        this.setData({
+          usePrepaid: false
+        })
+      }
+      let couponActivity = data.couponActivity || {};
+      if(couponActivity.couponAmount > 0 && parseFloat(orderInfo.jieSuanOrderAmount) >= parseFloat(couponActivity.transactionMinimum) && couponActivity.isJoin){
+        orderInfo.preAdmount = (parseFloat(orderInfo.jieSuanOrderAmount) - parseFloat(couponActivity.couponAmount)).toFixed(2);
+        // orderInfo.preAdmount = orderInfo.preAdmount > 0 ? orderInfo.preAdmount.toFixed(2) : 0;
+      }
+      //
+      this.setData({
+        bonus_info: bonus_info || {},
+        orderInfo: orderInfo || {},
+        rule: data.preferentialEntity || {},
+        pointInfo: pointInfo,
+        prepaidInfo: prepaidInfo,
+        paymentList: paymentList,
+        payId: payId,
+        balanceInfo: balanceInfo,
+        couponActivity: data.couponActivity
+        // select_bonus: this.data.select_bonus
+      })
+      //支付信息弹框动画
+      this.showPayInfo(true);
+      return Promise.resolve();
+    }
+    return Promise.reject();
+  }).finally(() => {
+    this.clicking = false;
+  })
+}
+
+function updateOrderInfo() { //更新订单信息
+  let beforeInfo = this.beforeInfo || {};
+  let payment_id = beforeInfo.payment_id || 0;
+  if (!payment_id) return;
+  let select_bonus = this.data.select_bonus || {};
+  return app.SmktPayApi.updateOfflineOrderInfoByPayInfo({
+    data: {
+      paymentId: payment_id,
+      pay_id: this.data.payId,
+      bonusId: select_bonus.bonus_id || 0,//this.beforeInfo.bonus_id,
+      IsUsePoint: this.data.usePoint ? 1 : 0, //使用的积分吧？
+      prepaidCardIds: "",
+      isUseStoredValue: this.data.usePrepaid ? 1 : 0,
+      IsUseBalance: this.data.useBalance ? 1 : 0, //使用的余额
+    },
+    other: {
+      isShowLoad: true
+    }
+  }).then(e => {
+    if (e.code == "1") {
+      let data = e.data; 
+      if (this.data.payId == 3 || this.data.payId == 4) {  //选择门店现金支付 
+        jump.call(this, payment_id,'result');
+      } else {    //选择微信支付
+        if (data > 0) {      
+          console.log('这里2')
+          getOrderStatus.call(this, 'toPay');
+        } else {
+          console.log('这里3') 
+          jump.call(this, payment_id)
+        } 
+      }
+      //toPay.call(this);
+      return Promise.resolve();
+    }
+  })
+}
+
+function toPay() {
+  let beforeInfo = this.beforeInfo || {};
+  return app.PayApi.getAppletPrepayId({
+    params: {
+      order_id: beforeInfo.payment_id,
+      pay_type: "sp"
+    },
+    other: {
+      isShowLoad: true
+    }
+  }).then(e => {
+    if (e.code == "1") {
+      let pay_info = e.data;
+      WxApi.requestPayment({
+        'timeStamp': pay_info.timeStamp + '',
+        'nonceStr': pay_info.nonceStr,
+        'package': pay_info.package,
+        'signType': pay_info.signType,
+        'paySign': pay_info.sign,
+
+      }).then(e => {
+        getOrderStatus.call(this);
+      })
+    } 
+  })
+}
+
+function jump(payment_id = 0,type=''){
+  app.StorageH.set("use_bonus", "");
+  app.StorageH.set("usePrepaids", "");
+  let that = this;
+  wx.nextTick(()=>{
+    that.setData({
+      select_bonus: {
+        type_money: 0,
+      },
+      usePoint:false, 
+      usePrepaid: false, 
+      useBalance: false, 
+    })
+  })
+  if (type =='result'){
+    wx.nextTick(() => {
+      wx.navigateTo({
+        url: '/pages/store_pay/pay_result/pay_result?payment_id=' + payment_id,
+      })
+    }) 
+  }else{
+    wx.nextTick(() => {
+      wx.navigateTo({
+        url: '/pages/store_pay/store_pay_history/history_info?payment_id=' + payment_id,
+      })
+    })
+  }
+  setTimeout(()=>{
+    this.setData({
+      show_pay_pop: 'ishide', 
+    })
+  },700);
+}
+function joinWxCouponActivity(){
+  if(this.joining) return;
+  this.joining = true
+  return app.SmktPayApi.joinWxCouponActivity({
+    data:{
+    },
+    other:{
+      isShowLoad: true
+    }
+  }).then(res=>{
+    console.log("joinWxActivity", res);
+    if(res.code == 1){
+      app.SMH.showToast({
+        title: "参与成功"
+      })
+      getJiesuan.call(this);
+    }
+  }).finally(()=>{
+    this.joining = false;
+  })
+}

@@ -1,0 +1,70 @@
+<!--pages/micro_mall/questionnaire/survey/survey.wxml-->
+<view class="box">
+  <view class="title_box">
+    <view class="title" wx:if="{{info.title}}">
+      <text class="is_required" wx:if="{{info.is_required}}">*</text><text>{{info.title}}</text>
+    </view>
+    <view class="tips" wx:if="{{info.child_title}}">
+      {{info.child_title}}
+    </view>
+  </view>
+
+  <block wx:if="{{info.vote_type_code == 'phone' || info.vote_type_code == 'email' || (info.vote_type_code == 'text' && info.textarea_row==1)}}">
+    <view class="input_box">
+      <input
+      class="inputClass" 
+      type="input" 
+      value="{{input_val}}" 
+      placeholder="{{info.title}}" 
+      placeholder-class="{{'_placeholderClass'}}"
+      bindinput="handle_input" 
+      bindblur="handle_blur"
+      ></input>
+      <view class="tips_box">
+        <view class="close" catchtap="close" hidden="{{!input_val}}">
+          <view class="row line"></view>
+          <view class="column line"></view>
+        </view>
+        <view class="tip" wx:if="{{info.is_required == 1 && !testReg && checked}}"></view>
+        <!-- <view class="tip" wx:if="{{is_required == 1 && !testReg && input_val}}"></view> -->
+      </view>
+    </view>
+  </block>
+
+  <block wx:elif="{{(info.vote_type_code == 'text' && info.textarea_row == 2)}}">
+    <view class="textarea_box">
+      <textarea  
+      disabled='{{false}}'  
+      class='_textarea' 
+      placeholder='{{info.title}}' 
+      bindinput="handle_input" 
+      value='{{input_val}}' 
+      data-type="t_a" 
+      placeholder-class='_placeholderClass'
+      ></textarea>
+    </view>
+  </block>
+
+  <block wx:elif="{{info.vote_type_code == 'date'}}"> <!-- 日期 -->
+    <view bindtap="handle_change" data-type="date" class="">
+      <view class="picker">
+        <text class="_C_7f">选择时间</text><text class="{{!showMsg?'_C_7f':''}}">{{showMsg?date:infoObj.default_time}}</text>
+      </view>
+    </view>
+    <!-- <picker mode="date" value="{{date}}" start="{{infoObj.from_time}}" end="{{infoObj.to_time}}" bindchange="handle_change" data-type="date" class="">
+      <view class="picker">
+        <text class="_C_7f">选择时间</text><text class="{{!showMsg?'_C_7f':''}}">{{showMsg?date:infoObj.default_time}}</text>
+      </view>
+    </picker> -->
+  </block>
+
+  <block wx:elif="{{info.vote_type_code == 'location'}}"> <!-- 地区 -->
+    <picker  mode="region" value="{{region}}"  bindchange="handle_change" data-type="region" class="">
+      <view class="picker">
+        <text class="_C_7f">所在地区</text><text class="{{!showMsg?'_C_7f':''}}" wx:if="{{region.length>0}}">{{region[0]}}，{{region[1]}}，{{region[2]}}</text>
+      </view>
+    </picker>
+  </block>
+</view>
+
+<date-picker wx:if="{{info.vote_type_code == 'date'}}" bind:datePickerCancellEvent="datePickerCancellEvent" bind:datePickerOkEvent="datePickerOkEvent" isShowDatePicker="{{isShowPicker}}" mode="{{mode}}" data="{{dataPicker}}" date="{{infoObj.default_timeVal || 0}}" time-arr="{{arr}}"/>

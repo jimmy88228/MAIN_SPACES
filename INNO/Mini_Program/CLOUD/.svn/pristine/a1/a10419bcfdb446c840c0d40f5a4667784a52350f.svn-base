@@ -1,0 +1,10 @@
+{
+  "navigationBarTitleText": "获取优惠券",
+  "disableScroll":true,
+  "backgroundColor":"#E6E6E6",
+  "usingComponents": {
+    "dialog": "/ui/cps/dialog/dialog",
+    "pageHome":"/pages/component/sceneOperate/pageHome",
+    "btns": "/pages/component/buttons/btns"
+  }
+}

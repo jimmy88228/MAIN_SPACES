@@ -1,0 +1,61 @@
+/* pages/goods/popup/service.wxss */
+.service_popup{
+  position:fixed;
+  left:50%;
+  top:50%;
+  width:100%;
+  box-sizing:border-box;
+  transform: translate(-50%,-50%);
+}
+.close_area {
+    position: absolute;
+    top: 50%;
+    right: 0px;
+    padding: 20rpx 25rpx;
+    transform: translateY(-50%);
+}
+.close_area image {
+    width: 20rpx;
+    display: block;
+}
+
+.ads_swiper_item image{
+  width:100%;
+  height:100%;
+  display:block;
+}
+.test_ads_swiper{
+  /* position:fixed;
+  top:50%;
+  left:50%;
+  transform: translate(-50%,-50%); */
+  width:100%;
+  height:720rpx;
+  background:none;
+}
+.ads_swiper_item_stay{
+  position:absolute;
+  top:50%;
+  left:50%;
+  transform: translate(-50%,-50%) scale(.8);
+  width:500rpx;
+  height:720rpx;
+  /* background:#fff; */
+  border-radius:30rpx;
+  transition:transform .35s;
+  transform-origin: 50% 50%;
+  overflow:hidden;
+}
+.ads_swiper_item_stay image{
+  width:100%;
+  height:100%;
+  display:block;
+}
+.test_ads_swiper .ads_swiper_item{
+  width:500rpx !important;
+  height:720rpx !important;
+  margin:0 125rpx;
+}
+.ads_swiper_item.current .ads_swiper_item_stay{
+  transform: translate(-50%,-50%) scale(1);
+}

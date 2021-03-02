@@ -1,0 +1,92 @@
+.main{
+  padding: 20rpx;
+  box-sizing: border-box;
+}
+.box,.results{
+  padding: 30rpx;
+  box-sizing: border-box;
+  border-radius: 10rpx;
+  background: #fff;
+  overflow: hidden;
+  margin-bottom: 20rpx;
+}
+.box:last-child{
+  margin-bottom: 0;
+}
+.r_msg_box{
+  padding-top: 50rpx;
+  padding-bottom: 60rpx;
+  font-size: 30rpx;
+  line-height: 30rpx;
+  font-weight: bold;
+  text-align: center;
+}
+.results_text{
+  width: 190rpx;
+  height: 90rpx;
+  border-radius: 12rpx;
+  margin: 0 auto;
+  background: #bebebe;
+  font-size: 28rpx;
+  color: #fff;
+}
+.title{
+  line-height: 26rpx;
+  padding-bottom: 10rpx;
+}
+.c_title{
+  padding-bottom: 10rpx;
+  font-size: 24rpx;
+  color: #7f7f7f;
+  line-height: 24rpx;
+}
+.msg_box{
+  display: flex;
+  align-items: center;
+  width: 100%;
+  position: relative;
+  margin-bottom: 20rpx;
+}
+.msg_box:last-child{
+  margin-bottom: 0;
+}
+.img_box{
+  width: 200rpx;
+  height: 200rpx;
+  border: 1px solid #efefef;
+  box-sizing: border-box;
+  position: relative;
+  flex-shrink: 0;
+}
+.img_vote{
+  width: 100%;
+  height: 100%;
+}
+.pg_box{
+  display: flex;
+  flex-direction: column;
+  box-sizing: border-box;
+  width: 100%;
+}
+.pg_box.pics{
+  padding-left: 20rpx;
+}
+.p_title{
+  padding-bottom: 10rpx;
+}
+.pg{
+  display: flex;
+  align-items: center;
+}
+.pg .progressBox{
+  height: 22rpx;
+}
+.pg_text{
+  width: 74rpx;
+  font-size: 24rpx;
+  line-height: 24rpx;
+  text-align: right;
+}
+.pg_show{
+  width: 100%;
+}

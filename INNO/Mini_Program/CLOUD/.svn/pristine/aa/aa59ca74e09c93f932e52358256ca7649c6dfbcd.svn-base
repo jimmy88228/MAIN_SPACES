@@ -1,0 +1,17 @@
+.scroll{
+  height: 100%;
+}
+.box{
+  padding-top: 30rpx;
+}
+.key{
+  font-weight:bold;
+  font-size: 34rpx;
+  color: #7f7f7f;
+  line-height: 80rpx;
+} 
+
+.item{
+  line-height: 75rpx; 
+  color: #7f7f7f;
+} 

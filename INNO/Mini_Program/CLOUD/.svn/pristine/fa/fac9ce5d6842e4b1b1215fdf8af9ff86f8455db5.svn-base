@@ -1,0 +1,13 @@
+{
+  "navigationBarTitleText": "女神节直播",
+  "enablePullDownRefresh": true,
+  "backgroundTextStyle": "dark",
+  "navigationStyle":"custom",
+  "usingComponents": {
+    "joinPop": "../pop/join_pop/join_pop",
+    "joinTip": "../pop/join_tip/join_tip",
+    "rule": "../pop/rule/rule",
+    "livePop": "../pop/live_pop/live_pop",
+    "pageHome": "/pages/component/sceneOperate/pageHome"
+  }
+}
