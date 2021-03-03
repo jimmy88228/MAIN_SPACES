@@ -11,10 +11,10 @@ const goodsSearch = {
   goods:"goods",
   goodsBrand:"Brandcode"
 }
-function SwitchApi({code,setting,data,index,extend,sr_t,Limit_S}) {
+function SwitchApi({code,setting,data,index,extend,sr_t,Limit_S,bindType}) {
   code = code || '', setting = setting || {}, data = data || {}, index = index || 0,extend=extend||{};
-  let api = '',url = '',params = {},extra = {};
-  let initMsg = {goApi:false,data:[],hide:false,apiParams:{api, url, params, extra}};
+  let api = '',url = '',params = {},extra = {},m='GET';
+  let initMsg = {goApi:false,data:[],hide:false,apiParams:{api, url, params, extra, m}};
   console.log('进来A1',{code,setting,data,index,extend,sr_t,Limit_S})
   // jimmy
   let p = new Promise((rs, rj) => {
@@ -43,26 +43,7 @@ function SwitchApi({code,setting,data,index,extend,sr_t,Limit_S}) {
           initMsg.goApi = true;
           api = 'CL_GoodsApi';
           url = 'getSearchGoodsListBySkip';
-          // params = initParams({bindType,index,sr_t,data:data.moduleItem && data.moduleItem.itemList || []});
-          params = initParamsNew(setting,code);
-          // params = {
-          //   functype: goodsSearch[setting.goodsGroup && setting.goodsGroup[0].goodsListType] || 'CA',
-          //   catId: setting.goodsGroup && setting.goodsGroup[0].goodsList[0].id || 0,
-          //   strAttrId: '',
-          //   strAttrValue: '',
-          //   colorCatId: 0,
-          //   startPrice: -1,
-          //   endPrice: -1,
-          //   strWhere: '',
-          //   pageSize: 1000,
-          //   pageIndex: 1 || setting.pageIndex || 1,
-          //   skipCount: setting.skip || 0,
-          //   sortField: 'goods_id',
-          //   sortBy: 'desc',
-          //   goods_brand_ids: '',
-          //   storeId: '0',
-          // }
-          console.log('看看params',params)
+          initMsg.apiParams = initParamsNew(setting,code,initMsg.apiParams);
           break;
         // case 1:
         //   try {
@@ -243,7 +224,7 @@ function SwitchApi({code,setting,data,index,extend,sr_t,Limit_S}) {
       }
       return rs(initMsg);
     }
-    initMsg.apiParams = {api,url,params,extra};
+    // initMsg.apiParams = {api,url,params,extra};
     return rs(initMsg);
   });
   return p;
@@ -252,10 +233,10 @@ function SwitchApi({code,setting,data,index,extend,sr_t,Limit_S}) {
 function GetData(apiParams = {},bindType,i) {
     let tempData = [];
     let resExtra = {};
-    let {api='',url='',params={},extra={}} = apiParams;
-    console.log('调接口', i,api, url, params);
+    let {api='',url='',params={},extra={},m="GET"} = apiParams;
+    console.log('调接口', i,api, url, params,m,apiParams);
     let p = new Promise((rs, rj) => {
-      return RunApi.go(api, url, params, extra).then(res => { //对应模块换数据   //广告和轮播不用另外调接口，在case已经整理完毕
+      return RunApi.go(m,api, url, params, extra).then(res => { //对应模块换数据   //广告和轮播不用另外调接口，在case已经整理完毕
         // if (bindType == 1) { //单品
         //   tempData = res.data && res.data.goodsList || [];
         // } else if (bindType == 2 || (bindType == 7 && url == 'getSumaryALLGoodsList')) { //分类、秒杀
@@ -430,20 +411,26 @@ function initParams({index = 0, bindType = 0, data = {}, extend = {},sr_t,Limit_
   return params
 }
 
-function initParamsNew(setting,code){
-  let params = {},goodsGroup = [];
+function initParamsNew(setting,code,apiParams){
   if(code == 'goodsList'){
+    apiParams.api = "CL_GoodsApi";
+    apiParams.extra = {diy:true};
     let goodsGroup = [],goodsList = [],ids,goodsListType;
     if(Array.isArray(setting.goodsGroup)){
       goodsGroup = setting.goodsGroup||[];
       goodsList = goodsGroup[0].goodsList||[];
       goodsListType = goodsGroup[0].goodsListType;
       ids = mapGoodsList(goodsList) || [];
-      ids = ids.join(',');
       if(goodsSearch[goodsGroup[0].goodsListType] == 'goods'){
-       console.log('看看params1',ids);
+        apiParams.url = "getALLGoodsListByGoodsIds";
+        apiParams.m = "POST";
+        apiParams.params = {
+          goodsIdList:[1,3]||ids
+        }
       }else{
-        params = {
+        apiParams.url = "getSearchGoodsListBySkip";
+        ids = ids.join(',');
+        apiParams.params = {
           functype: goodsSearch[goodsListType] || 'CA',
           catId: goodsListType != 'goodsBrand' ? ids : 0,
           strAttrId: '',
@@ -460,12 +447,11 @@ function initParamsNew(setting,code){
           goods_brand_ids: goodsListType == 'goodsBrand' ? ids : 0,
           storeId: '0',
         }
-        console.log('看看params2',goodsListType,params);
       }
-      
-    }
-       
+    } 
   }
+  console.log('看看params',apiParams);
+  return apiParams
 }
 
 function mapData(data = [],setting) { //热点处理

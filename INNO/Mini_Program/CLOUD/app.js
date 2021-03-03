@@ -5,7 +5,6 @@ import LM from "./helper/manager/login-manager";
 import LgMg from "./helper/manager/log-manager.js";
 import FM from "./helper/manager/form-id-manager.js";
 import SMH from "./helper/show-msg-helper.js";
-import Promise from "./libs/promise/promise";
 import BP from "./helper/base/base-page.js";
 import BTAB from "./helper/base/base-tab.js";
 import EB from "./support/tools/event-bus.js";
@@ -30,7 +29,7 @@ import { OpKind, ShareType} from "./helper/manager/log-map.js";
 import StorageH from "./helper/handle/storageHandle.js"
 import strH from "./helper/handle/strHandle.js"
 import StringUtl from "./support/utils/string-util.js";
-
+import './support/polyfill/polyfill-promise'
 App({
   globalData: {
     isShowWelcome: false,

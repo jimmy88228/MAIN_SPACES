@@ -145,9 +145,13 @@ EasyHttp.setRequestHandler(req => {
       }
       req.headers["lat"] = LocationM.lat;
       req.headers["lon"] = LocationM.lon;
-      return proceed(req).finally(() => {
+      return proceed(req).finally((res) => {
           showLoading && SMH.hideLoading();
-      });
+          return res
+      }).catch(err => {
+        showLoading && SMH.hideLoading();
+        return err
+    });
   });
 
 /**

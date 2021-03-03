@@ -198,7 +198,7 @@ Component(app.BTAB({
         success: function (res) {
           if (res.confirm) {
 
-            return app.BuyApi.delCartStroage({
+            return app.CL_GoodsApi.delCartStroage({
               data: {
                 "rectIds": recId || total_count.rec_str,
                 "clientSessionId": app.LgMg.channel && app.LgMg.channel.clientSessionId,
@@ -821,7 +821,7 @@ function countPromotion(rec_str = '', total_count) {
   let params = {
     recIds : rec_str
   }
-  return app.RunApi.go('post', 'CL_GoodsApi', 'countPromotionInfoByJieSuan', params).then(res => {
+  return app.RunApi.go('post', 'CL_GoodsApi', 'countPromotionInfoByJieSuan', params,{diy:true}).then(res => {
     if (res.code == '1') {
       let data = res.data || {};
       let sum_money = parseFloat((data.goodsAmount - data.discountAmount).toFixed(2)) || 0;

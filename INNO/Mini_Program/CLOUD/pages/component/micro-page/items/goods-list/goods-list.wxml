@@ -22,11 +22,14 @@
             </view>
             <view class="list-msg-box">
               <view class="msg-detail-box {{listGoods.market_price!=listGoods.sale_price?'large':'small'}}">
-                <view class="list-msg-name">{{listGoods.name}}</view>
+                <view class="list-msg-name">{{listGoods.goods_name}}</view>
               </view>
               <view class="price-box">
-                <view class="list-msg-sale-price char">{{listGoods.sale_price}}</view>
-                <view wx:if="{{listGoods.market_price!=listGoods.sale_price}}" class="list-msg-market-price char">
+                <view class="list-msg-sale-price char">
+                  <text>{{listGoods.price}}</text>
+                  <text wx:if="{{ listGoods.integral > 0 }}"> + {{listGoods.integral || listGoods.old_integral}} 积分</text>
+                </view>
+                <view wx:if="{{listGoods.market_price!=listGoods.price}}" class="list-msg-market-price char">
                   {{listGoods.market_price}}</view>
               </view>
             </view>

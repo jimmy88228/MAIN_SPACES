@@ -91,6 +91,11 @@ export const CL_GoodsApiList = {
   getSumaryALLGoodsList: "/api/Goods/Get_Sumary_ALLGoodsList?functype={functype}&cate_Id={cate_Id}&strWhere={strWhere}&pageSize={pageSize}&pageIndex={pageIndex}&sort_field={sort_field}&sort_by={sort_by}&goods_brand_ids={goods_brand_ids}",
   searchGoodsList: "/api/Goods/Get_Sumary_SearchGoodsList?functype={functype}&catId={catId}&strAttrId={strAttrId}&strAttrValue={strAttrValue}&colorCatId={colorCatId}&startPrice={startPrice}&endPrice={endPrice}&strWhere={strWhere}&pageSize={pageSize}&pageIndex={pageIndex}&sortField={sortField}&sortBy={sortBy}&goods_brand_ids={goods_brand_ids}&storeId={storeId}",
   getSearchGoodsListBySkip: "/api/Goods/GetSearchGoodsListBySkip?functype={functype}&catId={catId}&strAttrId={strAttrId}&strAttrValue={strAttrValue}&colorCatId={colorCatId}&startPrice={startPrice}&endPrice={endPrice}&strWhere={strWhere}&pageSize={pageSize}&skipCount={skipCount}&sortField={sortField}&sortBy={sortBy}&goods_brand_ids={goods_brand_ids}&storeId={storeId}",
+  getALLGoodsListByGoodsIds:
+  {
+    u:"/api/Goods/GetALLGoodsListByGoodsIds",
+    m: "post"
+  },
   getGoodsPropertyList: "/api/Goods/Get_GoodsPropertyList?functype={functype}&catId={catId}&strWhere={strWhere}",
   getShoppingAds: "/api/Goods/Get_shopping_recommend_template_List",
   get_recommend_template_List: "/api/Goods/Get_recommend_template_List?goodsId={goodsId}",
