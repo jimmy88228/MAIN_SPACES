@@ -1,0 +1,103 @@
+{
+  "description": "项目配置文件",
+  "packOptions": {
+    "ignore": []
+  },
+  "setting": {
+    "urlCheck": true,
+    "es6": true,
+    "enhance": false,
+    "postcss": true,
+    "preloadBackgroundData": false,
+    "minified": true,
+    "newFeature": true,
+    "coverView": true,
+    "nodeModules": false,
+    "autoAudits": false,
+    "showShadowRootInWxmlPanel": true,
+    "scopeDataCheck": false,
+    "uglifyFileName": false,
+    "checkInvalidKey": true,
+    "checkSiteMap": true,
+    "uploadWithSourceMap": true,
+    "compileHotReLoad": false,
+    "useMultiFrameRuntime": true,
+    "useApiHook": true,
+    "useApiHostProcess": true,
+    "babelSetting": {
+      "ignore": [],
+      "disablePlugins": [],
+      "outputPath": ""
+    },
+    "enableEngineNative": false,
+    "bundle": false,
+    "useIsolateContext": true,
+    "useCompilerModule": true,
+    "userConfirmedUseCompilerModuleSwitch": false,
+    "userConfirmedBundleSwitch": false,
+    "packNpmManually": false,
+    "packNpmRelationList": [],
+    "minifyWXSS": true
+  },
+  "compileType": "miniprogram",
+  "libVersion": "2.14.3",
+  "appid": "wxd07eb942e77828c5",
+  "projectname": "jimmy_branch",
+  "cloudfunctionTemplateRoot": "",
+  "debugOptions": {
+    "hidedInDevtools": []
+  },
+  "scripts": {},
+  "simulatorType": "wechat",
+  "simulatorPluginLibVersion": {},
+  "condition": {
+    "plugin": {
+      "list": []
+    },
+    "game": {
+      "list": []
+    },
+    "gamePlugin": {
+      "list": []
+    },
+    "miniprogram": {
+      "list": [
+        {
+          "name": "pages/micro_mall/user/user",
+          "pathName": "pages/micro_mall/user/user",
+          "query": "",
+          "scene": null
+        },
+        {
+          "name": "pages/micro_mall/goods/goods_info",
+          "pathName": "pages/micro_mall/goods/goods_info",
+          "query": "goods_id=1&color_id=0",
+          "scene": null
+        },
+        {
+          "name": "更换请求easy http",
+          "pathName": "pages/micro_mall/category/category",
+          "query": "",
+          "scene": null
+        },
+        {
+          "name": "个人中心",
+          "pathName": "pages/micro_mall/user/user",
+          "query": "",
+          "scene": null
+        },
+        {
+          "name": "余额",
+          "pathName": "pages/micro_mall/balance/my_balance",
+          "query": "",
+          "scene": null
+        },
+        {
+          "name": "优惠券列表",
+          "pathName": "pages/micro_mall/coupon/my_coupon",
+          "scene": null
+        }
+      ]
+    }
+  }
+}

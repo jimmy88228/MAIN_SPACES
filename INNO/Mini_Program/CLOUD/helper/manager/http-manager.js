@@ -1,12 +1,8 @@
-// import EasyHttp from "../../libs/easy-http/easy-http.min";
 import EasyHttp from "../../support/libs/easy-http.min";
-// import EasyHttpMiniApp from "../../libs/easy-http/easy-http-miniapp";
 import LocationM from "./location-manager.js";
-// import Utils from "../../support/utils/utils";
 import LM from "./login-manager.js";
-// import AppUtil from "../app-utils";
-import SMH from "../show-msg-helper";
-import SIH from "../sys-infos-helper";
+import SMH from "../show-msg-helper.js";
+import SIH from "../sys-infos-helper.js";
 import Conf from "../../conf";
 import Wxp from "../../support/tools/wx-api-promise";
 const LOG_TAG = "http-manager";
@@ -50,7 +46,6 @@ import {
     CL_VSlogApiList
 } from "./api/cloud-api";
 const apiDomain = Conf.api_domain || {};
-
 /***********************************全局请求配置*************************************/
 EasyHttp.setRequestHandler(req => {
   console.debug("请求前",LOG_TAG, "Request:", req.url, "\n", { req });
@@ -109,9 +104,6 @@ EasyHttp.setRequestHandler(req => {
 
           } else if(data.code == 10000){ // WxSessionKey已过期
             console.log("data code", data.code)
-            // return LM.createWxSessionId().then(()=>{
-            //     return Promise.reject({ code: 10000, msg: "会话已过期，已重新创建，请刷新重试", tag: LOG_TAG });
-            // })
             return Promise.reject({ ...data, tag: LOG_TAG });
           }
           return data;
@@ -120,7 +112,6 @@ EasyHttp.setRequestHandler(req => {
   //数据预处理拦截器
   .addInterceptor((req, proceed) => {
       return proceed(req).then(resp => {
-          console.log()
           if (resp.statusCode != 200) {
               return Promise.reject(resp);
           }
@@ -153,118 +144,6 @@ EasyHttp.setRequestHandler(req => {
         return err
     });
   });
-
-/**
- * old
-*/
-// let basePostHandler = p => {
-//   return p
-//     .finally(() => {
-//       // wx.nextTick(()=>{
-//       //   SMH.hideLoading();
-//       // })
-//     })
-//     .then(e => {
-//       let rq = e.request;
-//       let rp = e.response;
-//       if (!rq.other || rq.other.isShowLoad !== false){
-//         SMH.hideLoading();
-//       }
-//       if (rp.statusCode == 200) {
-//         AppUtil.log("EasyHttp-Response:", `[${rq.action}] ${rq.url}`, "\nresponse:", rp.data);
-//         // if (rp.data.code == "1001" || rq.url == 'https://developtest.innourl.com/api/Brand/Get_MenuList?brandCode=INNOVATION') {
-//         if (rp.data.code == "1001") { //已失效
-//           SMH.showToast({
-//             title: "用户登录凭证已失效，需要重新登录"
-//           });
-//           LM.logout();
-//           LM.loginAsync(false);
-//         }else if(rp.data.code == "1002"){ //未注册
-
-//         }
-//         return rp.data;
-//       } else {
-//         return Promise.reject(e);
-//       }
-//     })
-//     .catch(e => {
-//       let msg;
-//       let rq = e.request || {};
-//       if (!rq.other || rq.other.isShowLoad !== false) {
-//         SMH.hideLoading();
-//       }
-//       if (!rq.other || typeof rq.other.error == "undefined" || rq.other.error) {
-//         let rp = e.response;
-//         console.log("EasyHttp-Response e:",e);
-//         if (e.errType === 0) {
-//           AppUtil.log("EasyHttp-Response:", "没有网络");
-//           checkNetwork();
-//         } else if (rp) {
-//           msg = `code:${rp.statusCode}`;
-//           AppUtil.log("EasyHttp-Response:", `[${rq.action}] ${rq.url}`, "\n", msg);
-//         }
-//       }
-//       if (msg) {
-//         SMH.showToast({
-//           title: msg
-//         });
-//       }
-//       return Promise.reject();
-//     });
-// };
-
-
-// /******************************  全局配置 ***********************************/
-// EasyHttp
-//   //插件
-//   .use(EasyHttpMiniApp)
-//   //前置处理器
-//   .bindPreHandler(rq => {
-//     rq.header.lat = LocationM.lat;
-//     rq.header.lon = LocationM.lon;
-//     //
-//     if (rq.params && rq.data) {
-//       AppUtil.log("EasyHttp-Request:", `[${rq.action}] ${rq.url}`, "\nparams:", rq.params, "\ndata:", rq.data);
-//     } else if (rq.params) {
-//       AppUtil.log("EasyHttp-Request:", `[${rq.action}] ${rq.url}`, "\nparams:", rq.params);
-//     } else if (rq.data) {
-//       AppUtil.log("EasyHttp-Request:", `[${rq.action}] ${rq.url}`, "\ndata:", rq.data);
-//     } else {
-//       AppUtil.log("EasyHttp-Request:", `[${rq.action}] ${rq.url}`);
-//     }
-//     if (!rq.other || rq.other.isShowLoad !== false) {
-//       rq.other = rq.other ? rq.other : {};
-//       SMH.showLoading({
-//         title: rq.other.title || "加载中",
-//       }, rq.other.loadDelay);
-//     }
-//   })
-//   //后置处理器
-//   .bindPostHandler(basePostHandler)
-//   //默认Action
-//   .setAction("GET")
-//   //默认请求头
-//   .addHeader({
-//     "cookieId": SIH.cookieId,
-//     "content-type": "application/json",
-//     "platformSrc": Conf.PLATFORM && Conf.PLATFORM.TYPE,
-//     "platform_src": "WXAPP",
-//     "userToken": LM.userToken,
-//     "brandCode":Conf.BRAND_CODE,
-//     "storeId": 36246, //jimmy
-//     "lat": LocationM.lat,
-//     "lon": LocationM.lon,
-//   })
-
-
-
-
-
-
-
-
-
-
 
 //主接口
 export const MainApi = new EasyHttp().setBaseUrl(apiDomain.MAINAPI).addRequests(MainApiList);
