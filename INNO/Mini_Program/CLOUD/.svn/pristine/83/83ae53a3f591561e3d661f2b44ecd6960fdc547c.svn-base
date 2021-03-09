@@ -137,13 +137,9 @@ EasyHttp.setRequestHandler(req => {
       }
       req.headers["lat"] = LocationM.lat;
       req.headers["lon"] = LocationM.lon;
-      return proceed(req).finally((res) => {
+      return proceed(req).finally(() => {
           showLoading && SMH.hideLoading();
-          return res
-      }).catch(err => {
-        showLoading && SMH.hideLoading();
-        return err
-    });
+      });
   });
 
 //主接口
