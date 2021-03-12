@@ -67,7 +67,7 @@ class AllApiManager extends ApiBase {
         console.log('调接口?post')
         return this.ApiName[url]({
           data: this._params,
-          other: this._other
+          extraData: this._other
         }).then(res => {
           if(res.code == '1' || extra.resolve){
             return Promise.resolve(res);
@@ -79,7 +79,7 @@ class AllApiManager extends ApiBase {
       } else {
         return this.ApiName[url]({ //GET请求
           params: this._params,
-          other: this._other
+          extraData: this._other
         }).then(res => {
           if(res.code == '1' || extra.resolve){
             return Promise.resolve(res);

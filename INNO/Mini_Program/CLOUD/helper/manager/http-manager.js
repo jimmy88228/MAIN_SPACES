@@ -5,8 +5,9 @@ import SMH from "../show-msg-helper.js";
 import SIH from "../sys-infos-helper.js";
 import Conf from "../../conf";
 import Wxp from "../../support/tools/wx-api-promise";
+import StoreH from "../handle/storeHandle.js";
 const LOG_TAG = "http-manager";
-
+const platform_src = "WXAPP";
 import {
   MainApiList,
   GoodsApiList,
@@ -49,7 +50,6 @@ import {
 const apiDomain = Conf.api_domain || {};
 /***********************************全局请求配置*************************************/
 EasyHttp.setRequestHandler(req => {
-  console.debug("请求前",LOG_TAG, "Request:", req.url, "\n", { req });
   return Wxp.request({
       url: req.url,
       data: req.data || {},
@@ -68,10 +68,10 @@ EasyHttp.setRequestHandler(req => {
       "cookieId": SIH.cookieId,
       "content-type": "application/json",
       "platformSrc": Conf.PLATFORM && Conf.PLATFORM.TYPE,
-      "platform_src": "WXAPP",
+      "platform_src": platform_src,
       "userToken": LM.userToken,
       "brandCode": Conf.BRAND_CODE,
-      "storeId": 36246, //jimmy
+      "storeId": StoreH.storeId,//36246,//
       "lat": LocationM.lat,
       "lon": LocationM.lon,
   })
@@ -79,6 +79,13 @@ EasyHttp.setRequestHandler(req => {
   .addInterceptor((req, proceed) => {
       if (LM.isLogin) {
           req.headers["userToken"] = LM.userToken;
+      }
+      if(StoreH.storeId != req.headers["storeId"]){
+        req.headers["storeId"] = StoreH.storeId || 0;
+      }
+      //针对生成二维码，单独处理
+      if(req.url && req.url.indexOf('/WXBarCode/GetWxCode') != -1){
+        req.headers["platform_src"] = (Conf.PLATFORM && Conf.PLATFORM.TYPE) || platform_src
       }
       return proceed(req).catch(err => {
           console.warn("请求错误", LOG_TAG, "Error:", req.url, "\n", { req, err });
@@ -89,11 +96,10 @@ EasyHttp.setRequestHandler(req => {
   .addInterceptor((req, proceed) => {
       return proceed(req).then(resp => {
           let data = resp;
-          // let extra = req.extraData;
+          // let extraData = req.extraData;
           if(data.code === 1001){//token失效
             LM.logout();
             return LM.loginAsync(false).then(()=>{
-                console.log("重新登录成功");
               if (LM.isLogin && req.headers["userToken"] != LM.userToken){
                 req.headers["userToken"] = LM.userToken;
                 console.log("重新登录成功, 触发重发");
@@ -102,9 +108,8 @@ EasyHttp.setRequestHandler(req => {
               return Promise.reject({ code: 1001, msg: "登录授权已过期，请刷新重试", tag: LOG_TAG });
             })
           } else if(data.code === 1002){
-
+            return Promise.reject({ ...data, tag: LOG_TAG });
           } else if(data.code == 10000){ // WxSessionKey已过期
-            console.log("data code", data.code)
             return Promise.reject({ ...data, tag: LOG_TAG });
           }
           return data;
@@ -129,9 +134,9 @@ EasyHttp.setRequestHandler(req => {
   })
   //loading对话框拦截器
   .addInterceptor((req, proceed) => {
-      let extra = req.extraData;
+      let extraData = req.extraData;
       let showLoading = false;
-      if (extra && extra.showLoading) {
+      if (extraData && extraData.isShowLoad) {
           showLoading = true;
           SMH.showLoading();
       }

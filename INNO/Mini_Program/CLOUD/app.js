@@ -1,3 +1,4 @@
+import "./support/init";
 import Conf from "./conf";
 import * as Api from "./helper/manager/http-manager";
 import SIH from "./helper/sys-infos-helper.js";
@@ -11,26 +12,25 @@ import EB from "./support/tools/event-bus.js";
 import pageJump from "./helper/page-jump";
 import checkUpdate from "./helper/manager/check-update-manager.js";
 import SConf from "./helper/handle/getSystemConfig.js"
-import BI from "./helper/handle/getBrandInfo.js"
+// import BI from "./helper/handle/getBrandInfo.js"
 import md5 from './utils/md5';
 import getColor from "./helper/handle/colorHandle.js"
 import PH from "./helper/handle/paramsHandle.js"
 import AS from "./helper/manager/authorize-set.js"
 import RunApi from "./helper/manager/apiPackage.js"
 import TARH from "./helper/handle/tabbarHandle.js"
-import CDateH from "./helper/handle/cacheDateHandle.js"
 import NH from "./helper/handle/numHandle.js"
 import LocationM from "./helper/manager/location-manager.js"
 import CardM from "./helper/handle/openCardHandle.js"
-import CacheH from "./helper/handle/cacheHandle.js"
 import SHP from "./helper/handle/scanHandleParams.js"
 import WxGH from "./helper/handle/wxGroupHandle.js"
 import { OpKind, ShareType} from "./helper/manager/log-map.js";
 import StorageH from "./helper/handle/storageHandle.js"
 import strH from "./helper/handle/strHandle.js"
 import StringUtl from "./support/utils/string-util.js";
-import './support/polyfill/polyfill-promise'
+import "./support/polyfill/polyfill-promise";
 import StoreH from "./helper/handle/storeHandle.js";
+import CDateH from "./helper/handle/cacheDateHandle.js"
 App({
   globalData: {
     isShowWelcome: false,
@@ -189,15 +189,12 @@ App({
   },
   // get UserDockApi(){
   //   return Api.UserDockApi;
-  // },
-  get TARH() {
-    return TARH;
-  },
+  // }, 
   get CDateH(){
     return CDateH;
   },
-  get CacheH(){
-    return CacheH;
+  get TARH() {
+    return TARH;
   },
   get LocationM(){
     return LocationM;
@@ -217,7 +214,6 @@ App({
   sysTemConfig(params){
     return SConf.getSysConfig(params)
   },
-  getBrandInfo(){},
   pageJump(options) {
     return pageJump(options);
   },
@@ -234,7 +230,6 @@ App({
     }
   },
 	onLaunch: function (options) {
-    console.log("onLaunch",options); 
     console.log('systemInfo',this.SIH.systemInfo)
     //检测更新
     checkUpdate();
@@ -261,15 +256,6 @@ App({
   onHide(){
     appOnhide.call(this);
   },
-	// 检测是否是第一次打开小程序，在“发现”中删除小程序再重新进来也算第一次进来
-	checkIsFirst: function () {
-		if (!wx.getStorageSync('HAS_ENTRY')) {
-			this.globalData.isFirst = true;
-			wx.setStorageSync('HAS_ENTRY', 'true');
-		} else {
-			this.globalData.isFirst = false;
-		}
-	},
   //
   saveOptions(ops){
     console.log(ops,"app获取的参数")
@@ -282,11 +268,7 @@ function appOnshow(ops){
   CDateH.delCacheDate();
   LgMg.initGlobalParams(ops);
   PH.initStatus();
-  LM.loginAsync(false).then(res=>{
-    console.log('进来 loginAsync 结果',res)
-  }).catch(e=>{
-    console.log('进来 loginAsync 结果 catch',e)
-  }).finally(() => {
+  LM.loginAsync(false).finally(() => {
     LgMg.setChannel(ops);
     LM.checkIfStaffDstbEvent();
     FM.submit();
@@ -296,9 +278,8 @@ function appOnshow(ops){
     }
     this.saveOptions(ops);
   });
-  StoreH.getVisitStoreRule(ops);
+  StoreH.listen(ops);
   WxGH.initStatus();
-  this.getBrandInfo();
 }
 //
 function appOnhide(){
