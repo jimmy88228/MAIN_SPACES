@@ -5,17 +5,18 @@ Page(app.BP({
       isEdit: false,
     },
     onLoad() {
+      console.log('页面onLoad')
     },
     onShow: function() {
+      this.cartListModule = this.cartListModule || this.selectComponent('#cartListModule');
+      this.cartListModule.onShowFnc();
       if (this.onReadyBool){
-        this.cartListModule = this.cartListModule || this.selectComponent('#cartListModule');
-        this.cartListModule.onShowFnc();
       } 
     },
     onReady() {
-      this.onReadyBool =true;
-      this.cartListModule = this.cartListModule || this.selectComponent('#cartListModule');
-      this.cartListModule.onShowFnc();
+      // this.onReadyBool =true;
+      // this.cartListModule = this.cartListModule || this.selectComponent('#cartListModule');
+      // this.cartListModule.onShowFnc();
     },
     onHide: function() {
     },

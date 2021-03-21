@@ -66,11 +66,11 @@ class storeManager {
       }
     } else { // 带定位请求
       if(StorageH.get(STORE_KEY)){
-        console.log('云店缓存中')
+        console.log('页面 云店缓存中');
         let page = getCurrentPages().splice(-1)[0];
         setTimeout(()=>{
           page.onShow(); 
-        },1000)
+        },500)
         return;
       }
       this.getLocation().then(data=>{
@@ -195,8 +195,10 @@ function getVisitStore(params, isShowLoad){
         this._storeInfo = data;
         StorageH.set(STORE_KEY, data,20);
         // StorageH.set(TEMP_STORE_KEY,data,20);
-        page.onLoad(page.options);
-        page.onShow();
+        setTimeout(()=>{
+          page.onLoad(page.options);
+          page.onShow();
+        },500)
       } else {
         page.onLoad(page.options);
         page.onShow();

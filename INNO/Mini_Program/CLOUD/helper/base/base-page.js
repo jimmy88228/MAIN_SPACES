@@ -46,12 +46,11 @@ export default function(pageOptions) {
       if (q.scene && MyStr.checkWxScene(q.scene)) {
         delete q.scene;
       }
-      // console.log("StoreH.isHoldPage(this)", StoreH.isHoldPage(this))
       // 扫码进入: 过渡页、店铺进入的屏蔽
-      if (StartPageHandle.startPageJump(this, q) || StoreH.isHoldPage(this)) {
+      // if (StartPageHandle.startPageJump(this, q) || StoreH.isHoldPage(this)) {
+      if (StartPageHandle.startPageJump(this, q)) {
         return;
       }
-      console.log('BP页面onLoad',...args);
       //分享配置
       let cfgType = ShareConf[this.route] || "default";
       if (cfgType != "goods" && typeof(this.onShareAppMessage) != 'undefined') {
@@ -66,7 +65,7 @@ export default function(pageOptions) {
           return Promise.resolve(config);
         });
       }
-      //
+      console.log('BP页面onLoad',...args);
       rOnLoad && rOnLoad.call(this, ...args);
       if (q && q instanceof Object) {
         pageParams = {
@@ -77,14 +76,15 @@ export default function(pageOptions) {
     let rOnShow = pageOptions.onShow;
     pageOptions.onShow = function(...args) {
       let options = PH.paramsJson("options") || {};
-      console.log('BP页面onShow',StartPageHandle.releasePage?"ok,":"return,",this.route,options.query);
+      console.log('中转页检测',StartPageHandle.releasePage?"ok,":"return,",this.route,options.query);
       if (options.query && options.query.scene && !StartPageHandle.releasePage) return;
       let that = this;
       settarbar.call(this);
       checkMenuUpdate.call(this);
       checkRoute.call(this);
+      //onShow屏蔽检测
       if(!StoreH.isHoldPage(this)){
-        console.log('页面onShow',...args);
+        console.log('BP页面onShow',...args);
         rOnShow && rOnShow.call(this, ...args);
       }
       //欢迎页检测

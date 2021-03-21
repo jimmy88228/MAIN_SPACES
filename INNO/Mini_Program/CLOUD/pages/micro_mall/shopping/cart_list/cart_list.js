@@ -375,6 +375,7 @@ Component(app.BTAB({
 }))
 //获取购物车列表
 function getBuyCarGoodList(jumpInit) {
+  console.log('页面 调接口getShoppingCartList')
   return app.CL_GoodsApi.getShoppingCartList({
     params: {},
   })
