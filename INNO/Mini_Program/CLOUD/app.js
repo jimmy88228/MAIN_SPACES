@@ -12,7 +12,6 @@ import EB from "./support/tools/event-bus.js";
 import pageJump from "./helper/page-jump";
 import checkUpdate from "./helper/manager/check-update-manager.js";
 import SConf from "./helper/handle/getSystemConfig.js"
-// import BI from "./helper/handle/getBrandInfo.js"
 import md5 from './utils/md5';
 import getColor from "./helper/handle/colorHandle.js"
 import PH from "./helper/handle/paramsHandle.js"

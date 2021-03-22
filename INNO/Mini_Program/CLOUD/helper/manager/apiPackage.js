@@ -64,7 +64,6 @@ class AllApiManager extends ApiBase {
     this.initOther(extra.isShowLoad != false); //loading框
     if (url && this.ApiName && this.ApiName[url]) {
       if (action.toUpperCase() == 'POST') {  //POST请求
-        console.log('调接口?post')
         return this.ApiName[url]({
           data: this._params,
           extraData: this._other

@@ -1,0 +1,15 @@
+<template name="ad-nav-tpl">
+    <view class="list {{_data.open_slide?'':'warp'}}">
+      <block wx:for="{{_data.items}}" wx:key="index">
+        <view class="list-item {{_data.type}}" style="width:{{100/_data.row}}%;" bindtap="linkJump" data-data="{{item.link}}" data-type="imageAd">
+          <image 
+              wx:if="{{_data.type == 'imageText'}}"
+              class="list-img {{_data.icon_shape}} {{_data.open_icon?'limit':''}} {{_data.row>4?'small':''}}" 
+              mode="{{_data.open_icon?'aspectFit':'widthFix'}}" 
+              src="{{item.image}}">
+          </image>
+          <view class="title">{{item.title}}</view>
+        </view>
+      </block>
+    </view>
+</template>

@@ -17,6 +17,11 @@ Promise.delay = function (ms, val) {
 Promise.prototype.delay = function (ms) {
     return Promise.delay(ms, this);
 }
+//
+
+// Promise.prototype.delay = function (ms) {
+//     return Promise.delay(ms, this);
+// }
 
 // any
 class AggregateError extends Error {
@@ -57,10 +62,10 @@ Promise.any = function (array) {
 // finally
 Promise.prototype.finally = function (callback) {
     return this.then((data) => {
-        try { callback(); } catch(e) { }
+        try { callback(); } catch(error) { }
         return data;
     }, err => {
-        try { callback(); } catch(e) { }
+        try { callback(); } catch(error) { }
         return Promise.reject(err);
     });
 }
