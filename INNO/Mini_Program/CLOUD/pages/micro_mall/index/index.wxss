@@ -10,6 +10,6 @@ page{
 .index_page image{
   display:block;
 }
-.pager_tab{
+.page_tab{
   width:100%;
 }

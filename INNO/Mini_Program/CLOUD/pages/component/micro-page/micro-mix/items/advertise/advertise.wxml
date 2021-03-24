@@ -1,0 +1,27 @@
+<!--pages/component/micro-page/items/advertise/advertise.wxml-->
+<wxs module="dfCss" src="../../../help/defaultCss.wxs"></wxs>
+<import src="./adv-tpl.wxml"/>
+<view class="main" style="{{dfCss.getDfCss(_data,screenWidth)}}">
+  <block wx:if="{{_data.type == 't1'}}"> <!-- 静态图 -->
+    <block wx:if="{{_data.open_slide}}"> <!-- 左右滑动 -->
+      <list refresh="{{false}}" scroll-x="{{true}}" scroll-y="{{false}}" >
+        <view slot="data" class="list scroll">
+          <block wx:for="{{_data.images}}" wx:key="index">
+            <template is="adv-tpl" data="{{_data:_data,listGoods:item}}"></template>
+          </block>
+        </view>
+      </list>
+    </block>
+    <block wx:else>
+      <view class="list warp">
+        <block wx:for="{{_data.images}}" wx:key="index">
+          <template is="adv-tpl" data="{{_data:_data,listGoods:item}}"></template>
+        </block>
+      </view>
+    </block>
+  </block>
+  <block wx:elif="{{_data.type == 't2'}}">
+    <!-- 轮播图 -->
+    <swiper-mod list="{{_data.images}}" _data="{{_data}}"></swiper-mod>
+  </block>
+</view>

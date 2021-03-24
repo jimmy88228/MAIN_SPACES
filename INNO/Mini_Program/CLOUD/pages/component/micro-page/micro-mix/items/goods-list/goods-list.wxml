@@ -1,0 +1,30 @@
+<!--pages/component/micro-page/items/goods-list/goods-list.wxml-->
+<wxs module="dfCss" src="../../../help/defaultCss.wxs"></wxs>
+<import src="./gds-list-tpl.wxml"/>
+<view class="main" style="{{dfCss.getDfCss(_data,screenWidth)}}">
+  <!-- 分组tab -->
+  <view class="tab-box" wx:if="{{showTab && init}}">
+    <block wx:for="{{_data.goodsGroup}}" wx:key="index">
+      <view class="tab-item" catchtap="onTap" data-type="tab" data-index="{{index}}">
+        <view class="tab-name {{curTab == index?'active':''}}">{{item.name}}</view>
+        <view class="line {{curTab == index?'active':''}}"></view>
+      </view>
+    </block>
+  </view>
+  <!-- 静态商品 -->
+  <block wx:if="{{!_data.open_slide}}">
+    <block wx:if="{{listIndex == curTab}}" wx:for="{{_data.goodsGroup}}" wx:key="index" wx:for-item="listItem"
+      wx:for-index="listIndex">
+      <view class="list-box {{listData.length<=NumTextTrans[_data.layout]?'one-row':''}}" id="list-box{{listIndex}}" wx:if="{{listData.length>0}}">
+        <block wx:for="{{listData}}" wx:key="index" wx:for-item="listGoods" wx:for-index="listGoodsIndex">
+          <template is="gds-list-tpl" data="{{_data:_data,listGoods:listGoods,index:listGoodsIndex}}"></template>
+        </block>
+      </view>
+    </block>
+  </block>
+  <block wx:else>
+    <!-- 轮播 -->
+    <swiper-mod list="{{listData}}" _data="{{_data}}"></swiper-mod>
+    <!-- <swiper-mod list="{{listData[curTab].goodsList}}" _data="{{_data}}"></swiper-mod> -->
+  </block>
+</view>
