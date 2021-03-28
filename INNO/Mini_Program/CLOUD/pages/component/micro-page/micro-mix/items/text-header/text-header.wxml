@@ -1,6 +1,6 @@
 <!--pages/component/micro-page/items/text-header/text-header.wxml-->
 <wxs module="dfCss" src="../../../help/defaultCss.wxs"></wxs>
-<view class="main" style="{{dfCss.getDfCss(_data,screenWidth)}}">
+<view class="main" id="main" style="{{dfCss.getDfCss(_data,screenWidth)}}">
   <view class="box">
     <view class="name text-align-{{_data.textAlign}}" style="font-size:{{dfCss.getRpx(_data.nameFontSize,screenWidth)}}rpx;">{{_data.name}}</view>
     <view class="more-text-box" wx:if="{{_data.showMore}}" catchtap="linkJump" data-type="text" data-data="{{_data.showMoreLink}}">

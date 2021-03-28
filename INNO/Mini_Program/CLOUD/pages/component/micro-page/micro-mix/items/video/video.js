@@ -1,28 +1,31 @@
 // pages/component/micro-page/items/video/video.js
-// pages/component/micro-page/items/rich-text/rich-text.js
-const app = getApp();
+import mcBehavior from '../../../help/mc-behavior.js'
+import ParentNodes from '../../../help/parent-nodes'
+const app = getApp(); 
 Component(app.BTAB({
+  behaviors: [mcBehavior],
+  relations:ParentNodes,
   properties: {
-    _data:{
+    dt:{
       type:Object,
       value:{},
       observer:function(n,o){
-        if(!this.readyed)return
-        this.init(n);
+        // if(!this.isAttached)return
+        n && this.init(n);
       }
     }
   },
   attached(){
-    this.readyed = true;
+    this.isAttached = true;
   },
   data: {
     screenWidth:app.SIH.screenWidth
   },
   methods: {
-    init(data){
-      // console.log('init video',data);
+    init(_data){
+      // console.log('init video',_data);
       this.setData({
-        videoData:data||{}
+        _data
       })
     },
   }

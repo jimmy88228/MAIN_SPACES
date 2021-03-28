@@ -1,27 +1,30 @@
 // pages/component/micro-page/items/rich-text/rich-text.js
+import ParentNodes from '../../../help/parent-nodes'
 const app = getApp();
 Component(app.BTAB({
+  relations:ParentNodes,
   properties: {
-    _data:{
+    dt:{
       type:Object,
       value:{},
       observer:function(n,o){
-        if(!this.readyed)return
-        this.init(n);
+        // if(!this.isAttached)return
+        n && this.init(n);
       }
     }
   },
   attached(){
-    this.readyed = true;
+    this.isAttached = true;
   },
   data: {
     htmlNodes:""
   },
   methods: {
-    init(data){
-      // console.log('init rich-text',data);
+    init(_data){
+      // console.log('init rich-text',_data);
       this.setData({
-        htmlNodes:data.content||""
+        _data,
+        htmlNodes:_data.content||"",
       })
     },
   }

@@ -7,7 +7,7 @@
       "tabbar": "/pages/component/custom/tabBar",
       "btns": "/pages/component/buttons/btns",
       "share":"/pages/micro_mall/goods/popup/share",
-      "micro-page": "/pages/component/micro-page/micro-mix/box/box",
+      "micro-page": "/pages/component/micro-page/micro-mix/micro-page/micro-page",
       "shareImg": "/pages/micro_mall/goods/popup/shareImg",
       "slideVerify":"/pages/component/verify/slide_verify/slide_verify"     
   }

@@ -5,7 +5,7 @@
   "navigationStyle":"custom",
   "usingComponents": {
     "receiveFail": "/pages/micro_mall/coupon_center/pop/receive/fail",
-    "micro-page":"/pages/component/micro-page/micro-mix/box/box",
+    "micro-page":"/pages/component/micro-page/micro-mix/micro-page/micro-page",
     "pageHome": "/pages/component/sceneOperate/pageHome"
   }
 }

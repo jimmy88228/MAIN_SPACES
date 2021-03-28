@@ -1,6 +1,6 @@
 <!--pages/component/micro-page/items/notice/notice.wxml-->
 <wxs module="dfCss" src="../../../help/defaultCss.wxs"></wxs>
-<view class="main" style="{{dfCss.getDfCss(_data,screenWidth)}}">
+<view class="main" id="main" style="{{dfCss.getDfCss(_data,screenWidth)}}">
   <view class="box" style="{{colorMap[_data.type].str}}">
     <view class="icon-box" wx:if="{{_data.showIcon}}">
       <view class="box1">

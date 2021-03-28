@@ -1,7 +1,7 @@
 <!--pages/component/micro-page/items/advertise/advertise.wxml-->
 <wxs module="dfCss" src="../../../help/defaultCss.wxs"></wxs>
 <import src="./adv-tpl.wxml"/>
-<view class="main" style="{{dfCss.getDfCss(_data,screenWidth)}}">
+<view class="main" id="main" style="{{dfCss.getDfCss(_data,screenWidth)}}">
   <block wx:if="{{_data.type == 't1'}}"> <!-- 静态图 -->
     <block wx:if="{{_data.open_slide}}"> <!-- 左右滑动 -->
       <list refresh="{{false}}" scroll-x="{{true}}" scroll-y="{{false}}" >

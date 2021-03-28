@@ -1,4 +1,5 @@
 // pages/component/micro-page/items/notice/notice.js
+import ParentNodes from '../../../help/parent-nodes'
 const app = getApp();
 const playModeSel = {
   vertical:{
@@ -45,8 +46,9 @@ const colorMap = {
   },
 }
 Component(app.BTAB({
+  relations:ParentNodes,
   properties: {
-    _data:{
+    dt:{
       type:Object,
       value:{},
       observer:function(n,o){
@@ -66,17 +68,18 @@ Component(app.BTAB({
     screenWidth:app.SIH.screenWidth
   },
   methods: {
-    init(data){
-      // console.log('init notice',data);
-      if(data && data.option){
+    init(_data){
+      // console.log('init notice',_data);
+      if(_data && _data.option){
         let playMode = {};
-        if(data.option.direction == '1'){
+        if(_data.option.direction == '1'){
           playMode = playModeSel.vertical;
         }else{
           playMode = playModeSel.level;
         }
         this.setData({
-          playMode
+          _data,
+          playMode,
         })
       }
     },

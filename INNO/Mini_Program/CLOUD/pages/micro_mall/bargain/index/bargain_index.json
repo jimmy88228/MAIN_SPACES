@@ -3,7 +3,7 @@
     "enablePullDownRefresh": true,
     "usingComponents": {
         "tabbar": "/pages/component/custom/tabBar",
-        "micro-page": "/pages/component/micro-page/micro-mix/box/box",
+        "micro-page": "/pages/component/micro-page/micro-mix/micro-page/micro-page",
         "search":"/pages/component/search/s_view"
     }
 }

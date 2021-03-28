@@ -1,5 +1,5 @@
 {
   "usingComponents": {
-    "micro-page":"/pages/component/micro-page/micro-mix/box/box"
+    "micro-page":"/pages/component/micro-page/micro-mix/micro-page/micro-page"
   }
 }

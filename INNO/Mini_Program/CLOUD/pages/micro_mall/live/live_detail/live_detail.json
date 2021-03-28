@@ -1,7 +1,7 @@
 {
   "navigationBarTitleText": "",
   "usingComponents": {
-    "micro-page":"/pages/component/micro-page/micro-mix/box/box",
+    "micro-page":"/pages/component/micro-page/micro-mix/micro-page/micro-page",
     "subscribe": "plugin-private://wx2b03c6e691cd7370/components/subscribe/subscribe",
     "share": "/pages/micro_mall/goods/popup/share",
     "shareImg": "/pages/micro_mall/goods/popup/shareImg"

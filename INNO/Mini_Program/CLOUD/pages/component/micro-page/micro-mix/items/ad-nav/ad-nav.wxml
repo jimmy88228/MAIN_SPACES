@@ -1,7 +1,7 @@
 <!--pages/component/micro-page/items/ad-nav/ad-nav.wxml-->
 <wxs module="dfCss" src="../../../help/defaultCss.wxs"></wxs>
 <import src="./ad-nav-tpl.wxml"/>
-<view class="main" style="{{dfCss.getDfCss(_data,screenWidth)}}">
+<view class="main" id="main" style="{{dfCss.getDfCss(_data,screenWidth)}}">
   <block wx:if="{{_data.open_slide}}">
     <list refresh="{{false}}" scroll-x="{{true}}" scroll-y="{{false}}" >
       <view slot="data">

@@ -10,7 +10,7 @@
     "promotion":"/pages/micro_mall/shopping/promotion/promotion",
     "tips_window":"/pages/micro_mall/shopping/cart_list/tips_window/tips_window",
     "embed_custom_module": "/pages/component/custom/embed_custom/embed_custom",
-    "micro-page": "/pages/component/micro-page/micro-mix/box/box",
+    "micro-page": "/pages/component/micro-page/micro-mix/micro-page/micro-page",
     "couponList":"/pages/micro_mall/goods/module/coupon/list"
   }
 }

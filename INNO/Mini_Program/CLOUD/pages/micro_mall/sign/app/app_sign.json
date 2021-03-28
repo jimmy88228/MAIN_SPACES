@@ -6,7 +6,7 @@
     "pageHome": "/pages/component/sceneOperate/pageHome",
     "calendar": "/pages/component/calendar/index",
     "btns":"/pages/component/buttons/btns",
-    "micro-page": "/pages/component/micro-page/micro-mix/box/box"
+    "micro-page": "/pages/component/micro-page/micro-mix/micro-page/micro-page"
   },
   "backgroundColor": "#ffffff"
 }

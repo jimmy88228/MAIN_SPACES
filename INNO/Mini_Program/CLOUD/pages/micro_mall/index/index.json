@@ -2,7 +2,7 @@
   "navigationStyle":"custom",
 	"usingComponents": {
     "indexHeader":"/pages/component/indexHead/indexHeader",
-    "micro-page": "/pages/component/micro-page/micro-mix/box/box",
+    "micro-page": "/pages/component/micro-page/micro-mix/micro-page/micro-page",
     "pagePop":"/pages/component/pop/pagePop",
      "storesForA":"/pages/component/indexHead/storesForA",
      "btnFollow":"/pages/component/btnFollow/btnFollow",

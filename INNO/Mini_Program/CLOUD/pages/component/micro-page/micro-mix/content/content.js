@@ -7,6 +7,8 @@ import {
   SwitchApi,
   GetData
 } from "../../help/switchApiHelp"; //各模块调接口的整合
+import mcBehavior from '../../help/mc-behavior.js'
+import ParentNodes from '../../help/parent-nodes.js';
 const app = getApp();
 const INIT_LIMIT = 2; //一次加载模块数量
 const SHOW_MOD = INIT_LIMIT * 2; //限制模块
@@ -14,12 +16,22 @@ const SCREEN_TIMES = 1.2; //懒加载x屏
 const TAG_TIME = 3200; //商品tag下载节流时间
 const LIMIT_GOODSIDS = 24;// 一次性加载的goodsids超出，分散拼装
 const LIMIT_SORTS = 24;// 一次性加载的分类超出，分散拼装
-const MostApiNum = INIT_LIMIT + 3; //接口限流
+const MostApiNum = INIT_LIMIT + 3; //接口限流 
 Component(app.BTAB({
   options: {
-    addGlobalClass: true,
+    multipleSlots: true // 在组件定义时的选项中启用多slot支持
   },
+  behaviors: [mcBehavior],
+  relations: ParentNodes, 
   properties: {
+    dt:{
+      type:Object,
+      value:{},
+      observer:function(n,o){
+        // if(!this.isAttached)return
+        n && this.init(n);
+      }
+    },
     isLogin: {
       type: Boolean,
       value: false
@@ -86,6 +98,14 @@ Component(app.BTAB({
     this.loadModuleObj = {};
   },
   methods: {
+    queryRefresh(e){
+      this.getQuery(); //获取节点信息
+    },
+    init(_data){
+      this.setData({
+        _data
+      })
+    },
     getAutoData:function (data) { //只有骨架的自动加载
       this.setData({
         // img_url: data.ImgDomain || '',
@@ -377,9 +397,10 @@ function loadFrame(id) {
       }) 
     })
   }else {
-    wx.nextTick(() => {
-      loadData.call(that, true);
-    })
+    // wx.nextTick(() => {
+    //   loadData.call(that, true);
+    // })
+    console.log('重置数据');
   }
 } 
 

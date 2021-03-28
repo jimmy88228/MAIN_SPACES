@@ -1,7 +1,7 @@
 <!--pages/component/micro-page/items/goods-list/goods-list.wxml-->
 <wxs module="dfCss" src="../../../help/defaultCss.wxs"></wxs>
 <import src="./gds-list-tpl.wxml"/>
-<view class="main" style="{{dfCss.getDfCss(_data,screenWidth)}}">
+<view class="main" id="main" style="{{dfCss.getDfCss(_data,screenWidth)}}">
   <!-- 分组tab -->
   <view class="tab-box" wx:if="{{showTab && init}}">
     <block wx:for="{{_data.goodsGroup}}" wx:key="index">
