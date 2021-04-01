@@ -1,6 +1,6 @@
 <!--pages/component/micro-page/items/component/ad-swiper/swiper.wxml-->
 <import src="../../advertise/adv-tpl.wxml" />
-<view class="main" wx:if="{{swiperData.length>0}}">
+<view class="main {{!isInited?'init':''}}" hidden="{{swiperData.length<=0 && isInited}}">
   <swiper 
     class="swiper"
     style="height:{{swiperH}}px;"
@@ -10,11 +10,11 @@
     circular="{{circular}}"
     vertical="{{vertical}}"
     bindchange="onChange"
-    display-multiple-items="{{infoData.layoutRow}}"
+    display-multiple-items="{{_data.layoutRow}}"
   >
     <block wx:for="{{swiperData}}" wx:key="index" wx:for-item="listGoods" wx:for-index="listGoodsIndex">
       <swiper-item>
-        <template is="adv-tpl" data="{{_data:infoData,listGoods:listGoods}}"></template>
+        <template is="adv-tpl" data="{{_data:_data,listGoods:listGoods,isInited:isInited}}"></template>
       </swiper-item>
     </block>
   </swiper>

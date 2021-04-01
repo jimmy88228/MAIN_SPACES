@@ -1,10 +1,10 @@
 // pages/component/micro-page/items/advertise/advertise.js
 const app = getApp();
 import mcBehavior from '../../../help/mc-behavior.js'
-import ParentNodes from '../../../help/parent-nodes'
+import {ItemsParentNodes} from '../../../help/parent-nodes'
 Component(app.BTAB({
   behaviors: [mcBehavior],
-  relations:ParentNodes,
+  relations:ItemsParentNodes,
   properties: {
     dt:{
       type:Object,
@@ -20,32 +20,34 @@ Component(app.BTAB({
     this.queryInfo = {};
   },
   data: {
-    screenWidth:app.SIH.screenWidth
+    screenWidth:app.SIH.screenWidth,
+    // initCss:"init"
   },
   ready(){
     console.log('ready')
-    // setTimeout(()=>{
-    //   this.getQuery();
-    // },3000)
   },
   methods: {
     init(_data){
-      console.log('init advertise',_data);
+      this.trimData(_data);
+      // console.log('init advertise',_data);
       this.setData({
         _data
       })
     },
-    // getQuery(){
-    //   let query = this.createSelectorQuery();
-    //   query.select('#main').boundingClientRect().exec(
-    //     res=>{
-    //       console.log(this.data._data.moduleId,res);
-    //       this.queryInfo = res && res[0] || {};
-    //     }
-    //   )
-    // }
-    // goLink(e){
-    //   console.log('goLink',e)
-    // },
+    loadData(_data){
+      // console.log('loadData',this);
+      this.setData({
+        // _data,
+        isInited:true
+      });
+      if(this.data._data.type != 't2'){
+        Promise.nextTick().then(()=>{
+          this.itemRefresh(); 
+        })
+      }else{
+        this.swiperId = this.swiperId || this.selectComponent("#swiperId");
+        this.swiperId.loadData();
+      }
+    }
   }
 }))

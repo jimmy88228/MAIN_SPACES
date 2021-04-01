@@ -1,7 +1,7 @@
 <!--pages/component/micro-page/items/goods-list/goods-list.wxml-->
 <wxs module="dfCss" src="../../../help/defaultCss.wxs"></wxs>
 <import src="./gds-list-tpl.wxml"/>
-<view class="main" id="main" style="{{dfCss.getDfCss(_data,screenWidth)}}">
+<view class="main {{!isInited?'init':''}}" id="main" style="{{dfCss.getDfCss(_data,screenWidth)}}">
   <!-- 分组tab -->
   <view class="tab-box" wx:if="{{showTab && init}}">
     <block wx:for="{{_data.goodsGroup}}" wx:key="index">
@@ -24,6 +24,6 @@
   </block>
   <block wx:else>
     <!-- 轮播 -->
-    <swiper-mod list="{{listData}}" _data="{{_data}}"></swiper-mod>
+    <swiper-mod goodsList="{{listData}}" dt="{{_data}}" isInited="{{isInited}}"></swiper-mod>
   </block>
 </view> 

@@ -50,7 +50,9 @@
   box-sizing: border-box;
   font-size: 26rpx;
 } 
-
+.init .list-img{
+  background-color: #dfdfdf;
+}
 .list-img {
   width: 100%;
   height: 100%;
@@ -213,4 +215,28 @@
 }
 .list-item-list .msg-detail-box.small{
   padding-bottom: 28rpx;
+}
+.main.init{
+  width: 96%;
+  font-size: 0;
+  margin: 15rpx auto;
+}
+.init .price-box{
+  width: 50%;
+  height: 30rpx;
+  background: #dfdfdf;
+  font-size: 0;
+}
+.init .msg-detail-box{
+  width: 100%;
+  height: 30rpx;
+  background: #dfdfdf;
+  margin-bottom: 15rpx;
+  font-size: 0;
+}
+.init .list-msg-sale-price{
+  display: none;
+}
+.init .list-img{
+  background-color: #dfdfdf;
 }

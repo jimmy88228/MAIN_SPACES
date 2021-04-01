@@ -1,10 +1,10 @@
 // pages/component/micro-page/items/video/video.js
 import mcBehavior from '../../../help/mc-behavior.js'
-import ParentNodes from '../../../help/parent-nodes'
+import {ItemsParentNodes} from '../../../help/parent-nodes'
 const app = getApp(); 
 Component(app.BTAB({
   behaviors: [mcBehavior],
-  relations:ParentNodes,
+  relations:ItemsParentNodes,
   properties: {
     dt:{
       type:Object,
@@ -27,6 +27,14 @@ Component(app.BTAB({
       this.setData({
         _data
       })
-    },
+    }, 
+    loadData(){
+      this.setData({
+        isInited:true
+      })
+      Promise.nextTick().then(()=>{
+        this.itemRefresh(); 
+      })
+    }
   }
 }))

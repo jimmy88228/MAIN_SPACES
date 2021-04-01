@@ -8,7 +8,8 @@ import {
   GetData
 } from "../../help/switchApiHelp"; //各模块调接口的整合
 import mcBehavior from '../../help/mc-behavior.js'
-import ParentNodes from '../../help/parent-nodes.js';
+import {ContentParentNodes} from '../../help/parent-nodes.js';
+import {ContentChildNodes} from '../../help/child-nodes.js';
 const app = getApp();
 const INIT_LIMIT = 2; //一次加载模块数量
 const SHOW_MOD = INIT_LIMIT * 2; //限制模块
@@ -22,7 +23,20 @@ Component(app.BTAB({
     multipleSlots: true // 在组件定义时的选项中启用多slot支持
   },
   behaviors: [mcBehavior],
-  relations: ParentNodes, 
+  relations: {
+    ...ContentParentNodes,
+    ...ContentChildNodes,
+    // '../box/box':{
+    //   type: 'parent',
+    // },
+    // '../items/advertise/advertise':{
+    //   type: 'child',
+    //   linked: function(target) {
+    //     console.log('看看效果1',target); 
+    //     // 每次有custom-li被插入时执行，target是该节点实例对象，触发在该节点attached生命周期之后
+    //   }, 
+    // },
+  }, 
   properties: {
     dt:{
       type:Object,
@@ -97,8 +111,11 @@ Component(app.BTAB({
     this.nodeInfo = {};
     this.loadModuleObj = {};
   },
+  ready(){
+  },
   methods: {
     queryRefresh(e){
+      console.log('queryRefresh content',this.data._data.moduleId)
       this.getQuery(); //获取节点信息
     },
     init(_data){
@@ -215,8 +232,13 @@ Component(app.BTAB({
       })
       return 
     },
-    loadData(){ //父页面采用触底加载的实现
-      loadData.call(this, false, true);
+    loadData(){ //获取slot里面组件 并loadData
+      // loadData.call(this, false, true);
+      let code = this.data._data && this.data._data.code||'';
+      if(!code)return;
+      let temp = this.getAllNodes(this.data._data.code + '-key');
+      this.itemNodes = temp && temp[0];
+      this.itemNodes.loadData && this.itemNodes.loadData(this.data._data);
     },
     setAutoShow(){ //自动加载
       console.log('setAutoShow',this.allDataAlready,this)

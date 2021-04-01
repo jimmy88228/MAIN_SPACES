@@ -69,3 +69,8 @@
 /* .switch_point .point.number{
   background:none; 
 } */
+
+.init .list-img{
+  min-height: 750rpx;
+  background: #dfdfdf;
+}

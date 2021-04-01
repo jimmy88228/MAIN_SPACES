@@ -1,6 +1,6 @@
 <!--pages/component/micro-page/micro-mix/content/content.wxml-->
   <block wx:if="{{true}}">
-      <view class="main" id="main" bindqueryRefresh="queryRefresh">
+      <view class="main main{{dt.moduleId}}" id="main" catchqueryRefresh="queryRefresh">
         <slot></slot> 
       </view>
   </block>

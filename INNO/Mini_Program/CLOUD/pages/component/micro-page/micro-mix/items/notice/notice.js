@@ -1,5 +1,6 @@
 // pages/component/micro-page/items/notice/notice.js
-import ParentNodes from '../../../help/parent-nodes'
+import {ItemsParentNodes} from '../../../help/parent-nodes'
+import mcBehavior from '../../../help/mc-behavior.js'
 const app = getApp();
 const playModeSel = {
   vertical:{
@@ -46,7 +47,8 @@ const colorMap = {
   },
 }
 Component(app.BTAB({
-  relations:ParentNodes,
+  relations:ItemsParentNodes,
+  behaviors: [mcBehavior],
   properties: {
     dt:{
       type:Object,
@@ -65,23 +67,28 @@ Component(app.BTAB({
     playMode:{},
     colorMap,
     currentSwiper: 0,
-    screenWidth:app.SIH.screenWidth
+    screenWidth:app.SIH.screenWidth,
   },
   methods: {
     init(_data){
       // console.log('init notice',_data);
+      let playMode = {};
       if(_data && _data.option){
-        let playMode = {};
         if(_data.option.direction == '1'){
           playMode = playModeSel.vertical;
         }else{
           playMode = playModeSel.level;
-        }
-        this.setData({
-          _data,
-          playMode,
-        })
+        } 
       }
+      this.setData({
+        _data,
+        playMode, 
+      })
+    },
+    loadData(_data){
+      this.setData({
+        isInited:true
+      })
     },
     toogle: function (e) {
       this.setData({

@@ -1,14 +1,17 @@
 // pages/component/micro-page/items/rich-text/rich-text.js
-import ParentNodes from '../../../help/parent-nodes'
+import {ItemsParentNodes} from '../../../help/parent-nodes'
+import mcBehavior from '../../../help/mc-behavior.js'
 const app = getApp();
 Component(app.BTAB({
-  relations:ParentNodes,
+  behaviors: [mcBehavior],
+  relations:ItemsParentNodes,
   properties: {
     dt:{
       type:Object,
       value:{},
       observer:function(n,o){
         // if(!this.isAttached)return
+        console.log('init rich-text',n);
         n && this.init(n);
       }
     }
@@ -21,11 +24,20 @@ Component(app.BTAB({
   },
   methods: {
     init(_data){
-      // console.log('init rich-text',_data);
       this.setData({
         _data,
         htmlNodes:_data.content||"",
       })
+    },
+    loadData(_data){
+      this.setData({
+        isInited:true
+      })
+      setTimeout(() => {
+        Promise.nextTick().then(()=>{
+          this.itemRefresh(); 
+        })
+      }, 1000);
     },
   }
 }))

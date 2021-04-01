@@ -1,10 +1,10 @@
 // pages/component/micro-page/items/text-header/text-header.js
 const app = getApp();
 import mcBehavior from '../../../help/mc-behavior.js'
-import ParentNodes from '../../../help/parent-nodes'
+import {ItemsParentNodes} from '../../../help/parent-nodes'
 Component(app.BTAB({
   behaviors: [mcBehavior],
-  relations:ParentNodes,
+  relations:ItemsParentNodes,
   properties: {
     dt:{
       type:Object,
@@ -23,9 +23,17 @@ Component(app.BTAB({
   },
   methods: {
     init(_data){
-      // console.log('init text-header',data)
+      // console.log('init text-header',_data)
       this.setData({
         _data
+      })
+    },
+    loadData(_data){
+      this.setData({
+        isInited:true
+      })
+      Promise.nextTick().then(()=>{
+        this.itemRefresh(); 
       })
     }
   }

@@ -68,18 +68,17 @@
                   <block wx:elif="{{m_item.code == 'imageTextNavigate'}}">
                     <ad-nav dt="{{m_item.setting}}"></ad-nav>
                   </block>
-  
                   <block wx:elif="{{m_item.code == 'goodsList'}}">
                     <goods-list dt="{{m_item.setting}}"></goods-list>
                   </block> 
                   <block wx:elif="{{m_item.code == 'richText'}}">
-                    <mc-rich-text _data="{{m_item.setting}}"></mc-rich-text>
+                    <mc-rich-text dt="{{m_item.setting}}"></mc-rich-text>
                   </block>
                   <block wx:elif="{{m_item.code == 'video'}}">
-                    <mc-video _data="{{m_item.setting}}"></mc-video>
+                    <mc-video dt="{{m_item.setting}}"></mc-video>
                   </block>
                   <block wx:elif="{{m_item.code == 'textScroll'}}">
-                    <notice _data="{{m_item.setting}}"></notice>
+                    <notice dt="{{m_item.setting}}"></notice>
                   </block>
                         <!-- <block wx:elif="{{m_item.code == 'customerService'}}">
                           <cs _data="{{m_item.setting}}"></cs>

@@ -79,29 +79,27 @@ Component(app.BTAB({
   attached() {
     this.cur_name = '';
     this.extraTop = 0;
-    this.signStatus = true;
+    this.signStatus = true; 
+    this.screenHeight = app.SIH.screenHeight || 0;
+    checkSalesVolume.call(this);
+    this.baseW = (app.SIH.screenWidth / 750);
+    this.btnBackTop = this.btnBackTop || this.selectComponent("#btnBackTop");
     app.sysTemConfig().then(sysConf => {
       this.setData({
         sysConf: sysConf
       })
     })
-    checkSalesVolume.call(this);
-    this.baseW = (app.SIH.screenWidth / 750);
-    this.btnBackTop = this.btnBackTop || this.selectComponent("#btnBackTop");
   },
-  ready(){ 
-    setTimeout(()=>{
-      let query = this.createSelectorQuery();
-      let idSel = '#box'
-      query.select(idSel).boundingClientRect().exec(
-        res=>{
-         console.log('resres',res);
-         this.extraTop = res && res[0] && res[0].top || 0
-        }
-      )
-    },500)
+  ready(){  
   },
   methods: {
+    reflashQuery(){
+      // setTimeout(()=>{
+      //   this.getQueryInfo('#box').then(res=>{
+      //     this.extraTop = res && res[0] && res[0].top || 0 
+      //   })
+      // },500)
+    },
     setBoxH(n){
       this.windowHeight = parseInt(app.SIH.windowHeight) - n;
       let bottomTabH = this.data.customTab?app.SIH.isIphoneX?app.StringUtl.transPx(158):app.StringUtl.transPx(90):0;
@@ -201,23 +199,24 @@ Component(app.BTAB({
       })
     },
     reachBottom(type) {  //需要父页面调用原生的 onReachBottom()
-      if (!(this._options && this._options.page_id)) return;
-      this.cur_name = "custom" + this.currentId;
-      this[this.cur_name] = this[this.cur_name] || this.selectComponent("#" + this.cur_name);
-      if(type == 'callEvent'){
-        this[this.cur_name].callEvent();
-      }else{
-        this[this.cur_name].loadData();
-      }
+      console.log('触底',type)
+      // if (!(this._options && this._options.page_id)) return;
+      // this.cur_name = "custom" + this.currentId;
+      // this[this.cur_name] = this[this.cur_name] || this.selectComponent("#" + this.cur_name);
+      // if(type == 'callEvent'){
+      //   this[this.cur_name].callEvent();
+      // }else{
+      //   this[this.cur_name].loadData();
+      // }
     },
     handle_scroll(top,type="") {  //需要父页面调用原生的 onPageScroll()
       if(type != "autoHide"){
         checkBackTop.call(this,top);
       }
-      // console.log((top + this.extraTop)||0);
-      
-      // this[this.cur_name] = this[this.cur_name] || this.selectComponent("#" + this.cur_name);
-      // this[this.cur_name].checkTop(top || 0);
+      this[this.cur_name] = this[this.cur_name] || this.selectComponent("#" + this.cur_name);
+      let cur_top = parseInt(top + (this.screenHeight||0));
+      // let cur_top = parseInt(top + (this.extraTop||0) + (this.screenHeight||0));
+      this[this.cur_name].scroll(cur_top);
     }, 
     getActivityId(){
       this.couponAssist = this.couponAssist || this.selectComponent("#couponAssist");
@@ -335,6 +334,7 @@ function getCustomTabRequest(ops = {}) {
         isTabPage: isTabPage,
         isHomePage: this.isHomePage, 
       })
+      this.reflashQuery();
       if(!checkIsEnable.call(this,data,check)){ //检测页面失效
         return
       };

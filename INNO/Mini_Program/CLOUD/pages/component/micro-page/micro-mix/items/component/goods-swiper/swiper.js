@@ -1,26 +1,32 @@
 // pages/component/micro-page/items/component/swiper/swiper.js
 const app = getApp();
 import mcBehavior from '../../../../help/mc-behavior.js'
+const tempData = [{},{},{}]
 Component(app.BTAB({
   behaviors: [mcBehavior],
   properties: {
-    list: {
+    goodsList: {
       type: Array,
       value: [],
       observer: function (n, o) {
-        console.log('list swiper',n,this.readyed)
+        // console.log('list swiper',n,this.readyed)
         // if (!this.readyed) return
-        n && this.init(n);
+        n && this.loadData(n);
       }
     },
-    _data: {
+    dt: {
       type: Object,
       value: {},
       observer: function (n, o) {
         // if (!this.readyed || !n) return
-        this.initData(n);
+        this.init(n);
       }
-    }
+    },
+    isInited: {
+      type: Boolean,
+      value: false,
+    },
+    
   },
   attached() {
     this.readyed = true;
@@ -36,17 +42,20 @@ Component(app.BTAB({
   ready() {
   },
   methods: {
-    init(data) {
-      // console.log('init goods-swiper', data);
+    loadData(data) {
       this.setData({
         current:0,
-        swiperData: data
+        swiperData:data,
+        isEmpty:this.data.isInited && (!data || (data && data.length<=0))
       })
+      console.log('初始化 init goods-swiper loadData', data,'isEmpty:',this.data.isEmpty,this.data._data.moduleId);
       if(data&&data.length>0){
         this.initHeight();
+      }else{
+        this.callItemRefresh();
       }
     },
-    initData(data) {
+    init(data) {
       let _data = data || {};
       let layoutRow = 0;
       let layout = _data.layout || "";
@@ -63,19 +72,25 @@ Component(app.BTAB({
       }
       _data.layoutRow = layoutRow;
       this.setData({
-        infoData: _data
+        _data,
       })
     },
     initHeight() { //swiper高度设置
       let that = this;
       let query = this.createSelectorQuery();
       query.select('#listItemId0').boundingClientRect();
-      query.exec(function (res) {
-        if (res[0]) {
-          that.setData({
-            swiperH: res[0].height ? res[0].height + 30 : 250
-          })
-        }
+      query.exec(res=>{
+        console.log('initHeight',res,this.data._data.moduleId);
+        let item = res[0]||{};
+        this.setData({
+          swiperH: item.height ? item.height + (this.data.isInited?30:0) : 250
+        })
+        this.callItemRefresh();
+      })
+    },
+    callItemRefresh(){
+      Promise.nextTick().then(()=>{
+        this.itemRefresh(); 
       })
     },
     onChange(e) { 

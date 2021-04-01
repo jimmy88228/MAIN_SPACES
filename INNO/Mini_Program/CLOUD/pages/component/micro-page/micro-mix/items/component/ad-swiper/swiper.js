@@ -10,21 +10,25 @@ Component(app.BTAB({
       observer: function (n, o) {
         // console.log('???',n,this.readyed)
         // if (!this.readyed) return
-        n && this.init(n);
+        n && this.loadData(n);
       }
     },
-    _data: {
+    dt: {
       type: Object,
       value: {},
       observer: function (n, o) {
         // if (!this.readyed || !n) return
-        this.initData(n);
+        n && this.init(n);
       }
     },
     type:{
       type:String,
       value:""
-    }
+    },
+    isInited:{
+      type:Boolean,
+      value:false
+    },
   },
   attached() {
     this.readyed = true;
@@ -37,21 +41,13 @@ Component(app.BTAB({
     interval: 5000,
   },
   ready() {
-    setTimeout(()=>{
-      this.initHeight();
-    },500)
+    // setTimeout(()=>{
+    //   this.initHeight();
+    // },500)
   },
   methods: {
-    init(data) {
-      // console.log('init ad-swiper', data);
-      this.setData({
-        current:0,
-        swiperData: data
-      })
-    },
-    initData(data) {
-      console.log('initData swiper', data)
-      let _data = data || {};
+    init(_data) {
+      // console.log('init swiper', data)
       _data.row = 1;
       let layoutRow = 0;
       _data.layout = 'one' //广告位轮播 暂时只有一行一个
@@ -69,21 +65,39 @@ Component(app.BTAB({
       }
       _data.layoutRow = layoutRow;
       this.setData({
-        infoData: _data
+        _data, 
       })
-      console.log('infoDatainfoData',this.data.infoData)
+    },
+    loadData(list) {
+      // console.log('init loadData ad-swiper', data);
+      list || (list = this.data.list)
+      this.setData({
+        // _data,
+        swiperData:list,
+        current:0,
+      })
+      if(list.length>0){
+        this.initHeight();
+      }else{
+        this.callItemRefresh();
+      }
     },
     initHeight() { //swiper高度设置
       let that = this;
       let query = this.createSelectorQuery();
       query.select('#listItemId').boundingClientRect();
-      query.exec(function (res) {
-        console.log('resres', res)
-        if (res[0]) {
-          that.setData({
-            swiperH: res[0].height ? res[0].height : 250
+      query.exec(res=>{
+        console.log('initHeight??', res,this.data._data.moduleId)
+          let item = res[0]||{};
+          this.setData({
+            swiperH: item.height ? item.height : 250
           })
-        }
+          this.callItemRefresh();
+      })
+    },
+    callItemRefresh(){
+      Promise.nextTick().then(()=>{
+        this.itemRefresh(); 
       })
     },
     onChange(e) {

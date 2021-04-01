@@ -100,7 +100,17 @@ export default function(pageOptions) {
                 }
                 typeof(callback) == "function" && callback(LM.isLogin)
             },
-			_noFn(e) { }
+            _noFn(e) { },
+            getQueryInfo(id){ 
+                return new Promise((rs,rj)=>{
+                  let query = this.createSelectorQuery();
+                  query.select(id||'main').boundingClientRect().exec(
+                    res=>{
+                      rs(res)
+                    }
+                  )
+                })
+            }
         };
         if (pageOptions.methods) {
             pageOptions.methods = {

@@ -1,6 +1,6 @@
 <!--pages/component/micro-page/micro-mix/box/box.wxml-->
 <block wx:if="{{true}}">
-  <view class="main" id="main" bindqueryRefresh="queryRefresh">
+  <view class="main" id="main" bindqueryRefresh="queryRefresh" bindqueryAllRefresh="queryAllRefresh">
     <slot></slot>
   </view>
 </block>

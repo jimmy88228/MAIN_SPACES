@@ -1,6 +1,6 @@
 /* pages/component/micro-page/items/component/swiper/swiper.wxss */
 .swiper{
-  height: 410rpx;
+  min-height: 370rpx;
 }
 .list-box{
   display: flex;
@@ -13,7 +13,6 @@
   max-width: 100%;
   /* margin-bottom: 15rpx; */
 }
-
 .list-img {
   width: 100%;
   height: 100%;
@@ -32,7 +31,6 @@
 }
 .price-box{
 }
-
 .list-img-box {
   width: 100%;
   padding-top: 100%;
@@ -127,4 +125,24 @@
 }
 .list-item-list .msg-detail-box.small{
   padding-bottom: 28rpx;
+}
+
+.init .price-box{
+  width: 50%;
+  height: 30rpx;
+  background: #dfdfdf;
+  font-size: 0;
+}
+.init .list-msg-sale-price{
+  display: none;
+}
+.init .msg-detail-box{
+  width: 100%;
+  height: 30rpx;
+  background: #dfdfdf;
+  margin-bottom: 15rpx;
+  font-size: 0;
+}
+.init .list-img{
+  background-color: #dfdfdf;
 }

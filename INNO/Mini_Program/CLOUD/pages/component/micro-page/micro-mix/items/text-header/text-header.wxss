@@ -8,8 +8,10 @@
   align-items: center;
   position: relative;
   box-sizing: border-box;
-  padding: 0 80rpx;
 } 
+.box.center{
+  padding: 0 120rpx;
+}
 .more-text{
   font-size: 24rpx;
 }
@@ -32,7 +34,7 @@
   transform: rotate(-45deg);
 }
 .desc{
-  padding-top: 30rpx;
+  margin-top: 30rpx;
 }
 
 /* 通配 */
@@ -49,4 +51,15 @@
 }
 .font-size-12{
   font-size: 24rpx;
+}
+.init .name{
+  background: #dfdfdf;
+  color: #dfdfdf;
+}
+.init .more-text-box{
+  display: none;
+}
+.init .desc{
+  background: #dfdfdf;
+  color: #dfdfdf;
 }

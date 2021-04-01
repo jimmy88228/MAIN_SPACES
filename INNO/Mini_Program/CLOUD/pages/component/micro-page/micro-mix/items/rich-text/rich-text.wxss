@@ -1,1 +1,6 @@
 /* pages/component/micro-page/items/rich-text/rich-text.wxss */
+.main.init{
+  width: 96rpx;
+  margin: 15rpx auto;
+  background: #dfdfdf;
+}

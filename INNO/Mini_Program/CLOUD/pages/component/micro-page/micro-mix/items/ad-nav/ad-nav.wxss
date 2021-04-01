@@ -25,6 +25,9 @@
   width: 100%;
   position: relative;
 }
+.init .list-img{
+  background: #dfdfdf;
+}
 .list-img.limit{
   width: 110rpx;
   height: 110rpx;
@@ -39,4 +42,22 @@
 .title{
   line-height: 50rpx;
   font-size: 24rpx;
+}
+.main.init{
+  margin: 15rpx 0;
+}
+.init.title{
+  background: #dfdfdf;
+  color: #dfdfdf;
+  margin: 10rpx 0;
+  line-height: 28rpx;
+}
+.init .title{
+  background: #dfdfdf;
+  color: #dfdfdf;
+  margin: 10rpx 0;
+  height: 41rpx;
+}
+.init .text .title{
+  height: 100%;
 }
