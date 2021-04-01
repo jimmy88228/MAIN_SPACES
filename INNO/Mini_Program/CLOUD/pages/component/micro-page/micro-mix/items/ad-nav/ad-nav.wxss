@@ -40,7 +40,7 @@
   border-radius: 50%;
 }
 .title{
-  line-height: 50rpx;
+  line-height: 40rpx;
   font-size: 24rpx;
 }
 .main.init{
@@ -56,7 +56,7 @@
   background: #dfdfdf;
   color: #dfdfdf;
   margin: 10rpx 0;
-  height: 41rpx;
+  height: 30rpx;
 }
 .init .text .title{
   height: 100%;

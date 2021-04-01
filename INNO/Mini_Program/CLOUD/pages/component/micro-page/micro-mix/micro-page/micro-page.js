@@ -93,25 +93,18 @@ Component(app.BTAB({
   ready(){  
   },
   methods: {
-    reflashQuery(){
-      // setTimeout(()=>{
-      //   this.getQueryInfo('#box').then(res=>{
-      //     this.extraTop = res && res[0] && res[0].top || 0 
-      //   })
-      // },500)
-    },
     setBoxH(n){
-      this.windowHeight = parseInt(app.SIH.windowHeight) - n;
-      let bottomTabH = this.data.customTab?app.SIH.isIphoneX?app.StringUtl.transPx(158):app.StringUtl.transPx(90):0;
-      let extraSumH = n + bottomTabH;
-      this.setData({
-        boxH:`calc(100vh - ${extraSumH}px)`,
-        extraSumH: extraSumH
-      })
+      // this.windowHeight = parseInt(app.SIH.windowHeight) - n;
+      // let bottomTabH = this.data.customTab?app.SIH.isIphoneX?app.StringUtl.transPx(158):app.StringUtl.transPx(90):0;
+      // let extraSumH = n + bottomTabH;
+      // this.setData({
+      //   boxH:`calc(100vh - ${extraSumH}px)`,
+      //   extraSumH: extraSumH
+      // })
       // console.log('extraSumH',this.data.extraSumH,n)
     },
     onUnloadFn() {
-      this.cur_name && this[this.cur_name].unListen();
+      // this.cur_name && this[this.cur_name].unListen();
     },
     getPageData(options) {
       this.options = JSON.parse(JSON.stringify(options));
@@ -163,10 +156,10 @@ Component(app.BTAB({
         this.currentId = navList[current].page_id;
         this.cur_name = "custom" + this.currentId;
         this[this.cur_name] = this[this.cur_name] || this.selectComponent("#" + this.cur_name);
-        getItemData.call(this, _options, true);
         this.setData({
           tabCurr: current
         })
+        getItemData.call(this, _options, true);
         this.triggerEvent('getPageId', {page_id: this.currentId});
         this.timer && clearTimeout(this.timer);
       }, 200)
@@ -179,9 +172,6 @@ Component(app.BTAB({
     },
     handleReflash(e) {
       this.reflashId = e.detail || 0;
-    },
-    onUnloadFn() {
-      this.cur_name && this[this.cur_name].unListen();
     },
     setPageScroll(noScroll) {
       this.setData({
@@ -334,7 +324,6 @@ function getCustomTabRequest(ops = {}) {
         isTabPage: isTabPage,
         isHomePage: this.isHomePage, 
       })
-      this.reflashQuery();
       if(!checkIsEnable.call(this,data,check)){ //检测页面失效
         return
       };
@@ -417,8 +406,7 @@ function getItemData(_options, isTabPage) {
   //   this.custom = this.custom || this.selectComponent("#" + this.cur_name);
   //   this.custom.getCustomData(_options, this.isHomePage, lockTime);
   //   this.cur_name = "custom" + page_id; 
-  // }
-
+  // } 
   loadFrame.call(this,this.currentId);
   this.couponAssist = this.couponAssist || this.selectComponent("#couponAssist");
   this.couponAssist.getData(this.currentId);
@@ -438,6 +426,11 @@ function loadFrame(id) {
       params={ brandCode: app.Conf.BRAND_CODE };
       apiPack.url = "getParentPageDataScript";
     }
+    this.setData({
+      pageModelList:[]
+    })
+    this[this.cur_name] = this[this.cur_name] || this.selectComponent("#" + this.cur_name);
+    this[this.cur_name].reset();
     return app.RunApi.go(apiPack.api, apiPack.url, params,apiPack.extra).then(res => {
       if (res.code == 1) {
         this.inited = true;
@@ -455,25 +448,16 @@ function loadFrame(id) {
         })
         this.setData({
           img_url: data.imgUrl || '',
-          pageModelList: pageModelList,
+          pageModelList,
         })
-        // setPageData.call(this, pageModelList); //init
         console.log('骨架',this.data.pageModelList)
-        // wx.nextTick(() => {
-        //   loadData.call(that, false, false); //首次加载数据
-        // })
       }
     }).catch(e=>{
       (ops.pageType == 'getParentPage') && 
       this.setData({
         pageEnable: 0
-      }) 
+      })
     })
-  }else {
-    // wx.nextTick(() => {
-    //   loadData.call(that, true);
-    // })
-    console.log('重置数据');
   }
 } 
 

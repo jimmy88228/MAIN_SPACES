@@ -4,11 +4,11 @@
   <!-- 顶部广告 -->
   <view class="adsBox">
     <!-- <mc-content
-    wx:if="{{moduleList.length>0}}"
-    id="once" 
-    isLogin="{{isLogin}}"
-    sysConf="{{sysConf}}"
-    autoShow="{{true}}" 
+      wx:if="{{moduleList.length>0}}"
+      id="once" 
+      isLogin="{{isLogin}}"
+      sysConf="{{sysConf}}"
+      autoShow="{{true}}" 
     >
     </mc-content> -->
   </view>
@@ -80,9 +80,9 @@
                   <block wx:elif="{{m_item.code == 'textScroll'}}">
                     <notice dt="{{m_item.setting}}"></notice>
                   </block>
-                        <!-- <block wx:elif="{{m_item.code == 'customerService'}}">
-                          <cs _data="{{m_item.setting}}"></cs>
-                        </block> -->
+                  <!-- <block wx:elif="{{m_item.code == 'customerService'}}">
+                    <cs _data="{{m_item.setting}}"></cs>
+                  </block> -->
                 </mc-content>
             </block>
         </mc-box>

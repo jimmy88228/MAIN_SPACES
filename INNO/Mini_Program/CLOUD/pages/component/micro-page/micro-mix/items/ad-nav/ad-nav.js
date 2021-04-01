@@ -20,7 +20,6 @@ Component(app.BTAB({
   },
   data: {
     screenWidth: app.SIH.screenWidth,
-    // initCss:'init',
   },
   methods: {
     init(_data) {
@@ -30,7 +29,6 @@ Component(app.BTAB({
     },
     loadData(_data) {
       this.setData({
-        // _data,
         isInited:true
       })
       Promise.nextTick().then(()=>{

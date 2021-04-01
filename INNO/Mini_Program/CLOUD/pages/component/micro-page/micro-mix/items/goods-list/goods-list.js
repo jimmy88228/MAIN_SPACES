@@ -45,7 +45,6 @@ Component(app.BTAB({
   },
   methods: {
     init(_data){
-      // console.log('init goods-list',_data);
       let group =  _data && _data.goodsGroup||[];
       let listData = getInitData(group,this.data.curTab);
       this.setData({
@@ -55,7 +54,6 @@ Component(app.BTAB({
       });
     },
     loadData(_data){
-      // console.log('goods-list loadData',this);
       let apiPm = getParams(this.data._data||{},this);
       return app.RunApi.go(apiPm.m,apiPm.api,apiPm.url,apiPm.params,apiPm.extra).then(res=>{
         let data = res.data||{};
@@ -64,7 +62,7 @@ Component(app.BTAB({
           isInited:true,
           listData: data.goods_list || [],
         })
-        if(!this.data._data.open_slide){
+        if(!this.data._data.open_slide){ //swiper 先不刷新
           Promise.nextTick().then(()=>{
             this.itemRefresh(); 
           })

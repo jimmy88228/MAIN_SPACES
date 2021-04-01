@@ -1,8 +1,7 @@
 <template name="gds-list-tpl">
   <view id="listItemId{{index}}" class="list-item list-item-{{_data.layout}} list-item-{{_data.layout}}-{{arrLen}}" catchtap="linkJump" data-data="{{listGoods}}" data-type="goodsList">
     <view class="list-img-box">
-      <image src="{{}}" mode="aspectFit" class="list-img"></image>
-      <!-- <image src="{{listGoods.goods_thumb}}" mode="aspectFit" class="list-img"></image> -->
+      <image src="{{listGoods.goods_thumb}}" mode="aspectFit" class="list-img"></image>
       <view class="property_box" wx:if="{{listGoods.goods_brief}}">
         <view class="property">{{listGoods.goods_brief}}</view>
       </view>

@@ -41,13 +41,9 @@ Component(app.BTAB({
     interval: 5000,
   },
   ready() {
-    // setTimeout(()=>{
-    //   this.initHeight();
-    // },500)
   },
   methods: {
     init(_data) {
-      // console.log('init swiper', data)
       _data.row = 1;
       let layoutRow = 0;
       _data.layout = 'one' //广告位轮播 暂时只有一行一个
@@ -72,22 +68,24 @@ Component(app.BTAB({
       // console.log('init loadData ad-swiper', data);
       list || (list = this.data.list)
       this.setData({
-        // _data,
         swiperData:list,
         current:0,
       })
       if(list.length>0){
-        this.initHeight();
+        Promise.nextTick().then(()=>{
+          setTimeout(() => {
+            this.initHeight();
+          }, 300);
+        })
       }else{
         this.callItemRefresh();
       }
     },
     initHeight() { //swiper高度设置
-      let that = this;
       let query = this.createSelectorQuery();
       query.select('#listItemId').boundingClientRect();
       query.exec(res=>{
-        console.log('initHeight??', res,this.data._data.moduleId)
+        // console.log('initHeight', res,this.data._data.moduleId,this.data.swiperData,this.data.isInited)
           let item = res[0]||{};
           this.setData({
             swiperH: item.height ? item.height : 250

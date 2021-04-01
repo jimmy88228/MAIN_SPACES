@@ -34,6 +34,7 @@ module.exports = Behavior({
         delete this[key];
       }
       this[key] = setTimeout(()=>{
+        console.log('initQuery',key)
         this.getAllQueryInfo({key,...param});
       },1500)
     },
@@ -60,11 +61,11 @@ module.exports = Behavior({
             res=>{
               this.queryInfo = {};
               this.queryInfo = res && res[0] || {};
-              this.queryInfo.top = this.queryInfo.top+(res&&res[1]&&res[1].scrollTop); //绝对定位的top
-              console.log(this.data._data.moduleId,'getQuery',this.queryInfo.top,this.queryInfo,!!thatP,res);
-              thatP && thatP.queryRefresh();
-              !thatP && (this.itemRefresh(res));
-              // !thatP && (this.allRefresh({}));
+              this.queryInfo.top = this.queryInfo.top + (res&&res[1]&&res[1].scrollTop); //绝对定位的top坐标
+              console.log(this.data._data.moduleId,'getQuery',this.queryInfo.top,!!thatP,res);
+              thatP && thatP.queryRefresh(); //box的循环刷新item
+              !thatP && (this.itemRefresh(res)); //item的局部刷新
+              // !thatP && (this.allRefresh({})); //item抛出事件，走循环刷新
             }
           )
       }, 1000);

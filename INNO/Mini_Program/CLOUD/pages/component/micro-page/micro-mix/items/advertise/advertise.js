@@ -21,26 +21,21 @@ Component(app.BTAB({
   },
   data: {
     screenWidth:app.SIH.screenWidth,
-    // initCss:"init"
   },
   ready(){
-    console.log('ready')
   },
   methods: {
     init(_data){
       this.trimData(_data);
-      // console.log('init advertise',_data);
       this.setData({
         _data
       })
     },
     loadData(_data){
-      // console.log('loadData',this);
       this.setData({
-        // _data,
         isInited:true
       });
-      if(this.data._data.type != 't2'){
+      if(this.data._data.type != 't2'){ //swiper 先不刷新
         Promise.nextTick().then(()=>{
           this.itemRefresh(); 
         })

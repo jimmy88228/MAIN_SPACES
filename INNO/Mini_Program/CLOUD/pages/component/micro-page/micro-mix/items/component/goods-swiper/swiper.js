@@ -48,7 +48,7 @@ Component(app.BTAB({
         swiperData:data,
         isEmpty:this.data.isInited && (!data || (data && data.length<=0))
       })
-      console.log('初始化 init goods-swiper loadData', data,'isEmpty:',this.data.isEmpty,this.data._data.moduleId);
+      // console.log('初始化 init goods-swiper loadData', data,'isEmpty:',this.data.isEmpty,this.data._data.moduleId);
       if(data&&data.length>0){
         this.initHeight();
       }else{
@@ -80,7 +80,7 @@ Component(app.BTAB({
       let query = this.createSelectorQuery();
       query.select('#listItemId0').boundingClientRect();
       query.exec(res=>{
-        console.log('initHeight',res,this.data._data.moduleId);
+        // console.log('initHeight',res,this.data._data.moduleId);
         let item = res[0]||{};
         this.setData({
           swiperH: item.height ? item.height + (this.data.isInited?30:0) : 250
