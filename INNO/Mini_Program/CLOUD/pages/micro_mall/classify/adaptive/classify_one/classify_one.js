@@ -38,7 +38,6 @@ Component(app.BTAB({
       if (this.saveData) {
         this.jump = false;
         this.saveData = false;
-        // console.log('保留')
         return
       }
       this.mcPage = this.mcPage || this.selectComponent("#mcPage");

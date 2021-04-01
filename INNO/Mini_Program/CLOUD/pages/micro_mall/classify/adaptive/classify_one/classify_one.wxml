@@ -3,10 +3,7 @@
 <view class="index_page {{isIphoneX ? 'ipx_p_b' : ''}} {{customTab ? 'customTab' : ''}}">
   <micro-page
     class="page_tab" 
-    id="mcPage" 
-    bindgetPageId="getPageId" 
-    bindvideoPlayPage="videoPlayPage" 
-    bindpageShareSaving="pageShareSaving"
+    id="mcPage"
     extraH="{{extraH}}"
     isHideShare="{{true}}"
     custom-tab="{{customTab}}"></micro-page>
