@@ -78,6 +78,9 @@ Component(app.BTAB({
           }, 300);
         })
       }else{
+        this.setData({
+          isEmpty:this.data.isInited?true:false
+        })
         this.callItemRefresh();
       }
     },

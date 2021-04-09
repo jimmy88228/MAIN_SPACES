@@ -60,13 +60,13 @@
             <block wx:for="{{pageModelList}}" wx:for-item="m_item" wx:for-index="m_index" wx:key="index">
                 <mc-content dt="{{m_item.setting}}">
                   <block wx:if="{{m_item.code == 'text'}}">
-                    <text-header dt="{{m_item.setting}}"></text-header>
+                    <text-header dt="{{m_item.setting}}" index="{{m_index}}"></text-header>
                   </block>
                   <block wx:elif="{{m_item.code == 'imageAd'}}">
-                    <advertise id="id{{m_item.moduleId}}" dt="{{m_item.setting}}"></advertise>
+                    <advertise id="id{{m_item.moduleId}}" dt="{{m_item.setting}}" index="{{m_index}}"></advertise>
                   </block>
                   <block wx:elif="{{m_item.code == 'imageTextNavigate'}}">
-                    <ad-nav dt="{{m_item.setting}}"></ad-nav>
+                    <ad-nav dt="{{m_item.setting}}" index="{{m_index}}"></ad-nav>
                   </block>
                   <block wx:elif="{{m_item.code == 'goodsList'}}">
                     <goods-list dt="{{m_item.setting}}"></goods-list>

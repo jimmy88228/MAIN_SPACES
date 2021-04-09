@@ -37,7 +37,7 @@ Component(app.BTAB({
         Promise.nextTick().then(()=>{
           this.itemRefresh(); 
         })
-      }, 1000);
+      }, 300);
     },
   }
 }))

@@ -1,6 +1,6 @@
 <!--pages/component/micro-page/items/component/ad-swiper/swiper.wxml-->
 <import src="../../advertise/adv-tpl.wxml" />
-<view class="main {{!isInited?'init':''}}" hidden="{{swiperData.length<=0 && isInited}}">
+<view class="main {{!isInited?'init':''}}" hidden="{{isEmpty}}">
   <swiper 
     class="swiper"
     style="height:{{swiperH}}px;"

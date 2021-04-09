@@ -36,7 +36,7 @@ module.exports = Behavior({
       this[key] = setTimeout(()=>{
         console.log('initQuery',key)
         this.getAllQueryInfo({key,...param});
-      },1500)
+      },10)
     },
     getAllQueryInfo({key,id}){ //parent
       this.queryArr = this.getAllNodes(key);
@@ -51,13 +51,12 @@ module.exports = Behavior({
     getNodes(path) { //parent
       return this.getRelationNodes(path);
     }, 
-    getQuery(id,thatP){ //child (content)
+    getQuery(id,thatP,fnc){ //child (content)
       setTimeout(() => {
         let query = this.createSelectorQuery();
         let idSel = '#' + (id||'main');
           query.select(idSel).boundingClientRect()
           query.selectViewport().scrollOffset().exec(
-          // select(idSel).boundingClientRect().exec(
             res=>{
               this.queryInfo = {};
               this.queryInfo = res && res[0] || {};
@@ -68,7 +67,7 @@ module.exports = Behavior({
               // !thatP && (this.allRefresh({})); //item抛出事件，走循环刷新
             }
           )
-      }, 1000);
+      }, 300);
     },
     itemRefresh(e){ //child (content)
       this.triggerEvent('queryRefresh',e||{},{bubbles:true,composed:true,capturePhase:true})

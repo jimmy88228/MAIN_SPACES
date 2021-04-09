@@ -61,7 +61,7 @@ Component(app.BTAB({
   },
   data: {
     navList: [],
-    pageModelList:[],
+    pageModelData:[],
     swiperCurr: 0,
     tabCurr: 0,
     isTabPage: false,
@@ -412,7 +412,7 @@ function getItemData(_options, isTabPage) {
   this.couponAssist.getData(this.currentId);
 }
 
-function loadFrame(id) { 
+function loadFrame(id) {
   if (this.last_id != id || !this.inited) {
     this.last_id = id;
     let params = {
@@ -426,9 +426,11 @@ function loadFrame(id) {
       params={ brandCode: app.Conf.BRAND_CODE };
       apiPack.url = "getParentPageDataScript";
     }
-    this.setData({
-      pageModelList:[]
-    })
+    let pageModelData = this.data.pageModelData||{};
+    pageModelData[id] = [];
+    // this.setData({
+    //   pageModelData
+    // })
     this[this.cur_name] = this[this.cur_name] || this.selectComponent("#" + this.cur_name);
     this[this.cur_name].reset();
     return app.RunApi.go(apiPack.api, apiPack.url, params,apiPack.extra).then(res => {

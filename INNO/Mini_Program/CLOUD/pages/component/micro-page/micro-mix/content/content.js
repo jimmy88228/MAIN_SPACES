@@ -118,7 +118,7 @@ Component(app.BTAB({
       let code = this.data._data && this.data._data.code||'';
       if(!code)return;
       let temp = this.getAllNodes(this.data._data.code + '-key');
-      this.itemNodes = temp && temp[0];
+      this.itemNodes = temp && temp[0] || {};
       this.itemNodes.loadData && this.itemNodes.loadData(this.data._data);
     },
     // getAutoData:function (data) { //只有骨架的自动加载

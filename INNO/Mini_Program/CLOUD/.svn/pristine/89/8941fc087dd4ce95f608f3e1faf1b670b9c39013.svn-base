@@ -70,7 +70,6 @@ Component(app.BTAB({
   isPerfected:false,
   methods: {
     handleUserInfo(e){
-      console.log('handleUserInfo',e)
       if(!canClickEvent.call(this)){ return; };
       this.triggerEvent("clickFront");
       //普通按钮
@@ -94,14 +93,12 @@ Component(app.BTAB({
             })
             break;
           default:
-            console.log('进来0',this.data.isLogin)
             if (this.data.isLogin) {//已经登录
               this.needCheck = true;
               beforeAppletAuthRequired.call(this).then(value => {
                   clickHandleEvent.call(this, value, true);
               })
             } else {//注册流程
-              console.log('进来1',this.data.isLogin)
               this.needCheck = true;
               checkIsLogin.call(this).then((data) => {
                 beforeAppletAuthRequired.call(this).then(value => {
@@ -167,9 +164,9 @@ Component(app.BTAB({
     },
     clickHandleEvent(data){
       app.globalData.btns = null;
+      
       //初始化页面登录状态
       let page = getCurrentPages().slice(-1)[0];
-      console.log('进来2',page,this.data.isLogin,page.data.isLogin,app.LM.isLogin)
       if(page.data.isLogin != app.LM.isLogin){
         page.setData({
           isLogin: app.LM.isLogin
@@ -312,10 +309,8 @@ function userInfoJump(type, needCheck = false){
 }
 //检测登录
 function checkIsLogin() {
-  console.log('进来 开始注册')
   return app.LM.getUserTokenAsync(true).then(data => {
     // cache
-    console.log('进来 getUserTokenAsync',data)
     if (data.userToken) {
       this.setData({
         isLogin: true
