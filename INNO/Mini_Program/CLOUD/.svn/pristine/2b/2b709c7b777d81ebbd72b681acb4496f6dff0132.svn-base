@@ -1,0 +1,148 @@
+/* pages/component/micro-page/items/component/swiper/swiper.wxss */
+.swiper{
+  min-height: 370rpx;
+}
+.list-box{
+  display: flex;
+  flex-wrap: wrap;
+}
+.list-item{
+  flex: 1;
+  flex-shrink: 0;
+  min-width: 100%;
+  max-width: 100%;
+  /* margin-bottom: 15rpx; */
+}
+.list-img {
+  width: 100%;
+  height: 100%;
+  display: block;
+  position: absolute;
+  top: 50%;
+  left: 0px;
+  transform: translateY(-50%);
+  background-color:#fff;
+}
+.list-msg-box{
+  box-sizing: border-box;
+  padding: 20rpx;
+  line-height: 32rpx;
+  position: relative;
+}
+.price-box{
+}
+.list-img-box {
+  width: 100%;
+  padding-top: 100%;
+  position: relative;
+  overflow: hidden;
+  flex-shrink: 0;
+}
+
+.msg-detail-box{
+}
+.list-msg-name{
+  width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical; 
+  margin-bottom: 6rpx;
+}
+.char::before{
+  content:"¥";
+  margin-right: 4rpx;
+}
+
+/* 一行N个 */
+.list-item-one{
+  font-size: 30rpx;
+} 
+.list-item-two-1{
+  min-width: 50%;
+  max-width: 50%;
+}
+.list-item-three-1{
+  min-width: 33.33%;
+  max-width: 33.33%;
+}
+.list-item-four-1{
+  min-width: 20%;
+  max-width: 20%;
+}
+.list-msg-sale-price{
+  font-size: 24rpx;
+}
+
+.list-msg-market-price{
+  font-size: 24rpx;
+  color: #7f7f7f;
+  text-decoration: line-through;
+}
+
+/* 一大两小 */
+.list-item-bigSmall{
+  min-width: 50%;
+  max-width: 50%;
+}
+.list-item-bigSmall:nth-child(3n+1){
+  min-width: 100%;
+  max-width: 100%;
+  font-size: 30rpx;
+}
+
+/* 一行详细列表 */
+.list-item-list{
+  min-width: 100%;
+  max-width: 100%;
+  font-size: 30rpx;
+  display: flex;
+}
+
+/* 一大两小、一行一个、详细列表 价格权重调整 */
+.list-item-bigSmall:nth-child(3n+1) .list-msg-sale-price
+,.list-item-bigSmall:nth-child(3n+1) .list-msg-market-price
+,.list-item-one .list-msg-sale-price
+,.list-item-one .list-msg-market-price
+,.list-item-list .list-msg-sale-price
+,.list-item-list .list-msg-market-price
+{
+  font-size: 26rpx;
+}
+/* 详细列表 权重调整 */
+.list-item-list .list-img-box{
+  width: 200rpx;
+  padding-top: 200rpx;
+}
+.list-item-list .price-box{
+  position: absolute;
+  bottom: 0;
+  left: 20rpx;
+}
+.list-item-list .msg-detail-box.large{
+  padding-bottom: 60rpx;
+}
+.list-item-list .msg-detail-box.small{
+  padding-bottom: 28rpx;
+}
+
+.init .price-box{
+  width: 50%;
+  height: 30rpx;
+  background: #dfdfdf;
+  font-size: 0;
+}
+.init .list-msg-sale-price{
+  display: none;
+}
+.init .msg-detail-box{
+  width: 100%;
+  height: 30rpx;
+  background: #dfdfdf;
+  margin-bottom: 15rpx;
+  font-size: 0;
+}
+.init .list-img{
+  background-color: #dfdfdf;
+}

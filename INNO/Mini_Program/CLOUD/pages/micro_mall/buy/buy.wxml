@@ -208,7 +208,6 @@
                         </view>
                     </view>
                 </view>
-               
                 <!--全场促销优惠-->
                 <view class="area_box gift_card_box" wx:if="{{secPromoteList.length > 0}}">
                     <view class="title">全场促销优惠</view>

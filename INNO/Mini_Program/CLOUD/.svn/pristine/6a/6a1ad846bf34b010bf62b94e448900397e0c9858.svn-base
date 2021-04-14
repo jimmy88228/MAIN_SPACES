@@ -1,0 +1,35 @@
+<!--pages/component/micro-page/items/notice/notice.wxml-->
+<wxs module="dfCss" src="../../../help/defaultCss.wxs"></wxs>
+<view class="main" id="main" style="{{dfCss.getDfCss(_data,screenWidth)}}">
+  <view class="box" style="{{colorMap[_data.type].str}}">
+    <view class="icon-box" wx:if="{{_data.showIcon}}">
+      <view class="box1">
+        <view class="voice1" style="--voice-bg:{{colorMap[_data.type].val}}"></view>
+        <view class="voice2" style="--voice-bg:{{colorMap[_data.type].val}}"></view>
+        <view class="voice3" style="--voice-bg:{{colorMap[_data.type].val}}"></view>
+      </view>
+      <view class="voice_cir_box">
+        <view class="voice_cir" style="--voice-bg:{{colorMap[_data.type].val}}"></view>
+      </view>
+    </view>
+    <swiper
+    wx:if="{{_data.textList.length>0}}" 
+    class="swiper_box" 
+    current-item-id="{{index}}" 
+    circular="{{playMode.circular}}"
+    vertical="{{playMode.vertical}}" 
+    autoplay="{{playMode.autoplay}}" 
+    interval="{{playMode.interval}}" 
+    duration="{{playMode.duration}}"
+    easing-function="{{playMode.easing}}"
+    bindchange="toogle">
+    <block wx:for="{{_data.textList}}" wx:key="index">
+      <swiper-item catchtouchmove="_noFn" catchtap="_noFn" class="test2">
+        <view class="top_content" style="{{currentSwiper==index?playMode.opacity_show:playMode.opacity_hide}}">
+          <view class="text">{{item.text}}</view>
+        </view>
+      </swiper-item>
+    </block>
+    </swiper>
+  </view>
+</view>

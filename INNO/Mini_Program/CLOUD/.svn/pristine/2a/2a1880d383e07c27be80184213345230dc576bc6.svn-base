@@ -1,0 +1,10 @@
+{
+  "usingComponents": {
+      "lottery": "./activity/activity",
+      "lotteryTip": "./lottery_tip/lottery_tip",
+      "pageHome": "/pages/component/sceneOperate/pageHome",
+      "micro-page":"/pages/component/micro-page/micro-mix/micro-page/micro-page",
+      "btns": "/pages/component/buttons/btns"
+  },
+  "navigationBarTitleText": "活动"
+}

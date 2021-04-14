@@ -294,16 +294,6 @@ export default function(pageOptions) {
       }
       typeof(callback) == "function" && callback(LM.isLogin)
     }
-    pageOptions.getQueryInfo = function(id){ 
-      return new Promise((rs,rj)=>{
-        let query = wx.createSelectorQuery();
-        query.select(id||'main').boundingClientRect().exec(
-          res=>{
-            rs(res)
-          }
-        )
-      })
-    }
   }
   return pageOptions;
 }

@@ -1,0 +1,22 @@
+<!--pages/component/micro-page/items/component/goods-swiper/swiper.wxml-->
+<import src="../../goods-list/gds-list-tpl.wxml"/>
+<view class="main {{!isInited?'init':''}}" hidden="{{isEmpty}}">
+<!-- <view class="main {{!isInited?'init':''}}" wx:if="{{swiperData.length>0}}"> -->
+  <swiper 
+    class="swiper"
+    style="height:{{swiperH}}px;"
+    autoplay="{{swiperData.length>1?_data.autoplay:false}}"
+    display-multiple-items="{{swiperData.length>1?_data.layoutRow:1}}"
+		interval="{{_data.interval*1000}}"
+    current="{{current}}"
+    circular="{{circular}}"
+    vertical="{{vertical}}"
+    bindchange="onChange"
+  >
+    <block wx:for="{{swiperData}}" wx:key="index" wx:for-item="listGoods" wx:for-index="listGoodsIndex">
+      <swiper-item>
+				<template is="gds-list-tpl" data="{{_data:_data,listGoods:listGoods,index:listGoodsIndex,arrLen:swiperData.length}}"></template>
+      </swiper-item>
+    </block>
+  </swiper>
+</view> 

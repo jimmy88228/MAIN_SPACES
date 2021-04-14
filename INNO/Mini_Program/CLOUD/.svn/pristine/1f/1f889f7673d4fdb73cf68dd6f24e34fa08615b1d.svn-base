@@ -1,0 +1,22 @@
+<!-- pages/micro_mall/custom_page/custom_page -->
+<view hidden="{{pageHidden}}">
+  <view class="box" id="box">
+    <page-nav holdStay="{{true}}" title="{{pageTitle}}"></page-nav>
+  </view>
+  <indexHeader wx:if="{{showHeader}}" top="{{navH}}" id="indexHeader"></indexHeader>
+  <storesForA bindgetStoreMsg='getStoreMsg' top="{{navH}}" id="stores_a_id" show-stores-a="{{showStoresA}}"></storesForA>
+  <view class="index_page">
+    <micro-page
+    class="page_tab" 
+    id="mcPage" 
+    bindgetPageId="getPageId"
+    bindpageShareSaving="pageShareSaving"
+    extraH="{{extraH}}"
+    isCustomNav="{{true}}"
+    custom-tab="{{customTab}}"></micro-page>
+  </view>
+</view>
+<pageHome id="pageHome"></pageHome>
+<welcome id="welcome"></welcome>
+
+ 
