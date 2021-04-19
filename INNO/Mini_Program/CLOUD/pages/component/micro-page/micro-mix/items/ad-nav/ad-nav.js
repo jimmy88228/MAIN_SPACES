@@ -1,10 +1,8 @@
 // pages/component/micro-page/items/ad-nav/ad-nav.js
 import mcBehavior from '../../../help/mc-behavior.js'
-import { ItemsParentNodes } from '../../../help/parent-nodes'
 const app = getApp();
 Component(app.BTAB({
   behaviors: [mcBehavior],
-  relations: ItemsParentNodes,
   properties: {
     dt: {
       type: Object,

@@ -26,10 +26,6 @@ Component(app.BTAB({
       type: Boolean,
       value: false
     },
-    setShare:{
-      type: Boolean,
-      value: true
-    }
   },
   data: {
     staffConf: app.Conf.staffConf || {},

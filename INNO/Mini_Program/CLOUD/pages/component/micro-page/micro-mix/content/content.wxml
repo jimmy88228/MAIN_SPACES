@@ -1,8 +1,6 @@
 <!--pages/component/micro-page/micro-mix/content/content.wxml-->
   <block wx:if="{{true}}">
-    <!-- <view class="main main{{dt.moduleId}}" id="main" catchqueryRefresh="queryRefresh"> -->
-      <view class="main main{{dt.moduleId}}" id="main">
-        <!-- <slot></slot>  -->
+      <view class="main main{{dt.moduleId}}" id="main"> 
         <block wx:if="{{_data.code == 'text'}}">
           <text-header id="cItem" dt="{{_data.setting}}"></text-header>
         </block>
@@ -25,60 +23,4 @@
           <notice id="cItem" dt="{{_data.setting}}"></notice>
         </block>
       </view>
-  </block>
-   <!-- <view id="imageTextNavigate">
-        </view>
-        <view id="imageAd">
-          <slot name="imageAd"></slot>
-        </view> -->
-      <!-- <view class="module_items " hidden="{{hideModule[m_index] || (!autoShow && m_index>=curr_show_mod)}}" wx:for="{{pageModelList}}" wx:for-item="m_item" wx:for-index="m_index" wx:key="m_index"> -->
-  
-        <!-- <view id="custom{{m_item.moduleId}}" wx:if="{{m_item.code == 'text'}}">
-          <text-header _data="{{motion_data[m_index]}}"></text-header>
-        </view>
-        <view id="custom{{m_item.moduleId}}" wx:elif="{{m_item.code == 'imageAd'}}">
-          <advertise _data="{{motion_data[m_index]}}"></advertise>
-        </view>
-        <view id="custom{{m_item.moduleId}}" wx:elif="{{m_item.code == 'imageTextNavigate'}}">
-          <ad-nav _data="{{motion_data[m_index]}}"></ad-nav>
-        </view>
-        <view id="custom{{m_item.moduleId}}" wx:elif="{{m_item.code == 'richText'}}">
-          <mc-rich-text _data="{{motion_data[m_index]}}"></mc-rich-text>
-        </view>
-        <view id="custom{{m_item.moduleId}}" wx:elif="{{m_item.code == 'video'}}">
-          <mc-video _data="{{motion_data[m_index]}}"></mc-video>
-        </view>
-        <view id="custom{{m_item.moduleId}}" wx:elif="{{m_item.code == 'customerService'}}">
-          <cs isCustomNav="{{isCustomNav}}" custom-tab="{{customTab}}" _data="{{motion_data[m_index]}}"></cs>
-        </view>
-        <view id="custom{{m_item.moduleId}}" wx:elif="{{m_item.code == 'textScroll'}}">
-          <notice _data="{{motion_data[m_index]}}"></notice>
-        </view>
-        <view id="custom{{m_item.moduleId}}" wx:elif="{{m_item.code == 'goodsList'}}">
-          <goods-list bindsingleSwitch="singleSwitch" _data="{{_data}}" get-list="{{motion_data[m_index]}}" data-m_index="{{m_index}}"></goods-list>
-        </view> -->
-
-        <!-- <view id="custom{{m_item.moduleId}}" wx:if="{{m_item.code == 'text'}}">
-          <text-header _data="{{motion_data[m_index]}}"></text-header>
-        </view>
-        <view id="custom{{m_item.moduleId}}" wx:elif="{{m_item.code == 'imageAd'}}">
-          <advertise _data="{{motion_data[m_index]}}"></advertise>
-        </view>
-        <view id="custom{{m_item.moduleId}}" wx:elif="{{m_item.code == 'imageTextNavigate'}}">
-          <ad-nav _data="{{motion_data[m_index]}}"></ad-nav>
-        </view>
-        <view id="custom{{m_item.moduleId}}" wx:elif="{{m_item.code == 'richText'}}">
-          <mc-rich-text _data="{{motion_data[m_index]}}"></mc-rich-text>
-        </view>
-        <view id="custom{{m_item.moduleId}}" wx:elif="{{m_item.code == 'video'}}">
-          <mc-video _data="{{motion_data[m_index]}}"></mc-video>
-        </view>
-        <view id="custom{{m_item.moduleId}}" wx:elif="{{m_item.code == 'customerService'}}">
-          <cs isCustomNav="{{isCustomNav}}" custom-tab="{{customTab}}" _data="{{motion_data[m_index]}}"></cs>
-        </view>
-        <view id="custom{{m_item.moduleId}}" wx:elif="{{m_item.code == 'textScroll'}}">
-          <notice _data="{{motion_data[m_index]}}"></notice>
-        </view>
-        <view id="custom{{m_item.moduleId}}" wx:elif="{{m_item.code == 'goodsList'}}">
-          <goods-list bindsingleSwitch="singleSwitch" _data="{{_data}}" get-list="{{motion_data[m_index]}}" data-m_index="{{m_index}}"></goods-list>
-        </view> -->
+  </block>  

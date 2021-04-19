@@ -1,24 +1,13 @@
 // pages/component/micro-page/micro-mix/content/content.js 
 import mcBehavior from '../../help/mc-behavior.js'
-import {ContentParentNodes} from '../../help/parent-nodes.js';
-import {ContentChildNodes} from '../../help/child-nodes.js';
 const app = getApp();
-Component(app.BTAB({
-  options: {
-    multipleSlots: true // 在组件定义时的选项中启用多slot支持
-  },
+Component(app.BTAB({ 
   behaviors: [mcBehavior],
-  relations: {
-    // ...ContentParentNodes,
-    // ...ContentChildNodes,
-  }, 
   properties: {
     dt:{
       type:Object,
       value:{},
       observer:function(n,o){
-        // console.log('dtdt',n)
-        // if(!this.isAttached)return
         n && this.init(n);
       }
     },
@@ -29,39 +18,7 @@ Component(app.BTAB({
     cIndex: {
       type: Number,
       value: 0
-    },
-    // actData: {
-    //   type: Object,
-    //   value: ""
-    // },
-    // showSalesVolume: {
-    //   type: Boolean,
-    //   value: false
-    // },
-    // autoShow: {
-    //   type: Boolean,
-    //   value: false
-    // },
-    // customTab: {
-    //   type: Boolean,
-    //   value: false
-    // },
-    // isCustomNav: {
-    //   type: Boolean,
-    //   value: false
-    // },
-    // sysConf: {
-    //   type: Object,
-    //   value: {}
-    // },
-    // extraSumH:{
-    //   type: Number,
-    //   value:0,
-    // },
-    // extraH:{
-    //   type: Number,
-    //   value:0,
-    // },
+    }, 
   },
   data: { 
   },
@@ -83,149 +40,13 @@ Component(app.BTAB({
         _data
       })
     },
-    // queryRefresh(e){
-    //   console.log('queryRefresh content',this.data._data.moduleId)
-    //   this.getQuery(); //获取节点信息
-    // },
     loadData(){ 
-      //获取slot里面组件 并loadData
-      // let code = this.data._data && this.data._data.code||'';
-      // if(!code)return;
-      // let temp = this.getAllNodes(this.data._data.code + '-key');
-      // this.itemNodes = temp && temp[0] || {};
-      // this.itemNodes.loadData && this.itemNodes.loadData(this.data._data);
-
       this.cItem = this.cItem || this.selectComponent('#cItem') || {};
       this.cItem.loadData && this.cItem.loadData();
-    },
-    // getAutoData:function (data) { //只有骨架的自动加载
-    //   this.setData({
-    //     // img_url: data.ImgDomain || '',
-    //     pageModelList: data || [],
-    //   })
-    //   initAttach.call(this);
-    //   wx.nextTick(() => {
-    //     this.setAutoShow();
-    //   })
-    // },
-    // getCustomData: function(options = {}, isHomePage, lockTime) { //自定义模块加载启动 
-    //   this.loadLock = false;
-    //   this.options = options; 
-    //   this.isHomePage = isHomePage;
-    //   this.lockTime = lockTime; 
-    //   initAttach.call(this);
-    //   initPageType.call(this, options);
-    //   onShowEvent.call(this, options);
-    // }, 
-    // checkTop(top) { //滚动检测
-    //   this.nowTop = this.One_Screen + top;
-    //   // console.log('滚',top,'倒计数:',this.bottom_line - top - this.One_Screen,'累积:',this.nowTop,'line:',this.bottom_line)
-    //   if (this.allDataAlready || this.data.pageEnable == 0 || (this.loadDataType == "bottom" && !this.data.autoShow)) {
-    //     return
-    //   }
-    //   if (this.data.autoShow || (top && this.bottom_line && (this.bottom_line - top <= this.One_Screen))) { //this.bottom_line-top  小于视窗高度One_Screen时loadData
-    //     if (!this.checkTopVal[this.Screen_Num]) {
-    //       this.checkTopVal[this.Screen_Num] = true;
-    //       this.bottom_line += (this.One_Screen * 1.3); //暂时给一个line
-    //       this.Screen_Num += 1;
-    //       loadData.call(this, false, true);
-    //     }
-    //   }
-    // },
-    // setEmpty(){
-    //   this.setData({
-    //     pageEnable: 0
-    //   })
-    // },
-    // detachedTime: function() { //倒计时销毁
-    //   let act_count_down = this.actCountDown;
-    //   if (act_count_down) {
-    //     for (let i in act_count_down) {
-    //       let countDown = act_count_down[i].countDown;
-    //       if (countDown) {
-    //         stopCountDown.call(this, countDown);
-    //       }
-    //     }
-    //   }
-    // },
-    // unListen() {//消除、记录状态
-    //   clearTimeout(this.timer);
-    //   clearTimeout(this.divisionId);
-    //   this.loadLock = true;
-    //   if (this._tagId) {
-    //     this._tagId = 0;
-    //     clearTimeout(this._tagId);
-    //   }
-    //   // if (this.data.pageModelList && this.pageId && (this.loadedNum != 0)) { //排除扰乱因素的if
-    //   //   this.loadedNum_label = this.loadedNum; //标记
-    //   //   let _limitE = this.loadedNum < this.data.pageModelList.length ? this.loadedNum : this.data.pageModelList.length;
-    //   //   this.limitE_label = _limitE || 0; //标记
-    //   //   console.log('标记',this.loadedNum_label,this.limitE_label);
-    //   // }
-    //   this.attachStatus = false;
-    //   this.loadedNum = 0;
-    //   this.singleSwitchLoad = {};
-    //   this.activityId = this.activityId || this.selectComponent('#activityId');
-    //   this.activityId && this.activityId.unListen();
-    //   this.detachedTime();
-    // },
-    // singleSwitch(e) { //独立活动单击TAB
-    //   let detail = e.detail || {};
-    //   let dataset = e.currentTarget.dataset||{};
-    //   let i = dataset.m_index||0;
-    //   let tab_index = detail.index;
-    //   let id ='' + 'module_' + i + '_' + tab_index;
-    //   this.singleSwitchLoad = this.singleSwitchLoad || {};
-    //   console.log(id,this.singleSwitchLoad[id])
-    //   if(this.singleSwitchLoad[id]){//单击缓存
-    //     setMotionData.call(this,this.singleSwitchLoad[id],i);
-    //     return
-    //   };
-    //   let extend = {
-    //     index: tab_index
-    //   }
-    //   let p_mode_l = this.data.pageModelList||[];
-    //   let params = {
-    //     code:p_mode_l[i].code,
-    //     setting:p_mode_l[i].setting && p_mode_l[i].setting.setting || p_mode_l[i].setting,
-    //     data:p_mode_l[i],
-    //     index:i,
-    //     sr_t : this.serverTime,
-    //     extend
-    //   }
-    //   SwitchApi({...params}).then(initMsg=>{
-    //     trimModule.call(this,i,extend);//模块处理
-    //     if(initMsg && initMsg.goApi){
-    //       GetData(initMsg.apiParams||{},params.code,i).then(res=>{
-    //         let data = res.data;
-    //         let resExtra = res.resExtra||{};
-    //         this.singleSwitchLoad[id] = data||[];
-    //         trimModule.call(this,i,extend,'after',data,resExtra);//模块处理
-    //         setMotionData.call(this,data,i,initMsg.apiParams.params);
-    //       });
-    //     }
-    //   })
-    //   return 
-    // }, 
-    // setAutoShow(){ //自动加载
-    //   console.log('setAutoShow',this.allDataAlready,this)
-    //   if(!this.allDataAlready && this.data.pageEnable != 0){
-    //     !this.data.autoShow && this.setData({
-    //       autoShow:true
-    //     })
-    //     setTimeout(()=>{
-    //       this.checkTop();
-    //       this.setAutoShow();
-    //     },850)
-    //   }
-    // },
-    // callEvent(e){ //用于分类模块的触底
-    //   if(this.loadDataType == "bottom" && this.data.limitNum >= 0){
-    //     this.loadData();
-    //   }
-    // }
+    }, 
   },
 }))
+
 // //PageType初始化
 // function initPageType(option){
 //   if (!option.pageType) return;

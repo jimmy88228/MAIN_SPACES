@@ -1,8 +1,6 @@
 // pages/component/micro-page/micro-mix/micro-page/micro-page.js
 import mcBehavior from '../../help/mc-behavior.js'
 const app = getApp();
-const Tab_H = 74;
-const SearchTop = 90;
 const setTitle = {
   ["pages/micro_mall/index/index"]: true,
   ["pages/micro_mall/custom_page/custom_page"]: true,
@@ -12,55 +10,25 @@ const setTitle = {
 Component(app.BTAB({ 
   behaviors: [mcBehavior],
   properties: {
-    type:{
+    extraH:{
+      type: Number,
+      value:-1
+    }, 
+    assistBmH:{
       type: String,
-      value: 'page'
+      value: ""
     },
     customTab:{
       type: Boolean,
       value: false
     },
-    hideContact:{
-      type: Boolean,
-      value: false
-    },
-    setShare:{
-      type: Boolean,
-      value: true
-    },
-    isHideShare:{
-      type: Boolean,
-      value: false  
-    },
-    autoShow:{
-      type: Boolean,
-      value: false  
-    },
-    top:{
-      type: Number,
-      value: 0,
-      observer(n){
-        let searchH = 90;
-        let toprpx = parseFloat(app.SIH.getConvert(n,"RPX"));
-        this.setData({
-          stickyTop: (searchH + toprpx)
-        })
-      }
-    },
-    extraH:{
-      type: Number,
-      value:-1,
-      observer(n,o){
-        this.setBoxH(n);
-      }
-    },
     isCustomNav:{
       type: Boolean,
       value: false
     },
-    assistBmH:{
-      type: String,
-      value: ""
+    isHideShare:{
+      type: Boolean,
+      value: false  
     },
     isHideAssist:{
       type:Boolean,
@@ -69,12 +37,9 @@ Component(app.BTAB({
   },
   data: {
     navList: [],
-    pageModelData:[],
-    swiperCurr: 0,
     tabCurr: 0,
     isTabPage: false,
     noScroll: false,
-    sysConf: {},
     cur_view:"",
     cardInfo:{},
     showNav:false,
@@ -86,38 +51,20 @@ Component(app.BTAB({
   _options: {},
   attached() {
     this.cur_name = '';
-    this.extraTop = 0;
-    this.signStatus = true; 
     this.screenHeight = app.SIH.screenHeight || 0;
     checkSalesVolume.call(this);
     this.baseW = (app.SIH.screenWidth / 750);
-    this.btnBackTop = this.btnBackTop || this.selectComponent("#btnBackTop");
-    app.sysTemConfig().then(sysConf => {
-      this.setData({
-        sysConf: sysConf
-      })
-    })
   },
   ready(){  
+    this.btnBackTop = this.btnBackTop || this.selectComponent("#btnBackTop");
   },
-  methods: { 
-    setBoxH(n){
-      // this.windowHeight = parseInt(app.SIH.windowHeight) - n;
-      // let bottomTabH = this.data.customTab?app.SIH.isIphoneX?app.StringUtl.transPx(158):app.StringUtl.transPx(90):0;
-      // let extraSumH = n + bottomTabH;
-      // this.setData({
-      //   boxH:`calc(100vh - ${extraSumH}px)`,
-      //   extraSumH: extraSumH
-      // })
-      // console.log('extraSumH',this.data.extraSumH,n)
-    },
+  methods: {
     onUnloadFn() {
       // this.cur_name && this[this.cur_name].unListen();
     },
     getPageData(options) {
       this.options = JSON.parse(JSON.stringify(options));
       this._options = JSON.parse(JSON.stringify(options));
-      this.thisPage = getCurrentPages().pop();
       if (this._options.scene) {
         analysisParams.call(this);
       } else {
@@ -140,12 +87,10 @@ Component(app.BTAB({
       if (tabCurr == dataset.index) {
         return
       }
-      let cur_view = 'tab' + dataset.index;
-      this.clicked = true;
+      let cur_view = 'tab' + dataset.index; 
       this.timer && clearTimeout(this.timer);
       let _timer = setTimeout(() => {
         this.setData({
-          // swiperCurr: dataset.index,
           tabCurr: dataset.index,
           cur_view,
         })
@@ -153,7 +98,7 @@ Component(app.BTAB({
         _timer && clearTimeout(_timer);
       }, 150)
     },
-    swiperChangeHandle(e) {
+    swiperChangeHandle(e) { //控制swiper变化
       clearTimeout(this.timer);
       this.timer = setTimeout(() => {
         let current = this.data.tabCurr;
@@ -167,19 +112,10 @@ Component(app.BTAB({
         this.setData({
           tabCurr: current
         })
-        getItemData.call(this, _options, true);
+        getItemData.call(this, _options);
         this.triggerEvent('getPageId', {page_id: this.currentId});
         this.timer && clearTimeout(this.timer);
       }, 200)
-    },
-    // shareSaving(data) { //custom_module 数据请求完的回调
-    //   let dataValue = data.detail.data || {};
-    //   if(!this.properties.isHideShare){
-    //     shareMsgSaving.call(this, dataValue);
-    //   }
-    // },
-    handleReflash(e) {
-      this.reflashId = e.detail || 0;
     },
     setPageScroll(noScroll) {
       this.setData({
@@ -198,14 +134,6 @@ Component(app.BTAB({
     },
     reachBottom(type) {  //需要父页面调用原生的 onReachBottom()
       // console.log('触底',type)
-      // if (!(this._options && this._options.page_id)) return;
-      // this.cur_name = "custom" + this.currentId;
-      // this[this.cur_name] = this[this.cur_name] || this.selectComponent("#" + this.cur_name);
-      // if(type == 'callEvent'){
-      //   this[this.cur_name].callEvent();
-      // }else{
-      //   this[this.cur_name].loadData();
-      // }
     },
     handle_scroll(top,type="") {  //需要父页面调用原生的 onPageScroll()
       if(type != "autoHide"){
@@ -239,11 +167,6 @@ Component(app.BTAB({
       this[this.cur_name] && this[this.cur_name].setAutoShow();
     }, 
   },
-
-  pageLifetimes: {
-  },
-  
-  
 }))
 
 //获取页面tab数据
@@ -251,7 +174,7 @@ function getCustomTabRequest(ops = {}) {
   if (ops.pageType == "getParentPage"){
     this[this.cur_name] = this[this.cur_name] || this.selectComponent("#" + this.cur_name);
     this.currentId = 0;
-    getItemData.call(this, this._options, false);
+    getItemData.call(this, this._options);
     return
   }
   let apiPack = {
@@ -283,7 +206,6 @@ function getCustomTabRequest(ops = {}) {
     params: params,
   }).then(e => {
     if (e.code == 1) {
-      let check = !!e.data;
       let data = e.data || {}; 
       let navInfoBox = data.navInfo || {};
       let navInfo = navInfoBox.navInfo || {};
@@ -295,8 +217,6 @@ function getCustomTabRequest(ops = {}) {
         backgroundPosition:data.backgroundPosition,
       }
       let isTabPage = false,page_id = 0,showNav = false,showType = "top";
-      this.isHomePage = false; // this.isHomePage = this.data.customTab ? true : false; //云店不需要缓存
-      this.isHomePageConf = this.data.customTab ? true : false;
       if (navList.length == 0) { //不是tab页面
         page_id = data.page_id || ops.page_id || 0;
         navList.push({
@@ -320,7 +240,7 @@ function getCustomTabRequest(ops = {}) {
         item.pageModelList = [];
       })
       this.adsPop = {
-        is_home:this.isHomePageConf,
+        is_home:this.data.customTab,
         page_id:page_id
       }
       this.initPageId = data.page_id || ops.page_id || page_id; //赋值page_id
@@ -335,20 +255,10 @@ function getCustomTabRequest(ops = {}) {
         showNav,
         moduleList,
         isTabPage: isTabPage,
-        isHomePage: this.isHomePage, 
-        isHomePageConf: this.isHomePageConf, 
+        isHomePageConf: this.data.customTab, 
       })
-      // if(!checkIsEnable.call(this,data,check)){ //检测页面失效
-      //   return
-      // };
-      // Promise.nextTick().then(()=>{
-      //   if(moduleList.length>0){ //nav顶部广告
-      //     this.once = this.once || this.selectComponent('#once');
-      //     this.once && this.once.getAutoData(moduleList);
-      //   }
-      // })
       this._options.page_id = page_id;
-      getItemData.call(this, this._options, isTabPage);
+      getItemData.call(this, this._options);
       this.triggerEvent('getPageId', { page_id: this.currentId });
       return Promise.resolve(e);
     }
@@ -359,18 +269,12 @@ function getCustomTabRequest(ops = {}) {
   })
 }
 function noDataSet(setBox=false){
-  if(!setBox){
-    this[this.cur_name] = this[this.cur_name] || this.selectComponent("#" + this.cur_name);
-    this[this.cur_name] && this[this.cur_name].setEmpty();
-  }else{
-    this.setData({
-      hidePage:true
-    })
-  }
+  this.setData({
+    hidePage:true
+  })
 }
 //扫码进入
 function analysisParams() {
-  let paramsJson = app.PH.paramsJson();
   app.SHP.getParams(["page_id", "staff_code", "staffCode"]).then((params) => {
     let ops = {
       ...this._options,
@@ -382,45 +286,7 @@ function analysisParams() {
 }
 
 //获取页面数据
-function getItemData(_options, isTabPage) {
-  // let page_id = _options.page_id;
-  // let lockTime = false;
-  // if (isTabPage) {
-  //   //锁缓存
-  //   // if (this.isHomePage) {
-  //   //   this.loadTabData = this.loadTabData || {};
-  //   //   let label = "$#" + page_id + "$#";
-  //   //   if (!this.loadTabData[label]) {
-  //   //     lockTime = false;
-  //   //     this.loadTabData[label] = this.loadTabData[label] || true;
-  //   //     app.CDateH.setCatchDate('index');
-  //   //   } else {
-  //   //     if (app.CDateH.checkCatchData("index")) {
-  //   //       this.loadTabData = {};
-  //   //       this.loadTabData[label] = true;
-  //   //       lockTime = false;
-  //   //     }
-  //   //     lockTime = true
-  //   //   }
-  //   // } else {
-  //   //   //不是主页
-  //   //   lockTime = false;
-  //   // }
-  //   let cur_name = "custom" + page_id;
-  //   this.cur_name = cur_name;
-  //   this[cur_name] = this[cur_name] || this.selectComponent("#" + this.cur_name);
-  //   if (this.oldPageId && this.oldPageId != page_id) {
-  //     let oldName = "custom" + this.oldPageId;
-  //     this[oldName] && typeof(this[oldName].unListen) == "function" && this[oldName].unListen();
-  //   }
-  //   this.oldPageId = page_id;
-  //   this[cur_name].getCustomData(_options, this.isHomePage, lockTime) 
-  // } else {
-  //   lockTime = true;
-  //   this.custom = this.custom || this.selectComponent("#" + this.cur_name);
-  //   this.custom.getCustomData(_options, this.isHomePage, lockTime);
-  //   this.cur_name = "custom" + page_id; 
-  // } 
+function getItemData(_options) {
   loadFrame.call(this,this.currentId);
   this.couponAssist = this.couponAssist || this.selectComponent("#couponAssist");
   this.couponAssist.getData(this.currentId);
@@ -453,7 +319,7 @@ function loadFrame(id) {
         let pageModelList = data.pageModelList || [];
         let navList = this.data.navList || [],cur = this.data.tabCurr;
         this.setData({
-          img_url: data.imgUrl || '',
+          // img_url: data.imgUrl || '',
           [`navList[${cur}]`]:{
             ...navList[cur],
             pageModelList
@@ -512,36 +378,9 @@ function shareMsgSaving(data) {
   }, 100)
 }
 
-// function throttlingFn() {
-//   this.isLoading = true;
-//   this.throttlingId = setTimeout(() => {
-//     clearTimeout(this.throttlingId);
-//     this.isLoading = false;
-//   }, 10)
-// }
-
-// function setSignStatus(bool=false){  //bool: true为显示签到   false为隐藏签到
-//   this.signStatus = bool;
-//   this.triggerEvent('signStatusEvent', bool);
-// }
-
-function lockFnc(time = 500){
-  this.locking = true;
-  this._tiemr = setTimeout(()=>{
-    this.locking = false;
-  },time)
-}
-
-function throttlingFn(fn,params){
-  clearTimeout(this.throttlingId);
-  this.throttlingId = setTimeout(()=>{
-    clearTimeout(this.throttlingId);
-    fn && typeof (fn) == 'function' && fn(...params); 
-  },150); 
-}
-
 function checkBackTop(top=0){ 
-  if (top >= this.windowHeight){
+  this.btnBackTop = this.btnBackTop || this.selectComponent("#btnBackTop");
+  if (top >= (this.screenHeight * 0.5)){
     if (!this.showBackTop){
       this.showBackTop = true;
       this.btnBackTop.setShow(true);
@@ -554,7 +393,6 @@ function checkBackTop(top=0){
   }
 }
 
-
 function checkSalesVolume(){
   return app.sysTemConfig("is_show_goods_sales_volume").then(data=>{
     this.setData({
@@ -562,16 +400,3 @@ function checkSalesVolume(){
     })
   })
 }
-
-function checkIsEnable(data,check){
-  if(data.is_enable != 1){
-    noDataSet.call(this,!check && !this.data.showNav?true:false);
-    return false
-  }else if(this.data.hidePage){
-    this.setData({
-      hidePage:false
-    })
-  }
-  return true
-}
-

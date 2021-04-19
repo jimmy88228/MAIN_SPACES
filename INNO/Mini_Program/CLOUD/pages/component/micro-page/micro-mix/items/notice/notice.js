@@ -1,5 +1,4 @@
 // pages/component/micro-page/items/notice/notice.js
-import {ItemsParentNodes} from '../../../help/parent-nodes'
 import mcBehavior from '../../../help/mc-behavior.js'
 const app = getApp();
 const playModeSel = {
@@ -47,15 +46,12 @@ const colorMap = {
   },
 }
 Component(app.BTAB({
-  relations:ItemsParentNodes,
   behaviors: [mcBehavior],
   properties: {
     dt:{
       type:Object,
       value:{},
       observer:function(n,o){
-        console.log('advertise',n,o);
-        // if(!this.readyed)return
         n && this.init(n);
       }
     },
@@ -75,7 +71,6 @@ Component(app.BTAB({
   },
   methods: {
     init(_data){
-      // console.log('init notice',_data);
       let playMode = {};
       if(_data && _data.option){
         if(_data.option.direction == '1'){

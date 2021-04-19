@@ -58,7 +58,6 @@ Component(app.BTAB({
     },
     changeShipInfo: {},
     promotionInfo: {},
-    setShare:false,
     extraH:parseFloat(app.SIH.navPlace) || 0
   },
   distance: 0,

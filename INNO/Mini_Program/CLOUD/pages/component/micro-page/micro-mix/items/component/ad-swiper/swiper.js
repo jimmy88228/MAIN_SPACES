@@ -8,8 +8,6 @@ Component(app.BTAB({
       type: Array,
       value: [],
       observer: function (n, o) {
-        // console.log('???',n,this.readyed)
-        // if (!this.readyed) return
         n && this.loadData(n);
       }
     },
@@ -17,7 +15,6 @@ Component(app.BTAB({
       type: Object,
       value: {},
       observer: function (n, o) {
-        // if (!this.readyed || !n) return
         n && this.init(n);
       }
     },

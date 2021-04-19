@@ -1,6 +1,6 @@
 <!--pages/component/micro-page/micro-mix/micro-page/micro-page.wxml-->
 <wxs module="dfCss" src="../../help/defaultCss.wxs"></wxs>
-<view class="main" style="{{assistHoldStyle?assistHoldStyle+';':'' + dfCss.getDfCss(_data,screenWidth,'page')}}" wx:if="{{!hidePage}}">
+<view class="main {{noScroll?'_noScroll':''}}" style="{{assistHoldStyle?assistHoldStyle+';':'' + dfCss.getDfCss(_data,screenWidth,'page')}}" wx:if="{{!hidePage}}">
   <!-- 顶部广告 -->
   <view class="adsBox">
     <mc-box 
@@ -15,9 +15,9 @@
   </view>
 
   <!-- 顶部导航栏 -->
-  <view
+  <view 
     id="stickyBox"
-    class="stickyBox stickyBox-{{showType}} stickyBox-isIp-{{isIphoneX}} {{type=='inline'?'noSticky':''}}" 
+    class="stickyBox stickyBox-{{showType}} stickyBox-isIp-{{isIphoneX}}" 
     style="{{'top:' + extraH + 'px'}};{{showType == 'top'? 'height:' + initNavH : ''}}" 
     wx:if="{{showNav && extraH>=0}}"
     >
@@ -26,11 +26,11 @@
       scroll-y="{{showType == 'left'}}"
       scroll-with-animation="{{true}}" 
       scroll-into-view="{{cur_view}}"
-      class="scroll {{type=='inline'?'inline':''}} scroll-{{showType}}" 
+      class="scroll scroll-{{showType}}" 
       >
       <view class="page_tab page_tab-{{showType}} flex_global_c">
         <view
-          class="p_tab_item p_tab_item-{{showType}} flex1 {{tabCurr == index ? 'current' : ''}}" 
+          class="p_tab_item flex1 p_tab_item-{{showType}} {{tabCurr == index ? 'current' : ''}}" 
           style="--navH:{{initNavH}}"
           catchtap="changeSwiper" 
           data-index="{{index}}"  
@@ -56,12 +56,7 @@
       data-page-id="{{item.page_id}}"
       >
           <view class="box">
-            <!-- <view style="{{assistHoldStyle}}"></view> -->
-            <mc-box isLogin="{{isLogin}}" id="custom{{item.page_id}}" tab-index="{{index_num}}" _pageModelList="{{item.pageModelList||[]}}">
-              <!-- <block wx:for="{{pageModelList}}" wx:for-item="m_item" wx:for-index="m_index" wx:key="index">
-                <mc-content bindqueryRefresh="queryRefresh" id="cItem{{m_index}}" class="cItem{{index_num}}" dt="{{m_item.setting}}" p-index="{{m_index}}"></mc-content>
-              </block> -->
-            </mc-box>
+            <mc-box isLogin="{{isLogin}}" id="custom{{item.page_id}}" tab-index="{{index_num}}" _pageModelList="{{item.pageModelList||[]}}"></mc-box>
           </view>
     </view>
   </view>
@@ -69,7 +64,7 @@
 <view wx:else class="unenable_area">敬请期待</view>
     
 <!-- 分享按钮 -->
-<button_share wx:if="{{!isHideShare}}" id="button_share" isLogin="{{isLogin}}" is_home_page="{{isHomePageConf}}" url_value="{{url_value}}" page_id_value="{{page_id_value}}" custom-tab="{{customTab}}" set-share="{{setShare}}"></button_share>
+<button_share wx:if="{{!isHideShare}}" id="button_share" isLogin="{{isLogin}}" is_home_page="{{isHomePageConf}}" url_value="{{url_value}}" page_id_value="{{page_id_value}}" custom-tab="{{customTab}}"></button_share>
 <!-- 助力 -->
 <couponAssist id="couponAssist" isLogin="{{isLogin}}" customTab="{{customTab}}" assistBmH="{{assistBmH}}" isHideAssist="{{isHideAssist}}" bindsetTabStyle="setTabStyle" page-id="{{page_id_value}}" share_bg="{{url_value}}"></couponAssist>
 <!-- 回到顶部 -->

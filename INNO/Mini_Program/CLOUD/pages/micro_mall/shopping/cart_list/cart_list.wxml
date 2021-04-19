@@ -357,6 +357,7 @@
           bindsignStatusEvent="signStatusEvent"
           extraH="{{extraH}}"
           isCustomNav="{{true}}"
+          isHideShare="{{true}}"
           isHideAssist="{{true}}"
           custom-tab="{{customTab}}"></micro-page>
       </view>

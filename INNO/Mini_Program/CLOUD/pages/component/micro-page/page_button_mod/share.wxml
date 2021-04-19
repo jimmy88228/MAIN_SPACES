@@ -1,14 +1,12 @@
 <!-- 分享按钮 -->
-<block wx:if="{{setShare}}">
-  <btns 
-      wx:if="{{showButton == 1}}" 
-      isLogin="{{isLogin}}" 
-      class="share_point_btn" 
-      bindclickcallback="getShare">
-    <image wx:if="{{is_home_page && isStaff}}" class="page_share_icon" src="{{brand_info.icon_url}}micro_mall/share_goods.png" mode="aspectFit" lazy-load="{{true}}" />
-    <image wx:else class="page_share_icon" src="{{brand_info.icon_url}}micro_mall/page_share.png" mode="aspectFit" lazy-load="{{true}}"/>
-  </btns>
-</block>
+<btns 
+    wx:if="{{showButton == 1}}" 
+    isLogin="{{isLogin}}" 
+    class="share_point_btn" 
+    bindclickcallback="getShare">
+  <image wx:if="{{is_home_page && isStaff}}" class="page_share_icon" src="{{brand_info.icon_url}}micro_mall/share_goods.png" mode="aspectFit" lazy-load="{{true}}" />
+  <image wx:else class="page_share_icon" src="{{brand_info.icon_url}}micro_mall/page_share.png" mode="aspectFit" lazy-load="{{true}}"/>
+</btns>
   
 <!-- 自定义页分销员申请的按钮1 -->
 <view 

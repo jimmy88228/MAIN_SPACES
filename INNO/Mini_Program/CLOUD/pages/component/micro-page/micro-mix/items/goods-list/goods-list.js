@@ -22,7 +22,6 @@ Component(app.BTAB({
       type:Object,
       value:{},
       observer:function(n,o){
-        // if(!this.isAttached)return
         n && this.init(n);
       }
     },
