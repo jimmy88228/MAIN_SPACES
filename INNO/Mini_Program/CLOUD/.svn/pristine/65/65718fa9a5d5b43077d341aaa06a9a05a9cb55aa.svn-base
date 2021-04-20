@@ -17,10 +17,7 @@ page{
     vertical-align: top;
   }
   .stickyBox.stickyBox-left.stickyBox-isIp-true{
-   /* height: calc(100vh - 90rpx - 34px);  */
-  }
-  .stickyBox.stickyBox-left.stickyBox-isIp-false{
-   /* height: calc(100vh - 90rpx);  */
+   height: calc(100vh - 90rpx - 34px); 
   }
   .stickyBox.stickyBox-top{
     width: 100%;

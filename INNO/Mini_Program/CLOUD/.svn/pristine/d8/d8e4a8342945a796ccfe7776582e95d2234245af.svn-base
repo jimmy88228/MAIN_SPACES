@@ -136,7 +136,7 @@ Component(app.BTAB({
       // console.log('触底',type)
     },
     handle_scroll(top,type="") {  //需要父页面调用原生的 onPageScroll()
-      if(type != "hideBackTop"){
+      if(type != "autoHide"){
         checkBackTop.call(this,top);
       }
       this[this.cur_name] = this[this.cur_name] || this.selectComponent("#" + this.cur_name);
@@ -371,13 +371,11 @@ function shareMsgSaving(data) {
     page_id_value: this.currentId || 0
   })
   this.triggerEvent('pageShareSaving', shareConf);
-  if(!this.properties.isHideShare){
-    this.button_share = this.button_share || this.selectComponent('#button_share');
-    let timer = setTimeout(() => {
-      this.button_share.onShowFn(); //onshow请求
-      timer && clearTimeout(timer);
-    }, 100) 
-  }
+  this.button_share = this.button_share || this.selectComponent('#button_share');
+  let timer = setTimeout(() => {
+    this.button_share.onShowFn(); //onshow请求
+    timer && clearTimeout(timer);
+  }, 100)
 }
 
 function checkBackTop(top=0){ 

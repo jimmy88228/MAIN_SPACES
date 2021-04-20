@@ -1,5 +1,6 @@
 // pages/component/micro-page/items/goods-list/goods-list.js
 import mcBehavior from '../../../help/mc-behavior.js'
+import {ItemsParentNodes} from '../../../help/parent-nodes'
 const app = getApp();
 const NumTextTrans={
   "one":1,
@@ -15,6 +16,7 @@ const goodsSearch = {
 }
 Component(app.BTAB({
   behaviors: [mcBehavior],
+  relations:ItemsParentNodes,
   properties: {
     dt:{
       type:Object,

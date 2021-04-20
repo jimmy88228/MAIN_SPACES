@@ -1,0 +1,8 @@
+<!--pages/component/micro-page/micro-mix/box/box.wxml-->
+<block wx:if="{{pageModelList}}">
+  <view class="main" id="main">
+    <block wx:for="{{pageModelList}}" wx:for-item="m_item" wx:for-index="m_index" wx:key="index">
+      <mc-content bindqueryRefresh="queryRefresh" id="cItem{{m_index}}" class="cItem{{tabIndex}}" dt="{{m_item}}" c-index="{{m_index}}"></mc-content>
+    </block>
+  </view>
+</block>

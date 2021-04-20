@@ -85,10 +85,10 @@ Component(app.BTAB({
       let query = this.createSelectorQuery();
       query.select('#listItemId').boundingClientRect();
       query.exec(res=>{
-        console.log('ad initSwiperHeight', res,this.data._data.moduleId,this.data.swiperData,this.data.isInited)
+        // console.log('initHeight', res,this.data._data.moduleId,this.data.swiperData,this.data.isInited)
           let item = res[0]||{};
           this.setData({
-            swiperH: item.height ? item.height : 375
+            swiperH: item.height ? item.height : 250
           })
           this.itemRefresh(); 
       })

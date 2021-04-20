@@ -249,7 +249,7 @@ Component(app.BTAB({
     },
     handle_scroll(top){
       this.mcPage = this.mcPage || this.selectComponent("#mcPage");
-      this.mcPage && this.mcPage.handle_scroll(top||0,'hideBackTop');
+      this.mcPage && this.mcPage.handle_scroll(top||0);
     },
     handleMove(e) {
       this.moveSecond = e.changedTouches[0].clientX;
@@ -498,7 +498,7 @@ function getBuyCarGoodList(jumpInit) {
 }
 function initShoppingAds(){
   getShoppingAds.call(this).then(pageId => {
-    if(!pageId){return Promise.reject();}
+    if(!pageId){Promise.reject();}
     Promise.nextTick().then(()=>{
       this.mcPage = this.mcPage || this.selectComponent("#mcPage");
       this.mcPage && this.mcPage.getPageData({ 
