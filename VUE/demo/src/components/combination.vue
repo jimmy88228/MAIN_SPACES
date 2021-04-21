@@ -41,10 +41,12 @@
     };
     export default {
         name:"combination",
-        mixins: [_mix], //详见globalApi.Vue
-        extends:_extends, //extends在mixins生命周期前面，允许声明扩展另一个组件,无需使用 Vue.extend,这主要是为了便于扩展单文件组件
+        //节制地使用 $parent 和 $children - 它们的主要目的是作为访问组件的应急方法。更推荐用 props 和 events 实现父子组件通信
+        //extend > mixins > 自身
+        mixins: [_mix], //选项mixins //详见globalApi.Vue
+        extends:_extends, //选项extends //extends在mixins生命周期前面，允许声明扩展另一个组件,无需使用 Vue.extend,这主要是为了便于扩展单文件组件
         components: {
-            child,
+            child, 
         },
         mounted () {
             this.getParent();

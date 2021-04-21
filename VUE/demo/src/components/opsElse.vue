@@ -1,4 +1,4 @@
-<!-- opsElse ： name,props,delimiters,this.$route.query,functional,v-model,model-->
+<!-- opsElse ： name,props,delimiters,$route,$router,this.$route.query,functional,v-model,model-->
 <template>
     <div>
         <div>opsElse--{{paramsVal}}--{{que_val}}</div>
@@ -15,7 +15,7 @@
             <label for="checkbox">{{ checked1 }}</label>
         </div> -->
 
-        <my-checkbox v-model="checkBool" value="v-model 把value prop隔离出来"></my-checkbox>
+        <my-checkbox v-model="checkBool" value="v-model 把value prop隔离出来，现作为props传进去组件↓"></my-checkbox>
         <div>checkBool外面:{{checkBool}}</div>
     </div>
 </template>
@@ -23,18 +23,16 @@
 <script>
     import complt from './component.vue';
     import Vue from 'vue';
-    Vue.component('my-checkbox', {
+    Vue.component('my-checkbox', { //Api生成<my-checkbox>组件
         model: {
             prop: 'checked',
             event: 'change'
         },
-        // inheritAttrs
+        // inheritAttrs //改变纯文本插入分隔符
         // comments  
-        props: {
-            // this allows using the `value` prop for a different purpose
+        props: { //选项 props
             value: String,
-            // use `checked` as the prop which take the place of `value`
-            checked: {
+            checked: { //v-model绑定的值，不再是默认的value，现value是作为props传进来
                 type: Number,
                 default: 0
             }
@@ -44,12 +42,13 @@
                 count:0
             }
         },
-        template: '<div><input v-model="checked" placeholder="edit me"/><div>{{value}}:</div><p>my-checkbox is: {{ checked }}</p></div>'
+        template: '<div><input v-model="checked" placeholder="edit me"/><div>(value作为props传进来并展示): {{value}}</div><p>my-checkbox is: {{ checked }}</p></div>'
     })
+
     export default {
         name:"",
         // delimiters: ['${', '}'], //??
-        props:{
+        props:{ //选项 props
             paramsVal:{
                 type:Number,
                 default:0
@@ -70,13 +69,14 @@
             complt,
         },
         mounted () {
-            let route = this.$route || {};
-            console.log('route',route)
+            // let route = this.$route || {};
+            console.log('route',this.$route)
+            console.log('router',this.$router)
             let query = this.$route.query || {};
             this.que_val = query.que_val || 0;
-            console.log('thisthisA',this,this.cln_intvl)
+            console.log('this.que_val',this.que_val)
             this.timerId = setInterval(() => {
-                if(this.checkBool>=3){
+                if(this.checkBool>=5){
                     this.cln_intvl();
                     return
                 }
@@ -85,6 +85,7 @@
             }, 1000);
         },
         destroyed () {
+            console.log('destroyed')
             this.cln_intvl();
         },
         methods: {

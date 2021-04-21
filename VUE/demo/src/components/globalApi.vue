@@ -79,7 +79,7 @@ export default {
       // Vue.delete(this.mixinData,'a'); //响应
     },
     _directive() {
-      Vue.directive("diy-directive", {
+      Vue.directive("diy-directive", { //Api directive
         bind: function(el, binding, vnode) { //el, binding, vnode 都会有
           //3.1 if true 会执行
           console.log("directive bind", el, binding, vnode); //binding.value = 200 、 binding.value = 441

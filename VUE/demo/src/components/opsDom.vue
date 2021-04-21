@@ -1,4 +1,4 @@
-<!-- extend ： template,mount,el  -->
+<!-- opsDom ： template,mount,el  -->
 <template>
   <div>
     <div id="template"></div>
@@ -12,14 +12,18 @@ var _template = `<div>哈哈哈template模板1</div>`;
 var _template2 = `<div>哈哈哈template模板2</div>`;
 export default {
   mounted() {
-    new Vue({
-      template: _template    //挂载到template  //无render, 要template
-    }).$mount("#template");  //无el 要$mount
-
-    new Vue({                //挂载到template2 //无render, 要template
-      el:'#template2',       //有el 不用$mount
-      template: _template2
-    });  
+    setTimeout(() => {
+      new Vue({
+        template: _template    //挂载到template  //无render, 要template
+      }).$mount("#template");  //无el 要$mount
+    }, 2000);
+    
+    setTimeout(() => {
+      new Vue({                //挂载到template2 //无render, 要template
+        el:'#template2',       //有el 不用$mount
+        template: _template2
+      });
+    }, 3000);
   }
 };
 </script>
