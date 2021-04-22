@@ -1,4 +1,4 @@
-<!-- lifecycle ： beforeCreate,created,beforeMount,mounted,activated,beforeUpdate,updateddeactivated,beforeDestroy,destroyed,errorCaptured -->
+<!-- lifecycle ： beforeCreate,created,beforeMount,mounted,activated,beforeUpdate,updated,deactivated,beforeDestroy,destroyed,errorCaptured -->
 <template>
   <div>
     <div>生命周期log {{jimmyData.a}},{{jimmyData.b}}</div>

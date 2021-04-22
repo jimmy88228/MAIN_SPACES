@@ -58,19 +58,19 @@
                 //1
                 this.$watch('someObject',function(n,o) { //$watch
                     console.log('someObject callBack',n.a,o.a,n==o)
-                },{deep:true})
-                this.someObject.a = 441;
+                },{deep:true})      //deep：true
+                this.someObject.a = 441;      //响应
                 setTimeout(()=>{
-                    this.someObject.a = 442;
+                    this.someObject.a = 442;  //响应
                 },1000)
                 setTimeout(()=>{
-                    this.someObject.a=443;
+                    this.someObject.a=443;    //响应
                 },2000)
 
                 //2
                 this.$watch('someObject2',function(n,o) {
                     console.log('someObject2 callBack',n,o)
-                },{deep:false})
+                },{deep:false})           //deep：false
                 this.someObject2.a = 441; //不会响应
                 setTimeout(()=>{
                     this.someObject2.a = 442; //不会响应
@@ -80,11 +80,11 @@
                 },2000)
 
                 //3
-                var unwatch = this.$watch('immediateData', function(n,o) {
-                    console.log('immediateData 进来',n,o)//带有immediate，不能在第一次回调时取消侦听,除非加个if (unwatch) 
-                    if (unwatch) {
-                        console.log('immediateData 进来 unwatch')
-                        unwatch()
+                var _unwatch = this.$watch('immediateData', function(n,o) {
+                    console.log('immediateData 进来',n,o)//带有immediate，不能在第一次回调时取消侦听,除非加个if (_unwatch) 
+                    if (_unwatch) {
+                        console.log('immediateData 进来 _unwatch')
+                        _unwatch()
                     }
                 }, {
                     immediate: true
@@ -95,20 +95,20 @@
                 }, 1500);
 
                 //4
-                this.$set(this.setDiyObj,'a','setDiyObj');
+                this.$set(this.setDiyObj,'a','setDiyObj'); //$set
                 setTimeout(() => {
                     this.setDiyObj.a = 'setDiyObj change';
                     console.log('setDiyObj after',this.setDiyObj.a,this.setDiyObj);
                 }, 1000);
 
                 //5
-                this.$set(this.setDiyArr,1,'setDiyArr2');
+                this.$set(this.setDiyArr,1,'setDiyArr2'); //$set
                 console.log('setDiyArr',this.setDiyArr); 
                 setTimeout(() => {
                     this.setDiyArr[0] = 'setDiyArr1';
                     console.log('setDiyArr after',this.setDiyArr);
                     
-                    this.$delete(this.setDiyArr,1);
+                    this.$delete(this.setDiyArr,1);  //$delete
                     console.log('setDiyArr delete after',this.setDiyArr,this.setDiyArr[0],this.setDiyArr[1]);
                 }, 1500);
 

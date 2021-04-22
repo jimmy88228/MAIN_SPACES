@@ -1,29 +1,38 @@
 <!-- instance_data ：$emit,$on,$once,$off-->
 <template>
     <div>
-        <emit-button v-on:emit_test3="handle_btn_emit"></emit-button>
+        <emit-diy-button v-on:emit_test3="handle_btn_emit"></emit-diy-button>
+        <emit-diy-button @emit_test3="handle_btn_emit2"></emit-diy-button>
     </div>
 </template>
 
 <script>
     import Vue from 'vue'
-    Vue.component('emit-button', {
-        methods:{
-            btnFnc(){
-                this.$emit('emit_test3',31);
-            }
-        },
-        template: `
-            <button v-on:click="btnFnc">
-                Click me to be emit
-            </button>
-        `
-    })
     export default {
         data(){
             return {
                 jimmy:441
             }
+        },
+        beforeMount(){
+            //在mounted之前挂载都行
+            Vue.component('emit-diy-button', { //Api component 
+                data(){
+                    return {
+                        num:0
+                    }
+                },
+                methods:{
+                    btnFnc(){
+                        this.$emit('emit_test3',num);
+                    }
+                },
+                template: `
+                    <button v-on:click="btnFnc">
+                        Click me to be emit
+                    </button>
+                `
+            }) 
         },
         mounted(){
             var fnc = function (_params) {
@@ -42,6 +51,9 @@
         methods: {
             handle_btn_emit(_params) {
                 console.log('handle_btn_emit',_params)
+            },
+            handle_btn_emit2(_params) {
+                console.log('handle_btn_emit2',_params)
             }
         },
     }
