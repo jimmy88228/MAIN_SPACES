@@ -1,4 +1,4 @@
-<!-- instance_data ：$watch,immediate,deep,set,delete -->
+<!-- instance_data ：$watch,$set,$delete -->
 <template>
     <div>
         <div>InstanceData {{this.a+this.b}}</div>

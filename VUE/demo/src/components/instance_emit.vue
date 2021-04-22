@@ -24,7 +24,7 @@
                 },
                 methods:{
                     btnFnc(){
-                        this.$emit('emit_test3',num);
+                        this.$emit('emit_test3',this.num);
                     }
                 },
                 template: `

@@ -1,4 +1,5 @@
-<!-- instance_property ：$options,el,$parent,$child,$slots,$scopedSlots,v-slot,$refs... -->
+<!-- instance_property ：$data,$options,el,$parent,$child,$slots,$scopedSlots,v-slot,$refs... -->
+<!-- 实例 : $ -->
 <template>
     <div>
         <div>
@@ -64,7 +65,10 @@
             <input ref="input">
         `
     })
-    
+    var _data = {
+        data: {a:441},
+        slotData:{isShow:true,data:'slotData'}
+    }
     export default {
         name:"instance_property",
         customOption: 'foo',
@@ -73,10 +77,11 @@
             console.log('this.$options',this.$options,this.$options.customOption,this.$options.customOption2) // => 'foo'
         },
         data() {
-            return {
-                data: {a:441},
-                slotData:{isShow:true,data:'slotData'}
-            }
+            return _data
+            // return {
+            //     data: {a:441},  //访问这个方法:this.data
+            //     slotData:{isShow:true,data:'slotData'} //访问这个方法:this.slotData
+            // }
         },
         components: {
             child,
@@ -88,7 +93,7 @@
             },
             jimmy2:{
                 type:String,
-                default:""
+                default:"jimmy2"
             },
         },
         mounted () {
@@ -96,15 +101,22 @@
         },
         methods: {
            init(){
-                new Vue({
-                    el:"#template1",
-                    template:template1
-                });
-                console.log('$parent',this.$parent,'\n$children',this.$children,'\n$root',this.$root)
-                console.log('slots',this.$slots) //被调用 实例化时才会获取到$slots的信息，跳到当前页面没有数据
-                console.log('scopedSlots',this.$scopedSlots) //访问作用域插槽，该对象都包含每一个插槽相应的VNode 的函数
-                console.log('isServer',this.$isServer)
-                console.log('listeners ',this.$listeners ) //?
+               new Vue({
+                   el:"#template1",
+                   template:template1
+               });
+                console.log('$data',this.$data == _data,this.$data.data == this.data) //this.$data == _data  //this.$data.data == this.data
+                console.log('$props',this.$props,this.$props.jimmy1,this.$props.jimmy2) //this.$data == _data  //this.$data.data == this.data
+                console.log('$el',this.$el)
+                console.log('$parent',this.$parent)
+                console.log('$children',this.$children)
+                console.log('$root',this.$root)
+                console.log('$slots',this.$slots) //被调用 实例化时才会获取到$slots的信息，跳到当前页面没有数据
+                console.log('$scopedSlots',this.$scopedSlots) //访问作用域插槽，该对象都包含每一个插槽相应的VNode 的函数
+                console.log('$refs',this.$refs);
+                console.log('$isServer',this.$isServer)
+                console.log('$attrs',this.$attrs);
+                console.log('$listeners ',this.$listeners ) //?
                 new Demo_extend({ //可以异步注册组件
                     propsData: {    //propsData 在new的时候用
                         
@@ -112,7 +124,7 @@
                 }).$mount("#jimmy"); //挂载到#jimmy
                 console.log('父组件',this.$refs);
                 //this.$refs.usernameInput 控制组件内部
-                this.$refs.usernameInput._focusFnc();
+                this.$refs.usernameInput._focusFnc();                
             }
         }
     } 
