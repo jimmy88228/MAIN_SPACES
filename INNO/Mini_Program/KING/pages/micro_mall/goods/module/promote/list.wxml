@@ -1,0 +1,10 @@
+<import src="./promote.wxml" />
+<window class="window" ext-class="window-ext">
+  <form bindsubmit="formAction" report-submit="true">
+    <view class="main" style="{{boxStyle}}">
+      <scroll-view class="main_scroll" scroll-y>
+        <template is="promote-module" data="{{array: promList}}"></template>
+      </scroll-view>
+    </view>
+  </form>
+</window>

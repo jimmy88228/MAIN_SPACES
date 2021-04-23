@@ -1,0 +1,29 @@
+<!--pages/component/login/login_by_phone.wxml-->
+<wxs module="slideTool" src="./slide_verify.wxs"></wxs>
+<form bindsubmit="formAction" report-submit="true">
+<window class="window" ext-class="window-ext">
+    <view class="verify_page" style="{{boxStyle}}" catchtouchmove="_func">
+      <view class="v_title">请完成验证</view>
+      <view class="v_cont">
+        <view class="v_view" id="targetView" style="width:{{slideW}}rpx;">
+          <image class="view_img" bindload="loadImg" src="{{slideImg}}" mode="widthFix"/>
+          <view class="target_view" style="width:{{mWidth}}rpx;height:{{mHeight}}rpx;top:{{mTop}}rpx;left:{{targetLeft}}px;"></view>
+          <view 
+          class="move_point" 
+          id="movePoint" 
+          style="width:{{mWidth}}rpx;height:{{mHeight}}rpx;top:{{mTop}}rpx;">
+          <image src="{{slideImg}}" style="width:{{slideW}}rpx;left:-{{targetLeft}}px;top:-{{mTop}}rpx;" class="move_img" mode="widthFix"/>
+        </view>
+        </view>
+        <movable-area class="v_operate {{operateResult}}" id="movableArea">
+          <movable-view class="slide_point " style="width:{{mWidth}}rpx;height:{{mHeight}}rpx;" direction="horizontal" inertia="{{false}}" bindchange="{{slideTool.slideChange}}" catchtouchend="slideEnd">
+            <view class="slide_point_stay {{operateResult}}">
+              <text class="slide_c"></text>
+              <text class="slide_a"></text>
+            </view>
+          </movable-view>
+        </movable-area>
+      </view>
+    </view>
+</window>
+</form>

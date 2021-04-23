@@ -1,0 +1,8 @@
+<page-nav id="pageNav" isCustom="{{true}}" holdStay="{{true}}" isHoldBack="{{true}}">
+  <view class="nav_edit" catchtap="editCart">
+    <view class="nav_edit_stay {{isEdit ? 'editing' : ''}}">
+      <text class="edit_item">编辑</text>
+      <text class="edit_item">完成</text>
+    </view>
+  </view>
+</page-nav>
