@@ -33,7 +33,7 @@ Component(app.BTAB({
     current: 0,
     interval: 5000,
     duration: 500,
-    circular: false,
+    circular: true,
     vertical: false
   },
   ready() {
@@ -65,6 +65,9 @@ Component(app.BTAB({
           break;
         case "three":
           layoutRow = 3;
+          break;
+        case "four":
+          layoutRow = 4;
           break;
       }
       _data.layoutRow = layoutRow;

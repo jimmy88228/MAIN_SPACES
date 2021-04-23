@@ -49,7 +49,7 @@ Component(
 );
 function getGoodsReceiveBonusActivityDetail(Gid){
   if (!Gid) return;
-  return app.GoodsApi.getGoodsReceiveBonusActivityDetail({
+  return app.CL_GoodsApi.getGoodsReceiveBonusActivityDetail({
     params:{
       goodsId: Gid,
     },
@@ -91,7 +91,7 @@ function receiveBonusFromGoods(couponItem = {}) {
   let activity_id = couponItem.activity_id || "";
   let bonus_type_id = couponItem.bonus_type_id || "";
   if (!activity_id || !bonus_type_id || !this.Gid) return;
-  return app.GoodsApi.receiveBonusFromGoods({
+  return app.CL_GoodsApi.receiveBonusFromGoods({
     data: {
       goodsId: this.Gid,
       activityId: activity_id,
@@ -106,7 +106,7 @@ function receiveBonusFromGoods(couponItem = {}) {
         title:"领取成功"
       })
       if (res.data == 0 || res.data < 0 || !res.data){
-        let couponList = this.data.couponList || [];
+        // let couponList = this.data.couponList || [];
         let key = 'couponList[' + couponItem.index + '].status'
         this.setData({
           [key]: 2

@@ -4,9 +4,9 @@
   <swiper 
     class="swiper"
     style="height:{{swiperH}}px;"
-    autoplay="{{swiperData.length>1?_data.autoplay:false}}"
-    display-multiple-items="{{swiperData.length>1?_data.layoutRow:1}}"
-		interval="{{_data.interval*1000}}"
+    autoplay="{{swiperData.length>1?true:false}}"
+    display-multiple-items="{{swiperData.length>=_data.layoutRow?_data.layoutRow:swiperData.length}}"
+		interval="{{interval}}"
     current="{{current}}"
     circular="{{circular}}"
     vertical="{{vertical}}"

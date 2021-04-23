@@ -141,6 +141,7 @@ Component(app.BTAB({
                             this.data.filterList[sort][item][i].isActive = false;
                         }
                     }
+                    console.log(this.data.filterList[sort][item][select],'??')
                     this.data.filterList[sort][item][select].isActive =  !this.data.filterList[sort][item][select].isActive; 
                     this.setData({
                         filterList: this.data.filterList

@@ -28,10 +28,9 @@ Component(
 );
 function getGoodsReceiveBonusActivity(goodsId){
   if (!goodsId) return;
-  return app.GoodsApi.getGoodsReceiveBonusActivity({
+  return app.CL_GoodsApi.getGoodsReceiveBonusActivity({
     params:{
       goodsId: goodsId,
-      brandCode: app.Conf.BRAND_CODE
     }
   }).then(res=>{
     if(res.code == 1){

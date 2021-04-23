@@ -210,7 +210,11 @@ export const CL_GoodsApiList = {
   getGoodsVisitLogList: "/api/GoodsExtend/Get_GoodsVisitLog_List?pageIndex={pageIndex}&pageSize={pageSize}",
   getFavLogList: "/api/GoodsExtend/Get_Fav_LogList?pageIndex={pageIndex}&pageSize={pageSize}",  
   getGoodsReceiveBonusActivity: "/api/GoodsExtend/GetGoodsReceiveBonusActivity?goodsId={goodsId}",
-  getGoodsReceiveBonusActivityDetail: "/api/GoodsExtend/GetGoodsReceiveBonusActivityDetail?goodsId={goodsId}&activityId={activityId}",
+  getGoodsReceiveBonusActivityDetail: "/api/GoodsExtend/GetGoodsReceiveBonusActivityDetail?goodsId={goodsId}",
+  receiveBonusFromGoods: {
+    u:"/api/GoodsExtend/ReceiveBonusFromGoods",
+    m:"post"
+  },
   /*
   ShoppingCart
   */

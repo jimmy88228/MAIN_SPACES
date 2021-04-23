@@ -6,7 +6,7 @@
     style="height:{{swiperH}}px;"
     current="{{current}}"
     autoplay="{{swiperData.length>1?_data.autoPlay:false}}"
-    interval="{{_data.interval*1000}}"
+    interval="3000"
     circular="{{circular}}"
     vertical="{{vertical}}"
     bindchange="onChange"
