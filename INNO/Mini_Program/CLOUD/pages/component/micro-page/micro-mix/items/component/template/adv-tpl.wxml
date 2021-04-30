@@ -2,8 +2,6 @@
   <view id="listItemId" class="list-item list-item-{{_data.layout}}" style="width:{{100/(_data.type=='t2'?1:_data.row)}}%;" bindtap="linkJump" data-data="{{listGoods.link}}" data-type="imageAd">
     <image class="list-img" mode="widthFix" src="{{listGoods.img}}">
       <view class="initBg" wx:if="{{!isInited}}"></view>
-    <!-- <image class="list-img" mode="widthFix" src="{{isInited?listGoods.img:''}}"> -->
-    <!-- <image class="list-img" mode="widthFix" src="{{listGoods.img}}"> -->
       <!--热点区域-->
       <block wx:if="{{listGoods.poster_map && listGoods.poster_map.length>0}}">
           <view 

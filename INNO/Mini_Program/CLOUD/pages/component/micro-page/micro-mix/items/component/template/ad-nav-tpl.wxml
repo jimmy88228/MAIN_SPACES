@@ -9,12 +9,6 @@
               src="{{item.image}}">
               <view class="initBg" wx:if="{{!isInited}}"></view>
           </image>
-          <!-- <image 
-              wx:if="{{_data.type == 'imageText'}}"
-              class="list-img {{_data.icon_shape}} {{_data.open_icon?'limit':''}} {{_data.row>4?'small':''}}" 
-              mode="{{_data.open_icon?'aspectFit':'widthFix'}}" 
-              src="{{isInited?item.image:''}}">
-          </image> --> 
           <view class="title">{{item.title}}</view>
         </view>
       </block>

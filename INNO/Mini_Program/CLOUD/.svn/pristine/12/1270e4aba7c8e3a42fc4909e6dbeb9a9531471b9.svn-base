@@ -1,4 +1,4 @@
-// pages/component/micro-page/items/advertise/advertise.js
+// pages/component/micro-page/items/text-header/text-header.js
 const app = getApp();
 import mcBehavior from '../../../help/mc-behavior.js'
 Component(app.BTAB({
@@ -18,33 +18,21 @@ Component(app.BTAB({
   },
   attached(){
     this.isAttached = true;
-    this.queryInfo = {};
   },
   data: {
-    screenWidth:app.SIH.screenWidth,
-  },
-  ready(){
+    screenWidth:app.SIH.screenWidth
   },
   methods: {
     init(_data){
-      this.trimData(_data);
       this.setData({
         _data
       })
-      if(this.properties.autoShow){
-        this.loadData();
-      }
     },
-    loadData(data){
+    loadData(_data){
       this.setData({
         isInited:true
-      });
-      if(this.data._data.type != 't2'){
-        this.mcItemRefresh();
-      }else{ //swiper 先不刷新
-        this.swiperId = this.swiperId || this.selectComponent("#swiperId");
-        this.swiperId.loadData(this.data._data.images);
-      }
+      })
+      this.mcItemRefresh(); 
     }
   }
 }))
