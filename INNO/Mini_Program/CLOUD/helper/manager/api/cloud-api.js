@@ -11,6 +11,7 @@
 // }
 // const visitApi = Conf.visitApiType ? VISIT_APICONF[Conf.visitApiType] : VISIT_APICONF[1];
 // const barCodeApi = Conf.barCodeApiType ? BARCODE_APICONF[Conf.barCodeApiType] : BARCODE_APICONF[1];
+const barCodeApi = "";
 const visitApi = "";
 //注册
 export const CL_RegApiList = {
@@ -188,6 +189,7 @@ export const CL_GoodsApiList = {
   get_recommend_template_List: "/api/Goods/Get_recommend_template_List?goodsId={goodsId}",
   getMatchLinkGoodList: "/api/Goods/Get_MatchLinkGoodList?goodsId={goodsId}",
   getGoodsPromotionRuleList:"/api/Goods/GetGoodsPromotionRuleList?goodsId={goodsId}",
+  getGoodsRecommendTemplate:"/api/Goods/Get_GoodsRecommendTemplate?goodsId={goodsId}",
   /*
   GoodsExtend
   */
@@ -330,4 +332,17 @@ export const CL_VSlogApiList = {
 export const CL_PayApiList = {
   // UnifiedorderByOrderId: "/InnoPayApi/api/Pay/UnifiedorderByOrderId?userToken={userToken}&payType={payType}&payMethod={payMethod}&orderId={orderId}&brandCode={brandCode}",
   unifiedCloudShopOrder:"/InnoPayApi/api/Pay/UnifiedCloudShopOrder?payType={payType}&orderId={orderId}&brandCode={brandCode}"
+}
+
+export const CL_BarCodeApiList = {
+  //获取二维码
+  getWxCode: {
+    u: `${barCodeApi}/api/WXBarCode/GetWxCode`,
+    m: "post"
+  },
+  //分销员ScanWXCodeLog
+  scanWXCodeLog: {
+    u: `${barCodeApi}/api/WXBarCode/ScanWXCodeLog`,
+    m: "post"
+  }
 }

@@ -60,27 +60,26 @@ Component(app.BTAB({
       this.isInitData = true;
       let arr = this.nodeInfo[0],sclInfo = this.nodeInfo[1];
       arr.every((item,i)=>{
-        if(this.properties.autoShow || (((item.top+sclInfo.scrollTop) <= this.screenH) && !this.nodeLoad[i+''])){
-          this.nodeLoad[i+''] = true;
-          this.cItem[i+''] = this.cItem[i+''] || this.selectComponent(`#cItem${i}`)
+        if(this.properties.autoShow || (((item.top+sclInfo.scrollTop) <= this.screenH) && !this.nodeLoad[i])){
+          this.nodeLoad[i] = true;
+          this.cItem[i] = this.cItem[i] || this.selectComponent(`#cItem${i}`)
           console.log('初始化',i,JSON.parse(JSON.stringify(arr))) 
-          this.cItem[i+''].loadData();
+          this.cItem[i].loadData();
           return true
         }
       }) 
     },
     scroll(top){
-      this.curTop = top;
       // console.log(top);
+      this.curTop = top;
       let arr = this.nodeInfo[0] || [],sclInfo = this.nodeInfo[1] || {};
       arr.every((item,i)=>{
         if((this.curTop >= (item.top+sclInfo.scrollTop))){
-        // if((this.curTop >= (item.top+sclInfo.scrollTop)) && !this.nodeLoad[i+'']){
-          if(!this.nodeLoad[i+'']){
-            this.nodeLoad[i+''] = true;
-            this.cItem[i+''] = this.cItem[i+''] || this.selectComponent(`#cItem${i}`)
+          if(!this.nodeLoad[i]){
+            this.nodeLoad[i] = true;
+            this.cItem[i] = this.cItem[i] || this.selectComponent(`#cItem${i}`)
             console.log('加载',i,this.curTop,item.top+sclInfo.scrollTop) 
-            this.cItem[i+''].loadData();
+            this.cItem[i].loadData();
           }
           return true
         }

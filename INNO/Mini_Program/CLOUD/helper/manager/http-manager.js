@@ -35,7 +35,7 @@ import {
   BarCodeApiList,
   LiveApiList,
   ElectricApiList,
-  TestApiList, 
+  TestApiList,
   // UserDockApiList
 } from "./api/http-api";
 import {
@@ -45,7 +45,8 @@ import {
     CL_BuyApiList,
     CL_GoodsApiList,
     CL_VSlogApiList,
-    CL_PayApiList
+    CL_PayApiList,
+    CL_BarCodeApiList,
 } from "./api/cloud-api";
 const apiDomain = Conf.api_domain || {};
 /***********************************全局请求配置*************************************/
@@ -212,6 +213,7 @@ export const CL_BrandApi = new EasyHttp().setBaseUrl(apiDomain.CL_USERAPI).addRe
 export const CL_UserApi = new EasyHttp().setBaseUrl(apiDomain.CL_USERAPI).addRequests(CL_UserApiList);
 export const CL_BuyApi = new EasyHttp().setBaseUrl(apiDomain.CL_BUYAPI).addRequests(CL_BuyApiList);
 export const CL_VsLogApi = new EasyHttp().setBaseUrl(apiDomain.CL_VSLOGAPI).addRequests(CL_VSlogApiList); 
+export const CL_BarCodeApi = new EasyHttp().setBaseUrl(apiDomain.CL_BARCODEAPI).addRequests(CL_BarCodeApiList); 
 
 
 

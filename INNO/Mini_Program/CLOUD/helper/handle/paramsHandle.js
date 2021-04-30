@@ -1,6 +1,6 @@
 import LM from "../manager/login-manager.js";
 import Conf from "../../conf";
-import { BarCodeApi, DstbApi, UserApi } from "../manager/http-manager.js";
+import { CL_BarCodeApi, DstbApi, UserApi } from "../manager/http-manager.js";
 import LgMg from "../manager/log-manager.js";
 import EB from "../../support/tools/event-bus.js";
 import StorageH from "../../helper/handle/storageHandle";
@@ -84,7 +84,7 @@ class ParamsManager {
 }
 function scanWXCodeLog(options = {}) {
   if (!options.barCodeId && !options.scene) return Promise.resolve(options);
-  return BarCodeApi.scanWXCodeLog({
+  return CL_BarCodeApi.scanWXCodeLog({
     data: {
       "barCodeId": options.barCodeId || "",
       "scence": options.scene || "",

@@ -40,7 +40,7 @@ Component(app.BTAB({
         isInited:true
       });
       if(this.data._data.type != 't2'){
-        this.itemRefresh();
+        this.mcItemRefresh();
       }else{ //swiper 先不刷新
         this.swiperId = this.swiperId || this.selectComponent("#swiperId");
         this.swiperId.loadData();

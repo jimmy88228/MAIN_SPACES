@@ -50,7 +50,7 @@ module.exports = Behavior({
         }, 300);
       })
     },
-    itemRefresh(e){
+    mcItemRefresh(e){
       Promise.nextTick().then(()=>{
         this.triggerEvent('queryRefresh',e||{},{bubbles:true,composed:true,capturePhase:true});
       })

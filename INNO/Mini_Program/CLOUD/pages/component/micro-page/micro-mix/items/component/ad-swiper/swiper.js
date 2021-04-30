@@ -78,20 +78,23 @@ Component(app.BTAB({
         this.setData({
           isEmpty:this.data.isInited?true:false
         })
-        this.itemRefresh(); 
+        this.mcItemRefresh(); 
       }
     },
     initHeight() { //swiper高度设置
-      let query = this.createSelectorQuery();
-      query.select('#listItemId').boundingClientRect();
-      query.exec(res=>{
-        console.log('ad initSwiperHeight', res,this.data._data.moduleId,this.data.swiperData,this.data.isInited)
-          let item = res[0]||{};
-          this.setData({
-            swiperH: item.height ? item.height : 375
-          })
-          this.itemRefresh(); 
-      })
+      this.mcGetQuery('.list-item','all').then((res=>{
+        let arr = res && res[0]||[];
+        let maxH = 0;
+        arr.forEach(item=>{
+          if(maxH<item.height){
+            maxH = item.height;
+          }
+        })
+        this.setData({
+          swiperH: maxH>0 ? maxH : 250
+        })
+        this.mcItemRefresh();
+      }));
     },
     onChange(e) {
       let current = e.detail.current;

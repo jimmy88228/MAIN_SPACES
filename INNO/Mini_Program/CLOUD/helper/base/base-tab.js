@@ -9,6 +9,8 @@ export default function(pageOptions) {
         pageOptions.data = {
           ...data,
           brand_info: Conf,
+          main_bg_color:Conf.style.bg_color,
+          main_font_color:Conf.style.font_color,
           defaultIcon:  Conf.default_icon_url,
           isIphoneX: SIH.isIphoneX
         }
@@ -99,6 +101,25 @@ export default function(pageOptions) {
                     })
                 }
                 typeof(callback) == "function" && callback(LM.isLogin)
+            },
+            _getQuery(id,type,fnc){
+                return new Promise((rs,rj)=>{
+                  setTimeout(() => { 
+                    let query = this.createSelectorQuery();
+                    let idSel = id || '#main';
+                    if(type == 'all'){
+                      query.selectAll(idSel).boundingClientRect()
+                    }else{
+                      query.select(idSel).boundingClientRect();
+                    }
+                    query.selectViewport().scrollOffset().exec(
+                      res=>{
+                        fnc && typeof(fnc) == 'function' && fnc();
+                        rs(res || {})
+                      }
+                    )
+                  }, 300);
+                })
             },
 			_noFn(e) { }
         };

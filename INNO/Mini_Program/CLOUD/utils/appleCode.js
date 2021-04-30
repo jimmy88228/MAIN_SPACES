@@ -1,7 +1,7 @@
 import LM from "../helper/manager/login-manager.js"
 import Conf from "../conf.js"
 import SMH from "../helper/show-msg-helper.js"
-import { BarCodeApi, UserApi} from "../helper/manager/http-manager.js"
+import { CL_BarCodeApi, UserApi} from "../helper/manager/http-manager.js"
 import StoreH from "../helper/handle/storeHandle";
 function appletCode(data) {
   /**
@@ -47,7 +47,7 @@ function appletCode(data) {
       }
       extendParam = JSON.parse(JSON.stringify(extendParam));
     }
-    return BarCodeApi.getWxCode({
+    return CL_BarCodeApi.getWxCode({
       data: {
         "scene": JSON.stringify(scene || {}),
         "path": Conf.is_onlyUserCenter == 1 ? Conf.MEMBER_INDEX : path,

@@ -1344,10 +1344,9 @@ function createShoppingCart() {
 }
 //商品搭配
 function getMatchLinkGoodList(options = {}) {
-  return app.GoodsApi.getMatchLinkGoodList({
+  return app.CL_GoodsApi.getMatchLinkGoodList({
     params: {
       goodsId: options.goods_id,
-      brandCode: app.Conf.BRAND_CODE
     }
   }).then(e => {
     if (e.code == "1") {
@@ -1642,7 +1641,7 @@ function checkEmbedCustom(){
   let extra = {
     diy:true
   }
-  return app.RunApi.go('GoodsApi','get_recommend_template_List',params).then(res=>{
+  return app.RunApi.go('CL_GoodsApi','getGoodsRecommendTemplate',params,extra).then(res=>{
     if (res && res.code =='1' && res.data){
       this.embedLoad = true;
       return Promise.resolve(res.data);

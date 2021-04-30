@@ -8,6 +8,7 @@
     "mc-video":"/pages/component/micro-page/micro-mix/items/video/video",
     "cs": "/pages/component/cs/custom_service",
     "notice":"/pages/component/micro-page/micro-mix/items/notice/notice",
-    "goods-list":"/pages/component/micro-page/micro-mix/items/goods-list/goods-list"
+    "goods-list":"/pages/component/micro-page/micro-mix/items/goods-list/goods-list",
+    "ac-goods-list":"/pages/component/micro-page/micro-mix/items/ac-goods-list/ac-goods-list"
   }
 }

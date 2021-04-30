@@ -84,36 +84,38 @@ const TESTCONFIG = {
   "api_domain": {
     "TESTAPI":"https://developtest.innourl.com",
     "VSLOGAPI": "https://developtest.innourl.com",
-    "CL_VSLOGAPI": "https://developtest.innourl.com/QdqmLogApi",
     "GOODSAPI": "https://developtest.innourl.com",
+    "USERAPI": "https://developtest.innourl.com", 
+
+    "CL_VSLOGAPI": "https://developtest.innourl.com/QdqmLogApi",
     "CL_GOODSAPI": "https://developtest.innourl.com/QdqmMainApi",
-    "USERAPI": "https://developtest.innourl.com",
     "CL_USERAPI": "https://developtest.innourl.com/QdqmMainApi",
     "CL_BUYAPI": "https://developtest.innourl.com/QdqmMainApi",
     "Cl_REGAPI": "https://developtest.innourl.com/QdqmMainApi",
+    "CL_PAYAPI": "https://developtest.innourl.com",
+    "CL_BARCODEAPI": "https://developtest.innourl.com/QdqmMainApi",
     "BUYAPI": "https://developtest.innourl.com",
     "REGAPI": "https://developtest.innourl.com",
     "POINTAPI": "https://devimtest.innourl.com",
     "COLLAGEAPI": "https://devpttest.innourl.com",
     "PAYAPI": "https://devpaytest.innourl.com",
-    "CL_PAYAPI": "https://developtest.innourl.com",
     "PRESALEAPI": "https://developtest.innourl.com",
     "STAFFAPI": "https://developtest.innourl.com",
     "MAINAPI": "",
     "MAPAPI": "https://restapi.amap.com",
     //店铺支付
-    "SMKTPAYAPI": "https://developtest.innourl.com",
-    "GRASSAPI":"https://developtest.innourl.com/GrassApi",
-    "PAGEAPI":"https://developtest.innourl.com",
-    "BARGAINAPI": "https://developtest.innourl.com/BargainApi",
-    "MEMBERCARDAPI":"https://developtest.innourl.com",
-    "ACTAPI":"https://developtest.innourl.com",
-    "LOTTERYAPI":"https://developtest.innourl.com/LotteryApi",
-    "SECKILLAPI":"https://developtest.innourl.com/SecKill",
-    "VOTEAPI":"https://developtest.innourl.com/VoteApi",
-    "VIDEOSHOPAPI":"https://developtest.innourl.com",
-    "BARCODEAPI": "https://developtest.innourl.com",
-    "LIVEAPI": "https://developtest.innourl.com"
+    // "SMKTPAYAPI": "https://developtest.innourl.com",
+    // "GRASSAPI":"https://developtest.innourl.com/GrassApi",
+    // "PAGEAPI":"https://developtest.innourl.com",
+    // "BARGAINAPI": "https://developtest.innourl.com/BargainApi",
+    // "MEMBERCARDAPI":"https://developtest.innourl.com",
+    // "ACTAPI":"https://developtest.innourl.com",
+    // "LOTTERYAPI":"https://developtest.innourl.com/LotteryApi",
+    // "SECKILLAPI":"https://developtest.innourl.com/SecKill",
+    // "VOTEAPI":"https://developtest.innourl.com/VoteApi",
+    // "VIDEOSHOPAPI":"https://developtest.innourl.com",
+    // "BARCODEAPI": "https://developtest.innourl.com",
+    // "LIVEAPI": "https://developtest.innourl.com"
     
      // "VSLOGAPI": "https://developtest.innourl.com/QdqmMainApi",
     // "GOODSAPI": "https://developtest.innourl.com/QdqmMainApi",
@@ -595,7 +597,15 @@ const SINGLE_DOG = {
     "MEMBERCARDAPI": "https://innouserapi.innourl.cn",
     "LOTTERYAPI": "https://innoactapi.innourl.cn/LotteryApi",
     "BARGAINAPI": "https://innoptapi.innourl.cn/BargainApi",
-    "LIVEAPI": "https://innoactapi.innourl.cn/LiveApi"
+    "LIVEAPI": "https://innoactapi.innourl.cn/LiveApi",
+
+    "CL_VSLOGAPI": "https://cloudvisitlog.innourl.cn/VisitLogApi",
+    "CL_GOODSAPI": "https://cloudgoodsapi.innourl.cn",
+    "CL_USERAPI": "https://clouduserapi.innourl.cn",
+    "CL_BUYAPI": "https://cloudbuyapi.innourl.cn",
+    "Cl_REGAPI": "https://cloudregapi.innourl.cn",
+    "CL_BARCODEAPI": "https://cloudbarcode.innourl.cn",
+    "CL_PAYAPI": "https://cloudbuyapi.innourl.cn",
   },
   "tabbar_list": [
     {
@@ -735,6 +745,12 @@ function getSetConfig(config = {}){
     brandConfig = {
       ...config,
       ...JINGLANGTS
+    };
+  } 
+  else if (config.brandCode == "YUNDIAN") {
+    brandConfig = {
+      ...config,
+      ...SINGLE_DOG
     };
   } 
   else{//金王

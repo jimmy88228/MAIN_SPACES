@@ -34,7 +34,7 @@ Component(app.BTAB({
         isInited:true
       })
       setTimeout(() => {
-        this.itemRefresh();
+        this.mcItemRefresh();
       }, 300);
     },
   }

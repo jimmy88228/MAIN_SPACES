@@ -88,7 +88,7 @@ Component(app.BTAB({
       this.setData({
         isInited:true
       })
-      this.itemRefresh();
+      this.mcItemRefresh();
     },
     toogle: function (e) {
       this.setData({

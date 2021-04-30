@@ -23,10 +23,6 @@ Component(app.BTAB({
         n && this.init(n);
       }
     },
-    showTab:{
-      type:Boolean,
-      value:false,
-    },
     curTab:{
       type:Number,
       value:0
@@ -46,29 +42,28 @@ Component(app.BTAB({
       let listData = getInitData(group,this.data.curTab);
       this.setData({
         _data,
+        init:true,
         listData,
         showTab: group.length>1,
       });
     },
     loadData(_data){
-      let apiPm = getParams(this.data._data||{},this);
-      return app.RunApi.go(apiPm.m,apiPm.api,apiPm.url,apiPm.params,apiPm.extra).then(res=>{
+      let _p = getParams(this.data._data||{},this);
+      return app.RunApi.go(_p.m,_p.api,_p.url,_p.params,_p.extra).then(res=>{
         let data = res.data||{};
         this.setData({
-          init:true,
           isInited:true,
           listData: data.goods_list || [],
         })
         if(!this.data._data.open_slide){ //swiper 先不刷新
-          this.itemRefresh();
+          this.mcItemRefresh();
         }
       }).catch(e=>{
         this.setData({
           listData:[],
-          init:true,
           isInited:true
         })
-        this.itemRefresh();
+        this.mcItemRefresh();
         console.log('catch',e)
       })
     },

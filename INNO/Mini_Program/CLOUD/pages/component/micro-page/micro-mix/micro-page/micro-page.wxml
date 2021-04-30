@@ -1,6 +1,6 @@
 <!--pages/component/micro-page/micro-mix/micro-page/micro-page.wxml-->
 <wxs module="dfCss" src="../../help/defaultCss.wxs"></wxs>
-<view class="main {{noScroll?'_noScroll':''}}" style="{{assistHoldStyle?assistHoldStyle+';':'' + dfCss.getDfCss(_data,screenWidth,'page')}}" wx:if="{{!hidePage}}">
+<view wx:if="{{!hidePage}}" style="{{assistHoldStyle?assistHoldStyle+';':'' + dfCss.getDfCss(_data,screenWidth,'page')}}" class="main {{noScroll?'_noScroll':''}}">
   <!-- 顶部广告 -->
   <view class="adsBox">
     <mc-box 
