@@ -2,7 +2,8 @@
 <template>
     <div>
         <emit-diy-button v-on:emit_test3="handle_btn_emit"></emit-diy-button>
-        <emit-diy-button @emit_test3="handle_btn_emit2"></emit-diy-button>
+
+        <emit-diy-button @emit_test3="handle_btn_emit_2"></emit-diy-button>
     </div>
 </template>
 
@@ -23,12 +24,12 @@
                     }
                 },
                 methods:{
-                    btnFnc(){
-                        this.$emit('emit_test3',this.num);
+                    _btnFnc(){
+                        this.$emit('emit_test3',{num:this.num++,name:'jimmy'});
                     }
                 },
                 template: `
-                    <button v-on:click="btnFnc">
+                    <button @click="_btnFnc">
                         Click me to be emit
                     </button>
                 `
@@ -42,18 +43,18 @@
             this.$emit('emit_test',1);
             this.$emit('emit_test',2);
             this.$off('emit_test')
-            this.$emit('emit_test',3);
+            this.$emit('emit_test',3); //不再$on回调
             
             this.$once('emit_test2',fnc);
             this.$emit('emit_test2',21);
-            this.$emit('emit_test2',22);
+            this.$emit('emit_test2',22); //不再$once回调
         },
         methods: {
             handle_btn_emit(_params) {
                 console.log('handle_btn_emit',_params)
             },
-            handle_btn_emit2(_params) {
-                console.log('handle_btn_emit2',_params)
+            handle_btn_emit_2(_params) {
+                console.log('handle_btn_emit_2',_params)
             }
         },
     }

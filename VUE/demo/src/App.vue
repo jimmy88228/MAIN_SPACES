@@ -16,6 +16,7 @@
       <router-link to="/instanceLifeCycle">instanceLifeCycle</router-link> |
       <router-link to="/vInstructions">vInstructions</router-link> | 
     </div>
+    <div id="app2"></div>
     <transition name="fade">
       <router-view class="pst_ab ROUTER-VIEW"/>
     </transition>
