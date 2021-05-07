@@ -15,6 +15,7 @@
       <router-link to="/InstanceEmit">InstanceEmit</router-link> |
       <router-link to="/instanceLifeCycle">instanceLifeCycle</router-link> |
       <router-link to="/vInstructions">vInstructions</router-link> | 
+      <router-link to="/spAttribute">spAttribute</router-link> | 
     </div>
     <div id="app2"></div>
     <transition name="fade">

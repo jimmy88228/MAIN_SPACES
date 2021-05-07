@@ -15,6 +15,7 @@ import InstanceData from "@/components/instance_data.vue";
 import InstanceEmit from "@/components/instance_emit.vue";
 import instanceLifeCycle from "@/components/instance_life_cycle.vue";
 import vInstructions from "@/components/v_instructions.vue";
+import spAttribute from "@/components/sp_attribute.vue";
 Vue.use(VueRouter);
 
 const routes = [
@@ -87,6 +88,11 @@ const routes = [
     path: "/vInstructions",
     name: "vInstructions",
     component: vInstructions
+  },
+  {
+    path: "/spAttribute",
+    name: "spAttribute",
+    component: spAttribute
   },
 
 

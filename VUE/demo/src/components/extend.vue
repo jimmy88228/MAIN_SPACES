@@ -44,10 +44,11 @@ Vue.component("counter", { //只能页面加载时同步注册组件,new XXX可�
   },
   template: '<div v-on:click="count++">点击计算点击次数：{{count}}次</div>'
 });
+import combin_child from '@/components/combin_child.vue';
 export default {
   name: "extend",
   components: {
-    CombinationChild:'@/components/combin_child.vue'
+    CombinationChild:combin_child
   },
   mounted() {
     if (this.inited) return;

@@ -3,13 +3,21 @@
     <div>
         <emit-diy-button v-on:emit_test3="handle_btn_emit"></emit-diy-button>
 
-        <emit-diy-button @emit_test3="handle_btn_emit_2"></emit-diy-button>
+        <emit-diy-button @emit_test3="handle_btn_emit_2"></emit-diy-button> 
+
+        <div>子组件 {{fromType}}</div>
     </div>
 </template>
 
 <script>
     import Vue from 'vue'
     export default {
+        props: {
+            fromType: {
+                type: String,
+                default: ''
+            },
+        },
         data(){
             return {
                 jimmy:441
@@ -52,9 +60,19 @@
         methods: {
             handle_btn_emit(_params) {
                 console.log('handle_btn_emit',_params)
+                this.fromType = 'change';
+                this.$emit('update:fromType', this.fromType)
+                this.$emit('emitTap',{index:0})
             },
             handle_btn_emit_2(_params) {
                 console.log('handle_btn_emit_2',_params)
+                this.$emit('emitTap',{index:1})
+            },
+            clickTap(e){
+                console.log('clickTap1',e)
+            } ,
+            clickTap2(e){
+                console.log('clickTap2',e)
             }
         },
     }
