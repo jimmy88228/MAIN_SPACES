@@ -75,10 +75,11 @@
                 v-bind:fromType="fromType"
                 v-on:update:fromType="fromType = $event"
             ></diy-cmpt> -->
-            <!-- 等同于.sync -->
+            <!-- ↑等同于.sync -->
             <diy-cmpt v-bind:fromType.sync="fromType"></diy-cmpt>
             <div>父组件 {{fromType}}</div>
 
+            <!-- v-slot -->
             <v-slot>
                 <template v-slot:header>
                     <div>header</div>
@@ -90,6 +91,63 @@
                     <div>footer</div>
                 </template>
             </v-slot>
+
+            <!-- v-model -->
+            <!-- input type="text" -->
+            <div id="example-1"> 
+                <input type="text" v-model="message" placeholder="edit me">
+                <p>Message is: {{ message }}</p>
+            </div>
+            <div id="example-2">
+                <textarea v-model="messageArea" placeholder="add multiple lines"></textarea>
+                <p style="white-space: pre-line;">messageArea is: {{ messageArea }}</p>
+            </div>
+            <!-- input type="checkbox" v-model布尔值-->
+            <div id="example-3">
+                <input type="checkbox" id="jack" value="Jack" v-model="checkedNamesJack">
+                <label for="jack">Jack</label>
+                <input type="checkbox" id="john" value="John" v-model="checkedNames.John">
+                <label for="john">John</label>
+                <br>
+                <span>Checked names Boolean： {{ checkedNamesJack }},{{ checkedNames.John }}</span>
+            </div>
+            <!-- input type="checkbox" v-model数组-->
+            <div id="example-4">
+                <input type="checkbox" id="jack" value="Jack" v-model="checkedNamesArr">
+                <label for="jack">Jack</label>
+                <input type="checkbox" id="john" value="John" v-model="checkedNamesArr">
+                <label for="mike">Mike</label>
+                <br>
+                <span>Checked names Boolean：{{ checkedNamesArr }}</span>
+            </div>
+            <!-- input type="radio" v-model字符串-->
+            <div id="example-5">
+                <input type="radio" id="one" value="One" v-model="picked">
+                <label for="one">One</label>
+                <input type="radio" id="two" value="Two" v-model="picked">
+                <label for="two">Two</label>
+                <div>Picked: {{ picked }}</div>
+            </div>
+            <!-- select v-model字符串-->
+            <div id="example-6">
+                <select v-model="selected">
+                    <option disabled value="">请选择</option>
+                    <option>A</option>
+                    <option>B</option>
+                    <option>C</option>
+                </select>
+                <span>Selected: {{ selected }}</span>
+            </div>
+            <!-- select multiple v-mode数组 -->
+            <div id="example-7">
+                <select v-model="multiple" multiple style="width: 100px;">
+                    <option>AA</option>
+                    <option v-for="item in vForObjArr" :key="item.id" :value="item.val">
+                        {{item.id}}
+                    </option>
+                </select> 
+                <div>Selected multiple: {{ multiple }}</div>
+            </div>
         </div>
     </div>
 </template>
@@ -137,8 +195,20 @@
                     fontSize:'32px'
                 },
                 id:"jimmy",
-                fromType:'fromTypefromType'
-                
+                fromType:'fromTypefromType',
+                message:"",
+                messageArea:"",
+                checkedNamesArr:[],
+                checkedNamesJack:false,
+                checkedNames:{
+                    John:false,
+                },
+                picked:"",
+                selected:"",
+                multiple:[],
+
+                // checkedNamesJohn:false,
+                // checkedNamesMike:false,
             }
         }, 
         mounted () {

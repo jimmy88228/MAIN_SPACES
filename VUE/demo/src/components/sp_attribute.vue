@@ -7,11 +7,7 @@
             <p ref="p">hello</p>
             <!-- `vm.$refs.child` will be the child component instance -->
             <child-component ref="child"></child-component>
-        </div>
-
-        <div>
-            <component v-bind:is="currentView"></component>
-        </div>
+        </div> 
     </div>
 </template>
 
@@ -29,8 +25,7 @@
                 },{
                     id:'c1',
                     val:'jimmy2'
-                }],
-                currentView:'child-component'
+                }], 
             }
         },
         mounted () {
