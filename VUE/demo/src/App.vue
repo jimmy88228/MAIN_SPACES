@@ -16,7 +16,7 @@
       <router-link to="/instanceLifeCycle">instanceLifeCycle</router-link> |
       <router-link to="/vInstructions">vInstructions</router-link> | 
       <router-link to="/spAttribute">spAttribute</router-link> | 
-      <router-link to="/builtInComponent">builtInComponent</router-link> | 
+      <router-link to="/builtInComponent/441">builtInComponent</router-link> | 
     </div>
     <div id="app2"></div>
     <transition name="fade">

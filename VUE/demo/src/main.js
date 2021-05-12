@@ -12,6 +12,11 @@ new Vue({
   render: h => h(App) //有render 不用  template
 }).$mount("#app");    //有mount  不用  el
 
+router.beforeEach((to, from, next) => {
+  console.log('beforeEach 全局',to,from)
+  next();
+})
+
 //等同于
 // new Vue({
 //   el: '#app',         //有el

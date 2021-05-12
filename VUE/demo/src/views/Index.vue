@@ -23,6 +23,15 @@
         <div>footer</div>
       </template>
     </InstanceProperty>
+    <div @click="e=>onTapPush(1,e)">
+       this.$router.push(`/builtInComponent/${441}`)
+    </div>
+    <div @click="onTapPush(2,$event)">
+       this.$router.push({name:'builtInComponent',params:{id:441}}) //name->params
+    </div>
+    <div @click="onTapPush(3,$event)">
+        this.$router.push({path:`/builtInComponent/${441}`,query:{id:441}})//path->query
+    </div>
   </div>
 </template>
  
@@ -61,6 +70,13 @@ export default {
   },
   mounted () {
     // console.log('slots',this.$slots,'\nscopedSlots',this.$scopedSlots,'\n');
+    console.log('this.$router',this.$router)
+    console.log('this.$route',this.$route)
+    console.log('window.history',window.history)
+    // this.goBack();
+    // this.$router.push(`/builtInComponent/${441}`) // /path/params
+    // this.$router.push({name:'builtInComponent',params:{id:441}}) //name->params
+    // this.$router.push({path:'/builtInComponent',query:{id:441}})//path->query
   },
   methods: {
     onTap(e,type) {
@@ -73,6 +89,27 @@ export default {
           }
         })
       }
+    },
+    onTapPush(type,e){
+      console.log(type,typeof(type),e,'onTapPush',this.$router);
+      switch (type) {
+        case 1:
+          this.$router.push(`/builtInComponent/${441}`) // /path/params
+          break;
+        case 2:
+          this.$router.push({name:'builtInComponent',params:{id:441}}) //name->params
+          break;
+        case 3:
+          this.$router.push({path:`/builtInComponent/${441}`,query:{id:441}})//path->query
+          break;
+      
+        default:
+          break;
+      }
+    },
+    goBack() {
+      window.history.length > 1 ? this.$router.push('/') : this.$router.push('/')
+      // window.history.length > 1 ? this.$router.go(-1) : this.$router.push('/')
     }
   },
 };

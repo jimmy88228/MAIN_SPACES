@@ -1,8 +1,7 @@
 import Vue from "vue";
 import VueRouter from "vue-router";
 import Index from "../views/Index.vue";
-import opsElse from "../components/opsElse.vue";
-
+import opsElse from "../components/opsElse.vue"; 
 import ExtendDemo from "@/components/extend.vue";
 import GlobalApi from "@/components/globalApi.vue";
 import OpsData from "@/components/opsData.vue";
@@ -96,9 +95,13 @@ const routes = [
     component: spAttribute
   },
   {
-    path: "/builtInComponent",
+    path: "/builtInComponent/:id",
     name: "builtInComponent",
-    component: builtInComponent
+    component: builtInComponent,
+    beforeEnter: (to, from, next) => {
+      console.log('beforeEnter 路由',to,from)
+      next();
+    }
   },
 
 
