@@ -16,12 +16,14 @@ import instanceLifeCycle from "@/components/instance_life_cycle.vue";
 import vInstructions from "@/components/v_instructions.vue";
 import spAttribute from "@/components/sp_attribute.vue";
 import builtInComponent from "@/components/built_in_component.vue";
+import vRouter from "@/components/vRouter.vue";
 Vue.use(VueRouter);
 
 const routes = [
   {
     path: "/",
     name: "Index",
+    alias: '/jimmy',
     component: Index
   },
   {
@@ -97,13 +99,37 @@ const routes = [
   {
     path: "/builtInComponent/:id",
     name: "builtInComponent",
-    component: builtInComponent,
+    component: builtInComponent, 
     beforeEnter: (to, from, next) => {
       console.log('beforeEnter 路由',to,from)
       next();
     }
   },
-
+  {
+    path: "/vRouter/:id",
+    name: "vRouter",
+    component: vRouter,
+    children:[{
+          path: 'vRouterJump',
+          components: {
+            default:InstanceEmit,
+            second:spAttribute
+          },
+          meta: { requiresAuth441: true }
+    },
+    {
+      path: 'vRouterJump2',
+      components: {
+        default:spAttribute,
+        second:InstanceEmit
+      },
+      meta: { requiresAuth441: true }
+    }],
+    beforeEnter: (to, from, next) => {
+      console.log('beforeEnter 路由',to,from)
+      next();
+    }
+  },
 
 
   // {

@@ -17,6 +17,7 @@
       <router-link to="/vInstructions">vInstructions</router-link> | 
       <router-link to="/spAttribute">spAttribute</router-link> | 
       <router-link to="/builtInComponent/441">builtInComponent</router-link> | 
+      <router-link to="/vRouter/441">vRouter</router-link> | 
     </div>
     <div id="app2"></div>
     <transition name="fade">

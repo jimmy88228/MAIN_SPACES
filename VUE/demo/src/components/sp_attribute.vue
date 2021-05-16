@@ -35,5 +35,7 @@
 </script>
 
 <style lang="less" scoped>
-
+ul li{
+    list-style-type:none;
+}
 </style>

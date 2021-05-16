@@ -10,7 +10,6 @@
             <div>
                 <component v-bind:is="$options.components.childComponent"></component>
             </div>
-            <div>??</div>
             <div>jimmy {{ $route.params.id }},{{ $route.query.id }}</div>
         </div>
     </div>
