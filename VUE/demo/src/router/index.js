@@ -109,8 +109,11 @@ const routes = [
     path: "/vRouter/:id",
     name: "vRouter",
     component: vRouter,
+    props:true, //将params传到props解耦
+    meta: { requiresAuth: true },
     children:[{
-          path: 'vRouterJump',
+          path: 'vRouterJumpChildren',
+          props: { newsletterPopup: false },
           components: {
             default:InstanceEmit,
             second:spAttribute
@@ -118,7 +121,7 @@ const routes = [
           meta: { requiresAuth441: true }
     },
     {
-      path: 'vRouterJump2',
+      path: 'vRouterJumpChildren2',
       components: {
         default:spAttribute,
         second:InstanceEmit
@@ -144,7 +147,15 @@ const routes = [
 ];
 
 const router = new VueRouter({
-  routes
+  routes,
+  // scrollBehavior (to, from, savedPosition) {
+  //   return new Promise((resolve) => {
+  //     setTimeout(() => {
+  //       console.log(to,from,savedPosition,'看看')
+  //       resolve({ x: 0, y: 0 })
+  //     }, 2000)
+  //   })
+  // }
 });
 
 export default router;

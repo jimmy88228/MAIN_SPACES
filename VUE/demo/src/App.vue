@@ -17,7 +17,7 @@
       <router-link to="/vInstructions">vInstructions</router-link> | 
       <router-link to="/spAttribute">spAttribute</router-link> | 
       <router-link to="/builtInComponent/441">builtInComponent</router-link> | 
-      <router-link to="/vRouter/441">vRouter</router-link> | 
+      <router-link :to="{path:'/vRouter/441',query:{type:'jimmy'}}">vRouter</router-link> |  
     </div>
     <div id="app2"></div>
     <transition name="fade">
@@ -27,7 +27,11 @@
 </template>
 <script>
 export default {
-  
+  methods: {
+    jump(type) {
+      this.$router.push({path:"/vRouter/441",query:{type}})
+    }
+  },
 }
 </script>
 <style lang="less">
