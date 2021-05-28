@@ -1,0 +1,18 @@
+<!--pages/component/input-fill/fill/fill.wxml-->
+<view class="input-field single-row" style="{{item.boxStyle||''}}">
+    <view style="{{item.nameStyle||''}}" class="input-field-name">
+      <text wx:for="{{item.name}}" wx:key="index" wx:for-item="name_i">{{name_i}}</text>
+    </view>
+    <input 
+      class="input-field-input" 
+      style="{{item.inputStyle||''}}"
+      type="{{item.type || 'text'}}"
+      value="{{item.value || ''}}" 
+      bindinput="onInput" 
+      password="{{item.password || false}}" 
+      placeholder="{{item.placeHolder || ''}}" 
+      placeholder-class="input-field-input-ph"
+      placeholder-style="{{item.holderStyle}}"></input>
+      <slot></slot>
+</view>
+<!-- text number digit idcard  -->

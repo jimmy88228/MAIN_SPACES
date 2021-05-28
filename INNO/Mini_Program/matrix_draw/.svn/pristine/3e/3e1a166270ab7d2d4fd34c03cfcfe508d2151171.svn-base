@@ -1,0 +1,194 @@
+<!--order_list.wxml-->
+<view class="orderListPage">
+    <!-- 普通订单 -->
+    <view class="ordertTab flex_global flex_c" wx:if="{{orderTab.length>1}}">
+        <view wx:for="{{orderTab}}" wx:key="key" class="orderTabTit flex_global flex_c flex_al_c" data-type="{{item.key}}" bindtap="onTabClick" style="{{ clickTabId == item.key  ? 'color:#000;'+'font-weight:bold;' : '' }}">
+            <text>{{item.name}}</text>
+            <view class='lines' wx:if="{{clickTabId == item.key}}" style="background:#000;"></view>
+        </view> 
+    </view>
+    <view class="orderLists {{orderTab.length>1? 'orderLists_p' : ''}}" hidden="{{!isReady}}">
+        <block wx:if="{{true||orderType!=4}}">
+            <search style="{{(clickTabId != 'store_tab')?'':'display:none;'}}" id="search" class="search" bindonTapConfirm="onTapConfirm"></search>
+        </block>
+ 
+        <view class="orderListItem mobileList oh" style="display:{{ (clickTabId != 'store_tab') ? 'flex' : 'none'}}">
+            <view class="item C_333" wx:for="{{orderList}}" wx:key="index">
+                <view class='order_wrapper' bindtap="onPageJump" data-order_id="{{item.orderId}}" data-id="{{item.returnId || item.refundId}}" data-order_sn="{{item.orderSn || item.refundSn}}" data-parent_order_sn="{{item.parentOrderSn}}" data-sign="false">
+                    <view class="store_info flex_global flex_al_c">
+                        <image src="{{defaultIcon + 'store/store.png'}}" mode="aspectFit" class='store_icon' />
+                        <view>{{item.storeName}}</view>
+                    </view>
+                    <view class='header_info'>
+                        <view class='order_sn'>
+                            <text class='number'>{{order_text}}</text>{{item.orderSn || item.returnSn || item.refundSn}}
+                        </view>
+                        <view class='font_24 status'>{{item.orderStatus_str || item.stateName}}</view>
+                    </view>
+                    <view class='product' wx:if="{{item.goodsList.length == 1}}">
+                        <view class='pro_pic pro_pic_wrapper'>
+                            <image src="{{empty_url}}" mode="aspectFit" class='pro_pic' wx:if="{{item.goodsList[0].thumbUrl == ''}}" />
+                            <image src="{{item.goodsList[0].thumbUrl}}" mode="aspectFit" class='pro_pic' wx:else/>
+                        </view>
+                        <view class="pro_box">
+                            <view class='pro_name pro_item'>{{item.goodsList[0].goodsName}}</view>
+                            <view class='pro_attr'>{{item.goodsList[0].goodsAttr}}</view>
+                            <!-- <view class='pro_number pro_item'>x {{item.goodsList[0].goods_number || item.goodsList[0].return_number}}</view> -->
+                        </view>
+                    </view>
+                    <scroll-view scroll-x class='more product' wx:else>
+                        <view class='pro_pic pro_pic_wrapper' wx:for="{{item.goodsList}}" wx:for-item="multi" wx:for-index="multiIndex" wx:key="multiIndex">
+                            <image src="{{empty_url}}" mode="aspectFit" class='pro_pic' wx:if="{{multi.thumbUrl == ''}}" />
+                            <image src="{{multi.thumbUrl}}" mode="aspectFit" class='pro_pic' wx:else/>
+                        </view>
+                    </scroll-view>
+                    <view class="price_number {{item.is_valet_order ||  item.platformSrc=='mwin' || (item.returnStatus == 1 && !item.returnSn)?'':'p_right'}}">
+                        <view wx:if="{{item.is_valet_order ||  item.platformSrc=='mwin' || (item.returnStatus == 1&& !item.returnSn)}}" class='assist_guest'>
+                            <view wx:if="{{item.is_valet_order}}" style='color:{{brand_info.style.font_color}}; {{l_bg_color}}' class='label'>代下单</view>
+                            <text wx:if="{{item.platformSrc=='mwin'}}" style='color:{{brand_info.style.font_color}}; {{l_bg_color}}' class='label'>数字屏</text>
+                            <text wx:if="{{item.returnStatus == 1 && !item.returnSn}}" style='color:{{brand_info.style.font_color}}; {{l_bg_color}}' class='label'>退换货</text>
+                        </view>
+                        <view class="goods_msg_box">
+                            <text class='product_num'>
+                                <text>共</text>
+                                <text wx:if="{{clickTabId == 'mobile_tab' || clickTabId == 'store_tab'}}">
+                                    {{item.goodsNumber}}
+                                </text>
+                                <text wx:elif="{{clickTabId == 'refund_money_tab'}}">
+                                    {{item.refundNumber}}
+                                </text>
+                                <text wx:elif="{{clickTabId == 'refund_goods_tab' || clickTabId == 'swop_tab'}}">
+                                    {{item.totalGoodsNumber}}
+                                </text>
+                                <text>件商品</text>
+                            </text>
+                            <text class='product_price'>合计</text>
+                            <text class="the_price">
+                                <text wx:if="{{clickTabId == 'mobile_tab' || clickTabId == 'store_tab'}}">
+                                    {{item.orderAmount}}
+                                </text>
+                                <text wx:elif="{{clickTabId == 'refund_money_tab'}}">
+                                    {{item.refundAmount}}
+                                </text>
+                                <text wx:elif="{{clickTabId == 'refund_goods_tab' || clickTabId == 'swop_tab'}}">
+                                    {{item.totalAmount}}
+                                </text>
+                            </text>
+                        </view>
+                    </view>
+                </view>
+                <!-- <view class='the_line'></view> -->
+                <view class='msg_box'> 
+                    <view class='btn_group'>
+                        <button wx:if="{{item.can_one_more_order == '1'}}" hover-class="none" class='detail_btn' bindtap="onTap" data-type="oneMoreOrder" data-order_id="{{item.orderId}}" style="--theme_color:{{brand_info.style.bg_color}}">再次购买</button>
+                        <navigator 
+                        hover-class="none"
+                        capture-catch:tap="jumpToComment" 
+                        wx:if="{{item.canComment == '1'}}" 
+                        class="detail_btn" 
+                        style="--theme_color:{{brand_info.style.bg_color}}"
+                        data-order_id="{{item.orderId}}" 
+                        data-order_sn="{{item.orderSn}}"
+                        data-goods_id="{{item.goodsList[0].goodsId}}"
+                        data-goods_sn="{{item.goodsList[0].goodsSn}}"
+                        data-g_list_len="{{item.goodsList.length}}"
+                        >评价</navigator>
+                        <button wx:if="{{item.show_invoice_btn && item.invoiceNo}}" hover-class="none" class='detail_btn' bindtap="onTap" data-type="shipping" data-order_id="{{item.orderId}}" style="--theme_color:{{brand_info.style.bg_color}}">查看物流</button>
+                        <button wx:if="{{item.needPay}}" hover-class="none" class='detail_btn' bindtap="onTap" data-type="buyAgain" data-order_id="{{item.orderId}}" style="--theme_color:{{brand_info.style.bg_color}}">立即支付</button>
+                        <!-- <button wx:if="{{item.shipping_status != 0 && item.shipping_status != 3 && item.show_invoice_btn && item.invoiceNo}}" hover-class="none" class='detail_btn' bindtap="onTap" data-type="shipping" data-order_id="{{item.orderId}}" style="--theme_color:{{brand_info.style.bg_color}}">查看物流</button>
+                        <button wx:if="{{showElectricBtn == 1 && item.electric_task_id==0 && item.is_allow_electric == 1 && (item.order_amount>0 || item.offline_surplus!=0)}}" hover-class="none" class='detail_btn' bindtap="onTap" data-sp_fee="{{item.shipping_fee}}" data-type="issue_invoice" data-sn="{{item.orderSn}}" data-price="{{item.order_amount}}" data-offline_surplus="{{item.offline_surplus}}" style="--theme_color:{{brand_info.style.bg_color}}">申请开票</button>
+                        <button wx:if="{{showElectricBtn == 1 && item.electric_task_id}}" hover-class="none" class='detail_btn' bindtap="onTap" data-type="detail_invoice" data-id="{{item.electric_task_id}}" data-sn="{{item.orderSn}}" data-price="{{item.order_amount}}" style="--theme_color:{{brand_info.style.bg_color}}">查看发票</button>
+                        <button wx:if="{{item.needPay}}" hover-class="none" class='detail_btn' bindtap="onTap" data-type="buyAgain" data-order_id="{{item.orderId}}" style="--theme_color:{{brand_info.style.bg_color}}">立即支付</button> -->
+                    </view>
+                </view> 
+            </view>
+        </view>
+    </view>
+    
+    <view class="orderListItem storeList oh" style="display:{{ clickTabId == 'store_tab'  ? 'flex' : 'none'}}">
+        <view class="item C_333" wx:for="{{storeList}}" wx:key="index">
+            <view class='order_wrapper' bindtap="onPageJump" data-order_id="{{item.orderId}}"  data-order_sn="{{item.orderSn}}" data-parent_order_sn="{{item.parentOrderSn}}">
+                <view class="store_info flex_global flex_al_c">
+                    <image src="{{defaultIcon + 'store/store.png'}}" mode="aspectFit" class='store_icon' />
+                    <view>{{item.storeName}}</view>
+                </view>
+                <view class='header_info'>
+                    <view class='order_sn'>
+                        <text class='number'>{{order_text}}</text>{{item.orderSn || item.returnSn}}
+                    </view>
+                    <view class='status'>已完成</view>
+                </view>
+                <view class='product' wx:if="{{item.goodsList.length == 1}}">
+                    <view class='pro_pic pro_pic_wrapper'>
+                        <image src="{{empty_url}}" mode="aspectFit" class='pro_pic' wx:if="{{item.goodsList[0].thumbUrl == ''}}" />
+                        <image src="{{item.goodsList[0].thumbUrl}}" mode="aspectFit" class='pro_pic' wx:else/>
+                    </view>
+                    <view class="pro_box">
+                        <view class='pro_name pro_item'>{{item.goodsList[0].goodsName}}</view>
+                        <view class='pro_attr'>{{item.goodsList[0].goodsAttr}}</view>
+                        <!-- <view class='pro_number pro_item'>x {{item.goodsList[0].goods_number || item.goodsList[0].return_number}}</view> -->
+                    </view>
+                </view>
+                <view class='more product' wx:else>
+                    <view class='pro_pic pro_pic_wrapper' wx:for="{{item.goodsList}}" wx:for-item="multi" wx:for-index="multiIndex" wx:key="multiIndex">
+                        <image src="{{empty_url}}" mode="aspectFit" class='pro_pic' wx:if="{{multi.thumbUrl == ''}}" />
+                        <image src="{{multi.thumbUrl}}" mode="aspectFit" class='pro_pic' wx:else/>
+                    </view>
+                </view>
+                <view class="price_number {{item.is_valet_order ||  item.platformSrc=='mwin' || (item.returnStatus == 1&& !item.returnSn)?'':'p_right'}}">
+                    <view wx:if="{{item.is_valet_order ||  item.platformSrc=='mwin' || (item.returnStatus == 1&& !item.returnSn)}}" class='assist_guest'>
+                        <view wx:if="{{item.is_valet_order}}" style='color:{{brand_info.style.font_color}}; {{l_bg_color}}' class='label'>代下单</view>
+                        <text wx:if="{{item.platformSrc=='mwin'}}" style='color:{{brand_info.style.font_color}}; {{l_bg_color}}' class='label'>数字屏</text>
+                        <text wx:if="{{item.returnStatus == 1 && !item.returnSn}}" style='color:{{brand_info.style.font_color}}; {{l_bg_color}}' class='label'>退换货</text>
+                    </view>
+                    <view class="goods_msg_box">
+                        <text class='product_num'>共{{item.goodsNumber}}件商品</text>
+                        <text class='product_price'>合计</text>
+                        <text class="the_price">{{item.orderAmount >= 0 ? '¥' + item.orderAmount : item.refundAmount }}</text>
+                    </view>
+                </view>
+            </view>
+            <!-- <view class='the_line'></view> -->
+            <view class='msg_box'>
+                <view wx:if="{{item.is_valet_order ||  item.platformSrc=='mwin'}}" class='assist_guest'>
+                    <view wx:if="{{item.is_valet_order}}" style='color:{{brand_info.style.font_color}}; {{l_bg_color}}' class='label'>代下单</view>
+                    <text wx:if="{{item.platformSrc=='mwin'}}" style='color:{{brand_info.style.font_color}}; {{l_bg_color}}' class='label'>数字屏</text>
+                </view>
+
+                <view class='btn_group'>
+                    <button wx:if="{{item.can_one_more_order == '1'}}" hover-class="none" class='detail_btn' bindtap="onTap" data-type="oneMoreOrder" data-order_id="{{item.orderId}}" style="--theme_color:{{brand_info.style.bg_color}}">再次购买</button>
+                    <navigator 
+                        hover-class="none"
+                        capture-catch:tap="jumpToComment" 
+                        wx:if="{{item.canComment == '1'}}" 
+                        class="detail_btn" 
+                        style="--theme_color:{{brand_info.style.bg_color}}"
+                        data-type="store" 
+                        data-goods_id="{{item.goodsList[0].goodsId || ''}}"
+                        data-goods_sn="{{item.goodsList[0].goodsSn}}"
+                        data-order_id="{{item.orderId}}" 
+                        data-order_sn="{{item.orderSn}}"
+                        data-g_list_len="{{item.goodsList.length}}"
+                    >评价</navigator>
+                    <button wx:if="{{item.show_invoice_btn && item.invoiceNo}}" hover-class="none" class='detail_btn' bindtap="onTap" data-type="shipping" data-order_id="{{item.orderId}}" style="--theme_color:{{brand_info.style.bg_color}}">查看物流</button>
+                    <button wx:if="{{item.needPay}}" hover-class="none" class='detail_btn' bindtap="onTap" data-type="buyAgain" data-order_id="{{item.orderId}}" style="--theme_color:{{brand_info.style.bg_color}}">立即支付</button>
+                    <!-- <button wx:if="{{item.shipping_status != 0 && item.shipping_status != 3 && item.show_invoice_btn && item.invoiceNo}}" hover-class="none" class='detail_btn' bindtap="onTap" data-type="shipping" data-order_id="{{item.orderId}}" style="--theme_color:{{brand_info.style.bg_color}}">查看物流</button>
+                    <button wx:if="{{showElectricBtn == 1 && item.electric_task_id==0 && item.is_allow_electric == 1 && item.order_amount>0}}" hover-class="none" class='detail_btn' bindtap="onTap" data-sp_fee="{{item.shipping_fee}}" data-type="issue_invoice" data-sn="{{item.orderSn}}" data-price="{{item.order_amount}}" data-order_type="OFFLINE" style="--theme_color:{{brand_info.style.bg_color}}">申请开票</button>
+                    <button wx:if="{{showElectricBtn == 1 && item.electric_task_id}}" hover-class="none" class='detail_btn' bindtap="onTap" data-type="detail_invoice" data-id="{{item.electric_task_id}}" data-sn="{{item.orderSn}}" data-price="{{item.order_amount}}" style="--theme_color:{{brand_info.style.bg_color}}">查看发票</button>
+                    <button wx:if="{{item.needPay}}" hover-class="none" class='detail_btn' bindtap="onTap" data-type="buyAgain" data-order_id="{{item.orderId}}" style="--theme_color:{{brand_info.style.bg_color}}">立即支付</button> -->
+                </view>
+            </view>
+        </view>
+    </view>
+</view>
+
+<view hidden="{{!isReady}}">
+    <!--没有手机订单-->
+    <view class="emptyOrder" wx:if="{{(clickTabId != 'store_tab' && isEmptyMobile) || (clickTabId == 'store_tab' && isEmptyStore)}}">
+        <image src="{{empty_order}}" />
+        <view>暂无订单</view>
+    </view> 
+</view>
+<!--客服-->
+<cs id="csId" cardInfo="{{cardInfo}}"></cs>
+<tips_window id="tips_window" type="fail" text="{{failText}}"></tips_window>

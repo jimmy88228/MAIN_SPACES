@@ -1,0 +1,10 @@
+<!--pages/micro_mall/invoice/component/msg_fill.wxml-->
+<view class="box">
+  <view class="item_l {{fromType=='7f'?'_C_7f':''}}">
+    <!-- <slot name="left"></slot> -->
+    {{title}}
+  </view>
+  <view class="item_r">
+    <slot name="right"></slot>
+  </view>
+</view>

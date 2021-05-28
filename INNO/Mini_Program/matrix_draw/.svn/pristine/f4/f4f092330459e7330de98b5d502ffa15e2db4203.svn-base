@@ -1,0 +1,93 @@
+// pages/micro_mall/presale/presale_address_list.js
+var  app = getApp();
+Page({
+
+  data: {
+      address_list:[],
+       sys_info: {}
+  },
+  req_data: {},
+  page: 1,
+  is_more: true,
+  is_pull_down: false,
+  onLoad: function (options) {
+       this.req_data = options
+  },
+  onShow: function () {
+       this.page = 1;
+       this.getInitData();
+  },
+  onPullDownRefresh: function () {
+       this.is_more = true;
+       this.page = 1;
+       this.is_pull_down = true;
+       this.getInitData();
+  },
+  onShareAppMessage: function () {},
+     getInitData: function () {
+          var that = this;
+          var reqData = {
+               page: this.page,
+          }
+          app.wxReq('', 'presale_getAddressList', reqData, function (info) {
+               var address_list = info.data;
+               var sys_info = info.system_config;
+               that.setData({
+                    address_list: address_list,
+                    sys_info: sys_info
+               });
+               if (that.is_pull_down) {
+                    wx.stopPullDownRefresh()
+                    app.SMH.showToast({
+                         title:"刷新成功！"
+                    })
+               }
+               that.page++;
+          });
+     },
+     addNewAddress:function(){
+          var activity_id = this.req_data.activity_id;
+          var product_id = this.req_data.product_id;
+          var product_number = this.req_data.product_number;
+          wx.navigateTo({
+               url: 'presale_address_info'
+          })
+     },
+     setDafaultAddr: function (e){
+          var that = this;
+          var is_default = e.currentTarget.dataset.is_default;
+          var address_id = e.currentTarget.dataset.address_id;
+          if (is_default == 1) {
+               return;
+          }
+          var reqData = {
+               address_id: address_id
+          }
+          app.wxReq('', 'presale_setDefaultAddress', reqData, function (info) {
+               var address_list = that.data.address_list;
+               for (var j in address_list) {
+                    if (address_list[j].address_id == address_id) {
+                         address_list[j].is_default = '1';
+                    } else {
+                         address_list[j].is_default = '0';
+                    }
+               }
+               that.setData({
+                    address_list: address_list
+               })
+          });
+     },
+     choiceAddress:function(e){
+          var address_list = this.data.address_list;
+          var address_index = e.currentTarget.dataset.address_index;
+          var address_info = address_list[address_index];
+          app.StorageH.set('pre_default_address_info', address_info);
+          wx.navigateBack({
+               delta: 1
+          })
+     },
+     editAddress:function(e){
+          e.currentTarget.dataset.addr_id;
+     }
+      
+})

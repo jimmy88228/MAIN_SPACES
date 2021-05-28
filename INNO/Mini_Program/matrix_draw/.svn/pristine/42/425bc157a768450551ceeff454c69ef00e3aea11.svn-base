@@ -1,0 +1,15 @@
+<!--pages/component/micro-page/items/ad-nav/ad-nav.wxml-->
+<wxs module="dfCss" src="../../../help/defaultCss.wxs"></wxs>
+<import src="../component/template/ad-nav-tpl.wxml"/>
+<view class="main {{!isInited?'init':''}}" id="main" data-module-id="{{_data.moduleId}}" style="{{isInited?dfCss.getDfCss(_data,screenWidth):''}}">
+  <block wx:if="{{_data.open_slide}}">
+    <list refresh="{{false}}" scroll-x="{{true}}" scroll-y="{{false}}" >
+      <view slot="data">
+        <template is="ad-nav-tpl" data="{{_data:_data,isInited:isInited}}"></template>
+      </view>
+    </list>
+  </block>
+  <block wx:else>
+    <template is="ad-nav-tpl" data="{{_data:_data,isInited:isInited}}"></template>
+  </block>
+</view>

@@ -1,0 +1,79 @@
+
+var getDfCss = function (data,winW,fromType) {
+  if(!data){
+    return '';
+  }
+  var arr = [];
+  if(data.textColor){
+    arr.push('color:' + data.textColor);
+  }
+  if(data.fontSize){
+    arr.push('font-size:' + getRpx(data.fontSize,winW) + 'rpx');
+  }
+  if(data.textAlign){
+    arr.push('text-align:' + data.textAlign);
+  }
+  if(data.paddingLeftRight){
+    arr.push('padding-left:' + getRpx(data.paddingLeftRight,winW) + 'rpx' + ';padding-right:' + getRpx(data.paddingLeftRight,winW) + 'rpx' + ';box-sizing:border-box');
+  }
+  if(data.marginTop){
+    arr.push('margin-top:' + getRpx(data.marginTop,winW) + 'rpx');
+  }
+  if(data.marginBottom){
+    arr.push('margin-bottom:' + getRpx(data.marginBottom,winW) + 'rpx');
+  }
+  if(data.backgroundImage){
+    var positionType = 'scroll ';
+    if(fromType=='page'){
+      positionType = 'fixed '
+    }
+    arr.push('background:url(' + data.backgroundImage + ') ' + data.backgroundColor + ' no-repeat ' + positionType + data.backgroundPosition + ' center');
+    arr.push('background-size:100%');
+  }
+  if(data.backgroundColor){
+    arr.push('background-color:' + data.backgroundColor);
+  }
+  var result = arr.join(';') || "";
+  if(result){
+    result = result + ';';
+  }
+  return result
+}
+
+var getTitleCss = function (data,winW,fromType) {
+  if(!data){
+    return '';
+  }
+  var arr = [];
+  if(data.textColor){
+    arr.push('color:' + data.textColor);
+  }
+  if(data.nameFontSize){
+    arr.push('font-size:' + getRpx(data.nameFontSize,winW) + 'rpx');
+  }
+  if(data.textAlign){
+    arr.push('text-align:' + data.textAlign);
+  }
+  if(data.bgColor){
+    arr.push('background-color:' + data.bgColor);
+  }
+  var result = arr.join(';') || "";
+  if(result){
+    result = result + ';';
+  }
+  return result
+}
+
+var getPx = function (data){ //小程序rpx转px
+  return data * (winW/750)
+}
+var getRpx = function (data,winW){  //小程序px转rpx
+  return data * (750/winW);
+}
+
+module.exports = {
+  getDfCss:getDfCss,
+  getTitleCss:getTitleCss,
+  getRpx:getRpx,
+  getPx:getPx
+}

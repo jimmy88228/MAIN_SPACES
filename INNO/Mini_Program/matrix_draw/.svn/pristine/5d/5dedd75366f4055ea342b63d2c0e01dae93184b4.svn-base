@@ -1,0 +1,16 @@
+<view class='main' hidden="{{!showData}}">
+    <view class='main_top' style='background:linear-gradient(-22deg,{{brand_info.style.bg_color}},{{bg_color}})'>
+        <image class='user' mode="widthFix" src='{{dataDetail.portrait_path}}'></image>
+        <view class='name font_28'>{{dataDetail.dstb_staff_name}}/{{dataDetail.dstb_staff_code}}</view>
+    </view>
+    <view class='main_content mt_10'>
+    <!-- 我的收益 brokerage -->
+        <brokerage id="brokerage" wx:if="{{commission_mod_show}}" tabs="{{brok_tabs}}" can_cashout="{{can_cashout}}" commission="{{commission}}"></brokerage>
+    <!-- 我的销量 sale -->
+        <sales  id="sales" wx:if="{{sales_tabs.length>0}}" tabs="{{sales_tabs}}"></sales>
+    <!-- 分销订单 orders -->
+        <orders commission="{{commission}}" dataDetail="{{dataDetail}}"></orders>
+    <!-- 分销服务 service -->
+        <service wx:if="{{service_mod_show}}" service_mod="{{service_mod}}" page_id="{{page_id}}" user="{{dataDetail.portrait_path}}"></service>
+    </view>
+</view>

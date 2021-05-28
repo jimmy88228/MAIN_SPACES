@@ -1,0 +1,7 @@
+{
+  "component": true,
+  "usingComponents": {
+    "list":"/pages/component/list/list",
+    "swiper-mod":"/pages/component/micro-page/micro-mix/items/component/ad-swiper/swiper"
+  }
+}

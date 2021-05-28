@@ -1,0 +1,64 @@
+<!--pages/component/pop/adsPop.wxml-->
+<window class="window" ext-class="window-ext">
+	<view wx:if="{{showData.activity.showPage}}" class="ac_bg" catchtap="close" data-type="activity" catchtouchmove="_noFn"></view>
+	<view class="main" catchtouchmove="_noFn" style="background:{{showData.activity.showPage?showData.activity.bgColor:showData.assets.showPage?showData.assets.bgColor + ';border-radius:20rpx;':''}};{{boxStyle}}">
+		<block wx:if="{{showData.activity.showPage}}">
+			<view class="img_ad_box {{showData.activity.bgColor?'radius':''}}" wx:if="{{showData.activity.topPicture}}">
+				<!-- 宽高比: 640/200 -->
+				<image src="{{showData.activity.topPicture}}" mode="aspectFill" class="img_top_ad"></image>
+			</view>
+			<scroll-view scroll-y class="scroll activity">
+				<view class="box">
+					<block wx:for="{{showData.activity.itemList}}" wx:key="index">
+						<view class="data_img_box" catchtap="onTap" data-type="ads" data-url="{{item.jump_value}}" data-jump_type="{{item.jump_type}}">
+								<!-- 宽高比: 580/160 -->
+								<image src="{{item.picture}}" mode="widthFix" class="img_top_ad"></image>
+						</view>
+					</block>
+				</view>
+			</scroll-view>
+			<view class="close" catchtap="close" data-type="activity">
+				<view class="row c_line"></view>
+				<view class="col c_line"></view>
+			</view>
+		</block>
+
+		<block wx:elif="{{showData.assets.showPage}}">
+			<view class="msg_ad_box {{showData.assets.showList?'':'onlyMsg'}}" style="{{showData.assets.totalBonus<=0?'padding-bottom:30rpx;':''}}">
+				<view class="userName" style="{{onlyMsg?'padding-bottom:10rpx;':''}}">{{userName}}</view>
+				<view wx:if="{{showData.assets.totalBonus>0}}" class="totalBonus"><text>你还有{{showData.assets.totalBonus}}张优惠券待使用</text></view>
+				<view class="title_tips" wx:if="{{showData.assets.showList}}">即将到期的优惠券</view>
+			</view>
+			<scroll-view scroll-y class="scroll assets" wx:if="{{showData.assets.showList}}">
+				<view class="box">
+					<block wx:for="{{showData.assets.assetsList}}" wx:key="index">
+						<view class="data_box assets">
+							<view class="msg flex_col">
+								<view class="m_title">{{item.bonusTypeName?item.bonusTypeName:item.bonusType == 4?'折扣券':'满减券'}}</view>
+								<view class="m_tips" style="color:{{showData.assets.bgColor}};">{{item.timeLeft}}后到期</view>
+								<!-- <button style="background:{{showData.assets.bgColor}};" hover-class="none" class="btn_use">去使用</button> -->
+							</view>
+
+							<view class="price_box flex_col">
+								<view class="line"></view>
+								<view class="price" style="color:{{showData.assets.bgColor}};">
+									<text class="p_num">{{item.bonusType==4?item.discount:item.typeMoney}}</text><text class="p_text">{{item.bonusType==4?'折':'元'}}</text>
+								</view>
+								<view class="p_tips_box" wx:if="{{item.bonusType==4 || item.minGoodsAmount>0}}">
+									<view class="p_tips"><block wx:if="{{item.bonusType==4}}"><text>满{{item.minAmount}}~{{item.maxAmount}}元可用</text></block><block wx:else><text>满{{item.minGoodsAmount}}元可用</text></block></view>
+								</view>
+							</view>
+						</view>
+					</block>
+				</view>
+			</scroll-view>
+			<view catchtap="onTap" data-type="more" class="btn_more_box" style="{{showData.assets.showList?'':'box-shadow:none'}}">
+				<button hover-class="none" class="btn_more" style="background:#F78617;">查看更多</button>
+			</view>
+			<view class="close" catchtap="close" data-type="assets">
+				<view class="row c_line"></view>
+				<view class="col c_line"></view>
+			</view>
+		</block>
+	</view>
+</window>

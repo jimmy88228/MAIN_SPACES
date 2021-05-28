@@ -1,0 +1,9 @@
+{
+  "navigationBarTitleText": "个人资料",
+  "usingComponents": {
+    "areaSelect": "/pages/component/address/areaSelect",
+    "phoneLogin":"/pages/component/login/login_by_phone",
+    "dialog": "/ui/cps/dialog/dialog",
+    "tips_box": "/pages/micro_mall/register/help/tips_box"
+  }
+}

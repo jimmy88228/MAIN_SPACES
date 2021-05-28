@@ -1,0 +1,82 @@
+.time-down {
+    padding: 30rpx;
+    padding-right: 20rpx;
+    width: 100%;
+    box-sizing: border-box;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.td-tit {
+    font-family: none;
+    font-size: 20rpx;
+    color: var(--text-sub-color);
+    letter-spacing: 0;
+}
+
+.td-cont {
+    font-family: none;
+    font-weight: bold;
+    font-size: 32rpx;
+    letter-spacing: 0;
+    line-height: 46rpx;
+    font-weight: bold;
+    padding-top: 10rpx;
+}
+
+.m-tip {
+    font-family: none;
+    color: var(--text-sub-color);
+    letter-spacing: 0;
+    line-height: 46.2rpx;
+}
+
+.lines {
+    width: 30rpx;
+    height: 30rpx;
+    position: relative;
+    padding: 5rpx;
+}
+
+.-line {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: rgba(0, 0, 0, 0.5);
+}
+
+.-hline {
+    width: 13rpx;
+    height: 3rpx;
+}
+
+.-vline {
+    width: 3rpx;
+    height: 13rpx;
+}
+
+.img_main {
+    width: 100%;
+}
+
+.btn-sub {
+    position: fixed !important;
+    right: 50rpx;
+    bottom: 60rpx;
+    width: 260rpx;
+    height: 90rpx;
+    transition: all 0.32s;
+    opacity: 1;
+}
+
+.btn-sub.btn-hide {
+    transform: translateY(calc(100% + 60rpx));
+    opacity: 0;
+}
+
+
+.parser-box>.content {
+    display: block;
+    font-family: none;
+}

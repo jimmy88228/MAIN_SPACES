@@ -1,0 +1,8 @@
+{
+  "component": true,
+  "usingComponents": {
+      "img-layout": "../img/img-layout",
+      "gallery-layout": "../gallery/gallery-layout",
+      "group-layout": "../group/group-layout"
+  }
+}

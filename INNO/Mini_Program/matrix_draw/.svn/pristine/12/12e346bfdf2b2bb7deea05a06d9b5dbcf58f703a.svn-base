@@ -1,0 +1,5 @@
+/* pages/micro_mall/buyBonus/getBonusOrderDetail.wxss */
+.bonus_box{
+  width: 100%;
+  height: 100%;
+}

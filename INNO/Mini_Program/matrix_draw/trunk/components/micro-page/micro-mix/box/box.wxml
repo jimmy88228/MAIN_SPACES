@@ -1,0 +1,10 @@
+<!--pages/component/micro-page/micro-mix/box/box.wxml-->
+<block wx:if="{{pageModelList}}">
+  <view class="main" id="main">
+    <view
+      class="jimmy{{!maxShowHeight>0 || m_index <= (curLoadNum+onceOpenNum) || (nodeInfo[0][m_index].top+nodeInfo[1].scrollTop <= maxShowHeight)}}"  wx:for="{{pageModelList}}" wx:for-item="m_item" wx:for-index="m_index" wx:key="index">
+      <!-- <mc-content bindqueryRefresh="queryRefresh" id="cItem{{m_index}}" class="cItem{{tabIndex}} jimmy{{!maxShowHeight>0 || (nodeInfo[0][m_index].top+nodeInfo[1].scrollTop <= maxShowHeight)}}" dt="{{m_item}}" c-index="{{m_index}}"></mc-content> -->
+      <mc-content wx:if="{{!maxShowHeight>0 || m_index <= (curLoadNum+onceOpenNum) || (nodeInfo[0][m_index].top+nodeInfo[1].scrollTop <= maxShowHeight)}}"  bindqueryRefresh="queryRefresh" id="cItem{{m_index}}" class="cItem{{tabIndex}} jimmy{{!maxShowHeight>0 || (nodeInfo[0][m_index].top+nodeInfo[1].scrollTop <= maxShowHeight)}}" dt="{{m_item}}" c-index="{{m_index}}"></mc-content>
+    </view>
+  </view>
+</block>

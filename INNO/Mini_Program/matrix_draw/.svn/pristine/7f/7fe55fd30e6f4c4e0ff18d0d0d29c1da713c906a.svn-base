@@ -1,0 +1,8 @@
+{
+  "navigationBarTitleText": "门店列表",
+  "navigationStyle":"custom",
+  "usingComponents": {
+    "page-nav": "/pages/component/page-nav/page-nav",
+    "btns": "/pages/component/buttons/btns"
+  }
+}

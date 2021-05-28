@@ -1,0 +1,75 @@
+<!--pages/micro_mall/presale/presale_order_list.wxml-->
+<view class="presale_order_list {{isIphoneX?'ipx':''}}" hidden="{{showAll}}">
+    <view class="order_item_cont" wx:for='{{order_list}}' wx:key='index'>
+        <view class="table pay_status">
+            <view class="table_cell order_add_time f11">{{item.add_time}}</view>
+            <view class="table_cell order_pay_status bold f12">
+                <view wx:if="{{item.order_status == 1}}">
+                    <!--未支付-->
+                    <view wx:if="{{item.pay_status == 0 && item.activity_type==1}}" style="color:{{ brand_info.style.font_color}};">
+                        <view class="warn_c">定金待支付</view>
+                    </view>
+                    <!--已支付定金-->
+                    <view wx:if="{{item.pay_status == 1 && item.activity_type!=1}}" style="color:{{ brand_info.style.font_color}};">
+                        <view class="warn_c" wx:if="{{item.return_status == 0}}">尾款待支付</view>
+                        <view class="warn_c" wx:elif="{{item.return_status == 1}}" style="color:{{ brand_info.style.font_color}};">
+                            定金待退款
+                        </view>
+                        <view class="warn_c" wx:elif="{{item.return_status == 2}}" style="color:{{ brand_info.style.font_color}};">
+                            定金退款中
+                        </view>
+                        <view wx:elif="{{item.return_status == 3}}" class='finish'>
+                            定金已退款
+                        </view>
+                        <view wx:elif="{{item.return_status == 4}}" style="color:{{ brand_info.style.font_color}};">
+                            定金退款失败
+                        </view>
+                    </view>
+                    <!--已支付尾款-->
+                </view>
+                <view wx:elif="{{item.order_status == 2}}" style="color:{{ brand_info.style.font_color}};">
+                    <view>已取消</view>
+                </view>
+                <view wx:elif="{{item.order_status == 3}}" class='finish'>
+                    <view>已完成</view>
+                </view>
+                <view wx:elif="{{item.order_status == 4}}" class="failed">
+                    <view class="">已失效</view>
+                </view>
+            </view>
+        </view>
+        <view class="order_goods_info table" data-activity_id='{{item.pre_activity_id}}' catchtap='toDetails'>
+                <view class="p_rela">
+                    <view class="order_goods_img_stay">
+                        <image class="order_goods_img" src='{{item.img_url}}' mode='aspectFit'></image>
+                </view>
+                <view class="table_cell v_t order_goods_info_cell">
+                    <view class="font_26 goods_name m_b_1 bold">
+                        <view class='good_max_name'>{{item.goods_name}}</view>
+                        <view>¥{{item.order_amount}}</view>
+                    </view>
+                    <view class=" o_goods_color c_7f font_26" wx:if="{{item.color_name}}">
+                    <text class="color_title" wx:if="{{item.goods_attr[0]}}">{{item.goods_attr[0]}}</text>
+                    {{item.color_name}}</view>
+                    <view class=" o_goods_size c_7f font_26" wx:if="{{item.size_name}}">
+                    <text class="size_title" wx:if="{{item.goods_attr[1]}}">{{item.goods_attr[1]}}</text>
+                    {{item.size_name}}</view>
+                    <view class="font_22 warn_c m_t_1 order_deliver_time ">
+                        <view wx:if="{{item.estimate_delivery_date != ''}}" style="color:{{ brand_info.style.font_color}};">预计{{item.estimate_delivery_date_str}}后发货</view>
+                        <view style="color:transparent;" wx:else>预计后发货</view>
+                        <view class="goods_number">x{{item.goods_number}}</view>
+                    </view>
+                </view>
+            </view>
+        </view>
+        <view class="order_operate">
+            <button data-related_order_id='{{item.related_order_id}}' wx:if="{{item.related_order_id > 0}}" catchtap='gotoRelateOrderInfo' class="check_order_btn common_btn">查看订单</button>
+            <!-- <button data-order_id="{{item.order_id}}" wx:if="{{item.isallow_return_deposit == 1 && item.order_status == 1 &&item.return_status == 0}}" catchtap='cancelOrder' class="cancel_order_btn cancel_btn">取消订单</button> -->
+            <button data-order_id="{{item.order_id}}" wx:if="{{item.order_status == 1 && item.return_status == 0 && item.activity_type!=1}}" class="tail_pay_btn common_btn" catchtap='gotoOrderInfo' data-order_status="{{item.order_status}}" data-is-details="1">支付尾款</button>
+            <button data-order_id="{{item.order_id}}" wx:if="{{item.order_status == 1 && item.return_status == 0 && item.activity_type==1}}" class="tail_pay_btn common_btn" catchtap='gotoOrderInfo' data-order_status="{{item.order_status}}" data-is-details="1">支付定金</button>
+            <button data-order_id='{{item.order_id}}' wx:if="{{item.return_status != 0 || (item.order_status >1 &&  item.order_status <=4)}}" class="goods_detail_btn common_btn" catchtap='gotoOrderInfo' data-order_status="{{item.order_status}}" data-related_order_id='{{item.related_order_id}}' data-is-details="1">预售详情</button>
+        </view>
+    </view>
+    <view class="no_data_area" wx:if="{{order_list.length == 0}}">暂时还没有订单~</view> 
+</view>
+<tabbar id="custom_tabbar" type="{{jumpType}}"></tabbar>

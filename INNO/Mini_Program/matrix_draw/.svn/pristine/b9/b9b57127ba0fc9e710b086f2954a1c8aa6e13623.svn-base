@@ -1,0 +1,43 @@
+page {
+    width: 100%;
+}
+
+.logistics_box {
+    height: 150rpx;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    color: #7f7f7f;
+    background: #fff;
+    border-top: 1px solid #f7f7f7;
+    /* box-shadow:  */
+}
+
+.time_box {
+    padding: 15rpx 20rpx;
+    align-items: center;
+}
+.time_type2{
+    margin-top: 8rpx;
+}
+.decoration {
+    width: 1px;
+    /* padding: 5rpx 0; *//* margin: 0 5rpx; */
+    height: 70rpx;
+    background: #7f7f7f;
+}
+
+.logistics_box:first-child {
+    /* border-top: 1px solid #f7f7f7; */
+}
+
+.content {
+    align-items: flex-start;
+    margin-left: 20rpx;
+}
+
+.flex {
+    display: inline-flex;
+    flex-direction: column;
+    justify-content: center;
+}

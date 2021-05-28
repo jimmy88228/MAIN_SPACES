@@ -1,0 +1,20 @@
+<!--pages/micro_mall/questionnaire/upload/upload.wxml-->
+<view class="box"> 
+  <view class="header">
+    <import src='../header/header.wxml'/>
+    <template is="question_head" data="{{infoData:info}}"></template>
+  </view>
+  <view class="choose_image">
+    <view class="c_title"><text>图片上传</text><view>{{current_pics_arr.length || 0}}/1</view></view> 
+    <view class="choose_box">
+      <view class="choose" bindtap="chooseImage">
+      <view class="row c_style"></view>
+      <view wx:if="{{current_pics_arr.length==0}}" class="column c_style"></view>
+      </view>
+      <block wx:for="{{current_pics_arr}}" wx:key="index" wx:if="{{current_pics_arr.length>0}}">
+        <image src="{{item}}" mode="aspectFit" class="img_choose _n_b"></image>
+      </block>
+    </view>
+  </view>
+</view>
+<dialog id="dialog"></dialog>

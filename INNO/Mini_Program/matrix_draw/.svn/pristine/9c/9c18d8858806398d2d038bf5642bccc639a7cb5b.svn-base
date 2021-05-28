@@ -1,0 +1,29 @@
+<view class="mine-mian anim-fade-in">
+    <view class="header">
+        <block wx:if="{{isLogin}}">
+            <open-data class="user-header anim-fade-in" type="userAvatarUrl"></open-data>
+            <open-data class="user-name anim-fade-in" type="userNickName"></open-data>
+        </block>
+        <auth-button wx:else class="auth-btn btn-white" openType="getUserInfo" bindauthed="onAuthed">
+            授权登录
+        </auth-button>
+    </view>
+    <button class="cell btn-plain" hover-class="btn-hover" data-url="/pages/record/record" bindtap="jumpAction">
+        <view class="cell-content">
+            <view class="cell-title">我的战绩</view>
+            <image class="cell-arrow" src="/static/images/common/arrow.png" mode="aspectFit"></image>
+        </view>
+    </button>
+    <button class="cell btn-plain" hover-class="btn-hover" data-url="/pages/web/web?name=law" bindtap="jumpAction">
+        <view class="cell-content">
+            <view class="cell-title">法律条款</view>
+            <image class="cell-arrow" src="/static/images/common/arrow.png" mode="aspectFit"></image>
+        </view>
+    </button>
+    <button class="cell btn-plain" hover-class="btn-hover" data-url="/pages/web/web?name=about" bindtap="jumpAction">
+        <view class="cell-content">
+            <view class="cell-title">关于</view>
+            <image class="cell-arrow" src="/static/images/common/arrow.png" mode="aspectFit"></image>
+        </view>
+    </button>
+</view>

@@ -1,0 +1,62 @@
+<view class="map_view">
+
+  <map id="map" class="map" longitude="{{longitude}}" latitude="{{latitude}}" controls="{{controls}}" bindcontroltap="controltap" markers="{{markers}}" bindmarkertap="markertap" polyline="{{polyline}}" bindregionchange="regionchange" show-location="{{loc_f==0}}"
+    scale="{{scale}}">
+  </map>
+  <view wx:if="{{loc_f==0}}" class='top_header'>
+    <view class='allWays' style="{{'border-bottom:1rpx solid '+brand_info.style.bg_color+';'}}">
+      <view class="ways" bindtap='goTo' data-type="car" style="{{statusType == 'car'?'color:'+brand_info.style.bg_color:''}}">驾车</view>
+      <view class="ways" bindtap='goTo' data-type="walk" style="{{statusType == 'walk'?'color:'+brand_info.style.bg_color:''}}">步行</view>
+      <view class="ways" bindtap='goTo' data-type="ride" style="{{statusType == 'ride'?'color:'+brand_info.style.bg_color:''}}">骑行</view>
+    </view>
+    <view class='result' wx:if="{{showPanel}}">
+      <view class="distance_msg"><text style="padding-right:10rpx">距您</text><text>{{distance}}</text></view>
+      <view class="line_style"></view>
+      <view class="typeName"><text style="padding-right:10rpx">{{typeName}}</text><text>{{time}}</text></view>
+    </view>
+  </view>
+   
+  <view class="msg_box" data-type="location" bindtap="onTap"> 
+    <view wx:if="{{loc_f==0}}" class='wrapper' catchtap='toCurrent'>
+      <view class='currentPosi'></view>
+      <view class='innerPosi'>
+        <view class="innerPosiItem"></view>
+      </view>
+    </view>
+    <view class="store_msg bold">{{options.store_name}}</view>
+    <view class="store_msg">{{options.city}}{{options.addr}}</view>
+    <view class="store_msg">{{options.phone}}</view>
+    <view class="btn_box">
+      <view class="btn_l" catchtap="toNavigate">
+        <image src="{{img_btn_l}}" mode="aspectFit" class="img_btn_l"></image>
+        <view>路线</view>
+      </view>
+      <view class="btn_r" data-type="phone" catchtap="onTap">
+        <image src="{{img_btn_r}}" mode="aspectFit" class="img_btn_r"></image>
+        <view>呼叫</view>
+      </view>
+    </view>
+    <view wx:if="{{storeInfo.staffList.length > 0}}">
+      <view class="contact_staff">
+        <view class="c_s_tip">联系店员</view>
+        <view class="c_s_list">
+          <view class="c_s_item" wx:for="{{storeInfo.staffList}}" wx:key="index">
+            <image class="c_s_head" src="{{item.staffPhoto}}" mode="aspectFill"/>
+            <view class="c_s_name">{{item.staffName}}</view>
+            <view class="CS_icon">
+              <view class="CS_btn">
+                <!-- <contactPluginCell 
+                catchtap="startmessage"
+                data-index="{{index}}"
+                bind:completemessage="completemessage"
+                plugid="{{item.customerService}}"></contactPluginCell> -->
+              </view>
+              <image class="chat_icon" src="{{brand_info.default_icon_url}}contact_guide/chat.png" mode="aspectFill"/>
+            </view>
+          </view>
+        </view>
+      </view>
+    </view>
+  </view>  
+</view>
+<contactGuide id="contactGuide"></contactGuide>

@@ -1,0 +1,46 @@
+<template name="ac-gds-list-tpl">
+  <view id="listItemId{{index}}" class="list-item list-item-{{_data.layout}} list-item-{{_data.layout}}-{{arrLen}}" catchtap="linkJump" data-data="{{listGoods}}" data-type="goodsList">
+    <view class="list-img-box">
+      <image src="{{listGoods.goods_thumb}}" mode="aspectFit" class="list-img"></image> 
+    </view>
+    <view class="list-msg-box">
+      <view class="msg-detail-box {{listGoods.market_price!=listGoods.sale_price?'large':'small'}}">
+        <view class="list-msg-name">{{listGoods.goods_name}}</view>
+      </view>
+      <view class="price-flex-box">
+        
+        <view class="price-box"> 
+          <view class="list-msg-sale-price char" style="color:{{main_bg_color}};">
+            <text>{{listGoods.price}}</text>
+            <text wx:if="{{ listGoods.integral > 0 }}"> + {{listGoods.integral || listGoods.old_integral}} 积分</text>
+          </view>
+          <view wx:if="{{listGoods.market_price!=listGoods.price}}" class="list-msg-market-price char">
+            {{listGoods.market_price}}
+          </view>
+        </view>
+        <view wx:if="{{!_data.activityGroup}}" class="ac-msg-box" style="background-color:{{main_bg_color}};">
+          <view class="ac-msg-title">
+            <block wx:if="{{_data.code == 'integralSale'}}">积分兑换</block>
+            <block wx:elif="{{_data.code == 'pinSale'}}">立即拼团</block>
+            <block wx:elif="{{_data.code == 'kanSale'}}">参与砍价</block>
+            <block wx:elif="{{_data.code == 'preSale'}}">参与预售</block>
+            <block wx:elif="{{_data.code == 'packageSale'}}">马上抢</block>
+          </view>
+          <block wx:if="{{timeManager.aCs[listGoods.activity_id].active==2}}">
+            已结束
+          </block>
+          <view wx:elif="{{timeManager.aCs[listGoods.activity_id].active>=0 && timeManager.countType == 'goods'}}" class="ac-msg-time"> 
+            <text>距{{timeManager.aCs[listGoods.activity_id].active == '0'?'开始':'结束'}}</text>
+            <block wx:if="{{timeManager.aCs[listGoods.activity_id].day>=7}}">
+              <text style="padding-left:3rpx;">{{timeManager.aCs[listGoods.activity_id].day}}天</text>
+            </block>
+            <block wx:else>
+              <text style="padding-left:3rpx;">{{timeManager.aCs[listGoods.activity_id].day>=1?timeManager.aCs[listGoods.activity_id].day + '天':''}}{{timeManager.aCs[listGoods.activity_id].hour}}:{{timeManager.aCs[listGoods.activity_id].min}}:{{timeManager.aCs[listGoods.activity_id].sec}}</text>
+            </block>
+          </view>
+        </view>
+
+      </view>
+    </view>
+  </view>
+</template> 

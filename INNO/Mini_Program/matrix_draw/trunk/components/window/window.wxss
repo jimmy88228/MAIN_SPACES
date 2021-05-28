@@ -1,0 +1,33 @@
+:host {
+    pointer-events: none;
+    width: 0;
+    height: 0;
+    overflow: visible;
+}
+
+.window-root {
+    z-index: 1000;
+    position: fixed;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+}
+
+.window-mask {
+    pointer-events: none;
+    background: rgba(0, 0, 0, 0.7);
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+}
+
+.window-catch {
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+}

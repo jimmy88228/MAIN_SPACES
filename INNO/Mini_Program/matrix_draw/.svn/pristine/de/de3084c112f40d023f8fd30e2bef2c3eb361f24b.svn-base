@@ -1,0 +1,49 @@
+<window class="window" ext-class="window-ext">
+    <view class="dialog-box" style="{{mainStyle}}" catchtouchmove="noAction">
+        <view wx:if="{{_title&&_content}}" class="dialog-all">
+            <text class="dialog-title">{{_title}}</text>
+            <text class="dialog-content">{{_content}}</text>
+        </view>
+        <view wx:elif="{{_title}}" class="dialog-single">
+            <text class="dialog-title">{{_title}}</text>
+        </view>
+        <view wx:elif="{{_content}}" class="dialog-single">
+            <text class="dialog-content">{{_content}}</text>
+        </view>
+        <view class="dialog-btn-box" wx:if="{{btn1||btn2||btn3}}">
+            <block wx:if="{{btn1}}">
+                <button wx:if="{{btn1.openType}}" class="dialog-btn {{btn1.class}}" bindtap="_btnTap"
+                    hover-class="{{btn1.class}}-hover" data-btn="{{1}}" open-type="{{btn1.openType}}"
+                    bindgetuserinfo="_getuserinfo">
+                    {{btn1.name||btn1.defName}}
+                </button>
+                <button wx:else class="dialog-btn {{btn1.class}}" bindtap="_btnTap" hover-class="{{btn1.class}}-hover"
+                    data-btn="{{1}}">
+                    {{btn1.name||btn1.defName}}
+                </button>
+            </block>
+            <block wx:if="{{btn2}}">
+                <button wx:if="{{btn2.openType}}" class="dialog-btn {{btn2.class}}" bindtap="_btnTap"
+                    hover-class="{{btn2.class}}-hover" data-btn="{{2}}" open-type="{{btn2.openType}}"
+                    bindgetuserinfo="_getuserinfo">
+                    {{btn2.name||btn2.defName}}
+                </button>
+                <button wx:else class="dialog-btn {{btn2.class}}" bindtap="_btnTap" hover-class="{{btn2.class}}-hover"
+                    data-btn="{{2}}">
+                    {{btn2.name||btn2.defName}}
+                </button>
+            </block>
+            <block wx:if="{{btn3}}">
+                <button wx:if="{{btn3.openType}}" class="dialog-btn {{btn3.class}}" bindtap="_btnTap"
+                    hover-class="{{btn3.class}}-hover" data-btn="{{3}}" open-type="{{btn3.openType}}"
+                    bindgetuserinfo="_getuserinfo">
+                    {{btn3.name||btn3.defName}}
+                </button>
+                <button wx:else class="dialog-btn {{btn3.class}}" bindtap="_btnTap" hover-class="{{btn3.class}}-hover"
+                    data-btn="{{3}}">
+                    {{btn3.name||btn3.defName}}
+                </button>
+            </block>
+        </view>
+    </view>
+</window>

@@ -1,0 +1,4 @@
+<!--pages/startup/startup_page.wxml-->
+<view>
+  <view class="start_up_tip">跳转中...</view>
+</view>

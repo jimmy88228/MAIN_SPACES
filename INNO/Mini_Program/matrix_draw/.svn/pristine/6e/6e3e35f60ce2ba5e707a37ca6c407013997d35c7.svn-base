@@ -1,0 +1,140 @@
+const app = getApp();
+Page(app.BP({
+
+  data: {
+    followData: []
+  },
+  pageIndex: 1,
+  hasMore: true,
+  onLoad: function (options) {
+    
+  },
+
+  onReady: function () {
+
+  },
+
+  onShow: function () {
+    onShowEvent.call(this);
+  },
+
+  onHide: function () {
+
+  },
+
+  onUnload: function () {
+
+  },
+
+  onPullDownRefresh: function () {
+  },
+
+  onReachBottom: function () {
+    if (this.hasMore) {
+      this.pageIndex = this.pageIndex + 1;
+      this.search = this.search || this.selectComponent("#search");
+      this.search.search({
+        pageIndex: this.pageIndex
+      })
+    } else {
+      app.SMH.showToast({
+        title: "已经到底啦！"
+      })
+    }
+  },
+  searchCallback(res) {
+    //搜索数据回调处理
+    let detail = res.detail || {};
+    dataHandle.call(this, detail.data)
+  },
+  followHandle(e) {
+    let dataset = e.currentTarget.dataset;
+    let index = dataset.index;
+    let followData = this.data.followData;
+    let followItem = followData[index];
+    let that = this;
+    if (followItem.isFocuse){
+      this.pageDialog = this.pageDialog || this.selectComponent("#pageDialog");
+      this.pageDialog.setCentent(`确认不再关注?`);
+      this.pageDialog.setTwoBtn({
+        name: "取消",
+        tap: function () { that.pageDialog.dismiss(); }
+      }, {
+          name: "确定",
+          tap: function () {
+            opGrassRelation.call(that, index);
+            that.pageDialog.dismiss();
+          }
+        })
+      this.pageDialog.show();
+    }else{
+      opGrassRelation.call(this, index);
+    }
+    
+  },
+  getUserPage(e){
+    let dataset = e.currentTarget.dataset;
+    console.log(dataset);
+    let related_userid = dataset.related_userid;
+    if (related_userid){
+      wx.navigateTo({
+        url: '/pages/micro_mall/seeding_grass/user_page/user_page?related_userid=' + related_userid,
+      })
+    }
+  }
+}))
+function onShowEvent(){
+  this.hasMore = true;
+  this.search = this.search || this.selectComponent("#search");
+  this.search.search();
+}
+function dataHandle(data = {}) {
+  let followData = this.data.followData;
+  let list = data.data || [];
+  this.pageIndex = data.pageIndex || 1;
+  if (data.records == followData.length || list.length == 0) {
+    this.hasMore = false;
+  } else {
+    list.map((item,index) =>{
+      item.isFocuse = 1
+    })
+    if (this.pageIndex == 1) {
+      followData = list;
+    } else {
+      followData = followData.concat(list);
+    }
+    this.setData({
+      followData: followData
+    })
+  }
+}
+function opGrassRelation(index) {
+  let followData = this.data.followData || [];
+  let followItem = followData[index];
+  return app.GrassApi.opGrassRelation({
+    data: {
+      related_userId: followItem.related_userId,
+      opType: followItem.isFocuse ? 0 : 1,//1:foucse,0:canceld
+      brandCode: app.Conf.BRAND_CODE,
+      userToken: app.LM.userKey
+    },
+    extraData: {
+      isShowLoad: true
+    }
+  }).then(e => {
+    let warn = "操作失败";
+    if (e.code == 1) {
+      if(e.data == 1){
+        warn = followItem.isFocuse ? '取消关注' : '已关注';
+        followItem.isFocuse = !followItem.isFocuse;
+        followData[index] = followItem;
+        this.setData({
+          followData: followData
+        })
+      }
+    }
+    app.SMH.showToast({
+      "title": warn
+    })
+  })
+}

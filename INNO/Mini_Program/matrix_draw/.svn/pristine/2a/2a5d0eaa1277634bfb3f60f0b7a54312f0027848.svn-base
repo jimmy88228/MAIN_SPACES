@@ -1,0 +1,30 @@
+<window class="window" ext-class="window-ext">
+    <view class="enroll-root" style="{{mainStyle}}">
+        <view class="enroll-scroll" catchtouchmove="{{catcht?'noAction':''}}">
+            <view class="enroll-content">
+                <view class="enroll-title">登记资料</view>
+                <view class="enroll-tip">请正确填写信息，提交后不可修改</view>
+                <question-view wx:if="{{questions&&questions.length>0}}" id="question-view" class="enroll-question"
+                    questions="{{questions}}" bind:change="onChange"></question-view>
+                <spec-view wx:if="{{specData}}" id="spec-view" class="enroll-spec" specs-data="{{specData}}"
+                    bind:choseProduct="onChoseProduct"></spec-view>
+            </view>
+        </view>
+        <view class="enroll-bottom" catchtouchmove="noAction">
+            <view class="enroll-goods">
+                <view class="enroll-goods-title">{{goodsName}}</view>
+                <view class="enroll-goods-price">{{priceUnit}} {{isSelectProduct?price:priceRange}}</view>
+            </view>
+            <view class="enroll-read">
+                点击继续即表示您阅读并了解
+                <navigator class="enroll-read-btn" url="/pages/web/web?name=draw_rule">
+                    抽签须知
+                </navigator>
+            </view>
+            <view class="btn-black" hover-class="btn-hover" bindtap="submit">继续</view>
+        </view>
+    </view>
+</window>
+<import src="../enroll-templet.wxml" />
+<template is="enroll-templet" data="{{useCodeDialog}}"></template>
+<dialog wx:if="{{useDialog}}" id="dialog"></dialog>

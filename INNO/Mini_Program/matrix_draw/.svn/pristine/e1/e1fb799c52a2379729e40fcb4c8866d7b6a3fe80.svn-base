@@ -1,0 +1,60 @@
+<view class="ad_modular" wx:if="{{adData.length > 0}}">
+  <from bindsubmit="formAction" report-submit="true">
+    <block wx:for="{{adData}}" wx:for-item="adPositionItem" wx:for-index="ad_index" wx:key="ad_index">
+      <view class="swiper_area" wx:if="{{adPositionItem.ad_type == '2'}}">
+        <swiper 
+        autoplay="{{autoplay}}" 
+        interval="{{interval}}" 
+        duration="{{duration}}" 
+        data-item-sub="{{ad_index}}" 
+        bindchange="changeSwiper"
+        style="{{adSwiperH[ad_index].adH ? 'height:'+ adSwiperH[ad_index].adH + 'px' : ''}}"
+        >
+          <block wx:for="{{adPositionItem.ad_img}}" wx:key="index">
+              <swiper-item class="ad_swiper_item">
+                  <image 
+                  src="{{item.img_url}}" 
+                  lazy-load="{{true}}" 
+                  class="slide_image ad_img" 
+                  data-func_type="{{item.func_type}}" 
+                  mode="widthFix" 
+                  data-related_id="{{item.related_id}}" 
+                  data-link_url="{{item.link_url}}" 
+                  bindtap="adJump"
+                  data-app-id="{{item.app_id}}"
+                  data-applet_path="{{item.applet_path}}"
+                  data-tag="{{item.ad_name}}"
+                  data-item-sub="{{ad_index}}" 
+                  data-type="{{adPositionItem.ad_type}}"
+                  bindload="loadImg"/>
+              </swiper-item>
+          </block>
+        </swiper>
+        <view class="indicators">
+          <view 
+          wx:for="{{adPositionItem.ad_img}}" 
+          wx:key="index" 
+          wx:for-index="index" 
+          class="indicator {{(swiperCurrent[ad_index].current || 0 ) == index ? 'active' : ''}}"></view>
+        </view>
+      </view>
+      <view class="single_ads" wx:else>
+        <view wx:for="{{adPositionItem.ad_img}}" class="ad_img_box" wx:key="index">
+            <image 
+            src="{{item.img_url}}" 
+            lazy-load="{{true}}" 
+            class="slide-image" 
+            data-func_type="{{item.func_type}}" 
+            mode="widthFix" 
+            data-tag="{{item.ad_name}}"
+            data-related_id="{{item.related_id}}" 
+            data-link_url="{{item.link_url}}" 
+            data-type="{{adPositionItem.ad_type}}"
+            data-app-id="{{item.app_id}}"
+            data-applet_path="{{item.applet_path}}"
+            bindtap="adJump" />
+        </view>
+      </view>
+    </block>
+  </from>
+</view>

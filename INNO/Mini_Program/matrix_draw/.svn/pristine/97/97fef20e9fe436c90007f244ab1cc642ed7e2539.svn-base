@@ -1,0 +1,181 @@
+.anim-fade-in {
+    opacity: 0;
+    animation: fade-in 300ms forwards ease-out;
+}
+
+@keyframes fade-in {
+    0% {
+        opacity: 0;
+    }
+
+    100% {
+        opacity: 1;
+    }
+}
+
+.anim-slide-in-up {
+    opacity: 0;
+    transform: translateY(50pt);
+    animation: slide-in-up 300ms forwards ease-out;
+}
+
+@keyframes slide-in-up {
+    0% {
+        opacity: 0;
+        transform: translateY(50pt);
+    }
+
+    100% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.anim-slide-in-down {
+    opacity: 0;
+    transform: translateY(-50pt);
+    animation: slide-in-down 300ms forwards ease-out;
+}
+
+@keyframes slide-in-down {
+    0% {
+        opacity: 0;
+        transform: translateY(-50pt);
+    }
+
+    100% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.anim-cell-show {
+    opacity: 0;
+    transform: scale(0.8);
+    animation: cell-show 500ms forwards;
+}
+
+@keyframes cell-show {
+    0% {
+        opacity: 0;
+        transform: scale(0.8);
+    }
+
+    50% {
+        opacity: 1;
+        transform: scale(1.1);
+    }
+
+    75% {
+        opacity: 1;
+        transform: scale(0.95);
+    }
+
+    90% {
+        opacity: 1;
+        transform: scale(1.05);
+    }
+
+    100% {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+.anim-cell-show-small {
+    opacity: 0;
+    transform-origin: 50% 50%;
+    transform: scale(0.6);
+    animation: cell-show-small 500ms forwards;
+}
+
+@keyframes cell-show-small {
+    0% {
+        opacity: 0;
+        transform: scale(0.6);
+    }
+
+    50% {
+        opacity: 1;
+        transform: scale(1.2);
+    }
+
+    75% {
+        opacity: 1;
+        transform: scale(0.9);
+    }
+
+    90% {
+        opacity: 1;
+        transform: scale(1.1);
+    }
+
+    100% {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+.anim-cell-jump {
+    animation: cell-jump 500ms;
+}
+
+@keyframes cell-jump {
+    0% {
+        transform: scale(1);
+    }
+
+    17% {
+        transform: scale(1.1);
+    }
+
+    50% {
+        transform: scale(0.9);
+    }
+
+    68% {
+        transform: scale(1.05);
+    }
+
+    92% {
+        transform: scale(0.95);
+    }
+
+    100% {
+        transform: scale(1);
+    }
+}
+
+.anim-cell-jump-small {
+    animation: cell-jump-small 500ms;
+}
+
+@keyframes cell-jump-small {
+    0% {
+        transform: scale(1);
+    }
+
+    17% {
+        transform: scale(1.2);
+    }
+
+    50% {
+        transform: scale(0.8);
+    }
+
+    68% {
+        transform: scale(1.1);
+    }
+
+    92% {
+        transform: scale(0.90);
+    }
+
+    100% {
+        transform: scale(1);
+    }
+}
+
+.anim-delay {
+    animation-delay: 200ms;
+}

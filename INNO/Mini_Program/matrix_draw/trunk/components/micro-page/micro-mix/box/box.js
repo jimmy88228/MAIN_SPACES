@@ -1,0 +1,135 @@
+//components/micro-page/micro-mix/box/box.js
+import mcBehavior from '../../help/mc-behavior.js'
+const app = getApp(); 
+Component({
+  behaviors: [mcBehavior,Behavior.BaseBehavior],
+  properties: { 
+    _pageModelList:{
+      type:Object,
+      value:{},
+      observer:function(n,o){
+        n && this.init(n);
+      }
+    },
+    isLogin: {
+      type: Boolean,
+      value: false
+    },
+    tabIndex: {
+      type: Number,
+      value: 0
+    },
+    autoShow: {
+      type: Boolean,
+      value: false
+    }, 
+  },
+  data: {
+    curLoadNum:0,
+    onceOpenNum:2
+  }, 
+  attached() {
+    this.isAttached = true;
+    this.screenH = app.SIH.screenHeight;
+    this.reset();
+  },
+  ready(){ 
+  },
+  methods: {
+    init(data){
+      this.setData({
+        pageModelList:data
+      })
+      this.getAllQuery();
+    },
+    queryRefresh(e){
+      this.getAllQuery();
+    },
+    getAllQuery(callBack){
+      this.throttle(1000,'refreshKey',()=>{
+        this.mcGetQuery(`.cItem${this.data.tabIndex||0}`,'all').then(res=>{
+          this.nodeInfo = res;
+          this.setData({
+            nodeInfo:this.nodeInfo,
+            maxShowHeight:parseInt(this.nodeInfo[0][this.data.curLoadNum].top+this.nodeInfo[1].scrollTop+this.screenH)
+          })
+          console.log(this.data.maxShowHeight)
+          console.log('getAllQuery',this.data.tabIndex,JSON.parse(JSON.stringify(this.nodeInfo)),this.data.curLoadNum,this.nodeInfo[0][this.data.curLoadNum].top,this.nodeInfo[1].scrollTop,  this.nodeInfo[0][this.data.curLoadNum].top+this.nodeInfo[1].scrollTop,);
+          if(!this.isInitData){
+            this.initData();
+          }else{
+            this.scroll(this.curTop||0);
+          }
+        })
+      },!this.isInitData);
+    },
+    initData(){
+      this.isInitData = true;
+      let arr = this.nodeInfo[0],sclInfo = this.nodeInfo[1];
+      arr.every((item,i)=>{
+        if(this.properties.autoShow || (((item.top+sclInfo.scrollTop) <= this.screenH) && !this.nodeLoad[i])){
+          this.nodeLoad[i] = true;
+          this.setData({
+            curLoadNum : i,
+            maxShowHeight:parseInt(this.nodeInfo[0][i].top+this.nodeInfo[1].scrollTop+this.screenH)
+          })
+          console.log('初始化',i,JSON.parse(JSON.stringify(arr)),this.data.maxShowHeight,this.data.curLoadNum) 
+          wx.nextTick(()=>{
+            this.cItem[i] = this.cItem[i] || this.selectComponent(`#cItem${i}`)
+            this.cItem[i].loadData();
+          })
+          return true
+        }
+      }) 
+    },
+    reachBottom(type){
+      let curNum = this.data.curLoadNum + this.data.onceOpenNum >= this.data.pageModelList.length - 1 ?  this.data.pageModelList.length - 1:this.data.curLoadNum + this.data.onceOpenNum
+      console.log('触底',curNum)
+      this.setData({
+        curLoadNum : curNum
+      })
+      wx.nextTick(()=>{
+        !this.loadEnd && this.getAllQuery();
+        if(curNum == this.data.pageModelList.length - 1){
+          this.loadEnd = true;
+        }
+      })
+    },
+    scroll(top){ 
+      // console.log(top);
+      this.curTop = top;
+      let arr = this.nodeInfo[0] || [],sclInfo = this.nodeInfo[1] || {};
+      arr.every((item,i)=>{
+        if((this.curTop >= (item.top+sclInfo.scrollTop))){
+          if(!this.nodeLoad[i]){
+            this.nodeLoad[i] = true;
+            this.setData({
+              curLoadNum : i,
+              maxShowHeight:this.nodeInfo[0][i].top+this.nodeInfo[1].scrollTop+this.screenH
+            })
+            console.log('加载',i,this.curTop,item.top+sclInfo.scrollTop,this.data.maxShowHeight);
+            wx.nextTick(()=>{
+              this.cItem[i] = this.cItem[i] || this.selectComponent(`#cItem${i}`)
+              this.cItem[i].loadData();
+            })
+          }
+          return true
+        }
+      })
+    },
+    reset(id){
+      if(this.currentId && this.currentId == id){
+        console.log('骨架不需重置',id)
+        return false
+      }
+      this.currentId = id;
+      this.curTop = 0;
+      this.isInitData = false;
+      this.nodeInfo = {};
+      this.nodeLoad = {};
+      this.cItem = {};
+      return true
+    } 
+  },
+})
+ 

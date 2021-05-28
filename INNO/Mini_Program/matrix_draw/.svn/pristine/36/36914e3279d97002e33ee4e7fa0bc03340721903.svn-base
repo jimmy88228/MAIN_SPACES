@@ -1,0 +1,36 @@
+:host {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	font-size: 26rpx;
+	background: none;
+	margin: 0;
+	padding: 0;
+	white-space: nowrap;
+	border: none;
+	border-radius: 0;
+	box-sizing: border-box;
+	text-align: center;
+	text-decoration: none;
+	line-height: 2.55555556;
+	-webkit-tap-highlight-color: transparent;
+	position: relative !important;
+	overflow: hidden;
+	color: #000000;
+}
+
+.custom-auth-btn {
+	position: absolute;
+	float: left;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	background: none;
+}
+
+.custom-auth-btn::after {
+	content: none;
+	border: 0;
+	background: none;
+}

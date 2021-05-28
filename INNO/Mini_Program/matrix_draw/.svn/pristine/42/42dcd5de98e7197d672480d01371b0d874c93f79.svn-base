@@ -1,0 +1,142 @@
+/* pages/micro_mall/address/address_list.wxss */
+page{
+  background:#fff;
+}
+.address_page{
+  padding:17rpx 24rpx 0 15rpx;
+}
+/* .add_addr_btn{
+  width:100%;
+  line-height:88rpx;
+  height:88rpx;
+  text-align:center;
+  color:#fff;
+  border-radius:5rpx;
+  font-size:0px;
+  margin-bottom:28rpx;
+}
+.add_addr_btn .addr_icon{
+  font-weight:bold;
+  width:35rpx;
+  height:35rpx;
+  background-repeat:no-repeat;
+  background-size:80% auto;
+  background-position:center center;
+}
+.add_addr_btn text{
+  display:inline-block;
+  vertical-align: middle;
+  font-size:28rpx;
+   margin-left:8rpx; 
+} */
+.add_address_btns{
+  display:flex;
+  align-content: space-between;
+  padding:26rpx 0px;
+}
+.add_address_btn{
+  flex:1;
+  /* padding:0px 10rpx; */
+}
+.btns_stay{
+  display:inline-flex;
+  width:20rpx;
+}
+.add_address_btns .add_btn{
+  /* width:348rpx; */
+  width:100%;
+  height:82rpx;
+  border-radius:10rpx;
+  color:#fff;
+}
+.add_address_btns .addr_icon{
+  width:36rpx;
+  height:36rpx;
+  margin-right:14rpx;
+}
+.add_address_btns .add_addr_icon{
+  width:30rpx;
+  height:30rpx;
+}
+.add_wx_addr_btn{
+  background-color:#428F26;
+  color:#fff;
+  /* margin-right:15rpx; */
+}
+.addr_item{
+  border-radius:5rpx;
+  border:1px solid #e9e9e9;
+  margin-bottom:32rpx;
+  position:relative;
+}
+.item_info{
+  border-bottom:1px solid #e9e9e9;
+  padding:20rpx;
+  box-sizing:border-box;
+  width:100%;
+}
+.item_info .tit{
+  width:5em;
+}
+.addr_operation{
+  padding:20rpx;
+  display:table;
+  width:100%;
+  box-sizing:border-box;
+}
+.addr_operation_l{
+  display:table-cell;
+   vertical-align: middle; 
+}
+.addr_operation_r{
+  display:table-cell;
+  text-align:right;
+   vertical-align: middle; 
+}
+.edit_addr{
+  display:inline-block;
+}
+.edit_addr image{
+  width:31rpx;
+  height: 35rpx;
+  vertical-align: middle;
+}
+.del_addr{
+  display:inline-block;
+  margin-left:30rpx;
+}
+.del_addr image{
+  width:31rpx;
+  height: 35rpx;
+  vertical-align: middle;
+}
+.edit_addr text,.del_addr text{
+  display:inline-block;
+  vertical-align: middle;
+}
+.select_addr_btn{
+  display:inline-block;
+  color:#fff;
+  padding:10rpx 25rpx;
+  border-radius:10rpx;
+  vertical-align: middle;
+  margin:0px 10rpx;
+}
+.set_default_btn{
+  display:inline-block;
+  color:#fff;
+  padding:10rpx 25rpx;
+  border-radius:10rpx;
+  vertical-align: middle;
+  margin:0px 10rpx;
+}
+
+.select_icon{
+  position:absolute;
+  top:-16rpx;
+  right:-16rpx;
+  background:#fff;
+}
+.trans{
+    color: transparent;
+}

@@ -1,0 +1,11 @@
+<template name="enroll-templet">
+    <wxs module="m1">
+        module.exports.codeContent = {
+            title: "恭喜获得抽签码",
+            subTitle: "已放入我的战绩",
+            tip: "离完成只差一步",
+            desc: "请搜索：IT官方微信\n前往I.T官方微信号完成会员注册，即时获取最新抽签信息"
+        };
+    </wxs>
+    <dialog-code id="dialog-code" wx:if="{{useCodeDialog}}" content="{{m1.codeContent}}"></dialog-code>
+</template>

@@ -1,0 +1,317 @@
+import MobileM from "../../../helper/handle/mobileHandle.js"
+import MyDate from "../../../support/utils/date-util.js"
+const app = getApp();
+Page(app.BP({
+  
+  data: {
+    sexList: ['男', '女'],
+    nickName: '',
+    email: '',
+    sex: '',
+    birthday: '',
+    mobile: '',
+    // mobile_code:'',
+    // code_state:'发送验证码',
+    // send_surplus_time:0,
+    address:'',
+    info: {},
+    personal_page:{},
+    user_info:{},
+    address_info:{},
+    customUserFieldList:[],
+    isShow: true
+  },
+  toUserToken:"",
+  merge_mobile:"",
+  onLoad(options){
+    this.options = options || {}
+    initDate.call(this);
+    getUserInfoEvent.call(this);
+    //设置默认性别
+    // app.sysTemConfig("sex_default").then(data=>{
+    //   let sex = 0;
+    //   if(typeof(data.Value) != "undefined"){
+    //     if(data.Value == 1){
+    //       sex = 1;
+    //     } else {
+    //       sex = 0;
+    //     }
+    //     this.setData({
+    //       sex: sex
+    //     })
+    //   }
+    // })
+    
+    app.LM.getWxSessionIdAsync(); //进页面先check一遍
+  },
+  onShow () {},
+  onHide (){},
+  onUnload (){},
+  onReady () {},
+  bindChange (e) {
+    let dataset = e.target.dataset;
+    let key = dataset.key;
+    let isColumn = dataset.isColumn;
+    if (isColumn == "true"){
+      let customList = this.data.customUserFieldList;
+      customList[key].txtData = e.detail.value;
+      this.setData({
+        customUserFieldList: customList
+      })
+    }else{
+      this.setData({
+        [key]: e.detail.value
+      });
+    }
+  },
+  bindPhoneHandle(e){
+    let mobile = this.data.mobile;
+    this.phoneLogin = this.phoneLogin || this.selectComponent("#phoneLogin");
+    if(mobile){
+      this.phoneLogin.changePhoneNumber(e);
+    }else{
+      this.phoneLogin.getPhoneNumber(e);
+    }
+  },
+  loginCallback(e){
+    console.log(e,"loginCallback");
+    let user_info = this.data.user_info || {};
+    let detail = e.detail || {};
+    user_info.mobilePhone = detail.mobilePhone || "";
+    this.setData({
+      user_info: user_info,
+      mobile: detail.mobilePhone || "" 
+    })
+  },
+  /**
+   * 选择地区
+  */
+  showAreaPicker:function(){
+    var that = this;
+    var address_info = this.data.address_info;
+    //
+    this.areaSelect = this.areaSelect || this.selectComponent("#areaSelect");
+    this.areaSelect.SwitchAreaSelect(address_info,function(info){
+      that.setData({
+        address_info: info
+      })
+    });
+  },
+  confirmEdit:function(){
+    let that = this;
+    const data = this.data;
+    //
+    const info = data.info;
+    const address = data.address;
+    const address_info = data.address_info;
+    const user_info = data.user_info;
+    const profile_modify = user_info.profile_modify;
+    const personal_page = data.personal_page;
+    let customList = this.data.customUserFieldList;
+    let tip = "";
+    console.log(data.email,"email");
+    if (profile_modify == 1){//
+
+      if (!data.nickName){
+        tip="请输入姓名";
+      } else if(data.sex === ""){
+        tip="请选择性别";
+      } else if (!data.birthday){
+        tip="请选择生日日期";
+      } else if (!address_info.district_str){
+        tip="请选择地区";
+      } else if (!address){
+        tip="请输入详细地址";
+      } else if (!(data.email.search(/^\w+((-\w+)|(\.\w+))*\@[A-Za-z0-9]+((\.|-)[A-Za-z0-9]+)*\.[A-Za-z0-9]+$/) != -1)) {
+        tip = "请输入正确的email";
+      }
+    }else{//调用后台配置
+      const required = personal_page.required;
+      for (let i in required){
+        switch (required[i]){
+          case "birthday":
+            if (!data.birthday){
+              tip = "请选择生日日期";
+            }
+            break;
+          case "address":
+            if (!address) {
+              tip = "请输入详细地址";
+            }
+            break;
+          case "name":
+            if (!data.nickName) {
+              tip = "请输入姓名";
+            }
+            break;
+          case "area":
+            if (!address_info.district_str) {
+              tip = "请选择地区";
+            }
+            break;
+          case "sex":
+            if (data.sex === "") {
+              tip = "请选择性别";
+            }
+            break;
+          case "email":
+            if (!(data.email.search(/^\w+((-\w+)|(\.\w+))*\@[A-Za-z0-9]+((\.|-)[A-Za-z0-9]+)*\.[A-Za-z0-9]+$/) != -1)){
+              tip = "请输入正确的邮箱！"
+            }
+        }
+        if (tip){
+          break;
+        }
+      }
+      //判断手机
+      if ( !tip && personal_page.show_mobile){
+        if (!data.mobile){
+          tip = "请绑定手机号码";
+        }
+      }
+    }
+    //新增自定义字段
+    if(!tip){
+      for (let i in customList) {
+        if (customList[i].isRequired == 1 && !customList[i].txtData) {
+          tip = "请输入" + customList[i].fieldTitle;
+        }
+      }
+    }
+    //
+    if(tip){
+      app.SMH.showToast({
+        title: tip
+      })
+      return;
+    }
+    //判断输入无误
+    let saveReqData = {
+      realName: data.nickName,
+      sex: data.sex,
+      email: data.email,
+      birthday: data.birthday,
+      province: address_info.province ? address_info.province : 0,
+      city: address_info.city ? address_info.city : 0,
+      district: address_info.district ? address_info.district : 0,
+      address: address,
+      brandCode:app.Conf.BRAND_CODE,
+      userToken:app.LM.userKey
+    };
+    if (user_info.IsBindMobile) {
+      saveReqData['mobilePhone'] = data.mobile;
+      // saveReqData['msgCode'] = data.mobile_code;
+      saveReqData['isNeedBindPhone'] = data.mobile ? 0 : 1;
+    }
+    //添加自定义字段
+    for (let i in customList) {
+      saveReqData[customList[i].fieldName] = customList[i].txtData;
+    }
+    handlerUserInfo.call(this, saveReqData);
+  },
+  /***/
+  clickMsg:function(e){
+    app.SMH.showToast({
+      "title":"您已修改过生日，不能再修改！"
+    })
+  }
+}))
+
+//处理用户信息
+function handlerUserInfo(saveReqData){
+  saveUserInfo.call(this, saveReqData);
+}
+//获取用户信息
+function getUserInfoEvent() {
+  return app.UserApi.getUserExtendInfo({
+    params: {
+      brandCode: app.Conf.BRAND_CODE,
+      userToken: app.LM.userKey
+    },
+    extraData: {
+      isShowLoad: true
+    }
+  }).then(e => {
+    if (e.code == "1") {
+      let data = e.data;
+      let personal_page = (typeof (data.personal_page) == "string" && data.personal_page) ? JSON.parse(data.personal_page) : data.personal_page;
+      personal_page = personal_page || {};
+      if (data.mobilePhone == "" && personal_page.show_mobile == 1){
+        data.IsBindMobile = 1
+      }
+      let address_info = {
+        city_str: data.cityName || "",
+        district_str: data.districtName || "",
+        province_str: data.provinceName || "",
+        province : data.province || 0,
+        city : data.city || 0,
+        district: data.district || 0
+      }
+      data.address_info = address_info;
+      data.personal_page = personal_page;
+      this.setData({
+        nickName: data.realName,
+        email: data.email,
+        sex: data.sex,
+        birthday: data.birthday,
+        mobile: data.mobilePhone,
+        info: data,
+        personal_page: personal_page,
+        user_info: data,
+        address_info: address_info,
+        address: data.address,
+        agreementList: data.agreementList || [],
+        customUserFieldList: data.customUserFieldList || {},
+          isShow: false
+      });
+      //计算倒计时
+      return Promise.resolve(e);
+    }
+    return Promise.reject();
+  })
+}
+//保存用户信息
+function saveUserInfo(reqData){
+  return app.UserApi.completeUserInfo({
+    data: reqData,
+    extraData:{
+      isShowLoad:true
+    }
+  }).then( e=>{
+    if(e.code == 1){
+      wx.showModal({
+        title: '',
+        showCancel:false,
+        content: "保存成功",
+        success: function (res) {
+          if (res.confirm) {
+            saveCallback.call(this);
+          }
+        }
+      })
+      return Promise.resolve(e);
+    }else{
+      app.SMH.showToast({
+        "title": e.msg || "请求错误"
+      })
+    }
+    return Promise.reject();
+  })
+}
+function saveCallback(){
+  let user_infos = app.StorageH.get("USER_INFOS") || {};
+  user_infos.isPerfected = true;
+  app.StorageH.set("USER_INFOS", user_infos);
+  wx.navigateBack();
+}
+function initDate(){
+  let nowDate = new Date();
+  let nowDateStr = MyDate.format(nowDate,"yyyy-MM-dd");
+  let nowTime = nowDate.getTime() 
+  let prevTime = nowTime - ( 1000 * 60 * 60 * 24 * 365 * 80);
+  let preDateStr = MyDate.format(new Date(prevTime), "yyyy-MM-dd");
+  this.setData({
+    nowDateStr,
+    preDateStr
+  })
+}
