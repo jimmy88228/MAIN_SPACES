@@ -1,6 +1,7 @@
+// pages/draw/draw.js
 // pages/micro_mall/lottery/lottery.js
 import LIST from "./lottery-config.js";
-import ImgLoader from "./img_loader/img_loader";
+// import ImgLoader from "./img_loader/img_loader";
 import MyDate from '../../common/support/utils/date-util.js';
 
 const app = getApp();
@@ -15,11 +16,12 @@ Page.BasePage({
         isClosed: true,
         isLogin: app.LM.isLogin,
         isNeedBindPhone: false,
-        showTips: false
+        showTips: false,
+        maskBg:"rgba(0, 0, 0, 0.4)",
     },
     onLoad: function (options) {
         //初始化图片预加载组件，并指定统一的加载完成回调
-        this.imgLoader = new ImgLoader(this, this.imageOnLoad.bind(this));
+        // this.imgLoader = new ImgLoader(this, this.imageOnLoad.bind(this));
         this.options = options;
         this.loading = false;
         this.lotterySign = false; //标识是否调用EB，通知数据刷新成功
@@ -32,13 +34,21 @@ Page.BasePage({
         this.checkLoginChange();
     },
     onReady() {
-        this.lotteryTip = this.lotteryTip || this.selectComponent("#lotteryTip");
+        this.setData({
+          showfilter:true
+        })
+        this.draw_result = this.draw_result || this.selectComponent("#draw_result");
+        this.draw_result.show2();
         getAdSlot.call(this)
     },
     onShow: function () {
         listen.call(this);
         this.lotteryActivity = this.lotteryActivity || this.selectComponent("#lotteryActivity");
         this.lotteryActivity.showReset();
+        this.setData({
+          showfilter:true
+        })
+        this.draw_result && this.draw_result.show2();
         // this.pageHome = this.pageHome || this.selectComponent("#pageHome")
         // this.pageHome.initPageHome();
     },
@@ -93,7 +103,10 @@ Page.BasePage({
             lotteryInfo: resDetail,
             isClosed: false
         });
-        this.lotteryTip.show();
+        this.setData({
+          showfilter:true
+        })
+        this.draw_result.show();
         loadData.call(this, false);
         lotteryWinningRecord.call(this, false);
     },
@@ -102,35 +115,42 @@ Page.BasePage({
             isClosed: true
         });
     },
-    preloadImgs(isShowLoad = true) {
-        if (!isShowLoad) return;
-        let prizeImgList = this.data.prizeList.filter(item => item.prizeImg !== '').map(item => item.prizeImg);
-        // 加载所有的图片
-        let staticImgObj = staticImg.call(this);
-        let staticImgList = staticImgObj[this.data.activityTypeCode];
-        let allImg = [this.data.actBgImg, this.data.pushImg, ...prizeImgList, ...staticImgList].filter(item => item !== '');
-        allImg = Array.from(new Set(allImg));
-        this.needLoadCount = allImg.length;
-        this.preLoadCount = 0;
-        if (this.needLoadCount > 0) {
-            wx.showLoading({
-                title: '加载中...'
-            });
-        } 
-        allImg.forEach(imgUrl => {
-            this.imgLoader.load(imgUrl);
-        });
+    close(){
+      console.log('close')
+      this.setData({
+        showfilter:false
+      })
     },
-    imageOnLoad() {
-        this.preLoadCount++;
-        if (this.preLoadCount >= this.needLoadCount) {
-            wx.hideLoading();
-            this.setData({
-                isHided: false
-            });
-            this.lotteryActivity.loadData();
-        }
-    },
+    // preloadImgs(isShowLoad = true) {
+    //     if (!isShowLoad) return;
+    //     let prizeImgList = this.data.prizeList.filter(item => item.prizeImg !== '').map(item => item.prizeImg);
+    //     // 加载所有的图片
+    //     let staticImgObj = staticImg.call(this);
+    //     let staticImgList = staticImgObj[this.data.activityTypeCode];
+    //     let allImg = [this.data.actBgImg, this.data.pushImg, ...prizeImgList, ...staticImgList].filter(item => item !== '');
+    //     allImg = Array.from(new Set(allImg));
+    //     this.needLoadCount = allImg.length;
+    //     this.preLoadCount = 0;
+    //     if (this.needLoadCount > 0) {
+    //         wx.showLoading({
+    //             title: '加载中...'
+    //         });
+    //     } 
+    //     allImg.forEach(imgUrl => {
+    //         this.imgLoader.load(imgUrl);
+    //     });
+    //     console.log('allImg',allImg)
+    // },
+    // imageOnLoad() {
+    //     this.preLoadCount++;
+    //     if (this.preLoadCount >= this.needLoadCount) {
+    //         wx.hideLoading();
+    //         this.setData({
+    //             isHided: false
+    //         });
+    //         this.lotteryActivity.loadData();
+    //     }
+    // },
     reloadData() {
         this.lotterySign = true;
         listen.call(this);
@@ -187,7 +207,12 @@ function loadData(isShowLoad = true) {
                 prizeList: data.prizeList || [], 
                 activityType: LIST.lottery[data.activityTypeCode]
             });
-            this.preloadImgs(isShowLoad);
+            // this.preloadImgs(isShowLoad);
+            wx.hideLoading();
+            this.setData({
+                isHided: false
+            });
+            this.lotteryActivity.loadData();
             return Promise.resolve(data);
         } else {
             this.setData({
@@ -213,7 +238,7 @@ function lotteryWinningRecord(isShowLoad = true) {
             this.setData({
                 winningRecordList: data.map(item => {
                     return Object.assign(item, {
-                        createTime: MyDate.format((String(item.createTime).replace(/\-/gmi, "/")),"yyyy-MM-dd")
+                        createTime: MyDate.format(MyDate.parse((String(item.createTime).replace(/\-/gmi, "/"))),"yyyy-MM-dd")
                     });
                 }) || []
             });
