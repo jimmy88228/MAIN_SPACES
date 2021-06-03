@@ -1,0 +1,6 @@
+{
+	"usingComponents": {
+		"spec-view": "/components/spec-view/spec-view",
+		"question-view": "/components/question-view/question-view"
+	}
+}

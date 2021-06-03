@@ -1,0 +1,6 @@
+{
+  "component": true,
+  "usingComponents": {
+    "window": "/components/window/window"
+  }
+}

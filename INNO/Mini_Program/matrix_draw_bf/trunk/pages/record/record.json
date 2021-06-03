@@ -1,0 +1,7 @@
+{
+    "navigationBarTitleText": "我的战绩",
+    "usingComponents": {
+        "code-list": "./cps/code-list/code-list",
+        "prize-list": "./cps/prize-list/prize-list"
+    }
+}

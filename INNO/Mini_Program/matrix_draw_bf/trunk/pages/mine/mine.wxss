@@ -1,0 +1,67 @@
+.mine-mian {
+    width: 100%;
+}
+
+.header {
+    width: 100%;
+    height: 330rpx;
+    display: flex;
+    box-sizing: border-box;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    padding-bottom: 40rpx;
+}
+
+.header>.user-header {
+    width: 143rpx;
+    height: 143rpx;
+    border-radius: 50%;
+    background: #eee;
+    overflow: hidden;
+    display: block;
+}
+
+.header>.user-name {
+    width: 100%;
+    margin-top: 14rpx;
+    text-align: center;
+    font-size: 32rpx;
+    font-weight: bold;
+}
+
+.header .auth-btn {
+    padding: 0 80rpx;
+}
+
+.mine-mian .cell {
+    display: block;
+    height: 100rpx;
+}
+
+.mine-mian .cell-content {
+    box-sizing: border-box;
+    display: block;
+    margin-left: 40rpx;
+    height: 100%;
+    text-align: left;
+    border-top: 1px solid #eee;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+.mine-mian .cell:last-child .cell-content {
+    border-bottom: 1px solid #eee;
+}
+
+.mine-mian .cell-content .cell-title {
+    flex-grow: 1;
+    font-weight: bold;
+}
+
+.mine-mian .cell-content .cell-arrow {
+    width: 11rpx;
+    height: 20rpx;
+    margin-right: 40rpx;
+}

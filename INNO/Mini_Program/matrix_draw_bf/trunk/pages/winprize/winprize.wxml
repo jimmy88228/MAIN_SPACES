@@ -1,0 +1,82 @@
+<page-nav id="nav-bar" opacity="{{opacityVal}}" />
+<view wx:if="{{showRefresh}}" class="center-box anim-fade-in anim-delay">
+    <loading-view class="center-box-item" />
+</view>
+<block wx:elif="{{isAttached}}">
+    <view wx:if="{{!isLogin}}" class="center-box anim-fade-in">
+        <auth-view class="center-box-item" msg="登录后查看中奖信息" bindauthed="onAuthed" />
+    </view>
+    <block wx:elif="{{info.type == 1}}">
+        <view class="wp-main {{noScroll?'no-scroll':''}}">
+            <view class="wp-header-box anim-fade-in" id="initTop">
+                <image class="wp-header" src="{{info.picture}}" mode="aspectFill"></image>
+            </view>
+            <view class="wp-body anim-slide-in-up">
+                <view class="wp-row">
+                    <view class="wp-title">恭喜获得购买资格</view>
+                    <view wx:if="{{info.usageTips}}" class="wp-tips">{{info.usageTips}}</view>
+                    <text class="wp-name rich-name newline">{{info.title}}</text>
+                    <view class="wp-price" wx:if="{{info.price}}">{{info.unit}} {{info.price}}</view>
+                </view>
+                <view class="wp-row wp-info-box" wx:if="{{enrollItems && enrollItems.length > 0}}">
+                    <view class="wp-title">登记信息</view>
+                    <view class="wp-info-list">
+                        <view class="wp-info-item" wx:for="{{enrollItems}}" wx:key="index">
+                            <label>{{item.name}}</label>
+                            <text>{{item.value}}</text>
+                        </view>
+                    </view>
+                </view>
+                <view class="wp-row">
+                    <view class="wp-title">购买须知</view>
+                    <parser-view class="content wp-details" html="{{usegeHtmlDetails}}" gesture-zoom lazy-load
+                        selectable show-with-animation use-anchor use-cache class="content wp-details">
+                    </parser-view>
+                    <!-- <rich-text class="content wp-details" nodes="{{usegeHtmlDetails}}"></rich-text> -->
+                </view>
+                <view class="lay_out_box" wx:if="{{layoutData.length>0}}">
+                    <view class="lay_out_title flex-b-w">
+                        <view class="l_o_left">RECOMMEND</view>
+                        <view class="l_o_right">相关推荐</view>
+                    </view>
+                    <ad-layout id="layout" data="{{layoutData}}"></ad-layout>
+                </view>
+            </view>
+            <view class="menu-bar">
+                <button class="menu btn-plain" hover-class="btn-hover" bindtap="jumpAction"
+                    data-url="/pages/index/index">
+                    <image src="/static/images/common/home.png"></image>
+                    返回首页
+                </button>
+                <button class="menu btn-plain" hover-class="btn-hover" bindtap="onShareTap">
+                    <image src="/static/images/common/share.png"></image>
+                    分享
+                </button>
+            </view>
+        </view>
+    </block>
+    <block wx:elif="{{info.type == 2}}">
+        <view class="wp-main {{noScroll?'no-scroll':''}}">
+            <view class="cp-header-box anim-fade-in" id="initTop">
+                <image class="cp-header" src="{{info.picture}}" mode="widthFix"></image>
+            </view>
+            <view class="cp-body anim-slide-in-up">
+                <view class="cp-row">
+                    <view class="cp-title">ESHOP商城优惠券码</view>
+                    <view class="cp-cont">{{info.expand.couponCode||""}}</view>
+                </view>
+                <view class="cp-row" style="border:0 none;">
+                    <view style="margin-bottom:30rpx;" class="cp-title">优惠券说明</view>
+                    <parser-view class="content cp-details" html="{{usegeHtmlDetails}}" gesture-zoom lazy-load
+                        selectable show-with-animation use-anchor use-cache>
+                    </parser-view>
+                    <!-- <rich-text class="content cp-details" nodes="{{usegeHtmlDetails}}"></rich-text> -->
+                </view>
+            </view>
+            <view class="cp-menu-bar">
+                <button class="btn-black" bindtap="onEShopTap"> 前往eshop使用 </button>
+            </view>
+        </view>
+    </block>
+</block>
+<dialog-poster wx:if="{{usePosterDialog}}" id="dialog-poster" mode="detail"></dialog-poster>

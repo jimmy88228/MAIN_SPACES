@@ -1,0 +1,4 @@
+<view class="img-main" style="{{style.value}}">
+    <image class="img-pic" src="{{params.src}}" mode="{{style.mode}}"></image>
+    <button class="img-btn" bindtap="adAction"></button>
+</view>

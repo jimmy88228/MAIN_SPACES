@@ -1,0 +1,93 @@
+page {
+	background-color: var(--page-bg-color);
+}
+
+.activity-list {
+	width: 100%;
+	box-sizing: border-box;
+}
+
+.cell-list {
+	position: relative;
+	/* margin-bottom: 74rpx; */
+}
+
+.cell-year {
+	padding: 0 20rpx;
+	height: 100rpx;
+	display: flex;
+	justify-content: flex-end;
+	align-items: center;
+	box-sizing: border-box;
+	background-color: white;
+	font-size: 48rpx;
+	position: sticky;
+	top: 0;
+	z-index: 4;
+}
+
+.activity-list-cell {
+	position: relative;
+	z-index: 3;
+}
+
+.cell-head {
+	/* padding: 23rpx 32rpx 23rpx 42rpx; */
+	padding: 20rpx 32rpx 0 42rpx;
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	font-size: 26rpx;
+	box-sizing: border-box;
+	height: 130rpx;
+}
+
+.c-head-l {
+	font-size: 48rpx;
+	margin-top: 10rpx;
+	font-weight: bold;
+}
+
+.c-head-s {
+	color: var(--text-sub-color);
+	font-family: none;
+}
+
+.act-list {
+	display: flex;
+	flex-wrap: wrap;
+	box-sizing: border-box;
+	justify-content: space-between;
+	padding: 0 16rpx;
+}
+.activity-list-cell:last-child .act-list{
+	padding-bottom: 74rpx;
+}
+.cell-list:last-of-type .activity-list-cell .act-list{
+	padding-bottom: 0;
+}
+
+.act-item {
+	width: 350rpx;
+	height: 350rpx;
+	margin: 8rpx 0;
+	position: relative;
+	border-radius: 6rpx;
+	overflow: hidden;
+	/* box-shadow: 0 0 15rpx 0px rgba(127,127,127,0.2); */
+}
+
+.item-img {
+	width: 100%;
+	height: 100%;
+	display: block;
+}
+
+.item-time {
+	position: absolute;
+	top: 20rpx;
+	left: 24rpx;
+	font-size: 30rpx;
+	font-weight: bold;
+	text-shadow: 1px 1px 1px white;
+}

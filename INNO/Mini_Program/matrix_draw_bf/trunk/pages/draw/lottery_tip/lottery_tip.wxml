@@ -1,0 +1,27 @@
+<!--pages/micro_mall/lottery/lottery_tip/lottery_tip.wxml-->
+<window touchCancel="{{false}}" class="window" ext-class="window-ext">
+    <view class="lottery_content" style="{{mainStyle}}">
+        <view class="prize_bg {{show?'isShow':''}}">
+            <icon type="{{closeType}}" size="40" color="#fff" class="cancel_icon" bindtap="closeWin"/>
+            <image mode="widthFix" class="bg" src="{{win_bg}}" wx:if="{{_lotteryInfo.isWinning}}"/>
+            <image mode="widthFix" class="bg" src="{{failure_bg}}" wx:else/>
+            <view class="prize_info">
+              <block wx:if="{{_lotteryInfo.isWinning}}">
+                <image 
+                    mode="widthFix" 
+                    class="prize_img" 
+                    src="{{_lotteryInfo.prizeImg ? _lotteryInfo.prizeImg : default_img}}" 
+                    />
+                <view class="prize_name">{{_lotteryInfo.prizeName}}</view>
+              </block>
+              <view class="prize_info_cont" wx:else>
+                <view class="prize_name">谢谢参与</view>
+              </view>
+            </view>
+        </view>
+        <view class="use_prize {{show?'isShow':''}}" bindtap="cancel">
+            <image mode="widthFix" class="win_btn" src="{{win_bg_btn}}"/>
+            <view class="btn_text">{{_lotteryInfo.isWinning ? '立即查看' : '确定'}}</view>
+        </view>
+    </view>
+</window>
