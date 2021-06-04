@@ -1,0 +1,7 @@
+{ "disableScroll":true,
+  "usingComponents": {
+    "quick_find":"/pages/component/Quick_Find/Quick_Find",
+    "list":"/pages/component/Quick_Find/module/list",
+    "quick":"/pages/component/Quick_Find/module/quick"
+  }
+}

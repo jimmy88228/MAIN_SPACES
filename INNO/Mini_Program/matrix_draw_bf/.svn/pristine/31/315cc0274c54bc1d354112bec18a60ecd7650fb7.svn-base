@@ -1,0 +1,14 @@
+<!--pages/micro_mall/custom_page/custom_page.wxml-->
+<view class="index_page {{isIphoneX ? 'ipx_p_b' : ''}} {{customTab ? 'customTab' : ''}}">
+<micro-page
+    class="page_tab" 
+    id="mcPage" 
+    bindgetPageId="getPageId" 
+    bindpageShareSaving="pageShareSaving"
+    hideContact
+    custom-tab="{{customTab}}"
+    ></micro-page>
+</view>
+ <!--首页-->
+<pageHome id="pageHome"></pageHome>
+

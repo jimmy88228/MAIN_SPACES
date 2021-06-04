@@ -1,0 +1,7 @@
+<view class="main" wx:if="{{showToast}}">
+    <view class='toast_box {{obj.longText?"longText":""}} {{obj.shortText?"shortText":""}}'>
+        <image src='{{obj.image}}' wx:if="{{showImage}}" class='img_logo' mode='aspectFit'  ></image>
+        <!-- <image src='{{obj.image}}' class='img_logo' mode='aspectFit' style='width:{{obj.width||0}}rpx;height:{{obj.height||0}}rpx;'></image> -->
+        <text class='toast_text'>{{obj.title}}</text>
+    </view>
+</view>

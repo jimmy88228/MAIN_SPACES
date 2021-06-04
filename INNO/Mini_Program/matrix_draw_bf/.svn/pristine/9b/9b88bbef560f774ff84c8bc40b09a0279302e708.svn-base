@@ -1,0 +1,36 @@
+<!--pages/micro_mall/inviteAward/extraPage/friMore.wxml-->
+<page-nav></page-nav>
+<view class="content">
+  <view class="title">已累积邀请新人：{{friData.totalCount}}</view>
+  <view class="fri_bg_box"> 
+    <!-- <view class="friTitle">我邀请的好友</view> -->
+    <!-- <image src="{{friHead}}" mode="widthFix" class="friHead"></image> -->
+    <view class="fri_msg_box" wx:if="{{friData.totalCount > 0}}">
+      <block wx:for="{{friData.list}}" wx:key="index">
+        <view class="fri_item flex_global flex_al_c">
+          <image class="f_shrink img_user" mode="aspectFit" src="{{item.portraitPath}}"></image>
+          <view class="f_shrink fri_name">{{item.realName}}</view>
+          <view class="fri_i_right flex_global flex_al_c">
+            <view class="reward_box flex_global flex_al_c">
+              <image class="img_coupon" mode="aspectFit" src="{{item.registerStatus == '未关注'?invite:inviteAc}}"></image>
+              <view class="fri_coupon flex_col flex_c">
+                <view>{{item.registerStatus}}</view>
+                <view wx:if="{{item.registerBenefit}}" class="fri_reward">{{item.registerBenefit}}</view>
+              </view>
+            </view>
+            <view class="reward_box flex_global flex_al_c">
+              <image class="img_red_pack" mode="aspectFit" src="{{item.orderStatus == '未下单'?buy:buyAc}}"></image>
+              <view class="fri_buy flex_col flex_c">
+                <view class="">{{item.orderStatus}}</view>
+                <view wx:if="{{item.orderBenefit}}" class="fri_reward">{{item.orderBenefit}}</view>
+              </view>
+            </view>
+          </view>
+        </view>
+      </block>
+    </view>
+    <view class="friEmpty bold flex_global flex_al_c flex_c" wx:elif="{{friData.totalCount == 0}}">
+      暂无好友关注
+    </view>
+  </view>
+</view>

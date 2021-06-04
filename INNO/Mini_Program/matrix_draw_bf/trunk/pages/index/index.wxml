@@ -104,7 +104,7 @@
             custom-tab="{{customTab}}"></micro-page>
         </view> -->
         <view class="flex-c-c">isLogin--{{isLogin}}</view>
-        <view wx:if="{{!isLogin}}" class="flex-c-c">
+        <view class="flex-c-c">
             <auth-view class="center-box-item" bindauthed="onAuthed" />
         </view>
     </view> 

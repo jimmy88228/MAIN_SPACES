@@ -26,7 +26,7 @@ Component({
 		this.setData({
 			isCanUrPf:this.isCanUrPf
 		})
-		LM.getWxSessionIdAsync();
+		// LM.getWxSessionIdAsync();
 	},
 	data: {},
 	methods: {
@@ -60,6 +60,8 @@ function checkAuthorize(openType, detail) {
 			return LM.register(true).ignore(() => {
 				if (!LM.isLogin)
 					return Promise.reject("授权注册失败");
+					let page = getCurrentPages().pop();
+					page.checkLoginChange();
 			});
 		}
 	} else if (openType == OpenType.Phone) {

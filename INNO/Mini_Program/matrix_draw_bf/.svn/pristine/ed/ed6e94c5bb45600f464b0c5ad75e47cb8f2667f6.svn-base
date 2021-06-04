@@ -1,0 +1,17 @@
+.gallery-main {
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+}
+.swiper {
+    height: 100%;
+}
+.swiper-item {
+    width: 100%;
+    height: 100%;
+    box-sizing: border-box;
+}
+.swiper-item .gallery-img {
+    width: 100%;
+    height: 100%;
+}

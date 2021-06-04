@@ -220,7 +220,7 @@ class LoginManager {
       return h
     };
     this._gwxsh = h = Func.getWxSession.call(this,showLoading,isReject)
-        .finally(() => this._gwxsh && delete this._gwxsh);
+        .finally(() => {console.log('Fnc getWxsn finally');this._gwxsh && delete this._gwxsh});
     return h;
   }
   //读取token
@@ -384,7 +384,7 @@ function userRegister(showLoading, iData = {}) {
 
 //登录请求
 function userLogin(showLoading) {
-  console.log('进来 userLogin', id)
+  console.log('进来 userLogin')
   return RegApi.userLogin({
       data: {
         sessionId: this.sessionId || ""
@@ -397,7 +397,6 @@ function userLogin(showLoading) {
       let data = e.data = (e.data || {});
       this.savePrivateInfo({
         ...data,
-        register: false
       });
       return e;
     }).catch(error => {
@@ -646,28 +645,28 @@ const Func = {
   getWxSession(showLoading,isReject){
     console.log('进来 Fnc.getWxSession',this.sessionId)
     return new Promise((rs,rj)=> this.sessionId ? 
-    checkSession.call(this, showLoading, this.sessionId).then(e => {
-      rs(e);
-    }).catch(() => {
-      console.log('sessionKey过期',isReject);
-      this.removeSessionId();
-      if (isReject) { //getUserProfile 流程需要吐司重新点击授权
-        this.createWxSessionId(showLoading).then(() => {
-          SMH.showToast({
-            title: "状态已过期，请重新授权",
-            duration: 3000,
-          })
-        });
-        rj();
-      } else {
-        this.createWxSessionId(showLoading).then(e=>{
+      checkSession.call(this, showLoading, this.sessionId).then(e => {
+        rs(e);
+      }).catch(() => {
+        console.log('sessionKey过期',isReject);
+        this.removeSessionId();
+        if (isReject) { //getUserProfile 流程需要吐司重新点击授权
+          this.createWxSessionId(showLoading).then(() => {
+            SMH.showToast({
+              title: "状态已过期，请重新授权",
+              duration: 3000,
+            })
+          });
+          rj();
+        } else {
+          this.createWxSessionId(showLoading).then(e=>{
+            rs(e)
+          }).catch(e=>{
+            rj(e)
+          });
+        }
+      }) : this.createWxSessionId(showLoading).then(e=>{
           rs(e)
-        }).catch(e=>{
-          rj(e)
-        });
-      }
-    }) : this.createWxSessionId(showLoading).then(e=>{
-        rs(e)
       }).catch(e=>{
         rj(e)
       })

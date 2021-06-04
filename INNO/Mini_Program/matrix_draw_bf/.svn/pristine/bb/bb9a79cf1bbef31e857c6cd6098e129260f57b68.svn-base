@@ -1,0 +1,37 @@
+<view class="main">
+    <view class='header'>
+        <!-- <image src='{{}}' class="img_search" mode="aspectFit"></image>
+        <input class='input' bindconfirm='handle_confirm' data-type="search_value" placeholder='请输入关键字' placeholder-class='placeholder_style'> </input> -->
+        <search id="search" searchType="{{search_type}}" bindsearchCallback="searchCallback"></search>
+    </view>
+    <scroll-view hidden='{{none}}' scroll-y class='scroll' bindscrolltolower="handle_scroll">
+        <view class='data_list_box'>
+            <view wx:for="{{data_list}}" wx:for-index="sort_num" wx:key='goods_Id' class='data_list_item'>
+                <!-- catchtap='handle_select' data-id="{{item.id}}" data-name="{{item.name}}" data-num="{{sort_num}}"  -->
+                <view class='img_goods_box' catchtap='handle_select' data-src="{{item.goods_img}}" data-id="{{item.goods_Id}}" data-name="{{item.goods_name}}" data-num="{{sort_num}}">
+                    <!-- <image src='https://jwimgtest.innourl.com/SAAS_IMAGE/images/JW/goods/tag/20181215/20181215191207164_5345581.png' class="img_goods" mode="aspectFit"></image> -->
+                    <image src='{{item.goods_img}}' class="img_goods" mode="aspectFit"></image>
+
+                    <image src='{{item.isSelect?ls_icon2:ls_icon1}}' class="img_selected" mode="aspectFit"></image>
+                    <!-- <image src='{{}}' class="img_select_none " mode="aspectFit"></image> -->
+                </view>
+                <view class='C_333 font_22 list_text_title ml_10'>{{item.goods_name}}</view>
+                <view class='list_text_price font_28 ml_10 bold' style='color:{{brand_info.style.font_color}};'>¥{{item.price}}</view>
+                <view class='list_text_market font_22 ml_10' wx:if="{{item.market_price>0 && item.market_price>item.price}}">¥{{item.market_price}}</view>
+
+            </view>
+        </view>
+    </scroll-view>
+   <view class='no_data_area' hidden="{{!none}}">暂时还没有数据</view>
+</view>
+<view class='fix_bottom'>
+    <view class='fix_bottom_box'>
+        <view class='bottom_text C_333 font_28'>
+            <text>共选择</text>
+            <text class='bold'>{{selectedNum}}</text>
+            <text>个商品</text>
+            <text class='font_24 C_7f'>(最多选择{{maxNum}}个)</text>
+        </view>
+        <button class='button_confirm ' style='background:{{brand_info.style.bg_color}};' catchtap='button_confirm'>确定</button>
+    </view>
+</view>

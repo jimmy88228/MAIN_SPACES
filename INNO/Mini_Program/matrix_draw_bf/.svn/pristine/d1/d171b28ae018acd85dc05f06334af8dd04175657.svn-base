@@ -1,0 +1,6 @@
+{
+  "component": true,
+  "usingComponents":{
+   "auth-phone-wd" :"/components/auth/auth-phone-wd/auth-phone-wd"
+  }
+}

@@ -1,0 +1,33 @@
+<search id="search" searchType="fans" bindsearchCallback="searchCallback"></search>
+<form bindsubmit="formAction" report-submit="true">
+  <view class="fans_list">
+    <view class="table fans_item" wx:for="{{fansData}}" wx:key="index">
+      <view class="table_cell t_l" data-related_UserId="{{item.related_userId}}" catchtap="getUserPage">
+        <view class="inline_b v_m fans_head">
+          <image src="{{item.portrait_path}}" mode="aspectFit" class="head_img"/>
+        </view>
+        <view class="inline_b v_m">{{item.real_name}}</view>
+      </view>
+      <view class="table_cell t_r">
+        <button 
+        form-type="submit"   
+        hover-class="none" 
+        catchtap="fansHandle" 
+        wx:if="{{item.isFocuse}}" 
+        class="fans_btn fansed_btn" 
+        data-index="{{index}}"
+        >互相关注</button>
+        <button 
+        form-type="submit" 
+        style="{{brand_info.style.bg_color ? 'background-color:'+brand_info.style.bg_color+';' : ''}}" 
+        hover-class="none" 
+        class="fans_btn" 
+        wx:else 
+        data-index="{{index}}"
+        catchtap="fansHandle">关注</button>
+      </view>
+    </view>
+    <view class="no_data_area" wx:if="{{fansData.length == 0}}">暂时没有数据</view>
+  </view>
+</form>
+<dialog id="pageDialog"></dialog>

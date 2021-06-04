@@ -1,0 +1,14 @@
+<window class="window" ext-class="window-ext">
+    <view class="enroll-root" style="{{mainStyle}}" catchtouchmove="noAction">
+        <view class="enroll-content">
+            <view class="enroll-title">登记资料</view>
+            <view class="enroll-item" wx:for="{{list}}" wx:key="index">
+                <text class="enroll-key">{{item.name}}</text>
+                <text class="enroll-value">{{item.value}}</text>
+            </view>
+        </view>
+        <view class="enroll-btn btn-black" hover-class="btn-hover" bindtap="submit">继续</view>
+    </view>
+</window>
+<import src="../enroll-templet.wxml" />
+<template is="enroll-templet" data="{{useCodeDialog}}"></template>

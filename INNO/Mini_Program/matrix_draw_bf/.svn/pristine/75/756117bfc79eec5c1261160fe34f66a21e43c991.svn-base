@@ -1,0 +1,198 @@
+const app = getApp();
+import Down from '../help/down';
+Page(app.BP({
+
+  /**
+   * 页面的初始数据
+   */
+  data: {
+    headManager: {
+      "invoice_status": "发票状态",
+      "invoice_error_msg": "失败原因",
+    },
+    msgManager: {
+      "invoice_title": "发票抬头",
+      "invoice_tax_num": "税号",
+      "invoice_order_sn": "订单号",
+      "invoice_price": "发票金额",
+      "invoice_apply_time": "申请日期",
+    },
+    fromType: "7f"
+  },
+
+  /**
+   * 生命周期函数--监听页面加载
+   */
+  onLoad: function (options) {
+    this.options = options;
+  },
+
+  /**
+   * 生命周期函数--监听页面初次渲染完成
+   */
+  onReady: function () {
+
+  },
+
+  /**
+   * 生命周期函数--监听页面显示
+   */
+  onShow: function () {
+    loadData.call(this);
+  },
+
+  /**
+   * 生命周期函数--监听页面隐藏
+   */
+  onHide: function () {
+
+  },
+
+  /**
+   * 生命周期函数--监听页面卸载
+   */
+  onUnload: function () {
+
+  },
+  onTap(e) {
+    let dataset = e.currentTarget.dataset || {};
+    let type = dataset.type || "";
+    let data = this.data.data||{};
+    let url = data.url || "";
+    if (type == 'check') {
+      if (!url) {
+        app.SMH.showToast({
+          title: "没有发票可查看"
+        })
+        return
+      }
+      if (this.lock) return
+      this.lock = true;
+      app.SMH.showToast({
+        title: "加载中..."
+      })
+      preview.call(this, url);
+    } else if (type == 'again') {
+      let options = this.options || {};
+      let sn =  data.orderSn || options.sn || "";
+      let price = data.orderPrice || options.price || 0;
+      let order_type = data.orderType;
+      if (!sn) {
+        app.SMH.showToast({
+          title: "订单号异常"
+        })
+        return
+      }
+      wx.redirectTo({
+        url: `/pages/micro_mall/invoice/issue_manager/issue_manager?type=invoice&sn=${sn}&price=${price}&order_type=${order_type}`,
+      })
+    } else if (type == 'web') {
+      let params = changeHttp.call(this, dataset.url);
+      params = '?link_url=' + encodeURIComponent(params);
+      url = '/pages/micro_mall/web/webForSF/SF' + params;
+      wx.navigateTo({
+        url: url,
+      })
+    }
+  }
+}))
+
+function loadData() {
+  return app.ElectricApi.getElectricKpTask({
+    params: {
+      id: this.options.id || 0,
+      brandCode: app.Conf.BRAND_CODE,
+      userToken: app.LM.userKey
+    },
+    extraData: {
+      isShowLoad: true
+    }
+  }).then(res => {
+    if (res.code == '1') {
+      let data = res.data || {};
+      data.statusName = getStatus.call(this, data.status);
+      this.setData({
+        showMsg: true,
+        data
+      })
+    }
+  })
+}
+
+function getStatus(type) {
+  // 0:待开票(申请中)  1:已申请开票  2:撤销申请  3:申请成功(开票中)  4:申请失败  5:开票完成  6:开票失败  7:查询状态中 8：红冲 9：已作废）
+  let name = "";
+  switch (type) {
+    case 0:
+      name = "待开票(申请中)";
+      break;
+    case 1:
+      name = "已申请开票";
+      break;
+    case 2:
+      name = "撤销申请";
+      break;
+    case 3:
+      name = "申请成功(开票中)";
+      break;
+    case 4:
+      name = "申请失败";
+      break;
+    case 5:
+      name = "开票完成";
+      break;
+    case 6:
+      name = "开票失败";
+      break;
+    case 7:
+      name = "查询状态中";
+      break;
+    case 8:
+      name = "红冲";
+      break;
+    case 9:
+      name = "已作废";
+      break;
+    default:
+      break;
+  }
+  return name;
+}
+
+function preview(url = "") {
+  if (!this.tempFilePath) {
+    Down.previewFile(url).then(res => {
+      this.lock = false;
+      console.log('打开结果', res);
+      this.tempFilePath = res && res.tempFilePath || "";
+    }).catch(e => {
+      this.lock = false;
+      app.SMH.showToast({
+        title: "发票打开失败"
+      })
+      console.log('catch 结果', e)
+    });
+  } else {
+    Down.openFile(this.tempFilePath).then(res => {
+      console.log('缓存打开结果', res);
+      this.lock = false;
+    }).catch(e => {
+      app.SMH.showToast({
+        title: "发票打开失败"
+      })
+      this.lock = false;
+      console.log('catch 结果', e)
+    });
+  }
+}
+
+
+function changeHttp(link) {
+  if (!link) return link;
+  if (link.indexOf("http://") == "-1" && link.indexOf("https://") == "-1") {
+    link = "https://" + link;
+  } else if (link.indexOf("https://") == "-1") {
+    link = link.replace('http://', 'https://');
+  }
+  return link;
+}

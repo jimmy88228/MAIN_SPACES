@@ -1,0 +1,16 @@
+<window class="window" ext-class="window-ext">
+    <view class="dl-dialog" style="{{mainStyle}}" catchtouchmove="noAction">
+        <text class="dl-title" wx:if="{{ct.title||initCt.title}}">{{ct.title||initCt.title}}</text>
+        <view class="dl-box">
+            <text wx:if="{{ct.subTitle||initCt.subTitle}}" class="dl-sub-title">
+                {{ct.subTitle||initCt.subTitle}}
+            </text>
+            <text class="dl-code">{{ct.code||initCt.code}}</text>
+        </view>
+        <text wx:if="{{ct.tip||initCt.tip}}" class="dl-tip">{{ct.tip||initCt.tip}}</text>
+        <text wx:if="{{ct.desc||initCt.desc}}" class="dl-desc">{{ct.desc||initCt.desc}}</text>
+        <view class="dl-btn btn-black" bindtap="onConfirm">
+            {{ct.comfirmTitle||initCt.comfirmTitle||'确认'}}
+        </view>
+    </view>
+</window>

@@ -1,0 +1,169 @@
+.auth_page {
+	position: fixed;
+	top: 0px;
+	left: 0px;
+	width: 100%;
+	height: 100%;
+	background: rgba(255, 255, 255, 0.5);
+	z-index: 9;
+	padding-top: 160rpx;
+}
+
+.auth-head {
+	padding: 32rpx 66rpx;
+}
+
+.auth-boxs {
+	padding: 0px 66rpx;
+	padding-top: 10rpx;
+}
+
+.auth-box {
+	text-align: center;
+	padding: 20rpx 0;
+	background-color: white;
+	width: 100%;
+	box-sizing: border-box;
+	margin-top: 44rpx;
+	border-radius: 6prx;
+	position: relative;
+	box-shadow: 0 0 16rpx 4rpx rgba(127, 127, 127, .08);
+	transition: all 300ms ease-in-out;
+}
+
+.flex-l {
+	flex-shrink: 0;
+	margin-right: 70rpx;
+}
+
+.auth-logo {
+	width: 110rpx;
+	height: 110rpx;
+	display: block;
+}
+
+.auth-tit {
+	font-family: none;
+	font-size: 40rpx;
+	font-weight: bold;
+	margin-bottom: 12rpx;
+}
+
+.auth-txt {
+	font-family: none;
+	font-size: 20rpx;
+	margin-bottom: 4rpx;
+}
+
+.auth-btn {
+	width: 450rpx;
+	height: 88rpx;
+	margin: 0 auto;
+	margin-top: 25rpx;
+	animation-delay: 0.2s;
+}
+
+.finish-btn {
+	margin-top: 44rpx;
+	box-shadow: 0 0 16rpx 4rpx rgba(127, 127, 127, .08);
+}
+
+.finish-btn.no-enable {
+	box-shadow: none;
+}
+
+.auth-box .-tip {
+	font-family: none;
+	font-size: 28rpx;
+	font-weight: bold;
+}
+
+.auth-box .-step {
+	opacity: 0.3;
+	font-family: none;
+	font-size: 20rpx;
+	font-weight: bold;
+	margin-bottom: 5rpx;
+}
+
+.img-ok {
+	position: absolute;
+	width: 60rpx;
+	height: 60rpx;
+	top: 50%;
+	right: 30rpx;
+	opacity: 0;
+	transform-origin: 50% 50%;
+	transform: scale(0.6) translateY(-50%);
+	animation-delay: 0.3s;
+	animation: img-ok-show 0.5s forwards ease-in-out;
+}
+
+@keyframes img-ok-show {
+	0% {
+		opacity: 0;
+		transform: scale(0.6) translateY(-50%);
+	}
+
+	50% {
+		opacity: 1;
+		transform: scale(1.2) translateY(-50%);
+	}
+
+	75% {
+		opacity: 1;
+		transform: scale(0.9) translateY(-50%);
+	}
+
+	90% {
+		opacity: 1;
+		transform: scale(1.1) translateY(-50%);
+	}
+
+	100% {
+		opacity: 1;
+		transform: scale(1) translateY(-50%);
+	}
+}
+
+.active .-step {
+	width: 100%;
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	position: absolute;
+	top: 0px;
+	left: 0px;
+	padding: 19rpx 0px;
+	transform: translateY(-100%);
+	opacity: 1;
+	margin: 0px;
+}
+
+.auth-box.active {
+	margin-top: 110rpx;
+}
+
+.active .-step::before {
+	content: "";
+	display: block;
+	width: 30%;
+	border: 1rpx solid #979797;
+	opacity: 0.2;
+}
+
+.active .-step::after {
+	content: "";
+	display: block;
+	width: 30%;
+	border: 1rpx solid #979797;
+	opacity: 0.2;
+}
+
+.hide .auth-btn {
+	display: none;
+}
+
+.auth-boxs.p_0 {
+	padding-top: 0;
+}

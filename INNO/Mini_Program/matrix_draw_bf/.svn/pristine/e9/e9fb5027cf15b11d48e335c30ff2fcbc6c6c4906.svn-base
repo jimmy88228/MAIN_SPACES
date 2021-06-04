@@ -1,0 +1,356 @@
+{
+  "pages": [
+    "pages/micro_mall/index/index",
+    "pages/micro_mall/user/user",
+    "pages/micro_mall/goods/goods_info",
+    "pages/micro_mall/shopping/shopping_cart",
+    "pages/micro_mall/selfGet/self_get_set",
+    "pages/micro_mall/customer_service/contact_page",
+    "pages/micro_mall/user_info/user_info",
+    "pages/micro_mall/QRcode/my_code",
+    "pages/micro_mall/collection/my_collection",
+    "pages/micro_mall/footmark/my_footmark",
+    "pages/micro_mall/stores/store_nav",
+    "pages/micro_mall/stores/store_map",
+    "pages/micro_mall/stores/changeStore/changeStore",
+    "pages/micro_mall/bind_phone/bind_phone",
+    "pages/micro_mall/membership_card/membership_card",
+    "pages/micro_mall/custom_page/custom_page",
+    "pages/micro_mall/search/search_goods",
+    "pages/micro_mall/buy/buy",
+    "pages/micro_mall/buy/Mwin_buy/buy",
+    "pages/micro_mall/category/category",
+    "pages/micro_mall/sign/app/app_sign",
+    "pages/micro_mall/classify/classify_page",
+    "pages/micro_mall/shipping_info/shipping_info",
+    "pages/micro_mall/special_shopping/shopping_cart",
+    "pages/micro_mall/changeInfo/pw/password",
+    "pages/micro_mall/grass_navigate/index_page/index_page",
+    "pages/micro_mall/store_mod/qr_code",
+    "pages/micro_mall/my_store_mod/qr_code",
+    "pages/micro_mall/articles/agreet/agreet",
+    "pages/micro_mall/agreet_page/agreet",
+    "pages/micro_mall/memberCard/activiteCard/activiteCard",
+    "pages/micro_mall/goods/promote_list/promote_list",
+    "pages/micro_mall/goods/promote_activity/promote_activity",
+    "pages/micro_mall/web/webForSF/SF",
+    "pages/micro_mall/web/collect/collect",
+    "pages/micro_mall/balance/my_balance",
+    "pages/micro_mall/paypal/paypal",
+    "pages/micro_mall/tips_page/abnormal",
+    "pages/micro_mall/guide_point/guide_point",
+    "pages/micro_mall/live_custom/live_custom",
+    "pages/micro_mall/video_shopping/v_index/index",
+    "pages/startup/startup_page",
+    "pages/micro_mall/inviteAward/inviteAward",
+    "pages/micro_mall/inviteAward/extraPage/friMore",
+    "pages/micro_mall/tab_define/tab_define"
+  ],
+  "subPackages": [
+    {
+      "root": "pages/micro_mall/order",
+      "pages": [
+        "assist_guest",
+        "for_pay_order",
+        "order_list",
+        "order_info",
+        "erp_order_info",
+        "apply_return",
+        "order_exchange_info",
+        "shipping_list/shipping_list"
+      ]
+    },
+    {
+      "root": "pages/micro_mall/send_goods",
+      "pages": [
+        "send_goods_code",
+        "login_page",
+        "store_list"
+      ]
+    },
+    {
+      "root": "pages/micro_mall/point",
+      "pages": [
+        "user/user",
+        "point_goods_detail/point_goods_detail",
+        "point_coupon_detail/point_coupon_detail",
+        "exchange_record/exchange_record",
+        "point_goods_list/point_goods_list",
+        "point_order_detail/point_order_detail",
+        "point_record/point_record",
+        "point_settlement/integral_settlement"
+      ]
+    },
+    {
+      "root": "pages/micro_mall/collageGroup",
+      "pages": [
+        "activity_list",
+        "my_collage_detail",
+        "activity_goods_detail",
+        "my_collage",
+        "collage_buy_detail",
+        "activity_rule"
+      ]
+    },
+    {
+      "root": "pages/micro_mall/seeding_grass",
+      "pages": [
+        "publish/publish_op/publish_next",
+        "publish/publish_op/publish_pictures",
+        "publish/add_details/add_details",
+        "article_detail/article_detail",
+        "my_fans/my_fans",
+        "my_follow/my_follow",
+        "my_publish/my_publish",
+        "my_collection/my_collection",
+        "user_page/user_page",
+        "comments/comments"
+      ]
+    },
+    {
+      "root": "pages/micro_mall/plugins/presale",
+      "pages": [
+        "presale_order_list",
+        "presale_activity_detail",
+        "presale_activity_list",
+        "presale_buy_info",
+        "presale_address_list",
+        "presale_address_info",
+        "presale_buy_bonus"
+      ]
+    },
+    {
+      "root": "pages/micro_mall/distribution_center",
+      "pages": [
+        "distribution_center",
+        "distribution_orders_lists/distribution_orders_lists",
+        "distribution_brokerage/brokerage_content/brokerage_content",
+        "distribution_brokerage/distribution_details/distribution_details",
+        "distribution_brokerage/distribution_take_out/distribution_take_out",
+        "distribution_service/distribution_guest_detail/distribution_guest_detail",
+        "distribution_orders_detail/distribution_orders_detail",
+        "activity/activity",
+        "apply_for_staff/fill_information/fill_information",
+        "apply_for_staff/staff_tip/dure",
+        "distribution_service/guest_follows/guest_follows",
+        "invitat_award/invitat_award",
+        "distribution_service/rank/rank",
+        "distribution_brokerage/brokerage_content/identity_fill/identity_fill"
+      ]
+    },
+    {
+      "root": "pages/micro_mall/lottery",
+      "pages": [
+        "lottery",
+        "activity/activity",
+        "lottery_record/lottery_record",
+        "confirm_prize/confirm_prize",
+        "confirm_prize/store_confirm"
+      ]
+    },
+    {
+      "root": "pages/micro_mall/prepaid",
+      "pages": [
+        "erp/prepaid_card_erp",
+        "erp/prepaid_card_erp_detail",
+        "erp/prepaid_card_erp_recharge"
+      ]
+    },
+    {
+      "root": "pages/micro_mall/bargain",
+      "pages": [
+        "index/bargain_index",
+        "index/my_bargain",
+        "goods/goods_detail",
+        "bargain/bargain_detail",
+        "bargain/order_detail",
+        "bargain/order_confirm",
+        "bargain/bargain_popup"
+      ]
+    },
+    {
+      "root": "pages/store_pay",
+      "pages": [
+        "pay_center/pay_center",
+        "cards/select_prepaid",
+        "bouns/select_bouns",
+        "pay_result/pay_result",
+        "store_pay_history/history_info",
+        "store_pay_history/history_list"
+      ]
+    },
+    {
+      "root": "pages/micro_mall/staff_center",
+      "pages": [
+        "center_web",
+        "staff_tip/is_no_staff"
+      ]
+    },
+    {
+      "root": "pages/micro_mall/activity",
+      "pages": [
+        "goods_seckill"
+      ]
+    },
+    {
+      "root": "pages/micro_mall/buyBonus",
+      "pages": [
+        "getBonusActivityList",
+        "getBonusActivityDetail",
+        "getBonusOrderList",
+        "getBonusOrderDetail"
+      ]
+    },
+    {
+      "root": "pages/micro_mall/sk",
+      "pages": [
+        "activity-sk/activity-sk",
+        "goods-info-sk/goods-info-sk",
+        "orders-sk/order-confirm",
+        "orders-sk/order-list",
+        "orders-sk/order-status",
+        "activity-sk/rule/rule",
+        "orders-sk/order-coupon/order-coupon"
+      ]
+    },
+    {
+      "root": "pages/micro_mall/questionnaire",
+      "pages": [
+        "questionnaire",
+        "results/results"
+      ]
+    },
+    {
+      "root": "pages/micro_mall/video_shopping/v_page",
+      "pages": [
+        "index"
+      ]
+    },
+    {
+      "root": "pages/micro_mall/live",
+      "pages": [
+        "live_square/live_square",
+        "live_activity/live_activity",
+        "live_square_new/live_square_new",
+        "live_detail/live_detail"
+      ]
+    },
+    {
+      "root": "pages/micro_mall/comment",
+      "pages": [
+        "store_order_comment/store_order_comment",
+        "goods_comment_list/goods_comment_list",
+        "mobile_order_comment/mobile_order_comment",
+        "comment_edit/comment_edit",
+        "goods_comment_detail/goods_comment_detail",
+        "order_comment/order_comment_list",
+        "order_comment/order_comment_detail"
+      ]
+    },
+    {
+      "root": "pages/micro_mall/goods_collocation",
+      "pages": [
+        "goods_collocation",
+        "collocation_list/collocation_list",
+        "act_list/act_list"
+      ]
+    },
+    {
+      "root": "pages/micro_mall/integral",
+      "pages": [
+        "my_integral"
+      ]
+    },
+    {
+      "root": "pages/micro_mall/coupon_center",
+      "pages": [
+        "receive/receive",
+        "send/send"
+      ]
+    },
+    {
+      "root": "pages/micro_mall/red_packet",
+      "pages": [
+        "red_balance/red_balance",
+        "red_details/red_details"
+      ]
+    },
+    {
+      "root": "pages/micro_mall/invoice",
+      "pages": [
+        "invoice_list/list",
+        "invoice_detail/detail",
+        "title_manager/title_manager",
+        "issue_manager/issue_manager"
+      ]
+    },
+    {
+      "root": "pages/micro_mall/register",
+      "pages": [
+        "register_type/register_type",
+        "user_info/user_info"
+      ]
+    },
+    {
+      "root": "pages/micro_mall/coupon",
+      "pages": [
+        "get_coupon",
+        "coupon_give",
+        "my_coupon",
+        "check_coupon"
+      ]
+    },
+    {
+      "root": "pages/micro_mall/address",
+      "pages": [
+        "address_list",
+        "address_edit"
+      ]
+    }
+  ],
+  "tabBar": {
+    "custom": true,
+    "borderStyle": "black",
+    "color": "#7F7F7F",
+    "selectedColor": "#CD718F",
+    "backgroundColor": "#fff",
+    "list": [
+      {
+        "pagePath": "pages/micro_mall/index/index",
+        "text": "首页",
+        "iconPath": "/images/micro_mall/tabBar/Homes.png",
+        "selectedIconPath": "/images/micro_mall/tabBar/getHomes.png"
+      },
+      {
+        "pagePath": "pages/micro_mall/classify/classify_page",
+        "text": "商品分类",
+        "iconPath": "/images/micro_mall/tabBar/Classify.png",
+        "selectedIconPath": "/images/micro_mall/tabBar/getClassify.png"
+      },
+      {
+        "pagePath": "pages/micro_mall/shopping/shopping_cart",
+        "text": "购物车",
+        "iconPath": "/images/micro_mall/tabBar/Carts.png",
+        "selectedIconPath": "/images/micro_mall/tabBar/getCarts.png"
+      },
+      {
+        "pagePath": "pages/micro_mall/user/user",
+        "text": "个人中心",
+        "iconPath": "/images/micro_mall/tabBar/Users.png",
+        "selectedIconPath": "/images/micro_mall/tabBar/getUsers.png"
+      }
+    ]
+  },
+  "window": {
+    "backgroundTextStyle": "light",
+    "navigationBarTitleText": "",
+    "navigationBarBackgroundColor": "#fff",
+    "navigationBarTextStyle": "black"
+  },
+  "permission": {
+    "scope.userLocation": {
+      "desc": "你的位置信息将用于小程序位置"
+    }
+  },
+  "sitemapLocation": "sitemap.json"
+}

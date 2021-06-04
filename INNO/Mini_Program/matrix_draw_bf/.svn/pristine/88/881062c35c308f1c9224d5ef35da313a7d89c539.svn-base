@@ -1,0 +1,84 @@
+<view 
+class="user_header_area" 
+style="margin-top:{{setting.marginTop || 0}}rpx;margin-bottom:{{setting.marginBottom || 0}}rpx;padding-left:{{setting.paddingLeftRight || 0}}rpx;padding-right:{{setting.paddingLeftRight || 0}}rpx;background-image: url({{setting.backgroundImage}});background-color: {{setting.backgroundColor}};background-position: {{setting.backgroundPosition}};">
+    <view class="user_area user_info_area">
+        <!--没有登录模块-->
+        <view class="login_area" wx:if="{{!isLogin || needLogin}}">
+            <button 
+            hover-class='none' 
+            form-type='submit' 
+            class="user_login_btn" >登录/注册</button>
+        </view>
+        <!--登录信息-->
+        <view class="bg_img_box" wx:else>
+            <view class="user_content">
+                <view class="extra_box e_b_left" wx:if="{{show_store_staff}}">
+                    <view wx:if="{{show_store_staff == 1 || show_store_staff == 3}}">{{userData.store_name}}</view>
+                    <view wx:if="{{show_store_staff == 2 || show_store_staff == 3}}">{{userData.staff_name}}</view>
+                </view>
+                <view class="extra_box flex_global flex_col flex_b flex_al_e">
+                    <image wx:if="{{setting.user_qrcode}}" catchtap="qrCodeFnc" src="{{qrCode}}" class="qr_code" mode="aspectFit"></image>
+                    <view wx:if="{{setting.dynamicCode}}" catchtap="dynamicCodeFnc" class="dynamicBox flex_global flex_c flex_al_c" mode="aspectFit">
+                        <image src="{{dynamicCode}}" class="dynamicCode" mode="aspectFit"></image>
+                        <view>动态码</view>
+                    </view>
+                </view>
+                <view class="user_portrait">
+                    <navigator class="user_img_stay" hover-class="none" url="/pages/micro_mall/user_info/user_info">
+                        <image class="user_img" lazy-load="{{true}}" src="{{userData.portrait_path}}" mode="aspectFit" />
+                    </navigator>
+                    <btns
+                    class="refresh_btn"
+                    isLogin="{{false}}"
+                    loginType="REFRESH"
+                    limitTime="3000"
+                    bindclickFront="updateAvatarUrlClick"
+                    bindclickcallback="updateAvatarUrl"
+                    >
+                        <image 
+                        class="refresh_icon {{updateAvatarClass}}"
+                        src="{{brand_info.default_icon_url}}/user/refresh.png" 
+                        mode="aspectFit"/>
+                    </btns>
+                </view>
+                <view class="content_name">{{userData.UserName}}</view>
+                <view class="content_grade">{{userData.leverName}}</view>
+            </view>
+            <image class='bg_img' lazy-load="{{true}}" mode='widthFix' src='{{userData.rank_image ? userData.rank_image : "默认"}}'></image>
+        </view>
+    </view>
+    <view class="user_area" hidden="{{userData.weixin_card_activate == 0 && has_wxcard}}" wx:if="{{isLogin && setting.myQRcode && ((needLogin && userData.IsBindMobile != '0') || !needLogin)}}">
+        <view class="user_area_cont">
+            <view class="area_cont user_code_cont">
+                <image src="{{userCode}}" class="user_code" mode="aspectFit"></image>
+                <view class="user_code_txt">{{barCardCode}}</view>
+            </view>
+        </view>
+    </view>
+    <block wx:if="{{userData.weixin_card_activate == 0 && has_wxcard}}">
+        <view class="activite_card_btns" >
+        <navigator 
+        class="activite_card_btn"  
+        hover-class='none'
+        target="miniProgram" 
+        app-id="{{CARD_APPID}}" 
+        extra-data="{{extraData}}"
+        style="{{brand_info.style ? 'background-color:'+ brand_info.style.bg_color + ';' : ''}}"
+        >立即激活会员卡</navigator>
+        </view>
+    </block>
+</view>
+<!--用户二维码-->
+<view class="qr_code_lg_box" catchtap="qrCodeFnc" catchtouchmove="_noFn" style="{{show_lg_class?'background:rgba(0,0,0,0.7)':''}}" hidden="{{!show_qr_lg}}">
+    <view class="qr_msg_box" catchtap="_noFn">
+        <view class="qr_user">
+            <image  class="img_qr_user inline_b" src="{{userData.portrait_path}}" mode="aspecFit"></image>
+            <view class="qr_user_text inline_b font_24">{{userData.UserName}}</view>
+        </view>
+        <view class="qr_img_box">
+            <image class="qr_code_lg" src="{{qrcode_lg}}" mode="aspecFit"></image>
+        </view>
+        <view class="qr_tips font_24 C_7f">扫一扫上面的二维码图案，识别会员</view>
+    </view>
+</view>
+<cardCode wx:if="{{showCardCode}}" id="dynamicCode"/>

@@ -1,0 +1,17 @@
+<!-- <form> -->
+<view class="main">
+  <view class="promote_box" wx:for="{{promList}}" wx:key="rule_id">
+    <view class="contains">
+      <view class="left_side" style="color:{{brand_info.style.font_color}};border-color:{{brand_info.style.font_color}};"> {{item.condition_type=='1'?"满减":"多买优惠"}}</view>
+      <view class="right_side">
+        <view class="_text title" wx:for="{{item.gift_tips}}" wx:key="tips_index" wx:for-item="tips_item" wx:for-index="tips_index">{{tips_item}}；</view>
+        <view class="title_main p_10">{{item.rule_nick_name || item.rule_name}}</view>
+        <view class="time" wx:if="{{item.time_type==1}}">每周{{item.limit_weekdays}}促销</view>
+        <view class="time" wx:elif="{{item.time_type==2}}">每月{{item.limit_days}}号促销</view>
+        <view class="time" wx:else>活动有效至 {{item.end_time}}</view>
+      </view>
+    </view>
+    <button hover-class="none" catchtap="jump" data-rule-id="{{item.rule_id}}" class="more_btn" style="color:{{brand_info.style.font_color}}">更多活动商品</button>
+  </view>
+</view>
+<!-- </form> -->

@@ -1,0 +1,157 @@
+<!--order_info.wxml-->
+<form bindsubmit="formAction" report-submit="true">
+  <view class="orderInfoPage">
+      <view class="orderInfoTit orderBox  top0" style='background:linear-gradient(-53deg,{{brand_info.style.bg_color}},{{bg_color}})'>
+          <view class="itemR">
+              <view class="orderStatus">
+                <block wx:if="{{order_info.order_status == 2}}">已取消</block>
+                <block wx:else>
+                  <block wx:if="{{order_info.pay_status == 0}}">待支付</block>
+                  <block wx:elif="{{order_info.pay_status == 2}}">兑换成功</block>
+                  <block wx:else>--</block>
+                </block>
+              </view>
+              <view class="order_sn"><text class="order_sn_text v_m">订单编号 {{order_info.mkOrderSn}}</text><text class="copy v_m" catchtap="copy">复制</text></view>
+              <view class="createTime">下单时间 {{order_info.create_time}}</view>
+          </view>
+      </view>
+      <!-- <view class="countDown orderBox" wx:if="{{count_down.sec != '00' || count_down.hour != '00' || count_down.min != '00' }}">
+          <text>提示 剩 </text>
+          <block>
+              <text class=""> {{count_down.hour}}小时 </text>
+              <text class=""> {{count_down.min}}分 </text>
+              <text class=""> {{count_down.sec}}秒 </text>
+          </block>
+          <text> 后订单将自动关闭</text>
+      </view> -->
+      <!-- 1 -->
+      <view class="orderBox top0 bottom30">
+          <text class="tit top top30">
+                <block wx:if="{{order_info.is_forecd_shop_self == 1}}">自提店铺</block>
+                <block wx:else>收货地址详情</block>
+          </text>
+                 
+           
+          <view class="d_flex inline" style='font-weight:600;'>
+              <view class="flex1">
+                {{order_info.consignee}}
+              </view>
+          </view>
+          <view class="d_flex inline right_0">
+              <view class="flex1">{{order_info.mobilePhone}}</view>
+          </view>
+          <view class="d_flex" style='margin:7rpx 0 0 0;'>
+                <view class="flex1">
+                    <block wx:if="{{order_info.is_forecd_shop_self == 1}}">{{store_info.storeName}}</block>
+                    <block wx:else>{{order_info.address}}</block>
+                    <!-- {{order_info.address}} -->
+                </view>
+          </view>
+      </view>
+      <!-- <view class="orderGoods orderBox" wx:for="{{sub_order_list}}" wx:for-item='order' wx:key="order_num"> -->
+      <view class="orderGoods orderBox">
+          <text class="tit">商品详情</text>
+          <view class="orderGood">
+              <view class="goods_info_img" catchtap='jump_detail' data-id="{{order_goods.goodsId}}">
+                  <view class="goods_info_img_stay {{sys_config.goods_image_size == '4-3' ? 'ratio_3_4' : ''}}">
+                      <image src="{{order_goods.thumbnail}}" mode="aspectFit" />
+                  </view>
+              </view>
+              <view class="good_msg">
+                  <view class="good_name">{{order_goods.goodsName}}</view>
+                  <view class="good_info">
+                      <view class="csName" wx:if="{{order_goods.specs}}">{{order_goods.specs}}</view>
+                  </view>
+                  <view class="good_count">x {{order_goods.number}}</view>
+                  <view class='money_bottom'>
+                      <view class="font_w font_28" style="color:{{brand_info.style.font_color}}">
+                        <block wx:if="{{order_goods.salesPrice && order_goods.salesPrice > 0}}">
+                          <view class="font_28 RMB" >¥ </view>
+                          <text class="">{{order_goods.salesPrice}}</text>
+                          <text class="" wx:if="{{order_goods.goodsIntegral > 0}}"> + </text>
+                        </block>
+                        <block wx:if="{{order_goods.goodsIntegral > 0}}">
+                          <text>{{order_goods.goodsIntegral}}积分</text>
+                        </block>
+                      </view>
+                      <view class="originalPrice" wx:if="{{order_goods.market_price != order_goods.salesPrice  && order_goods.market_price > 0}}">
+                          <view class="RMB_line">¥ </view>
+                          <view style='display:inline-flex;text-decoration:line-through'>{{order_goods.market_price}}</view>
+                      </view>
+                  </view>
+              </view>
+          </view>
+
+      </view>
+      <view class="orderBox">
+          <text class="tit">资费详情</text>
+          <view class="tit_box">
+              <text class="row_tit">商品件数</text>{{order_goods.number}}件</view>
+          <view class="tit_box">
+              <text class="row_tit">商品总价</text>¥{{order_goods.salesPrice}}</view>
+          <view class="tit_box" wx:if="{{order_info.surplus != '' && (order_info.surplus > 0)}}">
+              <text class="row_tit">使用余额</text>{{order_info.surplus > 0 ? '- ' : ''}}¥{{order_info.surplus}}</view>
+          <view class="tit_box" wx:if="{{order_info.goodsIntegral > 0}}">
+              <text class="row_tit">商品积分</text>-{{order_info.goodsIntegral}}</view>
+          <view class="tit_box" wx:if="{{order_info.integral_amount > 0}}">
+              <text class="row_tit">积分抵扣</text>
+              <view>
+                <text>{{order_info.integral_amount > 0 ? '- ' : ''}}¥{{order_info.integral_amount}}</text>
+                <text wx:if="{{order_info.integral > 0 }}">(使用{{order_info.integral}}积分)</text>
+              </view>
+          </view>
+          <view class="tit_box" wx:if="{{order_info.bonus > 0}}">
+              <text class="row_tit">优惠券抵扣</text>- ¥{{order_info.bonus}}
+          </view>
+          <view class="tit_box">
+              <text class="row_tit">运费</text><block wx:if="{{order_info.shippingFee > 0 || order_info.shippingFee != '0.00'}}">+ </block>¥{{order_info.shippingFee}}</view>
+          <view class="tit_box bold">
+              <text class="row_tit">订单总价</text>¥{{order_info.orderAmount}}</view>
+      </view>
+
+      <view class="orderBox">
+          <text class="tit">支付</text>
+          <view class='row_tit_box'>
+              <text class="row_tit">支付方式</text>{{order_info.pay_name}}</view>
+          <view class='row_tit_box'>
+              <text class="row_tit">支付状态</text>
+              <block wx:if="{{order_info.pay_status == 0}}">未支付</block>
+              <block wx:elif="{{order_info.pay_status == 2}}">已支付</block>
+              <block wx:else>--</block>
+          </view>
+      </view>
+      <!-- <view class="orderBox relative padding_18" wx:if="{{order_info.invoice_no}}">
+          <text class="tit">物流信息</text>
+          <view class='padding_5'>
+              <text class="row_tit ">快递公司</text>{{order_info.shipping_name}}</view>
+          <view>
+              <text class="row_tit">快递单号</text>{{order_info.invoice_no ? order_info.invoice_no : 'N/S'}}</view>
+          <button wx:if="{{order_info.invoice_no!=''}}" class="order_button" data-invoice-no="{{order_info.invoice_no}}" bindtap='jump_order' hover-class='none'>查询物流</button>
+      </view> -->
+      <view class="orderBox">
+          <text class="tit">备注</text>
+          <view>{{order_info.remark != "" ? order_info.remark : '暂无备注'}}</view>
+      </view>
+  </view>
+  <!--浮层按钮-->
+  <view class="order_opreate_btns bg_fff font_0 t_r b_t">
+      <button hover-class="none" form-type="submit" class="opreate_btns b_1 font_24 radius_10 b_c_B2B2B2 v_m" bindtap="onTurnBack">返回首页</button>
+      <!-- <picker class="cancel_order_picker v_m" bindchange="cancelOrder" value="{{index}}" range="{{order_cancel_reason}}">
+          <button hover-class="none" form-type="submit" class="opreate_btns b_1 font_24 radius_10 b_c_B2B2B2 v_m" wx:if='{{order_info.order_status != 2 && order_info.pay_status == 0}}' data-op-type="1" bindtap="cancelOrder">取消订单</button>
+      </picker> -->
+      <button hover-class="none" form-type="submit" class="opreate_btns b_1 font_24 radius_10 b_c_B2B2B2 v_m" wx:if='{{order_info.order_status != 2 && order_info.pay_status == 0}}' data-op-type="1" bindtap="cancelOrder">取消订单</button>
+      <button hover-class="none" form-type="submit" class="opreate_btns font_24 b_1 radius_10 b_c_B2B2B2 v_m" wx:if="{{order_info.order_status != 2 && order_info.pay_status == 0 && order_info.pay_name == '微信支付'}}" bindtap="toPay">去支付</button>
+      <!-- <button hover-class="none" form-type="submit" class="opreate_btns b_1 font_24 radius_10 b_c_B2B2B2 v_m" wx:elif="{{order_info.orderStatus=='已完成' && order_info.can_comment === '1'}}" bindtap="toComment">去评价</button> -->
+
+  </view>
+</form>
+<!-- <view class="deal_tip" wx:if="{{show_pay_load}}">
+    <view class="deal_tip_txt">订单处理中~</view>
+</view> -->
+<btnFollow id="btnFollow" wx:if='{{btn_follow_must_show}}' btn_follow_must_show='{{btn_follow_must_show}}'></btnFollow>
+<!--客服-->
+<cs></cs>
+<bgHover id="bg" mask-bg="transparent"/> 
+
+<dialog id="pageDialog" marsk="{{marskValue}}"></dialog>
+<orderSync id="orderSync" mask-bg="transparent" touch-cancel="{{false}}" type='small' tips="订单同步中"/>

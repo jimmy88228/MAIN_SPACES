@@ -1,0 +1,26 @@
+<view wx:if="{{showRefresh}}" class="center-box anim-fade-in anim-delay">
+    <loading-view class="center-box-item" />
+</view>
+<block wx:elif="{{isAttached}}">
+    <view wx:if="{{!isLogin}}" class="center-box anim-fade-in">
+        <auth-view class="center-box-item" msg="登录后查看抽签码" bindauthed="onAuthed" />
+    </view>
+    <scroll-view wx:else enable-flex="true" class="code-list anim-slide-in-up" refresher-enabled
+        refresher-default-style="white" bindrefresherrefresh="onRefresh" bindscrolltolower="onScrolltolower"
+        refresher-triggered="{{triggered}}" scroll-y>
+        <view wx:if="{{list&&list.length > 0}}" class="code-list-box">
+            <view class="code-list-cell" wx:for="{{list}}" wx:key="id" data-index="{{index}}" id="code-{{index}}"
+                bindtap="onItemTap">
+                <text class="title newline {{item.status == 2 ? 'nowin-state' : ''}}">{{item.title}}</text>
+                <view class="status {{item.status == 2 ? 'nowin-state' : (item.status == 1 ? 'win-state' : '') }}">
+                    {{item.statusName}} </view>
+                <view class="code {{item.status == 2 ? 'nowin-state' : ''}}">{{item.code}}</view>
+            </view>
+            <more-view wx:if="{{list.length>15}}" data="{{ {loading:showLoadMore,end:isEnd} }}" />
+        </view>
+        <view wx:else class="center-box anim-fade-in">
+            <view class="center-box-item">你暂时还没有抽签码哦</view>
+        </view>
+    </scroll-view>
+</block>
+<dialog-poster wx:if="{{usePosterDialog}}" id="dialog-poster"></dialog-poster>

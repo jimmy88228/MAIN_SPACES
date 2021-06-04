@@ -1,0 +1,32 @@
+<!--pages/micro_mall/invoice/invoice_list/l_box/l_box.wxml-->
+<view class="main">
+  <view class="tab_box">
+    <view class="tab" wx:for="{{tab}}" wx:key="index" catchtap="onTap" data-type="tab" data-index="{{item.id}}">
+      <view class="t_title {{cur_index==item.id?'_bold':''}}" style="color:{{cur_index==item.id?brand_info.style.font_color:'#7f7f7f'}};">{{item.text}}</view>
+      <view class="t_line" wx:if="{{cur_index==item.id}}" style="background:{{brand_info.style.bg_color}};"></view>
+    </view>
+  </view>
+  <scroll-view class="scroll_box" scroll-y bindscrolltolower="handle_scroll">
+    <view class="list_box" wx:if="{{!empty[cur_index]}}">
+      <block wx:for="{{list[cur_index]}}" wx:key="index">
+        <view class="l_item" catchtap="onTap" data-type="detail" data-id="{{item.id}}">
+          <view class="i_title">
+            {{item.name}}
+          </view>
+          <view class="i_content_box">
+            <view class="i_c_left">
+              <view class="i_price" style="color:{{brand_info.style.font_color}};">¥{{item.orderPrice}}</view>
+              <view class="i_tip">电子发票</view>
+            </view>
+            <view class="i_c_right">
+              <view class="i_time">{{item.createTime}}</view>
+            </view> 
+          </view>
+        </view>
+      </block>
+    </view>
+    <view class="empty" wx:else>
+      暂无数据
+    </view>
+  </scroll-view>
+</view>

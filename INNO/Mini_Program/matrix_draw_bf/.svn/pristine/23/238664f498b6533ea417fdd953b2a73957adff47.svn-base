@@ -1,0 +1,6 @@
+<!--pages/micro_mall/video_shopping/v_page/v_components/v_top_bar.wxml-->
+<view wx:if="{{showBar}}" class="bar_box" style="height:{{initHeight}};top:{{initTop}}">
+  <view class="main_icon" catchtap="onTap" data-type="back">
+      <image src="{{img_back}}" mode="aspectFit" class="img_back"></image>  
+  </view>
+</view>

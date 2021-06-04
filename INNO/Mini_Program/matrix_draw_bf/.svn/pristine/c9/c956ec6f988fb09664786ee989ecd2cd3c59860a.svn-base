@@ -1,0 +1,18 @@
+/* pages/component/custom/embed_custom/embed_custom.wxss */ 
+ 
+.page_component{
+  /* padding-top:74rpx; */
+   width:100%;
+  height:100%; 
+  padding-top: 0;
+  box-sizing:border-box;
+  position:relative;
+  background-color:#fff;
+} 
+.page_scroll{
+  position:absolute;
+  top:0px;
+  left:0px;
+  width:100%;
+  height:100%;
+} 
