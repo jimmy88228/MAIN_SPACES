@@ -58,10 +58,10 @@ function checkAuthorize(openType, detail) {
 			return Promise.reject("用户授权失败");
 		} else {
 			return LM.register(true).ignore(() => {
+				let page = getCurrentPages().pop();
+					page.checkLoginChange();
 				if (!LM.isLogin)
 					return Promise.reject("授权注册失败");
-					let page = getCurrentPages().pop();
-					page.checkLoginChange();
 			});
 		}
 	} else if (openType == OpenType.Phone) {

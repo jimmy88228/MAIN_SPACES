@@ -18,7 +18,7 @@ App({
             // LgMg.init().createSession();
         // });
         LM.login(false).ignore(() => {
-            console.log('进来 LM.login ignore')
+            console.log('进来app LM.login ignore')
         })
     },
     onHide() {

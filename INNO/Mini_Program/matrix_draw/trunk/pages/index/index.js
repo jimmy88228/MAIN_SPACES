@@ -146,6 +146,12 @@ Page.BasePage({
             isAttached: true,
             showRefresh: true
         }); 
+        setTimeout(() => {
+            this.setData({
+                showRefresh: false,
+                isLogin:app.LM.isLogin
+              }); 
+        }, 2000);
         // LM.login(false)
         //     .ignore(() => {
         //         console.log('login then');

@@ -98,27 +98,38 @@ Component({
         this.show();
         this.setData({
           prizeList,
+          showAnimBool:true,
           baseW:getBaseW(),
         })
         console.log('onAttached',this.data.baseW);
         wx.nextTick(()=>{
           setTimeout(()=>{
             this.setData({
-              start:true
-            })
+              start:true,
+              mainOp:true
+            });
+            setTimeout(() => {
+              this.setData({
+                animBoxStyle:"opacity:0;"
+                // mainOp:false,
+              })
+              setTimeout(() => {
+                this.setData({
+                  start:false,
+                  // mainOp:true,
+                  // animBoxStyle:"",
+                  showAnimBool:false,
+                  showPrizeBool:true, 
+                });
+                wx.nextTick(()=>{
+                  this.setData({
+                    animBoxStyle:"opacity:1;"
+                  })
+                })
+              }, 300);
+            }, 6000);
           },150)
-        })
-        // this._getQuery('#img-box0','component').then((res)=>{
-        //   console.log('resres',res,app.SIH.systemInfo.windowWidth/750*214);
-        //   let info = res && res[0] || {};
-        //   setTimeout(() => {
-        //     this.setData({
-        //       jimmy1:true,
-        //       baseW:info.width||0,
-        //       start:true
-        //     })
-        //   }, 150);
-        // })
+        }) 
       }
         // closeWin() {
         //     this.dismiss();

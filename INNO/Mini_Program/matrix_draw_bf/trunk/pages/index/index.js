@@ -126,6 +126,7 @@ Page.BasePage({
         });
         LM.login(false)
             .ignore(() => {
+                console.log('进来index LM.login ignore')
                 this.setData({
                     showRefresh: false,
                     isLogin:app.LM.isLogin

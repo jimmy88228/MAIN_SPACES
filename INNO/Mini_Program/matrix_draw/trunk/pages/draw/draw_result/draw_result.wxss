@@ -4,7 +4,7 @@ page{
   --img-base-front:198rpx;
 }
 .main{
-  position: relative;
+  position: absolute;
   width: 100%;
   top: 0;
   left: 0;
@@ -15,7 +15,15 @@ page{
   min-height: 100vh;
 }
 .prize-box{
-  color: #fff;
+  color: #fff; 
+  min-height: 100vh;
+  box-sizing: border-box;
+  padding: 30rpx;
+  padding-top: 100rpx; 
+  position: relative;
+  z-index: 3;
+  opacity: 0;
+  transition: opacity 0.3s;
 }
 
 .title{
@@ -72,6 +80,7 @@ page{
   left: 0;
   transform: translateY(-50%);
   z-index: 1;
+  transition: opacity 0.3s;
 }
 .prize-list-box{
   position: absolute;

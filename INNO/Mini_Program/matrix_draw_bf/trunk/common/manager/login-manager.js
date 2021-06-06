@@ -32,23 +32,8 @@ function readData(key) {
 class LoginManager {
   constructor() {
     this.isCanUrPf = !!wx.getUserProfile;
-    Func.readAllData.call(this);
+    Func._readAllData.call(this);
   }
-  // get sessionKey() {
-  //     return this._sessionKey || "";
-  // }
-
-  // get isLogin() {
-  //     return !!this._userToken;
-  // }
-
-  // get token() {
-  //     return (this.isLogin && this._userToken) || "";
-  // }
-
-  // get userId() {
-  //     return (this.isLogin && this._userId) || 0;
-  // }
 
   // //注册
   // register(params) {
@@ -64,7 +49,7 @@ class LoginManager {
   //         return Promise.reject(this._loginErr);
   //     }
   //     return this.relogin();
-  // }
+  // } 
 
   // //重新登录
   // relogin() {
@@ -140,103 +125,69 @@ class LoginManager {
   get privateInfo() {
     return this.__privateInfo || {}
   }
- 
+
   //云店登录  
   login(showLoading) {
     console.log('进来 login', this.isLogin, this.userToken)
     if (this.isLogin) {
       return Promise.resolve(this.userToken)
     }
-    if (this._loginHold) {
-      console.log('进来 _loginHold', this.isLogin, this.userToken)
-      return this._loginHold;
+    let h = this._lgh;
+    if (h) {
+      console.log('进来 _lgh', this.isLogin, this.userToken)
+      return h;
     }
-    this._loginHold = this.getWxSessionIdAsync(showLoading).then(() => {
-      return userLogin.call(this, showLoading).then(e => {
-        let data = e.data || {};
-        if (!data.userKey) return Promise.reject();
-        return getUserExtraInfos.call(this, data.userKey);
-      }).finally(() => {
-        setTimeout(() => { //500毫秒后释放；
-          this._loginHold && delete this._loginHold;
-        }, 500)
+    this._lgh = h = Func._login.call(this,showLoading)
+      .finally(()=>{
+        this._lgh && delete this._lgh;
       })
-    })
-    return this._loginHold;
+    return h;
   }
-  
+
   //注册 
   register(showLoading) {
-    console.log('进来 isCanUrPf', this.isCanUrPf)
-    return this.isLogin ? Promise.resolve(this.userToken) : getUserProfile.call(this)
-      .then(e => {
-        return this.getWxSessionIdAsync(false, this.isCanUrPf).then(() => {
-          return e
-        })
+    console.log('进来 register', this.isLogin, this.userToken)
+    if (this.isLogin) {
+      return Promise.resolve(this.userToken)
+    }
+    let h = this._regh;
+    if (h) {
+      console.log('进来 _regh', this.isLogin, this.userToken)
+      return h;
+    }
+    this._regh = h = Func._register.call(this,showLoading)
+      .finally(()=>{
+        this._regh && delete this._regh;
       })
-      .then(e => {
-        return e;
-        // let fromUser = PH.paramsJson("fromUser") || "";
-        // console.log(fromUser,"注册前fromUser数据")
-        // let codeType = PH.paramsJson("codeType") || "";
-        // if (fromUser && codeType != "myStoreCode"){//不是扫店员二维码
-        //   return getUserExtraInfos.call(this, fromUser).then( userInfo =>{
-        //     let userCode = userInfo.userCode;
-        //     return { ...e, userCode}
-        //   })
-        // }else{
-        //   return e;
-        // }
-      })
-      .then(e => {
-        return userRegister.call(this, showLoading, e)
-      })
-      .then(e => {
-        return this.userToken;
-        return getUserExtraInfos.call(this, userToken).then(userInfos => {
-          if (userInfos) {
-            this.savePrivateInfo({userInfos}, true);
-            return userToken;
-          }
-        })
-      });
+    return h;
   }
+
   //创建sessionId 
-  createWxSessionId(showLoading) {
-    return Wxp.login()
-      .then(e => {
-        this.removeSessionId();
-        return createSession.call(this, showLoading, e.code);
-      }).catch(error => {
-        console.log("createSession catch", error);
-        return Promise.reject(error);
-      });
+  createWxSession(showLoading) {
+    let h = this._cwxsh;
+    console.log('进来 createWxSession', h)
+    if(h){
+      return h
+    }
+    this._cwxsh = h = Func._createWxSession.call(this,showLoading)
+      .finally(()=>{
+        this._cwxsh && delete this._cwxsh;
+      })
+    return h 
   }
   //读取sessionId 
   getWxSessionIdAsync(showLoading, isReject = false) {
     let h = this._gwxsh;
-    console.log('进来 getWxSessionIdAsync',h)
+    console.log('进来 getWxSessionIdAsync', h)
     if (h) {
       return h
     };
-    this._gwxsh = h = Func.getWxSession.call(this,showLoading,isReject)
-        .finally(() => {console.log('Fnc getWxsn finally');this._gwxsh && delete this._gwxsh});
-    return h;
-  }
-  //读取token
-  getUserTokenAsync(showLoading) {
-    console.log('进来 getUserTokenAsync', this.userToken)
-    return this.userToken ?
-      Promise.resolve({
-        userToken: this.userToken,
-        cache: true
-      }) :
-      this.register(showLoading).then(userToken => {
-        return {
-          userToken: userToken,
-          cache: false
-        };
+    this._gwxsh = h = Func._getWxSession.call(this, showLoading, isReject)
+      .finally(() => {
+        console.log('Fnc getWxsn finally');
+        this._gwxsh && delete this._gwxsh
       });
+    return h;
   }
 
   //读取个人信息
@@ -246,46 +197,17 @@ class LoginManager {
   }
 
   /*保存数据*/
-  saveSessionId(sessionId) {
-    if (this._sessionId == sessionId) return;
-    this._sessionId = sessionId || "";
-    saveData(STORAGE_SESSION_ID_KEY, this._sessionId);
-  }
-  saveOpenId(openId) {
-    if (this._openId == openId) return;
-    this._openId = openId || "";
-    saveData(STORAGE_OPEN_ID_KEY, this._openId);
-  }
-  saveUserKey(userKey) {
-    if (this._userKey == userKey) return;
-    this._userKey = userKey || "";
-    saveData(STORAGE_USER_KEY, this._userKey);
-  }
-  saveShareCode(shareCode) {
-    if (this._shareCode == shareCode) return;
-    this._shareCode = shareCode || "";
-    saveData(STORAGE_SHARE_CODE_KEY, this._shareCode);
-  }
-  saveUserToken(userToken) {
-    this._userToken = userToken || "";
-    saveData(STORAGE_USER_TOKEN_KEY, this._userToken);
-  }
-  saveUserInfo(userInfos) {
-    if (!userInfos) return;
-    this._userInfos = userInfos || {};
-    saveData(STORAGE_USER_INFOS_KEY, this._userInfos);
-  }
   savePrivateInfo(data) {
     this._privateInfo = {
       ...this._privateInfo,
       ...data
     }
-    console.log('进来 savePrivateInfo', this._privateInfo);
-    if (data.cookieId) {
-      this.saveOpenId(data.cookieId);
-    }
+    console.log('进来 savePrivateInfo',data,this._privateInfo);
     if (data.sessionId) {
       this.saveSessionId(data.sessionId);
+    }
+    if (data.cookieId) {
+      this.saveOpenId(data.cookieId);
     }
     if (data.userToken) {
       this.saveUserToken(data.userToken);
@@ -300,14 +222,43 @@ class LoginManager {
       this.saveUserInfo(data.userInfo);
     }
   }
-
+  saveSessionId(sessionId) {
+    if (this._sessionId == sessionId) return;
+    this._sessionId = sessionId || "";
+    saveData(STORAGE_SESSION_ID_KEY, this._sessionId);
+  }
+  saveOpenId(openId) {
+    if (this._openId == openId) return;
+    this._openId = openId || "";
+    saveData(STORAGE_OPEN_ID_KEY, this._openId);
+  }
+  saveShareCode(shareCode) {
+    if (this._shareCode == shareCode) return;
+    this._shareCode = shareCode || "";
+    saveData(STORAGE_SHARE_CODE_KEY, this._shareCode);
+  }
+  saveUserToken(userToken) {
+    this._userToken = userToken || "";
+    saveData(STORAGE_USER_TOKEN_KEY, this._userToken);
+  }
+  saveUserKey(userKey) {
+    if (this._userKey == userKey) return;
+    this._userKey = userKey || "";
+    saveData(STORAGE_USER_KEY, this._userKey);
+  }
+  saveUserInfo(userInfos) {
+    if (!userInfos) return;
+    this._userInfos = userInfos || {};
+    saveData(STORAGE_USER_INFOS_KEY, this._userInfos);
+  }
+  
   logout() { //注销
     console.log('进来 logout', )
     this.removeLoginData();
     this.removeSessionId();
   }
-  pastLogout() { //token过期（不注销SessionId
-    console.log('进来 pastLogout', )
+  tokenLogout() { //token过期（不remove SessionId
+    console.log('进来 tokenLogout', )
     this.removeLoginData();
   }
   removeLoginData() {
@@ -324,7 +275,7 @@ class LoginManager {
     delete this._shareCode;
     delete this._loginHold;
   }
-  removeSessionId() {
+  removeSessionId() { //token过期不需要remove SessionId
     console.log('进来 removeSessionId', )
     if (!this._sessionId) return;
     removeData(STORAGE_SESSION_ID_KEY);
@@ -350,19 +301,19 @@ function userRegister(showLoading, iData = {}) {
     "actionParam2": "",
     "actionParam3": "",
   }
-  if(this.isCanUrPf){
-    if(iData && iData.iv && iData.encryptedData){
+  if (this.isCanUrPf) {
+    if (iData && iData.iv && iData.encryptedData) {
       data.profileIv = iData && iData.iv || "";
       data.profileEncryptData = iData && iData.encryptedData || "";
-    }else{
+    } else {
       data.avatarUrl = userInfo.avatarUrl || "";
       data.nickName = userInfo.nickName || "";
-    } 
-  }else{
+    }
+  } else {
     data.iv = iData && iData.iv || "";
     data.encryptData = iData && iData.encryptedData || "";
   }
-  console.log('进来 userRegister', url,iData,data)
+  console.log('进来 userRegister', url, iData, data)
   return RegApi[url]({
     data,
     other: {
@@ -372,7 +323,6 @@ function userRegister(showLoading, iData = {}) {
     if (e.code == "1") {
       let data = e.data || {};
       this.savePrivateInfo(data);
-      // updateClientSession.call(this, data);
       return e;
     }
     SMH.showToast({
@@ -384,7 +334,6 @@ function userRegister(showLoading, iData = {}) {
 
 //登录请求
 function userLogin(showLoading) {
-  console.log('进来 userLogin')
   return RegApi.userLogin({
       data: {
         sessionId: this.sessionId || ""
@@ -395,14 +344,15 @@ function userLogin(showLoading) {
     })
     .then(e => {
       let data = e.data = (e.data || {});
+      console.log('进来 调Login接口',data)
       this.savePrivateInfo({
         ...data,
       });
       return e;
-    }).catch(error => {
-      console.log('进来 Login catch', this.isLogin, error);
+    }).catch(e => {
+      console.log('进来 Login catch', this.isLogin, e);
       this.removeLoginData();
-      return Promise.reject(error);
+      return Promise.reject(e);
     }).finally(() => {
       this._isCheckLogin = true;
     });
@@ -433,7 +383,6 @@ function getUserExtraInfos(userKey, isShowLoad = true) {
 function createSession(showLoading, code) {
   return RegApi.createSession({
     data: {
-      // brandCode: Conf.BRAND_CODE,
       code: code
     },
     other: {
@@ -471,11 +420,10 @@ function checkSession(showLoading, sessionId) {
   });
 }
 
-//
 function getUserInfos(withCredentials = false) {
   return Wxp.getSetting()
     .then(e => {
-      console.log('进来 getSetting',e);
+      console.log('进来 getSetting', e);
       if (e.authSetting["scope.userInfo"]) {
         return e
       }
@@ -487,7 +435,7 @@ function getUserInfos(withCredentials = false) {
           lang: 'zh_CN'
         })
         .then(e => {
-          console.log('进来 getUserInfo',e);
+          console.log('进来 getUserInfo', e);
           if (e.userInfo) {
             return e;
           } else {
@@ -521,28 +469,6 @@ function getUserProfile(desc = "") {
     return getUserInfos.call(this, true)
   }
 }
-//获取微信授权用户基本信息
-// function getUserInfos(withCredentials = false) {
-//   console.log('进来 getUserInfos', )
-//   return Wxp.getSetting()
-//     .then(e => {
-//       if (true || e.authSetting["scope.userInfo"]) { //待完善getUserProfile接口
-//         return Wxp.getUserInfo({
-//           withCredentials: withCredentials,
-//           lang: 'zh_CN'
-//         });
-//       } else {
-//         return  Promise.reject("授权失效");
-//       }
-//     })
-//     .then(e => {
-//       if (e.userInfo) {
-//         return e;
-//       } else {
-//         return Promise.reject("授权失败");
-//       }
-//     });
-// }
 
 //私有函数
 const Func = {
@@ -615,7 +541,86 @@ const Func = {
   //         removeData(STORAGE_USERID_KEY);
   //     }
 
-  readAllData() {
+  _login(showLoading){
+    console.log('进来 Func._login')
+    return Func._getWxSession.call(this, showLoading).then(() => {
+      return userLogin.call(this, showLoading)
+        .then(()=>{
+          return getUserExtraInfos.call(this, data.userKey);
+        })
+    })
+  },
+  _register(showLoading){
+    console.log('进来 Func._register')
+    return getUserProfile.call(this)
+      .then(e => {
+        return Func._getWxSession.call(this, showLoading, this.isCanUrPf).then(() => {
+          return e
+        })
+      })
+    // .then(e => {
+    //   return e;
+    //   // let fromUser = PH.paramsJson("fromUser") || "";
+    //   // console.log(fromUser,"注册前fromUser数据")
+    //   // let codeType = PH.paramsJson("codeType") || "";
+    //   // if (fromUser && codeType != "myStoreCode"){//不是扫店员二维码
+    //   //   return getUserExtraInfos.call(this, fromUser).then( userInfo =>{
+    //   //     let userCode = userInfo.userCode;
+    //   //     return { ...e, userCode}
+    //   //   })
+    //   // }else{
+    //   //   return e;
+    //   // }
+    // })
+        .then(e => {
+          return userRegister.call(this, showLoading, e)
+        })
+          .then(e => {
+            return this.userToken;
+            // return getUserExtraInfos.call(this, userToken).then(userInfos => {
+            //   if (userInfos) {
+            //     this.savePrivateInfo({
+            //       userInfos
+            //     }, true);
+            //     return userToken;
+            //   }
+            // })
+          });
+  },
+  _getWxSession(showLoading, isReject) {
+    console.log('进来 Func._getWxSession')
+    return new Promise((rs, rj) => this.sessionId ? rs(this.sessionId) : rj()).then(() => {
+      return checkSession.call(this, showLoading, this.sessionId)
+    }).catch(() => {
+      console.log('没有sessionId 或 sessionKey过期', isReject);
+      this.removeSessionId();
+      if (!isReject) { //重新createWxSession
+        return Func._createWxSession.call(this,showLoading)
+      } else { // getUserProfile流程需要重新create，再弹吐司然后用户重新点击授权
+        Func._createWxSession.call(this,showLoading).then(() => {
+          SMH.showToast({
+            title: "状态已过期，请重新授权",
+            duration: 2500,
+          })
+          setTimeout(() => {
+            rj();
+          }, 2000)
+        });
+      }
+    })
+  },
+  _createWxSession(showLoading){
+    console.log('进来 Func._createWxSession')
+    return Wxp.login()
+      .then(e => {
+        this.removeSessionId();
+        return createSession.call(this, showLoading, e.code);
+      }).catch(e => {
+        console.log("createSession catch", e);
+        return Promise.reject(e);
+      });
+  },
+  _readAllData() {
     let sId = readData(STORAGE_SESSION_ID_KEY) || "";
     if (sId) {
       this._sessionId = sId;
@@ -640,37 +645,6 @@ const Func = {
     if (sCode) {
       this._shareCode = sCode;
     }
-    this._isCheckLogin = false;
-  }, 
-  getWxSession(showLoading,isReject){
-    console.log('进来 Fnc.getWxSession',this.sessionId)
-    return new Promise((rs,rj)=> this.sessionId ? 
-      checkSession.call(this, showLoading, this.sessionId).then(e => {
-        rs(e);
-      }).catch(() => {
-        console.log('sessionKey过期',isReject);
-        this.removeSessionId();
-        if (isReject) { //getUserProfile 流程需要吐司重新点击授权
-          this.createWxSessionId(showLoading).then(() => {
-            SMH.showToast({
-              title: "状态已过期，请重新授权",
-              duration: 3000,
-            })
-          });
-          rj();
-        } else {
-          this.createWxSessionId(showLoading).then(e=>{
-            rs(e)
-          }).catch(e=>{
-            rj(e)
-          });
-        }
-      }) : this.createWxSessionId(showLoading).then(e=>{
-          rs(e)
-      }).catch(e=>{
-        rj(e)
-      })
-    )
   },
 };
 

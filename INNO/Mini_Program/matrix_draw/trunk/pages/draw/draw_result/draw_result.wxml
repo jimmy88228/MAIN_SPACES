@@ -25,24 +25,27 @@
         </view>
     </view> -->
     
-    <view class="main" catchtap="noAction" catchtouchmove="noAction" style="{{mainStyle}} {{start?'opacity:1;':''}}">
-      <!-- 抽奖动画 -->
+    <!-- <view class="main" catchtap="noAction" catchtouchmove="noAction" style="{{mainStyle}} {{start?'opacity:1;':''}}"> -->
+    <view class="main" catchtap="noAction" style="{{mainStyle}} {{mainOp?'opacity:1;':''}}">
       <view class="anim-bg-filter"></view>
-      <block wx:for="{{[1,2]}}" wx:key="index">
-        <view class="anim-box {{index==0?'front':''}}" bindtap="onTap" data-type="close"> 
-          <view class="prize-list-box {{index==0?'':'filer'}}" style="{{start?'opacity:1;transform: translateX(-' + (baseW*SUM) + 'px)':''}}">
-            <block wx:for="{{prizeList}}" wx:key="index">
-              <view class="img-box">
-                <image mode="aspectFit" class="img-prize2" src="{{item.src}}"></image>
-              </view>
-            </block>
-          </view> 
-          <view class="line" wx:if="{{index==0}}"></view>
-        </view>
+      <block wx:if="{{showAnimBool}}">
+        <!-- 抽奖动画 -->
+        <block wx:for="{{[1,2]}}" wx:key="index">
+          <view style="{{animBoxStyle}}" class="anim-box {{index==0?'front':''}}" bindtap="onTap" data-type="close"> 
+            <view class="prize-list-box {{index==0?'':'filer'}}" style="{{start?'opacity:1;transform: translateX(-' + (baseW*SUM) + 'px)':''}}">
+              <block wx:for="{{prizeList}}" wx:key="index">
+                <view class="img-box">
+                  <image mode="aspectFit" class="img-prize2" src="{{item.src}}"></image>
+                </view>
+              </block>
+            </view> 
+            <view class="line" wx:if="{{index==0}}"></view>
+          </view>
+        </block>
       </block>
       
       <!-- 抽奖结果 -->
-      <view class="prize-box" wx:if="{{false}}">
+      <view class="prize-box" style="{{animBoxStyle}}" wx:elif="{{showPrizeBool}}">
         <block wx:if="{{true}}">
           <view class="title">恭喜获得</view>
           <view class="prize-name">{{}}奖品</view> 
