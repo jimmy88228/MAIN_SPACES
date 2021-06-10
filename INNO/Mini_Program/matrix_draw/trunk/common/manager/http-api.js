@@ -184,5 +184,8 @@ export const LotteryApis = {
     },
     lotteryWinningRecordDetail: "/api/Lottery/Get_LotteryWinningRecordDetail?userToken={userToken}&activityId={activityId}&winningRecordId={winningRecordId}&brandCode={brandCode}",
     getLotteryShippingInfo: "/api/Lottery/Get_LotteryShippingInfo?userToken={userToken}&winningRecordId={winningRecordId}&invoiceNo={invoiceNo}&isBackground={isBackground}&isForce={isForce}&brandCode={brandCode}",
-    getLotteryAdSlot:"/api/Lottery/Get_LotteryAdSlot?brandCode={brandCode}"
+    getLotteryAdSlot:"/api/Lottery/Get_LotteryAdSlot?brandCode={brandCode}",
+
+
+    get_LotteryActivitDetail:"/api/Lottery/Get_LotteryActivitDetail",
 }

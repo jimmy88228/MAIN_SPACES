@@ -10,8 +10,7 @@
     "pages/lottery/lottery",
     "pages/activity/past-list/past-list",
     "pages/chosen-one/chosen-one",
-    "pages/draw/draw",
-    "pages/draw/draw_result/draw_result"
+    "pages/draw/draw"
   ],
   "usingComponents": {
     "page-nav": "/components/page-nav/page-nav",

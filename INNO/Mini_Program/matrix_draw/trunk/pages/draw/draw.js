@@ -34,14 +34,17 @@ Page.BasePage({
         //     lotteryImg: lotteryImg,
         //     lotteryTipImg: lotteryTipImg
         // });
-        this.checkLoginChange();
+        // this.checkLoginChange();
     },
     onReady() {
         getAdSlot.call(this)
     },
     onShow: function () {
-        this.draw_box = this.draw_box || this.selectComponent("#draw_box");
-        this.draw_box._onShow();
+        app.LM.login(true).ignore(()=>{
+            this.checkLoginChange();
+            this.draw_box = this.draw_box || this.selectComponent("#draw_box");
+            this.draw_box._onShow();
+        })
         // listen.call(this);
         // console.log('draw_box',this.draw_box)
         // this.draw_box.showReset(); 
@@ -75,24 +78,24 @@ Page.BasePage({
         // app.EB.listen("resetData", () => {
         //     this.draw_box.hideReset();
         // });
-        setTimeout(() => {
-            this.draw_box.hideReset();
-        }, 300);
-        // 用来清除存储的setTimeout
-        this.draw_box.cancelTime();
+        // setTimeout(() => {
+        //     this.draw_box.hideReset();
+        // }, 300);
+        // // 用来清除存储的setTimeout
+        // this.draw_box.cancelTime();
     },
     onUnload() {
         // 用来重置大转盘
         // app.EB.listen("resetData", () => {
         //     this.draw_box.hideReset();
         // });
-        setTimeout(() => {
-            this.draw_box.hideReset();
-        }, 300);
-        // 用来清除存储的setTimeout
-        this.draw_box.cancelTime();
-        // 卸载页面时候清除音频
-        this.draw_box.stopPlay();
+        // setTimeout(() => {
+        //     this.draw_box.hideReset();
+        // }, 300);
+        // // 用来清除存储的setTimeout
+        // this.draw_box.cancelTime();
+        // // 卸载页面时候清除音频
+        // this.draw_box.stopPlay();
         
     },
     onShareAppMessage: function () {

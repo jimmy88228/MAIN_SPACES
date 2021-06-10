@@ -29,7 +29,7 @@ Component({
             loadData.call(this).then(() => {
                 this.draw_acts._onShow(this.actInfo);
             });
-            lotteryWinningRecord.call(this);
+            // lotteryWinningRecord.call(this);
         }, 
     }
 })
@@ -37,17 +37,15 @@ Component({
 
 
 function loadData(isShowLoad = true) {
-    return app.LotteryApi.lotteryActivitDetail({
+    return app.LotteryApi.get_LotteryActivitDetail({
         params: {
             activityId: this.data.activityId || 0,
-            brandCode: app.Conf.BRAND_CODE,
-            userToken: app.LM.userKey
         },
         extraData: {
             isShowLoad: isShowLoad
         }
     }).then(res => {
-        console.log('loadData')
+        console.log('loadData',res)
         if (res.code == 1) {
             let data = res.data || {};
             this.actInfo = data;

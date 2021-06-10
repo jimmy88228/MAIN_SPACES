@@ -18,9 +18,8 @@
         "checkSiteMap": false,
         "uploadWithSourceMap": true,
         "compileHotReLoad": true,
-        "useMultiFrameRuntime": true,
+        "useMultiFrameRuntime": false,
         "useApiHook": true,
-        "useApiHostProcess": true,
         "babelSetting": {
             "ignore": [],
             "disablePlugins": [],
@@ -31,14 +30,13 @@
         "useIsolateContext": true,
         "useCompilerModule": true,
         "userConfirmedUseCompilerModuleSwitch": false,
-        "userConfirmedBundleSwitch": false,
         "packNpmManually": false,
         "packNpmRelationList": [],
         "minifyWXSS": true
     },
     "compileType": "miniprogram",
     "libVersion": "2.17.0",
-    "appid": "wxd07eb942e77828c5",
+    "appid": "wx9ccba640a50acd99",
     "projectname": "IT_SAAS",
     "isGameTourist": false,
     "simulatorType": "wechat",
@@ -121,7 +119,7 @@
                 {
                     "name": "pages/draw/draw",
                     "pathName": "pages/draw/draw",
-                    "query": "activityId=6056",
+                    "query": "activityId=1",
                     "scene": null
                 }
             ]

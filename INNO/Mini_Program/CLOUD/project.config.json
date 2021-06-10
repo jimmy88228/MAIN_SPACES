@@ -1,182 +1,182 @@
 {
-  "description": "项目配置文件",
-  "packOptions": {
-    "ignore": []
-  },
-  "setting": {
-    "urlCheck": false,
-    "es6": true,
-    "enhance": false,
-    "postcss": true,
-    "preloadBackgroundData": false,
-    "minified": true,
-    "newFeature": true,
-    "coverView": true,
-    "nodeModules": false,
-    "autoAudits": false,
-    "showShadowRootInWxmlPanel": true,
-    "scopeDataCheck": false,
-    "uglifyFileName": false,
-    "checkInvalidKey": true,
-    "checkSiteMap": true,
-    "uploadWithSourceMap": true,
-    "compileHotReLoad": false,
-    "useMultiFrameRuntime": true,
-    "useApiHook": true,
-    "useApiHostProcess": true,
-    "babelSetting": {
-      "ignore": [],
-      "disablePlugins": [],
-      "outputPath": ""
+    "description": "项目配置文件",
+    "packOptions": {
+        "ignore": []
     },
-    "enableEngineNative": false,
-    "bundle": false,
-    "useIsolateContext": true,
-    "useCompilerModule": true,
-    "userConfirmedUseCompilerModuleSwitch": false,
-    "userConfirmedBundleSwitch": false,
-    "packNpmManually": false,
-    "packNpmRelationList": [],
-    "minifyWXSS": true
-  },
-  "compileType": "miniprogram",
-  "libVersion": "2.16.1",
-  "appid": "wxd07eb942e77828c5",
-  "projectname": "Cloud_Store",
-  "cloudfunctionTemplateRoot": "",
-  "debugOptions": {
-    "hidedInDevtools": []
-  },
-  "scripts": {},
-  "simulatorType": "wechat",
-  "simulatorPluginLibVersion": {},
-  "condition": {
-    "plugin": {
-      "list": []
+    "setting": {
+        "urlCheck": false,
+        "es6": true,
+        "enhance": false,
+        "postcss": true,
+        "preloadBackgroundData": false,
+        "minified": true,
+        "newFeature": true,
+        "coverView": true,
+        "nodeModules": false,
+        "autoAudits": false,
+        "showShadowRootInWxmlPanel": true,
+        "scopeDataCheck": false,
+        "uglifyFileName": false,
+        "checkInvalidKey": true,
+        "checkSiteMap": true,
+        "uploadWithSourceMap": true,
+        "compileHotReLoad": false,
+        "useMultiFrameRuntime": true,
+        "useApiHook": true,
+        "useApiHostProcess": true,
+        "babelSetting": {
+            "ignore": [],
+            "disablePlugins": [],
+            "outputPath": ""
+        },
+        "enableEngineNative": false,
+        "bundle": false,
+        "useIsolateContext": true,
+        "useCompilerModule": true,
+        "userConfirmedUseCompilerModuleSwitch": false,
+        "userConfirmedBundleSwitch": false,
+        "packNpmManually": false,
+        "packNpmRelationList": [],
+        "minifyWXSS": true
     },
-    "game": {
-      "list": []
+    "compileType": "miniprogram",
+    "libVersion": "2.16.1",
+    "appid": "wxd07eb942e77828c5",
+    "projectname": "Cloud_Store",
+    "cloudfunctionTemplateRoot": "",
+    "debugOptions": {
+        "hidedInDevtools": []
     },
-    "gamePlugin": {
-      "list": []
-    },
-    "miniprogram": {
-      "list": [
-        {
-          "name": "pages/micro_mall/user/user",
-          "pathName": "pages/micro_mall/user/user",
-          "query": "",
-          "scene": null
+    "scripts": {},
+    "simulatorType": "wechat",
+    "simulatorPluginLibVersion": {},
+    "condition": {
+        "plugin": {
+            "list": []
         },
-        {
-          "name": "pages/micro_mall/goods/goods_info",
-          "pathName": "pages/micro_mall/goods/goods_info",
-          "query": "goods_id=3&color_id=",
-          "scene": null
+        "game": {
+            "list": []
         },
-        {
-          "name": "更换请求easy http",
-          "pathName": "pages/micro_mall/category/category",
-          "query": "",
-          "scene": null
+        "gamePlugin": {
+            "list": []
         },
-        {
-          "name": "个人中心",
-          "pathName": "pages/micro_mall/user/user",
-          "query": "",
-          "scene": null
-        },
-        {
-          "name": "余额",
-          "pathName": "pages/micro_mall/balance/my_balance",
-          "query": "",
-          "scene": null
-        },
-        {
-          "name": "优惠券列表",
-          "pathName": "pages/micro_mall/coupon/my_coupon",
-          "query": "",
-          "scene": null
-        },
-        {
-          "name": "pages/micro_mall/classify/classify_page",
-          "pathName": "pages/micro_mall/classify/classify_page",
-          "query": "",
-          "scene": null
-        },
-        {
-          "name": "pages/micro_mall/order/order_info",
-          "pathName": "pages/micro_mall/order/order_info",
-          "query": "order_sn=CS00174002103121630275481652&order_id=53",
-          "scene": null
-        },
-        {
-          "name": "TEMP",
-          "pathName": "pages/micro_mall/order/order_list",
-          "query": "",
-          "scene": null
-        },
-        {
-          "name": "pages/micro_mall/order/order_info",
-          "pathName": "pages/micro_mall/order/order_info",
-          "query": "order_sn=CS00174002103121849593888134&order_id=60",
-          "scene": null
-        },
-        {
-          "name": "pages/micro_mall/shopping/shopping_cart",
-          "pathName": "pages/micro_mall/shopping/shopping_cart",
-          "query": "",
-          "scene": null
-        },
-        {
-          "name": "pages/micro_mall/index/index",
-          "pathName": "pages/micro_mall/index/index",
-          "query": "storeCode=ZS16",
-          "scene": null
-        },
-        {
-          "name": "pages/micro_mall/shopping/shopping_cart",
-          "pathName": "pages/micro_mall/shopping/shopping_cart",
-          "query": "",
-          "scene": null
-        },
-        {
-          "name": "pages/micro_mall/buy/buy",
-          "pathName": "pages/micro_mall/buy/buy",
-          "query": "rec_str=290&store_id=32843",
-          "scene": null
-        },
-        {
-          "name": "pages/micro_mall/order/apply_return",
-          "pathName": "pages/micro_mall/order/apply_return",
-          "query": "order_id=61&product_id=&goods_id=3&rec_id=&valet=&is_user=",
-          "scene": null
-        },
-        {
-          "name": "pages/micro_mall/point/point_goods_list/point_goods_list?type=bonus",
-          "pathName": "pages/micro_mall/point/point_goods_list/point_goods_list",
-          "query": "type=goods",
-          "scene": null
-        },
-        {
-          "name": "pages/micro_mall/custom_page/custom_page",
-          "pathName": "pages/micro_mall/custom_page/custom_page",
-          "query": "page_id=1069",
-          "scene": null
-        },
-        {
-          "name": "pages/micro_mall/sign/app/app_sign",
-          "pathName": "pages/micro_mall/sign/app/app_sign",
-          "query": "page_id=58",
-          "scene": null
-        },
-        {
-          "name": "pages/micro_mall/order/apply_return",
-          "pathName": "pages/micro_mall/order/apply_return",
-          "query": "order_id=1128&product_id=&groupIndex=1&valet=&is_user=&advance=1",
-          "scene": null
+        "miniprogram": {
+            "list": [
+                {
+                    "name": "pages/micro_mall/user/user",
+                    "pathName": "pages/micro_mall/user/user",
+                    "query": "",
+                    "scene": null
+                },
+                {
+                    "name": "pages/micro_mall/goods/goods_info",
+                    "pathName": "pages/micro_mall/goods/goods_info",
+                    "query": "goods_id=3&color_id=",
+                    "scene": null
+                },
+                {
+                    "name": "更换请求easy http",
+                    "pathName": "pages/micro_mall/category/category",
+                    "query": "",
+                    "scene": null
+                },
+                {
+                    "name": "个人中心",
+                    "pathName": "pages/micro_mall/user/user",
+                    "query": "",
+                    "scene": null
+                },
+                {
+                    "name": "余额",
+                    "pathName": "pages/micro_mall/balance/my_balance",
+                    "query": "",
+                    "scene": null
+                },
+                {
+                    "name": "优惠券列表",
+                    "pathName": "pages/micro_mall/coupon/my_coupon",
+                    "query": "",
+                    "scene": null
+                },
+                {
+                    "name": "pages/micro_mall/classify/classify_page",
+                    "pathName": "pages/micro_mall/classify/classify_page",
+                    "query": "",
+                    "scene": null
+                },
+                {
+                    "name": "pages/micro_mall/order/order_info",
+                    "pathName": "pages/micro_mall/order/order_info",
+                    "query": "order_sn=CS00174002103121630275481652&order_id=53",
+                    "scene": null
+                },
+                {
+                    "name": "TEMP",
+                    "pathName": "pages/micro_mall/order/order_list",
+                    "query": "",
+                    "scene": null
+                },
+                {
+                    "name": "pages/micro_mall/order/order_info",
+                    "pathName": "pages/micro_mall/order/order_info",
+                    "query": "order_sn=CS00174002103121849593888134&order_id=60",
+                    "scene": null
+                },
+                {
+                    "name": "pages/micro_mall/shopping/shopping_cart",
+                    "pathName": "pages/micro_mall/shopping/shopping_cart",
+                    "query": "",
+                    "scene": null
+                },
+                {
+                    "name": "pages/micro_mall/index/index",
+                    "pathName": "pages/micro_mall/index/index",
+                    "query": "storeCode=ZS16",
+                    "scene": null
+                },
+                {
+                    "name": "pages/micro_mall/shopping/shopping_cart",
+                    "pathName": "pages/micro_mall/shopping/shopping_cart",
+                    "query": "",
+                    "scene": null
+                },
+                {
+                    "name": "pages/micro_mall/buy/buy",
+                    "pathName": "pages/micro_mall/buy/buy",
+                    "query": "rec_str=290&store_id=32843",
+                    "scene": null
+                },
+                {
+                    "name": "pages/micro_mall/order/apply_return",
+                    "pathName": "pages/micro_mall/order/apply_return",
+                    "query": "order_id=61&product_id=&goods_id=3&rec_id=&valet=&is_user=",
+                    "scene": null
+                },
+                {
+                    "name": "pages/micro_mall/point/point_goods_list/point_goods_list?type=bonus",
+                    "pathName": "pages/micro_mall/point/point_goods_list/point_goods_list",
+                    "query": "type=goods",
+                    "scene": null
+                },
+                {
+                    "name": "pages/micro_mall/custom_page/custom_page",
+                    "pathName": "pages/micro_mall/custom_page/custom_page",
+                    "query": "page_id=1069",
+                    "scene": null
+                },
+                {
+                    "name": "pages/micro_mall/sign/app/app_sign",
+                    "pathName": "pages/micro_mall/sign/app/app_sign",
+                    "query": "page_id=58",
+                    "scene": null
+                },
+                {
+                    "name": "pages/micro_mall/order/apply_return",
+                    "pathName": "pages/micro_mall/order/apply_return",
+                    "query": "order_id=1128&product_id=&groupIndex=1&valet=&is_user=&advance=1",
+                    "scene": null
+                }
+            ]
         }
-      ]
     }
-  }
 }

@@ -4,7 +4,7 @@ const LogApi = "http://devinnodraw.innourl.com/LogApi"
 
 const GoodsApi = "https://developtest.innourl.com/MatrixLotteryApi"
 const RegApi = "https://developtest.innourl.com/MatrixLotteryApi" 
-const LotteryApi = "https://developtest.innourl.com/LotteryApi" 
+const LotteryApi = "https://developtest.innourl.com/MatrixLotteryApi" 
 
 // const MainApi = "http://localhost:8534"
 // // const MainApi="http://10.1.1.5:8009"
