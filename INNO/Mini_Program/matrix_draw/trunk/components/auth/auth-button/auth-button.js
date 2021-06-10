@@ -7,16 +7,6 @@ const OpenType = {
 const app = getApp();
 Component({
 	behaviors: [Behavior.BaseBehavior],
-	lifetimes: {
-		created() {
-				Object.defineProperties(this, {
-					authPhoneWd: { get: () => this.findView("#authPhoneWdId", "showAuthPhoneWd") }, 
-				})
-		},
-		attached() {
-			LM.getWxSessionIdAsync(); 
-		},
-	},
 	properties: {
 		auth: {
 			type: Boolean,
@@ -30,21 +20,25 @@ Component({
 			type: Boolean,
 			value: false
 		}
-	}, 
+	},
+	attached() {
+		this.isCanUrPf = !!wx.getUserProfile;
+		this.setData({
+			isCanUrPf:this.isCanUrPf
+		})
+		// LM.getWxSessionIdAsync();
+	},
 	data: {},
 	methods: {
 		onTap(e) {
 			let openType = this.properties.openType;
-			console.log('已注册',e);
-			checkBindPhone.call(this).then(()=>{
-				this.triggerEvent("taped", { openType: openType });
-			})
+			this.triggerEvent("taped", { openType: openType });
 		},
 		onAuth(e) {
+			console.log('onAuth',e)
 			if (!app.clickHold("auth")) { return; };
 			let openType = this.properties.openType;
 			let detail = e.detail || {};
-			console.log('auth',e);
 			return checkAuthorize.call(this, openType, detail).then(() => {
 				this.triggerEvent("authed", { ...detail, openType });
 			}).catch(rs => {
@@ -59,22 +53,23 @@ Component({
 function checkAuthorize(openType, detail) {
 	if (openType == OpenType.UserInfo) {
 		// 用户授权
-		if (detail.errMsg.indexOf("ok") == -1) {
+		// if (detail.errMsg.indexOf("ok") == -1) {
+		if (detail.errMsg && detail.errMsg.indexOf("fail auth deny") != -1) {
 			return Promise.reject("用户授权失败");
 		} else {
-			return Promise.resolve();
-			// return LM.register(detail).ignore(() => {
-			// 	if (!LM.isLogin)
-			// 		return Promise.reject("授权注册失败");
-			// });
+			return LM.register(true).ignore(() => {
+				let page = getCurrentPages().pop();
+					page.checkLoginChange();
+				if (!LM.isLogin)
+					return Promise.reject("授权注册失败");
+			});
 		}
 	} else if (openType == OpenType.Phone) {
 		// 手机授权
 		if (detail.errMsg.indexOf("ok") == -1) {
 			return Promise.reject("手机授权失败");
 		} else {
-			return Promise.resolve();
-			// return bindPhone(LM.token, LM.sessionKey, detail.encryptedData, detail.iv).catch(() => Promise.reject("手机绑定失败"));
+			return bindPhone(LM.token, LM.sessionKey, detail.encryptedData, detail.iv).catch(() => Promise.reject("手机绑定失败"));
 		}
 	}
 }
@@ -88,14 +83,4 @@ function bindPhone(userToken, sessionKey, encryptedData, iv) {
 			iv
 		}
 	}).netData();
-}
-
-function checkBindPhone(){
-	let needBind = false;
-	if(needBind){
-		this.authPhoneWd.show();
-		return Promise.reject();
-	}else{
-		return Promise.resolve();
-	}
 }

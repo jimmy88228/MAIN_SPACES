@@ -1,5 +1,5 @@
-import LM from "../../common/manager/login-manager";
-import Smm from "../../common/helper/show-msg-helper";
+import LM from "../../../common/manager/login-manager";
+import Smm from "../../../common/helper/show-msg-helper";
 const OpenType = {
 	UserInfo: "getUserInfo",
 	Phone: "getPhoneNumber"
@@ -22,7 +22,11 @@ Component({
 		}
 	},
 	attached() {
-		LM.getWxSessionIdAsync();
+		this.isCanUrPf = !!wx.getUserProfile;
+		this.setData({
+			isCanUrPf:this.isCanUrPf
+		})
+		// LM.getWxSessionIdAsync();
 	},
 	data: {},
 	methods: {
@@ -31,6 +35,7 @@ Component({
 			this.triggerEvent("taped", { openType: openType });
 		},
 		onAuth(e) {
+			console.log('onAuth',e)
 			if (!app.clickHold("auth")) { return; };
 			let openType = this.properties.openType;
 			let detail = e.detail || {};
@@ -48,10 +53,13 @@ Component({
 function checkAuthorize(openType, detail) {
 	if (openType == OpenType.UserInfo) {
 		// 用户授权
-		if (detail.errMsg.indexOf("ok") == -1) {
+		// if (detail.errMsg.indexOf("ok") == -1) {
+		if (detail.errMsg && detail.errMsg.indexOf("fail auth deny") != -1) {
 			return Promise.reject("用户授权失败");
 		} else {
-			return LM.register(detail).ignore(() => {
+			return LM.register(true).ignore(() => {
+				let page = getCurrentPages().pop();
+					page.checkLoginChange();
 				if (!LM.isLogin)
 					return Promise.reject("授权注册失败");
 			});
