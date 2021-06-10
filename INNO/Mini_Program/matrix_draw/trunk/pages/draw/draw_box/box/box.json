@@ -1,0 +1,6 @@
+{
+  "component": true,
+  "usingComponents": {
+    "draw_acts":"/pages/draw/draw_box/draw_acts/draw_acts"
+  }
+}
