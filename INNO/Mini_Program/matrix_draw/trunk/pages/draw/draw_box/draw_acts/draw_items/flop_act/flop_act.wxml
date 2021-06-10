@@ -1,17 +1,13 @@
 <!--pages/draw/draw_box/draw_acts/draw_items/flop_act/flop_act.wxml-->
 <!-- 生肖 -->
-<view class="zodiac">
+<view class="flop_act">
   <view 
-    class="zodiac_item {{isActive ? 'active' : ''}}" 
+    class="flop_act_item {{isActive ? 'active' : ''}}" 
     style="transition: all 0.1s linear {{item.times}}s;"
-    wx:for="{{zodiacList}}" 
+    wx:for="{{flopActList}}" 
     wx:key="index" 
     data-index="{{index}}"
     bindtap="{{item.isSelected ? '' : 'draw'}}">
-    <image mode="widthFix" class="zodiac_img {{item.isSelected ? 'zodiac_img_action' : ''}}" src="{{item.path}}" />
-    <view class="zodiac_wrapper {{item.isSelected ? 'zodiac_img_reverse_action' : ''}}">
-      <image mode="widthFix" class="zodiac_img_reverse" src="{{zodiacReverse}}" />
-      <view class="zodiac_prize">{{zodiacName}}返回</view>
-    </view>
+    <image mode="widthFix" class="flop_act_img {{item.isSelected ? 'flop_act_img_action' : ''}}" src="{{item.path}}" /> 
   </view>
 </view>
