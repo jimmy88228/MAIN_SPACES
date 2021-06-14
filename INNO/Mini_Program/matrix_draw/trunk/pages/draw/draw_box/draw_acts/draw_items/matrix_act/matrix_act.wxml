@@ -1,0 +1,15 @@
+<!--pages/draw/draw_box/draw_acts/draw_items/matrix_act/matrix_act.wxml-->
+<view class="matrix-act-box">
+  <view class="draw_box">
+    <image mode="widthFix" src="{{setting.beforeActive.img}}" class="img-content"></image>
+    <image mode="heightFix" data-id='1' hidden="{{!showType || showType == 'second'}}" bindload="loaded"
+      src="{{activeImg1}}" class="img-content front"></image>
+    <image mode="heightFix" data-id='2' hidden="{{!showType || showType == 'first'}}" bindload="loaded"
+      src="{{activeImg2}}" class="img-content front"></image>
+  </view>
+</view>
+<draw_result 
+    id="draw_result"
+    touchCancel="{{true}}" 
+    maskBg="none"
+    bindclose="close"/> 

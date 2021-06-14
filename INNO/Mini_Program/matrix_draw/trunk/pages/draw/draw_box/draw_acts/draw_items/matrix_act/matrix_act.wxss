@@ -1,0 +1,28 @@
+/* pages/draw/draw_box/draw_acts/draw_items/matrix_act/matrix_act.wxss */
+
+.img{
+  width: 100%;
+  display: block;
+}
+.filterBox{
+  transition: filter 0.3s linear;
+}
+.filter{
+  filter: blur(20rpx);
+}
+.draw_box{
+  position: relative;
+}
+.img-content{
+  width:750rpx;
+  height: 598rpx;
+  display: block;
+}
+.img-content.front{
+  position: absolute;
+  left: 50%;
+  top: 0;
+  transform: translateX(-50%);
+  z-index: 2;
+  height: 100%;
+}
