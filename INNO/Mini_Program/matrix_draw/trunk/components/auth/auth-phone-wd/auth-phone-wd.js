@@ -36,6 +36,7 @@ Component({
           app.SMH.showToast({
             title: "绑定成功"
           })
+          this.triggerEvent("onPhoneWd",{isBind:true,errMsg:"ok"});
           this.dismiss();
           return Promise.resolve();
         }).catch((e) => Promise.reject(e&&e.msg||"手机绑定失败"));

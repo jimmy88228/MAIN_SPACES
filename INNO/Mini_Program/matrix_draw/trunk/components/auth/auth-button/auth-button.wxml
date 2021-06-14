@@ -24,4 +24,4 @@
     data-open-type="{{openType}}">
 </button>
 
-<auth-phone-wd id="authPhoneWdId"  bindonPhone="onPhone"></auth-phone-wd>
+<auth-phone-wd id="authPhoneWdId"  bindonPhoneWd="onPhoneWd"></auth-phone-wd>

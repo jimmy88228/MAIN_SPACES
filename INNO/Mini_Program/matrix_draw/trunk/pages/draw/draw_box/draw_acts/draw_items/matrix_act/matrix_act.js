@@ -123,18 +123,20 @@ function _setAnim(that, prizeMsg,index) {
 }
 
 function init(actInfo) {
-  this.afterActive = !!(actInfo.afterActive && actInfo.afterActive.img);
-  this.afterGif = !!(actInfo.afterActive && actInfo.afterActive.img && actInfo.afterActive.img.indexOf('.gif') != -1);
-  this.initPath = this.afterActive && actInfo.afterActive.img || "";
-  console.log('after',this.afterActive, this.afterGif);
-  if(this.afterGif){
-    let randomNum = '' + new Date().getTime();
-    let [activeImg1, activeImg2] = [actInfo.afterActive.img + '?' + randomNum, actInfo.afterActive.img + '?' + randomNum + 1]
-    this.setData({
-      activeImg1,
-      activeImg2,
-      afterGif:true
-    });
+  if(!this.inited){
+    this.inited = true;
+    this.afterActive = !!(actInfo.afterActive && actInfo.afterActive.img);
+    this.afterGif = !!(actInfo.afterActive && actInfo.afterActive.img && actInfo.afterActive.img.indexOf('.gif') != -1);
+    this.initPath = this.afterActive && actInfo.afterActive.img || "";
+    console.log('after',this.afterActive, this.afterGif);
+    if(this.afterGif){
+      let randomNum = '' + new Date().getTime();
+      let [activeImg1, activeImg2] = [actInfo.afterActive.img + '?' + randomNum, actInfo.afterActive.img + '?' + randomNum + 1]
+      this.setData({
+        activeImg1,
+        activeImg2,
+        afterGif:true
+      });
+    }
   }
-  
 }

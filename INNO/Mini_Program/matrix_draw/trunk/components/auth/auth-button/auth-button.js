@@ -48,7 +48,8 @@ Component({
 			console.log('已注册',e);
 			let openType = this.properties.openType;
 			checkBindPhone.call(this).then(()=>{
-				this.triggerEvent("taped", { openType: openType });
+				// this.triggerEvent("taped", { openType: openType });
+				this.triggerEvent("authed", { openType: openType });
 			})
 		},
 		onAuth(e) {
@@ -66,7 +67,7 @@ Component({
 				})
 			});
 		},
-		onPhone(e){
+		onPhoneWd(e){
 			let detail = e && e.detail || {};
 			let openType = this.properties.openType;
 			this.triggerEvent("authed", { ...detail, openType });
@@ -111,8 +112,8 @@ function bindPhone(sessionId, encryptedData, iv) {
 }
 
 function checkBindPhone(){
-	let needBind = true;
-	if(needBind){
+	let isBind = false;
+	if(!isBind && this.data.needCheckPhone){
 		this.authPhoneWd.show();
 		return Promise.reject();
 	}else{

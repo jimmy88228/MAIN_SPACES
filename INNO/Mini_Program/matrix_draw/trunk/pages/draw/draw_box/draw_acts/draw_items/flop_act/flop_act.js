@@ -44,7 +44,7 @@ Component({
         this.setData({
           isActive: true,
         })
-      }, 500);
+      }, 450);
     },
 
     draw(e) {

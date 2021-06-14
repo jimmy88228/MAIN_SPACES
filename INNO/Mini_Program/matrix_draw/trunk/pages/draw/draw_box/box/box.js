@@ -25,22 +25,28 @@ Component({
     },
     methods: {
         _onShow() {
-            this.checkLoginChange();
-            // this.setData({
-                //     activityId: this.data.activityId
-                // });
-                loadData.call(this).then(() => {
+            this.checkLoginChange(); 
+            return loadData.call(this).then(res => {
                 this.draw_acts = this.draw_acts || this.selectComponent("#draw_acts");
-                console.log('this.actInfo',this.actInfo,this.draw_acts)
+                console.log('this.actInfo',this.actInfo)
                 this.draw_acts._onShow(this.actInfo);
-            });
-            // lotteryWinningRecord.call(this);
+                return res;
+            }); 
         }, 
         draw(){
             console.log('draw')
             this.draw_acts = this.draw_acts || this.selectComponent("#draw_acts");
             this.draw_acts._draw();
-        }
+        },
+        authed(){
+            this._onShow().then(()=>{
+                Promise.nextTick().then(()=>{
+                    setTimeout(() => {
+                        this.draw();
+                    }, 500);
+                })
+            });
+        },
     }
 })
 

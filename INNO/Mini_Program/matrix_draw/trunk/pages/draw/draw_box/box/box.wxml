@@ -22,11 +22,11 @@
                     >
                 </draw_acts>
                 <auth-button 
-                    wx:if="{{!isLogin}}"
+                    wx:if="{{!isLogin || actInfo.isNeedBindMobile == 1}}"
                     auth="{{!isLogin}}"
                     class="loginBtn"  
                     openType="getUserInfo"
-                    bindtaped="loginTaped"
+                    bindauthed="authed"
                     >
                 </auth-button>
             </view>
@@ -38,11 +38,11 @@
                     <view class="img-act-tip">你还有{{actInfo.canJoinTimes}}次抽奖机会</view>
                 </view>
                 <auth-button 
-                    wx:if="{{!isLogin}}"
+                    wx:if="{{!isLogin || actInfo.isNeedBindMobile == 1}}"
                     auth="{{!isLogin}}"
                     class="loginBtn"  
                     openType="getUserInfo"
-                    bindtaped="loginTaped"
+                    bindauthed="authed"
                     >
                 </auth-button>
             </view>
