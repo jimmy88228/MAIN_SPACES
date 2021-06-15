@@ -61,20 +61,25 @@ EasyHttp.setRequestHandler(req => {
             if (data.code == 1001 && (!extra || !extra.noReLogin)) {//token失效自动刷新
                 return LM.relogin(false).ignore(() => {
                     if (LM.isLogin && req.headers["userToken"] != LM.userToken) {
-                        console.log('重发',req.headers["userToken"],LM.userToken)
+                        console.log('token过期 重发',data,req.headers["userToken"],LM.userToken)
                         req.headers["userToken"] = LM.userToken;
                         return proceed(req); //重发
                     }
                     return Promise.reject({ code: 1001, msg: "登录授权已过期，请刷新重试", tag: LOG_TAG });
                 });
-            // } else if (data.code == -10001 && (!extra || !extra.noReSessionKey)) {//sessionKey失效自动刷新
-            //     return LM.reCreateWxSession(false).ignore(() => {
-            //         if (LM.sessionKey) {
-            //             return Promise.reject({ code: -10001, msg: "会话已过期，已重新创建，请刷新重试", tag: LOG_TAG });
-            //         } else {
-            //             return Promise.reject({ code: -10001, msg: "会话已过期，请稍后再试", tag: LOG_TAG });
-            //         }
-            //     });
+            } else if (data.code == 10000 && (!extra || !extra.noReSessionKey)) {//sessionKey失效自动刷新
+                console.log('sessionKey失效自动刷新',data)
+                return LM.createWxSession(false).ignore(() => {
+                    if (LM.sessionKey) {
+                        return Promise.reject({ code: 10000, msg: "会话已更新，请刷新页面", tag: LOG_TAG });
+                    } else {
+                        return Promise.reject({ code: 10000, msg: "会话已过期", tag: LOG_TAG });
+                    }
+                }).catch(e=>{
+                    Smm.showToast({
+                        title: e && e.msg || "会话已过期"
+                    })
+                });
             }
             return data;
         });

@@ -42,8 +42,14 @@ Page.PagingPage({
   onTap(e){
     let dataset = this.getDataset(e);
     let type = dataset.type || "";
+    console.log(e,dataset)
     if(type == 'detail'){
-      
+      let prizeType = dataset.prizeType||0;
+      if(prizeType != 2)return
+      let recordId = dataset.recordId||0;
+      wx.navigateTo({
+        url: `/pages/matrix/draw_box/draw_details/draw_details?recordId=${recordId}`,
+      })
     }
   }
 })

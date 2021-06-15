@@ -14,5 +14,5 @@ page {
     width: 100%;
     font-size: 24rpx;
     color: var(--text-main-color);
-    font-family: 'HelveticaNeueLT Std Blk Cn', 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+    /* font-family: 'HelveticaNeueLT Std Blk Cn', 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif; */
 }

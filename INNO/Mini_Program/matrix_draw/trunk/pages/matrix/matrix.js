@@ -1,9 +1,3 @@
-// pages/draw/draw.js
-// pages/micro_mall/lottery/lottery.js
-// import LIST from "./lottery-config.js.js";
-// import ImgLoader from "./img_loader/img_loader";
-import MyDate from '../../common/support/utils/date-util.js';
-
 const app = getApp();
 Page.BasePage({
     data: {

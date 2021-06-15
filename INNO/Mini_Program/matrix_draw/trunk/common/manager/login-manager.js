@@ -95,6 +95,9 @@ class LoginManager {
   get sessionId() {
     return this._sessionId || "";
   }
+  get sessionKey() {
+    return this._sessionId || "";
+  }
   get openId() {
     return this._openId || ""; //获取到接口返回的openId，实际是cookieId
   }
@@ -166,6 +169,7 @@ class LoginManager {
     if(h){
       return h
     }
+    this.removeSessionId();
     this._cwxsh = h = Func._createWxSession.call(this,showLoading)
       .finally(()=>{
         this._cwxsh && delete this._cwxsh;
@@ -254,10 +258,10 @@ class LoginManager {
     this.removeLoginData();
     this.removeSessionId();
   }
-  tokenLogout() { //token过期（不remove SessionId
-    console.log('进来 tokenLogout', )
-    this.removeLoginData();
-  }
+  // tokenLogout() { //token过期（不remove SessionId
+  //   console.log('进来 tokenLogout', )
+  //   this.removeLoginData();
+  // }
   removeLoginData() {
     console.log('进来 removeLoginData', )
     removeData(STORAGE_OPEN_ID_KEY);
@@ -610,7 +614,6 @@ const Func = {
     console.log('进来 Func._createWxSession')
     return Wxp.login()
       .then(e => {
-        this.removeSessionId();
         return createSession.call(this, showLoading, e.code);
       }).catch(e => {
         console.log("createSession catch", e);

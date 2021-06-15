@@ -3,9 +3,9 @@
     <loading-view class="center-box-item" />
 </view>
 <view style="--draw-color:{{brand_info.style.draw_color}}" class="anim-fade-in main" hidden="{{!isAttached || showRefresh}}">
-  <page-nav opacity="1" full stay />
+  <!-- <page-nav opacity="1" full stay /> -->
   <view class="records-box" wx:if="{{list.length > 0}}">
-    <view class="records" bindtap="onTap" data-type="detail" wx:for="{{list}}" wx:key="index">
+    <view class="records" bindtap="onTap" data-prize-type="{{item.prizeType}}" data-type="detail" data-record-id="{{item.winningRecordId}}" wx:for="{{list}}" wx:key="index">
       <view class="rd-title">XXX活动</view>
       <view class="rd-msg flex-c-c">
         <image src="{{item.prizeImg}}" mode="aspectFit" class="img-prize"></image>
