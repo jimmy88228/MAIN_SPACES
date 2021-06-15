@@ -1,0 +1,74 @@
+<!--pages/draw/draw_box/draw_result/draw_result.wxml-->
+<window class="window" ext-class="window-ext">
+    <!-- <view class="lottery_content" style="{{mainStyle}}">
+        <view class="prize_bg {{show?'isShow':''}}">
+            <icon type="{{closeType}}" size="40" color="#fff" class="cancel_icon" bindtap="closeWin"/>
+            <image mode="widthFix" class="bg" src="{{win_bg}}" wx:if="{{_lotteryInfo.isWinning}}"/>
+            <image mode="widthFix" class="bg" src="{{failure_bg}}" wx:else/>
+            <view class="prize_info">
+              <block wx:if="{{_lotteryInfo.isWinning}}">
+                <image 
+                    mode="widthFix" 
+                    class="prize_img" 
+                    src="{{_lotteryInfo.prizeImg ? _lotteryInfo.prizeImg : default_img}}" 
+                    />
+                <view class="prize_name">{{_lotteryInfo.prizeName}}</view>
+              </block>
+              <view class="prize_info_cont" wx:else>
+                <view class="prize_name">谢谢参与</view>
+              </view>
+            </view>
+        </view>
+        <view class="use_prize {{show?'isShow':''}}" bindtap="cancel">
+            <image mode="widthFix" class="win_btn" src="{{win_bg_btn}}"/>
+            <view class="btn_text">{{_lotteryInfo.isWinning ? '立即查看' : '确定'}}</view>
+        </view>
+    </view> -->
+    
+    <!-- <view class="main" catchtap="noAction" catchtouchmove="noAction" style="{{mainStyle}} {{start?'opacity:1;':''}}"> -->
+    <view class="main" catchtap="noAction" style="{{mainStyle}}">
+      <view class="bg-filter"></view>
+      <!-- 动画 -->
+      <block wx:if="{{show && showAnimBool}}">
+        <!-- 抽奖动画 -->
+        <view wx:for="{{[1,2]}}" wx:key="index" style="{{animBoxStyle}}" class="anim-box {{index==0?'front':''}}"> 
+          <view class="prize-list-box {{index==0?'':'filer'}}" style="{{start?'opacity:1;transform:translateX(-' + (baseW*SUM) + 'px)':''}}">
+            <block wx:for="{{prizeList}}" wx:key="index">
+              <view class="img-box">
+                <image mode="aspectFit" class="img-prize2" src="{{item.prizeImg || 'http://devimgtest.innourl.com/SAAS_IMAGE/images/lottery/icon/point.png'}}"></image>
+              </view>
+            </block>
+          </view>
+          <view class="line-box" wx:if="{{index==0}}">
+            <view class="line-top line-border"></view>
+            <view class="line"></view>
+            <view class="line-bottom line-border"></view>
+          </view>
+        </view>
+      </block>
+      
+      <!-- 抽奖结果 -->
+      <view wx:if="{{show && showPrizeBool}}" class="prize-box" style="{{animBoxStyle}}">
+        <block wx:if="{{prizeMsg.isWinning == 1}}">
+          <view class="title">恭喜获得</view>
+          <view class="prize-name">{{prizeMsg.prizeName}}</view> 
+          <image src="{{prizeMsg.prizeImg}}" class="img-prize" mode="aspectFit"></image>
+        </block>
+        <block wx:else>
+          <image src="{{prizeMsg.prizeImg}}" class="un-img-prize" mode="aspectFit"></image>
+          <view class="un-p-title">未中奖</view>
+          <view class="un-p-tips">邀请好友助力获得更多抽奖机会 ></view> 
+        </block>
+        <view class="btn-box">
+          <button hover-class="none" class="btn" bindtap="onTap" data-type="close">知道了</button>
+          <block wx:if="{{prizeMsg.isWinning == 1}}">
+            <button style="background-color:{{brand_info.style.draw_color}};" hover-class="none" class="btn check" bindtap="onTap" data-type="check">查看奖品</button>
+          </block>
+          <block wx:elif="{{prizeMsg.isWinning != 1}}">
+            <button style="background-color:{{brand_info.style.draw_color}};" hover-class="none" class="btn again" bindtap="onTap" data-type="again">再来一次</button>
+          </block>
+        </view>
+      </view>  
+      <!-- <view class="ad"></view> -->
+    </view>
+</window>

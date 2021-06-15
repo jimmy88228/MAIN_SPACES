@@ -1,6 +1,0 @@
-{
-  "component": true,
-  "usingComponents": {
-    "draw_result":"/pages/draw/draw_box/draw_result/draw_result"
-  }
-}
