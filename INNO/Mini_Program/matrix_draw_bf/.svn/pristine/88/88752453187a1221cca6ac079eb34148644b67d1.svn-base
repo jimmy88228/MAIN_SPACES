@@ -1,0 +1,220 @@
+<!--pages/micro_mall/lottery/activity/activity.wxml-->
+<view>
+    <!-- 大转盘 1 -->
+    <view class="turntable" hidden="{{!(activityType === 1)}}">
+        <image mode="widthFix" class="turntable_bg" src="{{panBox}}"/>
+        <view class="turntable_root_wrapper" wx:if="{{false}}">
+        <!-- <view class="turntable_root_wrapper" wx:if="{{_bindMobile || !isLogin || isRegAction}}"> -->
+            <btns 
+                class="turntable_root"  
+                isLogin="{{isLogin}}"
+                btnType="{{_activityBindMobile ? 'bindPhone' : ''}}"
+                bindclickcallback="getUserInfo"
+                data-type="1"
+                hideDisStyle
+                disabled="{{disabled}}"
+                bindtap="setSign">
+                <image mode="widthFix" class="turn_root_img" src="{{pointer}}"/>
+            </btns>
+        </view>
+        <image wx:else mode="widthFix" class="turntable_pointer" src="{{pointer}}" bindtap="turntableStart"/>
+        <image mode="widthFix" class="turntable_pan" src="{{panBoxStay}}" style="transform: translate(-50%, -50%) rotate({{turntableTime * allDeg + addDeg + hasDeg}}deg);transition: transform {{durationTurn}}s ease-out;"/>
+        <view class="turntable_wrapper" style="transform: translate(-50%, -50%) rotate({{turntableTime * allDeg + addDeg + hasDeg}}deg);transition: transform {{durationTurn}}s ease-out;">
+            <view 
+                class="turntable_item {{index === 0 ? 'first_item' : (index === 1 ? 'second_item' : (index === 2 ? 'third_item' : (index === 3 ? 'fourth_item' : (index === 4 ? 'fifth_item' : 'sixth_item')) ))}}" 
+                wx:for="{{_prizeList}}" 
+                wx:key="index" 
+                style="left: {{index > 2 ? index % 3 * 192 : index * 192}}rpx;top: {{index > 2 ? 360 : 86}}rpx;">
+                <image mode="widthFix" class="turntable_img" src="{{item.prizeImg}}"/>
+                <view class="turntable_name">{{item.prizeName}}{{item.prizeId}}</view>
+            </view>
+        </view>
+    </view>
+    <!-- 水果机 2 -->
+    <view class="fruit_machine" hidden="{{!(activityType === 2)}}">
+        <view class="fruit_bg">
+            <image mode="widthFix" class="fruit_bg_img" src="{{fruitBg}}"/>
+        </view>
+        <view class="fruit_root_wrapper" wx:if="{{_bindMobile || !isLogin || isRegAction}}">
+            <btns 
+                class="fruit_root"  
+                isLogin="{{isLogin}}"
+                btnType="{{_activityBindMobile ? 'bindPhone' : ''}}"
+                bindclickcallback="getUserInfo"
+                data-type="2"
+                hideDisStyle
+                disabled="{{disabled}}"
+                bindtap="setSign">
+                <image mode="widthFix" class="fruit_start_img" src="{{fruitStart}}"/>
+                <view class="fruit_wrapper">
+                    <view class="fruit_title">开始抽奖</view>
+                </view>
+            </btns>
+        </view>
+        <view class="fruit_root_wrapper" wx:else>
+            <view class="fruit_root" bindtap="fruitStart">
+                <image mode="widthFix" class="fruit_start_img" src="{{fruitStart}}"/>
+                <view class="fruit_wrapper fruit_top">
+                    <view class="fruit_title">开始抽奖</view>
+                </view>
+            </view>
+        </view>
+        <view class="fruit_collection">
+            <view 
+                style="left: {{fruitPosition[index].x === 0 ? 14 : (fruitPosition[index].x === 1 ? fruitPosition[index].x * 224 : fruitPosition[index].x * 218)}}rpx;top: {{fruitPosition[index].y === 0 ? 8 : (fruitPosition[index].y === 1 ? fruitPosition[index].y * 214 : fruitPosition[index].y * 211)}}rpx;"
+                class="fruit_item" 
+                wx:for="{{_prizeList}}" 
+                wx:key="index">
+                <image mode="widthFix" class="fruit_item_img" src="{{friutItemActive}}" hidden="{{!(friutCurr === index)}}"/>
+                <image mode="widthFix" class="fruit_item_img" src="{{friutItem}}" hidden="{{friutCurr === index}}"/>
+                <view class="fruit_prize">
+                    <image mode="widthFix" class="fruit_prize_img" src="{{item.prizeImg}}"/>
+                    <view class="fruit_prize_name {{friutCurr === index ? 'fruit_prize_active' : ''}}">{{item.prizeName}}</view>
+                </view>
+            </view>
+        </view>
+    </view>
+    <!-- 生肖 3 -->
+    <view class="zodiac" hidden="{{!(activityType === 3)}}">
+        <block wx:if="{{_bindMobile || !isLogin || isRegAction}}">
+            <btns 
+                class="zodiac_item {{isActive ? 'active' : ''}}" 
+                style="transition: all 0.1s linear {{item.times}}s;"
+                wx:for="{{zodiacList}}"
+                wx:key="index" 
+                data-index="{{index}}"
+                isLogin="{{isLogin}}"
+                btnType="{{_activityBindMobile ? 'bindPhone' : ''}}"
+                bindclickcallback="getUserInfo"
+                data-type="3"
+                hideDisStyle
+                disabled="{{disabled}}"
+                bindtap="setSign">
+                <image mode="widthFix" class="zodiac_img {{item.isSelected ? 'zodiac_img_action' : ''}}" src="{{item.path}}"/>
+                <view class="zodiac_wrapper {{item.isSelected ? 'zodiac_img_reverse_action' : ''}}">
+                    <image mode="widthFix" class="zodiac_img_reverse" src="{{zodiacReverse}}"/>
+                    <view class="zodiac_prize">{{zodiacName}}</view>
+                </view>
+            </btns>
+        </block>
+        <block wx:else>
+            <view 
+                class="zodiac_item {{isActive ? 'active' : ''}}" 
+                style="transition: all 0.1s linear {{item.times}}s;"
+                wx:for="{{zodiacList}}"
+                wx:key="index" 
+                data-index="{{index}}"
+                bindtap="{{item.isSelected ? 'zodiacEnd' : 'zodiacStart'}}">
+                <image mode="widthFix" class="zodiac_img {{item.isSelected ? 'zodiac_img_action' : ''}}" src="{{item.path}}"/>
+                <view class="zodiac_wrapper {{item.isSelected ? 'zodiac_img_reverse_action' : ''}}">
+                    <image mode="widthFix" class="zodiac_img_reverse" src="{{zodiacReverse}}"/>
+                    <view class="zodiac_prize">{{zodiacName}}</view>
+                </view>
+            </view>
+        </block>
+    </view>
+    <!-- 一点领券 4 -->
+    <view class="coupon" hidden="{{!(activityType === 4)}}">
+        <view class="coupon_btn_view" wx:if="{{_bindMobile || !isLogin || isRegAction}}">
+            <image mode="widthFix" src="{{clickStart}}" class="coupon_start_img" wx:if="{{isCouponStart}}"/>
+            <image mode="widthFix" src="{{clickEnd}}" class="coupon_end_img" wx:else/>
+            <btns 
+                class="coupon_btn" 
+                hover-class="none" 
+                isLogin="{{isLogin}}"
+                btnType="{{_activityBindMobile ? 'bindPhone' : ''}}"
+                bindclickcallback="getUserInfo"
+                data-type="4"
+                hideDisStyle
+                disabled="{{disabled}}"
+                bindtap="setSign"
+                bindtouchstart="recordCouponStart" 
+                bindtouchend="recordCouponEnd"></btns>
+        </view>
+        <view class="coupon_btn_view" wx:else>
+            <image mode="widthFix" src="{{clickStart}}" class="coupon_start_img" wx:if="{{isCouponStart}}"/>
+            <image mode="widthFix" src="{{clickEnd}}" class="coupon_end_img" wx:else/>
+            <button 
+                class="coupon_btn" 
+                hover-class="none" 
+                bindtouchstart="couponStart" 
+                bindtouchend="couponEnd"></button>
+        </view>
+    </view>
+    <!-- 砸金蛋 5 -->
+    <view class="golden_egg" hidden="{{!(activityType === 5)}}">
+        <block wx:if="{{_bindMobile || !isLogin || isRegAction}}">
+            <btns 
+                class="egg_wrapper" 
+                wx:for="{{eggList}}" 
+                wx:key="index"
+                data-index="{{index}}"
+                style="left:{{item.left}}rpx;top:{{item.top}}rpx"
+                isLogin="{{isLogin}}"
+                btnType="{{_activityBindMobile ? 'bindPhone' : ''}}"
+                bindclickcallback="getUserInfo"
+                data-type="5"
+                hideDisStyle
+                disabled="{{disabled}}"
+                bindtap="setSign">
+                <view class="broken_egg_wrapper" wx:if="{{eggCurr === index}}">
+                    <image mode="widthFix" class="broken_egg" src="{{item.brokenEgg}}"/>
+                    <image mode="widthFix" class="ribbon ribbon_active" src="{{item.ribbon}}"/>
+                </view>
+                <image mode="widthFix" class="mask_egg" src="{{item.egg}}" wx:else/>
+            </btns>
+        </block>
+        <block wx:else>
+            <view 
+                class="egg_wrapper" 
+                wx:for="{{eggList}}" 
+                wx:key="index"
+                data-index="{{index}}"
+                style="left:{{item.left}}rpx;top:{{item.top}}rpx"
+                bindtap="eggStart">
+                <view class="broken_egg_wrapper" wx:if="{{eggCurr === index}}">
+                    <image mode="widthFix" class="broken_egg" src="{{item.brokenEgg}}"/>
+                    <image mode="widthFix" class="ribbon ribbon_active" src="{{item.ribbon}}"/>
+                </view>
+                <image mode="widthFix" class="mask_egg" src="{{item.egg}}" wx:else/>
+            </view>
+        </block>
+        <view 
+        class="hammer_wrapper {{isAnimateHammer ? 'hammer_wrapper_action' : ''}}" 
+        style="left:{{eggList[eggHammerCurr].left}}rpx;top:{{eggList[eggHammerCurr].top}}rpx">
+            <image mode="widthFix" class="hammer" src="{{hammer}}"/>
+        </view>
+    </view>
+    <!-- 摇一摇 6 -->
+    <view class="shake" hidden="{{!(activityType === 6)}}">
+        <btns 
+            wx:if="{{_bindMobile || !isLogin || isRegAction}}"
+            class="shake_root_btn"  
+            isLogin="{{isLogin}}"
+            btnType="{{_activityBindMobile ? 'bindPhone' : ''}}"
+            bindclickcallback="getUserInfo"
+            data-type="6"
+            hideDisStyle
+            disabled="{{disabled}}"
+            bindtap="setSign">
+            微信授权参与活动
+        </btns>
+        <block wx:else>
+            <image mode="widthFix" src="{{shakeImg}}" class="shake_img {{isShake ? 'shake_img_active' : ''}}"/>
+        </block>
+    </view>
+</view>
+
+<import src="../template/wait_result.wxml"/>
+<view class="prevent_bg pre_load" wx:if="{{preventBg}}">
+    <button hover-class="none" loading class="pre_load_show"></button>
+</view>
+<audio id="audioCtx1" 
+       bindplay="processStart"
+       binderror="processErr"  
+       bindended="processEnd"
+       loop="{{isLoop}}"></audio>
+<audio id="audioCtx2" 
+       bindplay="resultStart"
+       binderror="resultErr" 
+       bindended="resultEnd"></audio>

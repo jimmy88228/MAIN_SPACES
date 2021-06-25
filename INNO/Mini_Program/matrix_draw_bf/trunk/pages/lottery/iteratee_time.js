@@ -15,7 +15,7 @@ function calculate(numbers = 8, prizeId, prizeList, indexRecord = 0) {
                     return 0.4;
                 }
             }).concat(Array.from({ length: addTime * numbers + (currentIndex + 1) }, (v, i) => i === 0 ? 0.4 : Number((i * 0.2).toFixed(1))));
-            console.log('进来 totalDuration',totalDuration,currentIndex)
+            console.log(totalDuration)
             return {
                 next: function () {
                     if (index < totalDuration.length) {

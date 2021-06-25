@@ -1,0 +1,63 @@
+<!--pages/draw/draw_box/draw_acts/draw_items/fruit_act/fruit_act.wxml-->
+<!-- 水果机 2 -->
+<view class="fruit-act-box">
+  <image mode="aspectFit" class="fruit-bg-img" src="{{}}" />
+  <view class="fruit-act-list">
+    <block wx:for="{{PrizeList}}" wx:key="index">
+      <view class="fruit-act-item" bindtap="{{index == 4?'draw':''}}">
+        <view class="img-fruit-box">
+          <image mode="aspectFit" class="img-fruit-item trans-center" src="{{fruitStart}}" wx:if="{{index == 4}}" />
+          <image mode="aspectFit" class="img-fruit-item trans-center" src="{{friutItem}}" hidden="{{curIndex == index || index == 4}}" />
+          <image mode="aspectFit" class="img-fruit-item trans-center" src="{{friutItemActive}}" hidden="{{curIndex != index}}" />
+          <view class="prize-box trans-center">
+            <block wx:if="{{index != 4}}">
+              <image wx:if="{{item.prizeImg}}" mode="widthFix" class="img-prize" src="{{item.prizeImg}}"/>
+              <view class="prize-name {{curIndex == index ? 'active':''}}">{{item.prizeName}}</view>
+            </block>
+            <block wx:else>
+              <view class="draw-text">开始抽奖</view>
+            </block>
+          </view>
+        </view>
+      </view>
+    </block>
+  </view>
+  <!-- <view class="fruit_root_wrapper" wx:if="{{_bindMobile || !isLogin || isRegAction}}">
+            <btns 
+                class="fruit_root"  
+                isLogin="{{isLogin}}"
+                btnType="{{_activityBindMobile ? 'bindPhone' : ''}}"
+                bindclickcallback="getUserInfo"
+                data-type="2"
+                hideDisStyle
+                disabled="{{disabled}}"
+                bindtap="setSign">
+                <image mode="widthFix" class="fruit_start_img" src="{{fruitStart}}"/>
+                <view class="fruit_wrapper">
+                    <view class="fruit_title">开始抽奖</view>
+                </view>
+            </btns>
+        </view>
+        <view class="fruit_root_wrapper" wx:else>
+            <view class="fruit_root" bindtap="fruitStart">
+                <image mode="widthFix" class="fruit_start_img" src="{{fruitStart}}"/>
+                <view class="fruit_wrapper fruit_top">
+                    <view class="fruit_title">开始抽奖</view>
+                </view>
+            </view>
+        </view>
+        <view class="fruit_collection">
+            <view 
+                style="left: {{fruitPosition[index].x === 0 ? 14 : (fruitPosition[index].x === 1 ? fruitPosition[index].x * 224 : fruitPosition[index].x * 218)}}rpx;top: {{fruitPosition[index].y === 0 ? 8 : (fruitPosition[index].y === 1 ? fruitPosition[index].y * 214 : fruitPosition[index].y * 211)}}rpx;"
+                class="fruit_item" 
+                wx:for="{{_prizeList}}" 
+                wx:key="index">
+                <image mode="widthFix" class="fruit_item_img" src="{{friutItemActive}}" hidden="{{!(friutCurr === index)}}"/>
+                <image mode="widthFix" class="fruit_item_img" src="{{friutItem}}" hidden="{{friutCurr === index}}"/>
+                <view class="fruit_prize">
+                    <image mode="widthFix" class="fruit_prize_img" src="{{item.prizeImg}}"/>
+                    <view class="fruit_prize_name {{friutCurr === index ? 'fruit_prize_active' : ''}}">{{item.prizeName}}</view>
+                </view>
+            </view>
+        </view> -->
+</view>

@@ -1,0 +1,23 @@
+<!--pages/matrix/draw_box/draw_records/draw_records.wxml-->
+<view wx:if="{{showRefresh}}" class="center-box anim-fade-in anim-delay">
+    <loading-view class="center-box-item" />
+</view>
+<view style="--draw-color:{{brand_info.style.draw_color}}" class="anim-fade-in main" hidden="{{!isAttached || showRefresh}}">
+  <!-- <page-nav opacity="1" full stay /> -->
+  <view class="records-box" wx:if="{{list.length > 0}}">
+    <view class="records" bindtap="onTap" data-prize-type="{{item.prizeType}}" data-type="detail" data-record-id="{{item.winningRecordId}}" wx:for="{{list}}" wx:key="index">
+      <view class="rd-title">XXX活动</view>
+      <view class="rd-msg flex-c-c">
+        <image src="{{item.prizeImg}}" mode="aspectFit" class="img-prize"></image>
+        <view class="prize-name">{{item.prizeName}}</view>
+        <view class="status-box flex-e-c">
+          <view class="btn" style="background:{{brand_info.style.draw_color}};">领取</view>
+        </view>
+      </view>
+    </view>
+    <more-view data="{{ {loading:showLoadMore,end:isEnd} }}" />
+  </view>
+  <view wx:else>
+    没有获奖记录
+  </view>
+</view>

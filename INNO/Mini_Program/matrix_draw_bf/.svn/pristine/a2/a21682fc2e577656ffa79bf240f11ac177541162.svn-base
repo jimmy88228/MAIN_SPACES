@@ -1,0 +1,34 @@
+<!--pages/draw/draw_items/turn_plate/turn_plate.wxml-->
+<!-- <view class="turntable" hidden="{{!showPages}}">
+  <image mode="widthFix" class="turntable_bg" src="{{panBox}}" />
+  <image mode="widthFix" class="turntable_pointer" src="{{pointer}}" bindtap="turntableStart" />
+  <image mode="widthFix" class="turntable_pan" src="{{panBoxStay}}"
+    style="transform: translate(-50%, -50%) rotate({{turntableTime * allDeg + addDeg + hasDeg}}deg);transition: transform {{durationTurn}}s ease-out;" />
+  <view class="turntable_wrapper"
+    style="transform: translate(-50%, -50%) rotate({{turntableTime * allDeg + addDeg + hasDeg}}deg);transition: transform {{durationTurn}}s ease-out;">
+    <view
+      class="turntable_item {{index === 0 ? 'first_item' : (index === 1 ? 'second_item' : (index === 2 ? 'third_item' : (index === 3 ? 'fourth_item' : (index === 4 ? 'fifth_item' : 'sixth_item')) ))}}"
+      wx:for="{{actInfo.prizeList}}" wx:key="index"
+      style="left: {{index > 2 ? index % 3 * 192 : index * 192}}rpx;top: {{index > 2 ? 360 : 86}}rpx;">
+      <image mode="widthFix" class="turntable_img" src="{{item.prizeImg}}" />
+      <view class="turntable_name">{{item.prizeName}}{{item.prizeId}}</view>
+    </view>
+  </view>
+</view> -->
+
+
+<view class="turn-plate-box">
+  <image style="transform:translate(-50%,-50%) rotate({{curDeg == 0? 30 : curDeg}}deg);" mode="widthFix" class="turntable-bg trans-center" src="{{panBox}}" />
+  <image mode="widthFix" class="turntable-pointer trans-center" src="{{pointer}}" bindtap="draw" />
+
+  <view style="transform:rotate({{curDeg == 0? 30 : curDeg}}deg);" bindtransitionend="transitionend" class="prize-list-box">
+    <block wx:for="{{actInfo.prizeList}}" wx:key="index">
+      <view class="prize-list rotate{{index}}">
+        <view class="prize-item">
+            <image src="http://devadminwebapi.innourl.com/image/show/assets-images-point.png" mode="aspectFit" class="img-prize"></image>
+            <text class="prize-text">{{index}},{{item.prizeName}},{{item.prizeId}}</text>
+        </view>
+      </view>
+    </block>
+  </view>
+</view>
