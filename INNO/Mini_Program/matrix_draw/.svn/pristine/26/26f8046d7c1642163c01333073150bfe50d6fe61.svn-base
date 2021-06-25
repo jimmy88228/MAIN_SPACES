@@ -1,0 +1,33 @@
+/* pages/matrix/draw_box/draw_orders/draw_points/draw_points.wxss */
+.box{}
+.head{
+  font-size: 100rpx;
+  color: #fff;
+  height: 200rpx;
+}
+.content{
+  padding-left:30rpx;
+  box-sizing: border-box;
+}
+.list{
+  padding: 30rpx 30rpx 30rpx 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom:1px solid #dfdfdf;
+}
+.msg-box{ }
+
+.item-remark{
+  font-size: 28rpx;
+  font-weight: bold;
+  padding-bottom: 24rpx;
+}
+.item-time{
+  font-size: 22rpx;
+  color: #7f7f7f;
+}
+.point-value{
+  font-weight: bold;
+  font-size: 28rpx;
+}

@@ -1,0 +1,16 @@
+<!--pages/matrix/draw_box/draw_acts/draw_items/smash_eggs/smash_eggs.wxml-->
+<wxs module="dfCss" src="../../../../../../components/micro-page/help/defaultCss.wxs"></wxs>
+<view class="smash-eggs-box" style="{{dfCss.getDfCss(_setting,screenWidth,actInfo.activityTypeCode)}}">
+  <view class="egg_wrapper" wx:for="{{eggList}}" wx:key="index" data-index="{{index}}"
+    style="left:{{item.left}}rpx;top:{{item.top}}rpx" bindtap="eggStart">
+    <view class="broken_egg_wrapper" wx:if="{{eggCurr === index}}">
+      <image mode="widthFix" class="broken_egg" src="{{item.brokenEgg}}" />
+      <image mode="widthFix" class="ribbon ribbon_active" src="{{item.ribbon}}" />
+    </view>
+    <image mode="widthFix" class="mask_egg" src="{{item.egg}}" wx:else />
+  </view>
+  <view class="hammer_wrapper {{isAnimateHammer ? 'hammer_wrapper_action' : ''}}"
+    style="left:{{eggList[eggHammerCurr].left}}rpx;top:{{eggList[eggHammerCurr].top}}rpx">
+    <image mode="widthFix" class="hammer" src="{{hammer}}" />
+  </view>
+</view>

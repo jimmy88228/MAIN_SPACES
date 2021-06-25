@@ -1,0 +1,32 @@
+<!--pages/matrix/draw_box/shareHelp/shareHelp.wxml-->
+
+<window class="window" ext-class="window-ext"> 
+    <view class="main" catchtap="noAction" style="{{mainStyle}}">
+      <view class="content-box">
+        <view class="user-head">
+          <image src="{{actInfo.shareInfo.helpInfo.avatarUrl}}" mode="aspectFit" class="img-head"></image>
+        </view>
+        <view class="user-tip">{{actInfo.shareInfo.helpInfo.nickName}}的邀请</view>
+        <view class="share-tips-box">
+          <view class="share-tips">{{actInfo.shareInfo.helpInfo.friendReward>0?'帮我助力，一起抽大奖吧':'我正在发起组队，为我助力赢大奖机会'}}</view>
+          <view class="share-condition" wx:if="{{actInfo.shareInfo.helpInfo.friendReward>0}}">还差{{actInfo.shareInfo.helpInfo.currCondition - actInfo.shareInfo.helpInfo.currInvite}}个助力</view>
+        </view>
+        <view class="pro-bar-box">
+          <view class="pro-bar" style="width:{{actInfo.shareInfo.helpInfo.currInvite/actInfo.shareInfo.helpInfo.currCondition*100}}%;"></view>
+          <view class="pro-cir" style="left:{{actInfo.shareInfo.helpInfo.currInvite/actInfo.shareInfo.helpInfo.currCondition*100}}%"></view>
+        </view>
+        <view class="share-btn-box">
+          <view class="share-btn" bindtap="help">帮TA助力</view>
+          <auth-button 
+            wx:if="{{!isLogin}}"
+            auth="{{!isLogin}}"
+            class="loginBtn"  
+            openType="getUserInfo"
+            bindauthed="authed"
+            actionType="LOTTERY_HELP"
+            >
+          </auth-button>
+        </view>
+      </view>
+    </view>
+</window>
