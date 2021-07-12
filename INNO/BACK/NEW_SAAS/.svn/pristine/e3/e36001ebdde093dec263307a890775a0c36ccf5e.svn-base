@@ -1,0 +1,419 @@
+.oh{
+	overflow: hidden;
+}
+.save-dashboard{
+	background:#14202C;
+	border-radius: 15px;
+}
+.area-block{
+    border-radius: 15px;
+    background:#14202C;
+    // background-color:#fff;
+	margin-bottom: 20px;
+	box-shadow: unset;
+	border:0 none;
+}
+.user-board-page{
+    width:100%;
+    display:flex;
+    justify-content: flex-start;
+	min-height:450px;
+	box-sizing:border-box;
+	-moz-box-sizing:border-box;
+    -webkit-box-sizing:border-box;
+    font-size:0px;
+}
+.chart-item{
+	padding:15px;
+	background:#192636;
+	-moz-border-radius: 10px;
+    -webkit-border-radius: 10px;
+    border-radius: 10px;
+    margin:10px 5px;
+    box-sizing:border-box;
+	-moz-box-sizing:border-box;
+	-webkit-box-sizing:border-box;
+}
+.chart-item-t{
+	color:#5B8ECA;
+	margin:10px 0px;
+	overflow:hidden;
+}
+.chart-item-c{
+	color:#fff;
+	position:relative;
+}
+.chart-item-c-t{
+	padding:10px 0px;
+	color:#3a5065;
+}
+.user-board-page-l{
+    width:35%;
+    font-size:12px;
+	position:relative;
+}
+.user-board-page-r{
+    font-size:12px;
+    width:65%;
+}
+
+/*地图*/
+.map-chart-item{
+	padding:0px;
+	background:none;
+	margin:0px;
+	position:relative;
+}
+.map-chart-title{
+	position:absolute;
+	top:45px;
+	left:10px;
+	z-index:2;
+	color:#fff;
+}
+.map-chart{
+	width:100%;
+	height:580px;
+}
+.map-chart-statistics{
+	position:absolute;
+	left:10px;
+	bottom:10px;
+	z-index:2;
+}
+/*地图标签*/
+.formatter-prov{
+	float:left;
+	-moz-border-radius: 5px;
+    -webkit-border-radius: 5px;
+    border-radius: 5px;
+    overflow:hidden;
+    transition: all .32s;
+	-moz-transition: all .32s;
+	-webkit-transition: all .32s; 
+	-o-transition: all .32s;
+	width:50%;
+	padding-right:15px;
+	box-sizing:border-box;
+	-moz-box-sizing:border-box;
+	-webkit-box-sizing:border-box;
+}
+
+.formatter-prov-t{
+	background:#192636;
+	color:#5B8ECA;
+	/*background:#fff;*/
+	border-top-right-radius: 30px;
+	-moz-border-top-right-radius: 30px;
+	-webkit-border-top-right-radius: 30px;
+	height:35px;
+	line-height:35px;
+	width:70px;
+	text-align:center;
+	padding-right:30px;
+	display:inline-block;
+
+}
+.formatter-prov-c{
+	color:#fff;
+	background:#192636;
+	/*background:#fff;*/
+	border-top-right-radius: 20px;
+	-moz-border-top-right-radius: 20px;
+	-webkit-border-top-right-radius: 20px;
+	padding:0px 20px;
+}
+.prov-head{
+	padding:10px 0px;
+}
+.prov-cont-line{
+	padding:10px 0px;
+}
+.prov-cont{}
+.c-49BFE3{
+	color:#49BFE3;
+}
+.prov-cont-stay{
+	line-height:100px;
+	color:#3d546b;
+	text-align:center;
+}
+/*店铺会员*/
+.store-rang{
+	float:left;
+	width:50%;
+	margin:0px;
+	/*margin-right:5px;*/
+	margin-left:-5px;
+}
+.store-rang-list{
+	width:100%;
+	min-height:574px;
+	list-style: none;
+}
+.store-rang-item{
+	border-bottom:1px dotted #3a5065;
+	padding:15px 0px;
+	/*overflow:hidden;*/
+}
+.store-rang-item .rang-sort{
+	margin-right:10px;
+}
+.store-rang-item .rang-val{
+	float:right;
+}
+/*性别*/
+.memberSex{
+	width:100%;
+	height:170px;
+}
+/*会员等级*/
+.memberLevel{
+	width:100%;
+	height:170px;
+}
+.memberLevel li{
+	width:100%;
+	padding:5px 0px;
+}
+.m-level-name{
+	width:5em;
+	height:20px;
+	float:left;
+}
+.m-level-val{
+	margin:5px 4em 5px 4.5em;
+	/*display:table-cell;
+	vertical-align: middle;*/
+}
+.m-level-val p{
+	-moz-border-radius: 50px;
+    -webkit-border-radius: 50px;
+    border-radius: 50px;
+    width:50%;
+    height:10px;
+    position:relative;
+    background: -webkit-linear-gradient(left, #107eaf , #4ebce1); /* Safari 5.1 - 6.0 */
+	background: -o-linear-gradient(right, #107eaf, #4ebce1); /* Opera 11.1 - 12.0 */
+	background: -moz-linear-gradient(right, #107eaf, #4ebce1); /* Firefox 3.6 - 15 */
+	background: linear-gradient(to right, #107eaf , #4ebce1);
+}
+.m-level-percen{
+	position:absolute;
+	top:50%;
+	right:-10px;
+	height:20px;
+	margin-top:-10px;
+	display:inline-block;
+	float:right;
+	text-align:right;
+	transform:translateX(100%);
+	-ms-transform:translateX(100%);
+	-moz-transform:translateX(100%);
+	-webkit-transform:translateX(100%);
+	-o-transform:translateX(100%);
+}
+.user-board-meber-pie-bar{
+    display: flex;
+	justify-content: space-between;
+}
+.user-board-meber-pie{
+    width:250px;
+	flex-shrink: 0;
+	// display:flex;
+	// flex-direction: column;
+	// align-content: space-between;
+	display: table-cell;
+}
+.user-board-meber-pie .chart-item{
+}
+.user-board-meber-bar{
+	display:flex;
+	flex-direction:column;
+	width:100%;
+}
+/*会员年龄*/
+.memberAge{
+	min-height:500px;
+}
+.memberAge li{
+	padding:12px 0px;
+}
+.memberAge .m-level-name{
+	width:6em;
+}
+.memberAge .m-level-val{
+	margin-left:6em;
+}
+/*绑定手机*/
+.bindPhone{
+	width:100%;
+	height:170px;
+}
+/*关注服务号*/
+.followPublic{
+	width:100%;
+	height:170px;
+}
+/*会龄分布*/
+.joinAge{
+	width:100%;
+	height:334px;
+}
+/*星座分布*/
+.memberConstellation{
+	width:100%;
+	height:210px;
+}
+/**/
+.user-board-meber-lack-pie{
+    display: flex;
+    justify-content: space-between;
+    padding:0px 5px;
+    box-sizing: border-box;
+}
+.lack-pie-item{
+	width:33.6%;
+	margin:0px;
+}
+.lack-pie-item.memberbehavior{
+	width:65.5%;
+}
+.chart-item-c-tit{
+    display:flex;
+}
+.lack-pie-item .chart-item-c-t{
+	width:50%;
+	text-indent:-400px;
+	overflow:hidden;
+}
+.memberbehavior .chart-item-c-t{
+	text-indent:1em;
+}
+/**/
+.memberSource{
+	width:100%;
+	height:200px;
+}
+.memberActive{
+	width:50%;
+	height:200px;
+	float:left;
+	position:relative;
+}
+.memberActive:after{
+	content:'';
+	width:1px;
+	height:80%;
+	position:absolute;
+	top:50%;
+	right:0px;
+	border-right:1px dotted #3a5065;
+	transform:translateY(-50%);
+	-ms-transform:translateY(-50%);
+	-moz-transform:translateY(-50%); 
+	-webkit-transform:translateY(-50%);
+	-o-transform:translateY(-50%);
+}
+.memberConsume{
+	width:50%;
+	height:200px;
+	float:left;
+}
+.item-t-f-area{
+	display:block;
+	width:100%;
+	text-align:right;
+	min-height:60px;
+}
+.chart-item-t-f{
+	color:#fff;
+	padding:5px;
+	border-radius: 5px;
+	-moz-border-radius: 5px;
+	-webkit-border-radius: 5px;
+	-moz-box-shadow:0px 0px 5px #49BFE3;
+	-webkit-box-shadow:0px 0px 5px #49BFE3;
+	box-shadow:0px 0px 5px #49BFE3;
+	margin:5px;
+	display:inline-block;
+	// float:right;
+}
+.memberAge-statistics .memberAge-statistics-stay{
+	float:left;
+}
+/*生日分布*/
+.memberBirthday{
+	width:100%;
+	height:209px;
+}
+/**/
+/*.board-meber-bar-t{
+	overflow:hidden;
+}*/
+.board-meber-bar-t-l{
+	width:40%;
+	display:inline-block;
+	vertical-align: top;
+	font-size:13px;
+	/*float:left;*/
+}
+.board-meber-bar-t-r{
+	width:60%;
+	display:inline-block;
+	vertical-align: top;
+	font-size:13px;
+	/*float:right;*/
+}
+.board-meber-bar-f .chart-item{
+	margin-top:0px;
+	margin-bottom:0px;
+}
+
+
+/**/
+.custom-chart-title:after{
+
+}
+.board-meber-bar-t{
+	font-size:0px;
+}
+
+/*屏幕小于1366*/
+@media screen  and (max-width:1366px){
+    .user-board-page{
+        flex-wrap: wrap;
+    }
+	.user-board-page-l{
+		width:100%;
+	}
+	.user-board-page-r{
+		margin:0px;
+		width:100%;
+	}
+	.map-chart-item{
+		float:left;
+		width:64%;
+		/*width:700px;*/
+	}
+	.map-chart{
+        height:576px;
+    }
+    .formatter-prov{
+        position: absolute;
+        bottom:10px;
+        left:65%;
+        transform: translateX(-100%);
+        margin:0px;
+        width:200px;
+    }
+	.store-rang{
+		width:35%;
+		margin:0px;
+		margin-right:5px;
+		float:right;
+	}
+	.store-rang-list{
+		min-height:500px;
+	}
+}
