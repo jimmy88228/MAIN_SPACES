@@ -1,6 +1,6 @@
 // pages/micro_mall/lottery/lottery.js
 import LIST from "./lottery-config.js";
-import "../../../common/helper/expands/date-expand.js";
+import dateUtil from "../../../common/support/utils/date-util"
 import ImgLoader from "./img_loader/img_loader";
 const app = getApp();
 Page(app.BP({
@@ -221,7 +221,7 @@ function lotteryWinningRecord(isShowLoad = true) {
         if (res.code == 1) {
             let arr = data.map(item => {
                 return Object.assign(item, {
-                    createTime: new Date(String(item.createTime).replace(/\-/gmi, "/")).format('yyyy-MM-dd')
+                    createTime: dateUtil.format(dateUtil.parse(item.createTime),'yyyy-MM-dd')
                 });
             }) || [];
             this.setData({

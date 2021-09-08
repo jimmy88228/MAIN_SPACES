@@ -1,6 +1,4 @@
-//测试api
-//http://jwimtest.innourl.com/Help
-//
+//测试api 
 import Conf from "../../conf.js"
 const VISIT_APICONF = {
   "1": "/InnoLogApi",
@@ -203,9 +201,7 @@ export const GoodsApiList = {
     getActivityGoodsList:"/api/DiscountBuy/GetActivityGoodsList?activityId={activityId}&orderAmount={orderAmount}&userToken={userToken}&brandCode={brandCode}",
     getActivityGoodsProduct:"/api/DiscountBuy/GetActivityGoodsProduct?activityId={activityId}&goodsId={goodsId}&userToken={userToken}&brandCode={brandCode}&needGallery={needGallery}",
     getActivityGoodsDetail:"/api/DiscountBuy/GetActivityGoodsDetail?activityId={activityId}&goodsId={goodsId}&brandCode={brandCode}"
-}
-
-
+} 
 export const BuyApiList = {
     /**
      * Order
@@ -336,8 +332,7 @@ export const BuyApiList = {
       u: "/api/Wechat/SceneCheck",
       m: "post"
     }
-}
-
+} 
 export const LiveApiList = {
   getLiveRoomList: "/api/LiveShow/GetLiveRoomList?brandCode={brandCode}&pageIndex={pageIndex}&pageSize={pageSize}",
   getLiveShareAct: "/api/LiveShow/GetLiveRoomShareActivityDetaill?activityId={activityId}&userToken={userToken}&brandCode={brandCode}",
@@ -348,8 +343,7 @@ export const LiveApiList = {
     u:"/api/LiveShow/PostLiveShowShareActivityVisitRecord",
     m:"post"
   }
-}
-
+} 
 export const PayApiList = {
     // getAppletPrepayId: "/api/pay/weixin3.36/getAppletPrepayId_kingking.php?order_id={order_id}&pay_type={pay_type}",
     getAppletPrepayId: "/api/pay/weixin3.36/pay_v1.0.php?order_id={order_id}&pay_type={pay_type}",
@@ -360,8 +354,7 @@ export const NewPayApiList = {
     payUnifiedorder: "/api/Pay/Unifiedorder?userToken={userToken}&payType={payType}&payMethod={payMethod}&orderSn={orderSn}&brandCode={brandCode}",
     UnifiedorderByOrderId: "/api/Pay/UnifiedorderByOrderId?userToken={userToken}&payType={payType}&payMethod={payMethod}&orderId={orderId}&brandCode={brandCode}",
 
-  }
-//-----拼团
+} 
 export const CollageApiList = {
     //**
     //*拼团 
@@ -397,11 +390,9 @@ export const CollageApiList = {
       m: "post"
   },
 }
-
 export const MainApiList = {
   
 }
-//预售
 export const PreSaleApiList = {
     getPresaleGoodsList: "/api/Presale/GetPresaleGoodsList?pageIndex={pageIndex}&pageSize={pageSize}&brandCode={brandCode}&activityIds={activityIds}",
     getPresaleGoodsDetail: "/api/Presale/GetPresaleGoodsDetail?activityId={activityId}&brandCode={brandCode}",
@@ -443,7 +434,6 @@ export const PreSaleApiList = {
         m:"post"
     },
 }
-//----积分商城
 export const PointApiList = {
     getPointMkBonusListByMain: "/api/PointMk/GetPointMkBonusListByMain?userToken={userToken}&brandCode={brandCode}",
     getPointMkGoodsListMain: "/api/PointMk/GetPointMkGoodsListMain?userToken={userToken}&brandCode={brandCode}",
@@ -476,8 +466,6 @@ export const PointApiList = {
     getPointMkGoodOrderDetail: "/api/PointMk/GetPointMkGoodOrderDetail?mkOrderId={mkOrderId}&brandCode={brandCode}"
 
 }
-
-// 砍价
 export const BargainApiList = {
     getHagglePriceActivityList: "/api/HagglePrice/Get_HagglePriceActivityList?userToken={userToken}&pageIndex={pageIndex}&pageSize={pageSize}&brandCode={brandCode}&activityIds={activityIds}",
     getUserHagglePriceActivityList: "/api/HagglePrice/Get_UserHagglePriceActivityList?userToken={userToken}&status={status}&pageIndex={pageIndex}&pageSize={pageSize}&brandCode={brandCode}",
@@ -514,8 +502,6 @@ getUserHagglePriceActivityDetailRecord:"/api/HagglePrice/Get_UserHagglePriceActi
     },
     
 }
-
-
 export const UserApiList = {
 
     /**
@@ -760,7 +746,7 @@ export const UserApiList = {
       m: "post"
     },
 
-  }
+}
 export const LotteryApiList = {
     lotteryActivitDetail: "/api/Lottery/Get_LotteryActivitDetail?userToken={userToken}&activityId={activityId}&brandCode={brandCode}",
     lotteryWinningRecord: "/api/Lottery/Get_LotteryActivityWinningRecord?activityId={activityId}&brandCode={brandCode}",
@@ -777,9 +763,6 @@ export const LotteryApiList = {
     getLotteryShippingInfo: "/api/Lottery/Get_LotteryShippingInfo?userToken={userToken}&winningRecordId={winningRecordId}&invoiceNo={invoiceNo}&isBackground={isBackground}&isForce={isForce}&brandCode={brandCode}",
     getLotteryAdSlot:"/api/Lottery/Get_LotteryAdSlot?brandCode={brandCode}&activityId={activityId}"
 }
-/**
- * form
- */
 export const FromApiList = {
     //提交formId
     uploadUserFormId: {
@@ -787,9 +770,6 @@ export const FromApiList = {
       m: "post"
     }
 }
-/**
- * 分销
- */
 export const DstbApiList = {
 
     //创建分销关系
@@ -803,8 +783,6 @@ export const DstbApiList = {
     //通过分销员code找店员id
     getStaffIdByStaffCode:"/api/StaffDstb/GetStaffIdByStaffCode?staffCode={staffCode}&brandCode={brandCode}"
 }
-
-//分销中心
 export const DistributionApiList = {
     //首页  里面有申请中余额 
     staffDstbInfo: "/api/StaffDstb/Get_StaffDstbInfo?userToken={userToken}&brandCode={brandCode}",
@@ -948,7 +926,6 @@ export const PDAApiList = {
   }
 
 }
-
 export const BrandApiList = {
     getMenuList: "/api/Brand/Get_MenuList?brandCode={brandCode}",
     //文章
@@ -978,7 +955,6 @@ export const BrandApiList = {
       m: "post"
     },
 }
-
 export const MemberCardList={
     getOpenCardParams:{
       u: "/api/WxMemberCard/GetOpenCardParams",
@@ -1001,8 +977,6 @@ export const MemberCardList={
 
     // }
 }
-
-// 种草
 export const GrassApiList = {
     //
     get_Grass_CategoryList:"/api/Grass/Get_Grass_CategoryList?pageIndex={pageIndex}&pageSize={pageSize}&strWhere={strWhere}&brandCode={brandCode}",
@@ -1064,8 +1038,6 @@ export const GrassApiList = {
 
 
 }
-
-//活动api
 export const ActApiList = {
   getBuyBonusActivitList: "/api/BuyBonus/Get_BuyBonusActivitList?userToken={userToken}&pageSize={pageSize}&pageIndex={pageIndex}&brandCode={brandCode}",
   getBuyBonusActivitDetail: "/api/BuyBonus/Get_BuyBonusActivitDetail?activityId={activityId}&userToken={userToken}&brandCode={brandCode}",
@@ -1078,8 +1050,6 @@ export const ActApiList = {
   activeBonusList:"/api/BuyBonus/Get_ActiveBonusList?activityId={activityId}&brandCode={brandCode}",
   active_Order_BonusList:"/api/BuyBonus/Get_Active_Order_BonusList?orderId={orderId}&brandCode={brandCode}",
 }
-
-
 //注册/登录
 export const RegApiList = {
     userLogin: {
@@ -1117,7 +1087,6 @@ export const RegApiList = {
       m: "post"
     }
 }
-
 //店铺支付
 export const SmktPayApiList = {
     getPayCode: "/api/SmktPay/Get_OfflinePayCode?userToken={userToken}&brandCode={brandCode}",
@@ -1154,13 +1123,11 @@ export const SmktPayApiList = {
       m: "post"
     }
 }
-
 export const PageApiList = {
   getCustomPageDataList: "/api/Page/GetCustomPageDataList?pageId={pageId}&userToken={userToken}&brandCode={brandCode}",
   getALLGoodsList:"/api/Page/GetALLGoodsList?catType={catType}&cateId={cateId}&pageSize={pageSize}&pageIndex={pageIndex}&userToken={userToken}&brandCode={ brandCode}",
   // getALLGoodsListByGoodsIds:"/api/Page/GetALLGoodsListByGoodsIds?userToken={userToken}&goodIds={goodIds}&brandCode={brandCode}"
 }
-
 export const VoteApiList = {
   get_VoteActivityOptionList: "/api/Vote/Get_VoteActivityOptionList?voteActivityId={voteActivityId}&userToken={userToken}&brandCode={brandCode}",
   get_VoteResultList: "/api/Vote/Get_VoteResultList?voteActivityId={voteActivityId}&userToken={userToken}&cookieId={cookieId}&brandCode={brandCode}",
@@ -1169,7 +1136,6 @@ export const VoteApiList = {
     m: "post"
   },
 }
-
 export const SecKillApiList = {
   getActivityGroup: "/Activity/GetActivityGroup?groupId={groupId}&brandCode={brandCode}",
   getActivity: "/Activity/GetActivity?activityId={activityId}&brandCode={brandCode}",
@@ -1223,7 +1189,6 @@ export const SecKillApiList = {
     m:"post"
   }
 } 
-
 export const VideoShopApiList = {
   getVideoShoppingList: "/api/VideoShopping/GetVideoShoppingList?userToken={userToken}&brandCode={brandCode}&pageIndex={pageIndex}&pageSize={pageSize}",
   getVideoShoppingGoodsList: "/api/VideoShopping/GetVideoShoppingGoodsList?activeId={activeId}&brandCode={brandCode}",
@@ -1240,7 +1205,6 @@ export const VideoShopApiList = {
   },
   
 }
-
 export const ElectricApiList = {
   getDefaultElectricKpInfo:"/api/Electric/GetDefaultElectricKpInfo?type={type}&userToken={userToken}&brandCode={brandCode}",
   getElectricKpInfoList:"/api/Electric/GetElectricKpInfoList?userToken={userToken}&brandCode={brandCode}&pageIndex={pageIndex}&pageSize={pageSize}",
@@ -1260,7 +1224,6 @@ export const ElectricApiList = {
     m: "post"
   },
 }
-
 export const UserDockApiList = {
   getUserDockList:"/api/UserDock/Get_UserDockList?userToken={userToken}&brandCode={brandCode}",
   createUserDockPool: {

@@ -2,7 +2,7 @@
 import {
   barcode,
   qrcode
-} from "../../../common/helper/utils/goComplete/index.js" 
+} from "../../../common/utils/codeCanvas/index.js" 
 import SG from "../../../common/helper/handle/shopGuideHandle.js"
 import CheckUpdateTimer from "../../../common/helper/check-update-timer";
 // import Promise from "../../../libs/promise/promise.js";

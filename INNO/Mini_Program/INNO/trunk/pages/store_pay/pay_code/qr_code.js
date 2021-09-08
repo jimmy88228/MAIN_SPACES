@@ -2,7 +2,7 @@
 import {
     qrcode,
     barcode
-} from "../../../common/helper/utils/goComplete/index.js"
+} from "../../../common/utils/codeCanvas/index.js"
 import WxApi from '../../../common/helper/wx-api-helper.js';
 import Polling from '../../../common/helper/polling.js';
 import PayH from '../../../common/helper/handle/payHandle.js';

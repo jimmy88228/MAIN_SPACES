@@ -1,11 +1,9 @@
 // pages/micro_mall/presale/presale_buy_info.js
 import WxApi from '../../../../common/helper/wx-api-helper.js';
-import MyDate from '../../../../common/support/utils/date-util.js';
-import "../../../../common/helper/expands/date-expand.js";
+import dateUtil from '../../../../common/support/utils/date-util.js';
 import PayH from '../../../../common/helper/handle/payHandle.js';
 import Polling from '../../../../common/helper/polling.js'
-
-var app = getApp();
+const app = getApp();
 Page(app.BP({
     data: {
         brand_info: {},
@@ -159,7 +157,7 @@ Page(app.BP({
             }
             order_info['order_amount'] = (order_info.depositAmount + order_info.tailAmount).toFixed(2);
             order_info['order_status'] = that.data.orderStatusArr[order_info.orderStatus];
-            order_info['date_status'] = MyDate.parse(order_info.tailPayBeginTime) <= new Date().getTime();
+            order_info['date_status'] = dateUtil.parse(order_info.tailPayBeginTime) <= new Date().getTime();
 
             if (this.req_api_name == 'getPresaleDepositSettlement') {
                 order_info['totalDiscount'] = (order_info.diKouBonusMoney + order_info.diKouPointAmount).toFixed(2) || 0;
@@ -171,13 +169,10 @@ Page(app.BP({
             let timeArr = ['tailPayBeginTime', 'tailPayEndTime', 'last_pay_time'];
             for (let item in timeArr) {
                 if (order_info.hasOwnProperty(timeArr[item])) {
-                    order_info[timeArr[item]] = new Date(String(order_info[timeArr[item]]).replace(/\-/gmi, "/")).format('M月dd日 hh:mm');
+                    order_info[timeArr[item]] = dateUtil.format(dateUtil.parse(order_info[timeArr[item]]),'M月dd日 hh:mm')
                 }
-            }
-            // let n_t = new Date();
-            // order_info.deliveryDate = (MyDate.parse(order_info.estimateDeliveryDate||"") - n_t.getTime())/1000/60/60/24;
-            // order_info.deliveryDate = order_info.deliveryDate >= 3 ? parseInt(order_info.deliveryDate) : 3;            
-            order_info.deliveryDate = MyDate.format(MyDate.parse(order_info.estimateDeliveryDate||""),'M月dd日 hh:mm');
+            }            
+            order_info.deliveryDate = dateUtil.format(dateUtil.parse(order_info.estimateDeliveryDate||""),'M月dd日 hh:mm');
             that.orderStatus = order_info.orderStatus || 0;
             that.setData({
                 orderStatus: that.orderStatus

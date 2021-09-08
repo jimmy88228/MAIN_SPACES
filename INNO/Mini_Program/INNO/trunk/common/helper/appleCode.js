@@ -1,7 +1,7 @@
-import LM from "../../manager/login-manager.js"
-import Conf from "../../../conf.js"
-import SMH from "../../helper/show-msg-helper.js"
-import { BarCodeApi, UserApi} from "../../manager/http-manager.js"
+import LM from "../manager/login-manager.js"
+import Conf from "../../conf.js"
+import SMH from "./show-msg-helper.js"
+import { BarCodeApi, UserApi} from "../manager/http-manager.js"
 function appletCode(data) {
   /**
    * data = {
@@ -28,9 +28,6 @@ function appletCode(data) {
   let scene = data.scene;//页面需要带上的参数
   console.log('进来生成二维码',opKind,data);
   if (opKind == 'STORE_STAFF' || opKind == 'NEW_USER_SHARE'){
-  // let goodsInfo = data.goodsInfo;
-  // let scene = data.scene;//页面需要带上的参数
-  // if (goodsInfo && goodsInfo.opKind && goodsInfo.opKind == 'STORE_STAFF' || goodsInfo.opKind == 'NEW_USER_SHARE'){
     return getWxCodeForWap.call(this, data);
   }else{
     let extendParam = {}

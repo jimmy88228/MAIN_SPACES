@@ -1,10 +1,10 @@
 // pages/coupon/my_coupon.js
 import {
     barcode
-} from "../../../common/helper/utils/goComplete/index.js"
+} from "../../../common/utils/codeCanvas/index.js"
 import PageJump from "../../../common/helper/page-jump.js"
 import MyDate from '../../../common/support/utils/date-util.js';
-import modulesTimerManager from "../../../common/manager/modules-timer-manager.js";
+import modulesTimerManager from "../../../common/helper/modules-timer-manager.js";
 /**
  * 优惠券 列表   注  因接口原因  page 从0 开始 一页10 个
  */

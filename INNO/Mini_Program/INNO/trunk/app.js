@@ -12,7 +12,7 @@ import EB from "./common/support/tools/event-bus.js";
 import pageJump from "./common/helper/page-jump";
 import checkUpdate from "./common/manager/check-update-manager.js";
 import SConf from "./common/helper/handle/getSystemConfig.js"
-import md5 from './common/helper/utils/md5';
+import md5 from './common/support/utils/md5';
 import getColor from "./common/helper/handle/colorHandle.js"
 import PH from "./common/helper/handle/paramsHandle.js"
 import AS from "./common/helper/authorize-set.js"
@@ -20,7 +20,7 @@ import RunApi from "./common/helper/apiPackage.js"
 import TARH from "./common/helper/handle/tabbarHandle.js"
 import CDateH from "./common/helper/handle/cacheDateHandle.js"
 import NH from "./common/helper/handle/numHandle.js"
-import LocationM from "./common/manager/location-manager.js"
+import LocationM from "./common/helper/location-manager.js"
 import CardM from "./common/helper/handle/openCardHandle.js"
 import CacheH from "./common/helper/handle/cacheHandle.js"
 import SHP from "./common/helper/handle/scanHandleParams.js"

@@ -1,7 +1,7 @@
 // pages/micro_mall/send_goods/send_goods_code.js
 import {
     qrcode
-} from "../../../common/helper/utils/goComplete/index.js";
+} from "../../../common/utils/codeCanvas/index.js";
 const app = getApp();
 Page(app.BP({
     data: {

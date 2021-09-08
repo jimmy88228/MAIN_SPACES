@@ -1,4 +1,4 @@
-import LocationM from "../manager/location-manager.js";
+import LocationM from "./location-manager.js";
 const renewLocLabel = 'scope.userLocation';
 
 class authorizeSet {

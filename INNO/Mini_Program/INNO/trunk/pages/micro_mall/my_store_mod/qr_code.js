@@ -1,5 +1,5 @@
 // pages/micro_mall/store_mod/qr_code.js
-import appletCode from "../../../common/helper/utils/appleCode"
+import appletCode from "../../../common/helper/appleCode"
 import DrawTemplate from '../goods/popup/help/template.js';
 
 const app = getApp();

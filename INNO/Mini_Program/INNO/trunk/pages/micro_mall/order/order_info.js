@@ -7,7 +7,7 @@ import {
 } from "../../../common/manager/timer-manager.js";
 import {
   barcode
-} from "../../../common/helper/utils/goComplete/index.js"
+} from "../../../common/utils/codeCanvas/index.js"
 import Polling from '../../../common/helper/polling.js'
 const app = getApp();
 Page(app.BP({

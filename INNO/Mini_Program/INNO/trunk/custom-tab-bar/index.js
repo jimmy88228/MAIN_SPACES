@@ -1,4 +1,4 @@
-import GetTabList from "../common/manager/getTabList.js"
+import GetTabList from "../common/helper/getTabList.js"
 const app = getApp();
 Component(app.BTAB({
   data: {

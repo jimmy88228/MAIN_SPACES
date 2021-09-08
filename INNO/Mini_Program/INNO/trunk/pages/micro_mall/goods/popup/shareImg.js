@@ -1,7 +1,7 @@
 import WindowBehaviors from "../../../../components/ui/cps/window/window-behaviors";
 import WxApi from "../../../../common/helper/wx-api-helper.js"
 import SIH from "../../../../common/helper/sys-infos-helper"
-import appletCode from "../../../../common/helper/utils/appleCode.js"
+import appletCode from "../../../../common/helper/appleCode.js"
 // import Promise from '../../../../libs/promise/promise.js'
 import DrawTemplate from '../../goods/popup/help/template.js';
 import {

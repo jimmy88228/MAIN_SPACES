@@ -1,4 +1,41 @@
-const LOG_TAG = "polyfill-promise";
+const LOG_TAG = "polyfill-promise"; 
+class AggregateError extends Error {
+    constructor(array) {
+        super();
+        this.name = "AggregateError";
+        this.errors = array;
+    }
+}
+
+//any 
+if(!Promise.any){
+    Promise.any = function (array) {
+        return new Promise((rs, rj) => {
+            let length = array.length;
+            let count = 0;
+            let isCalled = false;
+            let arrayRs;
+            for (let i = 0; i < length; i++) {
+                array[i].then(data => {
+                    if (isCalled)
+                        return;
+                    isCalled = true;
+                    rs(data);
+                }).catch(err => {
+                    if (isCalled)
+                        return;
+                    arrayRs || (arrayRs = new Array(length));
+                    arrayRs[i] = err;
+                    count++;
+                    if (count < length)
+                        return;
+                    isCalled = true;
+                    rj(new AggregateError(arrayRs));
+                });
+            }
+        });
+    }
+}
 
 // delay
 Promise.delay = function (ms, val) {
@@ -16,47 +53,7 @@ Promise.delay = function (ms, val) {
 };
 Promise.prototype.delay = function (ms) {
     return Promise.delay(ms, this);
-}
-//
-
-// Promise.prototype.delay = function (ms) {
-//     return Promise.delay(ms, this);
-// } 
-
-class AggregateError extends Error {
-    constructor(array) {
-        super();
-        this.name = "AggregateError";
-        this.errors = array;
-    }
-}
-Promise._any = function (array) {
-    return new Promise((rs, rj) => {
-        let length = array.length;
-        let count = 0;
-        let isCalled = false;
-        let arrayRs;
-        for (let i = 0; i < length; i++) {
-            array[i].then(data => {
-                if (isCalled)
-                    return;
-                isCalled = true;
-                rs(data);
-            }).catch(err => {
-                if (isCalled)
-                    return;
-                arrayRs || (arrayRs = new Array(length));
-                arrayRs[i] = err;
-                count++;
-                if (count < length)
-                    return;
-                isCalled = true;
-                rj(new AggregateError(arrayRs));
-            });
-        }
-    });
-}
-
+} 
 
 // finally
 if(!Promise.prototype.finally){
@@ -71,10 +68,9 @@ if(!Promise.prototype.finally){
         });
     }
 }else{
-    console.log('无需重构 Promise.prototype.finally');
+    // console.log('无需重构 Promise.prototype.finally');
 }
-
-// cancelable
+ 
 Promise.cancelable = function (promise) {
     let isCanceled = false;
     let p = new Promise((resolve, reject) => promise.then(

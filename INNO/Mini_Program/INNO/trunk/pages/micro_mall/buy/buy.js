@@ -1,6 +1,6 @@
 // pages/micro_mall/buy/buy.js
 import WxApi from "../../../common/helper/wx-api-helper.js"
-import LocationM from "../../../common/manager/location-manager.js";
+import LocationM from "../../../common/helper/location-manager.js";
 import LgMg from "../../../common/manager/log-manager";
 import StrH from "../../../common/support/utils/string-util"
 import MyDate from '../../../common/support/utils/date-util.js';

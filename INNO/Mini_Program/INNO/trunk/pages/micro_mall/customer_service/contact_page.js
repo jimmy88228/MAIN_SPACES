@@ -1,4 +1,4 @@
-import md5 from "../../../common/helper/utils/md5.js"
+import md5 from "../../../common/support/utils/md5.js"
 const app = getApp();
 Page(app.BP({
   data: {

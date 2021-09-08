@@ -6,7 +6,7 @@ import {
 import RunApi from "./apiPackage.js"
 import Conf from "../../conf";
 import StorageH from "./handle/storageHandle";
-import GetTabList from "../manager/getTabList.js"; 
+import GetTabList from "./getTabList.js"; 
 class checkUpdate {
   static getInstance() {
     if (!checkUpdate.instance) {

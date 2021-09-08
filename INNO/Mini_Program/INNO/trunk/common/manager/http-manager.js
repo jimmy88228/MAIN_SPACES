@@ -1,5 +1,5 @@
 import EasyHttp from "../support/libs/easy-http/easy-http.min";
-import LocationM from "./location-manager.js";
+import LocationM from "../helper/location-manager.js";
 import LM from "./login-manager.js";
 // import Utils from "../support/utils/utils";
 // import AppUtil from "../helper/app-utils";

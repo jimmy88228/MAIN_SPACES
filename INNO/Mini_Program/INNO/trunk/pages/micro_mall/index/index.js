@@ -1,5 +1,5 @@
 import CDateH from "../../../common/helper/handle/cacheDateHandle.js"
-import ShakingHelp from "../../../common/manager/shakingHelp.js"
+import ShakingHelp from "../../../common/helper/shakingHelp.js"
 const PAGE_TYPE = "CUSTOM_INDEX";
 var app = getApp();
 Page(app.BP({

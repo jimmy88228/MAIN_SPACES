@@ -1,4 +1,4 @@
-import md5 from "../../../../common/helper/utils/md5.js"
+import md5 from "../../../../common/support/utils/md5.js"
 import {LogMap, LimitAddLog} from "../../../../common/manager/log-map";
 const app = getApp();
 Page(app.BP({

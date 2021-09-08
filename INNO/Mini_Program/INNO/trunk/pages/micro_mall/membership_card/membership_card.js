@@ -1,6 +1,6 @@
 import {
     barcode
-} from "../../../common/helper/utils/goComplete/index.js"
+} from "../../../common/utils/codeCanvas/index.js"
 var app = getApp();
 Page(app.BP({
 

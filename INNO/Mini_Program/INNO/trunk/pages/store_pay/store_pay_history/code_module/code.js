@@ -2,7 +2,7 @@ import WindowBehaviors from "../../../../components/ui/cps/window/window-behavio
 import {
   qrcode_custom,
   barcode_custom
-} from "../../../../common/helper/utils/goComplete/index.js"
+} from "../../../../common/utils/codeCanvas/index.js"
 const app = getApp();
 
 Component(app.BTAB({

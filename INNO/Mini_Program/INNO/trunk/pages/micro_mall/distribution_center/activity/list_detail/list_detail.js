@@ -1,5 +1,5 @@
 const app = getApp();
-import appleCode from "../../../../../common/helper/utils/appleCode.js"
+import appleCode from "../../../../../common/helper/appleCode.js"
 import WxApi from "../../../../../common/helper/wx-api-helper.js"
 import MyStr from "../../../../../common/support/utils/string-util.js"
 const PAGE_TYPE_GOODS = "STAFF_GOODS";

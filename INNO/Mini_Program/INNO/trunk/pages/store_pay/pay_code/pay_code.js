@@ -1,7 +1,7 @@
 import {
   qrcode_custom,
   barcode_custom
-} from "../../../common/helper/utils/goComplete/index.js"
+} from "../../../common/utils/codeCanvas/index.js"
 import WxApi from '../../../common/helper/wx-api-helper.js'
 const app = getApp();
 Component(app.BTAB({

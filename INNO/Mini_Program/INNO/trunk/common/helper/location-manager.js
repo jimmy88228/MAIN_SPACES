@@ -1,12 +1,12 @@
-import AS from "../helper/authorize-set.js";
-import WxApi from "../helper/wx-api-helper.js";
-import SConf from "../helper/handle/getSystemConfig.js"
+import AS from "./authorize-set.js";
+import WxApi from "./wx-api-helper.js";
+import SConf from "./handle/getSystemConfig.js"
 import EB from "../support/tools/event-bus.js"
-import LM from "./login-manager.js"
-import StorageH from "../helper/handle/storageHandle";
+import LM from "../manager/login-manager.js"
+import StorageH from "./handle/storageHandle";
 import {
   StoresForA
-} from "./log-map.js"
+} from "../manager/log-map.js"
 
 const Check_Name = 'scope.userLocation';
 class locationManager {
