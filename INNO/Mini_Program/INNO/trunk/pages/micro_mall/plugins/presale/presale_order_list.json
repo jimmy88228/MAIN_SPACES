@@ -1,0 +1,7 @@
+{
+     "navigationBarTitleText": "预售订单",
+     "enablePullDownRefresh": true,
+     "usingComponents": {
+        "tabbar": "/components/custom/tabBar"
+    }
+}

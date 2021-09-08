@@ -1,0 +1,7 @@
+{
+  "component": true,
+  "usingComponents": {
+    "btns":"/components/buttons/btns",
+    "subscribe-btn":"/components/subscribe-btn/subscribe-btn"
+  }
+}

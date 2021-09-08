@@ -1,0 +1,19 @@
+<!--pages/component/act-count-down/act-count-down.wxml-->
+<view wx:if="{{isDetail[timeMsg.type]}}" class="main" style="{{bgStyle}} {{timeMsg.boxStyle||''}}">
+    <view class="slot-box">
+        <slot></slot>
+    </view>
+    <view class="count-down-time font_22" wx:if="{{timeMsg.text}}">
+        <text wx:if="{{timeMsg.text}}" class="count-down-tip {{time?'':'font_28 tip-opacity'}}">{{timeMsg.text}}</text>
+        <text class="c_d_val bold" wx:if="{{time}}">{{time}}</text>
+    </view>
+</view>
+<view wx:elif="{{isList[timeMsg.type]}}" class="list main" style="{{bgStyle}} {{timeMsg.boxStyle||''}}">
+    <view class="slot-box list">
+        <slot></slot>
+    </view>
+    <view class="count-down-time font_22" wx:if="{{timeMsg.text}}">
+        <text wx:if="{{timeMsg.text}}" class="count-down-tip {{time?'':'font_28 tip-opacity'}}">{{timeMsg.text}}</text>
+        <text class="c_d_val bold" wx:if="{{time}}">{{time}}</text>
+    </view>
+</view>

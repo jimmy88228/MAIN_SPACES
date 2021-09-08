@@ -1,0 +1,9 @@
+<!--app_sign.wxml-->
+<view class="main" catchtouchstart="{{_showRule?'_noFn':''}}" style="{{_showRule?'overflow:hidden;':''}}">
+  <signMod id="signMod" type="signPage" isLogin="{{isLogin}}" calendar="{{calendar}}" bindcustomPageId="customPageId"></signMod>
+  <pageHome id="pageHome"></pageHome>
+  <view class="pageTab" style="{{showPadding}}" wx:if="{{!hideCustom}}">
+    <pageTab type="inline" bindsignStatusEvent="signStatusEvent" id="pageTab"></pageTab>
+  </view>
+</view>
+<adsPop class="adsPop" pop-data="{{adsPop}}"></adsPop>

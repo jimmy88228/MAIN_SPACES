@@ -1,0 +1,201 @@
+<!--pages/micro_mall/sk/goods-info-sk/goods-info-sk.wxml-->
+<import src="/components/thirdParty/wxParse/wxParse.wxml" />
+<wxs module="G_C" src="../help/getColor.wxs"></wxs>
+
+<form bindsubmit="formAction" report-submit="true">
+  <view class="main {{isIphoneX?'i_p_box':''}}" hidden="{{!showPage}}">
+    <view class="_swiper_box">
+      <swiper bindchange="handle_swiper" class="_swiper" current="{{swiper_current}}">
+        <swiper-item wx:for="{{gallery[select_goods.select_color_id]}}" wx:key="index">
+          <view catchtap="previewImage" data-url="{{item.imgUrl}}" class="img_swiper_box">
+            <image class="img_swiper" src="{{item.imgUrl}}" mode="aspectFit"></image>
+          </view>
+        </swiper-item>
+      </swiper>
+      <view class="switch_point">
+        <text 
+        class="point" 
+        style="{{'border-color:'+ ac_conf.theme_color +';'}}{{swiper_current  == index ?'background:' + ac_conf.theme_color + ';':''}}" 
+        wx:for="{{gallery[select_goods.select_color_id]}}" 
+        wx:for-index="index" 
+        wx:key="index"></text>
+      </view>
+    </view>
+    
+    <view class="count_down" style="{{G_C.getMultBg(ac_conf.to_color,ac_conf.from_color)}}">
+      <view class="c_d_text">
+        <text style="{{G_C.getBg(ac_conf.from_color)}}" class="c_d_label font_24 v_b">秒杀价</text>
+        <view class="price_box">
+          <view class="c_d_price font_38 bold v_b">
+            <text class="c_d_p_char font_28 bold v_b">¥</text><text>{{goodsBaseInfo.minPrice}}</text>
+            <block wx:if="{{goodsBaseInfo.minPrice!=goodsBaseInfo.maxPrice}}">
+              <text style="margin-right:6rpx;">-</text>
+              <text>{{goodsBaseInfo.maxPrice}}</text>
+            </block>
+          </view>
+          <block wx:if="{{goodsBaseInfo.minPrice != goodsBaseInfo.minMarketPrice}}">
+            <view class="c_d_m_k font_22 l_h v_b" style="color:{{m_color_t}};padding:6rpx 0 0 2rpx;">
+              <text class="l_h">¥{{goodsBaseInfo.minMarketPrice}}</text>
+              <block wx:if="{{goodsBaseInfo.minMarketPrice!=goodsBaseInfo.maxMarketPrice}}">
+                <text class="l_h" style="margin:0 2rpx;">-</text>
+                <text class="l_h">{{goodsBaseInfo.maxMarketPrice}}</text>
+            </block>
+            </view>
+          </block>
+        </view>
+      </view>
+      <view class="c_d_time font_22" wx:if="{{showTime || timeText}}">
+        <text class="c_d_tip {{time?'':'font_28'}}" wx:if="{{timeText}}" style="color:{{m_color_t}};">{{timeText}}</text>
+        <text class="c_d_val bold">{{time}}</text>
+      </view>
+    </view>
+
+    <multi_color id="multi_color" color-name="{{goodsBaseInfo.colorNameTitle || '规格'}}" color_img="{{color_img}}" cur_c_id="{{select_goods.select_color_id}}" bindchangeGoodsColor="changeGoodsColor" wx:if="{{color_img.length > 1}}" ></multi_color>
+
+    <view class="sk_content {{!isLogin || (activityInfo.shareCondition!=0 && activityInfo.state!=4 && (!checkUserRank || !checkCondition) )? 'p_b_80':''}}" >
+      <view class="sk_msg p_box">
+        <view class="msg_title font_32 C_333">{{goodsBaseInfo.goodsName}}</view>
+        <!-- <view class="inventory font_22 C_7f">仅剩{{goodsBaseInfo.inventoryRemnant}}件</view> -->
+        <view class="inventory font_22 C_7f">{{goodsBaseInfo.goodsSn}}</view>
+        <btns bindclickcallback="getShare" class="img_share_box" isLogin="{{isLogin}}"><image class="img_share" src="{{sk_share}}" mode="aspectFit"></image></btns>
+      </view>
+
+      <!--已选规格-->
+      <!-- <block wx:if="{{select_goods && select_goods.productInfo && select_goods.productInfo.product_sn}}"> -->
+      <view class="promote_box" bindtap="showPopup">
+        <view class="promote_title C_7f">已选</view>
+        <view class="promote_content _block"> 
+          <block wx:if="{{select_goods.productInfo.akId}}">
+            <block>{{select_goods.productInfo.colorName || ""}}</block><text class="_p_r_10" wx:if="{{select_goods.productInfo.sizeName}}"></text><block>{{select_goods.productInfo.sizeName || ""}}</block>
+          </block>
+          <block wx:else>
+            <block>{{select_goods.select_color || ""}}</block>
+          </block>
+
+        </view>
+        <image src="{{rightbutton}}" class="img_promote" mode="aspectFit"></image>
+      </view>
+      <comments id="comments"></comments>
+      <!-- <view class="promote_box" bindtap="showPopup">
+        <view class="promote_title C_7f">{{select_goods.productInfo.akId?'已选':''}}</view>
+        <view class="promote_content _block {{select_goods.productInfo.akId?'':'select_tip'}}">
+          <block wx:if="{{!select_goods.productInfo.akId}}"><text class="C_7f">请选择规格</text></block> 
+          <block wx:else>
+            <block>{{select_goods.productInfo.colorName || ""}}</block><text class="_p_r_10" wx:if="{{select_goods.productInfo.sizeName}}"></text><block>{{select_goods.productInfo.sizeName || ""}}</block>
+          </block>
+        </view>
+        <image src="{{rightbutton}}" class="img_promote" mode="aspectFit"></image>
+      </view> -->
+
+      <block wx:if="{{showDesc || priceExplain}}">
+        <view class="parting_line"></view>
+        <view class="goods_detail p_box">
+          <view class="g_d_title C_7f">商品详情</view> 
+        </view>
+        <view class="g_detail">
+          <template is="wxParse" data="{{wxParseData:article.nodes}}" />
+          <view class="price_explain" wx:if="{{priceExplain}}">
+            <image class="price_explain_img" src="{{priceExplain}}" mode="widthFix"></image>
+          </view>
+        </view>
+      </block>
+    </view>
+  </view>
+  
+  <view class="buy_tab {{isIphoneX?'fix_iphoneX':''}}" hidden="{{!showPage}}"> 
+    <block wx:if="{{activityInfo.shareCondition!=0 && activityInfo.state!=4}}">
+      <block wx:if="{{!isLogin}}">
+        <btns isLogin="{{isLogin}}" bindclickcallback="shareCallBack" style="background:{{m_bg_color}};" class="tip_box" hover-class="none">
+          <view class="tip_text">还未获得秒杀资格，邀请{{activityInfo.shareCondition}}位好友获取</view>
+          <view class="tip_btn" style="background:{{m_bg_color_btn}}">邀请好友</view>
+        </btns>
+      </block>
+      <button wx:elif="{{!checkUserRank}}" bindtap="handle_tip" data-type="grade" style="background:{{m_bg_color}};" class="tip_box" hover-class="none">
+        <view class="tip_text">还没有秒杀资格，邀请{{activityInfo.shareCondition}}位好友获取</view>
+        <view class="tip_btn" style="background:{{m_bg_color_btn}}">邀请好友</view>
+      </button>
+      <view wx:elif="{{activityInfo.state==1 || (activityInfo.state==2 && checkCondition)}}" style="background:{{m_bg_color}};" class="tip_box">
+        <view class="tip_text">
+          <text>即将开始，{{activityInfo.stimeStr}}开始秒杀</text>
+        </view>
+      </view>
+      <button wx:elif="{{!checkCondition}}" data-route="index" open-type="share" style="background:{{m_bg_color}};" class="tip_box" hover-class="none">
+        <view class="tip_text">还没有秒杀资格，邀请{{activityInfo.shareCondition}}位好友获取</view>
+        <view class="tip_btn" style="background:{{m_bg_color_btn}}">邀请好友</view>
+      </button>
+    </block>
+    <view class="tab_content">
+      <button form-type="submit" hover-class="none" class="tab_index" bindtap="jump" data-type="index" data-url="/pages/micro_mall/sk/activity-sk/activity-sk">
+        <image class="img_index" src="{{sk_home}}" mode="aspectFit"></image>
+        <view class="t_i_text font_22">秒杀列表</view>
+      </button>
+
+
+      <view class="tab_btn_box">
+        <view wx:if="{{goodsBaseInfo.allowDirectBuy==1}}" class="tab_btn_sm">
+          <view  bindtap="jump" data-url="/pages/micro_mall/goods/goods_info" data-goods-id="{{goodsBaseInfo.goodsId}}" data-type="goods" class="tab_flex font_28" style="background:{{m_color}};">
+            <view>
+              <text class="bold _char font_28">¥{{goodsBaseInfo.minMarketPrice}}</text>
+              <text class="bold _char font_28" wx:if="{{goodsBaseInfo.minMarketPrice != goodsBaseInfo.maxMarketPrice}}">-{{goodsBaseInfo.maxMarketPrice}}</text>
+            </view>
+            <text class="_text font_26">原价购买</text>
+          </view>
+        </view>
+        <view wx:if="{{activityInfo.state==3 && goodsBaseInfo.inventoryRemnant<=0}}" class="tab_btn_lg">
+          <view  class=" tab_flex font_28 t_disabled"><text class="_text font_26">被抢完啦</text></view>
+        </view>
+        <view wx:elif="{{(activityInfo.state==3 && checkCondition)}}" class="tab_btn_lg">
+          <btns style="{{G_C.getBg(ac_conf.theme_color)}}" isLogin="{{isLogin}}" bindclickcallback="buy" class="tab_flex font_28">
+            <view class="tab"><text class="_char font_28 bold">¥{{goodsBaseInfo.price}}</text><text class="_text font_26">立即秒杀</text></view>
+          </btns>
+        </view>
+        <view class="tab_btn_lg" wx:elif="{{activityInfo.state==4}}">
+          <view  class=" tab_flex font_28 t_disabled"><text class="_text font_26">活动已结束</text></view>
+        </view>
+        <view wx:elif="{{!isLogin}}" class="tab_btn_lg">
+          <btns style="{{G_C.getBg(ac_conf.theme_color)}}" isLogin="{{isLogin}}" bindclickcallback="checkBuy" class=" tab_flex font_28">
+            <view class="tab"><text class="_char font_28 bold">¥{{goodsBaseInfo.price}}</text><text class="_text font_26">立即秒杀</text></view>
+          </btns>
+        </view>
+        <block wx:else>
+          <view class="tab_btn_lg" wx:if="{{(activityInfo.state == '1' || activityInfo.state == '2') && tplsList.length>0 && !isLogin}}">
+            <btns  
+            class="tab_flex font_28"
+            bindclickcallback="setSubscribe" 
+            isLogin="{{isLogin}}"
+            style="{{((activityInfo.state == 2 && SubScribe.SECKILL_START == 1) || (activityInfo.state == 1 && SubScribe.SECKILL_READY == 1)) ? 'border: 1px solid transparent;' + G_C.getBorderFont(ac_conf.theme_color) : G_C.getBg(ac_conf.theme_color)}}">
+            {{((activityInfo.state == 2 && SubScribe.SECKILL_START == 1) || (activityInfo.state == 1 && SubScribe.SECKILL_READY == 1)) ? '取消提醒' : '提醒我'}}
+            </btns>
+          </view>
+          <view class="tab_btn_lg">
+            <view wx:if="{{(activityInfo.state == '1' || activityInfo.state == '2') && tplsList.length>0 && isLogin}}" 
+            class=" tab_flex font_28"
+            bindtap="setSubscribe" 
+            isLogin="{{isLogin}}"
+            style="{{((activityInfo.state == 2 && SubScribe.SECKILL_START == 1) || (activityInfo.state == 1 && SubScribe.SECKILL_READY == 1)) ? 'border: 1px solid transparent;' + G_C.getBorderFont(ac_conf.theme_color) : G_C.getBg(ac_conf.theme_color)}}">
+            {{((activityInfo.state == 2 && SubScribe.SECKILL_START == 1) || (activityInfo.state == 1 && SubScribe.SECKILL_READY == 1)) ? '取消提醒' : '提醒我'}}
+            </view>
+            <view wx:else class=" tab_flex font_28 font_op" style="{{G_C.getBg(ac_conf.theme_color)}}">
+              <text class="_char font_28">¥{{goodsBaseInfo.price}}</text>
+              <text class="_text font_26">立即秒杀</text>
+            </view>
+          </view>
+        </block>
+      </view> 
+    </view>
+  </view> 
+</form>
+ 
+
+<share id="shareModule" bindchooseShareType="chooseShareType" bindcheckIfStaffDstbCallBack="checkIfStaffDstbCallBack"></share>
+<!--分享图-->
+<shareImg id="shareImg" allData="{{allData}}" theme_color="{{ac_conf.theme_color || ''}}"></shareImg>
+
+<specPop id="specPop"> 
+  <popup id="popup" sku-obj="{{skuObj}}" default_id="{{default_id}}" picture="{{gallery[select_goods.select_color_id][0].imgUrl}}" goodsExtend="{{goodsExtend}}" product-info="{{select_goods.productInfo}}" cur_color_id="{{select_goods.select_color_id}}" bindskuConfirm="skuConfirm" bindcolorSelect="colorSelect" bindsizeSelect="sizeSelect" can-buy="{{activityInfo.state==3 && checkCondition}}" color-arr="{{colorArr}}" size-arr="{{sizeArr}}" select-ship-info="{{selectShipInfo}}" bindshipSelect="shipSelect" bindselectStore="selectStore"></popup>
+</specPop> 
+
+<dialog id="dialog"></dialog>
+<cs goods_id="{{goodsId}}"></cs>
+<!-- 全民分销 -->
+<staffApply touchCancel="{{false}}" isLogin="{{isLogin}}" id="staffApply"></staffApply>

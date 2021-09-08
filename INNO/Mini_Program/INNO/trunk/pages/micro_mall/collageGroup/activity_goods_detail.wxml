@@ -1,0 +1,394 @@
+<!--pages/micro_mall/collageGroup/activity_goods_detail.wxml-->
+<import src="/components/thirdParty/wxParse/wxParse.wxml" />
+<scroll-view class="activity_goods_detail  {{isIphoneX ? 'activity_goods_detail_IX' : ''}}" scroll-y="{{!noScroll}}">
+    <view class="goods_swiper_gallery">
+        <swiper class="goods_swiper {{sys_info.goods_image_size == '4-3' ? 'ratio_3_4rpx' :'' }}" bindchange="changeSwiper" interval="4000" duration="500" circular="true">
+            <block wx:for="{{color_list[select_style.color_id]}}" wx:key="index">
+                <swiper-item class="swiper_item">
+                    <image catchtap="preView" src="{{item.img_url}}" data-url="{{item.img_url}}" class="slide-image" mode="widthFix" />
+                </swiper-item>
+            </block>
+        </swiper>
+        <view class="switch_point">
+            <text class="point" wx:for="{{color_list[select_style.color_id]}}" wx:key="index" style="background:{{swiper_current === index ? brand_info.style.bg_color : '#BFBFBF'}}"></text>
+        </view>
+
+    </view>
+    <view class="bg_fff">
+        <!-- 倒计时 -->
+        <act-count-down id="actCountDownId">
+            <view class="table_cell t_l v_m to_flex">
+                <text style="line-height: 30rpx;" class="inline_b v_m font-28 C_fff">拼团</text>
+                <view class="activity_tip font_20 inline_b">{{goods_info.join_mans}}人团</view>
+            </view>
+        </act-count-down>
+
+        <!--good_info-->
+        <view class="goods_info">
+            <block>
+                <btns 
+                class="btn_share_icon"
+                isLogin="{{isLogin}}"
+                btnType="buy"
+                bindclickcallback="getShare"
+                >
+                  <view>
+                      <image class="share_icon" src='{{detail_share}}' mode='aspectFit'></image>
+                      <view class="goods_operate_txt">分享</view>
+                  </view>
+                </btns>
+            </block>
+            <block wx:if="{{goods_info.is_show_sale_number == 1}}">
+              <view class="sale_number">已拼{{goods_info.sale_number_str || 0}}件</view>
+            </block>
+            <view class="font_28 goods_name" style='color:#1B1B1B'>{{goods_info.activity_name}}</view>
+            <view class="font_22 C_7f goods_sn">{{goods_info.goods_sn}}</view>
+            <view class="goods_price" style="color:{{brand_info.style.font_color || '#000'}};">
+                <text class='font_24 C_333'>拼团价</text>
+                <text class="font_40 ml_5 bold">¥</text>
+                <text class="font_40  bold">{{goods_info.min_sale_price}} <block wx:if="{{goods_info.min_sale_price != goods_info.max_sale_price}}">- {{goods_info.max_sale_price}}</block></text>
+            </view>
+            <view class="font_22 placeholder market_price_box">
+                <view class="RMB_line font_24">¥ </view>
+                <view class='font_24' style='display:inline-flex'>{{goods_info.min_market_price}}</view>
+                <!-- <view class="font_22 placeholder t_line_t" style='margin-top:12rpx'>原价<view class="RMB_line font_24">¥ </view><view class='font_24' style='display:inline-flex'>{{goods_info.min_market_price}}</view> -->
+                <block wx:if="{{goods_info.min_market_price != goods_info.max_market_price}}">- ¥{{goods_info.max_market_price}}</block>
+                <view class='placeholder line_diy'></view>
+            </view>
+            <!--分销收益-->
+            <commission id="commission"></commission>
+
+
+        </view>
+    </view>
+
+    <!-- 服务-->
+    <view class="stay_line" wx:if="{{goodsServices && goodsServices.length > 0}}"></view>
+    <block wx:if="{{goodsServices && goodsServices.length > 0}}">
+        <view class="detail_item detail_tip C_7f font_24 b_st" catchtap="handleService">
+            <text class="detail_tip_tit">服务</text>
+            <view class="detail_tip_cont_box">
+                <view class="detail_tip_cont">
+                    <text wx:for="{{goodsServices}}" wx:key="index">{{item.name}}<text class="mr_10 ml_10 bold" wx:if="{{goodsServices[index+1]}}">·</text>
+                    </text>
+                </view>
+                <image src="{{rightbutton}}" class="rightbutton" mode="widthFix" />
+            </view>
+        </view>
+    </block>
+    <view class="stay_line"></view>
+
+    <!--拼团规则-->
+    <view class="collage_explain bg_fff font_24">
+        <view class="table  b_b collage_explain_tit">
+            <view class="table_cell t_l C_7f">拼团玩法</view>
+            <view class="table_cell t_r">
+                <navigator hover-class='none' url="activity_rule?activity_id={{goods_info.activity_id}}">
+                    <!-- <text class="warn_i_icon radius_00 b_c_B2B2B2 C_B2B2B2 C_7f b_1 inline_b v_base font_18 bold">i</text> -->
+                    <image src='{{rule_img}}' mode='widthFix' class='rule_img'></image>
+                    <text class="v_m C_7f font_22" style='line-height:24rpx;'>活动规则</text>
+                </navigator>
+            </view>
+        </view>
+        <view class="table collage_explain_table font_26" style='color:{{brand_info.style.font_color}}'>
+            <view class="table_cell v_m c_e_item_stay">
+                <text class="inline_b v_m gradient explain_point C_fff" style="background:linear-gradient(45deg,{{pt_color.from_color}},{{pt_color.to_color}});">1</text>
+                <view class="inline_b v_m" style=''>开团/参团</view>
+                <x-icon class="v_m C_7f as_gt" type="ios-arrow-right" size="18"></x-icon>
+                <image src="{{rightbutton}}" class="explain_gt inline_b v_m" mode="widthFix" />
+            </view>
+            <view class="table_cell v_m c_e_item_stay">
+                <text class="inline_b v_m gradient explain_point C_fff" style="background:linear-gradient(45deg,{{pt_color.from_color}},{{pt_color.to_color}});">2</text>
+                <view class="inline_b v_m">邀请好友参团</view>
+                <image src="{{rightbutton}}" class="explain_gt inline_b v_m" mode="widthFix" />
+            </view>
+            <view class="table_cell v_m">
+                <text class="inline_b v_m gradient explain_point C_fff" style="background:linear-gradient(45deg,{{pt_color.from_color}},{{pt_color.to_color}});">3</text>
+                <view class="inline_b v_m">
+                    <view class="explain_txt">达到人数</view>
+                    <view class="">顺利成团</view>
+                </view>
+            </view>
+        </view>
+    </view>
+    <!--团长优惠-->
+    <view class="stay_line" wx:if='{{goods_info.captain_tips}}'></view>
+    <view class="table captain_discount" wx:if='{{goods_info.captain_tips}}'>
+        <view class="C_7f table_cell font_24" style='width:138rpx;'>团长优惠</view>
+        <view class="table_cell" style='color:{{brand_info.style.font_color}}'>{{goods_info.captain_tips}}</view>
+    </view>
+    <view class="stay_line" wx:if="{{join_count > 0}}"></view>
+    <!--拼团情况-->
+    <!-- <view class="group_list condition_group bg_fff C_000"  > -->
+    <view class="group_list condition_group bg_fff C_000" wx:if="{{join_count > 0}}">
+        <view class="table condition_tit b_b ">
+            <view class="C_000 font_24 t_l table_cell">{{join_count}}人正在开团，可直接参与</view>
+            <view class="font_22 t_r table_cell">
+                <text class="inline_b v_m C_7f" catchtap='joinListPopData'>查看更多</text>
+                <image src="{{rightbutton}}" class="more_icon inline_b v_m " mode="widthFix" />
+            </view>
+        </view>
+        <view class="condition_list">
+            <view class="team_lists b_b table" wx:for="{{group_list}}" wx:key="index" wx:for-index="sort">
+                <view class="table_cell">
+                    <view class="user_portrait inline_b v_m bg_EFEFEF">
+                        <image src="{{item.user_portrait}}" mode="widthFix" />
+                    </view>
+                    <view class="real_name inline_b v_m font_24">{{item.real_name}}</view>
+                </view>
+                <view class="table_cell font_22 t_r C_7f" style='padding:8rpx 0;'>
+                    <view class="inline_b v_m t_c">
+                        <view class="dif_desc">还差
+                            <text style='color:{{brand_info.style.font_color}}'>{{item.allow_users}}人</text>拼成</view>
+                        <view class="surplus_time ">
+                            <view>
+                                剩余
+                                <text style='margin-right:4rpx;' wx:if="{{group_times[item.user_activity_id].day > 0}}">{{group_times[item.user_activity_id].day}}天</text>
+                                <text>{{group_times[item.user_activity_id].hour}}</text>
+                                <text style='margin:0 4rpx'>:</text>
+                                <text>{{group_times[item.user_activity_id].min}}</text>
+                                <text style='margin:0 4rpx'>:</text>
+                                <text>{{group_times[item.user_activity_id].sec}}</text>
+                            </view>
+                        </view>
+                    </view>
+                    <view class="inline_b v_m font_24">
+                        <text class="go_join_btn  b_1 " style='color:{{brand_info.style.font_color}};border-color:{{brand_info.style.bg_color}}' data-key="join_pop" data-index="{{sort}}" catchtap="joinPopData">去参团</text>
+                    </view>
+                </view>
+            </view>
+        </view>
+    </view>
+    <view class="stay_line"></view>
+    <!-- 商品详情 -->
+    <view class="goods_desc">
+        <view class="desc_tit C_7f font_24">
+            <text>商品详情</text>
+        </view>
+        <view class="desc_imgs_list" wx:if="{{goods_info.goods_desc}}">
+            <!--调用富文本-->
+            <template is="wxParse" data="{{wxParseData:article.nodes}}" />
+        </view>
+    </view>
+
+    <view class="stay_line"></view>
+
+</scroll-view>
+<!--页面btn-->
+<view class="activity_btn_operate bg_fff {{isIphoneX ? 'fix_iphoneX' : ''}}">
+    <view class="home_operate">
+        <view catchtap='go_home'>
+            <image src="{{Home}}" mode="widthFix" class='btn_go_home' />
+            <view class='font_20 C_333'>首页</view>
+        </view>
+    </view>
+    <view class="btns_table">
+        <view class="table btns_table_stay t_c" >
+            <view class="table_cell btn_operate_l" wx:if="{{goods_info.is_alone_buy == 1}}">
+                <navigator hover-class='none' style="border:1px solid {{brand_info.style.bg_color}};color:{{brand_info.style.font_color}}"  url="/pages/micro_mall/goods/goods_info?goods_id={{goods_info.goods_id}}&color_id={{goods_info.def_color}}" class="operate_btn">
+                  <view>
+                    <view>单独购买</view>
+                    <view class="font_20 mt_5">¥{{goods_info.max_market_price}}</view>
+                  </view>
+                </navigator>
+            </view>
+            <view class="table_cell btn_operate_r font_28 {{goods_info.isEnd ? '_invaild' : ''}}">
+                <view 
+                class="operate_btn bg_E60012" 
+                style="background-color:{{brand_info.style.bg_color || '#E60012'}}">
+                  <btns
+                  btnType="buy"
+                  isLogin="{{isLogin}}"
+                  disabled="{{disabledTip || goods_info.isEnd}}"
+                  bindclickcallback="getUserInfo"
+                  class="init_btns"
+                  >
+                    <view class="init_btns_cont">
+                        <block wx:if="{{disabledTip}}">{{disabledTip}}</block>
+                        <block wx:else>
+                            <view>立即开团</view>
+                            <view style='opacity:0.6;font-weight:300;' class="font_20" wx:if="{{goods_info.captain_tips}}">{{goods_info.captain_tips}}</view>
+                        </block>
+                    </view>
+                 </btns>
+                </view>
+                <!-- <view class='sale_up'>售罄</view> -->
+            </view>
+        </view>
+    </view>
+</view>
+<!--尺码板块-->
+<!-- <view class="style_pop bg_fff" wx:if="{{show_style_pop}}">
+    <view class="style_bg pop_bg {{style_pop_animate ? 'isshow' : 'ishide' }}" data-key='style_pop' catchtap='switchStylePop'></view>
+    <view class="style_cont bg_fff {{style_pop_animate ? 'isshow' : 'ishide' }} {{isIphoneX ? 'fix_iphoneX' : ''}}"> -->
+    <specPop id="specPop">
+        <view class="style_select_area {{isIphoneX?'style_select_area_ipX':''}}">
+            <view class="spec_msg_box">
+                <view class="select_color_img_area"> 
+                    <view class="select_color_img_stay inline_b v_b bg_fff">
+                        <view class="select_color_img {{sys_info.goods_image_size == '4-3' ? 'ratio_3_4' :'' }}">
+                            <image src="{{color_gallery[select_style.color_id].img_url}}" mode="aspectFit" />
+                        </view>
+                    </view>
+                    <view class="select_color_info inline_b">
+                        <block wx:if="{{select_style.size.size_id || (attr_info.attr_count<=1 && select_style.color.color_id)}}">
+                            <view class=" select_price">
+                                <text class=" font_40  bold" style='color:{{brand_info.style.font_color}}'>¥</text>
+                                <text class=" font_40  bold" style='color:{{brand_info.style.font_color}}'>{{attr_info.attr_count<=1?select_style.color.sale_price:select_style.size.sale_price}}</text>
+                            </view>
+                        </block>
+                        <block wx:else>
+                            <view class="select_price">
+                                <text class=" font_40  bold" style='color:{{brand_info.style.font_color}}'>¥{{attr_info.min_sale_price}}</text>
+                            </view>
+                        </block>
+                        <view class='mb_5' wx:if="{{(attr_info.attr_count <= 1 && select_style.color.sizeList[0].product_sn) || attr_info.attr_count > 1 && select_style.size.product_sn}}">
+                            <view class="font_24 C_7f mr_10" style="display:inline-block;">商品条码</view>
+                            <!-- <view class="is_select_tip font_24 C_7f mr_5" style='display:inline-flex'>商品条码</view> -->
+                            <view class='C_7f font_24' style="display:inline-block;">
+                                <block wx:if="{{attr_info.attr_count <= 1}}">
+                                {{select_style.color.sizeList[0].product_sn || ""}}
+                                </block>
+                                <block wx:else>
+                                {{select_style.size.product_sn}}
+                                </block>
+                            </view>
+                        </view>
+                        <view class="is_select_tip font_24 C_7f" wx:if="{{select_style.color.color_id}}">
+                            已选 {{select_style.color.color_name}} 
+                            <block wx:if="{{select_style.size.size_id}}"> {{select_style.size.size_name}}</block>
+                        </view>
+                    </view>
+                </view>
+            </view>
+
+            <view class="spec_scroll_box">
+                <scroll-view scroll-y="true" class="style_select_cont" scroll-with-animation="true">
+                    <view class="color_select">
+                        <view class="tit font_24 C_333">{{attr_info.color_name_title}}</view>
+                        <view class="color_select_item select_items">
+                            <view class="inline_b v_t attr_btn_view" wx:for="{{spe_color_list}}" wx:key="index">
+                                <button hover-class='none' class="b_1 radius_10" data-color_id="{{item.color_id}}" disabled='{{!item.is_enabled}}' style="{{(select_style.color_id == item.color_id) && item.is_enabled ? 'border-color:'+brand_info.style.bg_color+';color:#fff'+';background:'+ brand_info.style.bg_color: ''}}"
+                                    bindtap="colorSelect"><view class="specBtn">{{item.color_n}}</view></button>
+                            </view>
+                        </view>
+                    </view>
+                    <view class="size_select" wx:if='{{attr_info.attr_count>1}}'>
+                        <view class="tit font_24 C_333">{{attr_info.size_name_title}}</view>
+                        <view class="size_select_item select_items">
+                            <view class="inline_b v_t attr_btn_view" wx:for="{{spe_size_list}}" wx:key="index">
+                                <button hover-class='none' class="b_1 radius_10" data-size_id="{{item.size_id}}" disabled='{{!item.is_enabled}}' style="{{(select_style.size_id == item.size_id) && item.is_enabled ? 'background:'+brand_info.style.bg_color+';color:#fff' : ''}}"
+                                    bindtap="sizeSelect"><view class="specBtn">{{item.size_n}}</view></button>
+                            </view>
+                        </view>
+                    </view>
+                </scroll-view>
+                <view class="goods_count table b_t">
+                    <view class="tit table_cell t_l font_24 C_333 num">数量
+                        <view class="inline_b font_22 C_333 num_tip" style='opacity:0.6'>(每人限购{{goods_info.limit_buys}}件)</view>
+                    </view>
+
+                    <view class="goods_operate table_cell t_r C_7f">
+                        <view class="goods_count_operate inline_b t_c">
+                            <view class="count_operate reduce_btn b_1 inline_b font_45" bindtap="reduceGoodsNum">
+                                <text class="tr_line" style="background-color:{{brand_info.style.bg_color}};" wx:if="{{product_num > 1}}"></text>
+                                <text class="tr_line bg_B2B2B2" wx:else></text>
+                            </view>
+                            <input class="count_input font_26 C_000 inline_b" disabled="true" value="{{product_num}}" />
+                            <view class="count_operate add_btn b_1 inline_b font_45" bindtap="addGoodsNum">
+                                <block wx:if="{{product_num < limit_buys}}">
+                                    <text class="tr_line" style="background-color:{{brand_info.style.bg_color}};"></text>
+                                    <text class="ver_line" style="background-color:{{brand_info.style.bg_color}};"></text>
+                                </block>
+                                <block wx:else>
+                                    <text class="tr_line bg_B2B2B2"></text>
+                                    <text class="ver_line bg_B2B2B2"></text>
+                                </block>
+                            </view>
+                        </view>
+                    </view>
+                </view>
+            </view>
+
+            <view class="t_c btn_box {{isIphoneX ? 'fix_iphoneX' : ''}}">
+                <view class=" confirm_style_btn C_fff" style='background-color:{{brand_info.style.bg_color}}' catchtap='buyActivityGoods'>下一步</view>
+            </view>
+        </view> 
+    </specPop>
+    <!-- </view>
+</view> -->
+
+<!--参与拼团弹框-->
+<view class="join_pop" wx:if="{{show_join_pop}}">
+    <view class="join_pop_bg pop_bg {{join_pop_animate ? 'isshow' : 'ishide'}}" data-key="join_pop" catchtap='switchStylePop'></view>
+    <view class="join_pop_cont t_c bg_fff {{join_pop_animate ? 'isshow' : 'ishide'}}">
+        <view class="join_c_title bold">参与他的拼单</view>
+        <view class="">
+            <view class="inline_b v_m">
+                仅剩
+                <text style='color:{{brand_info.style.font_color}}'>{{group_list[select_join_index].allow_users}}</text>个名额
+            </view>
+            <view class="inline_b v_m">
+               <text wx:if="{{group_times[group_list[select_join_index].user_activity_id].day>0}}" style='margin-left:4rpx;margin-right:4rpx;'>{{group_times[group_list[select_join_index].user_activity_id].day}}天</text>{{group_times[group_list[select_join_index].user_activity_id].hour}}<text style='margin-left: 4rpx'>:</text>{{group_times[group_list[select_join_index].user_activity_id].min}}<text style='margin: 0 4rpx'>:</text>{{group_times[group_list[select_join_index].user_activity_id].sec}} 后结束
+            </view>
+        </view>
+        <view class="join_user_area t_c">
+            <view class="join_user_header is_joiner inline_b v_m">
+                <view class="join_user_header_stay oh">
+                    <image src="{{group_list[select_join_index].user_portrait}}" mode="widthFix" />
+                </view>
+                <text class="user_header_tip font_20">拼主</text>
+            </view>
+            <view class="join_user_header inline_b v_m">
+                <view class="join_user_header_stay oh" style='padding-left:4rpx'>?</view>
+            </view>
+        </view>
+        <view class="">
+            <view class="C_fff radius_10 join_collage_btn" catchtap="joinCollage" style='background-color:{{brand_info.style.bg_color}}'>参与拼团</view>
+        </view>
+    </view>
+</view>
+<!--查看参与拼团列表-->
+<view class="join_list_pop" wx:if="{{show_join_list_pop}}">
+    <view class="join_list_pop_bg pop_bg {{join_list_pop_animate ? 'isshow' : 'ishide'}}" data-key="join_list_pop" catchtap='switchStylePop'></view>
+    <view class="join_list_pop_cont bg_fff t_c radius_10 {{join_list_pop_animate ? 'isshow' : 'ishide'}}">
+        <view class="bold font_32 list_pop_tit b_b">正在拼单</view>
+        <scroll-view scroll-y class="join_team_lists">
+            <view class="team_lists b_b table" wx:for="{{group_list}}" wx:key="index"  wx:for-index="sort">
+                <view class="table_cell">
+                    <view class="user_portrait inline_b v_m bg_EFEFEF">
+                        <image src="{{item.user_portrait}}" mode="widthFix" />
+                    </view>
+                    <view class="real_name inline_b v_m font_24">{{item.real_name}}</view>
+                </view>
+                <view class="table_cell font_22 t_r C_7f">
+                    <view class="inline_b v_m t_c">
+                        <view class="dif_desc">还差
+                            <text style='color:{{brand_info.style.font_color}}'>{{item.allow_users}}人</text>拼成</view>
+                        <view class="surplus_time ">
+                            <view class='C_7f'>
+                                剩余
+                                <text style='margin-right:4rpx;' wx:if="{{group_times[item.user_activity_id].day > 0}}">{{group_times[item.user_activity_id].day}}天 </text>
+                                <text>{{group_times[item.user_activity_id].hour}}</text><text style='margin:0 4rpx'>:</text>
+                                <text>{{group_times[item.user_activity_id].min}}</text><text style='margin:0 4rpx'>:</text>
+                                <text>{{group_times[item.user_activity_id].sec}}</text>
+                            </view>
+                        </view>
+                    </view>
+                    <view class="inline_b v_m font_24">
+                        <text class="go_join_btn C_fff  b_1 " style='border-color:{{brand_info.style.bg_color}};background-color:{{brand_info.style.bg_color}}' data-key="join_pop" data-index="{{sort}}" catchtap="joinPopData">去参团</text>
+                    </view>
+                </view>
+            </view>
+        </scroll-view>
+    </view>
+</view>
+<service id="service"></service>
+<!--登录界面-->
+<!-- <loginPage id="loginPage" bindloginCallback="loginCallback"></loginPage> -->
+<!--分享海报-->
+<share id="shareModule" bindchooseShareType="chooseShareType" bindcheckIfStaffDstbCallBack="checkIfStaffDstbCallBack"></share>
+<!--分享图-->
+<shareImg id="shareImg" allData="{{allData}}"></shareImg>
+<!-- 全民分销 -->
+<staffApply touchCancel="{{false}}" isLogin="{{isLogin}}" id="staffApply"></staffApply>

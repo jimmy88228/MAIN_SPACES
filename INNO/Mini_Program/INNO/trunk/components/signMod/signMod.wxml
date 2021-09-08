@@ -1,0 +1,76 @@
+<!--pages/component/signMod/signMod.wxml-->
+<import src="./sign_user/sign_user.wxml"></import>
+<block wx:if="{{type == 'signPage'}}">
+  <view class="sign_cont" hidden="{{hideCurrent}}" style="{{_showAnim_op}} {{_showAnim_op_extra}}">
+    <view class="act-box {{signOrderActivityInfo.detailList.length>0?'':'noneAct'}}">
+      <template is="sign_user" data="{{point,img_rule,img_prize}}" />
+      <signContinuous id="signContinuousId" info="{{signOrderActivityInfo}}" wx:if="{{signOrderActivityInfo.detailList.length>0}}">
+        <view class="act-left-box">
+          <view class="act-title">连续签到冲刺大奖</view>
+          <view class="flex-s-c" style="flex-wrap: wrap;">
+            <view class="ac-img-box flex-c-c" wx:for="{{signOrderActivityInfo.detailList}}" wx:key="index">
+              <image src="{{item.goodsImg}}" mode="aspectFit" class="img-prog-prize"></image>
+              <view class="ac-progress">第{{index + 1}}档</view>
+            </view>
+          </view>
+        </view>
+      </signContinuous>
+    </view>
+    <view class="sign_count_box" bindtap="sign_show_toggle">
+      <view class="sign_count">连续签到{{signData.sign_num}}天</view>
+      <view class="arrow {{sign_show_detail?'detail':''}}"></view>
+    </view>
+    <calendar 
+      id="calendarId" type="style{{sign_show_detail?'1':'2'}}" 
+      calendar="{{calendar}}" gesture="{{gesture}}" signData="{{signData}}"
+      activityEndTime="{{activityEndTime}}" bindruleFnc="handle_rule"></calendar>
+    <view class="sign_box">
+      <signMsg bindcreateAppSign="createAppSign" btnSize="large" fromType="signPage" signData="{{signData}}"
+        signStyleBox="justify-content:center;" isLogin="{{isLogin}}">
+      </signMsg>
+    </view>
+  </view>
+
+  <view class="rich_box" catchtap="cancel_rule" hidden="{{!_showRule}}">
+    <view class="rich_box2" style="{{_showAnim?'opacity:1;':''}}">
+      <image catchtap="cancel_rule" src="{{close}}" mode="aspectFit" style="{{_showAnim?'opacity:1;':''}}"
+        class="img_close"></image>
+      <view class="rich_text" catchtap="handle_rich">
+        <rich-text nodes="{{htmlVal}}"></rich-text>
+      </view>
+    </view>
+  </view>
+</block>
+
+<block wx:elif="{{type == 'userCenter'}}">
+  <view class="signBox">
+    <view class="signMsg">
+      <signMsg bindcreateAppSign="createAppSign" getInfo="{{info}}" fromType="userCenter" btnSize="normal" signData="{{signData}}"
+        isLogin="{{isLogin}}">
+        <view slot="msg" class="sign_info">
+          <text>{{signData.sign_status==0?'已':''}}签到</text>
+          <text class="sign_point"
+            wx:if="{{signData.sign_status==1 && signData.canGetPoint}}">+{{signData.canGetPoint}}积分</text>
+        </view>
+      </signMsg>
+    </view>
+    <view class="calendar">
+      <calendar id="calendarId" calendar="{{calendar}}" type="style3" activityEndTime="{{activityEndTime}}"></calendar>
+    </view>
+    <view wx:if="{{signOrderActivityInfo.detailList.length>0}}" bindtap="onTap" data-type="jumpSign" class="signContinuous">
+      <signContinuous id="signContinuousId" info="{{signOrderActivityInfo}}" baseWH="182" signStyleBox="min-height:204rpx;align-items:center;padding-left:25rpx;">
+        <view class="tip-box">
+          <view class="tip-title">连续签到冲刺大奖</view>
+          <view class="tip-msg">
+            <block wx:if="{{signOrderActivityInfo.nextGetContinueInfo.nextGetContinueDay>0}}">再连签{{signOrderActivityInfo.nextGetContinueInfo.nextGetContinueDay}}天可得：{{signOrderActivityInfo.nextGetContinueInfo.goodsName}}</block>
+            <block wx:elif="{{signOrderActivityInfo.currentSort >= signOrderActivityInfo.detailList.length}}">已满足最大档位的奖励条件</block>
+            <block wx:else>再连签1天可得：{{signOrderActivityInfo.nextGetContinueInfo.goodsName}}</block>
+          </view>
+        </view>
+      </signContinuous>
+    </view>
+  </view>
+</block>
+<block wx:if="{{type == 'signPage' || type == 'userCenter'}}">
+  <ruleModule isJump="{{isJump}}" class="ruleModule" id="signRule"></ruleModule>
+</block>

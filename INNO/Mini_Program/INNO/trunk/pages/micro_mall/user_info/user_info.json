@@ -1,0 +1,7 @@
+{
+  "navigationBarTitleText": "个人资料",
+  "usingComponents": {
+    "areaSelect": "/components/address/areaSelect",
+    "phoneLogin":"/components/login/login_by_phone"
+  }
+}

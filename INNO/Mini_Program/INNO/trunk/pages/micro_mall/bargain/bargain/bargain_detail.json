@@ -1,0 +1,14 @@
+{
+  "navigationBarTitleText": "砍价详情",
+  "enablePullDownRefresh": true,
+  "usingComponents": {
+      "popup": "./bargain_popup",
+      "pageHome": "/components/sceneOperate/pageHome",
+      "tabbar": "/components/custom/tabBar_bargain",
+      "btns": "/components/buttons/btns",
+      "share":"/pages/micro_mall/goods/popup/share",
+      "pageTab": "/components/custom/pageTab/pageTab",
+      "shareImg": "/pages/micro_mall/goods/popup/shareImg",
+      "slideVerify":"/components/verify/slide_verify/slide_verify"     
+  }
+}

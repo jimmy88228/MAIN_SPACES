@@ -1,0 +1,12 @@
+{
+  "navigationBarTitleText": "加载中",
+  "navigationStyle":"custom",
+  "backgroundColor": "#ffffff",
+  "usingComponents": {
+    "pageTab": "/components/custom/pageTab/pageTab",
+    "pageHome": "/components/sceneOperate/pageHome",
+    "indexHeader": "/components/indexHead/indexHeader",
+    "page-nav": "/components/page-nav/page-nav",
+    "welcome": "/components/pop/welcome/welcome"
+  }
+}

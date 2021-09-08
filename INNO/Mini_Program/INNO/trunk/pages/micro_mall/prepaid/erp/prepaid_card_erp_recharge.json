@@ -1,0 +1,9 @@
+{
+  "backgroundColor": "#ffffff",
+  "usingComponents": {
+        "dialog": "/components/ui/cps/dialog/dialog",
+        "btns":"/components/buttons/btns",
+        "mp-input":"/components/mp-module/mp-input/mp-input",
+        "mp-scroll-view":"/components/mp-module/mp-scroll-view/mp-scroll-view"
+  }
+}

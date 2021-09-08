@@ -1,0 +1,23 @@
+<!-- <view class="btns_hold {{disabled ? 'disabled' : ''}}"> -->
+<view class="btns_hold {{disabled && !hideDisStyle ? 'disabled' : ''}}">
+    <slot></slot>
+    <block>
+      <block wx:if="{{isLogin || isNormal}}">
+        <button form-type="submit" class="handle_btn" bindtap='handleUserInfo' disabled='{{disabled}}' hover-class='none'></button>
+      </block>
+      <block wx:else>
+        <block wx:if="{{loginType != ''}}">
+          <button wx:if="{{isCanUrPf}}" form-type="submit" class="handle_btn" disabled='{{disabled}}' bindtap='handleUserInfo'></button>
+          <button form-type="submit" class="handle_btn" open-type='getUserInfo' disabled='{{disabled}}' bindgetuserinfo='handleUserInfo'></button>
+        </block>
+        <block>
+          <button wx:if="{{isCanUrPf}}" form-type="submit" class="handle_btn" disabled='{{disabled}}' bindtap='handleUserInfo'></button>
+          <button wx:else form-type="submit" class="handle_btn" open-type='getUserInfo' disabled='{{disabled}}' bindgetuserinfo='handleUserInfo'></button>
+        </block>
+
+      </block>
+    </block>
+  </view>
+
+<!--手机登录-->
+<loginPage id="loginPage" wx:if="{{needBindPhone}}" bindloginCallback="bindPhoneCallback"></loginPage>

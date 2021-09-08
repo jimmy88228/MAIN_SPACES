@@ -1,0 +1,179 @@
+<!--pages/micro_mall/prepaid/erp/prepaid_card_erp_recharge.wxml-->
+<view wx:if="{{showExchange && showRecharge}}" class="tabs C_7f font_28">
+  <view class="tab_l {{type=='exchange'?'C_000 bold':''}}" bindtap="handle_tab" data-type="exchange" data-num="0">充值兑换
+  </view>
+  <view class="tab_r {{type=='recharge'?'C_000 bold':''}}" bindtap="handle_tab" data-type="recharge" data-num="1">充值活动
+  </view>
+  <view class="line" style="left:{{_left}}%;"></view>
+</view>
+
+
+<view class="box_right bg_w" style="{{showExchange && showRecharge ? 'padding-top: 100rpx;' : 'padding-top: 0px;'}}"
+  hidden="{{type == 'recharge' || !showExchange}}">
+  <view class="header">
+    <image src="{{userImg || defaultImg}}" mode="aspectFit" class="userImg"></image>
+    <view class="circle">
+      <btns isLogin="{{isLogin}}" btnType="prepaid"></btns>
+    </view>
+    <view class="header_name C_7f {{!isLogin?'bold':''}}">
+      <btns isLogin="{{isLogin}}" btnType="prepaid">
+        <view class="header_style" wx:if="{{isLogin}}">{{mobilePhone||cardNum||realName}}</view>
+        <view class="header_style" wx:if="{{!isLogin}}">请登录</view>
+      </btns>
+    </view>
+  </view>
+  <view class="content C_7f">
+    <view class="card">兑换卡号</view>
+    <view class="_input_box">
+      <mp-input id="mpInputCard" bindhandleInput="handleInput" data-type="exchange" ext-input-class="_input"
+        placeholderProp="输入卡号"></mp-input>
+      <image src="{{scanImg}}" mode="aspectFit" data-id="mpInputCard" bindtap="scanCode" data-type="exchange" class="img_scan"></image>
+    </view>
+    <view class="card _m_60">兑换密码</view>
+    <view class="_input_box">
+      <mp-input id="mpInputPwd" ext-input-class="_input" bindhandleInput="handleInput" data-type="exchange"
+        placeholderProp="输入密码" password="{{hidePwd}}"></mp-input>
+      <image catchtap="handle_showPwd" src="{{hidePwd?pwd_hide:pwd_active}}" mode="aspectFit"
+        class="img_showText"></image>
+      <image src="{{scanImg}}" bindtap="scanCode" data-id="mpInputPwd" data-type="exchange" mode="aspectFit" class="img_scan"></image>
+    </view>
+    <view class="btn_box">
+      <view class="exchange_btn">
+        <btns isLogin="{{isLogin}}" btnType="prepaid" bindclickcallback="handle_exchange">立即兑换</btns>
+      </view>
+    </view>
+  </view>
+</view>
+
+
+<view class="box_left {{isIphoneX?'pb_X':'pb'}}"
+  style="{{showExchange && showRecharge ? 'padding-top: 100rpx;' : 'padding-top: 0px;'}}"
+  hidden="{{type == 'exchange' || !showRecharge}}">
+  <view class="recharge" hidden="{{showActivity}}">
+    <view class="box">
+      <view class="amount">
+        <view class="amount_wrapper">
+          <view class="amount_title">充值金额</view>
+          <view class="select_amount" style="color: {{brand_info.style.font_color}};">
+            ￥{{cardList[curAmountIndex].cardValue}}
+          </view>
+          <view class="select_given" style="color: {{brand_info.style.font_color}};">
+            (赠送金额{{cardList[curAmountIndex].cardAttachValue}})
+          </view>
+        </view>
+        <view class="amount_type_wrapper">
+          <view class="amount_type"
+            style="border: 1px solid {{curAmountIndex === index ? brand_info.style.font_color : '#e2e2e2'}}"
+            wx:for="{{cardList}}" wx:key="index" data-content="amount" data-type-index="{{index}}"
+            data-card-id="{{item.cardId}}" data-vaild-time="{{item.cardPeriodStr}}" bindtap="selectType">
+            <view class="item_amount">￥{{item.cardValue}}</view>
+            <view class="item_given">赠送金额{{item.cardAttachValue}}</view>
+          </view>
+        </view>
+      </view>
+    </view>
+    <view class="box">
+      <view class="pay_ways amount">
+        <view class="pay_title">支付方式</view>
+        <view class="pay_ways_wrapper">
+          <view class="pay_type" wx:for="{{payWays}}" wx:key="index"
+            style="border: 1px solid {{curPayIndex === index ? brand_info.style.font_color : '#e2e2e2'}}"
+            data-content="pay" data-type-index="{{index}}" bindtap="selectType">
+            <image mode="widthFix" src="{{item.img}}" class="pay_icon" />
+            <view class="item_pay_type">{{item.payType}}</view>
+          </view>
+        </view>
+      </view>
+    </view>
+    <view class="box">
+      <view class="share-box">
+        <view class="share-title">
+          <text class="v_t">分享人</text><text class="share-tip v_t">*选填</text>
+        </view>
+        <view class="share-content-box flex-s-s">
+          <view class="fold-box {{focus?'unfold':''}}">
+            <view class="input-box flex-s-c {{staff_select.dstb_staff_code}} {{staff_select.dstb_staff_code == searchText?'active':''}}">
+                <mp-input id="mpInput" data-type="staff" placeholderProp="请输入" ext-input-class="input-class {{staff_select.dstb_staff_code == searchText?'active':''}}" ext-placeholder-class="placeholder-class" setFocus bindhandleFocus="handleFocus" bindhandleInput="handleInput"></mp-input>
+                <view class="arrow-box flex-c-c" bindtap="handleToggle">
+                  <view class="arrow {{focus?'unfold':''}}"></view>
+                </view>
+            </view>
+            <mp-scroll-view ext-scroll-view="scroll" wx:if="{{focus && curStaffList.length>0}}" bindscrolltolower="scrollToLower">
+              <view class="scroll">
+                <block wx:for="{{curStaffList}}" wx:key="index">
+                  <view class="staff-item flex-s-c" catchtap="selectStaff" data-data="{{item}}">
+                    <text class="staff-code">[{{item.dstb_staff_code}}]</text>
+                    <text class="staff-name">{{item.dstb_staff_name}}</text>
+                  </view>
+                </block>
+              </view>
+            </mp-scroll-view>
+          </view>
+          <view class="scan-code-box flex-s-c" data-type="staff" bindtap="scanCode">
+            <image src="{{scanIcon}}" mode="aspectFit" class="icon-scan"></image>
+            <view>扫一扫</view>
+          </view>
+        </view>
+      </view>
+    </view>
+    <view class="activity_intro">
+      <view class="store_wrapper">
+        <icon type="info" size="20" color="#f46160"></icon>
+        <view class="store">活动备注:</view>
+      </view>
+      <view class="store_content">
+        <text space="nbsp">{{activityRemark}}</text>
+      </view>
+      <view class="lines"></view>
+      <view class="rules_wrapper">
+        <icon type="info" size="20" color="#f46160"></icon>
+        <view class="rules">使用规则:</view>
+      </view>
+      <text class="rules_content" decode="{{isDecode}}">充值订单支付成功后，购买金额将自动充值至你的充值卡账户，可到[个人中心]查看，无需再手动操作领用充值卡.</text>
+      <view class="date_wrapper">
+        <view class="validate_date">有效期</view>
+        <view class="dates">{{validTime}}</view>
+      </view>
+    </view>
+  </view>
+  <view class="Receivables {{isIphoneX?'fix_iphoneX':''}}">
+    <view class="receive_wrapper">
+      <view class="receive_title">实付款: </view>
+      <view class="receive_amount">￥{{cardList[curAmountIndex].cardValue}}</view>
+    </view>
+    <view class="submit_order" style="background: {{brand_info.style.bg_color}}">
+      <btns isLogin="{{isLogin}}" btnType="prepaid" bindclickcallback="createOrder">提交订单</btns>
+    </view>
+  </view>
+</view>
+<!--没有活动-->
+<view class="empty_state" wx:if="{{!showRecharge && !showExchange}}">
+  <image src="{{noActivityIcon}}" class="empty_icon" mode="aspectFit" />
+  <view class="empty_txt">暂无活动</view>
+</view>
+
+<view class="bg" hidden="{{hideWin}}" catchtap="_noFn "></view>
+<view class="window" hidden="{{hideWin}}" style="{{showWinAnim?'transform:translateY(0);':''}}">
+  <view class="price_box">
+    <view class="p_name p_flex C_7f font_30">卡面金额</view>
+    <view class="p_msg p_flex">
+      <view class="font_60">兑换成功</view>
+      <view class="font_80 bold mt_10">{{price}}</view>
+    </view>
+  </view>
+  <button hover-class="none" class="font_30 confirm" catchtap="win_cancel">确 定</button>
+</view>
+
+<view class="loadBg" wx:if="{{showLoad}}" catchtap="_noFn"></view>
+<view class="showMsg" wx:if="{{showLoad || showMsg}}">
+  <block wx:if="{{showLoad}}">
+    <text>充值中</text>
+    <text class="bold">{{loadingText}}</text>
+  </block>
+  <block wx:if="{{showMsg}}">
+    <text>{{result}}</text>
+  </block>
+</view>
+
+<!--弹框-->
+<dialog id="pageDialog"></dialog>

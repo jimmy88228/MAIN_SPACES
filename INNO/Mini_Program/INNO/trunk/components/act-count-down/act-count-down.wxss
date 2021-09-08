@@ -1,0 +1,38 @@
+/* pages/component/act-count-down/act-count-down.wxss */
+.main {
+    padding: 0rpx 30rpx;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    min-height: 100rpx;
+    position: relative;
+    color: #fff;
+}
+.list{
+    font-size: 20rpx;
+}
+.list.main{
+    padding: 0rpx 20rpx;
+    min-height: 70rpx;
+    box-sizing: border-box;
+    min-width: 150rpx;
+    justify-content: center;
+}
+.count-down-time {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+.count-down-tip {
+    /* padding-right: 12rpx; */
+}
+.list .count-down-tip{
+    font-size: 20rpx;
+}
+.tip-opacity {
+    opacity: 0.8;
+}
+.font_28{
+    font-size: 28rpx;
+}

@@ -1,0 +1,4 @@
+<!--pages/component/custom/module_branches/notice/more/more.wxml-->
+<view class="main">
+  <text space class="noticeText">{{noticeText}}</text>
+</view>

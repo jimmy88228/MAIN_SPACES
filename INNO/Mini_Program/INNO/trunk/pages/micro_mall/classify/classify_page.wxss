@@ -1,0 +1,41 @@
+ @import "/components/css3/loading/loading.wxss";
+ page{
+   background: #fff;
+   --main-color: "";
+   min-height: 100%;
+ }
+ .main{ 
+   /* padding-top: 100rpx; */
+   
+ }
+
+.search_box{
+  height: 100rpx;
+  position: relative;
+  z-index: 2;
+  background: #fff;
+}
+.search_content{
+  width: 690rpx;
+  height: 66rpx;
+  border-radius: 36rpx;
+  box-sizing: border-box;
+  padding:0 30rpx;
+}
+.icon_search{
+  display: inline-block;
+  vertical-align: middle;
+  width: 40rpx;
+  height: 40rpx;
+}
+
+
+.search_input{
+  display: inline-block;
+  vertical-align: middle;
+  margin-left: 20rpx;
+  width: 100%;
+  font-size:24rpx;
+  height: 60rpx;
+  line-height: 60rpx;
+}

@@ -1,0 +1,271 @@
+<!--pages/micro_mall/order/for_pay_order.wxml-->
+<form bindsubmit="formAction" report-submit="true">
+    <view class="orderInfoPage {{isIphoneX?'IphoneX':''}}">
+        <view class="orderInfoTit orderBox  top0" style='background:linear-gradient(-53deg,{{brand_info.style.bg_color}},{{bg_color}})'>
+            <view class="itemR" wx:if="{{order_info.orderStatus=='待付款'}}">
+                <view class="orderStatus">{{showTimeOut ? '等待买家付款' : '订单已过期'}}</view>
+                <view wx:if="{{order_info.platform_src=='MWIN'}}" style='color:{{brand_info.style.font_color}}' class='label'>数字屏</view>
+                <view wx:if="{{order_info.is_valet_order==1 && order_info.is_order_user==1}}" style='color:{{brand_info.style.font_color}}' class='label'>代下单</view>
+                <view wx:if="{{order_info.is_valet_order==1 && order_info.is_order_user==0}}" style='color:{{brand_info.style.font_color}}' class='label'>代客单</view>
+                <view class="createTime" wx:if="{{showTimeOut}}">
+                    <text>剩</text>
+                    <text wx:if="{{count_down.day>0}}">{{count_down.day}}天</text>
+                    <text wx:if="{{count_down.hour>0}}">{{count_down.hour}}小时</text>
+                    <text>{{count_down.min}}分钟</text>自动关闭
+                </view>
+                <view class='trim_msg mt_15' wx:if="{{order_info.is_valet_order==1 && order_info.is_order_user==1}}">
+                    <view class='trim_item tr_title'>代下单店员</view>
+                    <view class='trim_item p_r_20'>{{order_info.real_name || ''}}</view> 
+                    <view class='trim_item p_l_10'>{{order_info.order_staff_code || ''}}</view> 
+                </view>
+                
+                <view class='trim_msg mt_15' wx:if="{{order_info.is_valet_order==1 && order_info.is_order_user==1}}">
+                    <view class='trim_item tr_title'>店员手机号</view>
+                    <view class='trim_item'>{{order_info.mobile_phone || ''}}</view>
+                </view>
+            </view>
+            <view class="itemR" wx:else>
+                <view class="orderStatus mb_15">{{order_info.orderStatus}}</view>
+                <view wx:if="{{order_info.platform_src=='MWIN'}}" style='color:{{brand_info.style.font_color}}' class='label'>数字屏</view>
+               <view wx:if="{{order_info.is_valet_order==1 && order_info.is_order_user==1}}" style='color:{{brand_info.style.font_color}}' class='label'>代下单</view>
+                <view wx:if="{{order_info.is_valet_order==1 && order_info.is_order_user==0}}" style='color:{{brand_info.style.font_color}}' class='label'>代客单</view>
+                <view class="order_sn trim_msg ">
+                    <view class='trim_item tr_title'>订单编号</view>
+                    <view class='trim_item'>{{order_info.order_sn}}</view>
+                </view> 
+                <view class="trim_msg">
+                    <view class='trim_item tr_title'>下单时间</view>
+                    <view class='trim_item'>{{order_info.createTime}}</view>
+                </view>
+                <view class='trim_msg mt_15' wx:if="{{order_info.is_valet_order==1 && order_info.is_order_user==1}}" >
+                    <view class='trim_item tr_title'>代下单店员</view>
+                    <view class='trim_item p_r_20'>{{order_info.real_name || ''}}</view>
+                    <view class='trim_item p_l_10'>{{order_info.order_staff_code || ''}}</view> 
+                </view>
+
+                <view class='trim_msg mt_15' wx:if="{{order_info.is_valet_order==1 && order_info.is_order_user==1}}" >
+                    <view class='trim_item tr_title'>店员手机号</view>
+                    <view class='trim_item'>{{order_info.mobile_phone || ''}}</view>
+                </view> 
+            </view>
+        </view>
+        <view class="assist_member_box"  wx:if="{{order_info.is_valet_order==1 && order_info.is_order_user==0}}">
+            <view class='assist_title tit top top30'>下单会员</view>
+            <view class='assist_content_box'>
+                <view class='trim_item tr_assist_title'>昵称</view>
+                <view class='trim_item'>{{order_info.real_name || ''}}</view>
+            </view>
+            <view class='assist_content_box'>
+                <view class='trim_item tr_assist_title'>手机</view>
+                <view class='trim_item'>{{order_info.mobile_phone || ''}}</view>
+            </view>
+            <view class='assist_content_box'>
+                <view class='trim_item tr_assist_title'>卡号</view>
+                <view class='trim_item'>{{order_info.card_num || ''}}</view>
+            </view>
+        </view>
+        <!-- 1 -->
+        <view class="orderBox top0 bottom30">
+            <text class="tit top top30">{{order_info.isInstore!=0 ? '到店自提详情' : '收货地址详情'}}</text>
+            <view class="d_flex inline" style='font-weight:600;'>
+                <view class="flex1">{{order_info.consignee}}</view>
+            </view>
+            <view class="d_flex inline right_0">
+                <view class="flex1">{{order_info.mobile}}</view>
+            </view>
+            <view class="d_flex" style='margin:7rpx 0 0 0;'>
+                <view class="flex1">{{order_info.Address}}</view>
+            </view>
+        </view>
+        <!-- <view class="orderGoods orderBox" wx:for="{{sub_order_list}}" wx:for-item='order' wx:key="{{order_num}}"> -->
+        <view class="orderGoods orderBox">
+            <text class="tit">商品详情</text>
+            <view class="orderGood" wx:for="{{order_detail_list}}" wx:for-item='goods_info' wx:key="{{index}}">
+                <view class="goods_info_img" catchtap='jump_detail' data-color-id="{{goods_info.img_color}}" data-id="{{goods_info.goodsId}}">
+                    <view class="goods_info_img_stay {{sys_config.goods_image_size == '4-3' ? 'ratio_3_4' : ''}}">
+                        <image src="{{goods_info.img_url}}" mode="aspectFit" />
+                    </view>
+                </view>
+                <view class="good_msg">
+                    <view class='good_top'>
+                        <view wx:if="{{goods_info.sale_kind==1}}" style='background:{{brand_info.style.bg_color}};' class='sale_type'>{{goods_info.sale_kind==1?"海淘商品":""}}</view>
+                        <view class="good_name">{{goods_info.goods_Name}}</view>
+                        <view class="good_info">
+                            <view class="csName" wx:if="{{goods_info.colorName}}">{{goods_info.colorName}}</view>
+                            <!-- <view class="csName {{goods_info.sizeName && goods_info.colorName?'csName_mid':''}}" wx:if="{{goods_info.colorName}}">{{goods_info.sizeName && goods_info.colorName?',':''}}</view> -->
+                            <view class="csName {{goods_info.sizeName && goods_info.colorName?'csName_right':''}}" wx:if="{{goods_info.sizeName}}">{{goods_info.sizeName}}</view>
+
+
+                        </view>
+                        <view class="good_count">x {{goods_info.goods_num}}</view>
+                    </view>
+                    <view class='money_bottom'>
+                        <view class="font_w font_28" style="color:{{brand_info.style.font_color}}">
+                            <block wx:if="{{goods_info.goodPrice && goods_info.goodPrice > 0 && goods_info.goodsType ==1}}">
+                                <view class="font_28 RMB">¥ </view>
+                                <text class="">{{goods_info.goodPrice}}</text>
+                                <text class="" wx:if="{{goods_info.exchange_integral > 0}}"> + </text>
+                            </block>
+                            <block wx:if="{{goods_info.exchange_price && goods_info.exchange_price > 0 && goods_info.goodsType !=1}}">
+                                <view class="font_28 RMB">¥ </view>
+                                <text>{{goods_info.exchange_price}}</text>
+                                <text class="" wx:if="{{goods_info.exchange_integral > 0}}"> + </text>
+                            </block>
+                            <block wx:if="{{goods_info.exchange_integral > 0}}">
+                                <text>{{goods_info.exchange_integral}}积分</text>
+                            </block>
+                        </view>
+                        <view class="originalPrice" wx:if="{{ (goods_info.market_price != goods_info.goodPrice || (goods_info.goodsType==5 && goods_info.exchange_price!=goods_info.market_price)) && goods_info.market_price > 0}}">
+                            <view class="RMB_line">¥ </view>
+                            <view style='display:inline-flex;text-decoration:line-through'>{{goods_info.market_price}}</view>
+                        </view>
+                    </view>
+                    <!--申请退货-->
+                    <block wx:if="{{order_info.shipping_status == '2' && order_info.order_status_Id == '1' && order_info.isallow_tuihuanhuo == '1' && order_info.enable_returns }}">
+                        <navigator class="apply_return_btn" hover-class='none' url="/pages/micro_mall/order/apply_return?order_id={{goods_info.order_Id}}&product_id={{goods_info.productId}}&goods_id={{goods_info.goodsId}}&rec_id={{goods_info.rec_id}}&valet={{order_info.is_valet_order}}&is_user={{order_info.is_order_user}}" wx:if="{{goods_info.return_goods_number != goods_info.goods_num }}"
+                            style="{{order_info.from_user_name ? 'display:none;' : ''}}background-color:{{brand_info.style.bg_color}};color:#fff;">
+                            <text>申请退货</text>
+                        </navigator>
+                        <view wx:else class="apply_return_btn disabled_btn">
+                            <text>申请退货</text>
+                        </view>
+                    </block>
+                </view>
+            </view>
+
+        </view>
+        <view class="orderBox">
+            <text class="tit">资费详情</text>
+            <view class="tit_box">
+                <text class="row_tit">商品件数</text>{{order_info.totalGoodsNum}}件</view>
+            <view class="tit_box">
+                <text class="row_tit">商品总价</text>¥{{order_info.totalMarketPrice}}</view>
+            <view class="tit_box" wx:if="{{order_info.coupon_money>0}}">
+                <text class="row_tit">现金券抵扣</text>{{order_info.coupon_money>0?'- ':''}}¥{{order_info.coupon_money}}</view>
+            <view class="tit_box" wx:if="{{order_info.totalYouHuiPrice>0}}">
+                <text class="row_tit">优惠金额</text>{{order_info.totalYouHuiPrice>0?'- ':''}}¥{{order_info.totalYouHuiPrice}}</view>
+            <view class="tit_box" wx:if="{{order_info.offline_surplus != '' && (order_info.offline_surplus > 0)}}">
+                <text class="row_tit">储值金额</text>-¥{{order_info.offline_surplus}}</view>
+            <view class="tit_box" wx:if="{{order_info.surplus != '' && (order_info.surplus > 0)}}">
+                <text class="row_tit">使用余额</text>{{order_info.surplus>0?'- ':''}}¥{{order_info.surplus}}</view>
+            <view class="tit_box" wx:if="{{order_info.goods_integral>0}}">
+                <text class="row_tit">商品积分</text>{{order_info.goods_integral}}积分</view>
+            <view class="tit_box" wx:if="{{order_info.integral_money>0}}">
+                <text class="row_tit">积分抵扣</text>{{order_info.integral_money>0?'- ':''}}¥{{order_info.integral_money}}
+                <text wx:if="{{order_info.dikou_integral > 0 }}">(使用积分{{order_info.dikou_integral}})</text>
+            </view>
+            <view class="tit_box" wx:if="{{order_info.bonus>0}}">
+                <text class="row_tit">优惠券抵扣</text>- ¥{{order_info.bonus}}
+            </view>
+            <!-- <view class="tit_box" wx:if="{{order_info.prepaidcard_value>0}}">
+                <text class="row_tit">储值抵扣</text>{{order_info.prepaidcard_value>0?'- ':''}}¥{{order_info.prepaidcard_value}}
+            </view> -->
+            <view class="tit_box">
+                <text class="row_tit">运费</text>
+                <block wx:if="{{order_info.shipping_fee > 0 || order_info.shipping_fee != '0.00'}}">+ </block>¥{{order_info.shipping_fee}}</view>
+            <view class="tit_box bold">
+                <text class="row_tit">订单总价</text>¥{{order_info.order_amount}}</view>
+        </view>
+
+        <view class="orderBox" wx:if="{{order_info.isInstore > 0}}">
+            <text class="tit">到店自提详情</text>
+            <view class="d_flex">
+                <text class="row_tit">提 货 人 ：</text>
+                <view class="flex1">{{order_info.consignee}}</view>
+            </view>
+            <view class="d_flex">
+                <text class="row_tit">联系方式：</text>
+                <view class="flex1">{{order_info.mobile}}</view>
+            </view>
+            <view class="d_flex" wx:if="{{order_info.isInstore>0}}">
+                <text class="row_tit">提货店铺：</text>
+                <view class="flex1">{{order_info.instoreName}}</view>
+            </view>
+            <view class="d_flex">
+                <text class="row_tit">详细地址：</text>
+                <view class="flex1">{{order_info.Address}}</view>
+            </view>
+            <view class="d_flex" wx:if="{{order_info.isInstore>0}}">
+                <text class="row_tit">提 货 码 ：</text>
+                <view class="flex1">{{order_info.pickup_code}}</view>
+                <view class='bt_brcode' style='background:{{brand_info.style.bg_color}};' bindtap='handle_br' data-code="{{order_info.pickup_code}}">条码</view>
+            </view>
+            <view class="get_self_tip" wx:if="{{order_info.isInstore>0}}" style="{{'color:'+brand_info.style.font_color}}">
+                <view>到店提货时，请向店员出示提货码！</view>
+            </view>
+
+        </view>
+
+
+        <view class="orderBox">
+            <text class="tit">支付</text>
+            <view class='row_tit_box'>
+                <text class="row_tit">支付方式</text>{{order_info.pay_name}}</view>
+            <view class='row_tit_box'>
+                <text class="row_tit">支付状态</text>{{order_info.pay_status}}</view>
+        </view>
+        <view class="orderBox relative padding_18" wx:if="{{order_info.invoice_no}}">
+            <text class="tit">物流信息</text>
+            <view class='padding_5'>
+                <text class="row_tit ">快递公司</text>
+                <text>{{order_info.shipping_name}}</text>
+            </view>
+            <view class='shippingInfo'>
+                <!-- <text class="row_tit">快递单号</text>{{order_info.invoice_no ? order_info.invoice_no : 'N/S'}}</view> -->
+                <view class='row_tit'>快递单号</view>
+                <view class='' style='width:560rpx'>
+                    <view class='invoice_no_box' wx:if="{{item}}" wx:for="{{order_info.show_invoice_no}}" wx:key='index'>
+                        <view class=''>{{item}}</view>
+                        <button class="order_button" data-invoice-no="{{item}}" bindtap='jump_order' hover-class='none'>查询物流</button>
+                    </view>
+                </view>
+                <!-- <button wx:if="{{order_info.show_invoice_no!=''}}" class="order_button" data-invoice-no="{{order_info.invoice_no}}" bindtap='jump_order' hover-class='none'>查询物流</button> -->
+            </view>
+        </view>
+        <view class="orderBox" wx:if="{{isShowRemark != 1}}">
+            <text class="tit">备注</text>
+            <view>{{order_info.postscript!='（空）' ? order_info.postscript : '暂无备注'}}</view>
+        </view>
+    </view>
+    <!--浮层按钮-->
+    <view class="order_opreate_btns bg_fff font_0 t_r b_t {{isIphoneX ? 'fix_iphoneX' : ''}}">
+        <view class="order_opreate_btns_stay">
+            <!-- <button hover-class="none" form-type="submit" class="opreate_btns b_1 font_24 radius_10 b_c_B2B2B2 v_m" bindtap="onTurnBack">返回首页</button>
+            <button hover-class="none" form-type="submit" class="opreate_btns b_1 font_24 radius_10 b_c_B2B2B2 v_m" bindtap="confirmOrder" wx:if="{{order_info.shipping_status=='1' && (order_info.order_status_Id=='1' || order_info.order_status_Id=='9')}}">确认收货</button>
+            <picker class="cancel_order_picker v_m" bindchange="cancelOrder" value="{{index}}" range="{{order_cancel_reason}}">
+                <button hover-class="none" form-type="submit" class="opreate_btns b_1 font_24 radius_10 b_c_B2B2B2 v_m" wx:if='{{order_info.cancleActionStatus==1 && !sub_order}}' data-op-type="1" bindtap="cancelOrder">取消订单</button>
+                <button hover-class="none" form-type="submit" class="opreate_btns b_1 font_24 radius_10 b_c_B2B2B2 v_m" data-op-type="2" wx:elif='{{order_info.cancleActionStatus==2 && !sub_order}}' bindtap="cancelOrder">申请取消</button>
+            </picker> -->
+            <!-- <button hover-class="none" form-type="submit" class="opreate_btns font_24 b_1 radius_10 b_c_B2B2B2 v_m" wx:if="{{order_info.orderStatus=='待付款'&&(order_info.pay_code=='wxpay' || order_info.pay_code == 'wxin')&&!endOrder}}" bindtap="toPay">帮忙支付</button> -->
+             <btns 
+      isLogin="{{isLogin}}" 
+      bindclickcallback="toPay" 
+      wx:if="{{order_info.orderStatus=='待付款'&&(order_info.pay_code=='wxpay' || order_info.pay_code == 'wxin')&&!endOrder}}"
+      >
+        <view  class="opreate_btns font_24 b_1 radius_10 b_c_B2B2B2 v_m" >帮忙支付</view>
+      </btns>
+            <!-- <button hover-class="none" form-type="submit" class="opreate_btns b_1 font_24 radius_10 b_c_B2B2B2 v_m" wx:elif="{{order_info.orderStatus=='已完成' && order_info.can_comment === '1'}}" bindtap="toComment">去评价</button> -->
+        </view>
+    </view>
+</form>
+<!-- <view class="deal_tip" wx:if="{{show_pay_load}}">
+    <view class="deal_tip_txt">订单处理中~</view>
+</view> -->
+
+<view class='br_bg' hidden="{{!show_br}}" catchtouchmove='_noFn' catchtap='cancel_br'></view>
+<view class='br_box ' style='{{showBrStyle}}' hidden="{{!show_br}}">
+    <view class='p_10'>条形码</view>
+    <view class='br_code_box'>
+        <canvas hidden='{{!delay_br}}' canvas-id='br_code' class='br_code'></canvas>
+    </view>
+    <view class='p_5'>{{barcodeCard}}</view>
+    <view class='p_10'>出示此条形码给店员即可</view>
+    <image class='cr_delete' catchtap='cancel_br' mode='aspectFit' src="{{server_close}}"></image>
+</view>
+<btnFollow id="btnFollow" wx:if='{{btn_follow_must_show}}' btn_follow_must_show='{{btn_follow_must_show}}'></btnFollow>
+<!--客服-->
+<cs></cs>
+<bgHover id="bg" mask-bg="transparent" />
+<pageDialog id="pageDialog"></pageDialog>
+<orderSync id="orderSync" mask-bg="transparent" touch-cancel="{{false}}" type='small' tips="订单同步中"/>
+

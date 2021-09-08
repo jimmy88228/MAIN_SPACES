@@ -1,0 +1,78 @@
+<form bindsubmit="formAction" report-submit="true" class="scroll_view_box" ><!--style="height:100vh;"-->
+    <scroll-view scroll-y bindscrolltolower="handleMore" class="{{currentIndex == 0?'padding_top0':''}}">
+        <view class='wrappers'>
+            <!-- 优惠券 -->
+            <view wx:if="{{!showWrapperCouopn}}">
+                <view class="coupon_box"  wx:for="{{listData}}" wx:key="index">
+                    <view class="title_name">
+                        <!-- <image src="{{menu_url}}" mode="aspectFit" class='icon_store'/> -->
+                        <view class="title">{{item.name}}</view>
+                    </view>
+                    <view data-id="{{item.mk_bonus_id}}" bindtap="exchange" class='bottom_cont' style="box-shadow: 0 0 10rpx {{o_bg_color}};">
+                        <view class='card_wrap'>
+                            <image class="counpon" mode='aspectFill' src='{{item.picture}}' bindload='getReal'/>
+
+                        </view>
+                        <view class='counpon_content'>
+                            <view class="point" style='color:{{brand_info.style.font_color}}'>{{item.integral}}积分</view>
+                            <text class="counpon_line"></text>
+                            <text class="top_clip" style="box-shadow: 0 -5rpx 0px {{o_bg_color}} inset;"></text>
+                            <text class="bottom_clip" style="box-shadow: 0 5rpx 0px {{o_bg_color}} inset;"></text>
+
+                            <view class="button">
+                                <act-count-down id="actCountDownId-{{currentIndex}}-{{index}}">
+                                </act-count-down>
+                            </view>
+                        </view>
+                         
+                    </view>
+                </view> 
+            </view>
+
+
+            <!-- 商品 -->
+            <view wx:if="{{!showWrapperGoods}}">
+                <search 
+                class="_input_box"
+                searchType="goods" 
+                placeText="请输入商品关键词" 
+                bindinputCallback="getKeywork"
+                bindonTapConfirm="handleFilterSearch" />
+              <view class="goods_list"  >
+                  <view class="goods_item" wx:for="{{listData}}" wx:key="index">
+                  <!-- <view class="goods_item" wx:for="{{listData}}" wx:key="index" style="left:{{item.left}};top:{{item.top}};"> -->
+                      <!--实物兑-->
+                          <image class="goods_img" mode="aspectFill" src="{{item.picture}}"></image>
+                          <view class="property_box" style='background:#E1E1E1' wx:if="{{item.goods_brief != ''}}">
+                              <view class="propertyClass">
+                                  {{item.goods_brief}}
+                              </view>
+                          </view>
+                          <view class=" goods_name font_22">{{item.name}}</view>
+                          <view class="content" style='color:{{brand_info.style.font_color}}'>
+                              <label class="font_28" wx:if="{{item.integral > 0}}">{{item.integral}}积分</label>
+                              <label wx:if="{{item.sale_price > 0}}"><text class='signs' wx:if="{{item.integral > 0}}">+</text>￥<label class="font_28">{{item.sale_price}}</label></label>
+                          </view>
+                          <view class="market_price">￥{{item.market_price}}</view>
+                          <view class="exchange_number" wx:if="{{item.is_show_exchange_number == 1}}">已兑换{{item.exchange_number_str}}件</view>
+                          <view class="countDownBox">
+                            <act-count-down id="actCountDownId-{{currentIndex}}-{{index}}">
+                            </act-count-down>
+                          </view>
+                          <button class="opacity_btn" form-type="submit" data-url="/pages/micro_mall/point/point_goods_detail/point_goods_detail?goodsId={{item.goods_id}}&mkGoodsId={{item.mk_goods_id}}" bindtap="jumpAction"></button>
+                          
+                  </view>
+              </view>
+            </view>
+
+
+
+            <block wx:if="{{listData.length == 0}}">
+              <view class="empty_state">
+                <view class="empty_txt" wx:if="{{!showWrapperCouopn}}">暂无兑换优惠券</view>
+                <view class="empty_txt" wx:if="{{!showWrapperGoods}}">暂无兑换礼品</view>
+              </view>
+            </block>
+        </view>
+    </scroll-view>
+</form>

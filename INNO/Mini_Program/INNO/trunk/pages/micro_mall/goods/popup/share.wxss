@@ -1,0 +1,128 @@
+/* pages/goods/popup/service.wxss */
+.service_popup{
+  background:#fff;
+  position:fixed;
+  left:0px;
+  bottom:0px;
+  width:100%;
+  z-index:999;
+}
+.service_popup._pb{
+  bottom: 90rpx;
+}
+.service_popup._xpb{
+ bottom: 158rpx;
+}
+.service_tit{
+  position:relative;
+  font-size:28rpx;
+  padding:30rpx 0px;
+  font-weight:bold;
+  text-align:center;
+}
+.service_scroll{
+  min-height:300rpx;
+  max-height:400rpx;
+}
+.service_item{
+  padding:0px 66rpx;
+}
+.s_item_name{
+  font-size:26rpx;
+  margin-bottom:22rpx;
+}
+.s_item_desc{
+  font-size:24rpx;
+  color:#7f7f7f;
+  margin-bottom:49rpx;
+}
+.service_btn_area{
+  padding-top:10rpx;
+  background-color:#F7F4F8;
+}
+.confirm_btn{
+  width:100%;
+  display:flex;
+  height:88rpx;
+  justify-content: center;
+  align-items: center;
+  background:#fff;
+  color:#333;
+}
+.share_item{
+  text-align:center;
+  border-bottom:1px solid #efefef;
+  position:relative;
+}
+.share_item .share_item_btn{
+  height:100rpx;
+}
+.SECKILL_HELP_CONT,.STAFF_SHARE_HELP_CONT,.NORMAL_ROW_CONT{
+  display:flex;
+  justify-content: space-around;
+  align-items: center;
+  width:100%;
+}
+.SECKILL_HELP_CONT .share_item,.STAFF_SHARE_HELP_CONT .share_item,.NORMAL_ROW_CONT .share_item{
+  display:block;
+  flex:1;
+  padding-top:50rpx;
+  padding-bottom:46rpx;
+}
+.SECKILL_HELP_CONT .share_icon,.NORMAL_ROW_CONT .share_icon{
+  width:100rpx;
+  height:100rpx;
+  display:block;
+  margin:0 auto;
+  margin-bottom:20rpx;
+} 
+.SECKILL_HELP_CONT .share_txt,.STAFF_SHARE_HELP_CONT .share_txt,.NORMAL_ROW_CONT .share_txt{
+  font-size:25rpx;
+  color:#000;
+}
+.SECKILL_HELP_CONT .share_item_btn,.STAFF_SHARE_HELP_CONT .share_item_btn,.NORMAL_ROW_CONT .share_item_btn{
+  display:block;
+  position:absolute;
+  top:0px;
+  left:0px;
+  width:100%;
+  height:100%; 
+}
+
+.STAFF_SHARE_HELP_CONT .share_icon{
+  width:90rpx;
+  height:90rpx;
+  display:block;
+  margin:0 auto;
+  margin-bottom:20rpx;
+}
+.wx_sub_area{
+  background-color:#F7F4F8;
+  color:#000;
+  font-size:24rpx;
+  position:relative;
+  padding:20rpx;
+  text-align:center;
+  display:flex;
+  justify-content: center;
+  align-items: center;
+}
+.sub_icon{
+  width:30rpx;
+  height:30rpx;
+  display:inline-block;
+  vertical-align: middle;
+  margin-right:20rpx;
+}
+.sub_txt{
+  display:inline-block;
+  vertical-align: middle;
+}
+.wx_sub_btn{
+  position:absolute;
+  top:0px;
+  left:0px;
+  background:none;
+  width:100%;
+  height:100%;
+}

@@ -1,0 +1,129 @@
+<!--pages/micro_mall/sk/activity-sk.wxml-->
+<wxs module="G_C" src="../help/getColor.wxs"></wxs>
+<form bindsubmit="formAction" report-submit="true">
+  <view class="main {{isIphoneX?'ipx':''}}" id="main" hidden="{{!showPage}}">
+    <!-- 活动组tab -->
+    <view class="top_ads_module">
+      <embed_custom_module class="{{hasTopModule ? '' : 'hide_module'}} ads_module" id="topEmbedId"></embed_custom_module>
+    </view>
+    <view class="act_fixed">
+      <nav_bar class="nav_bar" id="nav_bar" wx:if="{{activityList.length>1}}" activity-list="{{activityList}}" bindtab="handle_tab" />
+    </view>
+    <!-- 倒计时 -->
+    <view class="content {{activityList.length <= 1 ? 'top0':''}}">
+      <view class="header font_24">
+        <view class="h_time C_7f">
+          <text>{{timeText}}</text>
+          <text class="bold ml_10" style="{{G_C.getFont(ac_conf.theme_color)}}">{{time}}</text>
+        </view>
+        <view class="h_rule" bindtap="jump" data-url="/pages/micro_mall/sk/activity-sk/rule/rule" data-type="rule">
+          <text class="r_text C_7f">活动规则</text>
+          <text class="circle" style="--opacity:0.2"></text>
+          <text class="circle" style="--opacity:0.6"></text>
+          <text class="circle" style="--opacity:1"></text>
+        </view>
+      </view>
+      <!-- 活动内容 -->
+      <view class="ac_content_box">
+        <view class="ac_content">
+          <image bindload="img_load" binderror="img_load" src="{{activityInfo.picture}}" mode="widthFix" class="img_ac {{!img_show?'init':''}}"></image>
+          <view wx:if="{{activityInfo.shareCondition != 0}}" class="pro_box">
+          <!-- <view class="pro_box" style="{{activityInfo.shareCondition == 0?'padding-top:25rpx;':''}}"> -->
+            <block wx:if="{{activityInfo.shareCondition != 0}}">
+              <view class="ac_title">
+                <view class="t_c ac_title_text font_38 C_000 bold">{{msgShow.title}}</view>
+                <view class="t_c ac_title_tip font_24 C_7f {{(activityInfo.state == 4 || activityInfo.state == 1)?'over':''}}">{{msgShow.tip}}</view>
+              </view>
+              <view class="progress {{percent==0 || percent==100?'noTipPadding':''}}" wx:if="{{activityInfo.state == 2 || activityInfo.state == 3}}">
+                <progress_bar tip="{{percent>0 && percent!=100 ?'已邀请' + progress.now + '位': ''}}" percent="{{percent}}" show-circle="{{true}}">
+                  <view slot="start" class="p_main" bindtap="{{progress.now>3?'handle_friends':''}}" wx:if="{{progress.now>0}}">
+                    <image wx:for="{{progress.users}}" wx:key="index" src="{{item.picture}}" mode="aspectFit" class="img_user" wx:if="{{index<3}}"></image>
+                    <view class="cir_more_box" wx:if="{{progress.now>3}}">
+                      <view wx:for="{{[1,2,3]}}" wx:key="index" class="cir_more"></view>
+                    </view>
+                  </view>
+                  <view wx:else class="C_7f font_22 t_tip" slot="start">需要{{activityInfo.shareCondition}}位好友助力</view>
+
+                  <view wx:if="{{progress.isComplete == 1}}" style="{{G_C.getFont(ac_conf.theme_color)}}" class="C_7f font_22" slot="end">成功邀请{{progress.now || activityInfo.shareCondition}}位好友</view>
+                  <view wx:else class="C_7f font_22" slot="end">获得资格</view>
+                </progress_bar>
+              </view>
+            </block> 
+            <block wx:if="{{(activityInfo.state == 2 || activityInfo.state == 3) && !isLogin}}" >
+              <view class="btn_ac_page font_30 C_fff" style="{{G_C.getMultBg(ac_conf.to_color,ac_conf.from_color)}}">
+                <btns isLogin="{{isLogin}}" bindclickcallback="registerBack">
+                  <view>立即注册</view>
+                </btns>
+              </view>
+            </block>
+            <block wx:elif="{{(activityInfo.state == 2 || activityInfo.state == 3) && checkUserRank && progress.isComplete!=1}}">
+              <button form-type="submit" class="btn_ac_page font_30 C_fff" catchtap="getShare" style="{{G_C.getMultBg(ac_conf.to_color,ac_conf.from_color)}}">
+                <view>分享好友，马上助力</view>
+              </button>
+              <!-- <button wx:if="{{activityInfo.state==4}}" class="btn_ac_page font_30 C_fff" form-type="submit" style="{{G_C.getMultBg(ac_conf.to_color,ac_conf.from_color)}}">
+                <view>查看更多活动</view>
+              </button> -->
+              <!-- <button wx:elif="{{progress.isComplete!=1 && progress.now>0}}"  form-type="submit" catchtap="getShare" class="btn_ac_page font_30 C_fff" style="{{G_C.getMultBg(ac_conf.to_color,ac_conf.from_color)}}">
+                <view>分享好友，马上助力</view>
+              </button> -->
+            </block>
+
+            <block wx:elif="{{(activityInfo.state == 2 || activityInfo.state == 3) && !checkUserRank && showRankBtn}}">
+              <button bindtap="handle_tip" data-type="gradeToast" class="btn_ac_page font_30 C_7f" form-type="submit" style="background:#EFEFEF;">
+                <view>分享好友，马上助力</view>
+              </button>
+              <view class="grade_tip_box">
+                <view class="grade_tip" bindtap="handle_tip" data-type="grade" style="background:{{i_color}};">
+                  <view wx:if="{{activityInfo.userRankList.length>0}}" class="tip_text_show C_7f font_22 {{tipClassActive?'active':''}}" style="{{tipActive?'display:block;':''}}">该活动只限<block wx:for="{{activityInfo.userRankList}}" wx:key="rankId" wx:for-item="rankItem" wx:for-index="_num">{{_num==0?'':'、'}}{{rankItem.rankName}}</block>参与</view>
+                  <text class="i_tip font_22 inline_b C_fff" style="{{G_C.getBg(ac_conf.theme_color)}}"></text>
+                  <view class="tip_text font_22 inline_b" style="{{G_C.getFont(ac_conf.theme_color)}}">
+                    <text>该活动只对特定会员开放</text>
+                  </view>
+                </view>
+              </view>
+            </block>
+          </view>
+        </view>
+      </view>
+    </view>
+     <!-- 商品列表 -->
+    <embed_custom_module class="{{hasMiddleModule ? '' : 'hide_module'}} middle_ads_module ads_module" id="middleEmbedId"></embed_custom_module>
+    <goods_list 
+    isLogin="{{isLogin}}"
+    subStateAll="{{SubScribe}}"
+    tplsList="{{goodsTplsList}}"
+    tplsListObj="{{tplsListObj}}"
+    bindupdateSubState="updateSubState"
+    class="goods_list" id="goods_list_id" group-id="{{groupId}}" ac-state="{{activityInfo.state}}"></goods_list>
+    <embed_custom_module class="{{hasBottomModule ? '' : 'hide_module'}} ads_module" id="bottomEmbedId"></embed_custom_module>
+
+    <btns isLogin="{{isLogin}}" class="staff_share_btn" bindclickcallback="getShare">
+      <image class="page_share_icon" src="{{brand_info.icon_url}}micro_mall/page_share.png" mode="aspectFit" lazy-load="{{true}}"/>
+    </btns>
+  </view>
+  <view wx:if="{{!showPage}}" class="empty_state">暂无活动</view>
+</form>
+
+<!-- <dynamic_btn id="dynamic_btn"></dynamic_btn> -->
+<invited_sk id="invited_sk" is-login="{{isLogin}}" bindhelp="help" touch-cancel="{{false}}"></invited_sk>
+<dialog id="dialog"></dialog>
+<friends mask-bg="transparent" id="friends"></friends>
+<orderSync mask-bg="transparent" touch-cancel="{{false}}" id="orderSync" tips="{{loadText}}"/>
+<tabbar id="custom_tabbar" type="{{jumpType}}"></tabbar>
+<!--分享模块-->
+<share 
+id="shareModule" 
+shareType="SECKILL_HELP" 
+tplsList="{{actTplsList}}"
+subState="{{acSubScribe}}"
+subStateAll="{{SubScribe}}"
+ac-state="{{activityInfo.state}}"
+bindchooseShareType="chooseShareType"
+bindupdateSubState="updateSubState"
+bindwxSubCallback="wxSubCallback"
+bindcheckIfStaffDstbCallBack="checkIfStaffDstbCallBack"></share>
+<!--分享图-->
+<shareImg id="shareImg" canvasConf="{{canvasConf}}" allData="{{allData}}"></shareImg>
+<pageHome id="pageHome" customImg="{{brand_info.icon_url}}micro_mall/sec_kill/sk_get_home.png?345"></pageHome>
+<!--引导关注-->
+<guide_follow id="guideFollow" activityInfo="{{activityInfo}}" isLogin="{{isLogin}}"></guide_follow>

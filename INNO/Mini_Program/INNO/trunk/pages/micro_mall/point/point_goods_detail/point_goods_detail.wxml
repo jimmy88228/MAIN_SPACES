@@ -1,0 +1,226 @@
+<import src="/components/thirdParty/wxParse/wxParse.wxml" />
+<scroll-view class="{{isIphoneX ? 'page_scroll_X' : 'page_scroll'}}" scroll-y="{{!noScroll}}">
+    <swiper class="goods_swiper" indicator-dots="true">
+        <swiper-item class="goods_swiper_item" wx:for="{{pictureList}}" wx:key="index">
+            <image src="{{item.picture}}" mode="aspectFit" />
+        </swiper-item>
+    </swiper>
+    <!-- <view class="tag_show" style='background:linear-gradient(90deg,{{p_color.from_color}},{{p_color.to_color}});'>
+        <view class="tag_title">积分兑换</view>
+        <view class="tag_time">
+            <view class="tag">距离{{isStart?'结束':'开始'}}时间</view>
+            <view class="tag_day" wx:if="{{count_down.day>0}}">{{count_down.day}}天</view>
+            <view class="tag_M" style='color:{{brand_info.style.font_color}}'>{{count_down.hour}}</view>:
+            <view class="tag_M" style='color:{{brand_info.style.font_color}}'>{{count_down.min}}</view>:
+            <view class="tag_S" style='color:{{brand_info.style.font_color}}'>{{count_down.sec}}</view>
+        </view>
+    </view> -->
+    
+    <act-count-down id="actCountDownId">
+        <view class="tag_title">积分兑换</view>
+    </act-count-down>
+    <view class="content">
+        <view class="content_title">{{baseInfo.name}}</view>
+        <view class="content_property">
+          {{baseInfo.goods_sn}}
+          <text wx:if="{{baseInfo.is_show_exchange_number == 1}}">已售{{baseInfo.exchange_number_str || 0}}件</text>
+        </view>
+        <view class="content_point mlf" style='color:{{brand_info.style.font_color}};'>
+            <block wx:if="{{baseInfo.min_integral>0}}">
+              <text class=" inline-block font_40">{{baseInfo.min_integral > 0 ? baseInfo.min_integral: ''}}</text>
+              <text class=" inline-block integral">积分</text>
+            </block>
+            <block wx:if="{{(!baseInfo.min_integral) || (baseInfo.min_integral > 0 &&  baseInfo.min_sale_price > 0)}}">
+              <text class="inline-block font_40" wx:if="{{baseInfo.min_integral>0}}"> + </text>
+              <text class=" inline-block font_40" >¥{{baseInfo.min_sale_price}}</text>
+            </block>
+        </view>
+
+        <view wx:if="{{(baseInfo.min_market_price>0)&&(baseInfo.min_market_price>baseInfo.min_sale_price)}}" class="content_old_price C_7f">¥ {{baseInfo.min_market_price}}
+            <!-- <view wx:if="{{baseInfo.max_market_price > baseInfo.min_market_price && (baseInfo.max_market_price!=baseInfo.max_sale_price && baseInfo.min_market_price!=baseInfo.min_sale_price)}}" class="content_old_price C_7f">¥ {{baseInfo.min_market_price}}
+            <text style='display:inline-flex'>-{{baseInfo.max_market_price}}</text> -->
+        </view>
+
+        <!-- <button open-type='share' class='shareButton_box'>
+            <view>
+                <image class="share" mode='widthFix' src='{{detail_share}}'></image>
+                <view class='share_text'>分享</view>
+            </view>
+        </button> -->
+        <btns 
+        class="shareButton_box"
+        isLogin="{{isLogin}}"
+        bindclickcallback="getShare"
+        btnType="point"
+        >
+          <view>
+              <image class="share" mode='widthFix' src='{{detail_share}}'></image>
+              <view class='share_text'>分享</view>
+          </view>
+        </btns>
+
+        <view bindtap='switchStylePop' class='rule C_7f'>规则</view>
+        <image bindtap='switchStylePop' src='{{rule_img}}' mode='widthFix' class='rule_img'></image>
+    </view>
+    <view class="commission_area">
+      <!--分销受益-->
+        <commission id="commission"></commission>
+    </view>
+
+    <comments id="comments"></comments>
+    
+    <view class="detail" wx:if="{{baseInfo.goods_desc}}">
+        <view class="goods_desc">
+            <view class="desc_tit_box">
+                <view class="desc_line"></view>
+            </view>
+            <view class="desc_imgs_list">
+                <template is="wxParse" data="{{wxParseData:article.nodes}}" />
+            </view>
+        </view>
+    </view>
+    <!-- <view class="stay_line_ef"></view> -->
+</scroll-view>
+<view class="detail_opreate {{isIphoneX ? 'fix_iphoneX' : ''}}">
+    <view class="home" catchtap='home_jump'>
+        <image class="icon" mode="widthFix" src="{{g_home}}"></image>
+        <view class='home_jump'>首页</view>
+    </view>
+
+    <button class="button1" style='color:{{brand_info.style.font_color}};border-color:{{brand_info.style.font_color}}' data-mk-goods-id="{{baseInfo.mkGoodsId}}" bindtap="exchange">原价购买</button>
+    <view 
+    class="button2" 
+    style='background:{{brand_info.style.bg_color}};'>
+      <btns 
+      btnType="point"
+      isLogin="{{isLogin}}"
+      bindclickcallback="showStylePop"
+      disabled="{{disabledTip}}"
+      >{{disabledTip?disabledTip:"立即兑换"}}</btns>
+    </view>
+
+
+
+
+</view>
+
+
+
+
+<!-- 弹出框 -->
+<!-- <view class="style_select_bg {{style_select_show}}" bindtap="hideStylePop"></view> -->
+<specPop id="specPop">
+    <view class="style_select {{isIphoneX ? 'style_select_ipX' : ''}}">
+    
+        <view class="spec_msg_box">
+            <view class="select_goods_img">
+                <view class="select_goods_img_stay">
+                    <!-- {{color_img[select_goods.select_color_id][0].picture}} -->
+                    <image class="select_img" src="{{color_img[select_goods.select_color_id][0].picture}}" mode="aspectFit" />
+                </view>
+            </view>
+            <view class="select_goods_info">
+                <view class="goods_price_box">
+                    <!--价格-->
+                    <view class="bold select_goods_price font_36" style='color:{{brand_info.style.font_color}}'>
+                        <view class="price_num" wx:if="{{select_goods.productInfo.sale_price != null}}">
+                        <block wx:if="{{select_goods.productInfo.integral > 0}}">
+                            <text class='font_40 inline-block'>{{select_goods.productInfo.integral}}</text>
+                            <text class='inline-block'>积分 </text>
+                        </block>
+                        <block wx:if="{{(!select_goods.productInfo.integral) || (select_goods.productInfo.integral > 0 && select_goods.productInfo.sale_price > 0)}}">
+                            <text class="inline-block" wx:if="{{select_goods.productInfo.integral > 0}}"> + </text>
+                            <text class=' font_40 inline-block' wx:if="{{select_goods.productInfo.sale_price>=0}}">¥{{select_goods.productInfo.sale_price}}</text>
+                        </block>
+                        </view>
+                        <view class="price_num" wx:elif="{{select_goods.productInfo.min_price != 0}}">
+                            <text class='font_40 inline-block' wx:if="{{select_goods.productInfo.integral > 0}}">{{select_goods.productInfo.integral}}</text>
+                            <text class='inline-block' wx:if="{{select_goods.productInfo.integral > 0}}">积分 + </text>
+                            <text class='inline-block font_40' wx:if="{{select_goods.productInfo.min_price>=0}}">¥{{select_goods.productInfo.min_price}}</text>
+                            <text class='inline-block font_40' wx:if="{{select_goods.productInfo.min_price != select_goods.productInfo.max_price}}"> - {{select_goods.productInfo.max_price}}</text>
+                        </view>
+
+                    </view>
+
+                </view>
+                <!--已选参数-->
+                <view class="select_goods_style C_7f font_24 min goods_price_margin" style='line-height:24rpx' wx:if="{{select_goods.productInfo.sku}}">商品款号 {{select_goods.productInfo.sku}}</view>
+                <view class="select_goods_style C_7f font_24 goods_price_margin" wx:if="{{select_goods.select_color || select_goods.select_size}}">已选 {{select_goods.select_color}} {{select_goods.select_size}}</view>
+
+            </view>
+        </view>
+
+        <view class="spec_scroll_box">
+            <scroll-view scroll-y="true" class="style_select_cont" scroll-with-animation="true">
+                <view class="color_select">
+                    <view class="font_24 tit C_333">{{goodsExtend.color_name_title || '规格一'}}</view>
+                    <view class="color_select_item">
+                        <view class="select_item_stay" wx:for="{{color_spec}}" wx:key="color_id">
+                            <button disabled="{{!is_enable[item[0].color_id]}}" style='{{(select_goods.select_color_id==item[0].color_id)&&is_enable[item[0].color_id]? "background:"+brand_info.style.bg_color+";color:#fff;":""}}' class='bg_fff_im button_style' data-color_id="{{item[0].color_id}}"
+                                data-color_name="{{item[0].color_name}}" bindtap="colorSelect"><view class="specBtn">{{item[0].color_n}}</view></button>
+                        </view>
+                    </view>
+                </view>
+                <view class="size_select" wx:if="{{specList.length >= 2}}">
+                    <view class="tit">{{goodsExtend.size_name_title || '规格二'}}</view>
+                    <view class="size_select_item">
+                        <view class="select_item_stay" wx:for="{{color_spec[select_goods.select_color_id]}}" wx:key="size_id">
+                            <button style='{{item.inventory>0 && (select_goods.select_size_id==item.size_id)?"background:"+brand_info.style.bg_color+";color:#fff;":""}}' disabled='{{item.inventory<=0}}' class='colorSelect' data-size_id="{{item.size_id}}" data-size_name="{{item.size_name}}"
+                                data-product_sn="{{item.product_sn}}" bindtap="sizeSelect"><view class="specBtn">{{item.size_n}}</view></button>
+                        </view>
+                    </view>
+                </view>
+            </scroll-view>
+            <shippingTypeMod id="shippingTypeMod" fromType="sk" bindshippingChange="shippingChange" selectGoodsInfo="{{select_goods}}"></shippingTypeMod>
+            <view class="goods_count">
+                <view class='goods_text_box'>
+                    <view class="font_24">数量</view>
+                    <view class="inventory font_22 C_333" wx:if="{{baseInfo.limit_count==0||baseInfo.limit_count>select_goods.productInfo.inventory}}">(库存{{select_goods.productInfo.inventory}})</view>
+                    <view class="inventory font_22 C_333" wx:else>(每人限购{{baseInfo.limit_count}}件)</view>
+                </view>
+                <view class="goods_count_operate">
+                    <view class="count_operate reduce_btn" bindtap="reduceGoodsNum">
+                        <image src="{{g_reduce}}" mode="widthFix" wx:if="{{select_goods.select_goods_count > 1}}" />
+                        <image src="{{g_reduce_none}}" mode="widthFix" wx:else/>
+                    </view>
+                    <input class="count_input C_000" disabled="true" value="{{select_goods.select_goods_count}}" />
+                    <view class="count_operate add_btn" bindtap="addGoodsNum">
+                        <!-- <image src="{{g_add}}" mode="widthFix" wx:if="{{(select_goods.select_goods_count < select_goods.productInfo.inventory)}}" /> -->
+                        <image src="{{g_add}}" mode="widthFix" wx:if="{{(select_goods.select_goods_count < baseInfo.limit_count) && (select_goods.select_goods_count < select_goods.productInfo.inventory) &&  baseInfo.limit_count!=0}}" />
+                        <image src="{{g_add}}" mode="widthFix" wx:elif="{{(select_goods.select_goods_count < select_goods.productInfo.inventory)  &&  baseInfo.limit_count==0  }}" />
+                        <image src="{{g_add_none}}" mode="widthFix" wx:else/>
+                    </view>
+                </view>
+            </view>
+            <!-- 确认 -->
+        </view>
+        <view class="add_cart_btn_area {{isIphoneX?'ipx_b':''}}">
+            <view wx:if="{{baseInfo.total_inventory<=0}}" class="add_cart_btn default_btn_bg font_28 " style='background:#dddddd'>售 罄</view>
+            <view wx:else class="add_cart_btn default_btn_bg font_28 {{select_goods.productInfo.product_id ? '':'disabled'}}" style='background:{{brand_info.style.bg_color}}' catchtap='addToCart' data-buy_type=""> {{ (BuyType ==0 || !isStart ) ? '原价购买' : '确 认' }}</view>
+        </view>
+
+    </view>
+</specPop>
+
+<!--规则弹框-->
+<view class="msg_pop" wx:if='{{show_msg_pop}}'>
+    <view class="msg_pop_bg pop_bg {{msg_pop_animate ? 'isshow' : 'ishide'}}" data-key="msg_pop" catchtap='switchStylePop'></view>
+    <view class="msg_pop_cont bg_fff {{msg_pop_animate ? 'isshow' : 'ishide'}}">
+        <image src='{{server_close}}' mode='widthFix' class='msg_img' data-key="msg_pop" catchtap='switchStylePop'></image>
+        <view class="msg_C_title bold font_28 msg_title t_c">规则</view>
+        <scroll-view scroll-y class="msg_scroll">
+            <text class='rule_content' decode='true' space='true'>{{baseInfo.exchange_conditions}}</text>
+        </scroll-view>
+        <view class="radius_10 msg_collage_btn t_c" style='background:{{brand_info.style.bg_color}};' catchtap="joinCollage" data-key="msg_pop" catchtap='switchStylePop'>确定</view>
+    </view>
+</view>
+<!-- <loginPage id="loginPage" bindloginCallback="loginCallback"></loginPage> -->
+<!--分享海报-->
+<share id="shareModule" bindchooseShareType="chooseShareType" bindcheckIfStaffDstbCallBack="checkIfStaffDstbCallBack"></share>
+<!--分享图-->
+<shareImg id="shareImg" allData="{{allData}}"></shareImg>
+<dialog id="pageDialog"></dialog>
+<!--客服-->
+<cs></cs>
+<!-- 全民分销 -->
+<staffApply touchCancel="{{false}}" isLogin="{{isLogin}}" id="staffApply"></staffApply>

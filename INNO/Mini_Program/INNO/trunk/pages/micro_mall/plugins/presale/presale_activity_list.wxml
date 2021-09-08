@@ -1,0 +1,59 @@
+<block wx:if="{{show}}">
+	<search class="_input_box" searchType="goods" placeText="请输入商品关键词" bindinputCallback="getKeywork"
+		bindonTapConfirm="handleFilterSearch" />
+	<view class="bargain_index">
+		<view class="bargain_list {{isIphoneX?'ipx':''}}">
+			<view class="bargain_item" wx:for="{{activity_list}}" wx:key="index" catchtap="goToDetail"
+				data-activity_id="{{item.activity_id}}">
+				<view class="product_img_wrapper">
+					<image class="product_img" mode="aspectFit" src="{{item.act_img}}" />
+					<view class='activity-tag'
+						style="{{brandStyle ? 'background-color:'+ brandStyle.bargain_color.to_color +';' : ''}}">预售
+					</view>
+					<!-- <view style="background:{{l_color}};" class="pre_sale_time" wx:if="{{item.status==1}}">
+						<text>{{item.stime || ""}}</text><text>开始预售</text></view> -->
+				</view>
+				<view class="product_info_wrapper">
+					<view class="product_name font_26">{{item.activity_name}}</view>
+					<view class="label_box">
+						<!-- <view class="join" style="border-color:{{brandStyle.pre_color.to_color}};color:{{brandStyle.pre_color.to_color}};" wx:if="{{item.sale_number_str}}">
+							<view class="join_txt">预售</view>
+						</view> -->
+						<view class="join"
+							style="border-color:{{brandStyle.pre_color.to_color}};color:{{brandStyle.pre_color.to_color}};"
+							wx:if="{{item.sale_number_str}}">
+							<view class="join_txt">已订{{item.sale_number_str || 0}}件</view>
+						</view>
+					</view>
+					<view class="price_msg_box">
+						<view class="price_msg">
+							<view class="p_price font_22 C_000">预售价 </view>
+							<view class="p_price bold font_22" style="color:{{brandStyle.pre_color.to_color}};"> ¥
+							</view>
+							<view class="p_price bold font_26" style="color:{{brandStyle.pre_color.to_color}};">
+								{{item.min_presale_price}}</view>
+							<view class="p_box">
+								<view class="p_m_price font_22">¥{{item.min_market_price}}</view>
+							</view>
+						</view>
+						<!-- <view class="btn" style="background:{{brandStyle.bargain_color.to_color}};">
+							<text class="btn_text font_22">参与预售</text>
+							<view class='font_18 to_end' wx:if="{{actCountDown[index].time}}">
+								距结束
+								<text wx:if="{{actCountDown[index].time.day > 0}}">{{actCountDown[index].time.day}} 天
+								</text>
+								<text> {{actCountDown[index].time.hour}}</text> :
+								<text>{{actCountDown[index].time.min}}</text> :
+								<text>{{actCountDown[index].time.sec}}</text>
+							</view>
+						</view> -->
+						<act-count-down id="actCountDownId{{index}}"></act-count-down>
+					</view>
+				</view>
+			</view>
+			<view class="no_data_area" wx:if="{{activity_list.length == 0}}">暂时还没有活动~</view>
+		</view>
+	</view>
+</block>
+
+<tabbar id="custom_tabbar" class='tabbar' type="{{jumpType}}"></tabbar>

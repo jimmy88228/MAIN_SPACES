@@ -1,0 +1,11 @@
+{
+  "navigationBarTitleText": "签到",
+  "onReachBottomDistance": 100,
+  "usingComponents": {
+    "pageHome": "/components/sceneOperate/pageHome",
+    "pageTab":"/components/custom/pageTab/pageTab", 
+    "adsPop":"/components/pop/adsPop",
+    "signMod":"/components/signMod/signMod"
+  },
+  "backgroundColor": "#ffffff"
+}

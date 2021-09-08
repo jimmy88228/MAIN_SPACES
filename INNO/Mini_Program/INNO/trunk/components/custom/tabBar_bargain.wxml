@@ -1,0 +1,43 @@
+<!--pages/component/custom/tabBar_bargain.wxml-->
+<block wx:if="{{tabbar.length && tabbar.length > 1}}">
+  <view class="tabbar_stay {{isIphoneX ? 'fix_iphoneX' : ''}}"></view>
+  <view class="custom_tabbar_area d_flex {{isIphoneX ? 'fix_iphoneX' : ''}}">
+    <view  class="tabbar_item flex1" wx:for="{{tabbar}}" wx:key="index">
+      <!-- <button class="jump_btn" hover-class="none" data-index="{{index}}" wx:if="{{item.need_login && !isLogin}}" open-type='getUserInfo' bindgetuserinfo='pageJump'>
+        <view>
+          <view class="tabbar_img">
+            <image src="{{item.selectedIconPath}}"  mode="aspectFit" wx:if="{{item.is_this_page}}"/>
+            <image src="{{item.iconPath}}"  mode="aspectFit" wx:else/>
+          </view>
+          <text class="tabbar_txt " style="{{item.is_this_page ? 'color:'+ item.select_color : ''}}">{{item.text}}</text>
+        </view>
+      </button>
+      <button wx:else class="jump_btn" hover-class="none" catchtap='pageJump' data-index="{{index}}">
+        <view>
+          <view class="tabbar_img">
+            <image src="{{item.selectedIconPath}}"  mode="aspectFit" wx:if="{{item.is_this_page}}"/>
+            <image src="{{item.iconPath}}"  mode="aspectFit" wx:else/>
+          </view>
+          <text class="tabbar_txt " style="{{item.is_this_page ? 'color:'+ item.select_color : ''}}">{{item.text}}</text>
+        </view>
+      </button> -->
+
+      <btns 
+      class="jump_btn" 
+      isLogin="{{isLogin}}"
+      customData="{{item.customData}}" 
+      bindclickcallback="pageJump"
+      isNormal="{{!item.need_login}}"
+      >
+        <view>
+          <view class="tabbar_img">
+            <image src="{{item.selectedIconPath}}"  mode="aspectFit" wx:if="{{item.is_this_page}}"/>
+            <image src="{{item.iconPath}}"  mode="aspectFit" wx:else/>
+          </view>
+          <text class="tabbar_txt " style="{{item.is_this_page ? 'color:'+ item.select_color : ''}}">{{item.text}}</text>
+        </view>
+      </btns>
+
+    </view>
+  </view>
+</block>

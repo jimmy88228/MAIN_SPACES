@@ -1,0 +1,58 @@
+@import "../default.wxss";
+
+.buy-info{
+     padding:20rpx 25rpx;
+     padding-top:10rpx;
+     background:#fff;
+}
+
+.buy_member_tip{
+     width:100%;
+     display:block;
+     margin:2rpx 0rpx;
+}
+.buy_info_group{
+     box-shadow:0rpx 0rpx 10rpx #dcdcdc;
+     border-radius: 8rpx;
+     padding:0rpx 20rpx 0rpx 77rpx;
+}
+.buy_info_group picker{
+     min-width: 200rpx
+}
+
+.info_box{
+     padding:0px;
+     margin:0px;
+     line-height:150rpx;
+}
+.info_box .txt1{
+     width: 150rpx;
+}
+.boder-b{
+      border-bottom:1px solid #EFEFEF;
+}
+.no-activity{
+     padding-top:200rpx;
+     text-align: center;
+     color:#7F7F7F;
+}
+.no-img{
+     display:block;
+     margin:0 auto;
+     width: 350rpx; 
+}
+.no-tip{
+     margin-top:20rpx;
+     font-size: 30rpx;
+}
+.no-back-btn{
+     border:1px solid #D4D4D4;
+     display:flex;
+     width:160rpx;
+     height:60rpx;
+     align-items: center;
+     margin:0 auto;
+     margin-top: 50rpx;
+     border-radius: 100rpx;
+     justify-content: center;
+}

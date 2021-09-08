@@ -1,0 +1,36 @@
+{
+    "setting": {},
+    "condition": {
+        "plugin": {
+            "list": []
+        },
+        "game": {
+            "list": []
+        },
+        "gamePlugin": {
+            "list": []
+        },
+        "miniprogram": {
+            "list": [
+                {
+                    "name": "pages/micro_mall/user/user",
+                    "pathName": "pages/micro_mall/user/user",
+                    "query": "",
+                    "scene": null
+                },
+                {
+                    "name": "pages/micro_mall/prepaid/erp/prepaid_card_erp_recharge",
+                    "pathName": "pages/micro_mall/prepaid/erp/prepaid_card_erp_recharge",
+                    "query": "activityId=12&type=recharge",
+                    "scene": null
+                },
+                {
+                    "name": "pages/micro_mall/selfGet/self_get_set",
+                    "pathName": "pages/micro_mall/selfGet/self_get_set",
+                    "query": "loc_f=0&showModalMsg=0&recIds=69425&select_store_id=36268&store_name=AB2&staff_name=&staff_id=0",
+                    "scene": null
+                }
+            ]
+        }
+    }
+}

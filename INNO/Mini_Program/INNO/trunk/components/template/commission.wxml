@@ -1,0 +1,17 @@
+<template name="commissionId">
+  <view 
+    wx:if="{{commission[item.goods_id].max_commission_amount>0}}" 
+    class="commission_box"
+    >
+    <view class="commission_text">佣金</view>
+    <view class="commission_price">
+      <block
+        wx:if="{{commission[item.goods_id].min_commission_amount == commission[item.goods_id].max_commission_amount }}">
+        {{commission[item.goods_id].max_commission_amount}}元
+      </block>
+      <block wx:else>
+        {{commission[item.goods_id].min_commission_amount}}元~{{commission[item.goods_id].max_commission_amount}}元
+      </block>
+    </view>
+  </view>
+</template>

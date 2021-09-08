@@ -1,0 +1,13 @@
+<import src="/components/css3/loading/loading.wxml"/>
+<import src="/pages/micro_mall/classify/adaptive/search.wxml"/>
+
+<form bindsubmit="formAction" report-submit="true">
+  <template is="search" data="{{ brand_info:brand_info,searchStr:searchStr }}"/>
+  <view class="main " >
+   <classify_one id="classify_{{one}}" custom-tab="{{customTab}}"></classify_one>
+   <classify_two id="classify_{{two}}" custom-tab="{{customTab}}"></classify_two>
+  </view>
+  <!-- <view class="fixed_c_b" wx:if="{{initLoadingAnim}}">
+    <template is="loadingId"/>
+  </view> -->
+</form>

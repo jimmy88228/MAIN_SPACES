@@ -1,0 +1,54 @@
+<template name="promote-module">
+  <view class="promote_box" wx:for="{{array}}" wx:for-item="promItem" wx:for-index="promIndex" wx:key="promIndex">
+    <view class="flex prom_head" data-index="{{promIndex}}" data-rule-id="{{promItem.ruleId}}" catchtap="getMore" wx:if="{{ type != 'detail'}}">
+      <view class="p_h_name">{{promItem.ruleName}}</view>
+      <view class="p_more">更多</view>
+    </view>
+    <view class="prom_rule">{{promItem.ruleRemark}}</view>
+
+    <view>
+      <view wx:for="{{promItem.giftList}}" wx:for-item="giftItem" wx:for-index="giftIndex" wx:key="giftIndex" wx:if="{{giftItem.tip}}">
+        <view class="flex gift_list">
+          <view class="key_tip_area">
+            <view class="key_tip">{{giftItem.txt}}</view>
+          </view>
+          <view class="gift_items">
+            <view class="gift_item">
+              <block wx:for="{{giftItem.tip}}" wx:for-item="tItem" wx:for-index="tIndex" wx:key="tIndex">
+                {{tItem}}
+                <block wx:if="{{giftItem.type == '1'}}">
+                  <block 
+                  wx:for="{{giftItem.list[tIndex]}}" 
+                  wx:for-item="cItem" 
+                  wx:for-index="cIndex" 
+                  wx:key="cIndex" 
+                  wx:if="{{giftItem.list[tIndex].length > 0}}"
+                  >{{cItem.giftName}} x{{cItem.giftNum}}<text class="c_item_hr" wx:if="{{cIndex < (giftItem.list[tIndex].length - 1)}}">/</text></block>
+                  <block wx:if="{{!giftItem.list[tIndex] || giftItem.list[tIndex].length == 0}}">券</block>
+                </block>
+                <block wx:if="{{tIndex < giftItem.tip.length - 1}}"> ; </block>
+              </block>
+            </view>
+          </view>
+        </view>
+        <view wx:if="{{giftItem.type == '1'||giftItem.type == '2'}}" class="p_goods_list">
+          <block wx:for="{{giftItem.list}}" wx:key="index" wx:for-item="gl_item" wx:for-index="gl_index">
+              <view class="flex p_goods_item" wx:for="{{gl_item}}" wx:key="index">
+                <view class="g_img_area"><image mode="aspectFit" class="p_g_img" src="{{item.giftPicture}}" /></view>
+                <view>
+                  <view class="p_g_name">{{item.giftName}}</view>
+                  <!-- <block wx:if="{{giftItem.type == '1'}}">
+                    <view class="g_tip">{{giftItem.tip[gl_index]}}</view>
+                  </block>
+                  <block wx:if="{{giftItem.type == '2'}}">
+                  </block> -->
+                  <view class="g_tip">{{giftItem.condition[gl_index]}}</view>
+                </view>
+                <view class="p_g_num" wx:if="{{item.giftNum}}">X{{item.giftNum}}</view>
+              </view>
+          </block>
+        </view>
+      </view>
+    </view>
+  </view>
+</template>

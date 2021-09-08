@@ -1,0 +1,37 @@
+<import src="../module/gift_goods.wxml" />
+<page-nav holdStay="{{false}}" bindgetNavH="setNavH"></page-nav>
+<view class="receive_status">
+  <view style="{{navH ? 'height:' + navH + 'px;' : ''}}"></view>
+  <view class="status_txt">待领取</view>
+  <view class="status_tip">请完善收货信息，领取奖品</view>
+</view>
+<view class="gift_page">
+  <view class="gift_detail">
+    <view class="msg_row" catchtap="getLink" data-type="chooseStore">
+      <view class="row_t font_24">收货信息</view>
+      <view class="row_c s_flex flex_b">
+        <view>
+          <view class="font_26 r_c_r C_000 bold">
+            <text wx:if="{{selectStore.id}}">{{selectStore.contact}} {{selectStore.mob_phone}}</text>
+            <text wx:else class="C_7f">姓名  手机号</text>
+          </view>
+          <view class="font_24 C_7f">{{selectStore.id ? selectStore.name : '自提店铺名称'}}</view>
+        </view>
+        <text class="iconfont icon-arrow-right arrow_r"></text>
+      </view>
+    </view>
+    <view class="stay_line"></view>
+    <template is="gift-goods" data="{{data: receiveDetail}}"></template>
+  </view>
+</view>
+<view class="operate_box">
+    <view class="operate_btn">
+      <block>立即领取</block>
+      <btns 
+      class="btn_link" 
+      isLogin="{{isLogin}}"
+      data-click-type="handle" 
+      bindclickcallback="receiveGift"></btns>
+    </view>
+  </view>
+<pageDialog id="pageDialog"></pageDialog>

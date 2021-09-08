@@ -1,0 +1,44 @@
+
+// import Conf from "../../../../conf.js";
+
+function getMultBg(to_c='',from_c='') {  //渐变背景
+  var color = "background:linear-gradient(to right," + to_c + "," + from_c + ");"
+  return color
+} 
+
+function getActive(param1, param2, ac_col, df_col,bold=false) {  //动态高亮
+  var color = ''
+  if(param1==param2){
+    ac_col && (color = "color:" + ac_col + ";");
+  }else{
+    df_col && (color = "color:" + df_col + ";");
+  }
+  if (color && bold){
+    color = color + 'font-weight:bold;'
+  }
+  return color
+}
+
+function getFont(theme_color = '') {  //字体主题色
+  var color = "color:" + theme_color + ";"
+  return color
+}
+
+function getBg(theme_color = '') {  //背景主题色
+  var color = "background:" + theme_color + ";"
+  return color
+}
+
+function getBorderFont(theme_color = '') {  //背景主题色
+  var color = "border-color:" + theme_color + ";" + "color:" + theme_color + ";"
+  return color
+}
+ 
+
+module.exports = {
+  getMultBg: getMultBg,
+  getActive: getActive,
+  getFont: getFont,
+  getBg: getBg,
+  getBorderFont: getBorderFont
+}

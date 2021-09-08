@@ -1,0 +1,19 @@
+<!--pages/component/micro-page/items/notice/notice.wxml-->
+<view class="main" id="main">
+  <view class="box">
+    <view class="icon-box">
+      <image src="{{noticeImg}}" class="noticeImg" mode="aspectFit"></image> 
+    </view>
+    <view class="text_box">
+      <view wx:if="{{showNotice}}" class="text_content noticeType_{{_data.moduleStyles}}" style="--baseW:{{baseW}};--textWH:{{noticeTextWH}}px;--textWH_reserve:-{{noticeTextWH}}px;--textTime:{{noticeTextT}}s;">
+        <text space>{{noticeText}}</text>
+      </view>
+    </view>
+    <view class="more_box" wx:if="{{_data.showMore=='1'}}" catchtap="onTap" data-type="more">
+      <view wx:for="{{[1,2,3]}}" wx:key="index" class="more"></view>
+    </view>
+  </view>
+</view>
+
+<text class="text_size_test">{{noticeText}}</text>
+<text class="text_size_test_ver" style="width:{{baseW}}px;">{{noticeText}}</text>

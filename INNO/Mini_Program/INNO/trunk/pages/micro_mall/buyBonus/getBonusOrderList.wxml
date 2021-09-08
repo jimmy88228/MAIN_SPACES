@@ -1,0 +1,24 @@
+<!--pages/micro_mall/buyBonus/getBonusOrderList.wxml-->
+<view class="">
+  <view class="bonus_order_list">
+    <view class="stay_line"></view>
+    <view bindtap="jump" data-order-id="{{item.orderId}}" class="" wx:for="{{order_list}}" wx:key="index">
+      <view class="table bg_fff bonus_order_item" >
+        <view class="table_cell t_l v_t item_l">
+          <view class="font_28 bold item_name">{{item.activityName}}</view>
+          <view class="C_7f font_22 item_tip">礼包含券（{{item.bonusCount}}）</view>
+          <view class="C_7f font_22 item_txt">{{item.bonusNameList}}</view>
+        </view>
+        <view class="table_cell t_r v_t item_r">
+          <view class="font_28 bold item_price money_char">￥{{item.price}}</view>
+          <view class="font_22 C_7f item_time">{{item.payTime}}</view>
+          <view class="font_28 item_status" style="color:{{brand_info.style.bc_color.font_color}};">{{item.orderStatus}}</view>
+        </view>
+      </view>
+      <view class="stay_line"></view>
+    </view>
+    <!--空状态-->
+    <view class="no_data_area" wx:if="{{empty}}">暂时还没有购买记录</view>
+  </view>
+
+</view>

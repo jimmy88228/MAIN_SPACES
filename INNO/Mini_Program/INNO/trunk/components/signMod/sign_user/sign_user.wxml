@@ -1,0 +1,24 @@
+<template name="sign_user">
+  <view class="head-box flex-b-c">
+    <view class="user-box flex-c-c">
+      <!-- <image src="" mode="aspectFit" class="img-user"></image> -->
+      <view class="img-user-box">
+        <open-data type="userAvatarUrl" class="img-user"></open-data>
+      </view>
+      <view class="user-msg-box">
+        <view class="point-title">我的积分</view>
+        <view class="user-point">{{point}}</view>
+      </view>
+    </view>
+    <view class="btn-box">
+      <view class="prize-box flex-c-c" bindtap="handle_prize">
+        <image src="{{img_prize}}" mode="aspectFit" class="head-img-prize"></image>
+        <view>奖品</view>
+      </view>
+      <view class="rule-box flex-c-c" bindtap="handle_rule">
+        <image src="{{img_rule}}" mode="aspectFit" class="head-rule-prize"></image>
+        <view>规则</view>
+      </view>
+    </view>
+  </view>
+</template>

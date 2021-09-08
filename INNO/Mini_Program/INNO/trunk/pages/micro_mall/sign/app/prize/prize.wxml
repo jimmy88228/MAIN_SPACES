@@ -1,0 +1,38 @@
+<!--pages/micro_mall/sign/app/prize/prize.wxml-->
+<import src="../.././../../component/calendar/progress/progress.wxml"></import>
+<view class="main">
+  <view class="title">奖品记录</view> 
+  <block wx:if="{{totalCount==0}}">
+    <view class="empty_tip">暂无记录</view>
+  </block>
+  <block wx:else>
+    <view class="box" wx:for="{{list}}" wx:key="index">
+      <view class="progress-box flex-s-c">
+        <view class="relative progress-content">
+          <template is="progress" data="{{type:'style3',timeType:'cur',list:item.levelList,fromPage:'prize'}}"></template>
+        </view>
+      </view>
+      <view class="prize-box">
+        <view class="prize-content flex-s-c relative" bindtap="jump" data-goods-id="{{item.goodsId}}">
+          <image src="{{item.goodsImg}}" class="img-prize" mode="aspectFit"></image>
+          <view class="prize-msg flex-col flex-c-s">
+            <view class="prize-title">
+              当前奖品
+            </view>
+            <view class="prize-name">
+              {{item.goodsName}}
+            </view>
+          </view>
+          <view class="arrow"></view>
+        </view>
+        <view class="prize-tip">
+          <view>· 连签满足对应级别时，奖品将自动升级。</view>
+          <view>· 奖品仅限随订单支付时兑换领取。</view>
+        </view>
+        <view class="status-img-box" wx:if="{{item.receiveStatus!=0}}">
+          <image wx:if="{{item.receiveStatus == 1}}" src="{{img_receive}}" class="status-img" mode="aspectFit"></image>
+        </view>
+      </view>
+    </view>
+  </block>
+</view>

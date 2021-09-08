@@ -1,0 +1,31 @@
+<view class="nav-view" style="padding-top:{{statusH}}px;{{holdStay ? 'background-color:#fff;' : ''}}{{bgStyle}}">
+    <view class="nav-box" style="{{style}}">
+        <block wx:if="{{!isCustom}}">
+            <block wx:if="{{navType != 0}}">
+                <view class="back-icon" catchtap="goBack" hidden="{{navType != 2}}">
+                    <view class="nav-logo">
+                        <text class="back-arrow"></text>
+                    </view>
+                </view>
+                <view class="home-icon" catchtap="goHome" hidden="{{navType != 1}}">
+                    <image src="{{brand_info.default_icon_url}}/goHome.png" class="nav-logo nav-home" mode="aspectFit"/>
+                </view>
+            </block>
+            <view wx:if="{{title}}" class="nav-title">{{title}}</view>
+        </block>
+        <block wx:else>
+            <block wx:if="{{navType != 0 && isHoldBack}}">
+                <view class="back-icon" catchtap="goBack" hidden="{{navType != 2}}">
+                    <view class="nav-logo">
+                        <text class="back-arrow"></text>
+                    </view>
+                </view>
+                <view class="home-icon" catchtap="goHome" hidden="{{navType != 1}}">
+                    <image src="{{brand_info.default_icon_url}}/goHome.png" class="nav-logo nav-home" mode="aspectFit"/>
+                </view>
+            </block>
+            <slot></slot>
+        </block>
+    </view>
+</view>
+<view class="nav-stay" wx:if="{{holdStay}}" style="height:{{navH}}px;"></view>

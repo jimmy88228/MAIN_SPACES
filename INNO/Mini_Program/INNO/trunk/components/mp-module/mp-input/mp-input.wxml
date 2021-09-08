@@ -1,0 +1,14 @@
+<!--components/mp-module/mp-input/mp-input.wxml-->
+<!-- 属性待补全 -->
+<input 
+    class="ext-input-class default-input" 
+    type="{{type}}" 
+    placeholder-class="ext-placeholder-class" 
+    placeholder="{{placeholderProp}}" 
+    bindinput="handleInput"
+    data-key="{{searchKey}}" 
+    value="{{searchText}}" 
+    password="{{password}}"
+    bindfocus="{{setFocus?'handleFocus':''}}"
+    bindblur="{{setBlur?'handleBlur':''}}"
+/>

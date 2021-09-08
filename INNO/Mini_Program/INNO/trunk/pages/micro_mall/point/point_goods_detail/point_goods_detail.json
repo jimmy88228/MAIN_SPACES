@@ -1,0 +1,18 @@
+{
+  "navigationBarTitleText": "兑换商品",
+  "backgroundColor": "#F5F5F5",
+  "usingComponents": {
+    "popup": "./popup/popup",
+    "servicePopup": "./popup/service", 
+    "dialog": "/components/ui/cps/dialog/dialog",
+    "cs": "/components/cs/custom_service",
+    "btns": "/components/buttons/btns",
+    "share": "/pages/micro_mall/goods/popup/share",
+    "shareImg": "/pages/micro_mall/goods/popup/shareImg",
+    "commission": "/components/commission/commission",
+    "specPop":"/components/pop/specPop",
+    "comments":"/components/comments/comments",
+    "shippingTypeMod":"/components/shippingTypeMod/shippingTypeMod",
+    "act-count-down":"/components/act-count-down/act-count-down"
+  }
+}
