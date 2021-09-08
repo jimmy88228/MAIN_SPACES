@@ -1,4 +1,4 @@
-import AS from "./authorize-set.js";
+import AS from "../helper/authorize-set.js";
 import WxApi from "../helper/wx-api-helper.js";
 import SConf from "../helper/handle/getSystemConfig.js"
 import EB from "../support/tools/event-bus.js"

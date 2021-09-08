@@ -49,9 +49,6 @@ Component(app.BTAB({
     actCountDown: {
       type: Object,
       value: {},
-      // observer:function(n){
-      //   console.log("进来啊",n)
-      // }
     },
     sysConf: {
       type: Object,

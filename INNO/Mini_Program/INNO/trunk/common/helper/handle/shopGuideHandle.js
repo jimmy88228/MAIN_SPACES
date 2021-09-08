@@ -1,7 +1,7 @@
 import LM from "../../manager/login-manager.js";
 import Conf from "../../../conf";
 import { UserApi } from "../../manager/http-manager.js";
-import AS from "../../manager/authorize-set.js";
+import AS from "../authorize-set.js";
 import SMH from "../show-msg-helper.js"
 import WxAPi from "../../helper/wx-api-helper.js";
 class ShopGuideManager {

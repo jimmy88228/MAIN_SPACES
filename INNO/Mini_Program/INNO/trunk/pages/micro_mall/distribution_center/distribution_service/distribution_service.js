@@ -1,5 +1,5 @@
 const app = getApp();
-import CheckUpdateTimer from "../../../../common/manager/check-update-timer";
+import CheckUpdateTimer from "../../../../common/helper/check-update-timer";
 
 Component(app.BTAB({
   properties: {

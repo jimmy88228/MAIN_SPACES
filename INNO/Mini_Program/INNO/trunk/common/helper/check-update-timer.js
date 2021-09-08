@@ -1,7 +1,7 @@
 // import Promise from "../libs/promise/promise.js";
 import Conf from "../../conf.js";
-import LM from "./login-manager.js"
-import StoHd from "../helper/handle/storageHandle";
+import LM from "../manager/login-manager.js"
+import StoHd from "./handle/storageHandle";
 let cacheTime = 24*60*2;
 class checkUpdateTimer {
   static getInstance() {

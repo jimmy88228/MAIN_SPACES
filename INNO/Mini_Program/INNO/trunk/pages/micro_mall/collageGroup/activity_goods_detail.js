@@ -5,7 +5,7 @@ import{
     CountDown
 } from "../../../common/manager/timer-manager.js";
 import StrH from "../../../common/helper/handle/strHandle.js"
-import AllStaffApply from "../../../common/manager/all-staff-apply"// pages/micro_mall/collageGroup/activity_goods_detail.js
+import AllStaffApply from "../../../common/helper/all-staff-apply"// pages/micro_mall/collageGroup/activity_goods_detail.js
 const app = getApp();
 const PAGE_TYPE = "COLLAGE_GOODS";
 Page(app.BP({

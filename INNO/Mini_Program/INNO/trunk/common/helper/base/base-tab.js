@@ -1,5 +1,5 @@
 import LgMg from "../../manager/log-manager.js";
-import FM from "../../manager/form-id-manager";
+import FM from "../form-id-manager";
 import BI from "../handle/getBrandInfo.js";
 import Conf from "../../../conf.js";
 import SIH from "../sys-infos-helper.js";

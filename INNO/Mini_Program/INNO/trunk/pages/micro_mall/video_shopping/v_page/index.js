@@ -2,7 +2,7 @@
 import {
   TabKeys,
 } from "../../../../common/manager/log-map.js";
-import CheckVideo from "../../../../common/manager/check-video-update.js";
+import CheckVideo from "../../../../common/helper/check-video-update.js";
 import DrawTemplate from '../../goods/popup/help/template.js';
 const PAGE_TYPE = "VIDEO_SHOP";
 const app = getApp();

@@ -1,5 +1,5 @@
 // pages/micro_mall/distribution_center/distribution_service/rank/rank.js
-import CheckUpdateTimer from "../../../../../common/manager/check-update-timer"; 
+import CheckUpdateTimer from "../../../../../common/helper/check-update-timer"; 
 const app = getApp();
 Page(app.BP({
   data: {

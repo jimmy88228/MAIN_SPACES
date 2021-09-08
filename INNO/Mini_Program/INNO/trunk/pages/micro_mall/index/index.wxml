@@ -1,11 +1,9 @@
-<!-- <include src="../header/index_header" /> -->
 <view hidden="{{pageHidden}}">
   <page-nav holdStay="{{true}}" bindgetNavH="getNavH" title="{{pageTitle}}"></page-nav>
   <indexHeader wx:if="{{showHeader}}" top="{{navH}}" id="indexHeader" needVerify></indexHeader>
   <storesForA bindgetStoreMsg='getStoreMsg' top="{{navH}}" id="stores_a_id" show-stores-a="{{showStoresA}}"></storesForA>
 
   <view class="index_page {{isIphoneX ? 'ipx_p_b' : ''}} {{customTab ? 'customTab' : ''}}">
-    <!-- <custom_module bindvideoplay="videoPlay" bindinitdatacallback="initDataCallBack" id="custom_module" ></custom_module> -->
     <pageTab 
     class="pager_tab" 
     id="pageTab" 
@@ -15,12 +13,7 @@
     top="{{navH}}"
     custom-tab="{{customTab}}"></pageTab>
   </view>
-
-  <view class="video_view">
-    <video id="play_video" src="{{video_url}}" direction='0' wx:if="{{video_url}}" bindfullscreenchange='videoFull'></video>
-  </view>
   <btnFollow id="btnFollow" customTab="{{customTab}}"></btnFollow>
-  <!-- <cs></cs> -->
   <pagePop id="pagePop" top="{{navH}}"></pagePop>
 </view>
 <welcome id="welcome" top="{{navH}}"></welcome>

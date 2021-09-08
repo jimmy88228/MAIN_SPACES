@@ -24,7 +24,7 @@
         
         <!-- 助力秒杀 9模块 -->
         <view id="custom{{m_item.moduleId}}" wx:elif="{{(m_item.bindType == 9)}}">
-          <multiActivities id="activityId" bindsingleSwitch="singleSwitch" module-id="{{m_item.moduleId}}" m_item="{{motion_data[m_index]}}" page_module_list="{{m_item}}" detailListObj="{{m_item.detail_list || []}}" actCountDown="{{actCountDown[m_item.moduleId]}}" m_index="{{m_index}}"
+          <multiActivities id="activityId" bindsingleSwitch="singleSwitch" module-id="{{m_item.moduleId}}" m_item="{{motion_data[m_index]}}" page_module_list="{{m_item}}" detailListObj="{{m_item.detail_list || []}}" actCountDown="{{actCountDown[m_item.moduleId] || null}}" m_index="{{m_index}}"
             img_url="{{img_url}}" sysConf="{{sysConf}}"></multiActivities>
         </view>
 
@@ -41,7 +41,7 @@
         </view>
         <!--秒杀、拼团、预售、积分、砍价  7~12、14--!9 -->
         <view id="custom{{m_item.moduleId}}" wx:else>
-          <activities id="activityId" bindsingleSwitch="singleSwitch" module-id="{{m_item.moduleId}}" m_item="{{motion_data[m_index]}}" page_module_list="{{m_item}}" detailListObj="{{m_item.detail_list || []}}" actCountDown="{{actCountDown[m_item.moduleId]}}" m_index="{{m_index}}"
+          <activities id="activityId" bindsingleSwitch="singleSwitch" module-id="{{m_item.moduleId}}" m_item="{{motion_data[m_index]}}" page_module_list="{{m_item}}" detailListObj="{{m_item.detail_list || []}}" actCountDown="{{actCountDown[m_item.moduleId] || null}}" m_index="{{m_index}}"
             img_url="{{img_url}}" sysConf="{{sysConf}}"></activities>
         </view> 
       </view>

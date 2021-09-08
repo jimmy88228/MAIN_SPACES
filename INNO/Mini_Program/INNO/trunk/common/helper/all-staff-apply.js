@@ -1,6 +1,6 @@
-import LM from "./login-manager.js";
+import LM from "../manager/login-manager.js";
 // import GetSystemConfig from '../handle/getSystemConfig';
-import {GoodsApi} from "./http-manager"
+import {GoodsApi} from "../manager/http-manager"
 import Conf from "../../conf"
 class AllStaffApply {
   constructor() {

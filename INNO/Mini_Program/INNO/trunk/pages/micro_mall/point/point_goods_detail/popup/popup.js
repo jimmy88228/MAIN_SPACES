@@ -1,6 +1,6 @@
 import WindowBehaviors from "../../../../../components/ui/cps/window/window-behaviors";
 import LM from "../../../../../common/manager/login-manager";
-import FM from "../../../../../common/manager/form-id-manager";
+import FM from "../../../../../common/helper/form-id-manager";
 import BTab from "../../../../../common/helper/base/base-tab.js";
 import EB from "../../../../../common/support/tools/event-bus";
 const app = getApp();

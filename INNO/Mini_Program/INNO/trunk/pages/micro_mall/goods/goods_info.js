@@ -9,9 +9,9 @@ import PH from "../../../common/helper/handle/paramsHandle.js";
 import WxApi from "../../../common/helper/wx-api-helper.js";
 import StrH from "../../../common/helper/handle/strHandle.js";
 import Utils from "../../../common/support/utils/utils";
-import AS from "../../../common/manager/authorize-set.js";
+import AS from "../../../common/helper/authorize-set.js";
 import {videoAccountType} from "../../../common/manager/log-map.js";
-import AllStaffApply from "../../../common/manager/all-staff-apply";
+import AllStaffApply from "../../../common/helper/all-staff-apply";
 
 let app = getApp();
 // let numArr = [1, 2, 3, 5];

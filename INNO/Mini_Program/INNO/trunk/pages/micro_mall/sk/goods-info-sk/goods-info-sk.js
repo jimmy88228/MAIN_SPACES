@@ -6,7 +6,7 @@ let WxParse = require("../../../../components/thirdParty/wxParse/wxParse.js");
 import WxSub from "../../../../common/helper/handle/wxSubscribe.js" 
 import GetStatus from '../help/getStatus.js';
 // import Promise from "../../../../libs/promise/promise";
-import AllStaffApply from "../../../../common/manager/all-staff-apply" 
+import AllStaffApply from "../../../../common/helper/all-staff-apply" 
 // const PAGE_TYPE = "SECKILL_GOODS";
 const app = getApp();
 Page(app.BP({

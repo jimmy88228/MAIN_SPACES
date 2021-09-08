@@ -4,7 +4,7 @@ import {
   qrcode
 } from "../../../common/helper/utils/goComplete/index.js" 
 import SG from "../../../common/helper/handle/shopGuideHandle.js"
-import CheckUpdateTimer from "../../../common/manager/check-update-timer";
+import CheckUpdateTimer from "../../../common/helper/check-update-timer";
 // import Promise from "../../../libs/promise/promise.js";
 import PageJump from "../../../common/helper/page-jump.js";
 import WxSub from "../../../common/helper/handle/wxSubscribe.js";

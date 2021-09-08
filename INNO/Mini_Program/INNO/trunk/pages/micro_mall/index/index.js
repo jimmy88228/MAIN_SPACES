@@ -1,5 +1,3 @@
-//index.js
-// import LocationM from "../../../common/manager/location-manager.js";
 import CDateH from "../../../common/helper/handle/cacheDateHandle.js"
 import ShakingHelp from "../../../common/manager/shakingHelp.js"
 const PAGE_TYPE = "CUSTOM_INDEX";
@@ -31,16 +29,10 @@ Page(app.BP({
             this.firstSnow = true;
             this.shakeStart(true);
         },1000)
-        this.initVideo();
         pagePopInit.call(this);
     },
     onShow: function() {
         this.onShowing = true;
-        Promise.resolve(441).finally(()=>{
-            console.log('测试 finally1');
-            console.log('测试 finally2',Promise.finally);
-            console.log('测试 finally3',Promise.prototype.finally);
-        })
         if(this.onReadyed){
             this.shakeStart(!this.firstSnow);
         }
@@ -72,32 +64,7 @@ Page(app.BP({
         return {
             shareType: app.ShareType[PAGE_TYPE] || app.ShareType.NORMAL,
             title: this.shareConf && this.shareConf.cfg_title || "",
-            path: path,
-            success: function(res) {
-                // 转发成功
-            },
-            fail: function(res) {
-                // 转发失败
-            }
-        }
-    },
-    initVideo() {
-        this.videoContext = wx.createVideoContext('play_video');
-    },
-    videoPlayPage: function(e) {
-      console.log('videoPlaypage',e)
-        var video_url = e.detail.video_url;
-        this.setData({
-            video_url: video_url
-        });
-        this.videoContext.requestFullScreen();
-    },
-    videoFull: function(e) {
-        var fullScreen = e.detail.fullScreen;
-        if (fullScreen) {
-            this.videoContext.play();
-        } else {
-            this.videoContext.pause();
+            path: path, 
         }
     },
     initDataCallBack(e) {
@@ -122,8 +89,6 @@ Page(app.BP({
     },
     getPageId(e){
           console.log("getPageId",e);
-    //   let detail = e.detail || {};
-    //   let page_id = detail.page_id;
     },
     checkAgreetLoginCallback(){
         this.welcome = this.welcome || this.selectComponent("#welcome");
@@ -202,7 +167,4 @@ function unListen(){
 function pagePopInit(){
     this.pagePop = this.pagePop || this.selectComponent('#pagePop') || {};
     this.pagePop.onReadyFnc && this.pagePop.onReadyFnc();
-    
-    // this.pageTab = this.pageTab || this.selectComponent("#pageTab") || {};
-    // this.pageTab.setAdsPop && this.pageTab.setAdsPop();
 }

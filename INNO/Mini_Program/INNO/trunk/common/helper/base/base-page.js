@@ -1,5 +1,5 @@
 import LgMg from "../../manager/log-manager.js";
-import FM from "../../manager/form-id-manager";
+import FM from "../form-id-manager";
 import LM from "../../manager/login-manager.js";
 import LocationM from "../../manager/location-manager.js";
 import AppUtil from "../app-utils.js";
@@ -10,14 +10,12 @@ import CDateH from "../handle/cacheDateHandle.js"
 import LoginM from "../handle/loginHandle.js"
 import SMH from "../../helper/show-msg-helper.js";
 // import Promise from "../../libs/promise/promise.js";
-import CheckVideo from "../../manager/check-video-update.js";
+import CheckVideo from "../check-video-update.js";
 import MyStr from "../../support/utils/string-util.js";
 import StartPageHandle from "../handle/startPageHandle.js";
 import StorageH from "../handle/storageHandle.js"
 import WelcomeH from "../handle/welcomeHandle.js";
 import GetSystemConfig from "../handle/getSystemConfig";
-// import AllStaffApply from "../../manager/all-staff-apply";
-// import {AllStaffApplyRoute} from "../../manager/log-map";
 import {
   ShareConf,
   TabKeys,
@@ -137,11 +135,6 @@ export default function(pageOptions) {
       }
     };
     pageOptions.onReady = function(){
-      // let page = (getCurrentPages() || []).pop();
-      // if(page && AllStaffApplyRoute[page.route] && page.selectComponent('#staffApply')){
-      //   let goods_id = page.options && page.options.goods_id||0;
-      //   AllStaffApply.checkAllStaffApply(page,goods_id);
-      // }
       rOnReady && rOnReady.call(this);
     }
     pageOptions.onHide = function(){

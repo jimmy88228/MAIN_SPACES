@@ -1,11 +1,11 @@
 import {
   TabKeys,
   CheckLastRoute
-} from "./log-map.js";
+} from "../manager/log-map.js";
 // import Promise from "../libs/promise/promise.js";
 import RunApi from "./apiPackage.js"
 import Conf from "../../conf";
-import StorageH from "../helper/handle/storageHandle";
+import StorageH from "./handle/storageHandle";
 import GetTabList from "../manager/getTabList.js"; 
 class checkUpdate {
   static getInstance() {

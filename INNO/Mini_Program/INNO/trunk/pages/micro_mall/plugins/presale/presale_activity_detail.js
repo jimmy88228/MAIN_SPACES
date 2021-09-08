@@ -6,7 +6,7 @@ import {
     CountDown
 } from "../../../../common/manager/timer-manager.js";
 import StrH from "../../../../common/helper/handle/strHandle.js";
-import AllStaffApply from '../../../../common/manager/all-staff-apply'
+import AllStaffApply from '../../../../common/helper/all-staff-apply'
 const PAGE_TYPE = "PRE_SALE_GOODS";
 var app = getApp();
 Page(app.BP({

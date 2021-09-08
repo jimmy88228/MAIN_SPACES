@@ -1,6 +1,6 @@
 import Conf from "../../conf";
-import LM from "./login-manager.js";
-import * as Api from "./http-manager.js";
+import LM from "../manager/login-manager.js";
+import * as Api from "../manager/http-manager.js";
 
 class ApiBase {
   constructor() {

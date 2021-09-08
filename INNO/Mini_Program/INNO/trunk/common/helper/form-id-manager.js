@@ -1,6 +1,6 @@
-import LM from "./login-manager";
+import LM from "../manager/login-manager";
 import Conf from "../../conf.js";
-import { FromApi } from "./http-manager";
+import { FromApi } from "../manager/http-manager";
 import Mydate from "../support/utils/date-util.js"
 class FormIdManager {
     static getInstance() {

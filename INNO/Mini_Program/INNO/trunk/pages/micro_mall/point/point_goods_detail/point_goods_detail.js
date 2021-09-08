@@ -3,7 +3,7 @@ import {
     CountDown
 } from "../../../../common/manager/timer-manager.js";
 import StrH from "../../../../common/helper/handle/strHandle.js";
-import AllStaffApply from "../../../../common/manager/all-staff-apply";
+import AllStaffApply from "../../../../common/helper/all-staff-apply";
 const app = getApp();
 const WxParse = require("../../../../components/thirdParty/wxParse/wxParse.js");
 const PAGE_TYPE = "POINT_GOODS";

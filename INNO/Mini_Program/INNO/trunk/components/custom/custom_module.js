@@ -854,7 +854,7 @@ function setTimeData(mId, cDs, time,extra={}) {
     actCountDown: this.data.actCountDown
   }) 
   !this.actCountDownLog && console.log('倒计时',this.actCountDown);  //每秒log
-  this.actCountDownLog =true
+  this.actCountDownLog = true;
 }
 //倒计时模块
 function timeHandle(value) {

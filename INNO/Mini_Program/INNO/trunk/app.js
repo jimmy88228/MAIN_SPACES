@@ -4,7 +4,7 @@ import * as Api from "./common/manager/http-manager";
 import SIH from "./common/helper/sys-infos-helper.js";
 import LM from "./common/manager/login-manager";
 import LgMg from "./common/manager/log-manager.js";
-import FM from "./common/manager/form-id-manager.js";
+import FM from "./common/helper/form-id-manager.js";
 import SMH from "./common/helper/show-msg-helper.js";
 import BP from "./common/helper/base/base-page.js";
 import BTAB from "./common/helper/base/base-tab.js";
@@ -15,8 +15,8 @@ import SConf from "./common/helper/handle/getSystemConfig.js"
 import md5 from './common/helper/utils/md5';
 import getColor from "./common/helper/handle/colorHandle.js"
 import PH from "./common/helper/handle/paramsHandle.js"
-import AS from "./common/manager/authorize-set.js"
-import RunApi from "./common/manager/apiPackage.js"
+import AS from "./common/helper/authorize-set.js"
+import RunApi from "./common/helper/apiPackage.js"
 import TARH from "./common/helper/handle/tabbarHandle.js"
 import CDateH from "./common/helper/handle/cacheDateHandle.js"
 import NH from "./common/helper/handle/numHandle.js"
@@ -270,7 +270,7 @@ App({
   },
   getIconUrl(url,type='icon_url'){
     if(!type)return ""
-    return Conf[type] + url;
+    return (Conf[type] || "") + url;
   }
 })
 //
