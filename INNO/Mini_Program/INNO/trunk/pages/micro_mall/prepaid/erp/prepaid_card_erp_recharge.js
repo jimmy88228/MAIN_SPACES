@@ -23,12 +23,13 @@ Page(app.BP({
     showExchange: false, //充值兑换
     showRecharge: false, //充值活动
     searchText:"",
-    curStaffList:[]
+    curStaffList:[],
   },
   staffListPage:1,
   staffListHasMore:true,
   staffListHasLoading:false,
   onLoad: function(options) {
+    console.log('jimmy2',this.getDataset)
     let bInfo = this.data.brand_info || {};
     this.options = options;
     let scanIcon = app.getIconUrl('default_scan.png','default_icon_url');
@@ -47,8 +48,6 @@ Page(app.BP({
       if (!this.alreadyLoad){
         getBaseInfo.call(this);
         loadData.call(this).then(()=>{
-        }).finally(() => {
-          this.showPage();
         })
       }
       this.loading = false;
@@ -63,14 +62,13 @@ Page(app.BP({
     });
     this.mpInputCard = this.selectComponent('#mpInputCard');
     this.mpInputPwd = this.selectComponent('#mpInputPwd');
+    this.inputDropDownId = this.selectComponent('#inputDropDownId');
   },
   onShow: function() {
     if (this.activityId){
       this.alreadyLoad = true;
       getBaseInfo.call(this);
-      loadData.call(this).finally(() => {
-        this.showPage();
-      });
+      loadData.call(this)
     }
   },
   checkShowViewState(){
@@ -253,8 +251,8 @@ Page(app.BP({
           let scene = getScene(res.path);
           if(scene){
             return scanWXCodeLog.call(this,scene).then(res=>{
-              this.mpInput = this.mpInput || this.selectComponent('#mpInput');
-              this.mpInput.setInput(res||"");
+              this.inputDropDownId = this.inputDropDownId || this.selectComponent('#inputDropDownId');
+              this.inputDropDownId.setInput(res||"");
               this.searchText = res;
               this.setData({
                 searchText:res||""
@@ -276,10 +274,11 @@ Page(app.BP({
     }
   },
   handleInput(e){
-    let dataset = this.getDataset(e);
+    let _e = e.detail||{};
+    let dataset = this.getDataset(_e);
     let type = dataset.type||"";
     if(type == 'staff'){
-      this.searchText = e.detail;
+      this.searchText = _e.detail;
       this.setData({searchText:this.searchText})
       this.resetList();
       searchFnc.call(this,()=>{
@@ -295,6 +294,7 @@ Page(app.BP({
     }
   },
   handleFocus(e){
+    console.log(e)
     this.setData({
       focus:true
     })
@@ -313,6 +313,21 @@ Page(app.BP({
     this.staffListHasLoading = false;
     this.data.curStaffList = [];
   },
+  selectStaff(e){
+    let data = this.getDataset(e.detail,'data') || {};
+    let code = data.dstb_staff_code||"";
+    this.staff_select = data;
+    this.searchText = code;
+    this.inputDropDownId.setFocus(false);
+    this.setData({
+      focus:false,
+      staff_select:this.staff_select,
+      searchText:this.searchText,
+    })
+    this.inputDropDownId.setInput(code);
+    this.resetList();
+    getStaffDstbList.call(this);
+  },
   searchStaff(){
     this.resetList();
     getStaffDstbList.call(this).then(res=>{
@@ -323,25 +338,10 @@ Page(app.BP({
         this.setData({
           staff_select:{}
         })
+        this.inputDropDownId.setFocus(true);
         this.handleFocus();
       }
     });
-  },
-  selectStaff(e){
-    let dataset = this.getDataset(e);
-    let data = dataset.data||{};
-    let code = data.dstb_staff_code||"";
-    this.staff_select = data;
-    this.searchText = code;
-    this.setData({
-      focus:false,
-      staff_select:this.staff_select,
-      searchText:this.searchText,
-    })
-    this.mpInput = this.mpInput || this.selectComponent('#mpInput');
-    this.mpInput.setInput(code);
-    this.resetList();
-    getStaffDstbList.call(this);
   }
 }))
 

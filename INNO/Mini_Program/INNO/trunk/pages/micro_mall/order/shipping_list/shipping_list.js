@@ -1,5 +1,5 @@
 // pages/micro_mall/order/shipping_list/shipping_list.js
-import LocaleCompareHelp from '../../../../common/manager/localeCompareHelp.js' 
+import LocaleCompareHelp from '../../../../common/helper/localeCompareHelp.js' 
 const app = getApp();
 Page(app.BP({
   data: { 

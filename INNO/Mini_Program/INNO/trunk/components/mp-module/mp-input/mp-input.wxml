@@ -1,10 +1,11 @@
 <!--components/mp-module/mp-input/mp-input.wxml-->
 <!-- 属性待补全 -->
 <input 
-    class="ext-input-class default-input" 
+    class="ext-input-class default-input ext-placeholder-class" 
     type="{{type}}" 
-    placeholder-class="ext-placeholder-class" 
-    placeholder="{{placeholderProp}}" 
+    placeholder-class="placeholder-class"
+    placeholder-style="{{placeholderStyle}}"
+    placeholder="{{placeholder}}" 
     bindinput="handleInput"
     data-key="{{searchKey}}" 
     value="{{searchText}}" 

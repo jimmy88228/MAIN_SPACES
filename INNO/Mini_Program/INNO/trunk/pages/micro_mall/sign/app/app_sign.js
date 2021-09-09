@@ -19,7 +19,7 @@ Page(app.BP({
     this.pageHome.initPageHome();
     this.loading = false;
     app.LM.loginAsync(true).finally(()=>{
-      this._checkUserLogin();
+      this.checkLoginChange();
       this.setAdsPop(); 
       this.signMod = this.selectComponent('#signMod');
       console.log('this.signMod',this.signMod)

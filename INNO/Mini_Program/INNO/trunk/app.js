@@ -6,11 +6,11 @@ import LM from "./common/manager/login-manager";
 import LgMg from "./common/manager/log-manager.js";
 import FM from "./common/helper/form-id-manager.js";
 import SMH from "./common/helper/show-msg-helper.js";
-import BP from "./common/helper/base/base-page.js";
-import BTAB from "./common/helper/base/base-tab.js";
+import BP from "./common/base/base-page.js";
+import BTAB from "./common/base/base-tab.js";
 import EB from "./common/support/tools/event-bus.js";
 import pageJump from "./common/helper/page-jump";
-import checkUpdate from "./common/manager/check-update-manager.js";
+import checkUpdate from "./common/helper/check-update-manager.js";
 import SConf from "./common/helper/handle/getSystemConfig.js"
 import md5 from './common/support/utils/md5';
 import getColor from "./common/helper/handle/colorHandle.js"

@@ -5,19 +5,21 @@ Page(app.BP({
     data: {
         brand_info: app.globalData.brand_info,
         showCard: true,
-        showCodeBtn: "1"
+        showCodeBtn: "1",
+        shopIcon: '',
     },
     onShow() {
         loadData.call(this);
         loadStoredValueActivity.call(this);
-        app.sysTemConfig("is_show_storevalue_password").then(data=>{
-          this.setData({
-            showCodeBtn: data.Value || 0
-          })
-        })
-        app.sysTemConfig("show_stored_value_activity_entrance").then(data=>{
+        app.sysTemConfig("is_show_storevalue_password").then(data => {
             this.setData({
-              showRecharge: data == null ? 1 : data.Value || 0
+                showCodeBtn: data.Value || 0,
+                shopIcon: this.data.brand_info.icon_url + "micro_mall/left_menu.png"
+            })
+        })
+        app.sysTemConfig("show_stored_value_activity_entrance").then(data => {
+            this.setData({
+                showRecharge: data == null ? 1 : data.Value || 0
             })
         })
     },
@@ -32,12 +34,12 @@ Page(app.BP({
     },
     checkRecode: function () {
         wx.navigateTo({
-          url: '/pages/micro_mall/prepaid/erp/prepaid_card_erp_detail?storeValue=' + this.data.storedValue
+            url: '/pages/micro_mall/prepaid/erp/prepaid_card_erp_detail?storeValue=' + this.data.storedValue
         });
     },
     jumpDetails() {
         wx.navigateTo({
-          url: `/pages/micro_mall/prepaid/erp/prepaid_card_erp_recharge?activityId=${this.data.activityId}&type=recharge`
+            url: `/pages/micro_mall/prepaid/erp/prepaid_card_erp_recharge?activityId=${this.data.activityId}&type=recharge`
         });
     },
     showCode() {
@@ -50,6 +52,11 @@ Page(app.BP({
         wx.navigateTo({
             url: '/pages/micro_mall/user_info/user_info'
         });
+    },
+    handleSelectShop() {
+        wx.navigateTo({
+            url: '/pages/micro_mall/stores/store_nav?value=none',
+        })
     }
 }))
 function loadData() {
@@ -76,7 +83,7 @@ function loadData() {
         }
     });
 }
-function loadStoredValueActivity(){
+function loadStoredValueActivity() {
     return app.UserApi.getCurrentStoredValueActivity({
         params: {
             brandCode: app.Conf.BRAND_CODE

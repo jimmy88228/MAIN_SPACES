@@ -5,9 +5,7 @@ Page(app.BP({
   data: {},
   onLoad: function (options) {
     this.options = options;
-    this.setBpData({
-      unAutoAddLog: true
-    })
+    this.unAutoAddLog=true;
     app.LM.loginAsync().finally(()=>{
       getUrl.call(this, options);
     })

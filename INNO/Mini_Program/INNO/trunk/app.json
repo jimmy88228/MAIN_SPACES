@@ -337,7 +337,8 @@
       "pages": [
         "store_nav",
         "store_map",
-        "scan_jump/scan_jump"
+        "scan_jump/scan_jump",
+        "store_canuse/store_canuse"
       ]
     },
     {

@@ -503,7 +503,7 @@ page {
   height: 56rpx;
   border: 1px solid #dfdfdf;
   border-radius: 14rpx;
-  transition: height 0.32s;
+  transition: height 0.2s;
   font-size: 24rpx;
   /* box-sizing: border-box; */
 }
@@ -511,6 +511,7 @@ page {
   height: 256rpx;
 }
 .input-box{
+  width: 100%;
   padding-left:20rpx;
   box-sizing: border-box;
   position: relative;
@@ -574,8 +575,4 @@ page {
   width: 48rpx;
   height: 48rpx;
   margin-right: 4rpx;
-}
-.placeholder-class{
-  color: red;
-  /* color: #afafaf; */
 }

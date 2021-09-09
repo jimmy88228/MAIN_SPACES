@@ -1,5 +1,4 @@
 import WindowBehaviors from "../../../../components/ui/cps/window/window-behaviors";
-// import BTab from "../../../common/helper/base/base-tab.js";
 const app = getApp();
 
 Component(

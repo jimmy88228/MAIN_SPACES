@@ -3,7 +3,11 @@ const app = getApp();
 Component(app.BTAB({
     externalClasses: ['ext-input-class','ext-placeholder-class'],
     properties: {
-        placeholderProp:{
+        placeholder:{
+            type:String,
+            value:""
+        },
+        placeholderStyle:{
             type:String,
             value:""
         },
@@ -28,16 +32,14 @@ Component(app.BTAB({
     data: {
         searchKey:"searchText",
         searchText:"",
-    }, 
+    },
     methods: {
         handleInput(e){
-            console.log(e,key);
+            // console.log(e);
             let value = e.detail.value;
-            let dataset = this.getDataset(e);
-            let key = dataset.key || "";
+            let key = this.getDataset(e,'key');
             this[key] = value;
             this.triggerEvent('handleInput',value);
-            // console.log(key,this[key]);
         },
         getInput(e){
             return this[this.data.searchKey];

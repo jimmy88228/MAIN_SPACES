@@ -4,6 +4,7 @@
         "dialog": "/components/ui/cps/dialog/dialog",
         "btns":"/components/buttons/btns",
         "mp-input":"/components/mp-module/mp-input/mp-input",
-        "mp-scroll-view":"/components/mp-module/mp-scroll-view/mp-scroll-view"
+        "mp-scroll-view":"/components/mp-module/mp-scroll-view/mp-scroll-view",
+        "input-drop-down":"/components/form-models/input-drop-down/input-drop-down"
   }
 }

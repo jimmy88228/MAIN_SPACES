@@ -1,10 +1,7 @@
 import WindowBehaviors from "../../../../../components/ui/cps/window/window-behaviors";
-import BTab from "../../../../../common/helper/base/base-tab.js";
-import LM from "../../../../../common/manager/login-manager.js";
 const app = getApp();
-
 Component(
-  BTab({
+  app.BTAB({
     behaviors: [WindowBehaviors],
     properties: {},
     data: {

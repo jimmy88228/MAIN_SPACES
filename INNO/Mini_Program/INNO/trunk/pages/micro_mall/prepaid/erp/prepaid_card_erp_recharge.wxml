@@ -25,14 +25,12 @@
   <view class="content C_7f">
     <view class="card">兑换卡号</view>
     <view class="_input_box">
-      <mp-input id="mpInputCard" bindhandleInput="handleInput" data-type="exchange" ext-input-class="_input"
-        placeholderProp="输入卡号"></mp-input>
+      <mp-input id="mpInputCard" bindhandleInput="handleInput" data-type="exchange" ext-input-class="_input" placeholder="输入卡号"></mp-input>
       <image src="{{scanImg}}" mode="aspectFit" data-id="mpInputCard" bindtap="scanCode" data-type="exchange" class="img_scan"></image>
     </view>
     <view class="card _m_60">兑换密码</view>
     <view class="_input_box">
-      <mp-input id="mpInputPwd" ext-input-class="_input" bindhandleInput="handleInput" data-type="exchange"
-        placeholderProp="输入密码" password="{{hidePwd}}"></mp-input>
+      <mp-input id="mpInputPwd" ext-input-class="_input" bindhandleInput="handleInput" data-type="exchange" placeholder="输入密码" password="{{hidePwd}}"></mp-input>
       <image catchtap="handle_showPwd" src="{{hidePwd?pwd_hide:pwd_active}}" mode="aspectFit"
         class="img_showText"></image>
       <image src="{{scanImg}}" bindtap="scanCode" data-id="mpInputPwd" data-type="exchange" mode="aspectFit" class="img_scan"></image>
@@ -91,9 +89,19 @@
           <text class="v_t">分享人</text><text class="share-tip v_t">*选填</text>
         </view>
         <view class="share-content-box flex-s-s">
-          <view class="fold-box {{focus?'unfold':''}}">
+        <input-drop-down 
+          id="inputDropDownId" 
+          inputActive="{{staff_select.dstb_staff_code == searchText}}" 
+          vocabulary="{{curStaffList}}" 
+          bindhandleInput="handleInput" 
+          bindscrolltolower="scrollToLower" 
+          bindhandleFocus="handleFocus" 
+          bindselectItem="selectStaff">
+        </input-drop-down>
+
+          <!-- <view class="fold-box {{focus?'unfold':''}}">
             <view class="input-box flex-s-c {{staff_select.dstb_staff_code}} {{staff_select.dstb_staff_code == searchText?'active':''}}">
-                <mp-input id="mpInput" data-type="staff" placeholderProp="请输入" ext-input-class="input-class {{staff_select.dstb_staff_code == searchText?'active':''}}" ext-placeholder-class="placeholder-class" setFocus bindhandleFocus="handleFocus" bindhandleInput="handleInput"></mp-input>
+                <mp-input id="mpInput" data-type="staff" placeholder="请输入" placeholderStyle="color:#afafaf;" ext-input-class="input-class {{staff_select.dstb_staff_code == searchText?'active':''}}" ext-placeholder-class="placeholder-class" setFocus bindhandleFocus="handleFocus" bindhandleInput="handleInput"></mp-input>
                 <view class="arrow-box flex-c-c" bindtap="handleToggle">
                   <view class="arrow {{focus?'unfold':''}}"></view>
                 </view>
@@ -108,7 +116,7 @@
                 </block>
               </view>
             </mp-scroll-view>
-          </view>
+          </view> -->
           <view class="scan-code-box flex-s-c" data-type="staff" bindtap="scanCode">
             <image src="{{scanIcon}}" mode="aspectFit" class="icon-scan"></image>
             <view>扫一扫</view>

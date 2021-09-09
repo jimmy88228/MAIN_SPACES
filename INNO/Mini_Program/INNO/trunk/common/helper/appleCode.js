@@ -51,7 +51,8 @@ function appletCode(data) {
         "isBackGround": 0,
         "is_White_Bg":0,
         "extend_id": info.extend_id || "",
-        "transPage": Conf.STARTUP_PAGE,
+        "transPage": "pages/micro_mall/index/index",
+        // "transPage": Conf.STARTUP_PAGE,
         ...extendParam
       }, other: { isShowLoad: false }
     }).then(e => {

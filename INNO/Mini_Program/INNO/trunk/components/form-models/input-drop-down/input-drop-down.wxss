@@ -1,0 +1,94 @@
+/* components/form-models/input-drop-down/input-drop-down.wxss */
+page{
+    --box-width:460rpx;
+    --fold-height: 56rpx;
+    --unfold-height: 256rpx;
+    --item-height:50rpx;
+}
+.fold-box {
+    width: var(--box-width);
+    height: var(--fold-height);
+    border: 1px solid #dfdfdf;
+    border-radius: 14rpx;
+    transition: height 0.2s;
+    font-size: 24rpx;
+}
+
+.fold-box.unfold {
+    height: var(--unfold-height);
+}
+
+.input-box {
+    width: 100%;
+    padding-left: 20rpx;
+    box-sizing: border-box;
+    position: relative;
+}
+
+.input-class {
+    width: 380rpx;
+    height: 56rpx;
+    font-size: 24rpx;
+    color: #afafaf;
+}
+
+.active {
+    color: #303030;
+}
+
+.scroll-box {
+    width: 100%;
+    height: calc(100% - var(--fold-height));
+}
+.scroll{
+    width: 100%;
+    height: 100%;
+}
+
+.staff-item {
+    width: 100%;
+    min-height: var(--item-height);
+    box-sizing: border-box;
+    padding-left: 20rpx;
+}
+
+.staff-name {
+    padding-left: 20rpx;
+    word-break: break-all;
+}
+
+.arrow-box {
+    width: 60rpx;
+    height: 56rpx;
+    position: relative;
+}
+
+.arrow {
+    width: 0;
+    height: 0;
+    border-top: 18rpx solid transparent;
+    border-left: 12rpx solid transparent;
+    border-right: 12rpx solid transparent;
+    border-top-color: #dfdfdf;
+    transition: transform 0.32s;
+    transform: translate(-50%, -50%) rotate(-90deg);
+    position: absolute;
+    top: 50%;
+    left: 50%;
+}
+
+.arrow.unfold {
+    transform: translate(-50%, -50%) rotate(0);
+}
+
+.flex-s-s{
+    display: flex;
+}
+.flex-s-c{
+    display: flex;
+    align-items: center;
+}
+.flex-c-s{
+    display: flex;
+    justify-content: center;
+}

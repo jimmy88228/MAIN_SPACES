@@ -22,7 +22,7 @@ Page(app.BP({
   onShow: function() {
     loadData.call(this).then(res=>{ 
       checkShow.call(this).then(res => {
-        this.nextTickTask().then(()=>{
+        this.nextTick().then(()=>{
           brokerageInit.call(this,res[0]);
           salesInit.call(this,res[1]);
         })

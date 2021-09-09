@@ -1,5 +1,10 @@
 <!--pages/micro_mall/prepaid/prepaid_card_erp.wxml-->
 <view class="prepaid_card" hidden="{{showCard}}">
+  <view class="canUseShop" bindtap="handleSelectShop">
+    <image src="{{shopIcon}}" class="shop_logo"></image>
+    <view class="shop_text">可用门店</view>
+    <image src="../../../../images/micro_mall/cn/arrow_hide.png" class="shop_in"></image>
+  </view>
   <view class="brand_logo">
     <image src="{{headerImg}}" mode="widthFix"/>
   </view>
@@ -29,7 +34,6 @@
       <view class="card_msg_row font_60 font_w" style="color:{{brand_info.style.font_color}};">{{storedValue}}元</view>
     </view>
   </view>
-
   <view class="scan_code_wrapper">
     <button 
     class="scan_code"

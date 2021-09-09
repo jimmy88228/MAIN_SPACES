@@ -76,7 +76,7 @@ function setNoticeW(){
     noticeText,
     baseW,
   })
-   this.nextTickTask().then(()=>{
+   this.nextTick().then(()=>{
     let className = data.moduleStyles == '9' || data.moduleStyles == '10' ? '.text_size_test' : '.text_size_test_ver'
     this._getQuery(className).then(res=>{
       let info = res[0],time=10,median=0;

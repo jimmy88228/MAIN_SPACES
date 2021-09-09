@@ -23,11 +23,15 @@ Page(app.BP({
     isEmpty: false,
     height: 0,
     loc_f: 0,
-    type: "" // contactStaff:联系店员， 
+    type: "", // contactStaff:联系店员， 
     //selectByGoods: 商品详情选择门店，
     //selectByCart: 购物车切换门店，
     //selectStore: 普通选择门店，
     //""： 附近门店
+    // value: 储值卡页面过来，不显示scan
+    isScanShow: false,
+    isAllowUseStoredValue: -1,
+    optionList: [{ name: '全部店铺', canUse: -1 }, { name: '可用', canUse: 1 }, { name: '不可用', canUse: 0 }],
   },
   page: 0,
   hasMore: true,
@@ -35,7 +39,7 @@ Page(app.BP({
   brand_giude_point: "",
   onLoad: function (options) {
     this.options = options;
-    let default_scan = this.data.brand_info.default_icon_url + "default_scan.png"; 
+    let default_scan = this.data.brand_info.default_icon_url + "default_scan.png";
     this.setData({
       height: wx.getSystemInfoSync().windowHeight,
       default_scan
@@ -43,6 +47,15 @@ Page(app.BP({
     let store_id = options.select_store_id;
     let key_word = options.key_word ? options.key_word : '';
     let loc_f = options.loc_f ? options.loc_f : 0;
+
+    // 储值页面跳转进来附近店铺
+    if (options.value === 'none') {
+      this.setData({
+        isScanShow: false,
+        defaultOption: this.data.optionList[0]
+      })
+    }
+
     if (typeof (store_id) != 'undefined') {
       let select_store = {
         store_id: store_id,
@@ -62,7 +75,7 @@ Page(app.BP({
     initScanImg.call(this);
     initJumpStyle.call(this);
   },
-  onUnload(){
+  onUnload() {
     app.StorageH.remove('StoreDetailInfo');
   },
   onHide() {
@@ -159,6 +172,16 @@ Page(app.BP({
     }
 
   },
+
+  // 切换选择店铺是否可用储值卡
+  handleTabsChange(e) {
+    let { dataset } = e.detail
+    this.setData({
+      isAllowUseStoredValue: dataset.name.canUse
+    });
+    getStoreData.call(this, this.data.keyword, true)
+  },
+  
   /**
    * 搜索店铺
    */
@@ -206,9 +229,9 @@ Page(app.BP({
         wx.navigateBack()
       }, 500)
     } else { //选择门店地址
-      let item = dataset.item||{};
-      let openTimeDesc = item.openTimeDesc||"";
-      let enableSelfGet = item.enableSelfGet||0;
+      let item = dataset.item || {};
+      let openTimeDesc = item.openTimeDesc || "";
+      let enableSelfGet = item.enableSelfGet || 0;
       let storage = app.StorageH.get('StoreDetailInfo') || {};
       storage = {
         ...storage,
@@ -217,40 +240,40 @@ Page(app.BP({
         store_name,
         place,
         city,
-        select_store_id:store_id,
+        select_store_id: store_id,
         distinct,
         phone,
         latlon,
         addr,
         lat,
         lon,
-        loc_f:this.data.loc_f||0
+        loc_f: this.data.loc_f || 0
       }
-      app.StorageH.set('StoreDetailInfo',storage);
+      app.StorageH.set('StoreDetailInfo', storage);
       wx.navigateTo({
         url: "store_map?store_name=" + store_name + "&place=" + place + "&city=" + city + "&select_store_id=" + store_id + "&distinct=" + distinct + "&phone=" + phone + "&latlon=" + latlon + "&addr=" + addr + "&lat=" + lat + "&lon=" + lon + "&loc_f=" + (this.data.loc_f || 0)
       })
     }
   },
-  onTap(e){
+  onTap(e) {
     let dataset = this.getDataset(e);
-    let type = dataset.type||"";
-    if(type == 'pageId'){
-      let pageId = dataset.pageId||0;
+    let type = dataset.type || "";
+    if (type == 'pageId') {
+      let pageId = dataset.pageId || 0;
       wx.navigateTo({
         url: `/pages/micro_mall/custom_page/custom_page?page_id=${pageId}`,
       })
-    }else if(type == 'jumpUrl'){
+    } else if (type == 'jumpUrl') {
       let url = this.data.jumpUrl;
       wx.navigateTo({
         url: '/' + url,
-        fail:res=>{
+        fail: res => {
           wx.switchTab({
             url: '/' + url,
           })
         }
       })
-    }else if(type == 'changeAddr'){
+    } else if (type == 'changeAddr') {
       wx.navigateTo({
         url: '/pages/micro_mall/address/address_list?type=store_nav_addr',
       })
@@ -266,9 +289,9 @@ Page(app.BP({
       } else {
         ScanH.scanAction().then(result => {
           this.pageDialog = this.pageDialog || this.selectComponent("#pageDialog");
-          ScanH.scanActionAnalyse(result,this.pageDialog);
-        }); 
-      } 
+          ScanH.scanActionAnalyse(result, this.pageDialog);
+        });
+      }
     })
   },
 
@@ -276,15 +299,15 @@ Page(app.BP({
 /*
  *获取当前位置
  */
-function getCurrLoation(type="") {
-  if(type == 'Geocoder'){
+function getCurrLoation(type = "") {
+  if (type == 'Geocoder') {
     let STORE_NAV_ADDR = app.StorageH.get('STORE_NAV_ADDR');
     let address = STORE_NAV_ADDR && STORE_NAV_ADDR.selectAddr && (STORE_NAV_ADDR.selectAddr.province_str + '-' + STORE_NAV_ADDR.selectAddr.city_str + '-' + STORE_NAV_ADDR.selectAddr.address) || "";
-    if(address)return Promise.resolve({});
+    if (address) return Promise.resolve({});
     return Promise.reject({});
   }
   let that = this;
-  if(this.gotLocation)return Promise.resolve(this.gotLocation);
+  if (this.gotLocation) return Promise.resolve(this.gotLocation);
   return WxAPi.getLocation({
     type: 'gcj02',
   }).then(res => {
@@ -302,24 +325,24 @@ function getCurrLoation(type="") {
       currlocation: currlocation,
     })
     return Promise.resolve(res);
-  }).catch(e => { 
-    console.log('catch',e)
-    let currlocation = that.data.currlocation||{}; 
+  }).catch(e => {
+    console.log('catch', e)
+    let currlocation = that.data.currlocation || {};
     let res = {
-      latitude:currlocation.o_latitude||-1,
-      longitude:currlocation.o_longitude||-1,
-    }; 
+      latitude: currlocation.o_latitude || -1,
+      longitude: currlocation.o_longitude || -1,
+    };
     return Promise.resolve(res);
-  })  
+  })
 
 }
 
-function getStoreData(searchName) {
+function getStoreData(searchName, isInit) {
   let sType = 0,
     hasPaging = false;
   // let select_store = this.data.select_store;
   let ops = this.options || {};
-  let page = this.page + 1 || 1;
+  let page = isInit ? 1 : (this.page + 1 || 1);
   let reqUrl = "getNearbyStoreList"; //附近店铺接口
   let reqParams = {
     searchName: searchName || "",
@@ -327,23 +350,24 @@ function getStoreData(searchName) {
     lon: -1,
     brandCode: app.Conf.BRAND_CODE,
     userToken: ops.userToken || app.LM.userToken || "",
-    sType: sType //0 附近店铺 ，1店铺自提
+    sType: sType, //0 附近店铺 ，1店铺自提
+    canUseStoredValue: this.data.isAllowUseStoredValue
   }
   let req = app.UserApi[reqUrl];
   switch (ops.type) {
     case "selectByGoods": //商品详情进入店铺列表
       sType = 1;
-      if(ops.pId){
+      if (ops.pId) {
         reqUrl = "get_Shipping_Store_ListByPID";
         reqParams.pId = ops.pId;
         reqParams.goodsNum = ops.goodsNum || 1;
-      }else if(ops.pIds){
+      } else if (ops.pIds) {
         reqUrl = "get_Shipping_Store_ListByPIDList";
         reqParams.pIds = ops.pIds;
         reqParams.goodsNums = ops.goodsNums;
-        console.log('opsops',ops)
-      }else{
-        reqUrl ="getShippingStoreList";
+        console.log('opsops', ops)
+      } else {
+        reqUrl = "getShippingStoreList";
         reqParams.goodsId = ops.goods_id;
         reqParams.goodsNum = ops.goodsNum || 1;
       }
@@ -379,7 +403,7 @@ function getStoreData(searchName) {
   return getCurrLoation.call(this).then(res => {
     reqParams.lat = res.latitude;
     reqParams.lon = res.longitude;
-    console.log('reqParams',reqParams,res)
+    console.log('reqParams', reqParams, res)
     // 需求待定
     // reverseGeocoder(res,this).then(rst=>{
     //   if(rst && rst.address){
@@ -414,7 +438,7 @@ function storeListHandle(store_data, hasPaging = false, page = 1) {
     handleData = store_data || [];
   } else { //从全部数据中抽取
     let preIndex = (page - 1) * pageSize,
-    nextIndex = page * pageSize;
+      nextIndex = page * pageSize;
     handleData = (store_data && store_data.slice(preIndex, nextIndex)) || [];
   }
   let viewData = this.data.viewData || [];
@@ -457,6 +481,7 @@ function storeListHandle(store_data, hasPaging = false, page = 1) {
   }
   this.hasMore = !(handleData.length < pageSize)
   viewData = page == 1 ? handleData : viewData.concat(handleData);
+
   console.log("数据", page, store_data, viewData, handleData);
   if (hasPaging) { //存在分页,存起所有数据
     this.all_store_data = viewData;
@@ -492,9 +517,9 @@ function sortDistance(a, b) {
   // }else{
   //   return -1;
   // }
-} 
+}
 
-function initScanImg(){
+function initScanImg() {
   let params = {
     brandCode: app.Conf.BRAND_CODE
   }
@@ -504,24 +529,24 @@ function initScanImg(){
     if (res.code == 1) {
       let data = res.data;
       if (data) {
-        this.setData({ 
-          scanIcon: data.scanIcon || '', 
-          storeIcon: data.storeIcon || this.data.brand_info.icon_url + "micro_mall/search_icon.png"||"",
+        this.setData({
+          scanIcon: data.scanIcon || '',
+          storeIcon: data.storeIcon || this.data.brand_info.icon_url + "micro_mall/search_icon.png" || "",
         })
-      } 
+      }
     }
   })
 
 }
 
-function initJumpStyle(){
-  if(this.options.type == 'index'){
+function initJumpStyle() {
+  if (this.options.type == 'index') {
     return app.sysTemConfig('nearby_store_style').then(res => {
-      if(res.Value == 1){
+      if (res.Value == 1) {
         return app.sysTemConfig('nearby_store_style_jump_url').then(res => {
-          if(res.Value){
+          if (res.Value) {
             this.setData({
-              jumpUrl:res.Value
+              jumpUrl: res.Value
             })
           }
         })
@@ -530,22 +555,22 @@ function initJumpStyle(){
   }
 }
 
-function reverseGeocoder(res,that){
+function reverseGeocoder(res, that) {
   let STORE_NAV_ADDR = app.StorageH.get('STORE_NAV_ADDR');
   let selectAddr = STORE_NAV_ADDR && STORE_NAV_ADDR.selectAddr;
   let address = selectAddr && (selectAddr.province_str + '-' + selectAddr.city_str + '-' + selectAddr.address) || "";
-  if(address){ //有修改取修改
-    return Promise.resolve({address})
+  if (address) { //有修改取修改
+    return Promise.resolve({ address })
   }
-  return new Promise((rs,rj)=>{
-    if(that.data.GeocoderAddr){rs({address:that.data.GeocoderAddr})} //取之前的值(在当前页只定位一次)
+  return new Promise((rs, rj) => {
+    if (that.data.GeocoderAddr) { rs({ address: that.data.GeocoderAddr }) } //取之前的值(在当前页只定位一次)
     WXMAP_SDK.reverseGeocoder({ //定位
       latitude: res.latitude,
       longitude: res.longitude
-    }).then(result=>{
+    }).then(result => {
       rs(result);
-    }).catch(e=>{
-      return Promise.resolve({address:"无法获取当前地址"})
+    }).catch(e => {
+      return Promise.resolve({ address: "无法获取当前地址" })
     })
   })
 }
