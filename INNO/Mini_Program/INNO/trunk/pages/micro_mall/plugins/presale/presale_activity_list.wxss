@@ -1,4 +1,3 @@
-@import "/static/wxss/tags.wxss";
 .banner, .active_banner{
   width: 750rpx;
   display: block;

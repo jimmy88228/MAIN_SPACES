@@ -65,12 +65,12 @@
                         <view class="goods_msg">
                             <view class='price font_w font_28 mlf' style="color:{{brand_info.style.font_color}};">
                               <block wx:if="{{goodsObj.goodsIntegral > 0}}">
-                                <text class='inline-block font_32'>{{goodsObj.goodsIntegral}}</text>
-                                <text class='inline-block'>积分</text>
+                                <text class='v_m font_32'>{{goodsObj.goodsIntegral}}</text>
+                                <text class='v_m'>积分</text>
                               </block>
                               <block wx:if="{{(!goodsObj.goodsIntegral) || (goodsObj.goodsIntegral > 0 && goodsObj.salesPrice > 0)}}">
                                 <text class="" wx:if="{{goodsObj.goodsIntegral > 0}}"> + </text>
-                                <text class='font_32 inline-block'>¥{{goodsObj.salesPrice}}</text>
+                                <text class='font_32 v_m'>¥{{goodsObj.salesPrice}}</text>
                               </block>
                             </view>
                             <!-- <view class='price'>
@@ -240,12 +240,12 @@
                 <view class='total_val_box'>
                     <view class="total_val" style="color:{{brand_info.style.font_color}};">
                       <block wx:if="{{goodsObj.goodsIntegral>0}}">
-                        <text class='inline-block font_32'>{{orderInfo.goodsIntegral+(integralInfo.isUsePoint>0?integralInfo.allowUsePoint:0)}}</text>
-                        <text class='inline-block font_30'>积分</text>
+                        <text class='v_m font_32'>{{orderInfo.goodsIntegral+(integralInfo.isUsePoint>0?integralInfo.allowUsePoint:0)}}</text>
+                        <text class='v_m font_30'>积分</text>
                       </block>
                       <block wx:if="{{ (!goodsObj.goodsIntegral) || (goodsObj.goodsIntegral>0 && orderInfo.orderAmount > 0)}}">
-                        <text class='inline-block font_30' wx:if="{{goodsObj.goodsIntegral > 0}}"> + </text>
-                        <text class='inline-block font_32'>¥{{orderInfo.orderAmount ? orderInfo.orderAmount : '0.00'}}</text>
+                        <text class='v_m font_30' wx:if="{{goodsObj.goodsIntegral > 0}}"> + </text>
+                        <text class='v_m font_32'>¥{{orderInfo.orderAmount ? orderInfo.orderAmount : '0.00'}}</text>
                       </block>
                     </view>
                     <!-- <view class="total_val" style="color:{{brand_info.style.font_color}};"> ¥{{orderInfo.orderAmount ? orderInfo.orderAmount : '0.00'}}</view> -->

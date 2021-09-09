@@ -646,3 +646,6 @@ page {
     border-bottom-color: transparent;
     transform: translateY(-50%) rotate(45deg);
 }
+.cut_r{
+    position:relative;
+}

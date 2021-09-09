@@ -1,5 +1,4 @@
 /* pages/micro_mall/collageGroup/activity_list.wxss */
-@import '/static/wxss/tags.wxss';
 .activity_item{
   width:100%;
   box-sizing:border-box;

@@ -1,5 +1,4 @@
 /* pages/micro_mall/bargain/index/bargain_index.wxss */
-@import '/static/wxss/tags.wxss';
 .banner, .active_banner{
     width: 750rpx;
     display: block;

@@ -1879,3 +1879,11 @@ page{
     bottom: -6rpx;
     left: 0;
 }
+.label_point{
+  padding:3rpx 10rpx;
+  display:inline-block;
+  vertical-align: middle;
+  background:#C81130;
+  border-radius:10rpx;
+  color:#fff;
+}

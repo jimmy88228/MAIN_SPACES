@@ -1,1 +1,6 @@
 @import "../default.wxss";
+.stay_line_ef{
+    height:10rpx;
+    width:100%;
+    background:#efefef; 
+  }

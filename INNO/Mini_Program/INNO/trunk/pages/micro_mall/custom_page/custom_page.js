@@ -13,7 +13,6 @@ Page(app.BP({
     this.options = options;
   },
   onReady: function () {
-    this.initVideo();
   },
   onShow: function () {
     this.loadPageInitData(this.options);
@@ -73,24 +72,6 @@ Page(app.BP({
   /**
    * 初始化视频
   */
-  initVideo() {
-    this.videoContext = wx.createVideoContext('play_video');
-  },
-  videoPlay: function (e) {
-    var video_url = e.detail.video_url;
-    this.setData({
-      video_url: video_url
-    });
-    this.videoContext.requestFullScreen();
-  },
-  videoFull: function (e) {
-    var fullScreen = e.detail.fullScreen;
-    if (fullScreen) {
-      this.videoContext.play();
-    } else {
-      this.videoContext.pause();
-    }
-  }, 
   onReachBottom(){
     this.pageTab.reachBottom();
   },

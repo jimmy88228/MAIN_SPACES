@@ -56,3 +56,8 @@
      border-radius: 100rpx;
      justify-content: center;
 }
+.stay_line_ef{
+  height:10rpx;
+  width:100%;
+  background:#efefef; 
+}

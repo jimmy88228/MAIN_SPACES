@@ -48,7 +48,7 @@
               <view class="present_p {{!goodsData[li.goods_id].status?'initStyle textInit half':''}}" style="color:{{brand_info.style.font_color || default_bg}}">
                 <text wx:if="{{goodsData[li.goods_id].status}}" class="RMB">¥</text>
                 <text>{{goodsData[li.goods_id].shop_price || goodsData[li.goods_id].price}}</text>
-                <text class="w_s" wx:if="{{goodsData[li.goods_id].integral > 0 }}"> + {{goodsData[li.goods_id].integral || goodsData[li.goods_id].old_integral}}积分</text>
+                <text class="" style="white-space:pre;" wx:if="{{goodsData[li.goods_id].integral > 0 }}"> + {{goodsData[li.goods_id].integral || goodsData[li.goods_id].old_integral}}积分</text>
               </view>
               <view class="">
                 <view class="text_crossed original_p {{!goodsData[li.goods_id].status?'initStyle textInit half':''}}" wx:if="{{(goodsData[li.goods_id].price && goodsData[li.goods_id].price != goodsData[li.goods_id].market_price) || (goodsData[li.goods_id].shop_price && goodsData[li.goods_id].shop_price != goodsData[li.goods_id].market_price) }}">

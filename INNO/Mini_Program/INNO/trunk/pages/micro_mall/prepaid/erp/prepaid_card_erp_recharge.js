@@ -1,5 +1,6 @@
 // pages/micro_mall/prepaid/erp/prepaid_card_erp_recharge.js
 import Utils from "../../../../common/support/utils/utils";
+import StringUtil from "../../../../common/support/utils/string-util"
 import WxApi from '../../../../common/helper/wx-api-helper.js';
 import PayH from '../../../../common/helper/handle/payHandle.js';
 const app = getApp();
@@ -657,9 +658,7 @@ function scanWXCodeLog(scene = "") {
 }
 
 function getScene(path){
-  let key = "scene=";
-  if(!path || (path.indexOf(key) == -1))return "";
-  let scene = path.slice(path.indexOf(key) + key.length);
+  let {scene = ""} = StringUtil.getUrlParam(path);
   return scene
 }
 
@@ -674,7 +673,6 @@ function getStaffDstbList(){
       brandCode:app.Conf.BRAND_CODE,
     }
   }).then(res=>{
-    console.log('resres',res);
     if(res.code == '1'){
       let data = res.data||{};
       let curStaffList = data.list||[];

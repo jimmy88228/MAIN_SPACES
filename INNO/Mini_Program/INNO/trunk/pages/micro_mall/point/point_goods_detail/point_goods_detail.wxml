@@ -27,12 +27,12 @@
         </view>
         <view class="content_point mlf" style='color:{{brand_info.style.font_color}};'>
             <block wx:if="{{baseInfo.min_integral>0}}">
-              <text class=" inline-block font_40">{{baseInfo.min_integral > 0 ? baseInfo.min_integral: ''}}</text>
-              <text class=" inline-block integral">积分</text>
+              <text class="v_m font_40">{{baseInfo.min_integral > 0 ? baseInfo.min_integral: ''}}</text>
+              <text class="v_m integral">积分</text>
             </block>
             <block wx:if="{{(!baseInfo.min_integral) || (baseInfo.min_integral > 0 &&  baseInfo.min_sale_price > 0)}}">
-              <text class="inline-block font_40" wx:if="{{baseInfo.min_integral>0}}"> + </text>
-              <text class=" inline-block font_40" >¥{{baseInfo.min_sale_price}}</text>
+              <text class="v_m font_40" wx:if="{{baseInfo.min_integral>0}}"> + </text>
+              <text class="v_m font_40" >¥{{baseInfo.min_sale_price}}</text>
             </block>
         </view>
 
@@ -79,7 +79,6 @@
             </view>
         </view>
     </view>
-    <!-- <view class="stay_line_ef"></view> -->
 </scroll-view>
 <view class="detail_opreate {{isIphoneX ? 'fix_iphoneX' : ''}}">
     <view class="home" catchtap='home_jump'>
@@ -125,19 +124,19 @@
                     <view class="bold select_goods_price font_36" style='color:{{brand_info.style.font_color}}'>
                         <view class="price_num" wx:if="{{select_goods.productInfo.sale_price != null}}">
                         <block wx:if="{{select_goods.productInfo.integral > 0}}">
-                            <text class='font_40 inline-block'>{{select_goods.productInfo.integral}}</text>
-                            <text class='inline-block'>积分 </text>
+                            <text class='font_40 v_m'>{{select_goods.productInfo.integral}}</text>
+                            <text class='v_m'>积分 </text>
                         </block>
                         <block wx:if="{{(!select_goods.productInfo.integral) || (select_goods.productInfo.integral > 0 && select_goods.productInfo.sale_price > 0)}}">
-                            <text class="inline-block" wx:if="{{select_goods.productInfo.integral > 0}}"> + </text>
-                            <text class=' font_40 inline-block' wx:if="{{select_goods.productInfo.sale_price>=0}}">¥{{select_goods.productInfo.sale_price}}</text>
+                            <text class="v_m" wx:if="{{select_goods.productInfo.integral > 0}}"> + </text>
+                            <text class=' font_40 v_m' wx:if="{{select_goods.productInfo.sale_price>=0}}">¥{{select_goods.productInfo.sale_price}}</text>
                         </block>
                         </view>
                         <view class="price_num" wx:elif="{{select_goods.productInfo.min_price != 0}}">
-                            <text class='font_40 inline-block' wx:if="{{select_goods.productInfo.integral > 0}}">{{select_goods.productInfo.integral}}</text>
-                            <text class='inline-block' wx:if="{{select_goods.productInfo.integral > 0}}">积分 + </text>
-                            <text class='inline-block font_40' wx:if="{{select_goods.productInfo.min_price>=0}}">¥{{select_goods.productInfo.min_price}}</text>
-                            <text class='inline-block font_40' wx:if="{{select_goods.productInfo.min_price != select_goods.productInfo.max_price}}"> - {{select_goods.productInfo.max_price}}</text>
+                            <text class='font_40 v_m' wx:if="{{select_goods.productInfo.integral > 0}}">{{select_goods.productInfo.integral}}</text>
+                            <text class='v_m' wx:if="{{select_goods.productInfo.integral > 0}}">积分 + </text>
+                            <text class='v_m font_40' wx:if="{{select_goods.productInfo.min_price>=0}}">¥{{select_goods.productInfo.min_price}}</text>
+                            <text class='v_m font_40' wx:if="{{select_goods.productInfo.min_price != select_goods.productInfo.max_price}}"> - {{select_goods.productInfo.max_price}}</text>
                         </view>
 
                     </view>

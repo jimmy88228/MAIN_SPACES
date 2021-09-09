@@ -544,3 +544,7 @@ image {
     text-align: left;
     min-width: 86rpx;
 }
+.disabled_btn{
+    background-color:#B2B2B2;
+    color:#fff;
+  }

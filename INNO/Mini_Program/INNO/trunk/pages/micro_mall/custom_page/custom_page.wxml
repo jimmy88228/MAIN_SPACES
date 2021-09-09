@@ -9,12 +9,8 @@
   top="{{navH}}" 
   id="pageTab" 
   bindpageShareSaving='pageShareSaving' 
-  bindvideoplay="videoPlay" 
   actData="{{act_data}}" 
   bindpageType="onTap"></pageTab>
-  </view>
-  <view class="video_view">
-    <video id="play_video" src="{{video_url}}" direction='0' wx:if="{{video_url}}" bindfullscreenchange='videoFull'></video>
   </view>
   <!--首页-->
   <pageHome id="pageHome"></pageHome>

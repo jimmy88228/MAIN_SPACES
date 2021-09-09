@@ -14,6 +14,21 @@
   border-radius:6rpx;
   margin:0 auto;
 }
+
+.input_box{
+  border:2rpx solid #e6e6e6;
+  border-radius:10rpx;
+  padding:0px 20rpx;
+  margin-bottom:20rpx;
+  background:#fff;
+  height:100rpx;
+}
+.input_box .limit_w{/*五个字符宽度*/
+  padding-left:20rpx;
+  padding-right:14rpx;
+  width:154rpx;
+  box-sizing: border-box;
+}
 .input_box.clerk_box{
   margin-bottom:0;
   height: 104rpx;

@@ -1,6 +1,3 @@
-@import "/static/wxss/common.wxss";
-@import "/static/wxss/tags.wxss";
-
 .window-ext {
     display: flex;
     flex-direction: column;

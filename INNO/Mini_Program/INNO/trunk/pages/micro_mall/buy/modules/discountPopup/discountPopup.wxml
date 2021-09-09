@@ -29,7 +29,7 @@
               </view>
               <view class="d_flex flex_b flex_al_e">
                 <view style="color:{{brandStyle.font_color}};">
-                  换购价 <text class="font_22">¥ </text> <text class="font_28 bold">{{item.minPrice}}</text> <text class="text_line C_90 font_22 ml_5" wx:if="{{item.minMarketPrice}}"> ¥ {{item.minMarketPrice}}</text>
+                  换购价 <text class="font_22">¥ </text> <text class="font_28 bold">{{item.minPrice}}</text> <text class="line-through C_90 font_22 ml_5" wx:if="{{item.minMarketPrice}}"> ¥ {{item.minMarketPrice}}</text>
                 </view>
                 <view>
                   <text class="iconfont  icon-fill-add" data-rule-index="{{rIndex}}" data-goods-index="{{index}}" data-goods-id="{{item.goodsId}}" data-is-fit="{{rItem.isFit}}" data-mix-num="{{item.mixNum}}" catchtap="showProduct" style="color:{{ rItem.isFit && (item.mixNum > 0) ? brandStyle.font_color : '#b2b2b2'}};"></text>

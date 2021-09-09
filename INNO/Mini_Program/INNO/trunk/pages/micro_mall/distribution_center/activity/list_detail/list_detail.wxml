@@ -1,6 +1,4 @@
 <view class='input_box' id="input_box" wx:if="{{(gList[current] && gList[current].length>0) || current==0}}">
-    <!-- <view class='input_box' hidden='{{!showInput}}'> -->
-    <!-- <view class='input_content' hidden="{{!showInput}}" style='opacity:{{showInput?"1;":"0"}}'> -->
     <view class='input_content' hidden="{{!showInput}}" >
         <input value='{{value}}' placeholder='请输入商品关键词' class='search_input' placeholder-class='change_style' bindinput='getSearchGoods' bindconfirm='handleClick' />
         <image bindtap='handleClick' data-current="{{current}}" src="{{search}}" mode="aspectFit" class='icon_search' />

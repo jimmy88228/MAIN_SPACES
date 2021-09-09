@@ -4,7 +4,7 @@
                <image class="buy_member_tip" src="{{brand_info.default_icon_url}}member_tip.png"  mode="widthFix"></image>
                <view class="buy_info_group" >
                     <view class='info_box boder-b'>
-                         <text class='C_ccc inline-block v_m txt1 font_28'>购买时限</text>
+                         <text class='C_ccc v_m txt1 font_28'>购买时限</text>
                          <picker class='inline-block v_m' bindchange="setLvlInfo" value="{{index}}" range="{{lvl_info}}" range-key="option_name">
                               <text class='font_30'>{{sel_lvl_info.option_name}}</text>
                          </picker>
