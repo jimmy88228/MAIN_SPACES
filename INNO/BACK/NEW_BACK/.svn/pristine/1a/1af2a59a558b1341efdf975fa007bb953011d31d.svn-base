@@ -1,0 +1,415 @@
+.data_view_area{
+	.clearfix{
+		zoom: 1;
+	}
+	.fl{
+		float:left;
+	}
+	.middle_w{
+		width:50%;
+	}
+	.w_33{
+		width:33.33%;
+	}
+	.w_40{
+		width:40%;
+	}
+	.w_60{
+		width:60%;
+	}
+	.user_board_page{
+		background:#fff;
+		padding:5px;
+		width:100%;
+		min-height:450px;
+		box-sizing:border-box;
+		-moz-box-sizing:border-box;
+		-webkit-box-sizing:border-box;
+	}
+	.chart_item{
+		background:#fff;
+		-moz-border-radius: 4px;
+	    -webkit-border-radius: 4px;
+	    border-radius: 4px;
+	    margin:10px 5px;
+	    margin-top:0px;
+	    border:1px solid #dddee1;
+	    box-sizing:border-box;
+		-moz-box-sizing:border-box;
+		-webkit-box-sizing:border-box;
+	}
+	.chart_item_t{
+		padding-left:13px;
+		height:40px;
+		line-height:40px;
+		overflow:hidden;
+	}
+	.chart_item_c{
+		color:#fff;
+		position:relative;
+	}
+	.chart_item_c_t{
+		padding:10px 0px;
+		height:40px;
+		color:#3a5065;
+	}
+	.user_board_page_l{
+		width:40%;
+		float:left;
+		padding:0px 5px;
+		box-sizing:border-box;
+		-moz-box-sizing:border-box;
+		-webkit-box-sizing:border-box;
+		/*overflow:hidden;*/
+		position:relative;
+	}
+	.user_board_page_r{
+		float:right;
+		width:60%;
+	}
+	/*地图*/
+	.map_chart_item{
+		background:none;
+		margin:0px;
+		margin-bottom:10px;
+		position:relative;
+	}
+	.map_chart_title{
+		position:absolute;
+		top:45px;
+		left:10px;
+		z-index:2;
+		color:#fff;
+	}
+	.map_chart{
+		width:100%;
+		height:452px;
+	}
+	.map_chart_statistics{
+		position:absolute;
+		left:10px;
+		bottom:10px;
+		z-index:2;
+	}
+	/*地图标签*/
+	.formatter_prov{
+		position:absolute;
+		bottom:-1px;
+		right:0px;
+		margin:0px;
+		width:200px;
+		-moz-border-radius: 5px;
+	    -webkit-border-radius: 5px;
+	    border-radius: 5px;
+	    overflow:hidden;
+	    transition: all .32s;
+		-moz-transition: all .32s;
+		-webkit-transition: all .32s; 
+		-o-transition: all .32s;
+		width:50%;
+		padding-right:15px;
+		box-sizing:border-box;
+		-moz-box-sizing:border-box;
+		-webkit-box-sizing:border-box;
+	}
+
+	.formatter_prov_t{
+		background:#fff;
+		color:#5B8ECA;
+		/*background:#fff;*/
+		border-top-right-radius: 30px;
+		-moz-border-top-right-radius: 30px;
+		-webkit-border-top-right-radius: 30px;
+		height:35px;
+		line-height:35px;
+		width:70px;
+		text-align:center;
+		padding-right:30px;
+		display:inline-block;
+		border:1px solid #dddee1;
+		border-bottom:0px;
+		margin-bottom:-1px;
+	}
+	.formatter_prov_c{
+		color:#333;
+		background:#fff;
+		/*background:#fff;*/
+		border-top-right-radius: 20px;
+		-moz-border-top-right-radius: 20px;
+		-webkit-border-top-right-radius: 20px;
+		padding:0px 20px;
+		border:1px solid #dddee1;
+	}
+	.prov_head{
+		padding:10px 0px;
+	}
+	.prov_cont_line{
+		padding:10px 0px;
+	}
+	.prov_cont{
+		/*min-height:200px;*/
+	}
+	.prov_cont_stay{
+		line-height:100px;
+		color:#3d546b;
+		text-align:center;
+	}
+	/*店铺会员*/
+	.store_rang{
+		float:left;
+		width:50%;
+		margin:0px;
+		/*margin-right:5px;*/
+		margin-left:-5px;
+	}
+	.store_rang_list{
+		width:100%;
+		min-height:572px;
+	}
+	.store_rang_item{
+		border-bottom:1px dotted #3a5065;
+		padding:15px 0px;
+		/*overflow:hidden;*/
+	}
+	.store_rang_item .rang_sort{
+		margin-right:10px;
+	}
+	.store_rang_item .rang_val{
+		float:right;
+	}
+	/*性别*/
+	.memberSex{
+		width:100%;
+		height:160px;
+	}
+	/*会员等级*/
+	.memberLevel{
+		width:100%;
+		height:160px;
+	}
+	.memberLevel li{
+		width:100%;
+		padding:5px 0px;
+	}
+	.m_level_name{
+		width:5em;
+		height:20px;
+		float:left;
+	}
+	.m_level_val{
+		margin:5px 4em 5px 4.5em;
+		/*display:table-cell;
+		vertical-align: middle;*/
+	}
+	.m_level_val p{
+		-moz-border-radius: 50px;
+	    -webkit-border-radius: 50px;
+	    border-radius: 50px;
+	    width:50%;
+	    height:10px;
+	    position:relative;
+	    background: -webkit-linear-gradient(left, #107eaf , #4ebce1); /* Safari 5.1 - 6.0 */
+		background: -o-linear-gradient(right, #107eaf, #4ebce1); /* Opera 11.1 - 12.0 */
+		background: -moz-linear-gradient(right, #107eaf, #4ebce1); /* Firefox 3.6 - 15 */
+		background: linear-gradient(to right, #107eaf , #4ebce1);
+	}
+	.m_level_percen{
+		position:absolute;
+		top:50%;
+		right:-10px;
+		height:20px;
+		margin-top:-10px;
+		display:inline-block;
+		float:right;
+		text-align:right;
+		transform:translateX(100%);
+		-ms-transform:translateX(100%);
+		-moz-transform:translateX(100%);
+		-webkit-transform:translateX(100%);
+		-o-transform:translateX(100%);
+	}
+	.user_board_meber_pie_bar{
+
+	}
+	.user_board_meber_pie{
+		width:300px;
+		float:left;
+	}
+	.user_board_meber_bar{
+		margin-left:250px;
+	}
+	.user_board_page_m{
+
+	}
+	/*会员年龄*/
+	.memberAge{
+		min-height:479px;
+	}
+	.memberAge li{
+		padding:12px 0px;
+	}
+	.memberAge .m_level_name{
+		width:6em;
+	}
+	.memberAge .m_level_val{
+		margin-left:6em;
+	}
+	/*绑定手机*/
+	.bindPhone{
+		width:100%;
+		height:160px;
+	}
+	/*关注服务号*/
+	.followPublic{
+		width:100%;
+		height:240px;
+	}
+	/*会龄分布*/
+	.joinAge{
+		width:100%;
+		height:317px;
+	}
+	/*星座分布*/
+	.memberConstellation{
+		width:100%;
+		height:235px;
+	}
+	.latelyConsum{
+		width:100%;
+		height:220px;
+	}
+	.consumFrequency{
+		width:100%;
+		height:220px;
+	}
+	.consumAmount{
+		width:100%;
+		height:220px;
+	}
+	/**/
+	.lack_pie_item{
+		width:33.6%;
+		float:left;
+		margin-left:0px;
+		margin-right:0px;
+	}
+	.lack_pie_item.memberbehavior{
+		width:65%;
+		margin-left:1.4%;
+	}
+	.lack_pie_item .chart_item_c_t{
+		width:50%;
+		text-indent:-400px;
+		overflow:hidden;
+	}
+	.memberbehavior .chart_item_c_t{
+		text-indent:1em;
+	}
+	/**/
+	.memberSource{
+		width:100%;
+		height:330px;
+	}
+	.memberActive{
+		// width:50%;
+		// height:330px;
+		// float:left;
+		position:relative;
+		height:240px;
+	}
+	.memberConsume{
+		// width:50%;
+		// height:330px;
+		// float:left;
+		height:240px;
+	}
+	.chart_item_t_f{
+		color:#fff;
+		padding:5px;
+		border-radius: 5px;
+		-moz-border-radius: 5px;
+		-webkit-border-radius: 5px;
+		-moz-box-shadow:0px 0px 5px #49BFE3;
+		-webkit-box-shadow:0px 0px 5px #49BFE3;
+		box-shadow:0px 0px 5px #49BFE3;
+		margin:5px;
+		float:right;
+	}
+	.memberAge_statistics .memberAge_statistics_stay{
+		float:left;
+	}
+	/*生日分布*/
+	.memberBirthday{
+		width:100%;
+		height:235px;
+	}
+	/**/
+
+	/**/
+	.board_meber_bar_t{
+		font-size:0px;
+	}
+
+	/**/
+	.s_user_board_page_m{
+		width:100%;
+	}
+	.user_board_page_b{
+		width:100%;
+	}
+	.ageConsum{
+		width:100%;
+		height:220px;
+	}
+	/*屏幕小于1400*/
+	@media screen  and (max-width:1400px){
+		.user_board_page_l{
+			width:54%;
+		}
+		.map_chart{
+			height:372px;
+		}
+		.user_board_page_r{
+			width:46%;
+		}
+		.member_activity_area{
+			width:100%;
+		}
+		.consum_frequency_area{
+			width:100%;
+		}
+		.memberActive{
+			height:160px;
+		}
+		.memberConsume{
+			height:160px;
+		}
+		//
+		.user_board_page_m_l{
+			width:100%;
+		}
+		.user_board_page_m_l_l{
+			width:32%;
+			float:left;
+		}
+		.user_board_page_m_l_r{
+			width:68%;
+			float:left;
+		}
+		.followPublic{
+			height:238px;
+		}
+		.memberBirthday{
+			height:238px;
+		}
+		.user_board_page_m_r{
+			width:100%;
+		}
+		.user_board_page_b_l{
+			width:100%;
+		}
+		.user_board_page_b_r{
+			width:100%;
+		}
+	}
+}

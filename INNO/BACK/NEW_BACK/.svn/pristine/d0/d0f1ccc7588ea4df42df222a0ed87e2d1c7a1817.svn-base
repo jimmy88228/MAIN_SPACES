@@ -1,0 +1,67 @@
+<template>
+	<div class="sign-search">
+		<Form ref="formSearch" :model="formSearch" inline>
+			<FormItem>
+				<Select v-model="formSearch.receive_status" style="width: 120px;">
+					<Option value="-1">领取状态</Option>
+					<Option value="0">未领取</Option>
+					<Option value="1">已领取</Option>
+					<Option value="2">已作废</Option>
+				</Select>
+			</FormItem>
+			<FormItem>
+				<Input class="brand-search_input" v-model="formSearch.searchq" placeholder="请输入卡号/手机号搜索" clearable search enter-button=""
+				 @on-search="searchPage" @on-clear="searchPage" @keydown.native.enter.prevent="searchPage">
+				</Input>
+			</FormItem>
+			<Button type="success" @click="explodeData">导出</Button>
+		</Form>
+	</div>
+</template>
+<script>
+	import DateSelect from '@/views/my-components/date-select/index.vue';
+
+	export default {
+		components: {
+			DateSelect
+		},
+		data() {
+			return {
+				formSearch: {
+                    receive_status: '-1',
+					searchq: ''
+				}
+			}
+		},
+		methods: {
+			handleStart(date) {
+				this.formSearch.from_time = date;
+			},
+			handleEnd(date) {
+				this.formSearch.to_time = date;
+			},
+			searchPage() {
+				this.$emit('on-search', this.formSearch);
+			},
+			explodeData(){
+				this.$emit('on-explode', this.formSearch);
+			}
+		}
+	}
+</script>
+
+<style lang="less">
+	.sign-search {
+		.brand-search_input {
+			width: 320px;
+		}
+
+		.date_wrapper {
+			width: 500px;
+		}
+
+		.ivu-form-item {
+			margin-bottom: 0;
+		}
+	}
+</style>

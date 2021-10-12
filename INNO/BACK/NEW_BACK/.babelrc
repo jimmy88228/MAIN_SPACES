@@ -1,0 +1,21 @@
+{
+    "presets": [
+      ["es2015", {
+        "modules": false
+      }],
+      "stage-3"
+    ],
+    "plugins": [
+        "transform-runtime",
+        "dynamic-import-webpack",
+        "transform-vue-jsx",
+        "jsx-v-model",
+        [
+          "component", {
+            "libraryName": "element-ui",
+            "styleLibraryName": "theme-chalk"
+          }
+        ]
+    ],
+    "comments": false
+}
