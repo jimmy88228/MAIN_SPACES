@@ -1,7 +1,0 @@
-{
-  "navigationStyle":"custom",
-  "usingComponents":{
-    "dialog":"/components/ui/cps/dialog/dialog",
-    "nav_bar":"/components/custom/nav_bar/nav_bar"
-  }
-}

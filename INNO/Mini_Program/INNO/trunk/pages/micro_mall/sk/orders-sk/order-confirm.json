@@ -1,7 +1,0 @@
-{
-  "navigationBarTitleText": "订单结算",
-  "backgroundColor": "#fbfbfb",
-  "usingComponents": {
-    "btns": "/components/buttons/btns"
-  }
-}

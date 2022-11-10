@@ -1,9 +1,0 @@
-{
-    "navigationBarTitleText": "订单详情",
-    "backgroundColor": "#f5f5f5",
-    "usingComponents": {
-      "dialog": "/ui/cps/dialog/dialog",
-      "orderSync": "/pages/component/pop/order-sync/order-sync",
-      "codeModule": "/pages/store_pay/store_pay_history/code_module/code"
-    } 
-}

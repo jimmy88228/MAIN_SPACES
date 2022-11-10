@@ -1,9 +1,0 @@
-{
-  "navigationBarTitleText": "兑换优惠券",
-  "backgroundColor": "#fff",
-  "usingComponents": {
-    "dialog": "/ui/cps/dialog/dialog",
-    "btns": "/pages/component/buttons/btns"
-  }
-  
-}

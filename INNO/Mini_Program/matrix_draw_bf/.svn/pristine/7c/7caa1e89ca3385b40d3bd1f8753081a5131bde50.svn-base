@@ -1,5 +1,0 @@
-@import "/wxParse/wxParse.wxss";
-
-.box{
-  /* background: #fff; */
-} 

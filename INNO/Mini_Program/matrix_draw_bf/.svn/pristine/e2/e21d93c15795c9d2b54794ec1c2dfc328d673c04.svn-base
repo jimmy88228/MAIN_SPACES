@@ -1,9 +1,0 @@
-<view class="gallery-main" style="{{style.value}}">
-    <swiper class="swiper" indicator-dots="{{indicatorDots}}" autoplay="{{params.autoplay}}" interval="{{params.interval}}" duration="{{params.duration}}">
-        <block wx:for="{{childs}}" wx:key="index">
-            <swiper-item class="swiper-item">
-                <img-layout class="gallery-img" wx:if="item.type == 'Img'" layout-data="{{item}}"></img-layout>
-            </swiper-item>
-        </block>
-    </swiper>
-</view>

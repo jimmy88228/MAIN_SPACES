@@ -1,8 +1,0 @@
-{
-  "navigationBarTitleText": "关注",
-  "backgroundColor": "#fff",
-  "usingComponents": {
-    "search": "/pages/micro_mall/seeding_grass/search/search",
-    "dialog": "/ui/cps/dialog/dialog"
-  }
-}

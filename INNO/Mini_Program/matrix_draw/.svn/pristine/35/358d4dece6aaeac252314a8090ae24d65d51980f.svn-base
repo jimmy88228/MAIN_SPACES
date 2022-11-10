@@ -1,8 +1,0 @@
-{
-  "usingComponents": {
-    "btns": "/pages/component/buttons/btns"
-  },
-  "disableScroll":true,
-  "backgroundColor": "#ffffff"
-  
-}

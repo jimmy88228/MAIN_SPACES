@@ -1,8 +1,0 @@
-{
-  "disableScroll": true,
-  "navigationBarTitleText": "派券中心",
-  "usingComponents": {
-    "list":"/pages/component/list/list",
-    "choice": "../pop/choice/choice"
-  }
-}

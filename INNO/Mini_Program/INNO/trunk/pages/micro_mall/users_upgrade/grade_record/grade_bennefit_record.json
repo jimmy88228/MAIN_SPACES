@@ -1,7 +1,0 @@
-{
-     "navigationBarTitleText": "付费会员-分享奖励",
-     "backgroundTextStyle": "dark",
-     "usingComponents": {
-          "list": "/components/list/list"
-     }
-}

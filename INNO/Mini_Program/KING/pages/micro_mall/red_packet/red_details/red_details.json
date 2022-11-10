@@ -1,7 +1,0 @@
-{
-  "disableScroll": true,
-  "navigationBarTitleText": "红包明细",
-  "usingComponents": {
-    "list":"/pages/component/list/list"
-  }
-}

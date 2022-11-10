@@ -1,8 +1,0 @@
-{
-  "disableScroll": true,
-  "usingComponents": {
-    "btns":"/components/buttons/btns",
-    "list":"/components/list/list",
-    "head": "../module/head/head"
-  }
-}

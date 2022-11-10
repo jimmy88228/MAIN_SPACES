@@ -1,5 +1,0 @@
-<window class="window" ext-class="window-ext-center">
-    <view class="popup-root" style="{{mainStyle}}" catchtouchmove="noAction">
-        <slot></slot>
-    </view>
-</window>

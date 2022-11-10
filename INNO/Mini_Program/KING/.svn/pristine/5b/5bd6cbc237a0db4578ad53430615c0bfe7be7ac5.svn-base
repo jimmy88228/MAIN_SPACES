@@ -1,7 +1,0 @@
-{
-    "navigationBarTitleText": "订单详情",
-    "backgroundColor": "#f5f5f5",
-    "usingComponents": {
-      "dialog": "/ui/cps/dialog/dialog"
-    } 
-}

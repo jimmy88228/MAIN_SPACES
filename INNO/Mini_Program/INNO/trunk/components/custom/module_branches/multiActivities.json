@@ -1,8 +1,0 @@
-{
-  "component": true,
-  "usingComponents": {
-      "btns": "/components/buttons/btns",
-      "marqueeView": "/components/custom/module_branches/marquee_view",
-      "progress_bar": "/components/progress_bar/progress_bar"
-  }
-}

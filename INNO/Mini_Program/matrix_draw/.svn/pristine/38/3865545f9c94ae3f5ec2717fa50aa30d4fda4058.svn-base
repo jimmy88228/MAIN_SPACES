@@ -1,8 +1,0 @@
-{
-    "enablePullDownRefresh": true,
-    "navigationStyle": "custom",
-    "usingComponents": {
-        "dialog-poster": "/components/dialog-poster/dialog-poster",
-        "parser-view": "/common/support/components/parser/parser"
-    }
-}

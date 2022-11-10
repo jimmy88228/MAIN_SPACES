@@ -1,3 +1,0 @@
-<view class="input-list-item" hover-class="btn-hover" catchtap="click">
-    <view class="text newline">{{content}}</view>
-</view>

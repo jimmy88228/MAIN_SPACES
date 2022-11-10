@@ -1,6 +1,0 @@
-{
-  "component": true,
-  "usingComponents": {
-    "loginPage":"/components/login/login_by_phone"
-  }
-}

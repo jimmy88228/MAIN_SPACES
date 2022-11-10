@@ -1,8 +1,0 @@
-{
-  "navigationBarTitleText": "文章详情",
-  "usingComponents": {
-    "dialog": "/components/ui/cps/dialog/dialog",
-    "pageHome": "/components/sceneOperate/pageHome",
-    "btns": "/components/buttons/btns"
-  }
-}

@@ -1,9 +1,0 @@
-{
-  "navigationBarTitleText": "订单列表",
-  "backgroundTextStyle": "dark",
-  "usingComponents": {
-    "cs": "/pages/component/cs/custom_service",
-    "tips_window": "/pages/micro_mall/shopping/cart_list/tips_window/tips_window",
-    "search":"/pages/component/search/s_view"
-  }
-}

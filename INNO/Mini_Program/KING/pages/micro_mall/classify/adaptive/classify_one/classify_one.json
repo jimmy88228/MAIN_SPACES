@@ -1,6 +1,0 @@
-{
-  "component": true,
-  "usingComponents": {
-    "marqueeView": "/pages/component/custom/marquee_view"
-  }
-}

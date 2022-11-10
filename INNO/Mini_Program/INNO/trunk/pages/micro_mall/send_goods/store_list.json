@@ -1,6 +1,0 @@
-{
-  "usingComponents": {
-      "dialog": "/components/ui/cps/dialog/dialog"
-  },
-  "navigationBarTitleText": "选取店铺"
-}

@@ -1,9 +1,0 @@
-{
-  "component": true,
-  "usingComponents": {
-    "calendar": "/components/calendar/index",
-    "signMsg":"/components/calendar/signMsg/signMsg",
-    "signContinuous":"/components/calendar/signContinuous/signContinuous",
-    "ruleModule": "/pages/micro_mall/sign/app/rule/rule"
-  }
-}

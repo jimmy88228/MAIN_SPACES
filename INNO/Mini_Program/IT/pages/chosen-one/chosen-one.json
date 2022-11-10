@@ -1,8 +1,0 @@
-{
-    "navigationStyle": "custom",
-    "navigationBarTextStyle":"white",
-    "enablePullDownRefresh": true,
-    "usingComponents": {
-        "parser-view": "/common/support/components/parser/parser"
-    }
-}

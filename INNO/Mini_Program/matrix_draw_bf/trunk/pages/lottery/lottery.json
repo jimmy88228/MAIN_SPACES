@@ -1,8 +1,0 @@
-{
-  "usingComponents": {
-      "lottery": "./activity/activity",
-      "lotteryTip": "./lottery_tip/lottery_tip",
-      "auth-button":"/components/auth/auth-button/auth-button"
-  },
-  "navigationBarTitleText": "活动"
-}

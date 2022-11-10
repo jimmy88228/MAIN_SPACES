@@ -1,7 +1,0 @@
-{
-  "navigationBarTitleText": "附近店铺",
-  "usingComponents": {
-    "dialog": "/components/ui/cps/dialog/dialog",
-    "select-drop-down": "/components/form-models/select-drop-down/select-drop-down"
-  }
-}

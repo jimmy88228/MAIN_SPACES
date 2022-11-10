@@ -1,7 +1,0 @@
-@import "../input-field.wxss";
-
-:host {
-    height: auto;
-    width: 100%;
-    display: block;
-}

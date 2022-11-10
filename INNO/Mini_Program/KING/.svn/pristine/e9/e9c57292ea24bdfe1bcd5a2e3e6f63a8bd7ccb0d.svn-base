@@ -1,6 +1,0 @@
-{
-  "navigationBarTitleText": "地址列表",
-  "usingComponents": { 
-    "dialog": "/ui/cps/dialog/dialog"
-  }
-}

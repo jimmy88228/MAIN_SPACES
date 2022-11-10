@@ -1,7 +1,0 @@
-<view class="index_page">
-  <pageTab class="page_tab" id="pageTab" bindpageShareSaving='pageShareSaving' bindvideoplay="videoPlay" actData="{{act_data}}"></pageTab>
-</view>
- <!--首页-->
-<pageHome id="pageHome"></pageHome>
-
- 

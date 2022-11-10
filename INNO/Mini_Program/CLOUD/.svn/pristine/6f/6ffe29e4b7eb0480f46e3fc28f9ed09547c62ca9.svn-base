@@ -1,6 +1,0 @@
-{
-  "component": true,
-  "usingComponents": {
-    "micro-page": "/pages/component/micro-page/micro-mix/box/box"
-  }
-}

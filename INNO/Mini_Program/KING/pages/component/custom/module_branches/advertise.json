@@ -1,7 +1,0 @@
-{
-    "component": true,
-    "usingComponents": {
-        "carousel":"/pages/component/custom/module_branches/carousel",
-        "btns": "/pages/component/buttons/btns"
-    }
-}

@@ -1,6 +1,0 @@
-{
-  "navigationBarTitleText":"发票列表",
-  "usingComponents": {
-    "l_box":"/pages/micro_mall/invoice/invoice_list/l_box/l_box"
-  }
-}

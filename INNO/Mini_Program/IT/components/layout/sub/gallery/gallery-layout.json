@@ -1,6 +1,0 @@
-{
-    "component": true,
-    "usingComponents": {
-        "img-layout": "../img/img-layout"
-    }
-}

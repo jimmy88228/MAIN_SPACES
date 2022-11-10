@@ -1,9 +1,0 @@
-{
-  "navigationStyle":"custom",
-  "backgroundColor": "#F04F05",
-  "usingComponents": {
-    "btns": "/components/buttons/btns",
-    "page-nav": "/components/page-nav/page-nav",
-    "pageDialog": "/components/ui/cps/dialog/dialog"
-  }
-}

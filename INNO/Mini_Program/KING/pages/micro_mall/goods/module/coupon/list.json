@@ -1,7 +1,0 @@
-{
-  "component": true,
-  "usingComponents": {
-    "window": "/ui/cps/window/window",
-    "btns":"/pages/component/buttons/btns"
-  }
-}

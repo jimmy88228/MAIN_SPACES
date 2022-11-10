@@ -1,9 +1,0 @@
-{  
-  "navigationStyle":"custom",
-  "usingComponents": {
-    "page-nav": "/pages/component/page-nav/page-nav",
-    "btns":"/pages/component/buttons/btns",
-    "shareImg": "/pages/micro_mall/goods/popup/shareImg",
-    "emptyTip":"/pages/component/empty_tip/empty_tip"
-  }
-}

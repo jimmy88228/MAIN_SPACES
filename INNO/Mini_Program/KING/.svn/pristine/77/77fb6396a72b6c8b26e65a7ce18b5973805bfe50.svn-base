@@ -1,8 +1,0 @@
-{
-  "navigationBarTitleText": "智慧零售",
-  "backgroundColor": "#f5f5f5",
-  "usingComponents": {
-    "btns": "/pages/component/buttons/btns",
-    "pay_code":"/pages/store_pay/pay_code/pay_code"
-  }
-}

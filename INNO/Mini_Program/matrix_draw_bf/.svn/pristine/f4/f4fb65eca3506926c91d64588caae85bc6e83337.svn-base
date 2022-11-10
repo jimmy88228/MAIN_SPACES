@@ -1,8 +1,0 @@
-{
-  "navigationBarTitleText": "支付口令",
-  "usingComponents": {
-    "qy_code":"/pages/component/custom/qy_bar_code/qy_code",
-    "bar_code":"/pages/component/custom/qy_bar_code/bar_code",
-    "btns": "/pages/component/buttons/btns"
-  }
-}

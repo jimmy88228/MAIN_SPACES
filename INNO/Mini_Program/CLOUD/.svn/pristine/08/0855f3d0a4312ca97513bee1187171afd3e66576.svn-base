@@ -1,7 +1,0 @@
-{
-  "navigationBarTitleText": "",
-  "usingComponents": {
-    "micro-page":"/pages/component/micro-page/micro-mix/box/box",
-    "pageHome": "/pages/component/sceneOperate/pageHome"
-  }
-}

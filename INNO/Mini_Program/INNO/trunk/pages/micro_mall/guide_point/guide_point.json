@@ -1,8 +1,0 @@
-{
-  "navigationBarTitleText": "",
-  "usingComponents": {
-    "pageTab": "/components/custom/pageTab/pageTab",
-    "pageHome": "/components/sceneOperate/pageHome",
-    "indexHeader": "/components/indexHead/indexHeader"
-  }
-}

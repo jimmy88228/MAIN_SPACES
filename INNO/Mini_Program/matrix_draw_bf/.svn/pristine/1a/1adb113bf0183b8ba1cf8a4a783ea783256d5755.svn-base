@@ -1,9 +1,0 @@
-{
-  "navigationBarTitleText": "购物车",
-  "backgroundColor": "#F2F2F2",
-  "navigationStyle": "custom",
-  "usingComponents": {
-    "cartList": "/pages/micro_mall/shopping/cart_list/cart_list",
-    "shopNav":"/pages/micro_mall/shopping/shop-nav/shop-nav"
-  }
-}

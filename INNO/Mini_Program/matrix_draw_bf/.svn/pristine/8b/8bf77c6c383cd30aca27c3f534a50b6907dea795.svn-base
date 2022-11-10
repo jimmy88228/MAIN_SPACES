@@ -1,8 +1,0 @@
-{
-  "component": true,
-  "usingComponents": {
-    "turn_plate":"/pages/draw/draw_box/draw_acts/draw_items/turn_plate/turn_plate",
-    "fruit_act":"/pages/draw/draw_box/draw_acts/draw_items/fruit_act/fruit_act",
-    "flop_act":"/pages/draw/draw_box/draw_acts/draw_items/flop_act/flop_act"
-  }
-}

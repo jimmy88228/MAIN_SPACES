@@ -1,9 +1,0 @@
-{
-"navigationBarTitleText": "优选种草",
-"disableScroll": true,
-  "usingComponents": {
-    "btns":"/pages/component/buttons/btns",
-    "list":"/pages/component/list/list",
-    "head": "../module/head/head"
-  }
-}

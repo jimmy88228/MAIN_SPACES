@@ -1,8 +1,0 @@
-/* pages/component/micro-page/micro-mix/content/content.wxss */
-
-.unenable_area{
-  padding-top:300rpx;
-  color:#b2b2b2;
-  font-size:40rpx;
-  text-align:center;
-}

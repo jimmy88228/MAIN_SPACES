@@ -1,8 +1,0 @@
-{
-    "disableScroll": true,
-    "usingComponents": {
-        "dialog": "/ui/cps/dialog/dialog",
-        "listDetail": "/pages/micro_mall/distribution_center/activity/list_detail/list_detail"
-    },
-    "navigationBarTitleText": "热销推荐"
-}

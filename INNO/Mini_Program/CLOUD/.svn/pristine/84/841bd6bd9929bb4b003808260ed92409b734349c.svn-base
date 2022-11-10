@@ -1,8 +1,0 @@
-<!--pages/component/more-view/more-view.wxml-->
-<!-- <view class="main"> -->
-<view class="main" wx:if="{{(loading || end || animMode) && !hide}}">
-  <more-load-view class="box {{animMode == 'loading' ? 'show':''}}" wx:if="{{loading || animMode == 'loading'}}" bindanimationend="animationend" size="small" anim="3" data-mode="loading" id="more" />
-  <view class="box content {{animMode == 'end' ?'show':''}}" wx:if="{{end || animMode == 'end'}}">
-    没有更多内容了
-  </view>
-</view>

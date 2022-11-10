@@ -1,8 +1,0 @@
-{
-  "navigationBarTitleText": "商品分类",
-  "backgroundColor": "#ffffff",
-  "usingComponents": {
-    "classify_one": "/pages/micro_mall/classify/adaptive/classify_one/classify_one",
-    "classify_two": "/pages/micro_mall/classify/adaptive/classify_two/classify_two"
-  }
-}

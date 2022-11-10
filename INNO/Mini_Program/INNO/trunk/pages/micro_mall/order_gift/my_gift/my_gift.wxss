@@ -1,4 +1,0 @@
-@import "../module/gift_goods.wxss";
-.gift_goods_list{
-  padding: 36rpx;
-}

@@ -1,7 +1,0 @@
-{
-  "component": true,
-  "usingComponents": {
-    "searchByMobile": "/pages/micro_mall/buy/modules/Valet/search/searchByMobile",
-    "phoneSms": "/pages/micro_mall/buy/modules/Valet/phoneSms/phoneSms"
-  }
-}

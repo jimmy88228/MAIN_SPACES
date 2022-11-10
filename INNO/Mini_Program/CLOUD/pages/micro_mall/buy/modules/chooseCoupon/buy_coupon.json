@@ -1,8 +1,0 @@
-{
-  "component": true,
-  "usingComponents": {
-    "window":"/ui/cps/window/window",
-    "dialog": "/ui/cps/dialog/dialog",
-    "list": "/pages/component/list/list"
-  }
-}

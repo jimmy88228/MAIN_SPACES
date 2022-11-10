@@ -1,9 +1,0 @@
-{
-  "navigationBarTitleText": "拼团首页",
-  "enablePullDownRefresh": true,
-  "backgroundColor": "#EFEFEF",
-  "usingComponents": {
-    "tabbar": "/pages/component/custom/tabBar",
-    "search": "/pages/component/search/s_view"
-  }
-}

@@ -1,8 +1,0 @@
-<!--pages/component/commission/commission.wxml-->
-<view wx:if="{{commissionAmount.max_commission_amount > 0}}">
-  <button hover-class='none' class="commission_amount" style="background-color:{{brand_info.style.pro_color}};">
-      <image class="commission_icon" src="{{brand_info.icon_url}}micro_mall/commission_icon.png" mode="aspectFit" />
-      <text class="font_30">购买或分享预计收益 </text>
-      <text class="bold font_30 commission_values"> ¥{{commissionAmount.min_commission_amount}} <block wx:if="{{commissionAmount.min_commission_amount != commissionAmount.max_commission_amount}}">- ¥{{commissionAmount.max_commission_amount}}</block></text>
-  </button>
-</view>

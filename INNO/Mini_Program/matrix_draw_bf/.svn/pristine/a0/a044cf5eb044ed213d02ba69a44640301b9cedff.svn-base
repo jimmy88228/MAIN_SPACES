@@ -1,6 +1,0 @@
-{
-  "navigationBarTitleText":"发票详情",
-  "usingComponents": {
-    "msg":"/pages/micro_mall/invoice/component/msg_fill"
-  }
-}

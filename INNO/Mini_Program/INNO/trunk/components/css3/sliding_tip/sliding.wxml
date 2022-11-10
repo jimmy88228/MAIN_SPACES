@@ -1,7 +1,0 @@
-<template name="slidingId">
-  <view class="slidingBox">
-    <image src="{{data.arrows}}" class="arrows" mode="aspectFit"></image>
-    <image src="{{data.hand}}" class="hand" mode="aspectFit"></image>
-    <view class="guide_text">{{data.text}}</view>
-  </view>
-</template>

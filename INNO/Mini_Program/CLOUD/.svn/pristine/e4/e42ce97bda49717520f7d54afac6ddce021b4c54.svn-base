@@ -1,7 +1,0 @@
-<!--pages/component/custom/qy_bar_code/bar_code.wxml-->
-<view class="code_img">
-  <view>
-    <canvas canvas-id="barCanvas" class="barCanvas"></canvas>
-  </view> 
-</view>
-<slot name="extra"></slot>

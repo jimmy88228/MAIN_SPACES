@@ -1,8 +1,0 @@
-<import src="../module/gift_goods.wxml" />
-<view class="gift_goods_list">
-  <view wx:for="{{giftGoods}}" wx:key="pIndex" wx:for-item="pItem" wx:for-index="pIndex">
-    <view wx:for="{{pItem}}" wx:key="index">
-      <template is="gift-goods" data="{{data: item, type: 'list', brandInfo: brand_info}}"></template>
-    </view>
-  </view>
-</view>

@@ -1,4 +1,0 @@
-<!--pages/micro_mall/buyBonus/getBonusOrderDetail.wxml-->
-  <view class="bonus_box">
-    <act_bonus id="act_bonus"></act_bonus>
-  </view>

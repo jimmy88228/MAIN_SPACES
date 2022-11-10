@@ -1,3 +1,0 @@
-<view id="box" class="item">
-	{{key}}
-</view>

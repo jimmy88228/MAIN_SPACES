@@ -1,6 +1,0 @@
-{
-  "component": true,
-  "usingComponents": {
-        "dialog": "/components/ui/cps/dialog/dialog"
-  }
-}

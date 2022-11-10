@@ -1,7 +1,0 @@
-{
-  "navigationBarTitleText": "订单结算",
-  "usingComponents": {
-        "dialog": "/components/ui/cps/dialog/dialog",
-        "cs": "/components/cs/custom_service"
-  }
-}

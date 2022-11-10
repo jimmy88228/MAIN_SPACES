@@ -1,7 +1,0 @@
-.has_no_group{
-  text-align:center;
-  padding:20rpx;
-  padding-top:380rpx;
-  font-size:30rpx;
-  color:#b2b2b2;
-}

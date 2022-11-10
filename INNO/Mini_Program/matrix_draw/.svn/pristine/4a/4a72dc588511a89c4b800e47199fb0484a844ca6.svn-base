@@ -1,4 +1,0 @@
-<!--pages/component/btnBackTop/btnBackTop.wxml-->
-<view class="backTopBox {{zIndexShow?'show':''}}" style="{{animShow}}" catchtap="goTop">
-  <image mode='aspectFit' class="backTop" src="{{img_back_top}}"></image>
-</view>

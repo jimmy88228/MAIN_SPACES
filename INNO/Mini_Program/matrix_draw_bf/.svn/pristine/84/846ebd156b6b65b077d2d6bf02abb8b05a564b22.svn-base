@@ -1,6 +1,0 @@
-{
-    "enablePullDownRefresh": true,
-    "usingComponents": {
-        "micro-page": "/components/micro-page/micro-mix/micro-page/micro-page"
-    }
-}

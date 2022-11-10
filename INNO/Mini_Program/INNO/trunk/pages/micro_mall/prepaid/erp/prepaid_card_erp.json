@@ -1,6 +1,0 @@
-{
-    "navigationBarTitleText": "店铺储值卡",
-    "usingComponents": {
-        "cardCode": "/components/pop/card_code/card_code"
-    }
-}

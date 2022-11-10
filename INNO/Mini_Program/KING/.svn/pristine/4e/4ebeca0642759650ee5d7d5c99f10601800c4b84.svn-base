@@ -1,6 +1,0 @@
-{
-    "navigationBarTitleText": "发布",
-    "usingComponents": {
-        "pubFirstStep": "/pages/micro_mall/seeding_grass/publish/publish_op/publish_pictures"
-    }
-}

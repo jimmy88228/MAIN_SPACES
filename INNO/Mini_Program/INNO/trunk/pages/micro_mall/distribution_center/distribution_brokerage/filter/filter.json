@@ -1,6 +1,0 @@
-{
-  "component": true,
-  "usingComponents": {
-    "popup": "/components/ui/cps/popup/popup"
-  }
-}

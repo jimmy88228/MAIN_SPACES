@@ -1,9 +1,0 @@
-<view class="loadmore-view" style="{{boxStyle}}">
-    <loading-view id="loadmore-anim" wx:if="{{loading||mMode=='loading'}}"
-        class="loadmore-cell {{mMode=='loading'?'show':''}}" size="small" anim="3" data-mode="loading"
-        bindanimationend="transitionend" />
-    <view id="loadmore-msg" wx:if="{{end||mMode=='end'}}" class="loadmore-cell {{mMode=='end'?'show':''}}"
-        data-mode="end" bindanimationend="transitionend">
-        没有更多内容了
-    </view>
-</view>

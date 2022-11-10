@@ -1,9 +1,0 @@
-{
-    "component": true,
-    "usingComponents": {
-        "window": "/components/window/window",
-        "spec-view": "/components/spec-view/spec-view",
-        "question-view": "/components/question-view/question-view",
-        "dialog-code": "../dialog-code/dialog-code"
-    }
-}

@@ -1,9 +1,0 @@
-{
-    "navigationBarTitleText": "砍价",
-    "enablePullDownRefresh": true,
-    "usingComponents": {
-        "tabbar": "/pages/component/custom/tabBar",
-        "micro-page": "/pages/component/micro-page/micro-mix/box/box",
-        "search":"/pages/component/search/s_view"
-    }
-}

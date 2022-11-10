@@ -1,8 +1,0 @@
-{
-  "navigationBarTitleText": "代客订单",
-  "backgroundTextStyle": "dark",
-  "usingComponents": {
-    "cs": "/components/cs/custom_service",
-    "search":"/components/search/s_view"
-  }
-}

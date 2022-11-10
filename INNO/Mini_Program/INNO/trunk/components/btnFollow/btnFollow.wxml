@@ -1,7 +1,0 @@
-<view class="btnFollowBox {{isIphoneX ? 'ipx_p_b' : ''}} {{customTab ? 'customTab' : ''}}" hidden="{{!is_loading}}" wx:if='{{!is_close}}'>
-     <view class='btnFollow oh'>
-          <official-account bindload='loadstatus' binderror="errorstatus" hidden="{{is_close}}"></official-account>
-          <text class='follow_icon_close C_a1 ' catchtap='closeFollow'></text>
-     </view>
-</view>
-

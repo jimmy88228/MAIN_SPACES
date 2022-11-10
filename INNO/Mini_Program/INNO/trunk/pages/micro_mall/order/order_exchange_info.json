@@ -1,7 +1,0 @@
-{
-  "navigationBarTitleText": "",
-  "enablePullDownRefresh": true,
-  "usingComponents": {
-    "cs": "/components/cs/custom_service"
-  }
-}

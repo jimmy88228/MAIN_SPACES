@@ -1,6 +1,0 @@
-{
-  "navigationBarTitleText": "我的余额",
-  "usingComponents": {
-    "pageHome": "/components/sceneOperate/pageHome"
-  }
-}

@@ -1,5 +1,0 @@
-<window class="window" ext-class="window-ext-center">
-    <view class="popup-root" style="{{boxStyle}}" catchtouchmove="()=>{}">
-        <slot></slot>
-    </view>
-</window>

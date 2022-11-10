@@ -1,9 +1,0 @@
-/* pages/startup/startup_page.wxss */
-.start_up_tip{
-  position:fixed;
-  top:44%;
-  left:50%;
-  transform: translate(-50%,-50%);
-  font-size:30rpx;
-  text-align: center;
-}

@@ -1,6 +1,0 @@
-<slot></slot>
-<button class="custom-auth-btn" wx:if="{{auth}}" disabled="{{disabled}}" open-type="{{openType}}" bindcontact="onAuth"
-    bindgetuserinfo="onAuth" bindgetphonenumber="onAuth" data-open-type="{{openType}}">
-</button>
-<button class="custom-auth-btn" wx:else disabled="{{disabled}}" catchtap="onTap" data-open-type="{{openType}}">
-</button>

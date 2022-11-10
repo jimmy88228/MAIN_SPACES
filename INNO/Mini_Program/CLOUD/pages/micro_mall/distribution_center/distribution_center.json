@@ -1,9 +1,0 @@
-{
-    "navigationBarTitleText": "",
-    "usingComponents": {
-        "brokerage": "/pages/micro_mall/distribution_center/distribution_brokerage/distribution_brokerage",
-        "sales": "/pages/micro_mall/distribution_center/distribution_sale/distribution_sale",
-        "orders": "/pages/micro_mall/distribution_center/distribution_orders/distribution_orders",
-        "service": "/pages/micro_mall/distribution_center/distribution_service/distribution_service"
-    }
-}

@@ -1,3 +1,0 @@
-<view class="input-grid-item  {{isChose? 'chose' : ''}}" hover-class="{{isChose? '' : 'btn-hover'}}" catchtap="click">
-    <view class="newline text">{{content}}</view>
-</view>

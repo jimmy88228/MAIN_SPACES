@@ -1,8 +1,0 @@
-<!--pages/component/dynamic_btn/dynamic_btn.wxml-->
-<view class="assist-main">
-  <view class="dynamic" style="{{anima}}" data-type="{{type}}" catchtap="jump">
-    <!-- <image src="{{sk_record}}" mode="aspectFit"></image>
-    <view class="tips" wx:if="{{tips}}">{{tips}}</view> -->
-    <image src="{{sk_record}}" mode="aspectFit"></image>
-  </view>
-</view>

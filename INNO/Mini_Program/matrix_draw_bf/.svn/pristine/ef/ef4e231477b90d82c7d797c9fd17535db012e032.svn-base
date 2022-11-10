@@ -1,6 +1,0 @@
-{
-  "navigationBarTitleText": "店铺详情",
-  "usingComponents": {
-    "contactGuide": "/pages/component/pop/contactGuide/contactGuide"
-  }
-}

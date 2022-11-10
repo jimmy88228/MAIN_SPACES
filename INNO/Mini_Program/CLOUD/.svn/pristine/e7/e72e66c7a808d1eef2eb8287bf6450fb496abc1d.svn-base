@@ -1,9 +1,0 @@
-{
-  "navigationBarTitleText": "商品详情",
-  "usingComponents": {
-    "btns":"/pages/component/buttons/btns",
-    "bgHover": "/pages/component/bg_hover/bg_hover",
-    "dialog": "/ui/cps/dialog/dialog",
-    "act_bonus":"/pages/component/act_bonus/act_bonus"
-  }
-}

@@ -1,8 +1,0 @@
-{
-     "navigationBarTitleText": "付费会员",
-     "backgroundTextStyle": "dark",
-     "enablePullDownRefresh": true,
-     "usingComponents": {
-          "btns": "/components/buttons/btns"
-     }
-}

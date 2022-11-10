@@ -1,7 +1,0 @@
-{
-  "component": true,
-  "usingComponents": {
-    "cardCode": "/pages/component/pop/card_code/card_code",
-    "btns": "/pages/component/buttons/btns"
-  }
-}

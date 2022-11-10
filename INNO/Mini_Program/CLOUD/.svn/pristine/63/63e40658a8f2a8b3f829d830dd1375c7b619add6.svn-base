@@ -1,8 +1,0 @@
-<shopNav isEdit="{{isEdit}}"></shopNav>
-<cartList 
-id="cartListModule"
-options="{{options}}" 
-customTab="{{customTab}}" 
-hasCustomData="{{hasCustomData}}"
-isEditAll="{{isEdit}}"
-></cartList>

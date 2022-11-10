@@ -1,9 +1,0 @@
-<!--pages/micro_mall/video_shopping/v_page/v_components/v_click_like.wxml-->
-
-<block wx:for="{{showArr}}" wx:key="index"> 
-  <view hidden="{{!item.toggle}}" class="box" style="left:{{item.left}};top:{{item.top}};{{item.animation}}">
-    <image src="{{like_action}}" mode="aspectFit" class="img_like_action"></image>
-    <!-- <view class="like" style="left:0;top:0;opacity:1;"></view>
-    <view class="like_squre" style="left:0;top:0;opacity:1;"></view> -->
-  </view>
-</block> 

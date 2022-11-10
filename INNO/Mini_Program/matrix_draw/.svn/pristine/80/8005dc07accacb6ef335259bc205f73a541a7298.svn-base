@@ -1,7 +1,0 @@
-{
-    "component": true,
-    "usingComponents": {
-        "window": "/components/window/window",
-        "auth-button": "/components/auth-button/auth-button"
-    }
-}

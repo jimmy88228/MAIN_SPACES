@@ -1,7 +1,0 @@
-{
-  "navigationBarTitleText": "会员中心",
-  "backgroundColor": "#ffffff",
-  "usingComponents": {
-    "member": "./member_popup/member"
-  }
-}

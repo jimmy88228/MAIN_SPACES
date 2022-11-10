@@ -1,9 +1,0 @@
-{
-    "navigationBarTitleText": "我的砍价",
-    "enablePullDownRefresh": true,
-    "backgroundColor": "#f5f5f5",
-    "usingComponents": {
-        "tabbar": "/components/custom/tabBar",
-        "dialog": "/components/ui/cps/dialog/dialog"
-    }
-}

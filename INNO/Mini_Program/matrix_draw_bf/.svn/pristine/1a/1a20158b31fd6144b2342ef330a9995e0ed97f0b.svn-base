@@ -1,7 +1,0 @@
-<view class="loading-view loading-{{anim==2?'anim2':(anim==3?'anim3':'anim1')}} loading-{{size}}">
-    <view class="loading-v loading-v1"></view>
-    <view class="loading-v loading-v2"></view>
-    <view class="loading-v loading-v3"></view>
-    <view class="loading-v loading-v4"></view>
-    <view class="loading-v loading-v5"></view>
-</view>

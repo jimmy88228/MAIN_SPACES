@@ -1,7 +1,0 @@
-{
-  "component": true,
-  "usingComponents": {
-    "discountPopup": "../discountPopup/discountPopup",
-    "pageDialog": "/components/ui/cps/dialog/dialog"
-  }
-}

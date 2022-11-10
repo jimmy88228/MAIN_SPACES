@@ -1,7 +1,0 @@
-<!--pages/component/custom/nav_bar/nav_bar.wxml-->
-<view id="nav_bar" wx:if="{{showBar}}" class="bar_box" style="height:{{initHeight}};top:{{initTop}};{{diyStyle}};">
-  <view class="main_icon" catchtap="onTap" data-type="back">
-      <image src="{{img_back}}" mode="aspectFit" class="img_back"></image>  
-  </view>
-  <view class="nav_title" wx:if="{{title}}">{{title}}</view>
-</view>

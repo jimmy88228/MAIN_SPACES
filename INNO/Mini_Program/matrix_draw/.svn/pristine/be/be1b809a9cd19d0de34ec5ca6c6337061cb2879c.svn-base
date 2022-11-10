@@ -1,7 +1,0 @@
-{
-  "component": true,
-  "usingComponents": {
-    "draw_acts":"/pages/matrix/draw_box/draw_acts/draw_acts",
-    "draw_result":"/pages/matrix/draw_box/draw_result/draw_result"
-  }
-}

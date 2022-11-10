@@ -1,6 +1,0 @@
-<view class="input-field single-column input-grid">
-    <view class="input-field-name">{{name||'选项'}}</view>
-    <view class="input-grid-item-box">
-        <slot></slot>
-    </view>
-</view>

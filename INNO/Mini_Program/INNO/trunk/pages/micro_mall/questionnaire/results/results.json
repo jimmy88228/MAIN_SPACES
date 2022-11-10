@@ -1,6 +1,0 @@
-{
-  "navigationBarTitleText": "调查结果",
-  "usingComponents": {
-    "progress_bar": "/components/progress_bar/progress_bar"
-  }
-}

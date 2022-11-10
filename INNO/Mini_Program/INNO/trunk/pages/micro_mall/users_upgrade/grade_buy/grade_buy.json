@@ -1,8 +1,0 @@
-{
-     "navigationBarTitleText": "付费会员",
-     "usingComponents": {
-          "btns": "/components/buttons/btns",
-          "pageDialog": "/components/ui/cps/dialog/dialog",
-          "orderSync": "/components/pop/order-sync/order-sync"
-     }
-}

@@ -1,5 +1,0 @@
-<template name="waitResult">
-    <view class="raysDemoHolder">
-        <view class="rays"></view>
-    </view>
-</template>

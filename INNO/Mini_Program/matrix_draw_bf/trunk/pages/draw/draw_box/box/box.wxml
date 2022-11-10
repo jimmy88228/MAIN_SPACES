@@ -1,7 +1,0 @@
-<!--pages/draw/draw_box/box/box.wxml-->
-
-<draw_acts 
-    id="draw_acts"
-    binddraw="draw"
-    >
-</draw_acts>

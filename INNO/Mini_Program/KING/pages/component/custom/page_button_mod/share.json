@@ -1,9 +1,0 @@
-{
-  "component": true,
-  "usingComponents": {
-    "choose": "/pages/component/custom/page_button_mod/choose",
-    "share": "/pages/micro_mall/goods/popup/share",
-    "shareImg": "/pages/micro_mall/goods/popup/shareImg",
-    "btns": "/pages/component/buttons/btns"
-  }
-}

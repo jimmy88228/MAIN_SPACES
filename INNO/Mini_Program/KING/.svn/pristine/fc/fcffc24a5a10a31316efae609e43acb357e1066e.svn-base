@@ -1,6 +1,0 @@
-{
-    "navigationBarTitleText": "评论",
-    "usingComponents": {
-      "btns": "/pages/component/buttons/btns"
-    }
-}
