@@ -43,7 +43,7 @@ export default {
             default: "name",
         },
         value: {
-            type: String | Number,
+            type: Number | String | Array,
             default: 0,
         },
         multiple: {
@@ -322,6 +322,9 @@ export default {
         },
         toggleMenu(){
             this.$refs["mySelect"] && this.$refs["mySelect"].toggleMenu();
+        },
+        _getData(){
+            return this.dataList || []
         }
     },
     mounted() {},

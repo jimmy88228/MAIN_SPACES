@@ -20,7 +20,7 @@ export default {
     },
     props: {
         value: {
-            type: Number,
+            type: Number | String | Array,
             default: 0,
         },
         type: {
@@ -265,6 +265,7 @@ export default {
                 _items = items;
             }
             this.dataList = _items;
+            this.$emit("getData", this.dataList);
             if (type == "init") {
                 typeof this.initCallback == "function" &&
                     this.initCallback(JSON.parse(JSON.stringify(_items)));
@@ -312,6 +313,9 @@ export default {
         },
         toggleMenu(){
             this.$refs["mySelect"] && this.$refs["mySelect"].toggleMenu();
+        },
+        _getData(){
+            return this.dataList || []
         }
     },
     mounted() {},

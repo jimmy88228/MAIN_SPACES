@@ -43,7 +43,7 @@ export default {
             default: "name",
         },
         value: {
-            type: String | Number,
+            type: Number | String | Array,
             default: 0,
         },
         multiple: {
@@ -296,6 +296,9 @@ export default {
             }catch(e){
                 return false
             }
+        },
+        _getData(){
+            return this.dataList || []
         }
     }, 
     watch: {
