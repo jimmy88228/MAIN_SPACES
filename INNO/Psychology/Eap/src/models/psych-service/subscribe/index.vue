@@ -15,7 +15,8 @@
         </div>
       </template>
       <template slot="pay_type" slot-scope="{ row }">
-        {{ row.type == 'commissioner' ? '--' : (row.payType == 'self' ? '自费' : '报销')}}
+        {{ (row.payType == 'self' ? '自费' : '报销')}}
+        <!-- {{ row.type == 'commissioner' ? '--' : (row.payType == 'self' ? '自费' : '报销')}} -->
       </template>
       <!-- <template slot="target" slot-scope="{ row }">
         <div class="target">
