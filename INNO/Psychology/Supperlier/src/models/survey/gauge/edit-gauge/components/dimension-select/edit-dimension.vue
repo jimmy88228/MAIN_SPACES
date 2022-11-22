@@ -1,0 +1,168 @@
+<template>
+<div class="" v-if="isShow">
+  <custom-modal :transfer="true" class="edit-dimension-modal hold-modal-zindex" ref="modal" :width="560" :closable="true" :isSlotHeader="true" :isSlotFooter="true">
+    <div slot="header">编辑与创建</div>
+    <div class="edit-modal-cont _edit-modal-cont">
+      <span class="add-dimension flex-c-c" @click="addDimension"><Icon type="md-add" />新增维度</span>
+      <div class="dimension-list-area">
+        <div class="dimension-list-hold" v-bar>
+          <Form class="dimension-list" ref="formDataRef" :model="formData">
+            <FormItem 
+            :prop="'dimensionData.'+ index +'.dimension_name'" 
+            :rules="{required: true, message: '维度名称不能为空', validator: _checkString,  trigger: 'blur'}"
+            class="dimension-item" 
+            v-for="(item, index) in formData.dimensionData" 
+            :key="index">
+              <custom-input v-model="item.dimension_name" size="large"></custom-input>
+              <Icon v-if="!Number(item.id)" @click="removeItem(index)" class="close-icon" :size="20" type="md-close-circle" />
+            </FormItem>
+          </Form>
+        </div>
+      </div>
+    </div>
+    <div slot="footer">
+      <Button @click="dismiss">取消</Button>
+      <Button type="primary" @click="confirm()">保存</Button>
+    </div>
+    <Spin fix v-if="pageLoading"></Spin>
+  </custom-modal>
+</div>
+</template>
+
+<script>
+import dimensionH from "../../helper/dimension.js";
+export default {
+  props: {
+    modelId: {
+      type: Number | String,
+      default: 0
+    }
+  },
+  data(){
+    return {
+      defaultDimension: {
+        id:0,
+        dimension_name:"",
+        description:"",
+      },
+      formData: {
+        dimensionData: [],
+      },
+      isShow: false
+    }
+  },
+  methods: {
+    dismiss() {
+      this.$refs.modal.dismiss();
+      this.isShow = false;
+    },
+    showModal(detail){
+      let dimensionData = JSON.parse(JSON.stringify(detail.dimensionData || []));
+      dimensionData = dimensionData.filter((item)=>{
+        return Number(item.id) != 0
+      })
+      this.formData.dimensionData = dimensionData || [];
+      this.isShow = true;
+      this.$nextTick(()=>{
+        this.$refs.modal.show();
+      })
+    },
+    addDimension(){
+      this.formData.dimensionData.push(JSON.parse(JSON.stringify(this.defaultDimension)))
+    },
+    removeItem(index){
+      if(index || index == 0){
+        this.formData.dimensionData.splice(index, 1)
+      }
+    },
+    confirm(){
+      this.$refs["formDataRef"] && this.$refs["formDataRef"].validate((valid) => {
+        if (valid) {
+          this.save();
+        } else {
+          this.$Message.warning("请完善维度信息");
+        }
+      })
+    },
+    save(){
+        this.pageLoading = true
+        return this.$MainApi.scaleDimensionSave({
+            data:{
+                model_id:Number(this.modelId || 0),
+                dimension_data: this.formData.dimensionData
+            }
+        }).then(res=>{
+            if(res.code){
+              this.dismiss();
+              dimensionH.loadData(this.modelId);
+            }
+            res.message && this.$Message.warning(res.message);
+            return Promise.reject(res);
+        }).finally(()=>{
+          this.pageLoading = false;
+        })
+    }
+  }
+}
+</script>
+
+<style lang="less" scoped>
+.edit-dimension-modal{
+  .add-dimension{
+    width: 124px;
+    height: 40px;
+    background: #ECF8FE;
+    font-size: 14px;
+    font-family: PingFangSC-Regular, PingFang SC;
+    font-weight: 400;
+    color: #008ACB;
+    line-height: 20px;
+    margin-bottom: 10px;
+    cursor: pointer;
+  }
+  .dimension-list-area{
+      max-height: 400px;
+      display: flex;
+  }
+  .dimension-list-hold{
+    flex: 1;
+  }
+  .dimension-list{
+    padding: 10px 0px;
+  }
+  .dimension-item{
+    display: inline-block;
+    width: 166px;
+    margin-right:10px;
+    margin-bottom: 18px;
+    position: relative;
+  }
+  .close-icon{
+    cursor: pointer;
+    opacity: 0;
+    z-index: 2;
+    position: absolute;
+    top: 0px;
+    right: 0px;
+    transform: translate(40%, -40%);
+    transition: opacity .35s;
+    color: #158BC9;
+  }
+  .dimension-item:hover{
+    .close-icon{
+      opacity: 1;
+    }
+  }
+  .edit-modal-cont{
+    margin: -10px 0px;
+  }
+}
+</style>
+<style lang="less">
+._edit-modal-cont{
+  .ivu-form-item-error-tip{
+    padding-top: 2px;
+  }
+}
+
+</style>
