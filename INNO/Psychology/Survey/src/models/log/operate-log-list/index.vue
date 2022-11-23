@@ -16,7 +16,7 @@
 import ListMixin from "@/helper/mixin/list-mixin";
 import searchForm from "./search-form";
 import mixins from "./mixins";
-
+import dateUtil from '@/helper/utils/date-util.js'
 export default {
   name: "resourceManageIndex",
   mixins: [ListMixin, mixins],
@@ -24,12 +24,20 @@ export default {
   data() {
     return {
       searchForm: { searchq: "",start_time: "", end_time: "", time: [] },
+      inited:false
     };
   },
   computed: {
   },
   methods: {
     onLoadData(page, extraData) {
+      console.log('searchForm.time',this.searchForm.time);
+      if(!this.inited){
+        let time = dateUtil.format(new Date(),'yyyy-MM-dd');
+        this.$set(this.searchForm.time,0,time+' 00:00');
+        this.$set(this.searchForm.time,1,time+' 23:59');
+        this.inited = true;
+      }
       return this.$MainApi
         .operationLogList({
           data: {

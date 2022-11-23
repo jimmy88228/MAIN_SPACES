@@ -16,33 +16,15 @@
       </template>
       <template slot="pay_type" slot-scope="{ row }">
         {{ (row.payType == 'self' ? '自费' : '报销')}}
-        <!-- {{ row.type == 'commissioner' ? '--' : (row.payType == 'self' ? '自费' : '报销')}} -->
       </template>
-      <!-- <template slot="target" slot-scope="{ row }">
-        <div class="target">
-          <p class="target-name text-flow">{{row.source}}</p>
-          <p class="target-customer text-flow" v-if="row.source != row.customerName">{{row.customerName}}</p>
-        </div>
-      </template> -->
       <template slot="consult_result_str" slot-scope="{ row }">
         {{row.consultResultStr}}
-        <!-- <div v-for="(item, index) in resultList" :key="index" v-if="item.id == row.consultResult">{{item.name}}</div> -->
       </template>
       
       <template slot="handle" slot-scope="{ row }">
         <div class="operate-area">
           <a class="operate" v-hasAction="true" @click="checkSubscribe(row)">查看</a>
           <a class="operate" v-hasAction="[(row.handle && row.handle.dispose)]" @click="setHandle(row)">设为已处理</a>
-          <!-- <Poptip
-            v-hasAction="[(row.handle && row.handle.dispose)]"
-            confirm
-            title="确定设为已处理吗？"
-            placement="left-end"
-            @on-ok="setHandle(row)">
-            <a class="operate" >设为已处理</a>
-          </Poptip> -->
-          
-          <!-- <a class="operate" v-hasAction="true">删除</a> -->
         </div>
       </template>
 
@@ -65,38 +47,19 @@ export default {
   data() {
     return {
       searchForm: {
-        searchq: "",
+        petitioner: "",
         customer_id: 0,
         consultant_id: 0,
         payType: "all",
         consultation_result: -1,
       },
       selectData: [],
-      // resultList:[{
-      //     id:-1,
-      //     name:"全部"
-      // },{
-      //     id:0,
-      //     name:"未处理"
-      // },{
-      //     id:1,
-      //     name:"已处理"
-      // }]
     };
   },
   methods: {
     selectDataEvent(selectData) {
       this.selectData = selectData || [];
     },
-    // isShowCustomName(item){
-    //   let source = item.source || "";
-    //   let customerName = item.customerName || "";
-    //   if(get_target.target_name != get_customer.customer_name && get_customer.customer_name){
-    //     return true;
-    //   } else {
-    //     return false;
-    //   }
-    // },
     onLoadData(page, extraData) {
       return this.$MainApi
         .reservationList({
@@ -126,15 +89,6 @@ export default {
           appointment_id: row.appointmentId
         });
     },
-    // setBatchHandle(){
-    //   if(!this.ids || this.ids.length == 0) {
-    //     this.$Message.warning("请勾选批量处理项");
-    //     return;
-    //   }
-    //   this.setHandleReq("reservationBatchDispose", {
-    //     appointment_ids: this.ids
-    //   })
-    // },
     setHandle(row) {
       this.$refs["handleSubscribeRef"] && this.$refs["handleSubscribeRef"].showModal({ subscribeInfo: row })
     },
@@ -142,23 +96,6 @@ export default {
       this.$refs["checkSubscribeRef"] && this.$refs["checkSubscribeRef"].getView(detail.appointment_id);
       this.handleUpdate();
     },
-    // setHandleReq(req, reqData){
-    //   this.tableLoading = true;
-    //   return this.$MainApi[req]({
-    //       data: reqData,
-    //     })
-    //     .then((res) => {
-    //       this.tableLoading = false;
-    //       if (res.code) {
-    //         this.$Message.success(res.message || "操作成功");
-    //         this.handleUpdate();
-    //       } else {
-    //         this.$Message.warning(res.message || "操作失败");
-    //       }
-    //     }).catch(()=>{
-    //       this.tableLoading = false;
-    //     }) 
-    // }
   },
   mounted() {
     this.loadData();

@@ -3,13 +3,8 @@
         <Form class="no-tip flex-b-c" inline>
             <div class="flex">
                 <FormItem :label-width="0">
-                  <rewrite-search v-model="searchForm.searchq" @search="search" placeholder="请输入名称搜索"></rewrite-search>
+                  <rewrite-search v-model="searchForm.petitioner" @search="search" placeholder="请输入名称搜索"></rewrite-search>
                 </FormItem>
-                <!-- <FormItem label="来源主体" :label-width="100">
-                  <data-select v-model="searchForm.customer_id" type="supervisorSourceList" valueKey="customerId" nameKey="targetName" @change="search()">
-                      <Option slot="default-option" :value="0">全部</Option>
-                  </data-select>
-                </FormItem> -->
                 <FormItem label="资费方式" :label-width="100">
                   <Select v-model="searchForm.payType" @on-change="search">
                       <Option v-for="(item, index) in payTypeList" :key="item.key" :value="item.key">{{item.name}}</Option>
@@ -21,9 +16,6 @@
                   </Select>
                 </FormItem>
             </div>
-            <!-- <div class="flex">
-                <Button @click="batch" v-hasAction="true">批量处理</Button>
-            </div> -->
         </Form>
     </rewrite-area>
 </template>

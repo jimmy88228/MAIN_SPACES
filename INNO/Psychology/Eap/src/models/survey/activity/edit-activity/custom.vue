@@ -6,7 +6,7 @@
                 <!-- <span class="notice">建议尺寸200*200px</span> -->
             </FormItem>
             <FormItem label="活动详情底色" prop="detail_bg_color">
-                <ColorPicker v-model="actSetting.detail_bg_color" />
+                <ColorPicker transfer v-model="actSetting.detail_bg_color" />
             </FormItem>
             <FormItem label="做题背景" prop="answer_bg_img">
                 <img-view uploadType="activity" :img="actSetting.answer_bg_img" @selectImg="(data)=>selectActImg(data, 'answer_bg_img')" @delImg="actSetting.answer_bg_img = ''"></img-view>
