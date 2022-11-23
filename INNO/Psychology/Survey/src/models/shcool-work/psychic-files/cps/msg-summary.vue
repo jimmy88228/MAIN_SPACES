@@ -280,6 +280,18 @@ import moreModel from "./more-model.vue";
 </script>
 
 <style lang="less" scoped>
+@-moz-document url-prefix(){ 
+    .file-detail{
+        .detail-l{
+            .trans-main-box{
+                overflow: unset; //兼容:火狐动画结束后显示模糊
+            }
+            .trans-pre-box{ 
+                -moz-transform-style:preserve-3d; //兼容:火狐动画结束后整个消失
+            } 
+        }
+    }
+}
 .file-detail {
     display: flex;
     margin-bottom: 10px;
@@ -564,7 +576,6 @@ import moreModel from "./more-model.vue";
     }
 }
 .trans-pre-box{ 
-    -moz-transform-style:preserve-3d; //兼容:火狐动画结束后显示异常
     &.animActive{
         transform-style:preserve-3d;
         perspective: 1000px;
