@@ -1,0 +1,781 @@
+import Conf from "@/config/config.js"
+import Utils from "../support/utils/utils.js";
+import StringUtil from "../support/utils/string-util.js";
+import LM from "./login-manager";
+import IM from "./identity-manager";
+import structureManage from '@/common/manager/structure-manage.js'
+import storageH from "@/common/helper/storage-handler.js";
+import PLM from '@/common/manager/platform-manager';
+
+
+// import MyDate from '../support/utils/date-util.js';
+// import SHP from "../helper/handle/scanHandleParams.js"
+// import WxGH from "../helper/handle/wxGroupHandle.js"
+// import StorageH from ""
+import {
+  Apis
+} from "../http/http.api.install.js";
+import {
+  Http
+} from "../http/http.interceptor.js";
+// import {
+//   VsLogApi,
+//   GoodsApi,
+//   DistributionApi
+// } from "./http-manager";
+import {
+  PageKeys,
+  LogMap,
+  KeyParamName,
+  ExtendKeyParamName,
+  SceneChannel,
+  ActionName,
+} from "./log-map";
+import SIH from "../helper/sys-infos-handler.js"
+const STORAGE_HOLD_MP = "HOLD_MP"
+class LogManager {
+  static getInstance() {
+    if (!LogManager.instance) {
+      LogManager.instance = new LogManager();
+    }
+    return LogManager.instance;
+  }
+  constructor() {
+    this._createNewSession = true;
+  }
+  get createNewSession() {
+    return this._createNewSession;
+  }
+  hideMP() {
+    // 息屏
+    this.addPageLog("APP_HIDE");
+    this.submitPageLog();
+    storageH.set(STORAGE_HOLD_MP, true, 0.5);
+  }
+  // 设置基础会话
+  setBaseChannel(ops_params) {
+    //console.log('setBaseChannel',this.channel)
+    if (!ops_params.path) {
+      let page = getCurrentPages().slice(-1)[0];
+      ops_params.path = (page && page.route) || "";
+    }
+    if (!ops_params.scene) {
+      ops_params.scene = this.lastScene;
+    }
+    this.checkResult = checkBaseChannel.call(this, ops_params);
+  }
+  // 设置详细会话
+  setChannel(ops_params={}) {
+    if (this.checkResult && this.checkResult.createLogSession) {
+      //兼容首次使用可能没有appCode，会从startup检查到appCode再设置详细对话
+      if (!ops_params.path) {
+        let page = getCurrentPages().slice(-1)[0];
+        ops_params.path = (page && page.route) || "";
+      }
+      if (!ops_params.scene) {
+        ops_params.scene = this.lastScene;
+      }
+      beforeCreateLogSession.call(this, ops_params)
+    }
+    // createChannel.call(this, ops_params || {}, this.checkResult).then(res=>{
+    //   res = res || {};
+    //   this._channel = res.channelData || {};
+    //   if (res.createLogSessionExtend){
+    //     this.createLogSessionExtend();
+    //   }
+    // }); 
+  }
+  createLogSessionFn(channel) {
+    return Http(Apis.createLogSession, {
+      header: {
+        cookieId: LM.openId || ""
+      },
+      data: {
+        ...channel,
+        userToken: LM.userToken || "",
+        cookieId: SIH.cookieId || "",
+        // brandCode: Conf.BRAND_CODE || ""
+      },
+      other: {
+        isShowLoad: false
+      }
+    }).catch(error => {
+      return Promise.reject(error);
+    })
+  }
+  createLogSessionExtend() {
+    let channelData = this.channel || {};
+    console.log("channelData", channelData);
+    let exTendData = {
+      channelType: channelData.channelType || "",
+      channel: channelData.channel || "",
+      fromUser: channelData.fromUser || "",
+      clientSessionId: channelData.clientSessionId || "",
+      scene: channelData.scene,
+      pageName: channelData.pageName || "",
+      pagePath: channelData.pagePath || "",
+      pageKeyParam1: channelData.pageKeyParam1 || "",
+      pageKeyParam2: channelData.pageKeyParam2 || "",
+      pageKeyParam3: channelData.pageKeyParam3 || "",
+      extendParam1: channelData.extendParam1 || "",
+      extendParam2: channelData.extendParam2 || "",
+      extendParam3: channelData.extendParam3 || "",
+      pageParamsJson: channelData.pageParamsJson || "",
+      inviteType: channelData.inviteType || "",
+      dstbStaffCode: channelData.dstbStaffCode || "",
+      customChannel: channelData.customChannel || "",
+      extendLogList: channelData.extendLogList || []
+    }
+    return Http(Apis.uploadLogActionList, {
+      header: {
+        cookieId: LM.openId || ""
+      },
+      data: {
+        ...exTendData,
+        userToken: LM.userToken || "",
+        cookieId: SIH.cookieId || "",
+        brandCode: Conf.BRAND_CODE || ""
+      },
+      other: {
+        isShowLoad: false
+      }
+    }).catch(error => {
+      return Promise.reject(error);
+    }).finally(() => {
+      // // extend 提交后提交一波日志，避免首次进入快速退出页面，无法提交数据
+      this.submit('channelSubmit');
+    })
+  }
+  setHideTag() {
+    this.addPageLog("APP_HIDE");
+    return this;
+  }
+  submit(type) {
+    this.submitAction(type);
+    this.submitPageLog(type);
+    return this;
+  }
+  submitAction() {
+    if (this.actionLogTid) {
+      clearTimeout(this.actionLogTid);
+      delete this.actionLogTid;
+    }
+    if (this.actionLogs && this.actionLogs.length > 0) {
+      let actionLogs = this.actionLogs;
+      delete this.actionLogs;
+      VsLogApi.uploadLogActionList({
+        data: {
+          userToken: LM.userToken,
+          cookieId: SIH.cookieId,
+          brandCode: Conf.BRAND_CODE,
+          actionList: actionLogs || [],
+          clientTime: new Date().getTime()
+        },
+        other: {
+          isShowLoad: false
+        }
+      });
+    } else {
+
+    }
+    return this;
+  }
+  submitPageLog(type) {
+    console.log("submitPageLog", this.pagelogs);
+    if (this.pagelogTid) {
+      clearTimeout(this.pagelogTid);
+      delete this.pagelogTid;
+    }
+    if (this.pagelogs && this.pagelogs.length > 0) {
+      let pagelogs = this.pagelogs;
+      delete this.pagelogs;
+      return Http(Apis.uploadLogVisitList, {
+        header: {
+          cookieId: LM.openId || ""
+        },
+        data: {
+          visitLogList: pagelogs,
+          clientTime: new Date().getTime()
+        },
+        other: {
+          isShowLoad: false
+        }
+      }).catch(error => {
+        return Promise.reject(error);
+      }).finally(() => {
+        this.isNoChannelSubmit = false;
+      })
+    } else if (type == 'channelSubmit') {
+      this.isNoChannelSubmit = true;
+    }
+    return this;
+  }
+  submitExtendChannelLog(params) {
+    //广告点击，直播进入时页面写完日志后提交
+    let channelType = "",
+      channel = "";
+    params = params || {};
+    if (params.room_id && params.openid) {
+      channelType = "LIVE";
+      channel = params.room_id;
+    } else if (params.tag) {
+      channelType = "ADVERT";
+      channel = params.tag;
+    }
+    if (!channelType) return;
+    VsLogApi.createExtendChannelLog({
+      data: {
+        "brandCode": Conf.BRAND_CODE,
+        "userToken": LM.userToken,
+        "cookieId": SIH.cookieId,
+        "clientSessionId": this.channel.clientSessionId,
+        "visitLogId": this.pageLog.logId,
+        "extendChannelType": channelType,
+        "extendChannel": channel
+      },
+      other: {
+        isShowLoad: false
+      }
+    })
+    return this;
+  }
+  addPageLog(name, path, params, isBack) {
+    // console.log("addPageLog", this.channel,name,(!name && !path) || !this.channel);
+    if ((!name && !path) || !this.channel ||!PLM.platformInfo.appCode) {
+      return;
+    }
+    console.log(this._createNewSession,"this._createNewSession")
+    if(this._createNewSession) this._createNewSession = false;
+    if (name != 'APP_HIDE') this.pageIndex += 1;
+    this.pageLog = createPageLog(name, path, params, this.pageLog, this.channel, isBack, this);
+    this.pagelogs || (this.pagelogs = []);
+    this.pagelogs.push(this.pageLog);
+
+    if (this.isNoChannelSubmit) {
+      this.pagelogTid = setTimeout(() => {
+        this.submitPageLog();
+      }, 500);
+    } else {
+      if (this.pagelogs.length >= 20) {
+        this.pagelogTid = setTimeout(() => {
+          this.submitPageLog();
+        }, 500);
+      } else if (!this.pagelogTid) {
+        this.pagelogTid = setTimeout(this.submitPageLog.bind(this), 30000);
+      }
+    }
+    this.submitExtendChannelLog(params);
+    return this;
+  }
+  addActionLog(name, position, params, tag) {
+    if (!name || !this.channel) {
+      return;
+    }
+    let initActionData = initAction.call(this, name, position, params);
+    name = initActionData.name;
+    position = initActionData.position;
+    params = initActionData.params;
+    let actionLog = createActionLog(name, position, params, tag, this.pageLog, this.channel);
+    this.actionLogs || (this.actionLogs = []);
+    this.actionLogs.push(actionLog);
+    if (this.actionLogs.length >= 20) {
+      this.actionLogTid = setTimeout(this.submitAction.bind(this), 500);
+    } else if (!this.actionLogTid) {
+      this.actionLogTid = setTimeout(this.submitAction.bind(this), 30000);
+    }
+    return this;
+  }
+  get channel() {
+    return this._channel;
+  }
+}
+//初始化acition参数
+function initAction(name, position, params) {
+  //动作日记没有传position,params
+  if (name) {
+    name = ActionName[name] || name;
+  }
+  if (position && params) {
+    return {
+      position,
+      params,
+      name
+    }
+  } else {
+    let this_page = getCurrentPages().pop();
+    let params = params || this_page.options || {};
+    if (!position && this_page.route) {
+      position = LogMap[this_page.route] || "";
+    }
+    position = position || ""
+    return {
+      position,
+      params,
+      name
+    }
+  }
+}
+
+function getPageName(path, params) {
+  let keys = LogMap[path];
+  if (!keys) return "";
+  if (typeof (keys) == "string") {
+    return keys
+  }
+  // if (keys instanceof Array && keys.length > 0) {
+  //   let key = keys[0];
+  //   if (path === "pages/micro_mall/plugins/presale/presale_buy_info") {
+  //     let paramsKeys = key["params"] || [];
+  //     let keyStr = "";
+  //     for (let i = 0; i < paramsKeys.length; i++) {
+  //       let val = params[paramsKeys[i]] && params[paramsKeys[i]] != '0' ? 1 : 0;
+  //       keyStr = keyStr ? keyStr + "," + val : val;
+  //     }
+  //     return key[keyStr] || key["default"] || "";
+  //   } else {
+  //     for (let i in params) {
+  //       if (key[params[i]]) return key[params[i]];
+  //     }
+  //   }
+  // }
+  return "";
+}
+
+function hasP(p) {
+  if (!p) {
+    return false;
+  }
+  for (let key in p) {
+    return true;
+  }
+  return false;
+}
+
+function getPageKeyParams(path, params, name = "KeyParamName") {
+  let keyParams = {};
+  let keyNames = {};
+  keyNames = KeyParamName[path];
+  if (keyNames && keyNames.length > 0) {
+    let keyMapCount = Math.min(keyNames.length, 3);
+    for (let i = 0; i < keyMapCount; i++) {
+      let keyName = keyNames[i];
+      // 特殊keyName兼容
+      if (LogMap[path] == 'BUY_BONUS_ACT_DETAIL' && i == 0) {
+        let key1 = "activityId";
+        (key1 in params) && (keyName = key1) || ('activityid' in params) && (keyName = 'activityid')
+      }
+      if (keyName in params) {
+        keyParams["keyParam" + (i + 1)] = (params[keyName] || params[keyName] == 0) ? params[keyName] : "";
+      }
+    }
+  }
+  return keyParams;
+}
+
+function getPageSessionKeyParams(path, params, name = "pageKeyParam") {
+  let keyParams = {};
+  let keyNames = {};
+  name = name || 'pageKeyParam';
+  if (name == 'extendParam') {
+    if (!(params && params.opKind)) return {};
+    keyNames = ExtendKeyParamName[params.opKind];
+  } else {
+    keyNames = KeyParamName[path];
+  }
+  if (keyNames && keyNames.length > 0) {
+    let keyMapCount = Math.min(keyNames.length, 3);
+    for (let i = 0; i < keyMapCount; i++) {
+      let keyName = keyNames[i];
+      // 特殊keyName兼容
+      if (LogMap[path] == 'BUY_BONUS_ACT_DETAIL' && i == 0) {
+        let key1 = "activityId";
+        (key1 in params) && (keyName = key1) || ('activityid' in params) && (keyName = 'activityid')
+      }
+      if (keyName in params) {
+        keyParams[name + (i + 1)] = (params[keyName] || params[keyName] == 0) ? params[keyName] : "";
+      }
+    }
+  }
+  return keyParams;
+}
+
+function getActionKeyParams(params) {
+  let keyParams = {},
+    j = 1;
+  for (let i in params) {
+    let keyName = "keyParam" + j;
+    keyParams[keyName] = (params[i] || params[i] == 0) ? params[i] : "";
+    if (keyParams[keyName] == "") {
+      let key = i.toUpperCase();
+      if (key.indexOf("ID") != -1) {
+        keyParams[keyName] = 0;
+      }
+    }
+    j++;
+  }
+  return keyParams;
+}
+
+function getExtendParams(query, keyParam) {
+  let {
+    extendParam1,
+    extendParam2,
+    extendParam3
+  } = query;
+  if (query.shareType == "STAFF_ACTIVITY" || query.shareType == "STAFF_GOODS") {
+    extendParam1 = query.staffCode;
+    extendParam2 = query.activityId || query.staffActivityId || 0;
+    extendParam3 = query.goods_id || query.page_id || 0;
+  }
+  return {
+    extendParam1,
+    extendParam2,
+    extendParam3
+  }
+}
+
+function getExtendLogList(query) {
+  let obj = {},
+    list = [];
+  if (query.shareType == "STAFF_ACTIVITY" || query.shareType == "STAFF_GOODS") {
+    obj.extendType = query.shareType;
+    obj.extendValue = query.activityId || query.staffActivityId || 0;
+    obj.enterType = query.scene ? "SCAN" : "CLICK";
+    obj.extendParam1 = (query.shareType == "STAFF_ACTIVITY" ? query.page_id : query.goods_id) || 0;
+    obj.extendParam2 = query.staffCode;
+    obj.extendParam3 = "";
+    list.push(obj);
+  }
+  return list
+}
+//new 页面log
+function createPageLog(name, path, params, lastLog, channel, isBack, that) {
+  let keyParams;
+  let paramsJson;
+  let extendKeyParams;
+  let structureInfo = structureManage.structureInfo
+  let structureId = structureInfo.structureId || IM.authUserInfo.structureId;
+  if (hasP(params)) {
+    keyParams = getPageKeyParams(path, params, 'KeyParamName');
+    extendKeyParams = getPageKeyParams(path, params, 'ExtendKeyParamName');
+    try {
+      paramsJson = JSON.stringify(params);
+    } catch (e) {}
+  }
+  let createTime = new Date().getTime()
+  let lastLogId;
+  let lastLogTimeStamp;
+  if (lastLog) {
+    lastLogId = lastLog.logId;
+    lastLogTimeStamp = lastLog.createTime ? createTime - lastLog.createTime : 0;
+  }
+  // console.log('keyParams',keyParams,extendKeyParams)
+  return {
+    ...(keyParams || {}),
+    ...(extendKeyParams || {}),
+    logId: Utils.uuid16ByTime(32),
+    clientSessionId: channel.clientSessionId || 0,
+    name: name || getPageName.call(this, path, params) || "",
+    path: path || "",
+    paramsJson: paramsJson || "",
+    lastLogId: lastLogId || 0,
+    lastLogTimeStamp: lastLogTimeStamp || 0,
+    createTime: createTime,
+    structureId: structureId || 0,
+    isBack: isBack ? 1 : 0,
+    pageIndex: that.pageIndex || 0
+  };
+}
+//动作
+function createActionLog(name, position, params, tag = "", visitLog, channel) {
+  let keyParams;
+  let paramsJson;
+  if (hasP(params)) {
+    keyParams = getActionKeyParams(params);
+    try {
+      paramsJson = JSON.stringify(params);
+    } catch (e) {}
+  }
+  name = name.toUpperCase();
+  return {
+    ...(keyParams || {}),
+    clientSessionId: channel.clientSessionId || 0,
+    visitLogId: visitLog && visitLog.logId || 0,
+    actionId: Utils.uuid16ByTime(32),
+    name: name || "",
+    paramsJson: paramsJson || "",
+    position: position || "",
+    createTime: new Date().getTime(),
+    tag: tag
+  };
+}
+//
+function checkChannelTime(time = 30) {
+  if (this.channelTime) {
+    let intervalTime = new Date().getTime() - parseFloat(this.channelTime);
+    return intervalTime > (time * 1000);
+  } else {
+    this.channelTime = new Date().getTime();
+    return true;
+  }
+}
+//
+function createChannel(ops_params, checkResult) {
+  let keyParams, paramsJson, extendKeyParams;
+  ops_params = ops_params || {};
+  let params = ops_params.query || '';
+  let scene = ops_params.scene || 0;
+  return checkChannel.call(this, ops_params, checkResult).then(channelInfo => {
+    channelInfo = channelInfo || {};
+    channelInfo.channelType = StringUtil.trim(channelInfo.channelType);
+    let query = channelInfo.query || params || {}
+    let page = getCurrentPages().slice(-1)[0];
+    let _options = page && page.options || {};
+    let path = _options.scene ? _options.p_path : ops_params.path;
+    let _query = {
+      ...query,
+      ..._options
+    }
+    let extendParamsList = {},
+      extendLogList = [];
+    if (hasP(_query)) {
+      keyParams = getPageSessionKeyParams(path, _query);
+      if (SceneChannel[scene] && query.opKind) {
+        extendKeyParams = getPageSessionKeyParams(path, query, 'extendParam');
+      }
+      extendParamsList = getExtendParams.call(this, _query);
+      extendLogList = getExtendLogList.call(this, _query);
+      // console.log('extendKeyParams', extendKeyParams)
+      // console.log('extendParamsList', extendParamsList)
+      // console.log('extendLogList', extendLogList)
+      try {
+        paramsJson = JSON.stringify(_query);
+      } catch (e) {}
+    }
+    let channelData = { //this.channel
+      channelType: channelInfo.channelType || "",
+      channel: channelInfo.channel || "",
+      clientSessionId: this.channel.clientSessionId,
+      fromUser: _query.fromUser || "",
+      pageParamsJson: paramsJson || "",
+      scene: scene || "",
+      model: SIH.model || "",
+      os: SIH.os || "",
+      appVersion: SIH.appVersion || "",
+      sdkVersion: SIH.sdkVersion || "",
+      createTime: new Date().getTime(),
+      pageName: getPageName.call(this, path, _query) || "",
+      pagePath: path || "",
+      ...(keyParams || {}),
+      ...(extendKeyParams || {}),
+      inviteType: query.shareType,
+      dstbStaffCode: query.staffCode,
+      customChannel: query.customChannel || "",
+      extendLogList,
+      ...(extendParamsList || {}),
+    }
+    let data = {
+      channelData,
+      createLogSession: channelInfo.createLogSession || false,
+      createLogSessionExtend: channelInfo.createLogSessionExtend || false,
+    }
+    return Promise.resolve(data)
+  });
+}
+// 同步检测会话信息
+function checkBaseChannel(ops_params) {
+  let channelType = '',
+    createLogSession = false,
+    createLogSessionExtend = false,
+    channel = "";
+  ops_params = ops_params || {};
+  let query = ops_params.query || {};
+  let scene = ops_params.scene || 0;
+  //1--30秒对比
+  // let checkTime = checkChannelTime.call(this);
+  // if (checkTime) {
+  //   this.channelTime = new Date().getTime();
+  //   createLogSession = true;
+  //   createLogSessionExtend = true;
+  // }
+  //2--进入的场景值是否属于渠道场景值
+  // if (SceneChannel[scene]) {
+  //   channelType = SceneChannel[scene] && SceneChannel[scene].channel;
+  //   createLogSession = true;
+  //   createLogSessionExtend = true;
+  // } 
+  //3--是否与上次进入的scene场景值一致
+  if (!this.lastScene || ((this.lastScene != scene) && scene)) {
+    createLogSession = true;
+    createLogSessionExtend = true;
+  }
+  scene && (this.lastScene = scene);
+  //4--是否分享进入
+  // if (query.fromUser && !createLogSessionExtend) {
+  //   createLogSession = true;
+  //   createLogSessionExtend = true;
+  // }
+  // if (ops_params._reset) {
+  //   createLogSession = true;
+  //   createLogSessionExtend = true;
+  // }
+  //5--是否带二维码scene进入
+  if (query.scene) {
+    createLogSession = true;
+    createLogSessionExtend = true;
+  }
+  //6--是否息屏超过30秒
+  if (!storageH.get(STORAGE_HOLD_MP)) {
+    createLogSession = true;
+    createLogSessionExtend = true;
+  }
+  // if (query.channelType) {    //自定义渠道
+  //   channelType = query.channelType || "MINI_QRCODE" || "";
+  //   channel = query.channel || query.scene ||"";
+  // }
+  if (createLogSession || createLogSessionExtend) { // 重新生成会话ID
+    // console.log('重新生成会话ID')
+    this.pageIndex = 0;
+    this._channel = {
+      ...this._channel,
+      clientSessionId: Utils.uuid16ByTime(32, 16)
+    }
+    this._createNewSession = true;
+  }
+  // else if(this.pageIndex > 0){ //
+  // this.pageIndex -= 1; 
+  // }
+  // //提交createLogSession 目前只获取基本的信息
+  // if (createLogSession){
+  //   beforeCreateLogSession.call(this, ops_params);
+  // }
+  return {
+    createLogSession,
+    createLogSessionExtend,
+    channelType,
+    channel
+  }
+}
+// 检测异步会话信息
+function checkChannel(ops_params = {}, checkResult) {
+  checkResult = checkResult || {};
+  let {
+    channel,
+    channelType,
+    createLogSession,
+    createLogSessionExtend,
+  } = checkResult;
+  ops_params = ops_params || {};
+  let query = ops_params.query || {};
+  let scene = ops_params.scene || 0;
+  let p = new Promise((rs, rj) => {
+    if (channelType) {
+      if (channelType == 'CUSTOM' || query.channelType) { //扫码进入
+        console.log("进入扫码", query);
+        createLogSessionExtend = true;
+        if (!query.channelType) {
+          channelType = "MINI_QRCODE";
+          channel = query.scene;
+        }
+        SHP.getParams(["options"]).then(params => {
+          let ph = params["options"] || {};
+          console.log("SHP options", ph);
+          query = ph.query;
+          createLogSessionExtend = true;
+          return rs();
+        })
+      } else if (channelType == 'GROUP_SHARE') { //群分享
+        WxGH.getShareTicket(ops_params.shareTicket).then(res => {
+          console.log('群分享结果', res);
+          if (res) {
+            channel = res;
+            createLogSessionExtend = true;
+          } else {
+            channelType = ""
+          }
+          return rs();
+        });
+      } else if (channelType == 'OFFIACCOUNT_MENU' || channelType == 'OFFIACCOUNT_MSG' || channelType == 'OFFIACCOUNT_ARTICLE' || channelType == 'MINIPRO') { //appId
+        channel = ops_params.referrerInfo && ops_params.referrerInfo.appId || ops_params.query && ops_params.query.appid || 'NO_APPID';
+        if (channel) {
+          createLogSessionExtend = true;
+        } else {
+          channelType = "";
+        }
+        return rs();
+      } else {
+        channel = scene;
+        return rs();
+      }
+    } else {
+      return rs();
+    }
+  })
+  return p.then(res => {
+    return Promise.resolve({
+      channelType,
+      channel,
+      query,
+      createLogSession,
+      createLogSessionExtend,
+    });
+  })
+}
+
+function beforeCreateLogSession(optionData) {
+  let channelType;
+  let channel;
+  let keyParams;
+  let paramsJson;
+  let path = optionData.path;
+  let params = optionData.query;
+  let scene = optionData.scene;
+  let structureInfo = structureManage.structureInfo
+  let structureId = structureInfo.structureId || IM.authUserInfo.structureId;
+  if (hasP(params)) {
+    keyParams = getPageSessionKeyParams(path, params);
+    try {
+      paramsJson = JSON.stringify(params);
+    } catch (e) {}
+    // if (params.fromUser) {
+    //   channelType = "INVITE";
+    //   channel = params.fromUser;
+    // } else if (params.channelType) {
+    //   channelType = params.channelType;
+    //   channel = params.channel;
+    // } else if (params.scene) {
+    //   channelType = "MINI_QRCODE",
+    //   channel = params.scene
+    // }
+    // channelType = StringUtil.trim(channelType);
+  }
+  // console.log('keyParams',keyParams)
+  let _channel = {
+    clientSessionId: this.channel.clientSessionId,
+    scene: scene || "",
+    model: SIH.model || "",
+    os: SIH.os || "",
+    appVersion: SIH.appVersion || "",
+    sdkVersion: SIH.sdkVersion || "",
+    structureId: structureId || 0,
+    pageName: getPageName.call(this, path, params) || "",
+    pagePath: path,
+    ...keyParams,
+    pageParamsJson: paramsJson,
+    // channelType: channelType || "",
+    // channel: channel || "",
+    // fromUser: params.fromUser || "",
+    // createTime: new Date().getTime(),
+    // inviteType: params.shareType,
+    // dstbStaffCode: params.staffCode,
+    // customChannel: params.customChannel || ""
+  }
+  this._channel = _channel;
+  this.createLogSessionFn(_channel);
+}
+export default LogManager.getInstance();
+export {
+  PageKeys,
+  LogMap,
+  KeyParamName
+};
