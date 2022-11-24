@@ -24,7 +24,7 @@
         </FormItem>
         <FormItem label="选择条件" v-if="exportInfo.exportType == 2 || exportInfo.exportType == 3">
           <template v-if="exportInfo.exportType == 2">
-            <rewrite-choose :data="conditionList" v-model="exportInfo.selectOption" @on-change="getDimension"></rewrite-choose>
+            <rewrite-choose :data="curConditionList" v-model="exportInfo.selectOption" ></rewrite-choose>
           </template>
           <template v-if="exportInfo.exportType == 3">
             <CheckboxGroup size="large" v-model="exportInfo.selectOption">
@@ -40,16 +40,16 @@
             </CheckboxGroup>
           </template>
         </FormItem>
-        <template v-if="exportInfo.exportType == 2">
+        <div v-show="exportInfo.exportType == 2">
           <FormItem label="" v-if="exportInfo.selectOption == 1">
             将根据量表总分预警线导出名单
           </FormItem>
-          <FormItem label="选择维度" v-else-if="exportInfo.selectOption == 2">
+          <FormItem label="选择维度" v-show="exportInfo.selectOption == 2 && dimensionData.length>0">
             <div class="base-320">
-              <data-select :isShowAll="false" size="large" :params="{ model_id:  exportInfo.selectModel}" :isAuto="false" type="dimension" ref="dimensionSelectRef" v-model="exportInfo.dimensionalityData" :multiple="true"></data-select>
+              <data-select size="large" :params="{ model_id:  exportInfo.selectModel}" :isAuto="false" type="dimension" ref="dimensionSelectRef" v-model="exportInfo.dimensionalityData" @getData="getDimensionData" :multiple="true"></data-select>
             </div>
           </FormItem>
-        </template>
+        </div>
       </Form>
     </div>
     <div class="flex-c-e" slot="footer">
@@ -63,13 +63,20 @@
 </template>
 
 <script>
+import rewriteChoose from '../../../../../components/rewrite/rewrite-choose/rewrite-choose.vue';
 import mpNotice from "@/components/main-components/mq-notice/mq-notice";
 export default {
-  components: { mpNotice },
+  components: { rewriteChoose, mpNotice },
   props: {
     activityId: Number | String,
     // schoolId: Number | String,
     modelData: Array
+  },
+  computed: {
+    curConditionList() {
+      let list = this.dimensionData||[];
+      return list.length>0? this.conditionList : this.conditionList.slice(0,1)
+    }
   },
   data(){
     return {
@@ -103,7 +110,8 @@ export default {
           key: 2,
           name: "按维度筛选"
         }
-      ]
+      ],
+      dimensionData:[]
     }
   },
   methods: {
@@ -122,6 +130,7 @@ export default {
     },
     changeExportType(data){
       if(!data) return;
+      let initFirst;
       switch(data){
         case 1:
             if(this.modelData.length == 1){
@@ -134,6 +143,7 @@ export default {
         case 2:
             if(this.modelData.length == 1){
               this.exportInfo.selectModel = this.modelData[0].id || "";
+              initFirst = true;
             } else {
               this.exportInfo.selectModel = "";
             }
@@ -145,12 +155,13 @@ export default {
             break;
       }
       this.exportInfo.dimensionalityData = [];
-      console.log("exportInfo", this.exportInfo);
+      initFirst && this.$refs["dimensionSelectRef"] && this.$refs["dimensionSelectRef"].getData();
     },
     getDimension(){
       this.$nextTick(()=>{
         let exportInfo = this.exportInfo || {};
-        if(exportInfo.exportType == 2 && exportInfo.selectOption == 2){
+        if(exportInfo.exportType == 2){
+          this.exportInfo.dimensionalityData = [];
           this.$refs["dimensionSelectRef"] && this.$refs["dimensionSelectRef"].getData();
         }
       })
@@ -162,7 +173,6 @@ export default {
       let selectOption = exportInfo.selectOption;
       let dimensionalityData = exportInfo.dimensionalityData;
       let warn = "";
-      console.log("exportInfo", exportInfo)
       switch(exportInfo.exportType){
         case 1:
           if(!(selectModel instanceof Array && selectModel.length > 0)){
@@ -212,6 +222,15 @@ export default {
               return data || {};
           }
       });
+    },
+    getDimensionData(e){
+      if(e&&e.length==0){
+        this.exportInfo.selectOption = 1
+      }
+      this.dimensionData = e || [];
+    },
+    selectReset(){
+
     }
   }
 }

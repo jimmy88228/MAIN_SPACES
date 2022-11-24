@@ -158,7 +158,6 @@ export default {
       initFirst && this.$refs["dimensionSelectRef"] && this.$refs["dimensionSelectRef"].getData();
     },
     getDimension(){
-      console.log('getDimensiongetDimension')
       this.$nextTick(()=>{
         let exportInfo = this.exportInfo || {};
         if(exportInfo.exportType == 2){

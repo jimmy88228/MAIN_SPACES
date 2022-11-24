@@ -280,6 +280,7 @@ export default {
                 _items = items;
             }
             this.dataList = _items;
+            this.$emit("getData", this.dataList);
             if (type == "init") {
                 typeof this.initCallback == "function" &&
                     this.initCallback(JSON.parse(JSON.stringify(_items)));
