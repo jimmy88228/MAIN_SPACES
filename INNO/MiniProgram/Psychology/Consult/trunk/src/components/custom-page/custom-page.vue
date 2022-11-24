@@ -1,0 +1,175 @@
+<template>
+  <view :class="['custom-page-area',fullScreen?'fullScreen':'']" :style="pageStyle">
+    <page-nav v-if="isShowNav" :scroll-height="scrollHeight" :isTransparent="isTransparent" :full="full" :mode="navMode">
+      <view slot="title" class="clamp2" v-if="isShowTitle && layoutSetting.isShowNav && pageData.pageName">{{pageData.pageName}}</view>
+    </page-nav>
+    <view class="custom-page-content">
+      <view v-for="(item, index) in moduleList" :key="index">
+        <moduleContain
+          :contain-conf="item.setting"
+          v-if="item.setting.is_enable == 1"
+        >
+          <template v-if="item.moduleType == 'IMAGE-AD'">
+            <imageAd :module-info="item"></imageAd>
+          </template>
+        
+          <template v-else-if="item.moduleType == 'USER-HEADER'">
+            <userHeader :module-info="item" :userInfo="userInfo"></userHeader>
+          </template>
+          <template v-else-if="item.moduleType == 'USER-SERVICE'">
+            <userService :is-commissioner="isCommissioner" :module-info="item" :userInfo="userInfo"></userService>
+          </template>
+          <template v-else-if="item.moduleType == 'AUDIO-MD'">
+            <audioMd :module-info="item"></audioMd>
+          </template>
+
+          <template v-else-if="item.moduleType == 'ARTICLE-MD'">
+            <articleMd :module-info="item"></articleMd>
+          </template>
+
+          <template v-else-if="item.moduleType == 'VIDEO-MD'">
+              <videoMd :module-info="item"></videoMd>
+          </template>
+
+          <template v-else-if="item.moduleType == 'RICH-TEXT-MD'">
+              <richTextMd :module-info="item"></richTextMd>
+          </template>
+           <template v-else-if="item.moduleType == 'BROADCAST-MD'">
+              <stationBroadcasting :module-info="item"></stationBroadcasting>
+          </template>
+          
+        </moduleContain>
+      </view>
+    </view>
+    <support-area class="support-area-module" v-if="isShowSupport"></support-area>
+  </view>
+</template>
+
+<script>
+import moduleContain from "./module/module-contain/module-contain.vue";
+import imageAd from "./module/image-ad/image-ad.vue";
+import userHeader from "./module/user-header/user-header.vue";
+import userService from "./module/user-service/user-service.vue";
+import audioMd  from "./module/audio-md/audio-md.vue"
+import videoMd  from "./module/video-md/video-md.vue"
+import articleMd  from "./module/article-md/article-md.vue"
+import richTextMd  from "./module/rich-text-md/rich-text-md.vue"
+import stationBroadcasting  from "./module/station-broadcasting/station-broadcasting.vue"
+const pageOption = Page.BasePage({
+  name: "custom-page",
+  components: {
+    moduleContain,
+    imageAd,
+    userHeader,
+    userService,
+    audioMd,
+    videoMd,
+    articleMd,
+    richTextMd,
+    stationBroadcasting
+  },
+  props: {
+    userInfo: {
+      type: Object,
+      default: () => {},
+    },
+    holdNav: {
+      type: Boolean,
+      default: false,
+    },
+    navIsTransparent:{
+      type: Boolean,
+      default: false
+    },
+    navFull:{
+      type:Boolean,
+      default:false
+    },
+    isShowNav: {
+      type: Boolean,
+      default: true,
+    },
+    navMode: String,
+    isCommissioner:{
+      type:Boolean,
+      default:false
+    },
+    isShowTitle:{
+      type:Boolean,
+      default:true
+    },
+    isShowSupport:{
+      type:Boolean,
+      default:false
+    },
+    fullScreen:{
+      type:Boolean,
+      default:true
+    }
+  },
+  data() {
+    return {
+      layoutSetting: {},
+      moduleList: [],
+      pageName: "",
+      pageData: {},
+    };
+  },
+  computed: {
+    pageStyle() {
+      let layoutSetting = this.layoutSetting || {};
+      let pageStyle = "";
+      let backgroundColor = layoutSetting.backgroundColor || "#FAFAFA";
+      pageStyle += "background-color:" + backgroundColor + ";";
+      if (layoutSetting.backgroundImage) {
+        pageStyle += "background-image:url(" + layoutSetting.backgroundImage + ");";
+        pageStyle += "background-repeat: no-repeat;";
+        pageStyle += "background-size: 100% auto;";
+        pageStyle += "background-position: center " +  layoutSetting.backgroundPosition + ";";
+      }
+      return pageStyle;
+    },
+    isTransparent(){ //navIsTransparent传参控制 || setting控制
+      let layoutSetting = this.layoutSetting || {};
+      return this.navIsTransparent || !layoutSetting.isShowNav || false;
+    },
+    full(){ //navFull传参控制 || setting控制
+      let layoutSetting = this.layoutSetting || {};
+      return this.navFull || !layoutSetting.isShowNav || false;
+    },
+  },
+  methods: {
+    initData(pageData) {
+      pageData = pageData || {};
+      this.pageData = pageData;
+      this.layoutSetting = pageData.layoutSetting || {};
+      this.moduleList = pageData.moduleList || [];
+    },
+  },
+  // watch: {
+  //   userInfo: {
+  //     handler(newVal, oldVal) {
+  //       console.log(newVal, "发生了变化custom-page");
+  //     },
+  //     deep: true,
+  //     immediate: true,
+  //   },
+  // },
+});
+export default pageOption;
+</script>
+
+<style lang="less" scoped>
+.custom-page-area {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  position:relative;
+  &.fullScreen{
+    min-height: 100vh;
+  }
+}
+.custom-page-content{
+  flex: 1;
+}
+</style>
