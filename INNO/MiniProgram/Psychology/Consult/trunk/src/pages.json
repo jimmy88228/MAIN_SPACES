@@ -150,7 +150,7 @@
 			}
 		},
 		{
-			"path": "pages/counseling/counselor/counselor",
+			"path": "pages/counseling/reserve-info/reserve-info",
 			"style": {
 				"navigationBarTitleText": "",
 				"enablePullDownRefresh": false
@@ -171,7 +171,14 @@
 			}
 		},
 		{
-			"path": "pages/counseling/room/room",
+			"path": "pages/counseling/room/client",
+			"style": {
+				"navigationBarTitleText": "",
+				"enablePullDownRefresh": false
+			}
+		},
+		{
+			"path": "pages/counseling/room/counselor",
 			"style": {
 				"navigationBarTitleText": "",
 				"enablePullDownRefresh": false

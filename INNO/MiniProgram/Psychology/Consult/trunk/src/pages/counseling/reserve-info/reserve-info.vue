@@ -1,14 +1,14 @@
 <template>
-    <div class="reserve-record flex flex-col">
-        <page-nav></page-nav>
-        <search-box></search-box>
-        <list class="list" :listData="listData"></list>
+    <div class="reserve-info flex flex-col">
+        <page-nav isHideHome></page-nav>
+        <msg-detail class="msg-detail"></msg-detail>
+        <list type="counselor" class="list" :listData="listData"></list>
     </div>
 </template>
 
 <script>
-import searchBox from './cps/search-box.vue';
-import list from "../reserve-info/cps/list.vue";
+import MsgDetail from "./cps/msg-detail.vue";
+import list from "./cps/list.vue";
 const pageOption = Page.BasePage({
     data() {
         return {
@@ -32,23 +32,22 @@ const pageOption = Page.BasePage({
     },
     components: {
         list,
-        searchBox
+        MsgDetail
     },
 })
 export default pageOption
 </script>
 
 <style lang="scss" scoped>
-.reserve-record{
-    padding: 30rpx;
-    box-sizing: border-box;
+.reserve-info{
     height: 100vh;
     background: #F7F7F7;
     .msg-detail{ 
     }
     .list{
         flex: 1;
-        padding-top: 25rpx;
+        padding: 25rpx;
+        box-sizing: border-box;
     }
 }
 </style>
