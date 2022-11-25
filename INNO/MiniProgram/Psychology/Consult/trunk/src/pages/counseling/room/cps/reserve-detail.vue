@@ -116,6 +116,9 @@ export default pageOption
                 top:0;
                 left: 0;
                 z-index: 2;
+                &.active{
+                    background-color: #39CA2D;
+                }
             }
             .img-user{
                 width: 100%;
@@ -128,16 +131,16 @@ export default pageOption
                     font-size: 22rpx;
                     margin-bottom: 10rpx;
                 }
-                .user-state{
-                    font-size: 20rpx;
-                    background-color: #B2B2B2;
-                    &.active{
-                        background-color: #21B014;
-                    }
-                }
                 
             }
         } 
+        .user-state{
+            font-size: 20rpx;
+            color: #B2B2B2;
+            &.active{
+                color: #21B014;
+            }
+        }
     }
 }
 </style> 

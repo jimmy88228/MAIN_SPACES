@@ -1,10 +1,12 @@
 <template>
     <div class="room flex flex-col">
-        <page-nav></page-nav>
-        <reserve-detail :roomInfo="roomInfo"></reserve-detail>
-        <div class="btn-box flex-c-c">
-            <div class="btn flex-c-c" @click="enter">发起咨询</div>
-        </div>
+        <page-nav>预约信息</page-nav>
+        <reserve-detail :roomInfo="roomInfo"></reserve-detail> 
+        <safe-area areaType="paddingBottom" class="btn-box flex-c-c">
+            <div class="btn-css flex-c-c">
+                <div class="btn flex-c-c" @click="enter">发起咨询</div>
+            </div>
+        </safe-area>
     </div>
 </template>
 
