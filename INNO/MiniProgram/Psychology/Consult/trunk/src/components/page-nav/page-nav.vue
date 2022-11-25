@@ -13,6 +13,7 @@
         </view>
         <view :style="{'opacity':bgOpacity}" style="transition: 0.5s all;" class="text-overflow-2 title-content" :class="[hasBack?'with-back':'']">
           <slot name="title"></slot>
+          <slot></slot>
         </view>
       </view>
     </view>

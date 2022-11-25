@@ -17,7 +17,7 @@
             </div>
             <div class="user-info">
                 <div class="name">{{userInfo.name||''}}</div>
-                <div class="room-state" :class="{active:userInfo.state == 1}">{{userState[userInfo.state]}}</div>
+                <div class="user-state" :class="{active:userInfo.state == 1}">{{userState[userInfo.state]}}</div>
             </div>
          </div>
     </div>  
@@ -49,7 +49,7 @@ const pageOption = Page.BaseComp({
                 2:"进行中",
                 3:"已结束",
             },
-            roomState:{
+            userState:{
                 0:"不在房间",
                 1:"在线"
             }
@@ -128,7 +128,7 @@ export default pageOption
                     font-size: 22rpx;
                     margin-bottom: 10rpx;
                 }
-                .room-state{
+                .user-state{
                     font-size: 20rpx;
                     background-color: #B2B2B2;
                     &.active{

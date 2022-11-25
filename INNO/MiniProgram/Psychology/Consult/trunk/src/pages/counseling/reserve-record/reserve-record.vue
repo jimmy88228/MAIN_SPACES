@@ -1,6 +1,6 @@
 <template>
     <div class="reserve-record flex flex-col">
-        <page-nav></page-nav>
+        <page-nav>预约记录</page-nav>
         <search-box></search-box>
         <list class="list" :listData="listData"></list>
     </div>

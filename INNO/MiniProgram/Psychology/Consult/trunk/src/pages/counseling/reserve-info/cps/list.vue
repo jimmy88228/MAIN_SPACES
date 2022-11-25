@@ -6,7 +6,7 @@
                 <div v-for="(item,index) in listData" :key="index" class="list-item flex-s-e">
                     <div class="msg-box">
                         <div class="type-box flex-s-c">
-                            <image class="img-type m-r-10" mode="aspectFit"></image>
+                            <image class="img-type m-r-10" mode="aspectFit" src=""></image>
                             <div class="m-r-10">{{nameKey[item.type] || ""}}</div>
                             <div class="state" :class="{active:item.state == 2}">{{stateKey[item.state] || ""}}</div>
                         </div>
@@ -18,7 +18,7 @@
                             <span>{{item.source||""}}</span>
                         </div>
                     </div>
-                    <div v-if="!item.isHideRoom" class="btn flex-c-c" :class="{disabled:item.state!=2}" hover-class="none">进入房间</div>
+                    <div v-if="!item.isHideRoom" class="btn flex-c-c" :class="{disabled:item.state!=2}" hover-class="none" @click="jump">进入房间</div>
                 </div>
             </div>
         </ori-scroll-view>
@@ -51,6 +51,11 @@ const pageOption = Page.BaseComp({
             type: Array,
             default: ()=>[]
         },
+    },
+    methods: {
+        jump(e) {
+            this.jumpAction(`/pages/counseling/room/counselor?id=${e.id}`)
+        }
     },
 })
 export default pageOption

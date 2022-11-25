@@ -1,84 +1,81 @@
 <template>
-    <div class="search-box flex-c-c" @click="dismiss">
-        <div class="search-list flex-s-c">
-            <div class="search-item flex-c-c" :class="{active:item.id == curId}" v-for="item in searchList" :key="item.id" @click="stateChange(item.id)">
+    <div class="search-box flex-s-c">
+        <!-- <div class="search-list flex-s-c">
+            <div class="search-item flex-c-c" :class="{active:item.id == curId}" v-for="item in stateList" :key="item.id" @click="stateChange(item.id)">
                 <div>{{item.text}}</div>
             </div>
-        </div>
-        <div class="source-box f-shrink-0 flex-1 flex-e-c">
-            <div class="m-r-15 font-20">来源</div>
-            <div class="select-box" :style="''">
-                <div class="select-view flex-s-c" @click.stop="toggle">
-                    <div class="select-text text-overflow">{{curSource.text}}</div>
-                    <div class="arrow"></div>
-                </div>
-                <template v-if="sourceBool">
-                    <ori-scroll-view class="list-box" :style="'height:' + (sourceList.length>3?240:sourceList.length*80) + 'rpx;'" :class="sourceBool?'active':''">
-                        <div class="list-item flex-s-c" @click.stop="sourceSelect(item)" v-for="item in sourceList" :key="item.id">
-                            <div class="source-text">{{item.text}}</div>
-                        </div>
-                    </ori-scroll-view>
-                </template>
-            </div>
+        </div> -->
+        <div class="source-box flex-s-c m-r-15">
+            <custom-select @change="e=>change(e,'curStateSelect')" class="custom-select" :curSelect="curStateSelect" :list="stateList" :scrollViewStyle="'height:' + (stateList.length>3?240:stateList.length*80) + 'rpx;'">
+                <div slot="tip" class="m-l-20 font-20">状态</div>
+            </custom-select>
+        </div> 
+        <div class="source-box flex-s-c">
+            <custom-select @change="e=>change(e,'curSourceSelect')" class="custom-select" :cur-select="curSourceSelect" :list="sourceList" :scrollViewStyle="'height:' + (sourceList.length>3?240:sourceList.length*80) + 'rpx;'">
+                <div slot="tip" class="m-l-20 font-20">来源</div>
+            </custom-select>
         </div>
     </div>  
 </template>
 
 <script>
-import oriScrollView from "@/components/ori-comps/scroll/ori-scroll-view.vue"
+import customSelect from "@/components/custom-cps/custom-select";
+
 const pageOption = Page.BaseComp({
     data() {
         return {
-            searchList:[{
+            stateList:[{
                 id:0,
-                text:"全部",
+                title:"全部",
             },{
                 id:1,
-                text:"已结束",
+                title:"已结束",
             },{
                 id:2,
-                text:"待开始",
+                title:"待开始",
             }],
             sourceList:[{
                 id:0,
-                text:"全部",
+                title:"全部",
             },{
                 id:1,
-                text:"测试1",
+                title:"测试1",
             },{
                 id:2,
-                text:"测试2",
+                title:"测试2",
             },{
                 id:3,
-                text:"测试3",
+                title:"测试3",
             }],
-            curId:0,
-            curSource:{
-                id:0,
-                text    :"全部"
-            },
-            sourceBool:false
+            curSourceSelect:{},
+            curStateSelect:{},
             
         }
     },
     components: {
-        oriScrollView,
+        customSelect
     },
     methods: {
-        toggle() {
-            this.sourceBool = !this.sourceBool;
-        },
-        sourceSelect(e){
-            console.log(e);
-            this.curSource = e;
-            this.dismiss();
-        },
-        stateChange(id){
-            this.curId = id;
-        },
-        dismiss(){
-            this.sourceBool = false;
+        // toggle() {
+        //     this.sourceBool = !this.sourceBool;
+        // },
+        // sourceSelect(e){
+        //     console.log(e);
+        //     this.curSelect = e;
+        //     this.dismiss();
+        // },
+        // stateChange(id){
+        //     this.curId = id;
+        // },
+        // dismiss(){
+        //     this.sourceBool = false;
+        // }
+        change(e,key){
+            this[key] = e;
         }
+    },
+    mounted() {
+        console.log('curSourceSelectcurSourceSelect',this.curSourceSelect)
     },
 })
 export default pageOption
@@ -137,7 +134,15 @@ export default pageOption
             }
         }
     }
-
+    .select-box-bg{
+        position: fixed;
+        left: 0;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        z-index: 98;
+        background-color: transparent;
+    }
     .list-box{
         width: 100%;
         // height: 300rpx;
@@ -160,6 +165,11 @@ export default pageOption
         }
     }
 
+    .custom-select{
+        width: 236rpx;
+        height: 60rpx;
+    }
+
 }
 @keyframes toggleAnim {
     0%{
@@ -170,18 +180,3 @@ export default pageOption
     }
 }
 </style>
-
-<!-- <div class="source-box flex-1 flex-s-c">
-    <div>来源</div>
-    <div class="select-box" :style="''">
-        <div class="select-view">
-            <div>{{curSource.text}}</div>
-            <div class="arrow"></div>
-        </div>
-                    <div class="list-box" :class="sourceBool?'active':''">
-                        <div class="list-item" @click.stop="sourceSelect" v-for="item in sourceList" :key="item.id">
-                            <div class="source-text">{{item.text}}</div>
-                        </div>
-                    </div>
-    </div>
-</div> -->

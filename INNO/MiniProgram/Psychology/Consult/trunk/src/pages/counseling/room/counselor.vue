@@ -1,22 +1,26 @@
 <template>
     <div class="room flex flex-col">
-        <page-nav></page-nav>
+        <page-nav>预约信息</page-nav>
         <reserve-detail :roomInfo="roomInfo"></reserve-detail>
         <div class="box">
             <div class="m-b-30">咨询者问题描述</div>
             <text>{{roomInfo.description||''}}</text>
         </div>
-        <div class="btn-box flex-c-c">
-            <div class="btn flex-c-c" @click="enter">进入咨询</div>
-        </div>
+        <safe-area areaType="paddingBottom" class="btn-box flex-c-c">
+            <div class="btn-css flex-c-c">
+                <div class="btn flex-c-c" @click="enter">进入咨询</div>
+            </div>
+        </safe-area>
     </div>
 </template>
 
 <script>
 import reserveDetail from "./cps/reserve-detail.vue"
+import safeArea from "@/components/safe-area/index.vue"
 const pageOption = Page.BasePage({
     components:{
-        reserveDetail
+        reserveDetail,
+        safeArea
     },
     data() {
         return {
