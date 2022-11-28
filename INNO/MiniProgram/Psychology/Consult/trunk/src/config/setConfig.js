@@ -15,7 +15,7 @@ const allBrandConfig = {
 		dev: {
 			appCode: "SURVEY_INNO",
 			appType: "edu",
-			staticConfig: "https://psyimage.innourl.com/v/asset/consult/general/static",
+			staticConfig: "https://psyimage.innourl.com/v/asset/eap/general/static",
 			"apiDomain": {
 				"USERAPI": "https://eapapi.innourl.com",
 				"REGAPI": "https://eapapi.innourl.com",
