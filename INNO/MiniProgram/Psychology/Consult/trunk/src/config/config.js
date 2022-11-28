@@ -36,4 +36,5 @@ config.platformSrc = "H5"
 config.platformSrc = "WXAPP"
 // #endif
 config = setConfig(config, brandConfig);
+console.log('config',config)
 export default config;

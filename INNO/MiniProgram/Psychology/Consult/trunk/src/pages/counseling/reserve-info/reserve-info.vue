@@ -34,6 +34,9 @@ const pageOption = Page.BasePage({
         list,
         MsgDetail
     },
+    mounted() {
+        console.log('看看',this.staticAddress)
+    },
 })
 export default pageOption
 </script>

@@ -15,7 +15,7 @@ const allBrandConfig = {
 		dev: {
 			appCode: "SURVEY_INNO",
 			appType: "edu",
-			staticConfig: "https://psyimage.innourl.com/v/asset/eap/general/static",
+			staticConfig: "https://psyimage.innourl.com/v/asset/consult/general/static",
 			"apiDomain": {
 				"USERAPI": "https://eapapi.innourl.com",
 				"REGAPI": "https://eapapi.innourl.com",
@@ -329,5 +329,68 @@ const allBrandConfig = {
 			}
 		}
 
-	}
+	},
+	// 英朗
+	CONSULT: {
+		dev: {
+			appCode: "SURVEY_INNO",
+			appType: "edu",
+			staticConfig: "https://psyimage.innourl.com/v/asset/consult/general/static",
+			"apiDomain": {
+				"USERAPI": "https://eapapi.innourl.com",
+				"REGAPI": "https://eapapi.innourl.com",
+				"WECHATAPI": "https://eapapi.innourl.com",
+				"EDEAPI": "https://eapapi.innourl.com",
+				"EVALUATEAPI": "https://eapapi.innourl.com",
+				"PAGEAPI": "https://eapapi.innourl.com",
+				"RESOURCEAPI": "https://eapapi.innourl.com",
+				"CONSULTANTAPI": "https://eapapi.innourl.com",
+				"COMMONAPI": "https://eapapi.innourl.com",
+				"SUPERVISIONAPI": "https://eapapi.innourl.com",
+				"SUPERVISORAPI": "https://eapapi.innourl.com",
+				"WARNINGAPI": "https://eapapi.innourl.com",
+				"ARCHIVESAPI": "https://eapapi.innourl.com",
+				"COMMISSIONERAPI": "https://eapapi.innourl.com",
+				"GAMEAPI": "https://eapapi.innourl.com",
+				"AUTHAPI": "https://eapapi.innourl.com",
+				"TREEHOLEAPI": "https://eapapi.innourl.com",
+				"PSYSERVICEAPI": "https://eapapi.innourl.com",
+				"FUNTESTAPI": "https://eapapi.innourl.com",
+				"SPECIALSECTIONAPI": "https://eapapi.innourl.com",
+				"EXAMAPI": "https://eapapi.innourl.com",
+				"COURSEAPI": "https://eapapi.innourl.com",
+				"LOGAPI": "https://eapapi.innourl.com/log",
+			}
+		},
+		prod: {
+			appCode: "SURVEY_INNO",
+			appType: "eap",
+			staticConfig: "https://psyimage.innourl.com/v/asset/eap/general/static",
+			"apiDomain": {
+				"USERAPI": "https://psyapi.innourl.com",
+				"REGAPI": "https://psyapi.innourl.com",
+				"WECHATAPI": "https://psyapi.innourl.com",
+				"EDEAPI": "https://psyapi.innourl.com",
+				"EVALUATEAPI": "https://psyapi.innourl.com",
+				"PAGEAPI": "https://psyapi.innourl.com",
+				"RESOURCEAPI": "https://psyapi.innourl.com",
+				"CONSULTANTAPI": "https://psyapi.innourl.com",
+				"COMMONAPI": "https://psyapi.innourl.com",
+				"SUPERVISIONAPI": "https://psyapi.innourl.com",
+				"SUPERVISORAPI": "https://psyapi.innourl.com",
+				"WARNINGAPI": "https://psyapi.innourl.com",
+				"ARCHIVESAPI": "https://psyapi.innourl.com",
+				"COMMISSIONERAPI": "https://psyapi.innourl.com",
+				"GAMEAPI": "https://psyapi.innourl.com",
+				"AUTHAPI": "https://psyapi.innourl.com",
+				"TREEHOLEAPI": "https://psyapi.innourl.com",
+				"PSYSERVICEAPI": "https://psyapi.innourl.com",
+				"LOGAPI": "https://ylpsyvsapi.innourl.com/eap",
+				"FUNTESTAPI": "https://psyapi.innourl.com",
+				"SPECIALSECTIONAPI": "https://psyapi.innourl.com",
+				"EXAMAPI": "https://psyapi.innourl.com",
+				"COURSEAPI": "https://psyapi.innourl.com",
+			}
+		} 
+	},
 }

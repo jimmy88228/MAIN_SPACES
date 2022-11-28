@@ -6,8 +6,8 @@
                 <div v-for="(item,index) in listData" :key="index" class="list-item flex-s-e">
                     <div class="msg-box">
                         <div class="type-box flex-s-c">
-                            <image class="img-type m-r-10" mode="aspectFit" src=""></image>
-                            <div class="m-r-10">{{nameKey[item.type] || ""}}</div>
+                            <image class="img-type m-r-10" mode="aspectFit" :src="staticAddress + typeKey[item.type].img"></image>
+                            <div class="m-r-10">{{typeKey[item.type].name || ""}}</div>
                             <div class="state" :class="{active:item.state == 2}">{{stateKey[item.state] || ""}}</div>
                         </div>
                         <div class="time-box m-b-15">
@@ -18,7 +18,7 @@
                             <span>{{item.source||""}}</span>
                         </div>
                     </div>
-                    <div v-if="!item.isHideRoom" class="btn flex-c-c" :class="{disabled:item.state!=2}" hover-class="none" @click="jump">进入房间</div>
+                    <div v-if="!item.isHideRoom" class="btn flex-c-c" :class="{disabled:item.state!=2}" hover-class="none" @click="jump(item)">进入房间</div>
                 </div>
             </div>
         </ori-scroll-view>
@@ -27,15 +27,22 @@
 
 <script>
 import oriScrollView from "@/components/ori-comps/scroll/ori-scroll-view.vue"
+const App = getApp();
 const pageOption = Page.BaseComp({
     components: {
         oriScrollView,
     },
     data() {
         return {
-            nameKey: {
-                video:"视频咨询",
-                audio:"语音咨询",
+            typeKey: {
+                video:{
+                    name:"视频咨询",
+                    img:"/common/camera.png"
+                },
+                audio:{
+                    name:"语音咨询",
+                    img:"/common/voice.png"
+                },
             },
             stateKey:{
                 0:"已关闭",
@@ -54,7 +61,13 @@ const pageOption = Page.BaseComp({
     },
     methods: {
         jump(e) {
-            this.jumpAction(`/pages/counseling/room/counselor?id=${e.id}`)
+            if(e.state == 2){
+                this.jumpAction(`/pages/counseling/room/counselor?id=${e.id}`)
+            }else{
+                App.SMH.showToast({
+                    title:"无法进入该房间"
+                })
+            }
         }
     },
 })
@@ -90,8 +103,8 @@ export default pageOption
                     margin-bottom: 25rpx;
                     font-size: 20rpx;
                     .img-type{
-                        width: 19rpx;
-                        height: 19rpx;
+                        width: 20rpx;
+                        height: 20rpx;
                     }
                     .state{
                         font-size: 16rpx;

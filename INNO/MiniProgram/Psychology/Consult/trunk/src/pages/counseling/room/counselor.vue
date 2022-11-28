@@ -6,21 +6,19 @@
             <div class="m-b-30">咨询者问题描述</div>
             <text>{{roomInfo.description||''}}</text>
         </div>
-        <safe-area areaType="paddingBottom" class="btn-box flex-c-c">
-            <div class="btn-css flex-c-c">
-                <div class="btn flex-c-c" @click="enter">进入咨询</div>
-            </div>
-        </safe-area>
+        <consultBtn @enter="enter">进入咨询</consultBtn>
     </div>
 </template>
 
 <script>
-import reserveDetail from "./cps/reserve-detail.vue"
+import reserveDetail from "./cps/reserve-detail.vue";
+import consultBtn from "./cps/consult-btn.vue";
 import safeArea from "@/components/safe-area/index.vue"
 const pageOption = Page.BasePage({
     components:{
         reserveDetail,
-        safeArea
+        safeArea,
+        consultBtn
     },
     data() {
         return {

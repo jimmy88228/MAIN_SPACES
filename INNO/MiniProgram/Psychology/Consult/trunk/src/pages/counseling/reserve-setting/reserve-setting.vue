@@ -6,11 +6,13 @@
             <div class="list-box">
                 <div class="list m-b-10 flex-b-c" v-for="(item) in listData" :key="item.id">
                     <div class="msg-box flex-c-c">
-                        <image :src="item.src" class="img-logo m-r-30" mode="aspectFit"></image>
+                        <image :src="staticAddress + keyType[item.type].img" class="img-logo m-r-30" mode="aspectFit"></image>
                         <div>{{item.title}}</div>
                     </div>
-                    <div class="switch-box" :class="{active:item.state == 1}" @click="toggle(item)">
-                        <div class="switch"></div>
+                    <div class="switch-area"  @click="toggle(item)">
+                        <div class="switch-box" :class="{active:item.state == 1}">
+                            <div class="switch"></div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -30,11 +32,21 @@ const pageOption = Page.BasePage({
                 id:0,
                 title:"视频咨询",
                 state:0,
+                type:"video",
             },{
                 id:1,
                 title:"语音咨询",
                 state:1,
-            }]
+                type:"audio"
+            }],
+            keyType:{
+                video:{
+                    img:"/common/camera-v2.png"
+                },
+                audio:{
+                    img:"/common/voice-v2.png"
+                },
+            }
         }
     },
     components: { 
@@ -61,12 +73,15 @@ export default pageOption
             height: 100rpx;
             background: #FFFFFF;
             border-radius: 10rpx;
-            padding:0 44rpx;
+            padding:0 14rpx 0 44rpx;
             box-sizing: border-box;
         }
         .img-logo{
             width: 32rpx;
             height: 32rpx;
+        }
+        .switch-area{
+            padding: 30rpx;
         }
         .switch-box{
             width: 50rpx;

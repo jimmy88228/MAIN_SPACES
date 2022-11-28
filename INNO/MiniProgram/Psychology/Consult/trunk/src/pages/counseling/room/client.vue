@@ -2,19 +2,17 @@
     <div class="room flex flex-col">
         <page-nav>预约信息</page-nav>
         <reserve-detail :roomInfo="roomInfo"></reserve-detail> 
-        <safe-area areaType="paddingBottom" class="btn-box flex-c-c">
-            <div class="btn-css flex-c-c">
-                <div class="btn flex-c-c" @click="enter">发起咨询</div>
-            </div>
-        </safe-area>
+        <consultBtn @enter="enter">发起咨询</consultBtn>
     </div>
 </template>
 
 <script>
 import reserveDetail from "./cps/reserve-detail.vue"
+import consultBtn from "./cps/consult-btn.vue"; 
 const pageOption = Page.BasePage({
     components:{
-        reserveDetail
+        reserveDetail,
+        consultBtn
     },
     data() {
         return {

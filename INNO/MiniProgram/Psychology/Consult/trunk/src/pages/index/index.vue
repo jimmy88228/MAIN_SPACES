@@ -66,6 +66,9 @@
 </script>
 
 <style lang="scss">
+page { 
+    font-family: KAITI;
+}
 	.index-page {
 		.main-points {
 			margin-top: 200rpx;

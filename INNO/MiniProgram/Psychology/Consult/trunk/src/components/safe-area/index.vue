@@ -40,10 +40,10 @@ const pageOption = Page.BaseComp({
     areaType: {
       handler(nV) {
         if (nV == "bottom") {
-        this.safeAreaStyle = `bottom:calc(${this.safeArea.bottom + 'px + ' + this.extra + 'rpx'});`;
+        this.safeAreaStyle = `bottom:calc(${this.safeArea.bottom + 'px + ' + this.extra + 'rpx'});left:0;`;
         }
         if (nV == "top") {
-          this.safeAreaStyle = `top:calc(${this.safeArea.bottom + 'px + ' + this.extra + 'rpx'});`;
+          this.safeAreaStyle = `top:calc(${this.safeArea.bottom + 'px + ' + this.extra + 'rpx'});left:0;`;
         }
         if (nV == "paddingBottom") {
           this.safeAreaStyle = `padding-bottom:calc(${this.safeArea.bottom + 'px + ' + this.extra + 'rpx'});`;
