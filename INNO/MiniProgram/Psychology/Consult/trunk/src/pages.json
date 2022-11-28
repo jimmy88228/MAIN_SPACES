@@ -183,6 +183,20 @@
 				"navigationBarTitleText": "",
 				"enablePullDownRefresh": false
 			}
+		},
+		{
+			"path": "pages/counseling/reserve-time/reserve-time",
+			"style": {
+				"navigationBarTitleText": "",
+				"enablePullDownRefresh": false
+			}
+		},
+		{
+			"path": "pages/counseling/edit-reserve-time/edit-reserve-time",
+			"style": {
+				"navigationBarTitleText": "",
+				"enablePullDownRefresh": false
+			}
 		}
 	],
 	"subPackages": [{
