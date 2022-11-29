@@ -11,10 +11,10 @@
                  <div class="empty-area" v-if="!searchData || searchData.length == 0">暂无匹配数据</div>
             </template>
             <template v-else> 
-                <div class="search-item flex-s-c" :class="[ids.indexOf(Number(item.id)) != -1 ? 'selected' : '']" v-for="(item) in (inputVal?searchData:list)" :key="item.id">
+                <div class="search-item flex-s-c" :class="[ids.indexOf(Number(item[valueKey])) != -1 ? 'selected' : '']" v-for="(item) in (inputVal?searchData:list)" :key="item[valueKey]">
                 <div>
                     <Checkbox 
-                    :value="ids.indexOf(Number(item.id)) != -1" 
+                    :value="ids.indexOf(Number(item[valueKey])) != -1" 
                     @on-change="(state)=>onSelect(state, item)" 
                     class="flex-s-c checkBox" 
                     style="width:100%;">
@@ -91,7 +91,7 @@ export default {
         if(bool){
             this.selectData.push(data);
         }else{
-            let index = this.selectData.findIndex(item=>item.id == data.id);
+            let index = this.selectData.findIndex(item=>item[this.valueKey] == data[this.valueKey]);
             console.log('index',index)
             this.$delete(this.selectData,index);
         }

@@ -4,6 +4,12 @@
       <div class="overview-operates text-r p-b-10" v-if="_structureType == 'edu_school' && !isDataCockpit">
         <Button @click="exportData" type="primary" >导出数据</Button>
       </div>
+      <div class="overview-operates text-r p-b-10" v-if="_structureType == 'edu_school' && !isDataCockpit">
+        <div class="flex-s-c">
+          <Button @click="exportGroup" type="primary" class="m-r-20">生成团报</Button>
+          <Button @click="exportData" type="primary" >导出数据</Button>
+        </div>
+      </div>
       <div class="activity-overview-top">
         <div class="activity-overview-info" v-if="!!activityInfo">
           <div class="activity-name">
@@ -151,6 +157,7 @@ export default {
       activityInfo: {},
       pageLoad: true,
       isDataCockpit: false,
+      selectData:[]
     };
   },
   mounted() {
@@ -290,7 +297,30 @@ export default {
     },
     exportData(){
       this.$refs["exportSurveyRef"] && this.$refs["exportSurveyRef"].showModal();
-    }
+    },
+    exportGroup(){ 
+      this.$UIModule({
+          mode:"list-modal",
+          props:{
+              multiple:true,
+              title:"团报",
+              type:"groupReport",
+              nameKey:"class_name",
+              valueKey:"class_id",
+              params:{
+                activityid: this.activityId,
+                school_id: this.pageQuery.schoolId || 0,
+                page:1,
+                pageSize:2000,
+              }
+          },
+          options: this.selectData||[],
+          success:(data)=>{
+              console.log('selectData',data)
+              this.selectData = data;
+          }
+      });
+    },
   },
 };
 </script>

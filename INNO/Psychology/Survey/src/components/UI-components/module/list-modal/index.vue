@@ -12,7 +12,7 @@
         <p class="area-title">已选{{title}}：</p>
         <div class="area-cont" v-bar>
           <div class="p-r-10">
-            <div class="select-item flex-b-c" v-for="(item, index) in selectData" :key="item.id">
+            <div class="select-item flex-b-c" v-for="(item, index) in selectData" :key="item[valueKey]">
               <p class="text-flow text-r">
                 {{item[nameKey]}}
               </p>
@@ -55,6 +55,7 @@ export default {
     },
     type:String,
     isPaging: Boolean,
+    params:Object
   },
   data() {
     return {
@@ -74,7 +75,6 @@ export default {
       this.selectData = data;
     },
     removeSelect(index){
-        console.log('removeSelect',index)
         this.$delete(this.selectData,index);
     },
     getData(){
@@ -88,44 +88,46 @@ export default {
     loadData() {
         if (this.type) {
             let req = "",
-                params = {};
+                params = this.params || {};
             switch (this.type) {
                 case "inventory":
-                    req = "inventoryComponentList";
-                    params = {};
+                    req = "inventoryComponentList"; 
+                    break; 
+                case "groupReport": //团报
+                    req = "assessmentTasksScheduleList"; 
                     break; 
                 default:
                     break;
             }
             this.getDataReq(req, params).then(res=>{
-                console.log('then list',res,this.dataList);
                 this.sumList = this.dataList||[];
-                this.refactor();
+                // this.refactor();
                 if(this.isPaging){
                     params.pageIndex = 1;
                     params.pageSize = 2000;
                     this.getDataReq(req, params, 'all').then(res=>{
                         this.sumList = res||[];
-                        this.refactor();
+                        // this.refactor();
                     })
                 }
             });
         }
     }, 
     refactor(){
-        if(this.selectData.length>0){
+        if(this.selectData.length>0){ 
             let obj = {};
             this.sumList.forEach(item=>{
-                obj[this.valueKey] = {...item};
+                obj[item[this.valueKey]] = {...item};
             })
-            this.selectData.map(item=>{
-                if(obj[item[this.valueKey]]){ 
-                    return {
-                        ...obj[item[this.valueKey]]
-                    }
-                }else{
-                    return {}
+            this.selectData = this.selectData.map(item=>{
+              if(obj[item[this.valueKey]]){ 
+                return {
+                  ...obj[item[this.valueKey]],
+                  ...item,
                 }
+              }else{
+                return {}
+              }
             })
         }
     },
@@ -135,7 +137,7 @@ export default {
         return DataH.getDataReq(this.type)
             .then((data) => {
                 let items = data.items || [];
-                this.handleData(items);
+                return this.handleData(items);
             })
             .catch(() => {
                 return this.getDataHold(req, params)
@@ -174,6 +176,9 @@ export default {
     },
     handleData(items, type,dataType) {
         let _items = [];
+        if(this.type == 'groupReport'){
+          items = this.getGroupReportItems(items);
+        }
         if (type == "init") {
             if (!(items instanceof Array) && items instanceof Object) {
                 for (let i in items) {
@@ -195,6 +200,12 @@ export default {
         dataType != 'all' && (this.dataList = _items);
         console.log('this.dataList',this.dataList)
         return _items
+    },
+    getGroupReportItems(items){
+      let arr = items && items.map(item=>{
+        return {...(item.get_edu_class||{})}
+      });
+      return arr||{};
     },
   },
 };
