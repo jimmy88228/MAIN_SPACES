@@ -1,0 +1,107 @@
+<template>
+    <Modal :value="isShow" @input="input" :title="'编辑账号'" class-name="modal-center" footer-hide transfer>
+        <div class="dialog-edit-group center">
+            <div class="dialog-edit-item">
+                <span class="name">账号名：</span>
+                <Input
+                    v-focusNext="{ref:'password'}"
+                    class="cev"
+                    v-model="userName"
+                    :disabled="loading"
+                    :maxlength="16"
+                    autocomplete="off"
+                    :clearable="!loading"
+                ></Input>
+            </div>
+            <div class="dialog-edit-item">
+                <span class="name">密码：</span>
+                <div class="cev">
+                    <Input
+                        ref="password"
+                        v-focusNext="{action:'submit'}"
+                        :type="showPwd?'text':'password'"
+                        v-model="password"
+                        :disabled="loading"
+                        :maxlength="16"
+                        autocomplete="off"
+                        :clearable="!loading"
+                    ></Input>
+                </div>
+                <Button class="eye-btn" @mousedown.native="e=>showPwd=true" @mouseup.native="e=>showPwd=false" :disabled="loading">
+                    <i class="iconfont" :class="showPwd?'icon-pw-show':'icon-pw-hide'"></i>
+                </Button>
+            </div>
+        </div>
+        <div class="cev-toolbar end flex-fixed">
+            <Button size="large" type="primary" @click="submit">确认</Button>
+        </div>
+    </Modal>
+</template>
+<script>
+import StringHelper from "@/helper/utils/string-util";
+import { MainApi } from "@/helper/manager/http-manager";
+import BaseDialog from "@/support/components/dialog/base-dialog";
+import LM from "@/helper/manager/login-manager";
+export default {
+    name: "AdminEditDialog",
+    extends: BaseDialog,
+    data() {
+        return {
+            showPwd: false,
+            loading: false,
+            password: "",
+            userName: ""
+        };
+    },
+    methods: {
+        setData({ adminId, userName }) {
+            this.adminId = adminId || 0;
+            this.userName = userName || "";
+            this.password = "";
+            return this;
+        },
+        submit() {
+            let data = {};
+            data.id = this.adminId;
+            if (StringHelper.trim(this.userName)) {
+                data.userName = this.userName;
+            }
+            if (StringHelper.trim(this.password)) {
+                data.password = this.password;
+            }
+            this.loading = true;
+            MainApi.postAdminUpdate({
+                data: data
+            })
+                .then(res => {
+                    if (res.code === "1") {
+                        this.dismiss();
+                        this.$Message.info("修改成功，请重新登陆");
+                        LM.logout().then(() =>
+                            this.$router.push({ name: "Login" })
+                        );
+                    } else {
+                        return Promise.reject(res.msg);
+                    }
+                })
+                .catch(msg => {
+                    if (StringHelper.trim(msg)) {
+                        this.$Message.error(msg || "修改失败");
+                    }
+                })
+                .finally(() => {
+                    this.loading = false;
+                });
+        }
+    }
+};
+</script>
+<style lang="less" scoped>
+    .eye-btn {
+        height: 32px;
+        width: 32px;
+        margin-left: 5px;
+        padding: 0;
+        line-height: 32px;
+    }
+</style>

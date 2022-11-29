@@ -1,0 +1,83 @@
+<template>
+    <rewrite-area>
+        <Form class="no-tip flex-b-c" inline>
+            <div class="flex">
+                <FormItem :label-width="0">
+                  <rewrite-search v-model="searchForm.petitioner" @search="search" placeholder="请输入名称搜索"></rewrite-search>
+                </FormItem>
+                <FormItem label="资费方式" :label-width="100">
+                  <Select v-model="searchForm.payType" @on-change="search">
+                      <Option v-for="(item, index) in payTypeList" :key="item.key" :value="item.key">{{item.name}}</Option>
+                  </Select>
+                </FormItem>
+                <FormItem label="咨询结果" :label-width="100">
+                  <Select v-model="searchForm.consultation_result" @on-change="search">
+                      <Option v-for="(item, index) in consultationList" :key="item.key" :value="item.key">{{item.name}}</Option>
+                  </Select>
+                </FormItem>
+            </div>
+            <!-- <div class="flex">
+                <Button @click="batch" v-hasAction="true">批量处理</Button>
+            </div> -->
+        </Form>
+    </rewrite-area>
+</template>
+
+<script>
+export default {
+    name: "subscribeSearchForm",
+    data() {
+        return {
+            payTypeList: [
+                {
+                    key: "all",
+                    name: "全部"
+                },
+                {
+                    key: "self",
+                    name: "自费"
+                },
+                {
+                    key: "company",
+                    name: "报销"
+                }
+            ],
+            consultationList: [
+                {
+                    key: -1,
+                    name: "全部"
+                },
+                {
+                    key: 0,
+                    name: "待处理"
+                },
+                {
+                    key: 1,
+                    name: "已处理"
+                },
+                {
+                    key: 2,
+                    name: "已拒绝"
+                }
+            ]
+        };
+    },
+    props: {
+        searchForm: {
+            type: Object,
+            default: () => ({}),
+        },
+    },
+    methods: {
+        search() {
+            this.$emit("search");
+        },
+        // batch(){
+        //     this.$emit("batch")
+        // }
+    },
+};
+</script>
+
+<style>
+</style>

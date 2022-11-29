@@ -1,0 +1,188 @@
+<template>
+  <div class="audio-edit-form flex">
+    <Form :label-width="100" style="width:auto;" :model="formData" ref="formDataRef" :rules="ruleValidate">
+      <FormItem label="上传音频">
+        <Button type="primary">重新上传</Button>
+        <p class="">音频原标题</p>
+      </FormItem>
+      <FormItem label="音频名称" prop="name">
+        <Input size="large" class="base-320" v-model="formData.name" :show-word-limit="true" :maxlength="30"></Input>
+      </FormItem>
+      <FormItem label="音频封面" prop="class_name">
+        <img-view uploadType="audio" :img="formData.coverImg" @selectImg="(data)=>{ selectImg(data, 'coverImg') }" :width="87" @delImg="formData.coverImg = ''"></img-view>
+        <p class="desc-notice">建议尺寸：800像素 * 800像素，图片大小不得超过 2M</p>
+      </FormItem>
+      <FormItem label="音频背景" prop="class_name">
+        <img-view uploadType="audio" :img="formData.bgImg" @selectImg="(data)=>{ selectImg(data, 'bgImg') }" width="89" height="116" @delImg="formData.bgImg = ''"></img-view>
+        <p class="desc-notice">建议尺寸：600像素 * 1300像素，图片大小不得超过 3M</p>
+      </FormItem>
+      <FormItem label="音频分组" prop="campus_id">
+        <data-select size="large" class="base-320" v-model="formData.campus_id" :schoolId="formData.school_id" @changeData=""></data-select>
+      </FormItem>
+      <FormItem label="" >
+        <Button style="padding: 0px 30px;" type="primary" @click="confirm">确 认</Button>
+      </FormItem>
+    </Form>
+    <div class="audio-preview">
+      <div class="preview-item" :class="isDetail ? 'preview-item-detail' : ''">
+        <div class="preview-title">音频封面详情效果</div>
+        <div class="preview-cont" :style="isDetail ? 'background-image:url('+ formData.bgImg +');' : ''">
+          <div class="preview-backdrop" v-if="!isDetail">
+            <img :src="formData.coverImg"/>
+          </div>
+          <div class="cont-main">
+            <p class="text-flow">{{formData.name}}</p>
+            <img :src="formData.coverImg" v-if="!isDetail"/>
+          </div>
+          <operateBar style="position:absolute; left:0px;bottom:0px; width:100%;"></operateBar>
+        </div>
+      </div>
+    </div>
+  </div>
+</template>
+
+<script>
+import operateBar from "../components/operate-bar.vue";
+export default {
+  components: { operateBar },
+  data() {
+    return {
+      formData: {
+        name: "亚马逊森林助眠音乐",
+        coverImg: "https://fc3tn.baidu.com/it/u=2331523043,512279637&fm=202&src=801",
+        bgImg: "https://gimg2.baidu.com/image_search/src=http%3A%2F%2Fp0.itc.cn%2Fq_70%2Fimages03%2F20200803%2F2333e4a52e4a46899278a356649cb54c.jpeg&refer=http%3A%2F%2Fp0.itc.cn&app=2002&size=f9999,10000&q=a80&n=0&g=0n&fmt=auto?sec=1654744879&t=2659acb1e61591fc3762a33325b9db83"
+      },
+      ruleValidate: {
+        grade_id: [
+          {
+            required: true,
+            validator: this._checkInt,
+            trigger: "blur",
+            message: "请选择年级",
+          },
+        ],
+        class_name: [
+          {
+            required: true,
+            validator: this._checkString,
+            message: "请填写班级",
+            trigger: "blur",
+          },
+        ],
+        campus_id: [
+          {
+            required: true,
+            validator: this._checkThanInt,
+            message: "请选择校区",
+            trigger: "blur",
+          },
+        ],
+      },
+    };
+  },
+  computed:{
+    isDetail(){
+      return this.formData.bgImg
+    }
+  },
+  methods: {
+    selectImg(data, key){
+      console.log("selectImg",data);
+      this.formData[key] = data;
+    },
+    confirm(){
+      this.$refs["formDataRef"].validate((valid) => {
+          if (valid) {
+
+          } else {
+              this.$Message.error('请完善相关信息');
+          }
+      })
+    }
+  }
+};
+</script>
+
+<style lang="less" scoped>
+.audio-edit-form{
+  .audio-preview{
+    display: flex;
+    padding-left: 10%;
+    .preview-item{
+      padding: 0px 10px;
+    }
+    .preview-title{
+      font-size: 13px;
+      font-family: PingFangSC-Regular, PingFang SC;
+      font-weight: 400;
+      color: #7F7F7F;
+      line-height: 18px;
+      margin-bottom: 10px;
+    }
+    .preview-cont{
+      width:300px;
+      height: 533px;
+      border: 1px solid #eee;
+      background-color:#FCFCFC;
+      position: relative;
+      overflow: hidden;
+      background-repeat:no-repeat;
+      background-size: 100% auto;
+      background-position: center center;
+      .preview-backdrop{
+        position:absolute;
+        top:0px;
+        left: 0px;
+        width:100%;
+        height:100%;
+        -webkit-filter: blur(90px);   
+        filter: blur(90px);
+        overflow: hidden;
+        img{
+          position:absolute;
+          top: 30%;
+          left: 50%;
+          transform: translate(-50%, -50%);
+          width:150%;
+        }
+      }
+      .preview-backdrop::after{
+        content: '';   
+        position: absolute;   
+        top: 0;
+        right: 0;
+        bottom: 0; 
+        left: 0;
+        opacity: 0.5;
+        -webkit-filter: blur(100px);   
+        filter: blur(100px);
+        background-color:#fff;
+      }
+      .cont-main{
+        position: absolute;
+        top: 90px;
+        left: 50%;
+        transform: translateX(-50%);
+        font-family: PingFangSC-Regular, PingFang SC;
+        p{
+          margin-bottom: 10px;
+          font-size: 14px;
+        }
+        img{
+          width: 120px;
+          display: block;
+          margin: 0 auto;
+        }
+      }
+    }
+    .preview-item-detail{
+      .cont-main{
+        p{
+          color:#efefef;
+        }
+        
+      }
+    }
+  }
+}
+</style>

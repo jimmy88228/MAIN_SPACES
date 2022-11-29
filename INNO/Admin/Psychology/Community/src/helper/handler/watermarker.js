@@ -1,0 +1,108 @@
+import Vue from "vue";
+
+const WaterMarkHelper = new Vue({
+  data(){
+    return {
+      imgSrc: "",
+      translateR: 0,
+    }
+  },
+  methods: {
+    watermark(str) {
+      this.$nextTick(()=>{
+        setTimeout(()=>{
+          this.createWatermark(str);
+        },350)
+      })
+    },
+    createWatermark(str){
+      if(!str) return;
+      let fontSize = 20, rotate = 45, actualRotate = 20; // 实际角度
+      let body = document.getElementById("cp-box");
+      if(!body) return;
+      let span = null;
+      let spanElems = body.getElementsByClassName("watermark-div-str");
+      if(spanElems.length > 0){
+        span = spanElems[0] || {}
+        span.innerHTML = str;
+      } else { // 由于canvas获取文字宽高不准确，增加span元素获取具体文字宽高
+        span = document.createElement('span') || {};
+        span.style.fontSize = fontSize + "px";
+        span.className = "watermark-div-str watermark-item";
+        span.style.display = "inline-block";
+        span.style.opacity = 0;
+        span.style.position = "absolute";
+        span.style.left = "0";
+        span.style.left = "0";
+        span.innerHTML = str;
+        span.style.transform = "translateX(-100%)";
+        body.appendChild(span);
+      }
+      let strL = 20, strT = 10;
+      let textW = span.clientWidth + (strL * 4);
+      let textH = span.clientHeight;
+      let canvas = null;
+      let canvasElem = body.getElementsByClassName("watermark-canvas");
+      if(canvasElem.length > 0){
+        canvas = canvasElem[0];
+      } else {
+        canvas = document.createElement('canvas');
+        canvas.className = "watermark-canvas watermark-item";
+        canvas.style.display='none';
+      }
+      canvas.width = this.hypotenuse(textW, rotate).b; //画布的宽
+      canvas.height = this.hypotenuse(textW, rotate).a; //画布的高度
+      if(canvasElem.length == 0) body.appendChild(canvas);
+      // 
+      let canvass = canvas.getContext('2d');
+      canvass.font = "bold "+ fontSize +"px arial"; //画布里面文字的字体
+      canvass.textBaseline = 'top'; //画布里面文字的垂直位置
+      canvass.rotate(-rotate * Math.PI / 180); //画布里面文字的旋转角度
+      canvass.fillStyle = "rgba(17, 17, 17, 0.50)";//画布里面文字的颜色
+      canvass.textAlign = 'left'; //画布里面文字的水平位置
+      canvass.fillText(str, -(textW / 2) + strL, textW / 2 - textH / 2); //画布里面文字的间距比例
+      this.imgSrc = canvas.toDataURL("image/png");
+      let canvasWatermark = document.getElementsByClassName("watermark-div");
+      if(canvasWatermark.length > 0){
+          canvasWatermark[0].style.background = "url(" + this.imgSrc + ")";
+          return;
+      }
+      let div = document.createElement("div");
+      div.className = "watermark-div watermark-item";
+      div.style.zIndex = 1000;
+      div.style.position =  "absolute";
+      div.style.top =  "0px";
+      div.style.left =  "0px";
+      div.style.right =  "0px";
+      div.style.bottom =  "0px";
+      div.style.pointerEvents =  "none";
+      div.style.overflow = "hidden";
+      div.style.opacity = "0.5";
+      this.translateR = rotate - actualRotate;
+      div.innerHTML = "<div style='position: absolute; top: 50%;left: 50%; width: 150%; height: 150%;background: url(" + this.imgSrc + ");opacity: 0.15; transform:translate(-50%, -50%) rotate(" + this.translateR + "deg);'></div>";
+      body.appendChild(div)
+    },
+    clearmark(){
+      this.$nextTick(()=>{
+        let body = document.getElementById("cp-box");
+        if(!body) return;
+        let watermarkItem = body.getElementsByClassName("watermark-item");
+        if(watermarkItem.length > 0){
+          watermarkItem.map((item)=>{
+            item.remove();
+          })
+        }
+      })
+    },
+    hypotenuse(long,angle){
+      //获得弧度
+      var radian = 2*Math.PI/360*angle;
+      return {
+          a:Math.sin(radian) * long,//邻边
+          b:Math.cos(radian) * long//对边
+      };
+    }
+  }
+})
+
+export default WaterMarkHelper;
