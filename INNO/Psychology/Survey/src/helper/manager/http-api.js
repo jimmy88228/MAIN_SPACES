@@ -350,6 +350,10 @@ export const componentsApi = {
         u:"/pt_v1/custom/getWarningModelList",
         m: "post"
     },
+    putLog:{
+        u:"/pt_v1/custom/putLog",
+        m: "post"
+    }
 }
 
 export const studentFileApi= {

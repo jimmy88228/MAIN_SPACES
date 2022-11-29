@@ -7,8 +7,8 @@
           <img class="range-item-icon" src="@/assets/images/ought_member.png"/>
           <div class="range-item-val">{{totalUserInfo.total_users}}</div>
           <div class="">
-            <p class="flex-e-c m-t-10 m-b-10">平台学生累计 {{totalUserInfo.total_student}}</p>
-            <p class="flex-e-c m-t-10 m-b-10">平台老师累计 {{totalUserInfo.total_teacher}}</p>
+            <p class="flex-b-c m-t-10 m-b-10">平台学生累计 {{totalUserInfo.total_student}}</p>
+            <p class="flex-b-c m-t-10 m-b-10">平台老师累计 {{totalUserInfo.total_teacher}}</p>
           </div>
         </div>
       </div>
@@ -17,23 +17,17 @@
         <div class="flex-s-c range-item-cont">
           <img class="range-item-icon" src="@/assets/images/join_member.png" />
           <div class="range-item-val">{{summaryRecordInfo.rerord_count}}</div>
-          <div class="">
-            <template>
-              <p class="flex-e-c m-t-10 m-b-10" v-if="parseFloat(summaryRecordInfo.last_rand) < 0">较昨日减少 {{summaryRecordInfo.last_rand}}
-                <span class="fall m-l-20" v-if="parseFloat(summaryRecordInfo.last_rand) < 0"></span>
+          <div >
+              <p class="flex-b-c m-t-10 m-b-10">
+                较昨日{{parseFloat(summaryRecordInfo.last_rand) >= 0 ? '新增' : '减少'}} 
+                {{parseFloat(summaryRecordInfo.last_rand) ? Math.abs(parseFloat(summaryRecordInfo.last_rand)) + '%' : ' - -'}}
+                <span class="trend m-l-20" :class="getTrendClass(summaryRecordInfo.last_rand)"></span>
               </p>
-              <p class="flex-e-c m-t-10 m-b-10" v-else>较昨日新增 {{summaryRecordInfo.last_rand}}
-                <span class="rise m-l-20"  v-if="parseFloat(summaryRecordInfo.last_rand) > 0"></span>
+              <p class="flex-b-c m-t-10 m-b-10">
+                较上周{{parseFloat(summaryRecordInfo.week_rand) >= 0 ? '新增' : '减少'}} 
+                {{parseFloat(summaryRecordInfo.week_rand) ? Math.abs(parseFloat(summaryRecordInfo.week_rand)) + '%' : ' - -'}}
+                <span class="trend m-l-20" :class="getTrendClass(summaryRecordInfo.week_rand)"></span>
               </p>
-            </template>
-            <template>
-              <p class="flex-e-c m-t-10 m-b-10" v-if="parseFloat(summaryRecordInfo.week_rand) < 0">较上周减少 {{summaryRecordInfo.week_rand}}
-                <span class="fall m-l-20" v-if="parseFloat(summaryRecordInfo.week_rand) < 0"></span>
-              </p>
-              <p class="flex-e-c m-t-10 m-b-10" v-else>较上周新增 {{summaryRecordInfo.week_rand}}
-                <span class="rise m-l-20" v-if="parseFloat(summaryRecordInfo.week_rand) > 0"></span>
-              </p>
-            </template>
           </div>
         </div>
       </div>
@@ -43,14 +37,16 @@
           <img class="range-item-icon" src="@/assets/images/ought_member.png" />
           <div class="range-item-val">{{warningRecordInfo.warning_count}}</div>
           <div class="">
-            <template>
-              <p class="flex-e-c m-t-10 m-b-10" v-if="parseFloat(warningRecordInfo.last_rand) < 0">较昨日减少 {{warningRecordInfo.last_rand}} <span class="rise m-l-20" v-if="parseFloat(warningRecordInfo.last_rand) < 0"></span></p>
-              <p class="flex-e-c m-t-10 m-b-10" v-else>较昨日新增 {{warningRecordInfo.last_rand}} <span class="rise m-l-20" v-if="parseFloat(warningRecordInfo.last_rand) > 0"></span></p>
-            </template>
-            <template>
-              <p class="flex-e-c m-t-10 m-b-10" v-if="parseFloat(warningRecordInfo.week_rand) < 0">较上周减少 {{warningRecordInfo.week_rand}} <span class="rise m-l-20" v-if="parseFloat(warningRecordInfo.week_rand) < 0"></span></p>
-              <p class="flex-e-c m-t-10 m-b-10" v-else>较上周新增 {{warningRecordInfo.week_rand}} <span class="rise m-l-20" v-if="parseFloat(warningRecordInfo.week_rand) > 0"></span></p>
-            </template>
+            <p class="flex-b-c m-t-10 m-b-10">
+              较昨日{{parseFloat(warningRecordInfo.last_rand) >= 0 ? '新增' : '减少'}} 
+              {{parseFloat(warningRecordInfo.last_rand) ? Math.abs(parseFloat(warningRecordInfo.last_rand)) + '%' : ' - -'}}
+              <span class="trend m-l-20" :class="getTrendClass(warningRecordInfo.last_rand)"></span>
+            </p>
+            <p class="flex-b-c m-t-10 m-b-10">
+              较上周{{parseFloat(warningRecordInfo.week_rand) >= 0 ? '新增' : '减少'}} 
+              {{parseFloat(warningRecordInfo.week_rand) ? Math.abs(parseFloat(warningRecordInfo.week_rand)) + '%' : ' - -'}}
+              <span class="trend m-l-20" :class="getTrendClass(warningRecordInfo.week_rand)"></span>
+            </p>
           </div>
         </div>
       </div>
@@ -128,6 +124,11 @@ export default {
       handler(nV){
         if(nV instanceof Array){
           let gradeJson = [], gradeData = [];
+          this.totalCount = {
+            totalWarn:0,
+            totalHealth: 0,
+            totalUser: 0
+          }
           for(let i = 0; i < nV.length; i++){
             let item = nV[i] || {};
             let grade_name = item.grade_name || '未知年级';
@@ -156,6 +157,7 @@ export default {
             this.totalCount.totalHealth += healthCount;
             this.totalCount.totalUser += userCount;
           }
+          console.log("gradeData", JSON.parse(JSON.stringify(gradeData)));
           // 
           try {
             gradeData.sort((a, b)=>{
@@ -179,6 +181,7 @@ export default {
               lastUser = lastUser - parseFloat(item.userPercent)
             }
           })
+          
           this.cockpitDataView = gradeData;
         }
       },
@@ -187,6 +190,13 @@ export default {
     }
   },
   methods:{
+    getTrendClass(val){
+      if(parseFloat(val) > 0){
+        return 'rise'
+      } else if(parseFloat(val) < 0){
+        return 'fall'
+      }
+    },
     setPercent(val, total){
       if(!total){
         return "0.0%";

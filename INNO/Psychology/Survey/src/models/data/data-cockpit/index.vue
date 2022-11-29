@@ -1,11 +1,11 @@
 <template>
   <div class="cockpit-area data-cockpit-area">
     <div class="inline-b cockpit-area-header">
-      <div class="flex-s-c">
+      <div class="flex-s-c w-nowrap">
         数据概况
         <p class="m-l-15" style="color:#5A5672;">统计时间 {{searchForm.to_date}}</p>
       </div>
-      <div class="cockpit-structure">{{_structureName}}</div>
+      <div class="cockpit-structure w-nowrap">{{_structureName}}</div>
       <div class="inline-b">
         <data-select 
         class="cockpit-select"
@@ -115,6 +115,9 @@ export default {
       this.searchForm.to_date = dataUtil.format(new Date(new Date().getTime() - (1000 * 60 * 60 * 24)), 'yyyy-MM-dd HH:mm')
     },
     loadData(){
+      // if(!this.loading){
+      //   this.loading = true;
+      // }
       return this.$MainApi.dataDriveCompartment({
           data: {
               ...this.searchForm,
@@ -135,6 +138,10 @@ export default {
               this.organizeData = JSON.parse(JSON.stringify(data.itmes || []));
               this.cockpitData = JSON.parse(JSON.stringify(data.itmes || []));
           }
+      }).finally(()=>{
+        // if(this.loading){
+        //   this.loading = false;
+        // }
       })
     },
     getModelData(){
@@ -158,7 +165,6 @@ export default {
       })
     },
     getCampusData(data){
-      console.log("data", data)
       this.campusData = data || [];
     },
     getOverview(detail){
@@ -190,11 +196,34 @@ export default {
   .bg-2{
     background: linear-gradient(180deg, #2D2B83 0%, #14134C 100%);
   }
-  .rise{
+  .trend{
+    padding: 3px;
     width: 20px;
     height: 20px;
     display: inline-block;
     position:relative;
+    overflow: hidden;
+  }
+  .trend:before{
+    content: '';
+    display: block;
+    width: 100%;
+    height: 100%;
+    border-radius: 100%;
+    background-color: #4B439E;
+  }
+  .trend:after{
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 40%;
+    height: 2px;
+    background-color: #fff;
+  }
+  .rise{
+    padding: 0px;
   }
   .rise:before{
     content: "";
@@ -205,30 +234,34 @@ export default {
     border: 5px solid #2BB026;
     border-color: transparent transparent #2BB026 transparent;
     margin-top: -2px;
+    background: none;
+    border-radius: 0;
   }
   .rise:after{
+    position: static;
     content: "";
     display: block;
     margin: 0 auto;
     width: 4px;
     height: 8px;
+    transform: unset;
     background-color:#2BB026;
+    border-radius: 0;
   }
   .fall{
-    width: 20px;
-    height: 20px;
-    display: inline-block;
-    position:relative;
-    overflow: hidden;
+    padding: 0px;
   }
   .fall:before{
+    position: static;
     content: "";
     display: block;
     margin: 0 auto;
     width: 4px;
     height: 8px;
     margin-top: 4px;
+    transform: unset;
     background-color:#E50111;
+    border-radius: 0;
   }
   .fall:after{
     content: "";
@@ -238,6 +271,10 @@ export default {
     height: 0px;
     border: 5px solid #E50111;
     border-color:#E50111 transparent transparent  transparent;
+    background: none;
+    border-radius: 0;
+    position: static;
+    transform: unset;
   }
   .warning:before{
     content: "";
@@ -274,6 +311,7 @@ export default {
     margin-bottom: 5px;
   }
   .cockpit-select{
+    min-width: 120px;
     .cockpit-select-prefix{
       color: #fff;
       font-size: 12px;
@@ -341,6 +379,7 @@ export default {
     line-height: 53px;
     letter-spacing: 4px;
     margin: 14px 0px 24px 0px;
+    width: 0;
   }
   //
   .data-main{

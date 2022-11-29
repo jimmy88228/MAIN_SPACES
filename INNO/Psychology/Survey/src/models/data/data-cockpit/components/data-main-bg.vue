@@ -1,6 +1,6 @@
 <template>
   <div class="data-middle-view">
-    <div class="data-middle-chart" id="organize-chart"></div>
+    <div class="data-middle-chart" :class="{'chart-loading': chartLoading}" id="organize-chart"></div>
   </div>
 </template>
 
@@ -43,6 +43,7 @@ export default {
           colorType: "radial",
           shadow: true,
           HollowColor: "#06002A",
+          lineColor: "#E76A2B",
           itemTargetColor: "#F56E2E",
           lineTargetColor: "#40AE36",
           fontFamily: "Futura-MediumItalic, Futura"
@@ -53,6 +54,7 @@ export default {
           color: "#C6F974",
           colorType: "radial",
           shadow: true,
+          lineColor: "#16901F",
           itemTargetColor: "#18921F",
           lineTargetColor: "#1EB593",
           fontFamily: "Futura-MediumItalic, Futura"
@@ -60,6 +62,7 @@ export default {
         "2": {
           z: 2,
           symbolSize: 50,
+          lineColor: "#179878",
           color: "#1EB593",
           HollowColor: "#06002A"
         },
@@ -68,7 +71,8 @@ export default {
         //   symbolSize: 40,
         //   color: "#1FB795"
         // }
-      }
+      },
+      chartLoading: false
     }
   },
   methods: {
@@ -175,7 +179,7 @@ export default {
           dataIndex = _data.length - 1;
           totalUsers[_id] = 0
         }
-        totalUsers[_id] += parseInt(item.male_users) + parseInt(item.female_users)
+        totalUsers[_id] += parseInt(item.male_users) + parseInt(item.female_users) + parseInt(item.unknown_gender_users)
       }
       // 赋值总数
       for(let i = 0; i < _data.length; i++){
@@ -200,17 +204,28 @@ export default {
               this.organizeChart ||
               echarts.init(document.getElementById("organize-chart"));
       }
+      this.chartLoading = true;
       let option = {
-        tooltip: {},
         grid: {
           containLabel: true
         },
+        animation: true,
         animationDuration: 1500,
-        animationEasingUpdate: 'quinticInOut',
+        animationDurationUpdate: 500,
+        animationEasing: 'cubicInOut',
+        animationEasingUpdate: 'cubicInOut',
+        animationThreshold: 2000,
+        tooltip: {
+          trigger: 'item'
+        },
         series: [
           {
             type: 'graph',
             layout: 'force',
+            smooth: true,
+            labelLayout: {
+              hideOverlap: true
+            },
             data: data.map((item)=>{
               if(item.id == 'bg'){
                 item.emphasis = {
@@ -266,26 +281,43 @@ export default {
                 item.label = {
                   show: false
                 }
+                item.tooltip = {
+                  show: false,
+                  formatter:()=>{
+                    return '';
+                  }
+                }
+              } else {
+                item.label = {
+                  show: true
+                }
+                item.tooltip = {
+                borderColor: item.color,
+                formatter: (params)=>{
+                  let data = params.data || {};
+                  if(data.id == 'bg') return '';
+                  return data.name + '： '  + data.value
+                }
+                }
               }
               return item;
             }),
             links: links.map((item)=>{
               item.lineStyle = {
                 width: 5 - item.category,
-                color: item.lineTargetColor
-                // (item.color && item.lineTargetColor) ? {
-                //       type: 'linear',
-                //       x: 0,
-                //       y: 0,
-                //       x2: 0,
-                //       y2: 1,
-                //       colorStops: [{
-                //           offset: 0, color: item.itemTargetColor
-                //       }, {
-                //           offset: 1, color: item.lineTargetColor
-                //       }],
-                //       global: false
-                //     } : item.color || '',
+                color: (item.color && item.lineTargetColor) ? {
+                      type: 'linear',
+                      x: 0,
+                      y: 0,
+                      x2: 0,
+                      y2: 1,
+                      colorStops: [{
+                          offset: 0, color: item.itemTargetColor
+                      }, {
+                          offset: 1, color: item.lineTargetColor
+                      }],
+                      global: false
+                    } : item.color || '',
               }
               return item;
             }),
@@ -306,23 +338,16 @@ export default {
             },
             emphasis: {
               // focus: 'adjacency',
-              blurScope: 'global'
+              blurScope: 'global',
               // disabled: true,
             },
-            tooltip: {
-              formatter: (params)=>{
-                let data = params.data || {};
-                if(data.id == 'bg') return '';
-                return data.name + '： '  + data.value
-              }
-            },
             label: {
+              show: true,
               align: 'center',
               fontFamily: 'PingFangSC-Medium, PingFang SC',
               formatter: (params )=>{
                 let data = params.data || {};
                 let str = '{a' + data.category + '|' + data.name + '}\n{b' + data.category +'|' + data.value + '}';
-                // console.log("str", str)
                 return str
               },
               rich: {
@@ -368,12 +393,19 @@ export default {
                   fontSize: 12,
                 }
               },
-              show: true,
+              
             }
           },
         ]
       };
-      this.organizeChart.setOption(option, true);
+      this.organizeChart.setOption(option, {notMerge: true});
+      this.$nextTick(()=>{
+        setTimeout(()=>{
+          this.chartLoading = false;
+          this.organizeChart.setOption(option);
+        }, 300)
+      })
+      
     }
   },
   mounted(){},
@@ -404,9 +436,11 @@ export default {
   .data-middle-chart{
     width:100%;
     height: 100%;
-    // background-image:url("@/assets/images/cockpit/cockpit_bg.png");
-    // background-repeat: no-repeat;
-    // background-position: center center;
+    opacity: 1;
+    transition: opacity .35s;
+  }
+  .chart-loading{
+    opacity: 0.8;
   }
 }
 </style>

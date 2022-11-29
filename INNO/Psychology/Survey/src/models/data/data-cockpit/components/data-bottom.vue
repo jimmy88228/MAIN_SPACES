@@ -1,28 +1,37 @@
 <template>
-  <div class="gender-data flex-a-c bg-1">
+  <div class="gender-data  bg-1">
     <div class="gender-data-tip item-tip">平台用户性别分布</div>
-    <div class="flex-s-c gender-data-cont">
-      <div class="flex-s-c gender-data-item">
-        <Icon type="md-man" :size="66" color="#0AAD91"/>
-        <div>
-          <span class="gender-percen">{{genderInfoView.maleRatio}}</span>
-          <p class="gender-val-txt">共 <span class="gender-val">{{genderInfoView.total_male_users}}</span> 人</p>
+    <div class="flex-a-c">
+      <div class="flex-s-c gender-data-cont">
+        <div class="flex-s-c gender-data-item">
+          <Icon type="md-man" :size="66" color="#0AAD91"/>
+          <div>
+            <span class="gender-percen">{{genderInfoView.maleUserRatio}}</span>
+            <p class="gender-val-txt">男生共 <span class="gender-val">{{genderInfoView.total_male_users}}</span> 人</p>
+          </div>
+        </div>
+        <div class="flex-s-c gender-data-item">
+          <Icon type="md-woman" :size="66" color="#F53D9E"/>
+          <div>
+            <span class="gender-percen">{{genderInfoView.femaleUserRatio}}</span>
+            <p class="gender-val-txt">女生共 <span class="gender-val">{{genderInfoView.total_female_users}}</span> 人</p>
+          </div>
+        </div>
+        <div class="flex-s-c gender-data-item">
+          <Icon class="p-10" type="md-help-circle" :size="50" color="#70B4D0"/>
+          <div>
+            <span class="gender-percen">{{genderInfoView.unKnowUserRatio}}</span>
+            <p class="gender-val-txt">未知共 <span class="gender-val">{{genderInfoView.total_unknown_gender_users}}</span> 人</p>
+          </div>
         </div>
       </div>
-      <div class="flex-s-c gender-data-item">
-        <Icon type="md-woman" :size="66" color="#F53D9E"/>
-        <div>
-          <span class="gender-percen">{{genderInfoView.femaleRatio}}</span>
-          <p class="gender-val-txt">共 <span class="gender-val">{{genderInfoView.total_female_users}}</span> 人</p>
+      <div class="flex-s-c">
+        <div class="gender-chart" id="healthy-chart">
+
         </div>
-      </div>
-    </div>
-    <div class="flex-s-c">
-      <div class="gender-chart" id="healthy-chart">
+        <div class="gender-chart" id="risk-chart">
 
-      </div>
-      <div class="gender-chart" id="risk-chart">
-
+        </div>
       </div>
     </div>
   </div>
@@ -51,13 +60,33 @@ export default {
     genderInfo:{
       handler(nV, oV){
         this.$nextTick(()=>{
-          if(nV.total_users){
-            nV.maleRatio = (Number(nV.total_male_users || 0) / Number(nV.total_users) * 100).toFixed(1);
-            nV.femaleRatio = (100 - parseFloat(nV.maleRatio)).toFixed(1) + '%'
+          nV = JSON.parse(JSON.stringify(nV));
+          let totalUser = parseInt(nV.total_unknown_gender_users) + parseInt(nV.total_female_users) + parseInt(nV.total_male_users);
+          if(totalUser){
+            nV.maleUserRatio = this.getPercent(nV.total_male_users, totalUser) + '%';
+            nV.femaleUserRatio = this.getPercent(nV.total_female_users, totalUser) + '%';
+            nV.unKnowUserRatio = (100 - parseFloat(nV.maleUserRatio) - parseFloat(nV.femaleUserRatio)).toFixed(1) + '%'
           } else {
-            nV.maleRatio = nV.femaleRatio = '0%';
+            nV.unKnowUserRatio = nV.maleUserRatio = nV.femaleUserRatio = '0%';
+          }
+          let totalHealth = parseInt(nV.total_health_unknown_gender) + parseInt(nV.total_health_female_users) + parseInt(nV.total_health_male_users);
+          if(totalHealth){
+            nV.maleHealthRatio = this.getPercent(nV.total_health_male_users, totalHealth) + '%';
+            nV.femaleHealthRatio = this.getPercent(nV.total_health_female_users, totalHealth) + '%';
+            nV.unKnowHealthRatio = (100 - parseFloat(nV.maleHealthRatio) - parseFloat(nV.femaleHealthRatio)).toFixed(1) + '%'
+          } else {
+            nV.unKnowHealthRatio = nV.maleHealthRatio = nV.femaleHealthRatio = '0%';
+          }
+          let totalWarn = parseInt(nV.total_warning_unknown_gender) + parseInt(nV.total_warning_female_users) + parseInt(nV.total_warning_male_users);
+          if(totalWarn){
+            nV.maleWarnRatio = this.getPercent(nV.total_warning_male_users, totalWarn) + '%';
+            nV.femaleWarnRatio = this.getPercent(nV.total_warning_female_users, totalWarn) + '%';
+            nV.unKnowWarnRatio = (100 - parseFloat(nV.maleWarnRatio) - parseFloat(nV.femaleWarnRatio)).toFixed(1) + '%'
+          } else {
+            nV.unKnowWarnRatio = nV.maleWarnRatio = nV.femaleWarnRatio = '0%';
           }
           this.genderInfoView = nV;
+          console.log('nV', nV)
           this.initChart(nV);
         })
       },
@@ -66,6 +95,12 @@ export default {
     }
   },
   methods: {
+    getPercent(val, total){
+      if(!total){
+        return 0
+      }
+      return (parseInt(val || 0) / parseInt(total) * 100).toFixed(1);
+    },
     initChart(data) {
       this.initHealthyChart(data);
       this.initRiskChart(data);
@@ -78,7 +113,21 @@ export default {
       }
       let option = {
         tooltip: {
-          trigger: 'item'
+          show: true,
+          formatter: (params)=>{
+            let data = params.data || {};
+            let str = params.seriesName || '';
+            str = str ? str + '<br />' : '';
+            str += params.name + '：  ' + params.value + '<br /> 占比：  ';
+            if(data.type == 'female'){
+              str += this.genderInfoView.femaleHealthRatio;
+            } else if(data.type == 'male'){
+              str += this.genderInfoView.maleHealthRatio;
+            } else {
+              str += this.genderInfoView.unKnowHealthRatio;
+            }
+            return str
+          }
         },
         grid: {
           top: "5%",
@@ -109,7 +158,7 @@ export default {
               }
             },
             data: [
-              { value: data.total_health_female_users, name: '女',  color: '#F3399D', itemStyle: {
+              { value: data.total_health_female_users, type: 'female', name: '女',  color: '#F3399D', itemStyle: {
                 color: {
                   type: 'linear',
                   x: 0,
@@ -124,7 +173,7 @@ export default {
                   global: false
                 }
               }},
-              { value: data.total_health_male_users, name: '男', color: '#1EAD91', itemStyle: {
+              { value: data.total_health_male_users, type: 'male', name: '男', color: '#1EAD91', itemStyle: {
                 color: {
                   type: 'linear',
                   x: 0,
@@ -135,6 +184,21 @@ export default {
                       offset: 0, color: "#15696A"
                   }, {
                       offset: 1, color: "#1FB495"
+                  }],
+                  global: false
+                }
+              }},
+              { value: data.total_health_unknown_gender, type: 'unkonw', name: '未知', color: '#70B4D0', itemStyle: {
+                color: {
+                  type: 'linear',
+                  x: 0,
+                  y: 0,
+                  x2: 0,
+                  y2: 1,
+                  colorStops: [{
+                      offset: 0, color: "#79B9D4"
+                  }, {
+                      offset: 1, color: "#4F9FC0"
                   }],
                   global: false
                 }
@@ -153,7 +217,21 @@ export default {
       }
       let option = {
         tooltip: {
-          show: true
+          show: true,
+          formatter: (params)=>{
+            let data = params.data || {};
+            let str = params.seriesName || '';
+            str = str ? str + '<br />' : '';
+            str += params.name + '：  ' + params.value + '<br /> 占比：  ';
+            if(data.type == 'female'){
+              str += this.genderInfoView.femaleWarnRatio;
+            } else if(data.type == 'male'){
+              str += this.genderInfoView.maleWarnRatio;
+            } else {
+              str += this.genderInfoView.unKnowWarnRatio;
+            }
+            return str
+          }
         },
         series: [
           {
@@ -175,7 +253,7 @@ export default {
               disabled: true
             },
             data: [
-              { value: data.total_warning_female_users, name: '女', color: '#F3399D', itemStyle: {
+              { value: data.total_warning_female_users, type: 'female', name: '女', color: '#F3399D', itemStyle: {
                 color: {
                   type: 'linear',
                   x: 0,
@@ -190,7 +268,7 @@ export default {
                   global: false
                 }
               }},
-              { value: data.total_warning_male_users, name: '男', color: '#1EAD91', itemStyle: {
+              { value: data.total_warning_male_users, type: 'male', name: '男', color: '#1EAD91', itemStyle: {
                 color: {
                   type: 'linear',
                   x: 0,
@@ -201,6 +279,21 @@ export default {
                       offset: 0, color: "#15696A"
                   }, {
                       offset: 1, color: "#1FB495"
+                  }],
+                  global: false
+                }
+              }},
+              { value: data.total_warning_unknown_gender, type: 'unkonw', name: '未知', color: '#70B4D0', itemStyle: {
+                color: {
+                  type: 'linear',
+                  x: 0,
+                  y: 0,
+                  x2: 0,
+                  y2: 1,
+                  colorStops: [{
+                      offset: 0, color: "#79B9D4"
+                  }, {
+                      offset: 1, color: "#4F9FC0"
                   }],
                   global: false
                 }
@@ -222,14 +315,19 @@ export default {
 .gender-data{
     max-width: 1007px;
     margin: 16px auto;
-    height: 173px;
-    padding: 0px 50px;
+    min-height: 173px;
+    padding: 20px 40px;
+    padding-right: 10px;
     border-radius: 200px;
     color:#fff;
+    .gender-data-tip{
+      padding-left: 30px;
+      margin-bottom: -10px;
+    }
   }
-.gender-data-tip{}
+
 .gender-data-item{
-  min-width: 170px;
+  min-width: 180px;
 }
 .gender-percen{
   font-size: 28px;
@@ -249,8 +347,8 @@ export default {
   color: #fff;
 }
 .gender-chart{
-  width: 150px;
-  height: 150px;
+  width: 125px;
+  height: 125px;
   margin: 0px 20px;
   // background-color: #efefef;
 }

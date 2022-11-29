@@ -12,7 +12,7 @@
           <div class="model-name fs-14">
             <div class="f-shrink-0">使用量表：</div>
             <div class="model-name-list">
-              <div class="model-name-item" v-for="(item,index) in modelNameArr" :key="index">{{item.name}}</div>
+              <div class="model-name-item m-r-5" v-for="(item,index) in modelNameArr" :key="index">{{item.name}}</div>
             </div>
           </div>
           <div class="activity-time fs-14">

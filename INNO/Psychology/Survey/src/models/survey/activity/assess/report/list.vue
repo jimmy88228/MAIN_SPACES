@@ -136,7 +136,7 @@ export default {
             return this.$MainApi.putLog({
                     data: {
                         log_type: 'view_preson_report_export_pdf',
-                        log_content: `导出【${studentName}】 参加【${userInfo.model_name || ''}】 量表的测评报告`
+                        log_content: `导出【${userInfo.student_name || ''}】 参加【${userInfo.model_name || ''}】 量表的测评报告`
                     },
                     other:{
                         isErrorMsg: true

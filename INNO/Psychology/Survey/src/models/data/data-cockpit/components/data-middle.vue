@@ -47,7 +47,6 @@ export default {
   methods:{
     changeCampus(campus_id, index){
       this.searchForm.campus_id = campus_id;
-      this.currIndex = index;
       this.$emit("search")
     }
   }
