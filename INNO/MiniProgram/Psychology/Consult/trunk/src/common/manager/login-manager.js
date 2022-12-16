@@ -50,7 +50,7 @@ class LoginManager {
 	
   //异步登录
   loginAsync(showLoading) {
-    console.log('loginAsync',this.userToken)
+    console.log('loginAsync',this.userToken,this._loginHold)
     if (this.isLogin) return Promise.resolve(this.userToken);
 		if(this._loginHold) return this._loginHold;
     this._loginHold = this.getWxSessionIdAsync().then((sessionId)=>{
@@ -221,9 +221,9 @@ class LoginManager {
   } 
   //注销信息
   logout(type='userToken') {
-    // if(type == 'all' || type == 'userToken'){
-    //   this.removeSessionId();
-    // }
+    if(type == 'all'){
+      this.removeSessionId();
+    }
     this.removeLoginData(type);
     return this;
   }
@@ -342,7 +342,7 @@ function userLogin(showLoading, sessionId,that) {
 			isHideMsg: true
 		}
 	}).catch(error => {
-		that.logout();
+		that.logout('userToken');
 		return Promise.reject(error);
 	})
 }

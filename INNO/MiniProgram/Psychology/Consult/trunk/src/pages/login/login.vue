@@ -117,7 +117,7 @@
       init() {
         // #ifdef MP
           app.Sysm.getSysConf("psyc_consult_login").finally(() => {
-            // this.isAccountLogin = app.Sysm.sysConf["psyc_consult_login"] == "password";
+            this.isAccountLogin = app.Sysm.sysConf["psyc_consult_login"] == "password";
             this.isInited = true;
             if(!this.isAccountLogin){//不是审核登录->静默注册
               this.checkRegister();
