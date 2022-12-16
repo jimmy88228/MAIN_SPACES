@@ -1,0 +1,6 @@
+<!--pages/component/sceneOperate/pageHome.wxml-->
+<block wx:if="{{showHome}}">
+  <button hover-class='none' catchtap='pageJump' class="page_home_icon" style="{{customStyle}}">
+    <image src="{{customImg ? customImg : brand_info.icon_url + 'micro_mall/page_home.png?123'}}"  mode="aspectFit"/>
+  </button>
+</block>

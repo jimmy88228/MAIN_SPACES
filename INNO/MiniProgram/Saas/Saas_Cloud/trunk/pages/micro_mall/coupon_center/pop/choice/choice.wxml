@@ -1,0 +1,91 @@
+<window class="window" ext-class="window-ext">
+  <form bindsubmit="formAction" report-submit="true">
+    <view class="main" style="{{boxStyle}}" catchtap="showDesc">
+      <view class="main_cont">
+        <view class="choice_title">选择派送数量</view>
+        <view>
+          <view class="box choice_bonus">
+            <view class="box_cont">
+              <view class="c_coupon_box">
+                <image class="c_coupon_bg" src="{{bonusInfo.couponInfo.image_main}}" mode="aspectFill" />
+                <view class="c_group_label">社群专享</view>
+                <view class="c_price_box">
+                  <block wx:if="{{bonusInfo.couponInfo.is_hide_money_show != 1}}">
+                    <view class="c_price">
+                      <block wx:if="{{bonusInfo.couponInfo.bonus_type == 4}}">
+                          <text class="c_price_ft">{{bonusInfo.couponInfo.discountStr}}</text><text>折</text>
+                          </block>
+                        <block wx:else>
+                          <text>¥</text><text class="c_price_ft">{{bonusInfo.couponInfo.type_money}}</text>
+                        </block>
+                    </view>
+                    <view class="c_price_tip">
+                      <block wx:if="{{bonusInfo.couponInfo.bonus_type == 4 }}">
+                        <block wx:if="{{bonusInfo.couponInfo.min_amount != bonusInfo.couponInfo.max_amount}}">
+                          满{{bonusInfo.couponInfo.min_amount}} ~ {{bonusInfo.couponInfo.max_amount}}可用
+                        </block>
+                      </block>
+                      <block wx:else>
+                        满{{bonusInfo.couponInfo.min_goods_amount}}可用
+                      </block>
+                    </view>
+                    <view class="c_split"></view>
+                  </block>
+                </view>
+                <text class="c_name">{{bonusInfo.couponInfo.is_show_name == 1 ? bonusInfo.couponInfo.type_name : ''}}</text>
+              </view>  
+              <view class="btn_box">
+                <view class="change_area">
+                  <view 
+                  class="change_p {{inputNum > 1 ? '' : 'invalid'}}" 
+                  data-type="reduce"
+                  catchtap="{{inputNum > 1 ? 'changeNum' : ''}}">
+                    <text class="_line h_line" ></text>
+                  </view>
+                  <input class="change_input" data-can-send-cound="{{bonusInfo.canSendCount}}"  bindblur="blurInput" type="text" value="{{inputNum}}"/>
+                  <view 
+                  class="change_p {{inputNum < bonusInfo.canSendCount ? '' : 'invalid'}}" 
+                  data-can-send-cound="{{bonusInfo.canSendCount}}" 
+                  data-type="add"
+                  catchtap="{{inputNum < bonusInfo.canSendCount ? 'changeNum' : ''}}">
+                    <text class="_line h_line"></text>
+                    <text class="_line v_line"></text>
+                  </view>
+                </view>
+                <view class="s_count">
+                  <block wx:if="{{true}}">可派数量{{bonusInfo.canSendCount}}</block>
+                </view> 
+
+              </view>
+            </view>
+            <view class="tips_detail_box {{activieTaskId == bonusInfo.taskId ? 'active':''}}">
+              <text class="tips_detail">{{bonusInfo.bonus_desc}}</text>
+            </view>
+            <!-- <view class="tips">
+              <view class="t_title_box" catchtap="showDesc" data-task-id="{{bonusInfo.taskId}}">
+                <view class="t_title">领取日期: {{bonusInfo.fromTimeStr + ' - ' + bonusInfo.toTimeStr}}</view>
+                <view class="t_header">
+                  <view class="t_tip">使用说明</view>
+                  <view class="arrow"></view>
+                  <view class="arrow_hide"></view>
+                </view> 
+              </view> 
+            </view> -->
+          </view>
+        </view>
+      </view>
+      <view class="operate_btns">
+        <view  class="o_btn">
+          <block wx:if="{{shareId}}">
+            <image class="share_icon" src="{{brand_info.default_icon_url}}wechat_logo.png" mode="aspectFit" />分享给好友
+            <button class="_o_btn" hover-class="none" open-type="share" data-share-info="{{shareInfo}}"></button>
+          </block>
+          <block wx:else>
+            生成派券任务
+            <button class="_o_btn" hover-class="none" catchtap="createShareEvent"></button>
+          </block>
+        </view>
+      </view>
+    </view>
+  </form>
+</window>

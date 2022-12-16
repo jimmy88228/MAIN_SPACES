@@ -1,0 +1,126 @@
+<template>
+  <div class="problems-left-set" v-bar>
+    <div class="left-set-cont">
+      <!-- <div class="test-img" v-bgStyle :img="problemsInfo.cover_pic" :style="'background-image:url('+ problemsInfo.cover_pic +')'"></div>
+      <div class="test-info">
+        <div class="m-b-10 fs-14 bold">{{problemsInfo.name || ' '}}</div>
+        <p class="fs-13 invalid">{{problemsInfo.type == 'dimension' ? '类型题' : '计分题'}}</p>
+      </div> -->
+      <div>
+        <div class="test-set bold">题目设置</div>
+        <!-- <div class="set-item">
+          <div class="item-title bold">做题规则</div>
+          <RadioGroup v-model="problemsInfo.multi_choice" >
+            <div class="p-t-5 p-b-5 invalid"><Radio :label="0" :disabled="problemsInfo.status == 1">单选</Radio></div>
+            <div class="p-t-5 p-b-5 invalid"><Radio :label="1" :disabled="problemsInfo.status == 1">多选</Radio></div>
+          </RadioGroup>
+        </div> -->
+        <div class="set-item" style="margin-bottom: 10px;">
+          <div class="item-title bold">分值统一设置</div>
+          <Input class="grade-input m-b-10" :disabled="problemsInfo.status == 1" v-model="problemsInfo.point_setting"></Input>
+          <Button type="primary" class="grade-btn m-b-10" v-if="problemsInfo.status != 1" @click="setAllValue">确认</Button>
+          <p class="item-tip">按选项顺序统一设置分值</p>
+          <p class="item-tip">不同选项请用；隔开</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</template>
+
+<script>
+export default {
+  props: {
+    testInfo: {
+      type: Object,
+      default: ()=>{
+        return {};
+      }
+    },
+    problemsInfo: {
+      type: Object,
+      default: ()=>{
+        return {};
+      }
+    }
+  },
+  data(){
+    return {
+
+    }
+  },
+  methods:{
+    setAllValue(){
+      let point_setting = this.problemsInfo.point_setting;
+      point_setting = point_setting.replace(/；/g, ';');
+      if(!point_setting){
+        this.$Message.warning("分值统一设置不能为空");
+        return;
+      } else {
+        let hasMinus = point_setting.match(/\-\d{1,}(|\;)/g) || [];
+        if(hasMinus.length > 0){
+          this.$Message.warning("分值统一设置包含负数，输入值必须大于等于0");
+          return;
+        }
+      }
+      this.$emit("setAllValue")
+    }
+  }
+}
+</script>
+
+<style lang="less" scoped>
+.problems-left-set{
+  width: 211px;
+  height:100%;
+  background:#fff;
+}
+.left-set-cont{
+  padding: 20px;
+  font-family: PingFangSC-Regular, PingFang SC;
+}
+.test-img{
+  width: 170px;
+  height:112px;
+  background:#F7F7F7;
+  background-size: 100% auto;
+  background-position: left top;
+  background-repeat: no-repeat;
+  margin-bottom: 20px;
+}
+.test-info{
+  margin-bottom: 35px;
+}
+.test-set{
+  margin-bottom: 25px;
+}
+.set-item{
+  margin-bottom: 45px;
+}
+.item-title{
+  margin-bottom: 18px;
+}
+.item-tip{
+  font-size: 12px;
+  font-weight: 400;
+  color: #B2B2B2;
+  line-height: 17px;
+}
+
+</style>
+<style lang="less">
+.problems-left-set{
+  .grade-input{
+    width:100%;
+    height:40px;
+    .ivu-input{
+      width:100%;
+      height:100%;
+    }
+  }
+  .grade-btn{
+    width:100%;
+    height:44px;
+  }
+}
+
+</style>

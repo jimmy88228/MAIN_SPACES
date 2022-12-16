@@ -1,0 +1,14 @@
+{
+  "navigationStyle":"custom",
+	"usingComponents": {
+    "indexHeader":"/components/indexHead/indexHeader",
+    "micro-page": "/components/micro-page/micro-mix/micro-page/micro-page",
+    "pagePop":"/components/pop/pagePop",
+     "storesForA":"/components/indexHead/storesForA",
+     "btnFollow":"/components/btnFollow/btnFollow",
+     "page-nav": "/components/page-nav/page-nav",
+     "snow":"/components/css3/snow/snow",
+     "welcome":"/components/pop/welcome/welcome"
+	},
+  "backgroundColor": "#ffffff"
+}

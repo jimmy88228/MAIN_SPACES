@@ -1,0 +1,8 @@
+{
+  "component": true,
+  "usingComponents": {
+    "dialog":"/components/ui/cps/dialog/dialog",
+    "window": "/components/ui/cps/window/window",
+    "btns": "/components/buttons/btns"
+  }
+}

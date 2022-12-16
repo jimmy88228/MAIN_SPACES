@@ -1,0 +1,17 @@
+<!-- public 必须是第一个元素 -->
+<include src="/common/base/page/index.wxml" />
+<scroll-view class="tab-bar-page-container" scroll-y>
+  <view class="user-page">
+    <!-- 用户头部 -->
+    <user-header />
+
+    <!-- 订单 -->
+    <order-bar />
+
+    <!-- 会员 -->
+    <user-service />
+
+    <!-- 店员 -->
+    <staff-service />
+  </view>
+</scroll-view>

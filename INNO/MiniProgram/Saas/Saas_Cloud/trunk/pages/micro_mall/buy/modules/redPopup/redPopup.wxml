@@ -1,0 +1,50 @@
+<!--pages/micro_mall/buy/modules/redPopup/redPopup.wxml-->
+<window class="window" ext-class="window-ext">
+  <view class="main {{isIphoneX?'ipX':''}}" style="{{boxStyle}}">
+    <view class="close" catchtap="close">
+      <view class="row line"></view>
+      <view class="col line"></view>
+    </view>
+    <view class="title padding_box">
+      <text class="font_32 bold">红包</text>
+      <!-- <text class="font_24 C_B2">规则</text> -->
+    </view>
+    <view class="use_box padding_box flex_global flex_b flex_al_c font_25" bindtap="onTap" data-type="use" data-bool="{{redpackSumary.isUseRedpack}}">
+      <view class="bold">使用红包</view>
+      <view>
+        <view class="use_select C_a1 {{redpackSumary.isUseRedpack == 1?'bold':''}}" style="{{redpackSumary.isUseRedpack == 1? 'color:' + brand_info.style.font_color + ';' : ''}}">
+          <block wx:if="{{redpackSumary.isUseRedpack == 1}}">已减{{redpackSumary.allowUseRedpack}}元</block>
+          <block wx:else>可抵扣¥{{redpackSumary.allowUseRedpack}}元</block>
+        </view>
+      </view>
+      <image wx:if="{{redpackSumary.isUseRedpack == 1}}" class="select_img" src="{{select_img}}" mode="aspectFit"></image>
+      <image wx:else class="select_img" src="{{un_select_img}}"  mode="aspectFit"></image>
+      <!-- <view class="select_box flex_global flex_c flex_al_c" style="{{redpackSumary.isUseRedpack == 1?'background:' + brand_info.style.bg_color :''}}">
+        <view class="correct"></view>
+      </view> -->
+    </view>
+    <view class="tips_box padding_box">
+      <view class="tips_title_box padding_box flex_global flex_al_c font_23 C_7f">
+        <text class="t_t_item">本单可用红包</text>
+        <image class="tip" bindtap="onTap" data-type="tip" src="{{tips_img}}" mode="aspectFit"></image>
+        <!-- <view class="tip_label_box flex_global flex_c flex_al_c" bindtap="onTap" data-type="tip">
+          <view class="tip_label flex_global flex_c flex_al_c"></view>
+        </view> -->
+      </view>
+      <view class="tips_msg_box padding_box">
+        <block wx:for="{{redpackList}}" wx:key="index">
+          <view class="tips_item flex_global flex_b font_25">
+            <view class="t_i_msg_box">
+              <view class="bold"><text style="padding-right:20rpx;">{{item.redpackName}}</text><text>¥{{item.balance}}</text></view>
+              <view class="font_19 C_7f"><text>有效期：</text><text>{{item.fromDate}}</text><text style="padding:0 8rpx;">-</text><text>{{item.toDate}}</text></view>
+            </view>
+            <view class="bold" style="color:{{brand_info.style.font_color}};" wx:if="{{redpackSumary.isUseRedpack==1}}">抵扣{{item.toUseAmount}}元</view>
+          </view>
+        </block>
+      </view>
+    </view>
+    <button catchtap="close" style="background:{{brand_info.style.bg_color}};" hover-class="none" class="btn {{isIphoneX?'ipx_b':''}}">确认</button>
+  </view>
+</window>
+
+<tipsPopup id="tipsPopup"></tipsPopup>

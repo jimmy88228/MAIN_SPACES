@@ -1,0 +1,73 @@
+<template>
+  <view
+    class="safe-area"
+    :class="[areaType, position]"
+    :style="boxStyle + safeAreaStyle"
+  >
+    <slot></slot>
+  </view>
+</template>
+
+<script>
+const app = getApp();
+const pageOption = Page.BaseComp({
+  props: {
+    areaType: {
+      type: String,
+      default: "",
+    },
+    extra: {
+      type: Number,
+      default: 0,
+    },
+    boxStyle: {
+      type: String,
+      default: "",
+    },
+    position: {
+      type: String,
+      default: "",
+    },
+  },
+
+  data() {
+    return {
+      safeArea: app.SIH.safeAreaInsets,
+      safeAreaStyle: "",
+    };
+  },
+  watch: {
+    areaType: {
+      handler(nV) {
+        if (nV == "bottom") {
+          this.safeAreaStyle = `bottom:${this.safeArea.bottom + this.extra}px;`;
+        }
+        if (nV == "top") {
+          this.safeAreaStyle = `top:${this.safeArea.top + this.extra}px;`;
+        }
+        console.log("safeArea", this.safeArea,this.safeAreaStyle);
+      },
+      immediate: true,
+    },
+  },
+});
+export default pageOption;
+</script>
+
+<style scoped lang="scss">
+.safe-area {
+  padding: 54rpx 0;
+  width: 100%;
+  background: #fff;
+  box-shadow: 0 -5px 10px rgb(0,0,0,0.05);
+  &.absolute {
+    position: absolute;
+  }
+  &.sticky {
+    position: sticky;
+  }
+  &.fixed {
+    position: fixed;
+  }
+}
+</style>

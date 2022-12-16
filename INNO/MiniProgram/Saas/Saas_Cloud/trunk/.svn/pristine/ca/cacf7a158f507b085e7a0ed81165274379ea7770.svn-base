@@ -1,0 +1,24 @@
+<form bindsubmit="formAction" report-submit="true">
+  <view wx:if="{{!showTips}}">
+    <view class="select_area">
+      <view class="select_line" catchtap="onTap" data-type='select' data-index="{{index}}" data-id="{{item.id}}" wx:for="{{dockList}}" wx:key="index">
+        <view>
+        <image class="s_icon" src="{{brand_info.icon_url}}micro_mall/return_active.png" mode="aspectFill" wx:if="{{current == index}}"/>
+        <image class="no_s_icon" src="{{brand_info.icon_url}}micro_mall/return.png" mode="aspectFill" wx:else/>
+        </view>
+        <text>{{item.title}}</text>
+      </view>
+    </view>
+    <view class="agree_list">
+      <block wx:if="{{agreementList.length > 0 && dockList[current].id>0}}">
+          <text class="agree_item agree_tip C_7f">点击详阅</text>
+          <text class="agree_item font_24" style="{{'color:' + brand_info.style.bg_color}}" wx:for="{{agreementList}}" wx:key="index" data-url="/pages/micro_mall/articles/agreet/agreet?articleId={{item.article_id}}" catchtap="jumpAction">《{{item.article_title}}》</text>
+      </block>
+    </view> 
+    <view> 
+      <btns wx:if="{{dockList[current].id > 0}}" isLogin="{{isLogin}}" btnType="justLogin" class="next_btn" bindclickcallback="getNext" style="background-color:{{brand_info.style.bg_color}}">下一步</btns>
+      <button wx:elif="{{dockList[current].id == 0}}" class="next_btn" catchtap="getNext" style="background-color:{{brand_info.style.bg_color}}">完成</button>
+    </view>
+  </view>
+  <tips_box id="tips_box" showTips="{{showTips}}" msg="{{msg}}"></tips_box>
+</form>

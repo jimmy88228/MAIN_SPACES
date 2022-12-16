@@ -1,0 +1,307 @@
+<template>
+  <view class="evaluating-index-box"> 
+		<!-- #ifdef H5 -->
+		<frameBox>
+			<template v-slot:body>
+				<view class="evaluating-box">
+					<view class="evaluating-index">
+						<view class="content-box">
+							<view class="font-22 C_7f"
+								><text class="p-r-10">题目{{ acInfo.questionCount }}</text
+								><text>约{{ acInfo.estimatedTime }}分钟</text>
+							</view>
+							<view class="title font-32">{{ acInfo.activityName }}</view>
+							<view class="tips_content">
+								<view class="tips font-22 C_7f">{{
+									acInfo.modelDescription
+								}}</view>
+								<view class="line"></view>
+								<view class="notice-box flex flex-col">
+									<view class="notice-title font-32 p-r-20 f-shrink-0"
+										>测评须知</view
+									>
+									<view class="tips_read C_7f font-20">{{
+										acInfo.activityDescription
+									}}</view>
+								</view>
+							</view>
+							<template>
+								<view
+									class="btn flex-c-c fixed-X-50 invalid"
+									v-if="acInfo.joinState == 'notstart'"
+									@click="jump"
+									>未开始</view
+								>
+								<view
+									class="btn flex-c-c fixed-X-50"
+									v-else-if="acInfo.joinState == 'unjoin'"
+									@click="jump"
+								>
+									开始测评</view
+								>
+								<view
+									class="btn flex-c-c fixed-X-50"
+									v-else-if="acInfo.joinState == 'joining'"
+									@click="jump"
+								>
+									继续测评（{{ acInfo.answerCount }}/{{
+										acInfo.questionCount
+									}}）</view
+								>
+								<view
+									class="btn flex-c-c fixed-X-50 invalid"
+									v-else-if="acInfo.joinState == 'finished'"
+									@click="jump"
+									>已测评</view
+								>
+								<view
+									class="btn flex-c-c fixed-X-50 invalid"
+									v-else-if="acInfo.joinState == 'end'"
+									@click="jump"
+									>已结束</view
+								>
+							</template>
+						</view>
+					</view>
+				</view>
+			</template>
+		</frameBox>
+		<!-- #endif -->
+
+		<!-- #ifdef MP -->
+		<view class="evaluating-bg-area">
+			<image class="evaluating-bg" src="/static/activity-bg.jpg" mode="widthFix"></image>
+		</view>
+		<view class="evaluating-box">
+			<page-nav bgStyle="background:none;"></page-nav>
+			<view class="evaluating-index">
+				<view class="msg-box flex-s-c">
+					<view v-for="(item,index) in msgList" :key="item.key"
+						:class="['item',index==0?'flex-s-c':'flex-c-c','flex1','f-shrink-0']">
+						<view class="C_7f font-20 p-r-10">{{item.title || ""}}</view>
+						<view class="content font-22">{{curStudentInfo[item.key] || ""}}</view>
+					</view>
+				</view>
+				<view class="content-box">
+					<view class="font-18 C_7f"><text
+							class="p-r-10">题目{{acInfo.questionCount}}</text><text>约{{acInfo.estimatedTime}}分钟</text>
+					</view>
+					<view class="title ">{{acInfo.activityName}}</view>
+					<view class="tips_content">
+						<view class="tips font-22 C_7f">{{acInfo.modelDescription}}</view>
+						<view class="line"></view>
+						<view class="notice-box flex">
+							<view class="notice-title font-24 p-r-20 f-shrink-0">测评须知</view>
+							<view class="tips_read C_7f font-20">{{acInfo.activityDescription}}</view>
+						</view>
+					</view>
+					<template>
+						<view class="btn flex-c-c fixed-X-50 invalid" v-if="acInfo.joinState == 'notstart'"
+							@click="jump">未开始</view>
+						<view class="btn flex-c-c fixed-X-50" v-else-if="acInfo.joinState == 'unjoin'" @click="jump">
+							开始测评</view>
+						<view class="btn flex-c-c fixed-X-50" v-else-if="acInfo.joinState == 'joining'" @click="jump">
+							继续测评（{{acInfo.answerCount}}/{{acInfo.questionCount}}）</view>
+						<view class="btn flex-c-c fixed-X-50 invalid" v-else-if="acInfo.joinState == 'finished'"
+							@click="jump">已测评</view>
+						<view class="btn flex-c-c fixed-X-50 invalid" v-else-if="acInfo.joinState == 'end'"
+							@click="jump">已结束</view>
+					</template>
+				</view>
+			</view>
+		</view>
+		<!-- #endif -->
+	</view>
+
+</template>
+
+<script>
+import frameBox from "@/components/frame-box/index.vue";
+const app = getApp();
+const pageOption = Page.BasePage({
+  components: {
+    frameBox,
+  },
+  data() {
+    return {
+      curStudentInfo: {
+        name: "",
+        studentNumber: "",
+        classFullName: "",
+      },
+      msgList: [
+        {
+          title: "测评对象",
+          key: "name",
+        },
+        {
+          title: "账号",
+          key: "studentNumber",
+        },
+        {
+          title: "班级",
+          key: "classFullName",
+        },
+      ],
+      acInfo: {
+        activityName: "",
+        activityDescription: "",
+        questionCount: 0,
+        estimatedTime: 0,
+        answerCount: 0,
+        activityId: 0,
+        endTime: "",
+        joinState: "",
+        logo: "",
+        modelDescription: "",
+        startTime: "",
+      },
+    };
+  },
+  onLoad(options) {
+    console.log('navigatornavigator',navigator,this.mobileInfo)
+    this.options = options;
+  },
+  onShow() {
+    this.loadData();
+  },
+  // onShareAppMessage(e){},
+  methods: {
+    loadData() {
+      this._getUserInfo().then((res) => {
+        this.curStudentInfo = res;
+      });
+      return this.$Http(this.$Apis.getActivityInfo, {
+        data: {
+          activityId: this.options.activityId,
+        },
+      }).then((res) => {
+        if (res.code == 1) {
+          let data = res.data || {};
+          this.acInfo = {
+            ...this.acInfo,
+            ...data,
+          };
+        }
+      });
+    },
+    jump() {
+      let acInfo = this.acInfo || {};
+      if (!(acInfo.joinState == "unjoin" || acInfo.joinState == "joining"))
+        return;
+      let url = `/pages/activities/evaluating/answer/answer?activityId=${
+        acInfo.activityId || 0
+      }&current=${acInfo.answerCount || 0}&allCount=${acInfo.questionCount}`;
+      this.jumpAction(url);
+    },
+  },
+});
+export default pageOption;
+</script>
+
+<style lang="scss" scoped>
+ @media screen and (max-width: 500px) { 
+  .evaluating-index {
+    padding: 70rpx 45rpx 200rpx 45rpx !important;
+  }
+}
+.evaluating-bg-area {
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  width: 100%;
+  .evaluating-bg {
+    width: 100%;
+  }
+}
+.evaluating-box {
+  position: relative;
+} 
+.evaluating-index {
+  padding: 130rpx;
+  padding-bottom: 200rpx;
+  font-family: PingFangSC-Regular;
+
+  .msg-box {
+    width: 100%;
+    background: rgba($color: #ffffff, $alpha: 0.8);
+    border-radius: 14rpx;
+    min-height: 66rpx;
+
+    .item {
+      border-right: 1px solid rgba($color: #979797, $alpha: 0.2);
+      box-sizing: border-box;
+      padding: 0 10rpx;
+      .content {
+        word-break: break-all;
+        font-family: PingFangSC-Medium;
+      }
+
+      &:first-child {
+        padding-left: 20rpx;
+      }
+
+      &:last-child {
+        border-right: none;
+      }
+    }
+  }
+
+  .content-box {
+    // padding: 63rpx 0 0 0;
+
+    .title {
+      font-size: 56rpx;
+      line-height: 85rpx;
+      // padding: 20rpx 0;
+      padding-top: 30rpx;
+      margin-left: -1px;
+    }
+
+    .tips_content {
+      // padding-right: 250rpx;
+    }
+
+    .tips {
+      padding-top: 100rpx;
+      line-height: 38rpx;
+      word-break: break-all;
+    }
+
+    .notice-title {
+      line-height: 48rpx;
+    }
+
+    .tips_read {
+      line-height: 48rpx;
+      padding-top: 55rpx;
+    }
+
+    .btn {
+      width: 500rpx;
+      height: 100rpx;
+      border-radius: 50rpx;
+      color: #fff;
+      background-color: $uni-main-color;
+      bottom: 60rpx;
+      box-shadow: 0 0 20rpx 0 rgba($color: #5ecf68, $alpha: 0.5);
+
+      &.invalid {
+        color: #7f7f7f;
+        background-color: #dfdfdf;
+        box-shadow: unset;
+      }
+    }
+
+    .notice-box {
+    }
+
+    .line {
+      width: 100%;
+      height: 1px;
+      background-color: #dfdfdf;
+      margin: 80rpx 0;
+    }
+  }
+} 
+</style>

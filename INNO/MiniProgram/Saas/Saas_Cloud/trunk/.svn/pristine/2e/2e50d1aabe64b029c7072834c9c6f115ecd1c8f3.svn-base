@@ -1,0 +1,8 @@
+<quick_find cur_key="{{result[current].key}}" current="{{current}}" bindupdateStatus="updateStatus" max-find-len="{{result.length}}">
+    <block wx:for="{{result}}" wx:key="index">
+      <list slot="list" active="{{index==0}}" listMod="{{item}}" key="{{item.key}}"></list>
+    </block>
+    <block wx:for="{{result}}" wx:key="index">
+      <quick slot="quick" style="{{current == index?'font-weight:bold;color:#171717;': ''}}" class="quick_box" key="{{item.key}}"></quick>
+    </block>
+</quick_find>

@@ -1,0 +1,142 @@
+<template>
+  <div class="audio-edit-form flex">
+    <Form :label-width="100" style="width:auto;" :model="formData" ref="formDataRef" :rules="ruleValidate">
+      <FormItem label="上传音频">
+        <Button type="primary">重新上传</Button>
+        <p class="">音频原标题</p>
+      </FormItem>
+      <FormItem label="音频名称" prop="name">
+        <Input size="large" class="base-320" v-model="formData.name" :show-word-limit="true" :maxlength="30"></Input>
+      </FormItem>
+      <FormItem label="音频封面" prop="class_name">
+        <img-view :img="formData.coverImg" :selectImg="(data)=>{ selectImg(data, 'coverImg') }" :width="87" ></img-view>
+        <p class="desc-notice">建议尺寸：800像素 * 800像素，图片大小不得超过 2M</p>
+      </FormItem>
+      <FormItem label="音频背景" prop="class_name">
+        <img-view :img="formData.bgImg" :selectImg="(data)=>{ selectImg(data, 'bgImg') }" width="89" height="116"></img-view>
+        <p class="desc-notice">建议尺寸：600像素 * 1300像素，图片大小不得超过 3M</p>
+      </FormItem>
+      <FormItem label="音频分组" prop="campus_id">
+        <data-select size="large" class="base-320" v-model="formData.campus_id" :schoolId="formData.school_id" @changeData="getChangeCampus"></data-select>
+      </FormItem>
+      <FormItem label="" >
+        <Button style="padding: 0px 30px;" type="primary" @click="confirm">确 认</Button>
+      </FormItem>
+    </Form>
+    <div class="audio-preview">
+      <div class="preview-item">
+        <div class="preview-title">音频封面详情效果</div>
+        <div class="preview-cont">
+          <div><img :src="formData.coverImg"/></div>
+          <div class="cont-main">
+            <p>{{formData.name}}</p>
+            <img :src="formData.coverImg"/>
+          </div>
+          <operateBar style="position:absolute; left:0px;bottom:0px; width:100%;"></operateBar>
+        </div>
+      </div>
+      <div class="preview-item">
+        <div class="preview-title">音频背景详情效果</div>
+        <div class="preview-cont">
+          <operateBar style="position:absolute; left:0px;bottom:0px; width:100%;"></operateBar>
+        </div>
+      </div>
+    </div>
+  </div>
+</template>
+
+<script>
+import operateBar from "../components/operate-bar.vue";
+export default {
+  components: { operateBar },
+  data() {
+    return {
+      formData: {
+        name: "",
+        coverImg: "https://fc3tn.baidu.com/it/u=2331523043,512279637&fm=202&src=801",
+        bgImg: ""
+      },
+      ruleValidate: {
+        grade_id: [
+          {
+            required: true,
+            validator: this._checkInt,
+            trigger: "blur",
+            message: "请选择年级",
+          },
+        ],
+        class_name: [
+          {
+            required: true,
+            validator: this._checkString,
+            message: "请填写班级",
+            trigger: "blur",
+          },
+        ],
+        campus_id: [
+          {
+            required: true,
+            validator: this._checkThanInt,
+            message: "请选择校区",
+            trigger: "blur",
+          },
+        ],
+      },
+    };
+  },
+  methods: {
+    selectImg(data, key){
+      this.formData[key] = data;
+    },
+    confirm(){
+      this.$refs["formDataRef"].validate((valid) => {
+          if (valid) {
+
+          } else {
+              this.$Message.error('请完善相关信息');
+          }
+      })
+    }
+  }
+};
+</script>
+
+<style lang="less" scoped>
+.audio-edit-form{
+  .audio-preview{
+    display: flex;
+    padding-left: 10%;
+    .preview-item{
+      padding: 0px 10px;
+    }
+    .preview-title{
+      font-size: 13px;
+      font-family: PingFangSC-Regular, PingFang SC;
+      font-weight: 400;
+      color: #7F7F7F;
+      line-height: 18px;
+      margin-bottom: 10px;
+    }
+    .preview-cont{
+      width: 218px;
+      height: 388px;
+      background-color:#FCFCFC;
+      position: relative;
+      .cont-main{
+        position: absolute;
+        top: 20px;
+        left: 50%;
+        transform: translateX(-50%);
+        p{
+          margin-bottom: 10px;
+          font-size: 14px;
+        }
+        img{
+          width: 120px;
+          height: 120px;
+        }
+      }
+    }
+  }
+}
+</style>

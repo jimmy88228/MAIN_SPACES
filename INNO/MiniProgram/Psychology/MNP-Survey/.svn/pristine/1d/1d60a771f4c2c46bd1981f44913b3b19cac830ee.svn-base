@@ -1,0 +1,251 @@
+<template>
+  <view class="information">
+    <image class="green-bg" :src="requireStatic('/green-bg.png')" mode="widthFix" />
+    <page-nav isHideHome :isTransparent="true"></page-nav>
+    <view class="custom-title" :style="{'height':allHeight+'px'}">填写信息</view>
+    <view class="box" :style="{'height':`calc(100vh - ${navHeight}px)`}">
+      <view class="perfect_info">
+        <view class="title">请先填写你的信息</view>
+        <view class="item">
+          <view class="label">账号/手机号</view>
+          <ori-input maxlength="32" @onInput="e=>onInput(e,'account')" placeholder="请输入账号/手机号" placeholderClass="hold-style"
+            class="input content" boxStyle="padding:25rpx 0;"></ori-input>
+        </view>
+        <view class="item">
+          <view class="label">密码</view>
+          <ori-input maxlength="32" :password="true" @onInput="e=>onInput(e,'password')" placeholder="请输入密码" placeholderClass="hold-style"
+            class="input content" boxStyle="padding:25rpx 0;"></ori-input>
+        </view>
+        <view class="tips C_7f7f7f font-20">{{tips}}</view>
+        <view class="btn-box flex-c-s">
+          <view class="btn flex-c-c" @click="confirm">确认</view>
+        </view>
+      </view>
+    </view>
+    <work-bench ref="workBench" @selected="selectClass"></work-bench>
+  </view>
+</template>
+
+<script>
+  import oriPicker from '@/components/ori-comps/picker/ori-picker.vue';
+  import oriInput from '@/components/ori-comps/input/ori-input.vue';
+  import scanCode from '@/common/helper/scan-code-handler.js';
+  import SIH from "@/common/helper/sys-infos-handler"
+  import workBench from "@/components/custom-page/work-bench/work-bench"
+
+
+  const app = getApp();
+  const pageOption = Page.BasePage({
+    components: {
+      oriPicker,
+      oriInput
+    },
+    data() {
+      return {
+        allHeight: SIH.navPlace + SIH.statusBarHeight,
+        navHeight: SIH.navPlace,
+        formData: {
+          account: "",
+          password: ""
+        },
+        lockPage: false,
+      }
+    },
+    onLoad(options) {
+      this.options = options || {};
+    },
+    onReady() {
+
+    },
+    onShow() {
+      this.init();
+    },
+    methods: {
+      init() {
+
+      },
+      confirm(e) {
+        if (this.lockPage) return;
+        let invalid = this.checkValid();
+        if (invalid) {
+          app.SMH.showToast({
+            title: invalid
+          })
+          return
+        };
+        return this.bindTeacher();
+      },
+      bindTeacher(){
+        return this.$Http(this.$Apis.bindTeacher,{
+            data:{
+              ...this.formData,
+            },
+            other:{
+              isShowLoad: true
+            }
+          }).then(res=>{
+            if(res.code==1){
+              this.lockPage = true;
+							if(!app.LM.recordId){
+								app.LM.savePrivateInfo({recordId:res.data||''});
+								app.IM.getAuthUserInfo();
+								app.IM.getTeacherUserInfo();
+							}
+              app.SMH.showToast({
+                title:"绑定成功"
+              });
+               if (res.roleType == "class_teacher") {
+              // 班主任
+              app.SM.saveStructureInfo(res.classList[0])
+              if (res.classList.length == 1) {
+                this.reLaunchAction(`/pages/work-bench/work-bench-detail/work-bench-detail`)
+              } else {
+                let ref = "workBench";
+                this.$refs[ref].loadData();
+              }
+            } else {
+              // 心理老师
+              this.reLaunchAction(`/pages/work-bench/work-bench-detail/work-bench-detail`)
+            }
+              return res
+            }
+            return Promise.reject(res)
+          }).catch(e=>{
+            return Promise.reject(e);
+          })
+      },
+      
+      checkValid() {
+        if (!this.formData.account) {
+          return "请输入账号/手机号"
+        } else if (!this.formData.password) {
+          return "请输入密码"
+        } 
+      },
+      onInput(e, type) {
+        let detail = e.detail || {};
+        let value = detail.value;
+        this.formData[type] = value;
+      },
+       showOrganizeLsit() {
+        let ref = "workBench";
+        this.$refs[ref].showBench();
+      },
+      selectClass() {
+        this.reLaunchAction(`/pages/work-bench/work-bench-detail/work-bench-detail`)
+      },
+    },
+  })
+  export default pageOption
+</script>
+
+<style lang="scss" scpoed>
+  .information {
+    .green-bg {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      z-index: -1;
+    }
+
+    .custom-title {
+      width: 100%;
+      position: absolute;
+      top: 0;
+      left: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: -1;
+    }
+
+    .box {
+      display: flex;
+      align-items: center;
+
+      .perfect_info {
+        width: 100%;
+        padding: 64rpx;
+        padding-bottom: 200rpx;
+
+        .title {
+          font-size: 46rpx;
+          color: #222222;
+          padding-bottom: 5rpx;
+          margin-bottom: 35rpx;
+        }
+
+        .item {
+          padding-top: 40rpx;
+          border-bottom: 1px solid rgba($color: #979797, $alpha: 0.3);
+
+          .label {
+            font-size: 26rpx;
+            color: #B2B2B2;
+          }
+
+          .content {
+            padding: 25rpx 0;
+            font-size: 42rpx;
+            color: #222222;
+
+            &.input {
+              padding: 0;
+            }
+          }
+
+          .place {
+            opacity: 0.1;
+          }
+
+          .switch {
+            color: $uni-main-color;
+          }
+
+          .iden {
+            height: 80rpx;
+            font-size: 28rpx;
+            border-radius: 100rpx;
+            background: #FAFAFA;
+
+            &.active {
+              color: #fff;
+              background-color: $uni-main-color;
+            }
+          }
+
+          &.iden-box {
+            padding-bottom: 40rpx;
+          }
+        }
+
+        .tips {
+          padding-top: 30rpx;
+        }
+
+        .btn-box {
+          width: 100%;
+          height: 200rpx;
+          box-sizing: border-box;
+          padding-top: 133rpx;
+          left: 0;
+          bottom: 0;
+          background-color: #fff;
+
+          .btn {
+            width: 400rpx;
+            height: 100rpx;
+            border-radius: 50rpx;
+            background-color: $uni-main-color;
+            color: #fff;
+          }
+        }
+      }
+
+      .hold-style {
+        color: #E9E9E9;
+      }
+    }
+  }
+</style>

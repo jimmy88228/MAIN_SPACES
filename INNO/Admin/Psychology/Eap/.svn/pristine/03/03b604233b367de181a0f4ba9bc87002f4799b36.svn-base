@@ -1,0 +1,156 @@
+<template>
+  <hold-layout :isFull="true">
+    <div class="init-title">
+      {{searchForm.activityName || ""}}
+    </div>
+    <searchForm :searchForm="searchForm" @search="loadData()" :structureArr="structureArr"></searchForm>
+    <Table ref="myTable" class="full-table" :columns="columns" :data="list" border :loading="tableLoading"  @on-sort-change="sortChange">
+      <template slot="member_name" slot-scope="{ row }">
+          <p class="p-t-5 p-b-5">{{row.get_member && row.get_member.member_name || "--"}}</p>
+      </template>
+      <template slot="create_time" slot-scope="{ row }">
+          <p class="p-t-5 p-b-5">{{row.record_create_time || "--"}}</p>
+      </template>
+      <template slot="complete_time" slot-scope="{ row }">
+          <p class="p-t-5 p-b-5">{{row.record_complete_time || '--'}}</p>
+      </template>
+      <template slot="handle" slot-scope="{ row }">
+          <div class="operate-area">
+            <a class="operate" @click="report(row)" v-hasAction="[row.handle.report]" >报告</a>
+            <a class="operate" @click="answer(row)" v-hasAction="[row.handle.answer]">答案</a>
+          </div>
+      </template>
+    </Table>
+    <rewrite-page
+    slot="footer"
+    :total="total"
+    :current="page"
+    :page-size="pageSize"
+    :page-size-opts="pageSizeOpts"
+    @on-change="e=>loadData(e)"
+    @on-page-size-change="handlePageSizeChange"
+    show-sizer
+    show-elevator
+    show-total
+    transfer
+    ></rewrite-page>
+    <!-- <answer ref="answerRef"></answer> -->
+  </hold-layout>
+</template>
+
+<script>
+import ListMixin from "@/helper/mixin/list-mixin";
+import searchForm from "./search-form.vue";
+import mixins from "./mixins";
+// import answer from "../answer/index";
+export default {
+  name: "assessResult",
+  mixins: [ListMixin, mixins],
+  components: { searchForm },
+  data(){
+    return {
+      searchForm: {
+          // class_id: 0,
+          // school_id: 0,
+          // grade_id: 0,
+          activityid: 0,
+          searchq: "",
+          state: -1,
+          field: "",
+          fieldBy: "desc",
+          structure_id:0,
+          prent_structure_ids:[],
+          activityName:""
+      },
+      structureArr:[],
+      structureName:'',
+      inited:false
+    }
+  },
+  methods:{
+    onLoadData(page, extraData) {
+      let type = this.pageQuery.type;
+      console.log("this.inited", this.inited)
+      if(!this.inited){
+        this.searchForm.activityid = Number(this.pageQuery.activityId);
+        this.searchForm.structure_id = Number(this.pageQuery.structureId) || 0;
+        this.searchForm.prent_structure_ids = this.pageQuery.prentStructureIds || [];
+        this.searchForm.activityName = this.pageQuery.activityName || "";
+        this.structureName = this.pageQuery.structureName || ''
+        this.inited = true;
+      }
+      return this.$MainApi.appraisalScheduleResult({
+          data: {
+              ...this.searchForm,
+              ...extraData,
+          },
+          other: {
+            isErrorMsg: true
+          }
+      })
+      .then((res) => {
+          if (res.code) {
+              let data = res.data || {};
+              this.data = {
+                  total: data.total,
+                  list: data.items,
+              };
+          }
+      });
+    },
+    sortChange(detail){
+      this.searchForm.field = detail.key || "";
+      this.searchForm.fieldBy = detail.order || "desc";
+      this.loadData();
+    },
+    report(row){
+      this.$UIModule({
+          mode: "clause-view",
+          success: () => {
+            this.$router.push({
+              name: "assessReport",
+              query: {
+                type: this.pageQuery.type,
+                modelId: Number(row.model_id),
+                recordId: row.id || row.record_id,
+                userId: Number(row.user_id)
+              }
+            })
+          }
+      })
+      
+    },
+    answer(row){
+      this.$UIModule({
+          mode: "clause-view",
+          success: () => {
+            this.$router.push({
+                name: 'assessAnswer',
+                query: {
+                    modelName: row.model_name,
+                    modelId: Number(row.model_id),
+                    recordId: row.id || row.record_id || "",
+                    type: this.pageQuery.type || "assess",
+                },
+            });
+          }
+      })
+    }
+  },
+  mounted() {
+      this.loadData();
+  },
+}
+</script>
+
+<style>
+  .init-title{
+    font-size: 22px;
+    font-family: PingFangSC-Semibold, PingFang SC;
+    font-weight: 600;
+    color: #171717;
+    line-height: 30px;
+    margin-bottom: 23px;
+    padding-left: 20px;
+  }
+</style>

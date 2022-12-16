@@ -1,0 +1,287 @@
+<template>
+<div>
+  <custom-modal class="hold-modal-zindex" :isSlotHeader="true" ref="modal" :width="530" :closable="true" :isSlotFooter="true">
+    <div slot="header">导出数据</div>
+    <div class="export-survey-cont">
+      <Form :label-width="100">
+        <FormItem label="导出类型">
+          <rewrite-choose :data="exportTypes" v-model="exportInfo.exportType" @on-change="changeExportType"></rewrite-choose>
+        </FormItem>
+        <FormItem label="选择量表" v-if="exportInfo.exportType == 1 || exportInfo.exportType == 2">
+          <div class="base-320">
+            <Select size="large" v-model="exportInfo.selectModel" :multiple="exportInfo.exportType == 1" @on-change="getDimension">
+              <Option :value="item.id" v-for="(item, index) in modelData" :key="item.id">{{item.name}}</Option>
+            </Select>
+          </div>
+        </FormItem>
+        <FormItem label="题目选项" v-if="exportInfo.exportType == 1">
+          <div class="base-320">
+            <RadioGroup size="large" v-model="exportInfo.selectOption">
+              <Radio :label="1">按文字显示</Radio>
+              <Radio :label="2">按分数显示</Radio>
+            </RadioGroup>
+          </div>
+        </FormItem>
+        <FormItem label="选择条件" v-if="exportInfo.exportType == 2 || exportInfo.exportType == 3">
+          <template v-if="exportInfo.exportType == 2">
+            <rewrite-choose :data="curConditionList" v-model="exportInfo.selectOption" ></rewrite-choose>
+          </template>
+          <template v-if="exportInfo.exportType == 3">
+            <CheckboxGroup size="large" v-model="exportInfo.selectOption">
+              <Checkbox :label="1">
+                    <span>未参与</span>
+                </Checkbox>
+                <Checkbox :label="2">
+                    <span>未完成</span>
+                </Checkbox>
+                <Checkbox :label="3">
+                  <span>已完成</span>
+              </Checkbox>
+            </CheckboxGroup>
+          </template>
+        </FormItem>
+        <div v-show="exportInfo.exportType == 2">
+          <FormItem label="" v-if="exportInfo.selectOption == 1">
+            将根据量表总分预警线导出名单
+          </FormItem>
+          <FormItem label="选择维度" v-show="exportInfo.selectOption == 2 && dimensionData.length>0">
+            <div class="base-320">
+              <data-select size="large" :params="{ model_id:  exportInfo.selectModel}" :isAuto="false" type="dimension" ref="dimensionSelectRef" v-model="exportInfo.dimensionalityData" @getData="getDimensionData" :multiple="true"></data-select>
+            </div>
+          </FormItem>
+        </div>
+      </Form>
+    </div>
+    <div class="flex-c-e" slot="footer">
+      <Button size="large" @click="dismiss">取消</Button>
+      <Button size="large" type="primary"  @click="exportConfirm">确认导出</Button>
+    </div>
+  </custom-modal>
+  <!--异步处理导出excel组件-->
+    <mpNotice :ref="'notice' + item" v-for="item in jobIdCol" :key="item"></mpNotice>
+</div>
+</template>
+
+<script>
+import rewriteChoose from '../../../../../components/rewrite/rewrite-choose/rewrite-choose.vue';
+import mpNotice from "@/components/main-components/mq-notice/mq-notice";
+export default {
+  components: { rewriteChoose, mpNotice },
+  props: {
+    activityId: Number | String,
+    schoolId: Number | String,
+    modelData: Array
+  },
+  computed: {
+    curConditionList() {
+      let list = this.dimensionData||[];
+      return list.length>0? this.conditionList : this.conditionList.slice(0,1)
+    }
+  },
+  data(){
+    return {
+      jobIdCol: [],
+      exportInfo: {
+        exportType: 1, // 1.活动数据 2.报警名单 3.参与情况
+        selectModel: [], // 选择量表
+        selectOption: 1, // 在exportType为1的情况下1.按文字 2.按分数；为2情况下1.按总分 2.按维度;为3的情况下1.未参与 2.未完成 3.已完成
+        dimensionalityData: []
+      },
+      exportTypes: [
+        {
+          key: 1,
+          name: "活动数据"
+        },
+        {
+          key: 2,
+          name: "预警名单"
+        },
+        {
+          key: 3,
+          name: "参与情况"
+        }
+      ],
+      conditionList: [
+        {
+          key: 1,
+          name: "按总分筛选"
+        },
+        {
+          key: 2,
+          name: "按维度筛选"
+        }
+      ],
+      dimensionData:[]
+    }
+  },
+  methods: {
+    dismiss() {
+      this.$refs.modal.dismiss();
+    },
+    showModal(){
+      this.exportInfo = {
+        exportType: 1,
+        selectModel: [],
+        selectOption: 1,
+        dimensionalityData: []
+      }
+      this.changeExportType(1);
+      this.$refs.modal.show();
+    },
+    changeExportType(data){
+      if(!data) return;
+      let initFirst;
+      switch(data){
+        case 1:
+            if(this.modelData.length == 1){
+              this.exportInfo.selectModel = this.modelData[0].id ? [this.modelData[0].id] : [];
+            } else {
+              this.exportInfo.selectModel = [];
+            }
+            this.exportInfo.selectOption = 1
+            break;
+        case 2:
+            if(this.modelData.length == 1){
+              this.exportInfo.selectModel = this.modelData[0].id || "";
+              initFirst = true;
+            } else {
+              this.exportInfo.selectModel = "";
+            }
+            this.exportInfo.selectOption = 1
+            break;
+        case 3:
+            this.exportInfo.selectModel = [];
+            this.exportInfo.selectOption = []
+            break;
+      }
+      this.exportInfo.dimensionalityData = [];
+      initFirst && this.$refs["dimensionSelectRef"] && this.$refs["dimensionSelectRef"].getData();
+    },
+    getDimension(){
+      console.log('getDimensiongetDimension')
+      this.$nextTick(()=>{
+        let exportInfo = this.exportInfo || {};
+        if(exportInfo.exportType == 2){
+          this.exportInfo.dimensionalityData = [];
+          this.$refs["dimensionSelectRef"] && this.$refs["dimensionSelectRef"].getData();
+        }
+      })
+    },
+    exportConfirm(){ 
+      let exportInfo = this.exportInfo || {};
+      let selectModel = exportInfo.selectModel;
+      let selectOption = exportInfo.selectOption;
+      let dimensionalityData = exportInfo.dimensionalityData;
+      let warn = "";
+      switch(exportInfo.exportType){
+        case 1:
+          if(!(selectModel instanceof Array && selectModel.length > 0)){
+            warn = "请选择量表！";
+          }
+          break;
+        case 2:
+          if(!selectModel){
+            warn = "请选择量表！";
+          } else if(selectOption == 2 && (!dimensionalityData || dimensionalityData.length == 0)){
+            warn = "请选择维度！";
+          }
+          break;
+      }
+      console.log("warn", warn)
+      if(warn){
+        this.$Message.warning(warn);
+        return;
+      }
+      let reqData = {
+        activityid: this.activityId,
+        school_id: this.schoolId,
+        export_type: exportInfo.exportType,
+        select_model: selectModel instanceof Array ? selectModel : [selectModel],
+        select_option: selectOption instanceof Array ? selectOption : (selectOption ? [selectOption] : []),
+        dimensionality_data: dimensionalityData
+      }
+      this.exportHandle(reqData);
+    },
+    exportHandle(reqData){
+      return this.$MainApi.assessmentTasksScheduleExport({
+          data: reqData,
+          other: {
+            isErrorMsg: true
+          }
+      })
+      .then((res) => {
+          if (res.code) {
+              let data = res.data;
+              if (data) {
+                this.dismiss();
+                this.jobIdCol.push(data);
+                this.$nextTick(() => {
+                    this.$refs[`notice${data}`][0].showNotice(data);
+                });
+              }
+              return data || {};
+          }
+      });
+    },
+    getDimensionData(e){
+      if(e&&e.length==0){
+        this.exportInfo.selectOption = 1
+      }
+      this.dimensionData = e || [];
+    },
+    selectReset(){
+
+    }
+  }
+}
+</script>
+
+<style lang="less" scoped>
+.export-survey-cont{
+  .radio{
+        padding: 2px 10px;
+        border-radius: 2px;
+        background-color: #fff;
+        transition: all 0.2s;
+        border: 1px solid #DDDDDD;
+        margin-right: 10px;
+        .radio-cir{
+            width: 16px;
+            height: 16px;
+            background-color: #FFFFFF;
+            border: 1px solid #B2B2B2;
+            position: relative;
+            border-radius: 50%;
+            margin-right: 10px;
+        }
+        &.active{
+            background-color: #EFFAFF;
+            color: #008ACB;
+            .radio-cir{
+                background-color: #008ACB;
+                border: 1px solid #008ACB;
+                position: relative;
+                &::after{
+                    content: "";
+                    position: absolute;
+                    width: 7px;
+                    height: 7px;
+                    border-radius: 50%;
+                    left: 50%;
+                    top: 50%;
+                    transform: translate(-50%,-50%);
+                    background-color: #fff;
+                }
+            }   
+        }
+    }
+    .bg_f3{
+        background: #f3f3f3;
+        div{
+            opacity: 0.5;
+            color: #7f7f7f;
+        }
+    }
+}
+
+</style>

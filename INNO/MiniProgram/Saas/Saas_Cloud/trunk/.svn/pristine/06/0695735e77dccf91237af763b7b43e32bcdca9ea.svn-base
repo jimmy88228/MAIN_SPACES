@@ -1,0 +1,20 @@
+/* pages/micro_mall/QRcode/my_code.wxss */
+page{
+  background:#fff;
+}
+.code_page{
+  text-align:center;
+}
+.brand_icon image{
+  width:500rpx;
+  display:inline-block;
+  margin-top:100rpx;
+}
+.code_img{
+  height:506rpx;
+}
+.code_img image{
+  width:400rpx;
+  display:inline-block;
+  margin:50rpx auto;
+}

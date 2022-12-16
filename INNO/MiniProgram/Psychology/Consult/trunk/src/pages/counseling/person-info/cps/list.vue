@@ -1,0 +1,172 @@
+<template>
+    <div class="scroll-view-box flex flex-col">
+        <div v-if="type=='counselor'" class="title flex-s-c">今日预约咨询</div>
+        <ori-scroll-view class="scroll-view" @scrolltolower="scrolltolower" @refresherrefresh="refresherrefresh">
+            <div class="list-box">
+                <template v-if="listData.length>0">
+                    <div v-for="(item,index) in listData" :key="index" class="list-item flex-s-e">
+                        <div class="msg-box">
+                            <div class="type-box flex-s-c">
+                                <image class="img-type m-r-10" mode="aspectFit" :src="staticAddress + typeKey[item.serviceType].img"></image>
+                                <div class="m-r-10 bold">{{typeKey[item.serviceType].name || ""}}</div>
+                                <div class="state" :class="{active:item.state == 1}">{{stateKey[item.state] || ""}}</div>
+                            </div>
+                            <div class="time-box m-b-15">
+                                <span class="m-r-5">{{item.scheduleDay||""}}</span>
+                                <span>{{item.scheduleTime||""}}</span>
+                            </div>  
+                            <div class="source-box">
+                                <span class="m-r-5">来源</span>
+                                <span>{{item.customerName||""}}</span>
+                            </div>
+                        </div>
+                        <div v-if="!item.isHideRoom && item.roomKey && (item.state == 0 || item.state == 1)" class="btn flex-c-c"  @click="jump(item)">进入房间</div>
+                        <!-- <div v-if="!item.isHideRoom" class="btn flex-c-c"  @click="jump(item)">进入房间</div> -->
+                    </div> 
+                </template>
+                <template v-else-if="isInited">
+                    <div class="empty-tip">{{emptyTip}}</div>
+                </template>
+            </div>
+        </ori-scroll-view>
+    </div>
+</template>
+
+<script>
+import oriScrollView from "@/components/ori-comps/scroll/ori-scroll-view.vue"
+const App = getApp();
+const pageOption = Page.BaseComp({
+    components: {
+        oriScrollView,
+    },
+    data() {
+        return {
+            typeKey: {
+                video:{
+                    name:"视频咨询",
+                    img:"/common/camera.png"
+                },
+                voice:{
+                    name:"语音咨询",
+                    img:"/common/voice.png"
+                },
+                offline:{
+                    name:"面对面咨询",
+                    img:"/common/offline.png"
+                },
+            },
+            stateKey:{
+                '-1':"全部",
+                '0':"未开始",
+                '1':"已开始",
+                '2':"已结束",
+            }
+        }
+    },
+    props: {
+        type:String,
+        listData: {
+            type: Array,
+            default: ()=>[]
+        },
+        isInited:Boolean,
+        emptyTip:{
+            type:String,
+            default:"暂无数据"
+        }
+    },
+    methods: {
+        jump(e) {
+            if((e.roomKey && e.serviceType != 'offline')){
+                let roomKey = encodeURIComponent(e.roomKey)
+                this.jumpAction(`/pages/counseling/room/counselor?mobilePhone=${e.mobilePhone||''}&roomKey=${roomKey||''}&isPsyConsultant=1`)
+            }else{
+                App.SMH.showToast({
+                    title:"无法进入该房间"
+                })
+            }
+        },
+        scrolltolower(){
+            this.$emit('scrolltolower')
+        },
+        refresherrefresh(){
+            this.$emit('refresherrefresh')
+        },
+    },
+})
+export default pageOption
+</script>
+
+<style lang="scss" scoped>
+.scroll-view-box{
+    height: 100%;
+    box-sizing: border-box;
+    .title{
+        padding: 0 25rpx 25rpx 25rpx; 
+        box-sizing: border-box;
+    }
+    .scroll-view{
+        height: 100%;
+        overflow:hidden;
+        .list-box{
+            height: 100%;
+            .list-item{
+                background-color: #fff;
+                border-radius: 12rpx;
+                padding: 35rpx;
+                box-sizing: border-box;
+                margin-bottom: 22rpx;
+                .msg-box{
+                    flex:1;
+                    font-size: 26rpx;
+                }
+                .type-box{
+                    margin-bottom: 25rpx;
+                    font-size: 20rpx;
+                    .img-type{
+                        width: 22rpx;
+                        height: 22rpx;
+                    }
+                    .state{
+                        font-size: 16rpx;
+                    }
+                }
+                .source-box{
+                    color: #7f7f7f;
+                    font-size:18rpx;
+                } 
+                .state{
+                    font-size:16rpx;
+                    line-height: 20rpx;
+                    padding: 0 2rpx;
+                    color: #b2b2b2;
+                    background-color:rgba(231,231,231,0.27);
+                    border-radius: 6rpx;
+                    border: 1px solid;
+                    border-color: rgba(141,141,141,0.27);
+                    &.active{
+                        color: #21B014;
+                        background-color:rgba(227, 255, 231, 0.5); 
+                        border-color: rgba(53,172,71,0.5);
+                    }
+                } 
+                .btn{
+                    width: 160rpx;
+                    height: 66rpx;
+                    background:#21B014;
+                    border-radius: 6rpx;
+                    flex-shrink: 0;
+                    margin-bottom: 6rpx;
+                    color: #fff;
+                    &.disabled{
+                        background: #F1F1F1;
+                        color: #b2b2b2;
+                    }
+                }
+                
+            }
+
+        }
+    }
+}
+</style>

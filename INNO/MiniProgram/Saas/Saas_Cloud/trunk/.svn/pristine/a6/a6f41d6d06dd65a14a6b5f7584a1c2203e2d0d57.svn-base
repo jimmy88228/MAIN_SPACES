@@ -1,0 +1,19 @@
+<form bindsubmit="formAction" report-submit="true">
+  <view class="ad_nav" style="{{page_module_list.bgImg ? 'background-image: url(' + img_url + page_module_list.bgImg + ');' : ''}}">
+    <view wx:if="detail_list.length > 0" class="nav_list">
+      <view wx:for="{{detail_list}}" wx:key="index" class="nav_item {{index == active ? 'active' : ''}}">
+        <view class="_nav_item" style="{{index == active?'background-color:' + brand_info.style.bg_color:''}}" catchtap="changeNav" data-index="{{index}}">{{item.activity_title_name}}</view>
+      </view>
+    </view>
+    <view>
+      <view class="ad_list" wx:for="{{detail_list}}" wx:key="index" hidden="{{active != index}}">
+        <view id="custom{{page_module_list.moduleId}}" wx:if="{{page_module_list.moduleType == '4'}}">
+          <advertise isLogin="{{isLogin}}" page_module_list="{{page_module_list}}" bindgoLinkCall="goLink" m_item="{{m_data[item.activity_id]}}" m_index="{{m_index}}" img_url="{{img_url}}"></advertise>
+        </view>
+        <view id="custom{{page_module_list.moduleId}}" wx:elif="{{page_module_list.moduleType == '5'}}">
+          <goodsList tagVal="{{tagVal}}" showSalesVolume="{{showSalesVolume}}" tagList="{{tagList}}" img_url="{{img_url}}" goodsTagList="{{goodsTagList}}" page_module_list="{{detail_json[item.activity_id]}}" m_item="{{m_data[item.activity_id]}}" sysConf="{{sysConf}}"></goodsList> 
+        </view>
+      </view>
+    </view>
+  </view>
+</form>

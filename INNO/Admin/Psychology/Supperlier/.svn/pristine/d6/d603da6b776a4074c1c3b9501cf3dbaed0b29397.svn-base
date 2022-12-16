@@ -1,0 +1,85 @@
+<template>
+    <div class="rewrite-page" :style="customStyle">
+        <Page
+        :total="total"
+        :current="current"
+        :page-size="pageSize"
+        :page-size-opts="pageSizeOpts"
+        @on-change="onChange"
+        @on-page-size-change="onPageSizeChange"
+        @on-prev="onPrev"
+        @on-next="onNext"
+        :placement="placement"
+        :size="size"
+        :simple="simple"
+        :prev-text="prevText"
+        :next-text="nextText"
+        show-sizer
+        show-elevator
+        show-total
+        :transfer="transfer"
+        ></Page>
+    </div>
+</template>
+<script>
+    export default {
+        name: "rewrite-page",
+        props: {
+            "current": Number,
+            "total": Number,
+            "page-size": Number,
+            "page-size-opts": Array,
+            "placement": String,
+            "size": {
+                type: String,
+                default: "default"
+            },
+            "simple": Boolean,
+            "show-total": Boolean,
+            "show-elevator": Boolean,
+            "show-sizer": Boolean,
+            "class-name": String,
+            "custom-style": String,
+            "styles": Object,
+            "transfer": {
+                type: Boolean,
+                default: true
+            },
+            "prev-text": {
+                type: String,
+            },
+            "next-text": {
+                type: String,
+            },
+            "disabled": Boolean,
+            "events-enabled": Boolean
+        },
+        data(){
+            return {
+
+            }
+        },
+        methods:{
+            onChange(e){
+                this.$emit("on-change", e);
+            },
+            onPageSizeChange(e){
+                this.$emit("on-page-size-change", e)
+            },
+            onPrev(e){
+                this.$emit("on-prev", e);
+            },
+            onNext(e){
+                this.$emit("on-next", e);
+            }
+        }
+    }
+</script>
+<style scoped lang="less">
+.rewrite-page{
+    padding: 15px 0px;
+    text-align: center;
+    background-color: #fff;
+    border-top: 1px solid #F2F2F2;
+}
+</style>

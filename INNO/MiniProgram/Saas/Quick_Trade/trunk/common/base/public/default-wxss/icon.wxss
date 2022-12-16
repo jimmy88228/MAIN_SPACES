@@ -1,0 +1,13 @@
+.icon-arrow {
+  display: inline-block;
+  width: 16rpx;
+  height: 16rpx;
+  border: 4rpx solid;
+  border-color: currentColor currentColor transparent transparent;
+  color: var(--cancel-text-color);
+  transform: rotate(45deg);
+  transition: opacity 0.1s ease;
+}
+.icon-arrow:hover{
+  opacity: 0.6;
+}

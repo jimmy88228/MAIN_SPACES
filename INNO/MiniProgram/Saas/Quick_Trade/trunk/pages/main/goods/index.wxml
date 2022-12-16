@@ -1,0 +1,119 @@
+<!-- public 必须是第一个元素 -->
+<include src="/common/base/page/index.wxml" />
+<view class="goods-info-page">
+  <scroll-view class="goods-info-main" scroll-y>
+    <view class="goods-images-con">
+      <swiper 
+        class="goods-images-swiper"
+        current="{{imageSwiperCurrent}}" 
+        bindchange="handleImageSwiperChange"
+        interval="4000"
+        duration="500"
+        circular
+        catchtap="handleImageSwiperTap"
+      >
+        <block wx:for="{{10}}" wx:key="index">
+          <swiper-item class="goods-images-swpier-item">
+            <view class="g-i-s-i-image-con">
+              <image class="g-i-s-i-image" src="http://devimgtest.innourl.com/SAAS_IMAGE/images/INNO/goods/gallery/20221209/20221209161853497_0305216.jpg" lazy-load  mode="aspectFit" />
+            </view>
+          </swiper-item>
+        </block>
+      </swiper>
+    </view>
+    <view class="goods-info-contentrate-con">
+      <view class="g-i-c-main">
+        <view class="g-i-c-left">
+          <!-- 现价 -->
+          <view class="g-i-c-price-con">
+            <view class="g-i-c-price">
+              <text class="g-i-c-rmb">￥</text>
+              <text class="g-i-c-price-text">199</text>
+            </view>
+            <view class="g-i-c-trend">
+              <view class="iconfont icon-xiajiang g-i-c-trend-icon"></view>
+              <view class="g-i-c-trend-text">直降￥40</view>
+            </view>
+          </view>
+          <!-- 划线价 -->
+          <view class="g-i-c-original-price">
+              <text class="g-i-c-rmb">￥</text>
+              <text class="g-i-c-original-price-text">239</text>
+          </view>
+        </view>
+        <view class="g-i-c-right">
+          <view class="g-i-c-count-down-info">
+            <view class="g-i-c-c-d-image-con">
+              <image class="g-i-c-c-d-image" src="/assets/images/common/xianshiqiang.png" />
+            </view>
+            <view class="g-i-c-c-d-text">
+                <text class="c-d-prefix">距结束 </text>
+                <text class="c-d-time">05: 12: 32</text>
+              </view>
+          </view>
+        </view>
+      </view>
+    </view>
+    <view class="goods-info-basic-con">
+      <view class="g-i-b-main">
+        <view class="g-i-b-left">
+          <view class="g-i-b-goods-name">耐克小童男大童卫衣/长袖</view>
+          <view class="g-i-b-goods-sn">
+            <text class="goods-sn-prefix">商品编号</text>
+            <text class="goods-sn-text">0001843710</text>
+          </view>
+        </view>
+        <view class="g-i-b-right">
+          <view class="g-i-b-btn-group">
+            <view class="g-i-b-btn-item">
+              <button class="g-i-b-btn">
+                <view class="icon-share-con">
+                  <view class="iconfont icon-fenxiang share-icon"></view>
+                </view>
+                <view class="g-i-b-btn-text">分享</view>
+              </button>
+            </view>
+          </view>
+        </view>
+      </view>
+    </view>
+    <!-- <view class="goods-info-service-con">
+      <view class="g-i-s-main">
+        <view class="g-i-s-list">
+          <view class="g-i-s-item">
+            <view class="g-i-s-item-prefix">物流</view>
+            <view class="g-i-s-item-content">运费xx元 满xx元包邮</view>
+          </view>
+        </view>
+      </view>
+    </view> -->
+    <view class="goods-info-detail-con">
+      <view class="g-i-f-detail">
+        <view class="g-i-d-header">
+          <view class="g-i-d-title">详情</view>
+        </view>
+        <view class="g-i-d-main">
+          
+        </view>
+      </view>
+    </view>
+  </scroll-view>
+
+  <view class="goods-info-footer">
+    <view class="g-i-f-main">
+      <view class="g-i-f-left">
+        <view class="g-i-f-btn-group">
+          <button class="g-i-f-btn">
+            <view class="iconfont icon-list g-i-f-list-icon"></view>
+            <view class="g-i-f-btn-text">返回列表</view>
+          </button>
+        </view>
+      </view>
+      <view class="g-i-f-right">
+        <view class="gif-main-btn-group">
+          <button class="goods-info-purchase-btn">立即购买</button>
+        </view>
+      </view>
+    </view>
+  </view>
+</view>

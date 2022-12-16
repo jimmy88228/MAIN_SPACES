@@ -1,0 +1,229 @@
+/* components/micro-page/items/notice/notice.wxss */
+
+page{
+  --voice-bg:"#171717";
+  --baseW:305px;
+  --baseH:70rpx;
+  --textWH:305px;
+  --textWH_reserve:-305px; 
+  --textTime:10s; 
+}
+.box{
+  width: 100%;
+  display: flex;
+  align-items: center;
+  padding:10rpx 20rpx;
+  box-sizing: border-box;
+}
+.icon-box{
+  flex-shrink: 0;
+  width: 55rpx;
+  height: 40rpx;
+  display: flex;
+  align-items: center;
+}
+.text_box{
+  width: 100%;
+  height: var(--baseH);
+  overflow: hidden;
+  position: relative;
+}
+.text_content{
+  /* width: 100%; */
+  box-sizing: border-box;
+  padding:20rpx 0;
+} 
+
+/* 从下往上移动 */
+.noticeType_1{
+  min-height: var(--baseH);
+  padding:0;
+  transform: translate(0,var(--baseH)); 
+  animation: anim_noticeType_ver var(--textTime) linear infinite;
+}
+/* 从上往下移动 */
+.noticeType_0{
+  min-height: var(--baseH);
+  padding:0;
+  transform: translate(0,-100%);
+  animation: anim_noticeType_ver var(--textTime) linear infinite reverse;
+} 
+
+/* 从右往左移动 */
+.noticeType_2{
+  transform: translate(100%,0);
+  animation: anim_noticeType_level var(--textTime) linear infinite; 
+  white-space: nowrap;
+
+  display: flex;
+  align-items: center;
+  height: 100%;
+} 
+/* 从左往右移动 */
+.noticeType_3{
+  opacity: 1;
+  transform: translate(var(--textWH_reserve),0);
+  animation: anim_noticeType_level var(--textTime) linear infinite reverse; 
+  white-space: nowrap;
+  
+  display: flex;
+  align-items: center;
+  height: 100%;
+}
+
+@keyframes anim_noticeType_ver
+{
+0% {transform:translate(0,var(--baseH))}
+100% {transform:translate(0,-100%);}
+}
+
+@keyframes anim_noticeType_level
+{
+0% {transform:translate(100%,0)}
+100% {transform:translate(var(--textWH_reserve),0)}
+}
+.text_size_test,.text_size_test_ver{
+  opacity: 0;
+  position: fixed;
+  left: -1000px;
+  bottom: -100px;
+}
+.noticeImg{
+  width: 40rpx;
+  height: 40rpx;
+}
+.more_box{
+  width: 50rpx;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  flex-shrink: 0;
+  justify-content: space-around;
+  flex-shrink: 0;
+  padding-left: 20rpx; 
+  min-height: 80rpx;
+}
+.more{
+  width: 10rpx;
+  height: 10rpx;
+  border-radius: 50%;
+  background: rgba(216, 30, 6, 1);
+}
+
+.box.primary{
+  background-color: #ecf5ff;
+  color: #2979ff;
+}
+.box.success{
+  background-color: #dbf1e1;
+  color: #19be6b;
+}
+.box.error{
+  background-color: #fef0f0;
+  color: #fa3534;
+}
+.box.warning{
+  background-color: #fdf6ec;
+  color: #f90;
+}
+
+/* page{
+  --voice-bg:"#171717";
+}
+.box{
+  width: 100%;
+  display: flex;
+  align-items: center;
+}
+.swiper_box {
+  width: 100%;
+  height: 100rpx;
+}
+.icon-box{
+  flex-shrink: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding-left: 12rpx;
+}
+.icon{
+  width: 40rpx;
+  height: 40rpx;
+}
+.test2 {
+}
+.top_content {
+  line-height: 52rpx;
+  height: 52rpx;
+  display: flex;
+  align-items: center;
+  position: absolute;
+  left: 0;
+  top: 28rpx;
+  box-sizing: border-box;
+  max-width: 95%;
+}
+
+.padding_left {
+  padding-left: 60rpx;
+}
+
+.text{
+  width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.box1{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-end;
+}
+.voice1{
+  width: 0;
+  height: 0;
+  border: 8rpx solid transparent;
+  border-bottom: 8rpx solid var(--voice-bg); 
+  border-right: 8rpx solid var(--voice-bg);
+  margin-bottom: -6rpx;
+}
+.voice2{
+  width: 16rpx;
+  height: 10rpx;
+  background: var(--voice-bg);
+}
+.voice3{
+  width: 0;
+  height: 0;
+  border: 8rpx solid transparent;
+  border-top: 8rpx solid var(--voice-bg);
+  border-right: 8rpx solid var(--voice-bg);
+  margin-top: -6rpx;
+}
+.voice_cir_box{
+  position: relative;
+  width: 24rpx;
+  height: 30rpx;
+  overflow: hidden;
+  margin-left: 4rpx;
+}
+.voice_cir{
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  transform: translateX(-50%);
+  box-sizing: border-box;
+  background: transparent;
+  border: 4rpx solid var(--voice-bg);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.voice_cir::after{
+  content: "";
+  width: 8rpx;
+  height: 14rpx;
+  background: var(--voice-bg);
+  border-radius: 50%;
+} */

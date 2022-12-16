@@ -1,0 +1,1430 @@
+<style lang="scss">
+page{
+	background-color: $page-color-base;
+}
+
+@font-face {font-family:"HMfont-home";src:url('data:application/x-font-woff2;charset=utf-8;base64,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') format('woff2');}
+.icon {
+	font-family:"HMfont-home" !important;
+	font-size:56upx;
+	font-style:normal;
+	color: #333;
+	&.biaoqing:before {
+	  content: "\e797";
+	}
+	&.jianpan:before {
+	  content: "\e7b2";
+	}
+	&.yuyin:before {
+	  content: "\e805";
+	}
+	&.tupian:before {
+	  content: "\e639";
+	}
+	&.chehui:before {
+	  content: "\e904";
+	}
+	&.luyin:before {
+	  content: "\e905";
+	}
+	&.luyin2:before {
+	  content: "\e677";
+	}
+	&.other-voice:before {
+	  content: "\e667";
+	}
+	&.my-voice:before {
+	  content: "\e906";
+	}
+	&.hongbao:before {
+	  content: "\e626";
+	}
+	&.tupian2:before {
+	  content: "\e674";
+	}
+	&.paizhao:before {
+	  content: "\e63e";
+	}
+	&.add:before {
+	  content: "\e655";
+	}
+	&.close:before {
+	  content: "\e607";
+	}
+	&.to:before {
+	  content: "\e675";
+	}
+}
+.hidden{
+	display: none !important;
+}
+.popup-layer{
+	transition: all .15s linear;
+	width: 100%;
+	height: 42vw;
+	background-color: #f3f3f3;
+	border-top: solid 1upx #ddd;
+	position: fixed;
+	z-index: 20;
+	top: 100%;
+	
+	&.showLayer{
+		transform: translate3d(0,-42vw,0);
+	}
+	.emoji-swiper{
+		padding: 0 2%;
+		background-color: #ffff;
+		
+		swiper-item{
+			display: flex;
+			align-content: flex-start;
+			flex-wrap: wrap;
+			view{
+				width: 12vw;
+				height: 12vw;
+				display: flex;
+				justify-content: center;
+				align-items: center;
+				image{
+					width: 8.4vw;
+					height: 8.4vw;
+				}
+			}
+		}
+	}
+	.more-layer{
+		width: 100%;
+		height: 42vw;
+		padding: 20upx 2%;
+		
+		.list{
+			width: 100%;
+			display: flex;
+			flex-wrap: wrap;
+			
+			.box{
+				text-align: center;
+				justify-content: center;
+				align-items: center;
+				margin: 0 30rpx 30rpx 30rpx;
+				width:120rpx;
+				
+				.icon-box{
+					width: 90rpx;
+					height: 90rpx;
+					border-radius: 20upx;
+					background-color: #fff;
+					font-size: 55rpx;
+					line-height: 90rpx;
+					margin: 0 auto;
+				}
+				.txt{
+					margin-top:4rpx;
+					font-size:$font-sm - 1;
+				}
+			}
+		}
+	}
+}
+
+.input-box{
+	width: 100%;
+	min-height: 100upx;
+	padding: 0 1%;
+	background-color: #f2f2f2;
+	display: flex;
+	position: fixed;
+	z-index: 20;
+	bottom:0;
+	transition: all .15s linear;
+	
+	&.showLayer{
+		transform: translate3d(0,-42vw,0);
+	}
+	.more{
+		flex-shrink: 0;
+		width: 80upx;
+		height: 100upx;
+		display: flex;
+		justify-content: center;
+		align-items: center;
+	}
+	
+	.send{
+		margin-left: 20upx;
+		flex-shrink: 0;
+		width: 100upx;
+		height: 100upx;
+		display: flex;
+		align-items: center;
+	}
+	.textbox{
+		width: 100%;
+		min-height: 70upx;
+		margin-top: 15upx;
+		.text-mode{
+			width: 100%;
+			min-height: 70upx;
+			display: flex;
+			background-color: #fff;
+			border-radius: 40upx;
+			.box{
+				width: 100%;
+				padding-left: 30upx;
+				min-height: 70upx;
+				display: flex;
+				align-items: center;
+				textarea{
+					width: 100%;
+				}
+			}
+			.em{
+				flex-shrink: 0;
+				width: 80upx;
+				padding-left: 10upx;
+				height: 70upx;
+				display: flex;
+				justify-content: center;
+				align-items: center;
+			}
+		}
+	}
+}
+
+.content{
+	width: 100%;
+	
+	.top-bar{
+		display: flex;
+		background-color: rgba(255,255,255,0.5);
+		padding:20rpx 30rpx;
+		border-radius: 0 0 0 40rpx;
+		position: fixed;
+		top: 0;
+		right: 0;
+		z-index: 9999;
+		justify-content: flex-end;
+	}
+	
+	.msg-list{
+		width: 100%;
+		position: absolute;
+		top: 0;
+		bottom: 100upx;
+		
+		.loading{
+			//loading动画
+			display: flex;
+			justify-content: center;
+			@keyframes stretchdelay {
+				0%, 40%, 100% {
+					transform: scaleY(0.6);
+				}
+				20% {
+					transform: scaleY(1.0);
+				}
+			}
+			.spinner {
+				margin: 20upx 0;
+				width: 60upx;
+				height: 100upx;
+				display: flex;
+				align-items: center;
+				justify-content: space-between;
+				view {
+					background-color: #f06c7a;
+					height: 50upx;
+					width: 6upx;
+					border-radius: 6upx;
+					animation: stretchdelay 1.2s infinite ease-in-out;
+				}
+				.rect2 {
+				  animation-delay: -1.1s;
+				}
+				.rect3 {
+				  animation-delay: -1.0s;
+				}
+				.rect4 {
+				  animation-delay: -0.9s;
+				}
+				.rect5 {
+				  animation-delay: -0.8s;
+				}
+			}
+		}
+
+		.row{
+			padding: 20upx;
+			&:first-child{
+				margin-top: 20upx;
+			}
+			
+			.system{
+				display: flex;
+				justify-content: center;
+				view{
+					padding: 0 30upx;
+					height: 50upx;
+					display: flex;
+					justify-content: center;
+					align-items: center;
+					background-color: #c9c9c9;
+					color: #fff;
+					font-size: 24upx;
+					border-radius: 40upx;
+				}
+			}
+
+			.my .left,.other .right{
+				width: 100%;
+				display: flex;
+
+				.bubble{
+					max-width: 70%;
+					min-height: 50upx;
+					border-radius: 10upx;
+					padding: 12upx 20upx;
+					align-items: center;
+					font-size: 32upx;
+					word-break: break-word;
+					
+					&.img{
+						background-color: transparent;
+						padding:0;
+						overflow: hidden;
+						image{
+							max-width: 280rpx;
+							max-height: 280rpx;
+						}
+					}
+					
+					&.card{
+						.title{
+							font-size: $font-base;
+							max-width: 300rpx;
+							line-height: 2;
+						}
+						.img{
+							background: center center no-repeat #fff;
+							background-size: 100% auto;
+							margin:0 auto;
+							width: 280rpx;
+							height: 280rpx;
+							border-radius:10rpx;
+						}
+						.tips{
+							text-align: center;
+							font-size: $font-sm;
+						}
+					}
+				}
+			}
+			.my .right,.other .left{
+				flex-shrink: 0;
+				width: 80upx;
+				height: 80upx;
+			}
+			.my{
+				width: 100%;
+				display: flex;
+				justify-content: flex-end;
+				
+				.left{
+					min-height: 80upx;
+					align-items: center;
+					justify-content: flex-end;
+					flex-wrap: wrap;
+					
+					.workername{
+						width: 100%;
+						height: 45upx;
+						font-size: 24upx;
+						color: #999;
+						display: flex;
+						justify-content: flex-end;
+						
+						.name{
+							margin-right: 20upx;
+						}
+					}
+					
+					.bubble{
+						background-color:#9eea6a;
+						position: relative;
+						.arrow-out{
+							width: 0;
+							height: 0;
+							border-width: 16rpx;
+							border-style: solid;
+							border-color: transparent transparent transparent #9eea6a;
+							position: absolute;
+							top: 18rpx;
+							right: -28rpx;
+						}
+					}
+				}
+				.right{
+					margin-left: 15upx;
+					background-color: #ddd;
+				}
+			}
+			.other{
+				width: 100%;
+				display: flex;
+				.left{
+					margin-right: 15upx;
+				}
+				.right{
+					flex-wrap: wrap;
+					.username{
+						width: 100%;
+						height: 45upx;
+						font-size: 24upx;
+						color: #999;
+						display: flex;
+						.name{
+							margin-right: 20upx;
+						}
+					}
+					.bubble{
+						background-color: #fff;
+						color: #333;
+						position: relative;
+						.arrow-out{
+							width: 0;
+							height: 0;
+							border-width: 16rpx;
+							border-style: solid;
+							border-color: transparent #fff transparent transparent;
+							position: absolute;
+							top: 20rpx;
+							left: -28rpx;
+						}
+					}
+				}
+			}
+		}
+	}
+}
+.cs-image{
+	width:280rpx;
+	height:280rpx;
+	background-color: #fff;
+}
+</style>
+
+<template>
+	<view class="container">
+		<global-com></global-com>
+		
+		<view class="content" @touchstart="hideDrawer">
+			<scroll-view class="msg-list" scroll-y="true" 
+			upper-threshold="50"
+			:scroll-with-animation="scrollAnimation" 
+			:scroll-top="scrollTop" 
+			:scroll-into-view="scrollToView" 
+			@scrolltoupper="loadHistory">
+				
+				<!--固定在顶部的待接入提示-->
+				<view class="top-bar">
+					<!--接待中的红点-->
+					<view @click="goJoinedList">
+						已接入
+						<u-badge type="success" :count="joinedunReadCount" :absolute="false" show-zero></u-badge>
+					</view>
+					
+					<!--待接入的红点-->
+					<view style="margin-left: 30rpx;" @click="goWaitingList">
+						待接入
+						<u-badge type="error" :count="waitingunReadCount" :absolute="false" show-zero></u-badge>
+					</view>
+				</view>
+				
+				<!-- 加载历史数据waitingUI -->
+				<view v-show="isHistoryLoading" class="loading">
+					<view class="spinner">
+						<view class="rect1"></view>
+						<view class="rect2"></view>
+						<view class="rect3"></view>
+						<view class="rect4"></view>
+						<view class="rect5"></view>
+					</view>
+				</view>
+				
+				<view class="row" v-for="(row,index) in msgList" :key="index" :id="'msg'+row.id">
+					
+					<!-- 系统消息 -->
+					<view class="system" v-if=" typeof( row.isLast ) != 'undefined' ">
+						<view class="text">
+							没有更多内容了
+						</view>
+					</view>
+					
+					<block v-if="row.content_type=='system'" >
+						<view class="system">
+							<!-- 文字消息 -->
+							<view class="text">
+								{{row.content_search}}
+							</view>
+						</view>
+					</block>
+					
+					<!-- 用户消息 -->
+					<block v-else>
+						
+						<!-- 客服自己发出的消息 -->
+						<view class="my" v-if="row.originator_type == 'worker'">
+							<!-- 左-消息 -->
+							<view class="left">
+
+								<!-- 文字消息 -->
+								<view v-if="row.content_type=='text'" class="bubble">
+									<span class="arrow-out"></span>
+									<rich-text :nodes="row.content.text"></rich-text>
+								</view>
+								<!-- 图片消息 -->
+								<view v-if="row.content_type=='image'" class="bubble img" @click="showPic(row)">
+									<span class="arrow-out"></span>
+									<image :src="row.content.url" class="cs-image" mode="aspectFit"></image>
+								</view>
+								
+								<!--小程序卡片-->
+								<view v-if="row.content_type=='miniprogrampage' && typeof( row.content.miniprogrampage ) != 'undefined' " 
+								class="bubble card">
+									<text class="arrow-out"></text>
+									<view class="title clamp">{{row.content.miniprogrampage.Title}}</view>
+									<view class="img" :style="{'background-image':'url('+row.content.miniprogrampage.LocalUrl+')'}"></view>
+									<view class="tips">小卡片</view>
+								</view>
+								
+								<view class="workername">
+									<view class="name">{{row.get_worker_info !=null ? row.get_worker_info.nick_name : ''}}</view> 
+									<view class="time">{{row.created_at_format}}</view>
+								</view>
+							</view>
+							<!-- 右-头像 -->
+							<view class="right">
+								<u-avatar :src="row.get_worker_info !=null ? row.get_worker_info.avatar_format : '' " 
+								:size="80" mode="square"></u-avatar>
+							</view>
+						</view>
+						
+						<!-- 别人发出的消息 -->
+						<view class="other" v-if="row.originator_type == 'user'">
+							<!-- 左-头像 -->
+							<view class="left">
+								<u-avatar :src="row.get_user_info !=null ? row.get_user_info.wx_avatar : '' "
+								:size="80" mode="square"
+								@click="openUserInfo"></u-avatar>
+							</view>
+							<!-- 右-用户名称-时间-消息 -->
+							<view class="right">
+								
+								<!-- 文字消息 -->
+								<view v-if="row.content_type=='text'" class="bubble">
+									<text class="arrow-out"></text>
+									<rich-text :nodes="row.content.text"></rich-text>
+									
+									<!--a 标签的内容-->
+									<view v-if="row.tags != null" 
+									v-for="(titem, tindex) in row.tags" :key="tindex" 
+									style="color:#2d8cf0;margin-top:30rpx;">{{titem.name}}</view>
+									
+								</view>
+								<!-- 图片消息 -->
+								<view v-if="row.content_type=='image'" class="bubble img" @click="showPic(row)">
+									<text class="arrow-out"></text>
+									<image :src="row.content.url" class="cs-image" mode="aspectFit"></image>
+								</view>
+								
+								<!--小程序卡片-->
+								<view v-if="row.content_type=='miniprogrampage' && typeof( row.content.miniprogrampage ) != 'undefined' " 
+								class="bubble card">
+									<text class="arrow-out"></text>
+									<view class="title clamp">{{row.content.miniprogrampage.Title}}</view>
+									<view class="img" :style="{'background-image':'url('+row.content.miniprogrampage.LocalUrl+')'}"></view>
+									<view class="tips">小卡片</view>
+								</view>
+								
+								<view class="username">
+									<view class="name">{{row.get_user_info.wx_nick_name}}</view> 
+									<view class="time">{{row.created_at_format}}</view>
+								</view>
+							</view>
+						</view>
+					</block>
+				</view>
+			</scroll-view>
+		</view>
+		
+		<!-- 抽屉栏 -->
+		<view class="popup-layer" :class="popupLayerClass" @touchmove.stop.prevent="discard">
+			<!-- 表情 --> 
+			<swiper class="emoji-swiper" :class="{hidden:hideEmoji}" indicator-dots="true" duration="150">
+				<swiper-item v-for="(page,pid) in emojiList" :key="pid">
+					<view v-for="(em,eid) in page" :key="eid" @click="addEmoji(em)">
+						<image mode="widthFix" :src="emHost+em.url"></image>
+					</view>
+				</swiper-item>
+			</swiper>
+			<!-- 更多功能 相册-拍照 -->
+			<view class="more-layer" :class="{hidden:hideMore}">
+				<view class="list">
+					<view class="box" @click="chooseImage">
+						<view class="icon icon-box tupian2"></view>
+						<view class="txt">本地图片</view>
+					</view>
+					<view class="box" @click="camera">
+						<view class="icon icon-box paizhao"></view>
+						<view class="txt">拍照上传</view>
+					</view>
+					<view class="box" @click="openMaterial('texts')">
+						<view class="icon-box ionmy ion-my-text"></view>
+						<view class="txt">素材-文本</view>
+					</view>
+					<view class="box" @click="openMaterial('images')">
+						<view class="icon-box ionmy ion-my-images"></view>
+						<view class="txt">素材-图片</view>
+					</view>
+					<view class="box" @click="openMaterial('cards')">
+						<view class="icon-box ionmy ion-my-cards"></view>
+						<view class="txt">素材-卡片</view>
+					</view>
+					<view class="box" @click="openMaterial('goods')">
+						<view class="icon-box ionmy ion-my-goods"></view>
+						<view class="txt">商品-卡片</view>
+					</view>
+					<view class="box" @click="openMaterial('pages')">
+						<view class="icon-box ionmy ion-my-pages"></view>
+						<view class="txt">页面-卡片</view>
+					</view>
+					<view class="box" @click="transferSession">
+						<view class="icon-box yticon icon-share"></view>
+						<view class="txt">转接到</view>
+					</view>
+				</view>
+			</view>
+		</view>
+		
+		<!-- 底部输入栏 -->
+		<view class="input-box" :class="popupLayerClass" @touchmove.stop.prevent="discard">
+			<view class="more" @click="showMore">
+				<view class="icon add"></view>
+			</view>
+			<view class="more" @click="closeSession">
+				<view class="icon close"></view>
+			</view>
+			<view class="textbox">
+				<view class="text-mode">
+					<view class="box">
+						<textarea auto-height="true" v-model="textMsg" @focus="textareaFocus"/>
+					</view>
+					<view class="em" @click="chooseEmoji">
+						<view class="icon biaoqing"></view>
+					</view>
+				</view>
+			</view>
+			<view class="send">
+				<u-button size="mini" type="success" @click="sendText">发送</u-button>
+			</view>
+		</view>
+		
+		<!--确认提示框-->
+		<u-modal v-model="showModal"
+		show-cancel-button
+		title="操作提示" 
+		content="您确定要关闭当前客服会话吗？" 
+		@confirm="closeSessionCallback"></u-modal>
+		
+		<!--用户信息查看 弹出层-->
+		<csUserInfo ref="cs-user-info"></csUserInfo>
+		
+		<!--客服素材选择器-->
+		<csMaterial ref="cs-material" @on-success="sendMaterial"></csMaterial>
+		
+		<!--客服转接到-->
+		<csTransferSession ref="cs-transfer-session" @on-success="transferSessionCb"></csTransferSession>
+	</view>
+</template>
+
+<script>
+import {mapState, mapMutations} from 'vuex';
+import csUserInfo from './cs-user-info.vue';
+import csMaterial from './cs-material.vue';
+import csTransferSession from './cs-transfer-session.vue';
+
+/**
+ * 客服组件（小程序不用这个组件）
+ */	
+export default {
+	components:{
+		csUserInfo,
+		csMaterial,
+		csTransferSession,
+	},
+	data() {
+		return {
+			// 客服初始化信息
+			info:{},
+			
+			// 当前打开session 的用户详情
+			sessInfo:{
+				id: 0,
+				get_user_info: null
+			},
+			
+			// 当前选中的会话ID
+			currSessionId: 0,
+
+			//文字消息
+			textMsg:'',
+			
+			//消息列表
+			isHistoryLoading:false,
+			scrollAnimation:false,
+			scrollTop:0,
+			scrollToView:'',
+			msgList:[],
+			msgImgList:[],
+			
+			// 当前用户的ID
+			myuid:0,
+			
+			// 搜索上下文时候的定位内容id
+			contentId: 0,
+			
+			// 抽屉参数
+			popupLayerClass:'',
+			// more参数
+			hideMore:true,
+			//表情定义
+			hideEmoji:true,
+			emojiList:[],
+
+			// 表情图片的url host
+			emHost: '',
+			
+			showModal: false,
+		};
+	},
+	// #ifndef MP
+	// 非小程序 才出发导航栏的按钮事件
+	onNavigationBarButtonTap(e) {
+		const index = e.index;
+		if(index == 0){
+			// 设置状态的按钮
+			this.closeSession();
+		}
+	},
+	// #endif
+	onLoad(option) {
+		this.currSessionId = option.sess_id;
+		this.contentId = typeof(option.content_id) != 'undefined' ? option.content_id : 0;
+		
+		this.init();
+	},
+	onShow(){
+		this.scrollTop = 999999;
+	},
+	methods:{
+		...mapMutations(['setUserHistoryList','setCsIsRead','setJoinedSession']),
+		init(){
+			this.info = this.csAdminInfo;
+			this.sessInfo = this.selectedCsSession;
+	
+			// 当前用户的ID
+			this.myuid = this.sessInfo.user_id;
+			
+			if( typeof( this.info.worker ) == 'undefined' ){
+				// 如果缓存的数据失效，跳回到客服主页
+				uni.switchTab({
+					url:'/pages/app/customer-service-worker/index'
+				});
+				return ;
+			}
+			
+			uni.setNavigationBarTitle({
+				title: this.sessInfo.get_user_info.wx_nick_name,
+			});
+			
+			// emoji 的 host 地址
+			this.emHost = this.$util.apiHost + '/../assets/emoji/';
+			this.emojiList = this.info.emojiList2;
+			
+			// 设置为已读
+			this.setContentIsRead();
+			
+			if( this.contentId == 0 ){
+				if( typeof( this.userHistoryList[ this.currSessionId ] ) == 'undefined' ){
+					this.userHistoryList[ this.currSessionId ] = [];
+					
+					// 初始化消息列表
+					this.getMsgList( 0 );
+				}
+				else{
+					// 直接读取缓存
+					this.msgList = this.userHistoryList[ this.currSessionId ];
+					
+					// 滚动到底部
+					this.scrollToBottom();
+				}
+			}
+			else{
+				// 搜索的上下文
+				this.getUserContextSearch();
+			}
+		},
+		// 获取上下文列表
+		getUserContextSearch(){
+			this.isHistoryLoading = true;
+			this.$u.post( this.$api.csUserContextSearch, {
+				user_id: this.myuid,
+				content_id: this.contentId,
+			})
+			.then( (response) => {
+				this.isHistoryLoading = false;
+				var res = response.data;
+				if( res.code ){
+					// 消息列表
+					let list = res.data;
+	
+					// 获取消息中的图片,并处理显示尺寸
+					for(let i=0; i<list.length; i++){
+						if( list[i].content_type=="image" ){
+							this.msgImgList.push( list[i].content.url.replace(/\_thumb\.jpg/, '') );
+						}
+						else if( list[i].content_type=="text" ){
+							this.$set(list[i], 'tags', []);
+							list[i].content.text = this.replaceEmoji( list[i].content.text, list[i].tags );
+						}
+					}
+
+					// 加载历史记录的
+					/*
+					for(var i in list){
+						this.msgList.unshift( list[i] );
+					}*/
+					this.msgList = list;
+					
+					// 滚动到指定位置
+					this.$nextTick( () => {
+						this.scrollToView = 'msg' + this.contentId;
+						this.$nextTick( () => {
+							this.scrollAnimation = true;//恢复滚动动画
+						});
+					});
+				}
+			});
+		},
+		// 加载内容列表
+		getMsgList( lastId ){
+			this.isHistoryLoading = true;
+			this.$u.post( this.$api.csUserContentList, {
+				user_id: this.myuid,
+				last_id: lastId,
+			})
+			.then( (response) => {
+				this.isHistoryLoading = false;
+				var res = response.data;
+				if( res.code ){
+					// 消息列表
+					let list = res.data.items;
+					if( list.length == 0 ){
+						this.$u.toast('没有更多内容了');
+						this.$set( this.msgList[0], 'isLast', true );
+						
+						this.msgList.unshift({
+							type: 'system',
+							msg:{
+								id: -100,
+								type: 'text',
+								content:{
+									text: '没有更多内容了'
+								}
+							}
+						});
+						this.$nextTick( () => {
+							this.scrollAnimation = true;//恢复滚动动画
+						});
+					}
+					else{
+						// 获取消息中的图片,并处理显示尺寸
+						for(let i=0; i<list.length; i++){
+							if( list[i].content_type=="image" ){
+								this.msgImgList.push( list[i].content.url.replace(/\_thumb\.jpg/, '') );
+							}
+							else if( list[i].content_type=="text" ){
+								this.$set(list[i], 'tags', []);
+								list[i].content.text = this.replaceEmoji( list[i].content.text, list[i].tags );
+							}
+						}
+						
+						if( lastId == 0 ){
+							this.msgList = list;
+							
+							// 滚动到底部
+							this.scrollToBottom();
+						}
+						else{
+							// 加载历史记录的
+							for(var i in list){
+								this.msgList.unshift( list[i] );
+							}
+							
+							// 滚动到指定位置
+							this.$nextTick( () => {
+								this.scrollToView = 'msg' + lastId;
+								this.$nextTick( () => {
+									this.scrollAnimation = true;//恢复滚动动画
+								});
+							});
+						}
+						
+						// 写入到store 缓存
+						this.setUserHistoryList({session_id: this.currSessionId, list: this.msgList});
+					}
+				}
+			});
+		},
+		// 滚动到底部
+		scrollToBottom(){
+			this.$nextTick( () => {
+				//进入页面滚动到底部
+				this.scrollTop += 100;
+				this.$nextTick( () => {
+					this.scrollAnimation = true;
+				});
+			});
+		},
+		// 当前会话打开后，把用户未读的内容设置为已读
+		setContentIsRead(){
+			this.$u.post( this.$api.csContentIsRead, {
+				user_id: this.myuid,
+				session_id: this.currSessionId,
+			})
+			.then( (response) => {
+				var res = response.data;
+				if( res.code ){
+					// 触发已读
+					if( res.data > 0 ){
+						this.setCsIsRead( (new Date()).valueOf() );
+						
+						// 触发刷新已接入的会话列表
+						this.setJoinedSession( (new Date()).valueOf() );
+					}
+				}
+			});
+		},
+		// 接收消息(筛选处理)
+		screenMsg(msg){
+			//从长连接处转发给这个方法，进行筛选处理
+			if(msg.type=='system'){
+				// 系统消息
+				switch (msg.type){
+					case 'text':
+						this.addSystemTextMsg(msg);
+						break;
+				}
+			}
+			else if(msg.type=='user'){
+				// 用户消息
+				switch (msg.type){
+					// 文本
+					case 'text':
+						this.addTextMsg(msg);
+						break;
+						
+					// 图片	
+					case 'image':
+						this.addImgMsg(msg);
+						break;
+						
+					// 卡片	
+					case 'miniprogrampage':
+						this.addCardMsg(msg);
+						break;
+				}
+				
+				//非自己的消息震动
+				if( msg.userinfo.id != this.myuid ){
+					console.log('振动');
+					uni.vibrateLong();
+				}
+			}
+			
+			this.$nextTick( () => {
+				// 滚动到底
+				this.scrollToView = 'msg'+msg.id
+			});
+		},
+		//触发滑动到顶部(加载历史信息记录)
+		loadHistory(e){
+			if( this.isHistoryLoading || typeof(this.msgList[0].isLast ) != 'undefined'){
+				return ;
+			}
+			else{
+				// 关闭滑动动画
+				this.scrollAnimation = false;
+				var lastId = this.msgList[0].id;
+				if( lastId != -100 ){
+					this.getMsgList( lastId );
+				}
+			}
+		},
+		
+		//更多功能(点击+弹出) 
+		showMore(){
+			this.hideEmoji = true;
+			if(this.hideMore){
+				this.hideMore = false;
+				this.openDrawer();
+			}else{
+				this.hideDrawer();
+			}
+		},
+		// 打开抽屉
+		openDrawer(){
+			this.popupLayerClass = 'showLayer';
+		},
+		// 隐藏抽屉
+		hideDrawer(){
+			this.popupLayerClass = '';
+			setTimeout(()=>{
+				this.hideMore = true;
+				this.hideEmoji = true;
+			},150);
+		},
+		// 选择图片发送
+		chooseImage(){
+			this.getImage('album');
+		},
+		//拍照发送
+		camera(){
+			this.getImage('camera');
+		},
+		
+		//选照片 or 拍照
+		getImage(type){
+			this.hideDrawer();
+			
+			uni.chooseImage({
+				sourceType:[type],
+				sizeType: ['original', 'compressed'], //可以指定是原图还是压缩图，默认二者都有
+				success: (res) => {
+					for(let i=0; i<res.tempFilePaths.length; i++){
+						uni.getImageInfo({
+							src: res.tempFilePaths[i],
+							success: (image) => {
+								let msg = {
+									url:res.tempFilePaths[i],
+								};
+								let msg2 = msg;
+								
+								// ajax 把这张图片上传到服务器
+								this.$util.showLoading( this );
+								uni.uploadFile({
+									url: this.$util.getAdminUploadUrl( this ),
+									filePath: res.tempFilePaths[i],
+									name: 'image_file',
+									formData: {
+										'type': 'IMAGE'
+									},
+									success: ( uRes ) => {
+										this.$util.hideLoading();
+										var rs = JSON.parse( uRes.data );
+										if( rs.code ){
+											// 把上传成功的图片的url写入到内容
+											msg.url = rs.data;
+											
+											this.sendMsg(msg, msg2, 'image', '图片');
+										}
+										else{
+											uni.showToast({
+												title: '发送失败：'+ rs.message,
+												icon: 'none',
+											});
+										}
+									}
+								});
+							}
+						});
+					}
+				}
+			});
+		},
+		// 选择表情
+		chooseEmoji(){
+			this.hideMore = true;
+			if(this.hideEmoji){
+				this.hideEmoji = false;
+				this.openDrawer();
+			}
+			else{
+				this.hideDrawer();
+			}
+		},
+		//添加表情
+		addEmoji(em){
+			this.textMsg+=em.alt;
+		},
+		//获取焦点，如果不是选表情ing,则关闭抽屉
+		textareaFocus(){
+			if(this.popupLayerClass=='showLayer' && this.hideMore == false){
+				this.hideDrawer();
+			}
+		},
+		// 发送文字消息
+		sendText(){
+			//隐藏抽屉
+			this.hideDrawer();
+			if( !this.textMsg ){
+				uni.showToast({
+					title:'内容不能为空',
+					icon:'none',
+				});
+				return;
+			}
+			let msg = {
+				text: this.replaceEmoji( this.textMsg ), 
+			}
+			let msg2 = {
+				text: this.textMsg,
+			};
+			this.sendMsg(msg, msg2, 'text', this.textMsg);
+			//清空输入框
+			this.textMsg = '';
+		},
+		// 发送客服素材消息
+		sendMaterial( obj ){
+			var contentType = '';
+			var msg = '';
+			var content = {};
+			var content2 = {};
+			
+			// 素材库的文本内容
+			if( obj.type == 'texts' ){
+				contentType = 'text';
+				msg = obj.content;
+				
+				// 替换换行符
+				msg = msg.replace(/<br\/>/g,"\n");
+				msg = msg.replace(/<\/p>/g,"\n");
+				msg = msg.replace(/\n$/,"");
+			
+				if( msg == '' || msg == null ){
+					this.$u.toast('内容为空，不能发送！');
+					return ;
+				}
+				// 加入客服的签名昵称
+				msg = '【'+this.info.worker.nick_name+'】'+msg;
+				
+				content = {
+					text: this.replaceEmoji( msg ),
+				};
+				content2 = {
+					text: msg,
+				};
+			}
+			// 素材 - 图片
+			else if( obj.type == 'images' ){
+				contentType = 'image';
+				msg = '图片';
+				content = {
+					url: obj.imgUrl,
+				};
+				content2 = {
+					url: obj.imgUrl,
+				};
+			}
+			// 素材 - 卡片
+			else if( obj.type == 'cards' ){
+				contentType = 'miniprogrampage';
+				msg = '小卡片';
+				content = {
+					miniprogrampage:{
+						Title: obj.Title,
+						PagePath: obj.PagePath, // 后台会根据路由来判断小卡片类型
+						LocalUrl: obj.LocalUrl,
+					}
+				};
+				content2 = content;
+			}
+			// 商品小卡片
+			else if( obj.type == 'goods'){
+				contentType = 'miniprogrampage';
+				msg = '商品小卡片';
+				content = {
+					miniprogrampage:{
+						Title: obj.Title,
+						PagePath: obj.PagePath, // 后台会根据路由来判断小卡片类型
+						LocalUrl: obj.LocalUrl,
+					} 
+				};
+				content2 = content;
+			}
+			// 页面小卡片
+			else if( obj.type == 'pages'){
+				contentType = 'miniprogrampage';
+				msg = '页面小卡片';
+				content = {
+					miniprogrampage:{
+						Title: obj.Title,
+						PagePath: obj.PagePath, // 后台会根据路由来判断小卡片类型
+						LocalUrl: obj.LocalUrl,
+					} 
+				};
+				content2 = content;
+			}
+			
+			this.sendMsg(content, content2, contentType, msg );
+		},
+		// 发送消息( 统一方法 )
+		sendMsg(content, content2, contentType, content_search=''){
+			// 如果是微信，最多只能连续发送5条信息
+			var uLength = this.msgList.length;
+			if( this.sessInfo.openid_type != 'APP' ){
+				for(var u = 1 ; u < 10 ; u++){
+					if( this.msgList[ uLength - u ].originator_type == 'worker' ){
+						if( u >= 5 ){
+							this.$u.toast('不能连续发送5条以上的信息给用户！');
+							return false;
+						}
+					}
+					else{
+						break;
+					}
+				}
+			}
+			
+			// 微信规定最后一条信息，不能超过48 小时
+			var userLastDate = new Date( this.msgList[ uLength - 1 ].created_at );
+			var userTimestamp = userLastDate.getTime(); // 毫秒级别
+			var currTimestamp = new Date().getTime(); // 毫秒级别
+			if( this.sessInfo.openid_type != 'APP' && userTimestamp + ( 48 * 3600 * 1000 ) < currTimestamp ){
+				this.$u.toast('微信规定，超过48小时未发送过信息的用户，客服是不能主动发出信息的！');
+				return false;
+			}
+			
+			// 1.直接写入到数组
+			this.msgList.push({
+				id: (new Date()).valueOf(),
+				originator_type: 'worker',
+				content_type: contentType,
+				created_at_format: this.getTimeFormat("yyyy-MM-dd hh:mm"),
+				content: content,
+				content_search: content_search,
+				get_worker_info: {
+					nick_name: this.info.worker.nick_name,
+					avatar_format: this.info.worker.avatar_format,
+					get_admin_info: {
+						name: this.info.userName,
+					},
+				},
+			});
+			
+			// 如果是图片,更新相册缓存
+			if( contentType == 'image' ){
+				this.msgImgList.push(content.url);
+			}
+			
+			// 写入到store 缓存
+			this.setUserHistoryList({session_id: this.currSessionId, list: this.msgList});
+			
+			// 2.滚动到最底部
+			this.scrollToBottom();
+			
+			// 3.把内容发送到服务器 
+			this.$u.post( this.$api.csworkerAddContent, {
+				session_id: this.sessInfo.id,
+				user_id: this.sessInfo.get_user_info.id,
+				worker_id: this.sessInfo.worker_id,
+				content_type: contentType,
+				content: JSON.stringify(content2),
+				content_search: content_search,
+			})
+			.then( (response) => {
+				var res = response.data;
+				if( res.code ){
+					// 发送成功，不用处理
+				}
+				else{
+					this.$u.toast(res.message);
+					if(res.data == -1 ){
+						this.$delete( this.msgList, ( this.msgList.length -1) );
+						// 滚动到最底部
+						this.scrollToBottom();
+					}
+				}
+			});
+		},
+		//替换表情符号为图片
+		replaceEmoji(str, tags = [] ){
+			let replacedStr = str.replace(/\[([^(\]|\[)]*)\]/g,(item, index)=>{
+				for(let i=0;i<this.emojiList.length;i++){
+					let row = this.emojiList[i];
+					for(let j=0;j<row.length;j++){
+						let EM = row[j];
+						if(EM.alt==item){
+							let imgstr = '<img src="'+ this.emHost + EM.url+'">';
+							return imgstr;
+						}
+					}
+				}
+			});
+			
+			replacedStr = replacedStr.replace(/'/g,'"');
+			replacedStr = replacedStr.replace(/keyword="([^\"]*)"/g, (item, index)=>{
+				return 'style="display:none;" class="'+ item.replace('keyword="','');
+			});
+			
+			replacedStr.replace(/class=([^\<]*)/g, (item, index)=>{
+				var arr = item.split('">');
+				tags.push({
+					keyword: arr[0].replace('class="', '').replace('"', ''),
+					name: arr[1],
+				});
+			});
+			
+			// 这里是富文本解析，是可以使用div 的
+			return '<div style="word-wrap:break-word;">'+replacedStr+'</div>';
+		},
+		// 添加文字消息到列表
+		addTextMsg(msg){
+			this.msgList.push(msg);
+		},
+		// 添加图片消息到列表
+		addImgMsg(msg){
+			// 添加到相册list
+			this.msgImgList.push(msg.content.url);
+			// 添加到列表
+			this.msgList.push(msg);
+		},
+		// 添加卡片消息到列表
+		addCardMsg( msg ){
+			this.msgList.push(msg);
+		},
+		// 添加系统文字消息到列表
+		addSystemTextMsg(msg){
+			this.msgList.push(msg);
+		},
+		sendSystemMsg(content,type){
+			let lastid = this.msgList[this.msgList.length-1].id;
+			lastid++;
+			let row = {type:"system",msg:{id:lastid,type:type,content:content}};
+			this.screenMsg(row)
+		},
+		// 预览图片
+		showPic(msg){
+			uni.previewImage({
+				indicator:"none",
+				current: msg.content.url.replace(/\_thumb\.jpg/, ''),
+				urls: this.msgImgList
+			});
+		},
+		// 格式化当前时间
+		getTimeFormat(fmt) { 
+			var d = new Date();
+		    var o = { 
+		        "M+" : d.getMonth()+1,                 //月份 
+		        "d+" : d.getDate(),                    //日 
+		        "h+" : d.getHours(),                   //小时 
+		        "m+" : d.getMinutes(),                 //分 
+		        "s+" : d.getSeconds(),                 //秒 
+		        "q+" : Math.floor((d.getMonth()+3)/3), //季度 
+		        "S"  : d.getMilliseconds()             //毫秒 
+		    }; 
+		    if(/(y+)/.test(fmt)) {
+		            fmt=fmt.replace(RegExp.$1, (d.getFullYear()+"").substr(4 - RegExp.$1.length)); 
+		    }
+		    for(var k in o) {
+		        if(new RegExp("("+ k +")").test(fmt)){
+		             fmt = fmt.replace(RegExp.$1, (RegExp.$1.length==1) ? (o[k]) : (("00"+ o[k]).substr((""+ o[k]).length)));
+		         }
+		    }
+		    return fmt; 
+		},
+		// 打开用户详情的 popup
+		openUserInfo(){
+			this.$refs['cs-user-info'].openPopup( this.sessInfo );
+		},
+		discard(){
+			return;
+		},
+		// 关闭会话
+		closeSession(){
+			this.showModal = true;
+		},
+		// 关闭会话回调
+		closeSessionCallback(){
+			// 发送关闭会话
+			this.$u.post( this.$api.csCloseSession, {
+				session_id: this.sessInfo.id,
+			})
+			.then( (response) => {
+				var res = response.data;
+				if( res.code ){
+					this.sessInfo = {};
+					
+					// 触发刷新已接入的会话列表
+					this.setJoinedSession( (new Date()).valueOf() );
+					
+					// 窗口返回
+					uni.navigateBack();
+				}
+			});
+		},
+		// 打开素材选择器
+		openMaterial( type ){
+			this.hideDrawer();
+			
+			this.$refs['cs-material'].openPopup( type );
+		},
+		// 打开转接组件
+		transferSession(){
+			this.$refs['cs-transfer-session'].openPopup( this.info, this.sessInfo.id );
+		},
+		// 转接成功的回调
+		transferSessionCb( obj ){
+			// 转接成功后，清除掉当前会话信息
+			this.sessInfo = {};
+			
+			// 触发刷新已接入的会话列表
+			this.setJoinedSession( (new Date()).valueOf() );
+			
+			// 触发返回到客服索引页
+			uni.navigateTo({
+				url:'/pages/app/customer-service-worker/index',
+			});
+		},
+		goWaitingList(){
+			uni.navigateTo({
+				url:'/pages/app/customer-service-worker/index?tab=1'
+			});
+		},
+		goJoinedList(){
+			uni.navigateTo({
+				url:'/pages/app/customer-service-worker/index'
+			});
+		}
+	},
+	computed:{
+		...mapState([
+			'csSession', 
+			'csAdminInfo', 
+			'selectedCsSession', 
+			'userHistoryList',
+			'joinedunReadCount', 
+			'waitingunReadCount',
+		]),
+	},
+	watch:{
+		// 当接收到用户发送回来的 ws 信息
+		'csSession' ( to ){
+			// 数据已经在index.vue 写入到了userHistoryList，这里只负责滚动到底部
+			this.$nextTick( () => {
+				this.scrollToBottom();
+			});
+		},
+	}
+}
+</script>

@@ -1,0 +1,59 @@
+<view class="cr_container">
+  <view class="cr_header">
+    <search id="search" class="search" searchType="employee" placeText="输入店员昵称/名字" bindonTapConfirm="handleSearchConfirm"></search>
+  </view>
+  <scroll-view class="cr_main" scroll-y refresher-enabled 
+    bindrefresherrefresh="refreshData"
+    refresher-triggered="{{refreshing}}"
+    bindscrolltolower="scrollToLower"
+  >
+    <view class="setting_row">
+      <view class="all_set_btn">
+        <button style='background:{{brand_info.style.bg_color}}' hover-class="active" bindtap="ontap" data-type="setAll">统一设置比例</button>
+      </view>
+    </view>
+
+    <view class="table_container" style="--theme_color:{{brand_info.style.bg_color}}">
+      <view class="cr_table">
+        <view class="cr_th">
+          <view class="cr_tc cr_th_title" wx:for="{{tableHead}}" wx:key="index">{{item}}</view>
+        </view>
+        <view class="cr_tb">
+          <block wx:if="{{list && list.length}}">
+            <view class="cr_tr" wx:for="{{list}}" wx:key="id" hover-class="hover">
+              <view class="cr_tc">
+                <view class="employee_name">{{item.staffName}}</view>
+              </view>
+              <view class="cr_tc">
+                <view class="ratio_wrap">
+                  <input placeholder="值" value="{{item.commRate}}" type="digit" bindblur="handleInputBlur" bindfocus="handleInputFocus" bindinput="handleUserInput" data-keyname="singleRatio" data-id="{{item.staffId}}" />
+                  <text>%</text>
+                </view>
+              </view>
+              <view class="cr_tc">
+                <view class="update_time">{{item.lastModify}}</view>
+              </view>
+            </view>
+          </block>
+          <block wx:else>
+            <view class="cr_tr">
+              <view class="cr_tc no_data_tc">暂无</view>
+              <view class="cr_tc no_data_tc">暂无</view>
+              <view class="cr_tc no_data_tc">暂无</view>
+            </view>
+          </block>
+        </view>
+      </view>
+    </view>
+  </scroll-view>
+
+  <dialog id="pageDialog" isSlotContent="{{isSlotContent === 'allSet'}}">
+    <view slot="content" class="ratio_set_input" wx:if="{{isSlotContent === 'allSet'}}">
+      <view class="ratio_set_input_label">比例</view>
+      <view class="ratio_set_qty">
+        <input class="ratio_set_input_number" type="digit" value="{{allStaffCommRate}}" data-keyname="allStaffCommRate" bindinput="handleUserInput" />
+        <text>%</text>
+      </view>
+    </view>
+  </dialog>
+</view>

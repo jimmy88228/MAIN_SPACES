@@ -1,0 +1,6 @@
+{
+  "navigationBarTitleText":"同步会员",
+  "usingComponents": {
+    "input-drop-down":"/components/form-models/input-drop-down/input-drop-down"
+  }
+}

@@ -1,0 +1,7 @@
+{
+    "component": true,
+    "usingComponents": {
+        "mp-input":"/components/mp-module/mp-input/mp-input",
+        "mp-scroll-view":"/components/mp-module/mp-scroll-view/mp-scroll-view"
+    }
+}

@@ -1,0 +1,478 @@
+<template>
+  <view class="game-area text-c">
+    <page-nav :isTransparent="true">
+      <view slot="custom-content">
+        <image @click="getRank" class="game-rank-icon" :src="staticAddress + '/game/different/rank-icon.png'" mode="widthFix">
+      </view>
+    </page-nav>
+    <view class="game-level">第 {{currLevel + 1}} 关</view>
+    <view class="game-title">
+      <view class="title-c">
+        <view class="title-t">{{gameTitle}}</view>
+        <view class="title-b">{{gameTitle}}</view>
+      </view>
+    </view>
+    <view class="game-time">
+      <view class="time-tip m-r-10">耗时</view>
+      <view class="time-used">{{usedTime}}</view>
+    </view>
+    <view class="game-cont">
+      <view class="rect-list" v-show="vIndex == currLevel" v-for="(vItem, vIndex) in dataListView" :key="vIndex">
+        <view class="rect-item" :style="{'width': item.width, 'padding-top': item.width}" v-for="(item, index) in vItem" :key="index">
+          <view class="item-cont-area" :class="{'shake' : chooseIndex == item.id && isShake}">
+            <view class="item-cont" @click="chooseItem(item.id)" :class="{'animate': isAnimate, 'prize-item': prizeIndex == item.id}" :style="{'animation-duration': item.time + 's'}">
+              <image class="item-img" :src="item.unHappyFace" mode="widthFix" v-if="prizeIndex == item.id"/>
+              <image class="item-img" :src="item.happyFace" mode="widthFix" v-else/>
+            </view>
+          </view>
+        </view>
+      </view>
+    </view>
+    <!--开始动画-->
+    <countDown ref="countDownRef"></countDown>
+  </view>
+</template>
+
+<script>
+import countDown from "../components/count-down/count-down.vue";
+const app = getApp();
+const pageOption = Page.BasePage({
+  components: { countDown },
+  data() {
+    return {
+      isShow: false,
+      currLevel: 0,
+      gameTitle: "找出不开心的表情",
+      usedTime: "00:00:00",
+      gameLog: [],
+      itemList: [],
+      dataListView: [],
+      isAnimate: false,
+      isShake: false, 
+      shakeTimer: null,
+      prizeIndex: -1, // 中奖点
+      chooseIndex: -1, // 选择点
+      anmiateMaxTime: 0,
+      reckonTimer: null
+    };
+  },
+  // computed: {
+  // },
+  onLoad(options) {
+    this.options = options || {};
+    this.loadData();
+  },
+  onShow() {
+    this.usedTime = '00:00:00';
+    this.currLevel = 0;
+    this.isAnimate = false;
+    this.initData();
+    this.isShow = true;
+    this.$refs["countDownRef"] && this.$refs["countDownRef"].initAnimate(()=>{
+      this.initAnimation();
+      this.reckonTime();
+    })
+  },
+  onHide() {
+    this.$refs["countDownRef"] && this.$refs["countDownRef"].destroy();
+    this.reckonTime(true);
+    this.isShow = false;
+  },
+  onUnload(){
+    this.$refs["countDownRef"] && this.$refs["countDownRef"].destroy();
+    this.reckonTime(true);
+    this.isShow = false;
+  },
+  methods: {
+    loadData() {
+      this.itemList = [
+        {
+          col: 2,
+          row: 2,
+          happyFace: this.staticAddress + "/game/different/happy-face.png",
+          unHappyFace: this.staticAddress + "/game/different/unhappy-face.png"
+        },
+        {
+          col: 2,
+          row: 2,
+          happyFace: this.staticAddress + "/game/different/happy-face.png",
+          unHappyFace: this.staticAddress + "/game/different/unhappy-face.png"
+        },
+        {
+          col: 2,
+          row: 2,
+          happyFace: this.staticAddress + "/game/different/happy-face.png",
+          unHappyFace: this.staticAddress + "/game/different/unhappy-face.png"
+        },
+        {
+          col: 3,
+          row: 3,
+          happyFace: this.staticAddress + "/game/different/happy-face.png",
+          unHappyFace: this.staticAddress + "/game/different/unhappy-face.png"
+        },
+        {
+          col: 3,
+          row: 3,
+          happyFace: this.staticAddress + "/game/different/happy-face.png",
+          unHappyFace: this.staticAddress + "/game/different/unhappy-face.png"
+        },
+        {
+          col: 3,
+          row: 3,
+          happyFace: this.staticAddress + "/game/different/happy-face.png",
+          unHappyFace: this.staticAddress + "/game/different/unhappy-face.png"
+        },
+        {
+          col: 4,
+          row: 4,
+          happyFace: this.staticAddress + "/game/different/happy-face.png",
+          unHappyFace: this.staticAddress + "/game/different/unhappy-face.png"
+        },
+        {
+          col: 4,
+          row: 4,
+          happyFace: this.staticAddress + "/game/different/happy-face.png",
+          unHappyFace: this.staticAddress + "/game/different/unhappy-face.png"
+        },
+        {
+          col: 5,
+          row: 5,
+          happyFace: this.staticAddress + "/game/different/happy-face.png",
+          unHappyFace: this.staticAddress + "/game/different/unhappy-face.png"
+        },
+        {
+          col: 5,
+          row: 5,
+          happyFace: this.staticAddress + "/game/different/happy-face.png",
+          unHappyFace: this.staticAddress + "/game/different/unhappy-face.png"
+        }
+      ];
+    },
+    // 初始化展示数据
+    initData() {
+      let itemList = this.itemList || [];
+      let dataListView = [];
+      for(let i = 0; i < itemList.length; i++){
+        let currItem = itemList[i] || {};
+        let { col, row } = currItem;
+        if (!col || !row) continue;
+        let itemCount = parseInt(Number(col) * Number(row));
+        let width = 100 / col + "%";
+        let time = 0.3;
+        let itemData = []
+        this.anmiateMaxTime = 200//time * 1000;
+        for (let i = 0; i < itemCount; i++) {
+          itemData.push({
+            width: width,
+            id: i,
+            delayed: 0,
+            time: time,
+            ...currItem
+          });
+        }
+        dataListView.push(itemData);
+      }
+      this.dataListView = dataListView || [];
+      // let { col, row } = currItem;
+      // if (!col || !row) return;
+      // let itemCount = parseInt(Number(col) * Number(row));
+      // let dataListView = [];
+      // let width = 100 / col + "%";
+      // let time = 0.35;
+      // this.anmiateMaxTime = time * 1000;
+      // for (let i = 0; i < itemCount; i++) {
+      //   dataListView.push({
+      //     width: width,
+      //     id: i,
+      //     delayed: 0,
+      //     time: time,
+      //     ...currItem
+      //   });
+      // }
+      // this.dataListView = dataListView //.shuffle();
+    },
+    reckonTime(isClear){
+      if(this.reckonTimer){ 
+        clearInterval(this.reckonTimer);
+        this.reckonTimer = null;
+      }
+      if(isClear) return;
+      let nowTime = new Date().getTime();
+      this.reckonTimer = setInterval(()=>{
+        let currTime = new Date().getTime();
+        let timeDiff = currTime - nowTime;
+        this.usedTime = this.getTimeStr(timeDiff);
+      }, 1000)
+    },
+    getTimeStr(timeDiff){
+      let dec = timeDiff / 1000;
+      let d =  parseInt(dec / 60 / 60 / 24);
+      d = d < 10 ? '0'+ d : d;
+      let h = parseInt(dec / 60 / 60 % 24);
+      h = h < 10 ? '0'+ h : h;     
+      let m= parseInt(dec / 60 % 60);
+      m = m < 10 ? '0'+ m: m;
+      let s= parseInt(dec % 60);
+      s = s < 10 ? '0'+ s : s;
+      return h + ":" + m +":" + s;
+    },
+    // 排列动画
+    initAnimation() {
+      // this.$nextTick(()=>{
+      //   this.random();
+      //   this.isAnimate = true;
+      // })
+      this.random();
+      this.isAnimate = true;
+    },
+    // 生成随机数
+    random() {
+      let dataListView = this.dataListView || [];
+      let itemCount = dataListView && dataListView[this.currLevel].length || 0;
+      let val = parseInt(Math.random() * itemCount);
+      this.prizeIndex = val;
+    },
+    chooseItem(id){
+      this.chooseIndex = id;
+      if(this.prizeIndex != id){
+        this.setShake(false, ()=>{
+          this.chooseIndex = -1;
+        });
+      } else {
+        this.setShake(true, ()=>{
+          this.chooseIndex = -1;
+        });
+        if(this.currLevel + 1 < this.itemList.length){
+          this.getNext();
+        } else {
+          this.reckonTime(true);
+          this.jumpAction("/pages/game/find-out-difference/result/result");
+        }
+      }
+    },
+    getNext() {
+      this.isAnimate = false;
+      this.$nextTick(()=>{
+      //  let timer = setTimeout(()=>{
+      //     this.currLevel = Number(this.currLevel) + 1;
+      //     this.initAnimation();
+      //     clearTimeout(timer);
+      //     timer = null;
+      //   }, this.anmiateMaxTime)
+      this.currLevel = Number(this.currLevel) + 1;
+      this.initData();
+      this.initAnimation();
+      // clearTimeout(timer);
+      // timer = null;
+      })
+      
+    },
+    setShake(isClear, callback){
+      if(isClear){ // 切换下一关时，需要清空动画
+        this.isShake = false;
+        clearTimeout(this.shakeTimer);
+        this.shakeTimer = null;
+        return;
+      }
+      this.$nextTick(()=>{ 
+        if(this.shakeTimer){ return; } // shake 过程中，不处理
+        this.isShake = true;
+        this.shakeTimer = setTimeout(()=>{
+          this.isShake = false;
+          if(this.shakeTimer){
+            clearTimeout(this.shakeTimer);
+            this.shakeTimer = null
+          }
+          typeof callback == 'function' && callback();
+        },800)
+      })
+    },
+    getRank(){
+      this.jumpAction("/pages/game/find-out-difference/rank/list");
+    }
+  },
+});
+export default pageOption;
+
+// Fisher–Yates shuffle 洗牌算法
+Array.prototype.shuffle = function () {
+  var input = this;
+  for (var i = input.length - 1; i >= 0; i--) {
+    var randomIndex = Math.floor(Math.random() * (i + 1));
+    var itemAtIndex = input[randomIndex];
+    input[randomIndex] = input[i];
+    input[i] = itemAtIndex;
+  }
+  return input;
+};
+</script>
+
+<style lang="scss">
+.game-area {
+  min-height: calc(100vh);
+  background: linear-gradient(-43deg, #FFF6D4, #FFFDF4);
+  .game-rank-icon{
+    width: 90rpx;
+    height: 90rpx;
+  }
+}
+.game-level {
+  margin-top: 23rpx;
+  margin-bottom: 34rpx;
+  font-size: 32rpx;
+  font-family: PingFang SC;
+  font-weight: 400;
+  font-style: italic;
+  color: #682a00;
+  line-height: 30rpx;
+}
+.game-title {
+  text-align: center;
+  margin-bottom: 44rpx;
+  .title-c {
+    display: inline-block;
+    font-size: 52rpx;
+    font-family: PingFang SC;
+    font-weight: 600;
+    line-height: 48rpx;
+    position: relative;
+  }
+  .title-t {
+    z-index: 2;
+    position: relative;
+    color: #ffa800;
+  }
+  .title-b {
+    z-index: 0;
+    position: absolute;
+    top: 5rpx;
+    left: 0px;
+    color: #fff;
+    text-shadow: -1px 0px 1px #ffce0a, 1px 0px 1px #ffce0a, 0px -1px 1px #ffce0a,
+      0px 1px 1px #ffce0a;
+  }
+}
+.game-time {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  .time-tip {
+    font-size: 26rpx;
+    font-family: PingFang SC;
+    font-weight: 400;
+    color: #000000;
+    line-height: 20rpx;
+    opacity: 0.5;
+  }
+  .time-used {
+    font-size: 28rpx;
+    font-family: Krungthep;
+    font-weight: bold;
+    color: #333333;
+    line-height: 48rpx;
+  }
+}
+.game-cont {
+  margin-top: 30rpx;
+  padding: 30rpx;
+  width: 100%;
+  padding-top: 100%;
+  height: 0px;
+  box-sizing: border-box;
+  position: relative;
+}
+.rect-list {
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  width: 100%;
+  height: 100%;
+  padding: 20rpx;
+  box-sizing: border-box;
+  display: flex;
+  flex-wrap: wrap;
+  .rect-item {
+    position: relative;
+  }
+}
+.item-cont-area {
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  padding: 15rpx;
+  width: 100%;
+  height: 100%;
+  box-sizing: border-box;
+  .item-cont {
+    width: 100%;
+    height: 100%;
+    // transform: translateY(10%);
+    // opacity: 0;
+    animation-name: fadeOut;
+    animation-fill-mode: forwards;
+  }
+  .item-img{
+    width:100%;
+    display: block;
+  }
+  .item-cont.animate {
+    animation-name: fadeIn;
+    animation-fill-mode: forwards;
+  }
+  // .item-cont.prize-item {
+  //   transform: translate(0, 0);
+  //   opacity: 0.6;
+  // }
+}
+.item-cont-area.shake{
+  animation-name: shake;
+  animation-duration: 800ms;
+  animation-fill-mode: forwards;
+  animation-timing-function: ease-in-out;
+}
+@keyframes fadeIn {
+  from{
+    transform: translateY(10%);
+    opacity: 0;
+  }
+  to{
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+@keyframes fadeOut {
+  from{
+    transform: translateY(0);
+    opacity: 1;
+  }
+  to{
+    transform: translateY(10%);
+    opacity: 0;
+  }
+}
+@keyframes shake {
+  10%,
+  90% {
+    transform: translate3d(-2rpx, -2rpx, 0);
+  }
+
+  20%,
+  80% {
+    transform: translate3d(+6rpx, +6rpx, 0);
+  }
+
+  30%,
+  70% {
+    transform: translate3d(-12rpx, -12rpx, 0);
+  }
+
+  40%,
+  60% {
+    transform: translate3d(+12rpx, +12rpx, 0);
+  }
+
+  50% {
+    transform: translate3d(-12rpx, -12rpx, 0);
+  }
+}
+</style>

@@ -1,0 +1,27 @@
+{
+    "plugins": [
+        "@babel/syntax-dynamic-import",
+        [
+            "@babel/plugin-transform-runtime",
+            {
+                // "absoluteRuntime": true,
+                "corejs": "3"
+                // "helpers": true,
+                // "regenerator": true
+            }
+        ]
+    ],
+    "presets": [
+        "@vue/babel-preset-jsx",
+        [
+            "@babel/preset-env",
+            {
+                "modules": false,
+                "targets": "> 0.5%, not dead"
+                // 下面是polyfill垫片配置
+                // "useBuiltIns": "usage",
+                // "corejs": "3.20.1",
+            }
+        ]
+    ]
+}

@@ -1,0 +1,105 @@
+.input_item {
+  background: #fff;
+  line-height: 130rpx;
+  padding: 0 30rpx;
+  position:relative;
+}
+.input_item .no_phone_tip{
+  position:absolute;
+  top:50%;
+  right:30rpx;
+  transform: translateY(-50%);
+}
+.input_item .showPw{
+  position:absolute;
+  top:50%;
+  right:40rpx;
+  transform: translateY(-50%);
+  width:36rpx;
+  height:16rpx;
+  border:1px solid #333;
+  border-radius:100%;
+  text-align:center;
+}
+.input_item .showPw:before{
+  content:"";
+  width:14rpx;
+  height:14rpx;
+  display:block;
+  position:absolute;
+  top:50%;
+  left:50%;
+  transform: translate(-50%,-50%);
+  border-radius:100%;
+  background:#333;
+}
+.input_item .showPw::after{
+  content:"";
+  position:absolute;
+  top:50%;
+  left:50%;
+  transform: translate(-50%,-50%) rotate(-45deg);
+  width:96%;
+  height:0px;
+  border:1px solid #333;
+}
+.input_item .showPw.show:after{
+  display:none;
+}
+.input_item + .input_item {
+  border-top: 1px solid #efefef;
+}
+
+.input_label,
+.phone_input {
+  display: inline-block;
+  vertical-align: middle;
+}
+
+.input_label {
+  color: #7f7f7f;
+  margin-right: 40rpx;
+  min-width:114rpx;
+}
+
+.phone_input {
+  width:340rpx;
+  height: 130rpx;
+}
+
+.identify_code_btn {
+  float: right;
+  margin-top: 32rpx;
+  line-height: 66rpx;
+  font-size: 24rpx;
+  border: 1px solid #7f7f7f;
+  border-radius: 4px;
+  padding: 0 16rpx;
+  text-align: center;
+}
+
+.complete_btn {
+  color: #fff;
+  width: 390rpx;
+  line-height: 100rpx;
+  font-size: 32rpx;
+  text-align: center;
+  margin: 84rpx auto 30rpx auto;
+}
+
+.protocol {
+  color: #7f7f7f;
+  font-size: 20rpx;
+  text-align: center
+}
+
+.protocol_text {
+  display: inline-block;
+  vertical-align: middle;
+  line-height: 1.2;
+}
+.pw_tip{padding:20rpx 30rpx;}
+
+.underline {
+  border-bottom: 1px solid #7f7f7f;
+}

@@ -1,0 +1,26 @@
+@import "/common/base/component/default-wxss/index.wxss";
+.sku-selector{
+  position: fixed;
+  left: 0;
+  bottom: 0;
+  z-index: 999999;
+  background-color: #ffffff;
+  width: 100%;
+  height: 50vh;
+}
+
+.sku-item{
+  display: inline-block;
+  padding: 8rpx 32rpx;
+  border-radius: 10rpx;
+  background-color: #ffffff;
+  border: 1px solid var(--main-color);
+  margin-right: 16rpx;
+  margin-bottom: 12rpx;
+}
+.sku-item.selected{
+  background-color: var(--main-color);
+}
+.sku-item.disabled{
+  background-color: #777777;
+}

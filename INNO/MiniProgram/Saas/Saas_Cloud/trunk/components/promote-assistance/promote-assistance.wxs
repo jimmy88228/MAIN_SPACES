@@ -1,0 +1,19 @@
+function conditionTypeUnit(type){ 
+  type = Number(type);
+  var result = "";
+  switch (type) {
+    case 1:
+      result = "元"
+      break;
+    case 2:
+      result = "件"
+      break;
+    default:
+      break;
+  }
+  return result
+}
+
+module.exports = {
+  conditionTypeUnit: conditionTypeUnit
+}

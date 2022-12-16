@@ -1,0 +1,67 @@
+<!-- pages/micro_mall/red_packet/red_balance/red_balance -->
+<view class="main">
+  <view class="tab_box">
+    <view class="tab" wx:for="{{tab}}" wx:key="key" data-key="{{index}}" catchtap="onTap" data-type="tabTap" style="{{current == index?'color:#000;font-weight:bold;':''}}">
+      {{item.name}}
+    </view>
+  </view>
+  <view class="content">
+    <list 
+    id='list' 
+    current="{{current}}"
+    tabData="{{tab}}" 
+    isSwiper="{{true}}"
+    bindswiperChange="swiperChangeCallback"
+    bindscrolltolower="scrolltolowerCallback"
+    bindrefresherrefresh="refreshCallback"
+    >
+      <block>
+        <view slot="data{{lIndex}}" wx:for="{{listData}}" wx:for-item="lItem" wx:for-index="lIndex" wx:key="lIndex" class="list_padding_box">
+          <block wx:for="{{lItem.data}}" wx:key="index">
+            <view class="box">
+              <view class="box_cont">
+                <view class="red_back {{item.type==1 || item.type==0?'':'used'}}">
+                </view>
+                <view class="red_cont {{item.type==1 || item.type==0?'':'used'}}">
+                  <view class="red_c {{item.type==1 || item.type==0?'':'used'}}">
+                    <view>
+                      <block wx:if="{{item.type == 3}}">
+                        <view class="red_val"><text class="val_m">¥</text><text class="val_v">{{item.originalAmount}}</text></view>
+                        <view class="red_init_val" wx:if="{{item.amount != item.originalAmount && item.amount>0}}">已使用面额¥{{item.amount}}</view>
+                      </block>
+                      <block wx:else>
+                        <view class="red_val"><text class="val_m">¥</text><text class="val_v">{{item.amount}}</text></view>
+                        <view class="red_init_val" wx:if="{{item.amount != item.originalAmount}}">初始面额 ¥{{item.originalAmount}}</view>
+                      </block>
+                    </view>
+                  </view>
+                </view>
+                <view class="red_face">
+                  <view class="red_f red_f_t {{item.type==1 || item.type==0?'':'used'}}"></view>
+                  <view class="red_f red_f_m {{item.type==1 || item.type==0?'':'used'}}"></view>
+                  <view class="red_f red_f_b {{item.type==1 || item.type==0?'':'used'}}"></view>
+                  <text class="red_square"></text>
+                  <view class="face_cont">
+                    <view class="pack_type" wx:if="{{item.type == 0}}">
+                      待生效
+                    </view>
+                    <view>
+                      <view class="face_title {{item.type==1 || item.type==0?'':'used'}}">{{item.redpackName}}</view>
+                      <view class="face_time {{item.type==1 || item.type==0?'':'used'}}">有效期：{{item.fromTimeStr}} - {{item.toTimeStr}}</view>
+                    </view>
+                  </view>
+                  <block wx:if="{{item.type==2||item.type==3}}">
+                    <image class="img" src="{{item.type==2?img_used:img_past}}" mode="aspectFit"></image>
+                  </block> 
+                </view>
+              </view>
+            </view>
+          </block>
+          <view class="empty_state" wx:if="{{lItem.data.length == 0 && lItem.loaded}}">
+            <view class="empty_txt">暂无数据</view>
+          </view>
+        </view>
+      </block>
+    </list>
+  </view>
+</view>

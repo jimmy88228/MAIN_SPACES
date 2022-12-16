@@ -1,0 +1,41 @@
+@import "/static/iconFont/font.wxss";
+.size-chart-tip{
+  position: relative;
+  padding: 20rpx 25rpx;
+  border-top:1px solid #efefef;
+}
+.tip-left{
+  padding-right: 20rpx;
+  flex-shrink: 0;
+}
+.tip-right{
+}
+.size-chart-cont{
+  position: relative;
+  padding: 0rpx 25rpx;
+  max-height: 0;
+  overflow: hidden;
+  transition: all .35s;
+}
+.show-chart{
+  max-height: 3000rpx;
+}
+.scroll-size-stay{
+  display: inline-flex;
+  width:100%;
+}
+.scroll-size{
+  height:100%;
+  width:100%;
+}
+.size-img{
+  height: 100%;
+  display:block;
+}
+.icon-arrow-down{
+  transition: transform .35s;
+  font-size: 45rpx;
+}
+.rotate{
+  transform: rotate(180deg);
+}

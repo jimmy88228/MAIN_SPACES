@@ -1,0 +1,708 @@
+const AdminApi = {
+    adminLogin: {
+        u: "/pt_v1/admin/loginInit",
+        a: "post"
+    },
+    adminLoginOut: {
+        u: "/pt_v1/admin/loginOut",
+        a: "post"
+    },
+    editInitpasswd: { // oldpasswd, newpasswd, notarizepasswd
+        u: "/pt_v1/admin/editInitpasswd",
+        a: "post"
+    },
+    selectSupplierLogin: {
+        u: "/pt_v1/admin/selectSupplierLogin",
+        a: "post"
+    },
+}
+
+export const pagesApi = {
+    pageList: {
+        u: "/pt_v1/pageMaintenance/list",
+        a: "post"
+    },
+    pageAdd: {
+        u: "/pt_v1/pageMaintenance/add",
+        a: "post"
+    },
+    pageInfo: {
+        u: "/pt_v1/pageMaintenance/Info",
+        a: "post"
+    },
+    pageUpdate: {
+        u: "/pt_v1/pageMaintenance/update",
+        a: "post"
+    },
+    pageRemove: {
+        u: "/pt_v1/pageMaintenance/remove",
+        a: "post"
+    },
+    pageSort: {
+        u: "/pt_v1/pageMaintenance/sort",
+        a: "post"
+    },
+    setHomePage: {
+        u: "/pt_v1/pageMaintenance/homePage",
+        a: "post"
+    },
+}
+
+export const componentsApi = {
+    inventoryComponentList: {
+        u: "/pt_v1/custom/componentData",
+        a: "post"
+    },
+    adminRoleData: {
+        u: "/pt_v1/custom/adminRoleData",
+        a: "post"
+    },
+    adminAreaData: {
+        u: "/pt_v1/custom/adminAreaData",
+        a: "post"
+    },
+    adminSchoolData: {
+        u: "/pt_v1/custom/adminSchoolData",
+        a: "post"
+    },
+    adminCampusData: {
+        u: "/pt_v1/custom/adminCampusData",
+        a: "post"
+    },
+    adminGradeData: {
+        u: "/pt_v1/custom/adminGradeData",
+        a: "post"
+    },
+    addCampus: {
+        u: "/pt_v1/classMaintenance/addCampus",
+        a: "post"
+    },
+    updateCampus: {
+        u: "/pt_v1/classMaintenance/updateCampus",
+        a: "post"
+    },
+    ImageUplode: {
+        u: "/pt_v1/custom/ImageUplode",
+        a: "post"
+    },
+    mqProgress: {
+        u: "/pt_v1/custom/mqProgress",
+        a: "post"
+    },
+    qrcode: {
+        u: "/pt_v1/custom/qrcode",
+        a: "post"
+    },
+    surveyLevel: {
+        u: "/pt_v1/custom/surveyLevel",
+        a: "post"
+    },
+    surveyIntervention: {
+        u: "/pt_v1/custom/surveyIntervention",
+        a: "post"
+    },
+    schoolStudentData: {
+        u: "/pt_v1/custom/schoolStudentData",
+        a: "post"
+    },
+    getStudent: {
+        u: "/pt_v1/custom/getStudent",
+        a: "post"
+    },
+    adminOrganizationData: {
+        u: "/pt_v1/custom/adminOrganizationData",
+        a: "post"
+    },
+
+
+
+    specializeInSkilled: {
+        u: "/pt_v1/custom/specializeInSkilled",
+        a: "post"
+    },
+    multimediaUplode: {
+        u: "/pt_v1/custom/MultimediaUplode",
+        a: "post"
+    },
+    getCustomerGroupType: {
+        u: "/pt_v1/customer/getCustomerGroupType",
+        a: "post"
+    },
+    getTargetList: { // 参数page  pageSize 或则 is_all 可选参数：searchq、customer_ids、customer_id
+        u: "/pt_v1/target/getTargetList",
+        a: "post"
+    },
+    counselorMember: {
+        u: "/pt_v1/custom/counselorMember",
+        a: "post"
+    },
+    counselorService: {
+        u: "/pt_v1/custom/counselorService",
+        a: "post"
+    },
+    //
+    getRoleData: {
+        u: "/pt_v1/custom/getRoleData",
+        a: "post"
+    },
+    // 
+    getExamList: {
+        u: "/pt_v1/custom/getExamList",
+        a: "post"
+    },
+}
+
+
+
+export const peopleManagementApi = {
+    peopleList: {
+        u: "/pt_v1/peopleManagement/list",
+        a: "post"
+    },
+    peopleAdd: {
+        u: "/pt_v1/peopleManagement/add",
+        a: "post"
+    },
+    peopleInfo: {
+        u: "/pt_v1/peopleManagement/Info",
+        a: "post"
+    },
+    peopleUpdate: {
+        u: "/pt_v1/peopleManagement/update",
+        a: "post"
+    },
+    peopleRemove: {
+        u: "/pt_v1/peopleManagement/remove",
+        a: "post"
+    },
+    peopleRest: {
+        u: "/pt_v1/peopleManagement/rest",
+        a: "post"
+    },
+    peopleState: {
+        u: "/pt_v1/peopleManagement/state",
+        a: "post"
+    }
+}
+
+export const userCenterApi = {
+    viewUserCenter: {
+        u: "/pt_v1/personalCenter/view",
+        a: "post"
+    },
+    saveUserCenter: {
+        u: "/pt_v1/personalCenter/save",
+        a: "post"
+    },
+
+}
+
+export const videoManageApiList = {
+    getVideoGroupList: {
+        u: "/pt_v1/videoManage/getVideoGroupList",
+        a: "post"
+    },
+    getVideoGroupInfo: {
+        u: "/pt_v1/videoManage/getVideoGroupInfo",
+        a: "post"
+    },
+    videoGroupAdd: {
+        u: "/pt_v1/videoManage/videoGroupAdd",
+        a: "post"
+    },
+    videoGroupUpdate: {
+        u: "/pt_v1/videoManage/videoGroupUpdate",
+        a: "post"
+    },
+    getVideoList: {
+        u: "/pt_v1/videoManage/getVideoList",
+        a: "post"
+    },
+    getVideoInfo: {
+        u: "/pt_v1/videoManage/getVideoInfo",
+        a: "post"
+    },
+    videoAdd: {
+        u: "/pt_v1/videoManage/videoAdd",
+        a: "post"
+    },
+    videoUpdate: {
+        u: "/pt_v1/videoManage/videoUpdate",
+        a: "post"
+    },
+    videoChangeGroup: {
+        u: "/pt_v1/videoManage/videoChangeGroup",
+        a: "post"
+    },
+    distributeVideo: {
+        u: "/pt_v1/videoManage/distributeVideo",
+        a: "post"
+    }
+}
+
+export const audioManageApiList = {
+    getAudioGroupList: {
+        u: "/pt_v1/audioManage/getAudioGroupList",
+        a: "post"
+    },
+    getAudioGroupInfo: {
+        u: "/pt_v1/audioManage/getAudioGroupInfo",
+        a: "post"
+    },
+    audioGroupAdd: {
+        u: "/pt_v1/audioManage/audioGroupAdd",
+        a: "post"
+    },
+    audioGroupUpdate: {
+        u: "/pt_v1/audioManage/audioGroupUpdate",
+        a: "post"
+    },
+    getAudioList: {
+        u: "/pt_v1/audioManage/getAudioList",
+        a: "post"
+    },
+    getAudioInfo: {
+        u: "/pt_v1/audioManage/getAudioInfo",
+        a: "post"
+    },
+    audioAdd: {
+        u: "/pt_v1/audioManage/audioAdd",
+        a: "post"
+    },
+    audioUpdate: {
+        u: "/pt_v1/audioManage/audioUpdate",
+        a: "post"
+    },
+    audioChangeGroup: {
+        u: "/pt_v1/audioManage/audioChangeGroup",
+        a: "post"
+    },
+    distributeAudio: {
+        u: "/pt_v1/audioManage/distributeAudio",
+        a: "post"
+    }
+}
+
+export const articleManageApiList = {
+    getArticleGroupList: {
+        u: "/pt_v1/articleManage/getArticleGroupList",
+        a: "post"
+    },
+    getArticleGroupInfo: {
+        u: "/pt_v1/articleManage/getArticleGroupInfo",
+        a: "post"
+    },
+    articleGroupAdd: {
+        u: "/pt_v1/articleManage/articleGroupAdd",
+        a: "post"
+    },
+    articleGroupUpdate: {
+        u: "/pt_v1/articleManage/articleGroupUpdate",
+        a: "post"
+    },
+    getArticleList: {
+        u: "/pt_v1/articleManage/getArticleList",
+        a: "post"
+    },
+    getArticleInfo: {
+        u: "/pt_v1/articleManage/getArticleInfo",
+        a: "post"
+    },
+
+    articleAdd: {
+        u: "/pt_v1/articleManage/articleAdd",
+        a: "post"
+    },
+    articleUpdate: {
+        u: "/pt_v1/articleManage/articleUpdate",
+        a: "post"
+    },
+    articleChangeGroup: {
+        u: "/pt_v1/articleManage/articleChangeGroup",
+        a: "post"
+    },
+    distributeArticle: {
+        u: "/pt_v1/articleManage/distributeArticle",
+        a: "post"
+    }
+
+}
+
+export const subscribeApiList = {
+    reservationList: {
+        u: "/pt_v1/reservationConsultation/list",
+        a: "post"
+    },
+    reservationDispose: {
+        u: "/pt_v1/reservationConsultation/dispose",
+        a: "post"
+    },
+    reservationBatchDispose: {
+        u: "/pt_v1/reservationConsultation/batchDispose",
+        a: "post"
+    },
+    reservationView: {
+        u: "/pt_v1/reservationConsultation/view",
+        a: "post"
+    },
+    reservationRefuse: {
+        u: "/pt_v1/reservationConsultation/refuse",
+        a: "post"
+    },
+}
+
+export const psychologicalApiList = {
+    psychologicalList: {
+        u: "/pt_v1/psychologicalCounselor/list",
+        a: "post"
+    },
+    psychologicalInfo: {
+        u: "/pt_v1/psychologicalCounselor/Info",
+        a: "post"
+    },
+    psychologicalAdd: {
+        u: "/pt_v1/psychologicalCounselor/add",
+        a: "post"
+    },
+    psychologicalUpdate: {
+        u: "/pt_v1/psychologicalCounselor/update",
+        a: "post"
+    },
+    distributeConsultant: {
+        u: "/pt_v1/psychologicalCounselor/distributeConsultant",
+        a: "post"
+    }
+}
+
+export const superviseApiList = {
+    supervisorList: {
+        u: "/pt_v1/reservationSupervisor/list",
+        a: "post"
+    },
+    supervisorAllocation: {
+        u: "/pt_v1/reservationSupervisor/allocation",
+        a: "post"
+    },
+    supervisorView: {
+        u: "/pt_v1/reservationSupervisor/view",
+        a: "post"
+    },
+}
+
+export const referApiList = {
+    referralList: {
+        u: "/pt_v1/referralCase/list",
+        a: "post"
+    },
+    referralAccomplish: {
+        u: "/pt_v1/referralCase/accomplish",
+        a: "post"
+    },
+    referralView: {
+        u: "/pt_v1/referralCase/view",
+        a: "post"
+    },
+}
+
+export const systemApiList = {
+    adminSettingList: {
+        u: "/pt_v1/adminSetting/list",
+        a: "post"
+    },
+    adminSettingAdd: {
+        u: "/pt_v1/adminSetting/add",
+        a: "post"
+    },
+    adminSettingUpdate: {
+        u: "/pt_v1/adminSetting/update",
+        a: "post"
+    },
+    adminSettingReset: {
+        u: "/pt_v1/adminSetting/rest",
+        a: "post"
+    },
+    adminSettingState: {
+        u: "/pt_v1/adminSetting/state",
+        a: "post"
+    },
+    // 
+}
+
+export const commApiList = {
+    getEapToken: {
+        u: "/pt_v1/custom/getEapToken",
+        a: "post"
+    },
+    getEapApi: {
+        u: "/pt_v1/custom/getEapApi",
+        a: "post"
+    },
+    getBackstageToken: {
+        u: "/pt_v1/custom/getBackstageToken",
+        a: "post"
+    },
+    getBackstageApi: {
+        u: "/pt_v1/custom/getBackstageApi",
+        a: "post"
+    },
+    getArticlePreview: {
+        u: "/pt_v1/custom/getArticlePreview",
+        a: "post"
+    },
+}
+
+export const customerApiList = {
+    setAppointmentIsLimitCount: {
+        u: "/pt_v1/customer/setAppointmentIsLimitCount",
+        a: "post"
+    },
+    getAppointmentConfig: {
+        u: "/pt_v1/customer/getAppointmentConfig",
+        a: "post"
+    },
+}
+
+export const consultantApiList = {
+    getConsultantAppointmentOrderList: {
+        u: "/pt_v1/consultant/getConsultantAppointmentOrderList",
+        a: "post"
+    },
+    getConsultantAppointmentOrderInfo: {
+        u: "/pt_v1/consultant/getConsultantAppointmentOrderInfo",
+        a: "post"
+    },
+    consultantAppointmentOrderAdd: {
+        u: "/pt_v1/consultant/consultantAppointmentOrderAdd",
+        a: "post"
+    },
+    consultantAppointmentOrderUpdate: {
+        u: "/pt_v1/consultant/consultantAppointmentOrderUpdate",
+        a: "post"
+    },
+    setConsultantAppointmentOrderLimitTime: {
+        u: "/pt_v1/consultant/setConsultantAppointmentOrderLimitTime",
+        a: "post"
+    },
+    basicSettinglist: {
+        u: "/pt_v1/consultant/basicSettinglist",
+        a: "post"
+    },
+    basicSettingSave: {
+        u: "/pt_v1/consultant/basicSettingSave",
+        a: "post"
+    },
+    // 活动次数配置
+    getConsultantEvaluateOrderList: {
+        u: "/pt_v1/consultant/getConsultantEvaluateOrderList",
+        a: "post"
+    },
+    getConsultantEvaluateOrderInfo: {
+        u: "/pt_v1/consultant/getConsultantEvaluateOrderInfo",
+        a: "post"
+    },
+    consultantEvaluateOrderAdd: {
+        u: "/pt_v1/consultant/consultantEvaluateOrderAdd",
+        a: "post"
+    },
+    consultantEvaluateOrderUpdate: {
+        u: "/pt_v1/consultant/consultantEvaluateOrderUpdate",
+        a: "post"
+    },
+    getEvaluateConfig: {
+        u: "/pt_v1/consultant/getEvaluateConfig",
+        a: "post"
+    },
+    consultantEvaluateOrderConfig: {
+        u: "/pt_v1/consultant/consultantEvaluateOrderConfig",
+        a: "post"
+    },
+}
+
+export const courseManagementApiList = {
+    courseManagementGroupList: {
+        u: "/pt_v1/courseManagement/groupList",
+        a: "post"
+    },
+    courseManagementGroupAdd: {
+        u: "/pt_v1/courseManagement/groupAdd",
+        a: "post"
+    },
+    courseManagementUpdateName: {
+        u: "/pt_v1/courseManagement/updateName",
+        a: "post"
+    },
+    courseManagementUpdateGroup: {
+        u: "/pt_v1/courseManagement/updateGroup",
+        a: "post"
+    },
+    courseManagementList: {
+        u: "/pt_v1/courseManagement/list",
+        a: "post"
+    },
+    courseManagementInfo: {
+        u: "/pt_v1/courseManagement/Info",
+        a: "post"
+    },
+    courseManagemenAdd: {
+        u: "/pt_v1/courseManagement/add",
+        a: "post"
+    },
+    courseManagementUpdate: {
+        u: "/pt_v1/courseManagement/update",
+        a: "post"
+    }, 
+    courseManagementAllocation: {
+        u: "/pt_v1/courseManagement/allocation",
+        a: "post"
+    },
+}
+
+export const tasteTestApiList = {
+    tasteTestList: {
+        u: "/pt_v1/tasteTest/list",
+        a: "post"
+    },
+    issueTasteTest: {
+        u: "/pt_v1/tasteTest/Issue",
+        a: "post"
+    },
+    tasteTestInfo: {
+        u: "/pt_v1/tasteTest/Info",
+        a: "post"
+    },
+    saveTasteTest: {
+        u: "/pt_v1/tasteTest/save",
+        a: "post"
+    },
+
+    tasteTestResultList: {
+        u: "/pt_v1/tasteTest/resultList",
+        a: "post"
+    },
+    tasteTestResultAdd: {
+        u: "/pt_v1/tasteTest/resultAdd",
+        a: "post"
+    },
+    tasteTestResultUpdate: {
+        u: "/pt_v1/tasteTest/resultUpdate",
+        a: "post"
+    },
+
+    tasteTestTypeList: {
+        u: "/pt_v1/tasteTest/typeList",
+        a: "post"
+    },
+    tasteTestTypeAdd: {
+        u: "/pt_v1/tasteTest/typeAdd",
+        a: "post"
+    },
+    tasteTestTypeUpdate: {
+        u: "/pt_v1/tasteTest/typeUpdate",
+        a: "post"
+    },
+
+    tasteTestSubjectManagementInfo: {
+        u: "/pt_v1/tasteTest/subjectManagementInfo",
+        a: "post"
+    },
+    tasteTestSubjectManagementSave: {
+        u: "/pt_v1/tasteTest/subjectManagementSave",
+        a: "post"
+    },
+    // 分配
+    tasteTestAllocation: {
+        u: "/pt_v1/tasteTest/allocation",
+        a: "post"
+    },
+}
+
+
+export const scaleMaintenanceApi = {
+    scaleList: {
+        u: "/pt_v1/scaleMaintenance/list",
+        a: "post"
+    },
+    setPublishState: {
+        u: "/pt_v1/scaleMaintenance/setPublishState",
+        a: "post"
+    },
+    scaleUpdate: {
+        u: "/pt_v1/scaleMaintenance/update",
+        a: "post"
+    }, 
+    scaleInfo: {
+        u: "/pt_v1/scaleMaintenance/Info",
+        a: "post"
+    },
+    scaleReportInfo: {
+        u: "/pt_v1/scaleMaintenance/reportInfo",
+        a: "post"
+    },
+    scaleReportSave: {
+        u: "/pt_v1/scaleMaintenance/reportSave",
+        a: "post"
+    },
+    scaleDimensionInfo: {
+        u: "/pt_v1/scaleMaintenance/dimensionInfo",
+        a: "post"
+    },
+    scaleDimensionAdd: {
+        u: "/pt_v1/scaleMaintenance/add",
+        a: "post"
+    },
+    scaleDimensionSave: {
+        u: "/pt_v1/scaleMaintenance/dimensionSave",
+        a: "post"
+    },
+    scaleSubjectInfo: {
+        u: "/pt_v1/scaleMaintenance/subjectInfo",
+        a: "post"
+    },
+    scaleSubjectSave: {
+        u: "/pt_v1/scaleMaintenance/subjectSave",
+        a: "post"
+    },
+    setStatRule: {
+        u: "/pt_v1/scaleMaintenance/setStatRule",
+        a: "post"
+    },
+    setStatRuleRange: {
+        u: "/pt_v1/scaleMaintenance/setStatRuleRange",
+        a: "post"
+    },
+    getStatRuleRangeList: {
+        u: "/pt_v1/scaleMaintenance/getStatRuleRangeList",
+        a: "post"
+    },
+    delStatRuleRange: {
+        u: "/pt_v1/scaleMaintenance/delStatRuleRange",
+        a: "post"
+    },
+
+
+
+}
+
+export const WebApiList = {}
+
+export default {
+    ...AdminApi,
+    ...pagesApi,
+    ...componentsApi,
+    ...peopleManagementApi,
+    ...userCenterApi,
+    ...videoManageApiList,
+    ...audioManageApiList,
+    ...articleManageApiList,
+    ...subscribeApiList,
+    ...psychologicalApiList,
+    ...superviseApiList,
+    ...referApiList,
+    ...systemApiList,
+    ...commApiList,
+    ...customerApiList,
+    ...consultantApiList,
+	...courseManagementApiList,
+    ...tasteTestApiList,
+	...scaleMaintenanceApi
+};

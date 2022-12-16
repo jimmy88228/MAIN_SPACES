@@ -1,0 +1,50 @@
+<template>
+  <div>
+    <custom-page :navIsTransparent="true" :isShowTitle="false" :navFull="true" :holdNav="true" ref="customPageRef"></custom-page>
+  </div>
+</template>
+
+<script>
+const app = getApp();
+const pageOption = Page.BasePage({
+  data() {
+    return {
+      options: {},
+    };
+  },
+  onLoad(options) {
+    this.options = options || {};
+  },
+  methods: {
+    getPageDetail() {
+      return this.$Http(this.$Apis.getPsycHandbook, {
+        other: {
+          isShowLoad: true,
+        },
+      })
+        .then((res) => {
+          if (res.code == 1) {
+            let data = res.data || {};
+            this.$refs["customPageRef"].initData(data);
+          }
+        })
+        .catch((err) => {
+          setTimeout(() => {
+            // this.jumpAction("/pages/index/index");
+            this.backAction();
+          }, 1500);
+        });
+    },
+  },
+  onShow() {
+    this._checkLogin().then((login) => {
+      if (!login) return;
+      this.getPageDetail();
+    });
+  },
+});
+export default pageOption;
+</script>
+
+<style lang="scss">
+</style>

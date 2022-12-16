@@ -1,0 +1,91 @@
+<import src="../../components/calendar/progress/progress.wxml"></import>
+<block wx:if="{{type == 'style1'}}">
+  <!-- 签到页样式一 -->
+  <view class="flex b tb ac" style="padding-bottom:30rpx;" id='calendarId' wx:if="{{calendar}}">
+    <view class="calendar black_color b tb">
+      <view class="top-handle fs30 b lr ac pc">
+        <view class="prev fs36">
+          <text class="prev-handle iconfont icon-left" bindtap="chooseDate" data-type="prev_month"></text>
+        </view>
+        <view class="date-area b lr cc">{{calendar.curYear || "--"}} 年 {{calendar.curMonth || "--"}} 月</view>
+        <view class="next fs36">
+          <text class="next-handle iconfont icon-right" bindtap="chooseDate" data-type="next_month"></text>
+        </view>
+
+        <!-- <view class="btn_rule" bindtap="handle_rule">
+          <view class="font_24 rule_text">规则</view>
+          <view class="img_btn_rule">?</view>
+        </view> -->
+      </view>
+      <view class="weeks b lr ac title_bg">
+        <view class="week fs24" wx:for="{{calendar.weeksCh}}" wx:key="index" data-idx="{{index}}">{{item}}</view>
+      </view>
+      <view class="perspective {{isShowMore?'distance':''}}">
+        <view
+          class="days b lr box-wrap {{calendar.leftSwipe ? 'leftRoate' : ''}}  {{calendar.rightSwipe ? 'rightRoate' : ''}} inner_align"
+          bindtouchstart="calendarTouchstart" bindtouchmove="calendarTouchmove" bindtouchend="calendarTouchend">
+          <!-- 上个月 -->
+          <view wx:if="{{calendar.empytGrids && empytGrids}}" class="grid disable-day-color b ac pc"
+            wx:for="{{calendar.empytGrids}}" wx:key="index" data-idx="{{index}}">
+            <view class="day b ac pc">{{item.i}}</view>
+          </view>
+          <!-- 当前月 -->
+          <view class="grid b ac pc" wx:for="{{date}}" wx:key="index" data-disable="{{item.disable}}"
+            data-idx="{{index}}" bindtap="tapDayItem">
+            <view wx:if="{{!calendar.todoLabelCircle}}" class="dot-day-height b tb ac pc">
+              <view
+                class="day border-radius {{item.choosed ? 'day-choosed-color day-choosed-bg' : ''}} {{ item.disable ? 'disable-day-color disable-day-bg' : '' }} b ac pc"
+                style="{{item.choosed ? l_bg_color : ''}}">{{item.day}}</view>
+              <view wx:if="{{item.showTodoLabel}}"
+                class="{{item.todoText ? 'todo-text' : 'todo-dot'}} {{calendar.todoLabelPos === 'bottom' ? 'todo-text-bottom' : 'todo-text-top'}}"
+                style="background-color: {{calendar.todoLabelColor}};">{{item.todoText}}</view>
+            </view>
+            <view wx:else class="dot-day-height b tb ac pc">
+              <view
+                class="day border-radius {{item.showTodoLabel ? 'day-circle' : '' }} {{item.choosed ? 'day-choosed-color day-choosed-bg' : ''}} {{ item.disable ? 'disable-day-color disable-day-bg' : '' }} b ac pc">
+                {{item.day}}</view>
+            </view>
+          </view>
+          <!-- 下个月 -->
+          <view class="grid disable-day-color b ac pc" wx:if="{{lastEmptyGrids}}" wx:for="{{calendar.lastEmptyGrids}}"
+            wx:key="index" data-idx="{{index}}">
+            <view class="day b ac pc">{{item.i}}</view>
+          </view>
+        </view>
+      </view>
+      <view class="extend" bindtap="showMore">
+        <view class="arrow" style="{{isShowMore ? 'transform: rotate(180deg);' : ''}}"></view>
+      </view>
+    </view>
+  </view>
+</block>
+<block wx:elif="{{type == 'style2'}}">
+  <!-- 签到页样式二 -->
+  <view class="calendarBox {{type}}" wx:if="{{calendar}}">
+    <!-- 上个月 -->
+    <block wx:if="{{empytGrids}}">
+      <template is="progress" data="{{type,timeType:'empytGrids',list:calendar.empytGrids,info:signData,extraInfo:GetDayOfWeekName,imgObj}}"></template>
+    </block>
+    <!-- 当前月 -->
+    <template is="progress" data="{{type,timeType:'cur',list:date,info:signData,extraInfo:calendar,imgObj}}"></template>
+    <!-- 下个月 -->
+    <block wx:if="{{lastEmptyGrids}}">
+      <template is="progress" data="{{type,timeType:'lastEmptyGrids',list:calendar.lastEmptyGrids,info:signData,extraInfo:GetDayOfWeekName,imgObj}}"></template>
+    </block> 
+  </view>
+</block>
+<block wx:elif="{{type == 'style3'}}">
+  <!-- 个人中心签到样式 -->
+  <view class="calendarBox {{type}}" wx:if="{{calendar}}">
+    <!-- 上个月 -->
+    <block wx:if="{{empytGrids}}">
+      <template is="progress" data="{{type,timeType:'empytGrids',list:calendar.empytGrids,extraInfo:GetDayOfWeekName}}"></template>
+    </block>
+    <!-- 当前月 -->
+    <template is="progress" data="{{type,timeType:'cur',list:date,extraInfo:calendar}}"></template>
+    <!-- 下个月 -->
+    <block wx:if="{{lastEmptyGrids}}">
+      <template is="progress" data="{{type,timeType:'lastEmptyGrids',list:calendar.lastEmptyGrids,extraInfo:GetDayOfWeekName}}"></template>
+    </block>
+  </view>
+</block>

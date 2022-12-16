@@ -1,0 +1,156 @@
+.main {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 650rpx;
+  height: 55vh;
+  padding: 200rpx 10rpx 30rpx 10rpx;
+  border-radius: 60rpx;
+  background-color: #ffffff;
+  z-index: 180;
+  overflow: hidden;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  color: #333333;
+  text-align: left;
+  line-height: initial;
+}
+
+.top_img {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 10;
+  width: 100%;
+  transform: scale(1.5) translateY(-210rpx);
+}
+.top_title{
+  position: absolute;
+  top: 65rpx;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 18;
+  font-size: 36rpx;
+  color: #ffffff;
+}
+
+.user_avatar {
+  position: absolute;
+  top: 20%;
+  left: 50%;
+  z-index: 11;
+  transform: translateX(-50%);
+  width: 152rpx;
+  height: 152rpx;
+  border-radius: 50%;
+}
+
+.assistance_msg {
+  font-size: 40rpx;
+  letter-spacing: 0;
+  color: #222222;
+}
+
+.coupon_list{
+  height: calc(100% - 50rpx - 90rpx);
+  margin-bottom: 50rpx;
+}
+
+.coupon_item{
+  display: flex;
+  margin-bottom: 8rpx;
+}
+
+.coupon_item>.coupon_left{
+  flex: 3;
+  position: relative;
+  padding: 40rpx 0 20rpx 0;
+  border: 1px solid grey;
+  border-top-right-radius: 20rpx;
+  border-top-left-radius: 20rpx;
+  border-bottom-right-radius: 20rpx;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+
+.coupon_item>.coupon_right{
+  flex: 8;
+  display: flex;
+  flex-direction: column;
+  padding: 16rpx;
+  border: 1px solid grey;
+  border-top-left-radius: 20rpx;
+  border-bottom-left-radius: 20rpx;
+}
+
+.coupon_label{
+  position: absolute;
+  top: 0;
+  left: 0;
+  border-bottom: 1px solid #F78617;
+  border-right: 1px solid #F78617;
+  border-top-left-radius: 20rpx;
+  background-color: #F78617;
+  padding: 4rpx 8rpx;
+  font-size: 20rpx;
+  color: #fff;
+}
+
+.coupon_money{
+  font-size: 32rpx;
+  color: red;
+}
+
+.coupon_limit{
+  font-size: 24rpx;
+  margin-top: 4rpx;
+}
+
+.coupon_name{
+  width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  font-size: 32rpx;
+  font-weight: bold;
+  margin-bottom: 8rpx;
+}
+
+.coupon_valid_date{
+  margin-bottom: 8rpx;
+}
+
+.coupon_btn_group{
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+}
+
+.coupon_btn_group>.coupon_go_to_use{
+  width: 150rpx;
+  background-color: #F78617;
+  color: #ffffff;
+  border-radius: 20rpx;
+  height: 50rpx;
+}
+
+.btn_con {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+}
+
+.confirm_btn {
+  width: 320rpx;
+  height: 88rpx;
+  border-radius: 44rpx;
+  font-size: 30rpx;
+  color: #fff;
+  background:#F78617;
+}

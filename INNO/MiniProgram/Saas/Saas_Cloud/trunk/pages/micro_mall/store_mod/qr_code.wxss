@@ -1,0 +1,70 @@
+page{
+  background: #fff;
+}
+.main {
+  height: 100%;
+}
+
+.swiper_box {
+  width: 100%;
+  height: 750rpx;
+  position: relative;
+}
+
+.swiper {
+  width: 100%;
+  height: 100%;
+  background-color:#efefef;
+}
+
+.img_swiper {
+  width: 100%;
+  height: 750rpx;
+}
+
+.circle {
+  width: 100%;
+  text-align: center;
+  position: absolute;
+  bottom: 5rpx;
+}
+
+.circle .item {
+  display: inline-block;
+  width: 12rpx;
+  height: 12rpx;
+  border-radius: 50%;
+  background: #7f7f7f;
+  margin-right: 10rpx;
+}
+
+.button_save {
+  width: 500rpx;
+  height: 80rpx;
+  margin: 0 auto;
+  margin-top: 20rpx;
+  border: 1px solid #7f7f7f;
+  border-radius: 8rpx;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.select_area{
+  padding:20rpx 0;
+  text-align:center;
+}
+.select_icon{
+  display:inline-block;
+  vertical-align: middle;
+  margin-right:10rpx;
+}
+.s_icon_img{
+  width:30rpx;
+  height:30rpx;
+  display:block;
+}
+.select_txt{
+  display:inline-block;
+  vertical-align: middle;
+  color:#333;
+}

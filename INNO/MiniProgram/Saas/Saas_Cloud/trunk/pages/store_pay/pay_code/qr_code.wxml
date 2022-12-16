@@ -1,0 +1,147 @@
+<!--pages/store_pay/pay_code/qr_code.wxml-->
+
+<view class="qr_code_page">
+    <!-- <view class="page_tip">请向收银员出示此页面</view> -->
+    <view class="head">
+
+    </view>
+    <view class="code_page">
+        <view class="code_img code_not_{{show_pay_pop}}">
+            <view>
+                <canvas canvas-id="barCanvas" class="barCanvas"></canvas>
+                <view class="code_text">{{code_data.qr_pay_code}}</view>
+            </view>
+            <view class="pay_code_view">
+                <canvas class="pay_code" canvas-id='payCode'></canvas>
+            </view>
+        </view>
+        <view class="refresh_btn" bindtap="refreshCode">
+            <image src="{{brand_info.icon_url}}store_pay/refresh_icon.png" mode="aspectFit" />
+            <text>请点击刷新二维码</text>
+        </view>
+        <!-- <navigator url="/pages/store_pay/store_pay_history/history_list" hover-class='none' class="history_link">
+            支付记录
+            <image src="{{brand_info.icon_url}}micro_mall/rightbutton.png" class="r_arrow" mode="aspectFit" />
+        </navigator> -->
+    </view>
+
+</view>
+
+
+<!--支付弹框-->
+<view class="pay_pop_bg {{show_pay_pop}}" bindtap="closePayInfo"></view>
+<view class="pay_pop {{show_pay_pop}}">
+    <view class="total_pay">
+
+        <view class="total_pay_title oh">
+            <text class="fl">总需支付</text>
+            <text class="fr">{{orderInfo.order_amount}}元</text>
+        </view>
+
+        <!--优惠券-->
+        <block wx:if="{{rule.is_allow_coupon == '1'}}">
+            <navigator url="/pages/store_pay/bouns/select_bouns?bonus_ids={{bonus_info.bonus_ids}}" class="discount_link" wx:if="{{ bonus_info.canUseCouponNum > 0 }}">
+                <view class="link_name">优惠券</view>
+                <view class="link_state" wx:if="{{select_bonus.bonus_id}}">使用了一张优惠券抵扣
+                  <text style="color:{{brand_info.style.font_color}}"> ¥{{bonus_info.canUseCouponMoney}}</text>
+                </view>
+                <view class="link_state" wx:else>可用优惠券{{bonus_info.canUseCouponNum}}张</view>
+                <view class="r_arrow">
+                    <image src="{{brand_info.icon_url}}micro_mall/rightbutton.png" mode="widthFix" />
+                </view>
+            </navigator>
+            <!--优惠券不可用-->
+            <view class="discount_link" wx:else>
+                <view class="link_name">优惠券</view>
+                <view class="link_state invalid">(暂无可用优惠券)</view>
+            </view>
+        </block>
+
+        <!--积分抵扣-->
+        <block wx:if="{{rule.is_allow_point == '1'}}">
+            <view class="discount_link point_discount_link" wx:if="{{pointInfo.allowPoint > 0}}">
+                <view class="link_name">积分抵扣</view>
+                <view class="link_state" wx:if="{{!usePoint}}">可用积分 {{pointInfo.allowPoint}} 抵扣 ¥{{pointInfo.allowPointMoney}}</view>
+                <view class="link_state" wx:else>积分{{pointInfo.allowPoint}} 抵扣 <text style="color:{{brand_info.style.font_color}}">¥{{pointInfo.allowPointMoney}}</text>
+                </view>
+                <view class="radio_icon" bindtap="usePoint" wx:if="{{pointInfo.allowPoint > 0 }}">
+                    <image src="{{brand_info.icon_url}}micro_mall/return_active.png" mode="widthFix" wx:if="{{usePoint}}" />
+                    <image src="{{brand_info.icon_url}}micro_mall/return.png" mode="widthFix" wx:else/>
+                </view>
+            </view>
+            <!--规则不允许-->
+            <view class="discount_link" wx:else>
+                <view class="link_name">积分抵扣</view>
+                <view class="link_state invalid">暂无可用积分</view>
+            </view>
+        </block>
+        <!--储值卡-->
+        <block wx:if="{{rule.is_allow_prepaidcard == '1'}}">
+            <view class="discount_link" wx:if="{{prepaidInfo && prepaidInfo.canUseStoredValue > 0}}">
+                <view class="link_name">储值余额</view>
+                <view class="link_state" wx:if="{{usePrepaid}}">使用储值余额
+                  <text style="color:{{brand_info.style.font_color}}"> ¥{{prepaidInfo.canUseStoredValue}}</text>
+                </view>
+                <view class="link_state" wx:else>可用储值¥{{prepaidInfo.canUseStoredValue}}</view>
+                <view class="radio_icon" bindtap="usePrepaid">
+                  <image src="{{brand_info.icon_url}}micro_mall/return_active.png" mode="widthFix" wx:if="{{usePrepaid}}" />
+                  <image src="{{brand_info.icon_url}}micro_mall/return.png" mode="widthFix" wx:else />
+                </view>
+            </view>
+            <!--规则不允许-->
+            <view class="discount_link" wx:else>
+                <view class="link_name">储值余额</view>
+                <view class="link_state invalid">暂无可用储值余额</view>
+            </view>
+        </block>
+
+
+        <!--余额抵扣-->
+        <block wx:if="{{rule.is_allow_point == '1'}}">
+            <view class="discount_link point_discount_link" wx:if="{{ balanceInfo.canUsebalance > 0 }}">
+                <view class="link_name">余额抵扣</view>
+                <view class="link_state" wx:if="{{!useBalance}}">可用余额¥{{balanceInfo.canUsebalance}}</view>
+                <view class="link_state" wx:else>可用余额<text style="color:{{brand_info.style.font_color}}">¥{{balanceInfo.canUsebalance}}</text>
+                </view>
+                <view class="radio_icon" bindtap="useBalanceHandle">
+                    <image src="{{brand_info.icon_url}}micro_mall/return_active.png" mode="widthFix" wx:if="{{useBalance}}" />
+                    <image src="{{brand_info.icon_url}}micro_mall/return.png" mode="widthFix" wx:else/>
+                </view>
+            </view>
+            <!--规则不允许-->
+            <view class="discount_link" wx:else>
+                <view class="link_name">余额抵扣</view>
+                <view class="link_state invalid">暂无可用余额</view>
+            </view>
+        </block>
+    </view>
+    <view class="pay_mode">
+        <view class="pay_mode_title oh table">
+            <view class="table_cell t_l">支付方式</view>
+            <view class="table_cell t_r">
+              <view 
+              style="color:{{brand_info.style.font_color}}" 
+              wx:if="{{orderInfo.order_amount_discount > 0}}">{{orderInfo.order_amount_discount}}</view>
+              {{orderInfo.jieSuanOrderAmount}}元
+            </view>
+        </view>
+        <view class="pay_mode_list">
+            <view class="pay_mode_item" wx:for="{{paymentList}}" wx:key="index" wx:for-item="mode">
+                <image src="{{brand_info.icon_url}}store_pay/ic_wxpay.png" mode="widthFix" />
+                <text>{{mode.pay_name}}</text>
+                <view class="radio_icon" data-pay-id="{{mode.pay_id}}" bindtap="selectPayMode">
+                    <image src="{{brand_info.icon_url}}micro_mall/return_active.png" mode="widthFix" wx:if="{{payId == mode.pay_id}}" />
+                    <image src="{{brand_info.icon_url}}micro_mall/return.png" mode="widthFix" wx:else/>
+                </view>
+            </view>
+        </view>
+    </view>
+
+    <view class="go_pay_box">
+        <view class="go_pay_btn" style="background:{{brand_info.style.bg_color}}" bindtap="confirmToPay">确认</view>
+    </view>
+</view>
+
+
+<dialog id="pageDialog" marsk="{{marskValue}}"></dialog>
+<orderSync id="orderSync" mask-bg="transparent" touch-cancel="{{false}}" type='small' tips="订单同步中"/>

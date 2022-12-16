@@ -1,0 +1,8 @@
+<!--pages/component/sceneOperate/pageHome.wxml-->
+<block>
+  <button hover-class='none' class="page_home_icon" catchtap="jumpPage">
+    <image class="img_icon" src="{{customImg ? customImg : brand_info.icon_url + 'micro_mall/tabbar/main/Carts.png'}}"  mode="aspectFit"/>
+    <view class="cir_anim" style="background-color:{{brand_info.style.bg_color}};{{animStyle}}">
+    </view>
+  </button>
+</block>

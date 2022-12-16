@@ -1,0 +1,24 @@
+<!--pages/micro_mall/prepaid/prepaid_card_erp_detail.wxml-->
+<view class="prepaid_card_recode" hidden="{{hideRecord}}">
+  <view class="card_val_area C_fff" style="background-image:url({{brand_info.icon_url}}micro_mall/Integral/user_center_points.png)">
+    <view class="card_val_tit">可用余额</view>
+    <view class="font_150 card_val">{{totalAmount ? totalAmount : 0}}</view>
+  </view>
+  <view class="card_recode">
+    <view class="card_recode_item oh" wx:for="{{dataList}}" wx:key="index">
+      <view class="">
+        <!-- <view class="recode_row">
+          <text>余额:</text>
+          <text>{{item.amount}}</text>
+        </view> -->
+        <view class="recode_row creat_time">{{item.create_time}}</view>
+        <view class="recode_row remark" wx:if="{{hideRemark!=1 && showMsg}}">{{item.remark}}</view>
+      </view>
+      <view class="">
+        <view class="recode_row change_amount" wx:if="{{item.change_amount||true}}">
+          <block wx:if="{{item.change_amount > 0}}">+</block>{{item.change_amount}}
+        </view>
+      </view>
+    </view>
+  </view>
+</view>

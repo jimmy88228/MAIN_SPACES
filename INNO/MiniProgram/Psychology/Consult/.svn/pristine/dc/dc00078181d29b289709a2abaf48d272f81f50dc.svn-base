@@ -1,0 +1,169 @@
+<template>
+  <view class="tree-hole-record flex-s-s flex-col">
+    <page-nav></page-nav>
+    <view class="header flex-s-c">
+      <image :src="setStaticAddress('/tree-hole/hug.png')" mode="aspectFit" class="img-hug" />
+      <view class="hug-box flex-e-s flex-col flex-1">
+        <view class="hug">
+          <span style="padding-right:33rpx;">收获拥抱</span>
+          <span class="font-32">1{{}}</span>
+        </view>
+        <swiper 
+            class="swiper-box" 
+            :current-item-id="index" 
+            :circular="circular" 
+            :vertical="vertical" 
+            :autoplay="autoplay" 
+            :interval="interval" 
+            :duration="duration" 
+            @change="toogle">
+            <block v-for="(item,index) in carousel_list" :key="index">
+                <swiper-item @touchmove.stop="noAction" class="swiper-item">
+                    <view class="top-content" :style="currentSwiper==index?opacity_1:opacity_0">
+                        <view class="text text-overflow-2"><span class="C_333 p-r-10" style="opacity:0.3;">TA们说:"</span>{{item.msg}}</view>
+                    </view>
+                </swiper-item>
+            </block>
+        </swiper>
+      </view>
+    </view>
+    <view class="box">
+      <view class="title-box">
+        <view class="title">倾述记录</view>
+        <view class="tip">记录只保留15分钟，15分钟后系统自动销毁</view>
+      </view>
+      <view class="list-box flex1">
+        <view class="list-item" v-for="(item,index) in carousel_list" :key="index">
+          <view class="title p-b-20 font-28">测试测试测试测试{{index}}</view>
+          <view class="msg-box">
+            <view class="time">
+              <span class="p-r-20">06-12 12:22:10{{}}</span>
+              <span class="C_7f">{{}}分钟后销毁</span>
+            </view>
+          </view>
+        </view>
+      </view>
+    </view>
+  </view>
+</template>
+
+<script>
+  const app = getApp();
+  const pageOption = Page.BasePage({
+    data() {
+      return {
+        currentSwiper:0,
+        interval: 3000,
+        autoplay: true,
+        vertical: true,
+        duration: 3000,
+        circular: true,
+        opacity_0: "opacity:0;transition: all 1000ms ease-in-out;",
+        opacity_1: "opacity:1;transition: opacity 400ms ease-in-out 1000ms;",
+        carousel_list:[{
+          msg:"你并不孤独，给你一个拥抱，加油！"
+        },{
+          msg:"你并不孤独，给你一个拥抱，加油！"
+        },{
+          msg:"你并不孤独，给你一个拥抱，加油！你并不孤独，给你一个拥抱，加油！！你并不孤独，给你一个拥抱，加油！！你并不孤独，给你一个拥抱，加油！"
+        },]
+      }
+    },
+    components: {
+    },
+    onReady(){
+    },
+    methods: { 
+      toogle(e) {
+        console.log('toogle',e)
+        this.currentSwiper = e.detail.current
+      },
+    },
+  })
+  export default pageOption
+</script>
+
+<style lang="scss" scoped> 
+.tree-hole-record{
+  background: #F3F7F8;
+  height: 100vh;
+  .box{
+    padding:0 35rpx;
+    box-sizing: border-box;
+  }
+  .header{
+    height: 180rpx;
+    border-radius: 0 0 50rpx 50rpx;
+    box-shadow: 0px 4px 26px 0px rgba(23,164,255,0.1100);
+    padding-left: 46rpx;
+    box-sizing: border-box;
+  }
+  .img-hug{
+    width: 162rpx;
+    height: 145rpx;
+  }
+  .hug-box{
+    padding-left: 20rpx;
+    box-sizing: border-box;
+    align-self: flex-end;
+  }
+  .hug{
+    // padding-top: 30rpx;
+  }
+  .title-box{
+    padding-top: 70rpx;
+    padding-bottom: 15rpx;
+    .title{
+      font-size: 32rpx;
+      font-weight: bold;
+    }
+  }
+  .title{
+    font-size: 28rpx;
+  }
+  .tip{
+    font-size: 18rpx;
+    color: #ADABAB;
+    padding-top: 18rpx;
+    padding-bottom: 45rpx;
+  }
+  .list-box{
+    overflow: scroll; 
+  } 
+  .list-item{
+    border-radius: 20rpx;
+    background: #fff;
+    border: 1px solid rgba($color:#D4E4E8, $alpha: 0.8);
+    box-sizing: border-box;
+    padding: 40rpx;
+    font-size: 18rpx;
+    margin-bottom: 20rpx;
+    &:last-child{
+      margin-bottom: 0;
+    }
+  }
+  .time{
+    color: #B7B7B7;
+  }
+  
+  .swiper-box {
+    width: 90%;
+    height: 78rpx;
+    margin-top: 10rpx;
+  } 
+  
+  .top-content {
+    font-size: 18rpx;
+    color: #439C00;
+    min-height: 42rpx;
+    display: flex;
+    align-items: center;
+    position: relative;
+    background: #F4FFF2;
+    border-radius: 26rpx;
+    box-sizing: border-box;
+    padding: 8rpx 20rpx 8rpx 26rpx;
+    margin-top: 12rpx;
+  }
+}
+</style>

@@ -1,0 +1,52 @@
+<import src="../module/gift_goods.wxml" />
+<page-nav holdStay="{{true}}" bgStyle="background:none;"></page-nav>
+<view class="gift_page">
+  <view class="gift_page_tip_box">
+    <view class="gift_page_tip d_flex">
+      <!-- <navigator url="/pages/micro_mall/order_gift/my_gift/my_gift" hover-class="navigator-hover">我的奖品</navigator>
+      <text class="min_line">|</text> -->
+      <navigator url="/pages/micro_mall/articles/agreet/agreet?articleId={{giftActDetail.ruleArticleId}}" hover-class="navigator-hover">活动规则</navigator>
+    </view>
+  </view>
+  <view class="gift_detail">
+    <view class="steps_title">
+      <image class="steps_title_icon" src="{{brand_info.default_icon_url}}/gift/step-title.png" mode="widthFix"/>
+    </view>
+    <view class="detail_tip">
+      <block wx:if="{{giftActDetail.waitExchangeCount > 0}}">
+        <view class="is_finished_tip">你已完成{{giftActDetail.rewardCondition}}笔有效订单</view>
+        <view class="font_22">有{{giftActDetail.waitExchangeCount}}个奖励待领取</view>
+      </block>
+      <block wx:else>每完成{{giftActDetail.rewardCondition}}笔有效订单，即可获得奖品</block>
+    </view>
+    <view>
+      <orderGiftTip isDetail="{{true}}" setGiftData="{{giftData}}"></orderGiftTip>
+    </view>
+    <template is="gift-goods" data="{{data: giftActDetail}}"></template>
+    <view class="operate_box">
+      <view class="operate_btn {{giftActDetail.waitExchangeId ? '' : 'hasFew'}}">
+        <block wx:if="{{giftActDetail.waitExchangeId}}">立即领取奖励</block>
+        <block wx:else>还剩{{hasFew}}单，即可领取奖励</block>
+        <btns 
+        wx:if="{{giftActDetail.waitExchangeId}}"
+        class="btn_link" 
+        isLogin="{{isLogin}}"
+        data-click-type="handle" 
+        bindclickcallback="receiveGift"></btns>
+      </view>
+      <view class="operate_btn my_gifts_btn">
+        我的奖品
+        <btns 
+        class="btn_link" 
+        isLogin="{{isLogin}}"
+        data-click-type="handle" 
+        bindclickcallback="getMyGift"></btns>
+      </view>
+    </view>
+    <!-- <view class="gift_notice">
+      <view class="notice_tit">活动须知</view>
+      <rich-text class="notice_con" space="nbsp" nodes="{{giftActDetail.ruleArticle}}"></rich-text>
+    </view> -->
+  </view>
+</view>
+<pageDialog id="pageDialog"></pageDialog>

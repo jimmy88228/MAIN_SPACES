@@ -1,0 +1,26 @@
+<view class="store_order_comment_main">
+    <view class="goods_list">
+        <view class="goods_item" wx:for="{{orderGoodsInfoList}}" wx:key="goods_id">
+            <view class="goods_img_box">
+                <image src="{{item.goods_img}}" mode="aspectFit"></image>
+            </view>
+            <view class="goods_info_box">
+                <view class="goods_name">{{item.goods_name}}</view>
+                <!-- <view>
+                    <text class="goods_sn">({{item.goods_sn}})</text>
+                </view> -->
+            </view>
+            <block wx:if="{{item.can_comment === 1}}">
+                <navigator wx:if="{{options.type == 'store'}}" hover-class="none" url="../comment_edit/comment_edit?order_id={{orderId}}&goods_id={{item.goods_id}}&goods_sn={{item.goods_sn}}&type=store&order_sn={{options.order_sn}}" class="comment_model comment_btn">评价</navigator>
+                <navigator wx:else hover-class="none" url="../comment_edit/comment_edit?order_id={{orderId}}&goods_id={{item.goods_id}}&goods_sn={{item.goods_sn}}" class="comment_model comment_btn">评价</navigator>
+            </block>
+            <block wx:else>
+                <view class="is_comment_tip">
+                    <!-- <view class="comment_tip_txt">已评论</view> -->
+                    <image src="{{comment_list}}" mode="aspectFit" class="img_comment"></image>
+                </view>
+            </block>
+        </view>
+
+    </view>
+</view>

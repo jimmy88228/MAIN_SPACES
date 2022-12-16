@@ -1,0 +1,49 @@
+<!--pages/micro_mall/live/live_detail/live_detail.wxml-->
+<view class="square_area">
+     <view class="header_tip" wx:if="{{nextRoomId != 0}}">
+     <view class="notice_left">
+        <image src="{{brand_info.default_icon_url}}live/notice.png" class="notice_img" mode="widthFix"></image>
+        <view class="notice_label">订阅下一场直播</view>
+      </view>
+     <view wx:if="{{subscribeStatus}}" class="notice_right btn_checked">已订阅</view>
+      <subscribe wx:else style="margin-right: 20rpx;" room-id="{{nextRoomId}}" width="90" height="30" font-size="12" color="#ffffff" background-color="#E8053E" ></subscribe>
+    </view>
+    <image src="{{roomsList.coverImg}}" class="coverImg" mode="widthFix"></image>
+    <view class="content">
+      <view class="live_title">{{roomsList.name}}</view>
+      <view class="live_status {{liveStatus.className}}">{{liveStatus.staueStr}}</view>
+      <text class="live_desc">{{roomsList.description}}</text>
+    </view>
+    <image src="{{brand_info.icon_url}}micro_mall/live/group_code.png" mode="widthFix" class="adImg" data-url="{{brand_info.icon_url}}micro_mall/live/group_code.png" bindtap="previewImg"></image>
+    <view class="list">
+      <block wx:for="{{roomsList.goodsList}}" wx:for-item="item" wx:key="goodsList">
+        <view  class="item" data-url="/pages/micro_mall/goods/goods_info?goods_id={{item.goodsId}}&color_id={{item.color_id || 0}}" data-good="{{item.goodsId}}" catchtap='handleJump'>
+          <image src="{{item.coverImg}}" mode="widthFix" class="goodsImg"></image>
+          <view class="intro" data-id="item.id">
+            <view class="item_name">{{item.name}}</view>
+            <view class="item_price" wx:if="{{item.price_type == 1}}">￥{{item.price}}</view>
+            <view class="item_price" wx:elif="{{item.price_type == 2}}">￥{{item.price}} ~ ￥{{item.price2}}</view>
+            <view class="item_price" wx:elif="{{item.price_type == 3}}">￥{{item.price2}} <label class="price3">￥{{item.price}}</label> </view>
+          </view>
+        </view>
+      </block>
+    </view>
+</view>
+<view class="footer" bindtap="joinLive">
+   <subscribe style="margin-left:110rpx;margin-top:30rpx;display:block;" wx:if="{{roomsList.liveStatus == 102 && !subscribeStatus}}"  room-id="{{roomsList.roomId}}" width="265" height="40" font-size="15" color="#ffffff" background-color="#E8053E" catchtap="subscribeNextLive"></subscribe>
+    <view class="btn" wx:elif="{{roomsList.liveStatus == 102 && subscribeStatus}}">进入直播间</view>
+    <view class="btn" wx:elif="{{roomsList.liveStatus == 101}}">进入直播间</view>
+     <view class="btn" wx:else>回放直播</view>
+</view>
+
+
+
+<btns class="share collection" style="" isLogin="{{isLogin}}" bindtap="getShare">
+      <image class="c_icon" src="{{brand_info.icon_url}}micro_mall/detail_share.png?123" mode="aspectFit" />
+</btns>
+<!--分享模块-->
+<share id="shareModule" shareType="NORMAL_ROW" bindchooseShareType="chooseShareType" bindcheckIfStaffDstbCallBack="checkIfStaffDstbCallBack"></share>
+<!--分享图-->
+<shareImg id="shareImg" allData="{{allData}}"></shareImg>
+
+

@@ -1,0 +1,30 @@
+<!-- public 必须是第一个元素 -->
+<include src="/common/base/page/index.wxml" />
+<!-- 自定义导航栏 -->
+<custom-nav styleType="1" />
+<view class="index-page tab-bar-page-container had-custom-nav" >
+  <!-- main-container -->
+  <scroll-view class="index-main" scroll-y>
+    <view class="index-main-h">
+      <view class="i-m-h-left">
+        <view class="i-m-h-title">
+          <image class="i-m-h-title-image" src="/assets/images/common/xianshiqiang.png" />
+        </view>
+        <view class="i-m-h-desc">限时限量 · 先抢先得</view>
+      </view>
+      <view class="i-m-h-right">
+        <view class="i-m-h-count-down-large"> 
+        <text class="c-d-h">05</text>:<text class="c-d-m">32</text>:<text class="c-d-s c-d-hightlight">12</text>
+        </view>
+        <view class="i-m-h-count-down-small">
+          <text class="i-m-h-cc">时</text>
+          <text class="i-m-h-cc">分</text>
+          <text class="i-m-h-cc">秒</text>
+        </view>
+      </view>
+    </view>
+    <view class="index-main-goods-list-con">
+      <goods-list />
+    </view>
+  </scroll-view>
+</view>

@@ -1,0 +1,160 @@
+<template>
+    <editorMain :showHeader="false" ref="editorMainRef" pageType="MINE" @on-save="save"></editorMain>
+</template>
+<script>
+import editorMain from "@/components/main-components/custom-page/editor-main";
+export default {
+    name: "userCenter",
+    components: {
+        editorMain,
+    },
+    data(){
+      return {
+        defaultData: {
+          id: 0,
+          layout_name: "个人中心",
+          layout_type: "MINE",
+          setting: {
+            backgroundColor: "#efefef",
+            backgroundImage: "",
+            backgroundRepeat: "",
+            backgroundSize: "",
+            backgroundPosition: "",
+          },
+          wx_share_title: "",
+          wx_share_img: "",
+          get_module: [
+            {
+              id: 0,
+              module_name: "个人中心头部",
+              module_type: "USER-HEADER",
+              dynamic_setting: {},
+              module_data: {},
+              setting: {
+                backgroundColor: "#fff",
+                backgroundImage: "",
+                backgroundRepeat: "",
+                backgroundSize: "",
+                backgroundPosition: "",
+                marginTop: 0,
+                marginBottom: 10,
+                marginLeftRight: 0,
+                paddingLeftRight: 0,
+                paddingTop: 0,
+                paddingBottom: 0,
+                is_enable: 1,
+                widgetRemark: ""
+              },
+              sort: 1,
+              is_deletable: 0
+            },
+            {
+              id: 0,
+              module_name: "个人中心功能",
+              module_type: "USER-SERVICE",
+              dynamic_setting: {},
+              module_data: {
+                serviceList: [
+                  {
+                    code: "SURVEY-RECORD",
+                    icon: "https://psyimage.innourl.com/v/admintmp/admin/supplier/general/static/user/SURVEY-RECORD.png",
+                    is_enable: 1,
+                    name: "心理测评记录",
+                    tip: "提示",
+                    type_name: "心理测评记录"
+                  },
+                  {
+                    code: "MY-REPORT",
+                    icon: "https://psyimage.innourl.com/v/admintmp/admin/supplier/general/static/user/MY-REPORT.png",
+                    is_enable: 1,
+                    name: "我的报告",
+                    tip: "提示",
+                    type_name: "我的报告"
+                  },
+                  {
+                    code: "MY-SUBSCRIBE",
+                    icon: "https://psyimage.innourl.com/v/admintmp/admin/supplier/general/static/user/MY-SUBSCRIBE.png",
+                    is_enable: 1,
+                    name: "我的预约",
+                    tip: "提示",
+                    type_name: "我的预约"
+                  },
+                  {
+                    code: "USERINFO-EDIT",
+                    icon: "https://psyimage.innourl.com/v/admintmp/admin/supplier/general/static/user/USERINFO-EDIT.png",
+                    is_enable: 1,
+                    name: "个人信息",
+                    tip: "提示",
+                    type_name: "个人信息"
+                  },
+                ]  
+              },
+              setting: {
+                backgroundColor: "",
+                backgroundImage: "",
+                backgroundRepeat: "",
+                backgroundSize: "",
+                backgroundPosition: "",
+                marginTop: 0,
+                marginBottom: 10,
+                marginLeftRight: 0,
+                paddingLeftRight: 0,
+                paddingTop: 0,
+                paddingBottom: 0,
+                is_enable: 1,
+                widgetRemark:""
+              },
+              sort: 2,
+              is_deletable: 0
+            }
+          ],
+        }
+      }
+    },
+    methods: {
+        loadData() {
+            return this.$MainApi
+                .viewUserCenter({
+                    data: {},
+                })
+                .then((res) => {
+                    if (res.code) {//res.data || 
+                        let data = res.data || this.defaultData || {};
+                        // data.get_module[1].module_data= JSON.stringify(this.defaultData.get_module[1].module_data);
+                        this.$refs["editorMainRef"] &&
+                    this.$refs["editorMainRef"].initData(data);
+                    }
+                });
+        },
+        save(detail) {
+            detail = JSON.parse(JSON.stringify(detail));
+            let compPageInfo = detail.compPageInfo || {};
+            let pageCompList = detail.pageCompList || [];
+            console.log('compPageInfo',compPageInfo)
+            console.log('pageCompList',pageCompList)
+            this.$store.commit("setPageLoading", true)
+            return this.$MainApi.saveUserCenter({
+                    data: {
+                        ...compPageInfo,
+                        module_data: pageCompList
+                    },
+                })
+                .then((res) => {
+                    if (res.code) {
+                        this.$Message.success(res.message || "编辑成功");
+                    } else {
+                        this.$Message.warning(res.message || "编辑失败");
+                    }
+                }).finally(()=>{
+                  this.$store.commit("setPageLoading", false)
+                })
+        },
+    },
+    mounted() {
+        this.loadData();
+    },
+};
+</script>
+
+<style>
+</style>

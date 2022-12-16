@@ -1,0 +1,316 @@
+<style lang="less">
+.editor-image-ad-view {
+    //.image-item {
+        // position: relative;
+        // .map {
+        //     position: absolute;
+        //     background: rgba(0, 0, 204, 0.3);
+        //     z-index: 100;
+        //     font-size: 12px;
+        //     color: #fff;
+        //     text-align: center;
+        //     overflow: hidden;
+        //     text-overflow: ellipsis;
+        //     white-space: nowrap;
+        // }
+    //}
+
+    .play-icon-box {
+        top: 50%;
+        position: absolute;
+        width: 100%;
+        z-index: 10;
+        text-align: center;
+
+        .play-icon {
+            font-size: 20px;
+            color: #fff;
+            padding: 8px;
+            background-color: rgba(0, 0, 0, 0.4);
+            border-radius: 100%;
+        }
+    }
+    .ivu-tabs-bar {
+        border-bottom: 0 none;
+    }
+    .ivu-tabs-nav {
+        display: flex;
+        width: 100%;
+        background-color: rgba(0, 0, 0, 0.03);
+
+        .ivu-tabs-tab {
+            flex: 1 1 0%;
+            text-align: center;
+        }
+    }
+
+    .carousel-title {
+        text-align: center;
+        color: #fff;
+        position: absolute;
+        bottom: 0;
+        width: 100%;
+        padding: 5px 0;
+        background-color: rgba(0, 0, 0, 0.25);
+    }
+    .empty {
+        text-align: center;
+        padding: 50px 20px;
+        color: #515a6e;
+    }
+    // 浮层轮播
+    .float_swiper {
+        width: 100%;
+        height: 240px;
+        position: relative;
+    }
+    .float_swiper_item {
+        width: 200px;
+        height: 90%;
+        background-color: #fff;
+        border-radius: 5px;
+        overflow: hidden;
+        box-sizing: border-box;
+        padding: 5px;
+        position: absolute;
+        z-index: 2;
+        transition: opacity .3s ease-out, transform .6s, top .6s, left .6s;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        box-shadow: 0px 0px 5px #ccc;
+    }
+    .float_swiper_item .list-img {
+        width: 100%;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+    }
+    .float_swiper_item .img-item{
+        width:100%;
+        // padding-top:100%;
+        background-color:#efefef;
+    }
+    .image-item{
+        width:100%;
+        &.type-list{
+            display: flex;
+            margin-bottom: 13px;
+            &:last-child{
+                margin-bottom: 0;
+            }
+            .img-cover-box{
+                width:110px;
+                height: 83px;
+            }
+            .content-box{
+                padding-top: 5px;
+                padding-left: 12px;
+            }
+        }
+    }
+    .img-cover-box{
+        width: 100%;
+        height: 200px;
+        flex-shrink: 0;
+        .cover{
+            width: 100%;
+            height: 100%;
+            display: block;
+        }
+        &.init{
+            background: #D8D8D8;
+        }
+    } 
+    .type-row{
+        &.row-1{
+            width: 100%;
+        }
+        &.row-2{
+            width: 48%;
+            .img-cover-box{
+                height: 120px;
+            }
+        }
+        &.row-3{
+            width: 31%;
+            .img-cover-box{
+                height: 120px;
+            }
+        }
+    }
+    .cover{
+        width: 100%;
+    }
+    .content-box{
+        padding: 13px 0 20px 0;
+        padding-left: 3px;
+        width: 100%;
+        overflow: hidden;
+    }
+    .title,.summary{
+        width: 100%;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: pre;
+        font-size: 11px;
+    }
+    .title{
+        padding-bottom: 8px;
+        font-weight: bold;
+        font-size: 16px;
+    }
+}
+</style>
+
+<template>
+    <div class="editor-image-ad-view">
+        <template v-if="module_data.videosGroup && module_data.videosGroup.length > 0">
+            <template v-for="(group, gindex) in module_data.videosGroup" v-if="module_data.videosGroup.length > 0 || dynamic_setting.currTab == 'tab' + gindex">
+                <!-- 静态图片 -->
+                <template v-if="group">
+                    <div class="flex-b-s flex-wrap">
+                        <div v-for="(item, index) in group.videos" :key="index" class="image-item" :class="[`row-${dynamic_setting.row}`,`type-${dynamic_setting.type}`]">
+                            <div class="img-cover-box" :class="{'init':!!!item.cover}">
+                                <img v-show="item.cover" class="cover" :src="item.cover" alt="">
+                            </div>
+                            <div class="content-box">
+                                <div class="title">{{item.title||""}}</div>
+                                <div class="summary C_B2">{{item.summary||""}}</div>
+                            </div>
+                        </div>
+                    </div>
+                </template> 
+            </template>
+        </template>
+        <div v-else class="empty">
+            <Icon type="ios-videos" size="60" color="#2d8cf0"></Icon>
+            <div>请点击编辑视频模块</div>
+        </div>
+    </div>
+</template>
+
+<script>
+export default {
+    name: "imageAdView",
+    components: {},
+    props: {
+        compInfo: {
+            type: Object,
+            default: () => {},
+        },
+        inTab: {
+            type: Boolean,
+            default: false,
+        },
+    },
+    data() {
+        return {
+            t2_val: 0,
+            // 浮动轮播
+            styleList: [],
+            touchs: [],
+            swiperTime: null,
+        };
+    },
+    computed: {
+        dynamic_setting(){
+            return this.compInfo.dynamic_setting || {};
+        },
+        module_data(){
+            let module_data = this.compInfo.module_data || {};
+            if (!module_data.videosGroup) {
+                this.$set(this.compInfo.module_data, "videosGroup", [])
+            }
+            let videosGroup = module_data.videosGroup || [];
+            let currTab = this.dynamic_setting.currTab || "";
+            let currIndex = Number(currTab.replace(/[^\d]/g, "")) || 0;
+            let imgL = videosGroup[currIndex] && videosGroup[currIndex].videos && videosGroup[currIndex].videos.length; 
+            this.setSwiperStyle(this.t2_val, imgL);
+            return module_data || {};
+        }
+    },
+    methods: {
+        mapStyle(map) {
+            // 当前比例 375，数据比例 600；
+            let r = 375 / 600;
+            return {
+                bottom:
+                    Math.abs(Math.ceil(map.map_y * r)) -
+                    Math.ceil(map.map_height * r) +
+                    "px",
+                left: Math.ceil(map.map_x * r) + "px",
+                width: Math.ceil(map.map_width * r) + "px",
+                height: Math.ceil(map.map_height * r) + "px",
+                "line-height": Math.ceil(map.map_height * r) + "px",
+            };
+        },
+        swiperChangeEvent(isAdd = true) {
+            let cur = this.swiperCurrent || 0;
+            let videosGroup = this.module_data.videosGroup || [];
+            let dataL = videosGroup && videosGroup.videos.length || 0;
+            let i = isAdd ? 1 : -1;
+            if (dataL > 0) {
+                cur = cur + i;
+                if (isAdd) {
+                    if (cur == dataL) {
+                        cur = 0;
+                    }
+                } else {
+                    if (cur < 0) {
+                        cur = (dataL - 1);
+                    }
+                }
+                if (cur != this.swiperCurrent) {
+                    this.swiperCurrent = cur;
+                    this.setSwiperStyle(cur, dataL);
+                }
+            }
+        },
+        setSwiperStyle(cur, dataL) {
+            let styleList = [];
+            for (let i = 0; i < dataL; i++) {
+                let style = ""
+                if (i == cur) {
+                    style = "z-index: 5;opacity: 1;transform:translate(-50%, -50%); scale(1);"
+                } else if ((cur - 1) == i || (cur == 0 && i == (dataL - 1))) {
+                    style = "z-index: 3;opacity: 0.8;left:0;transform:translate(0, -50%) scale(0.8);"
+                } else if ((cur + 1) == i || (cur == (dataL - 1) && i == 0)) {
+                    style = "z-index: 3;opacity: 0.8;left:100%;transform:translate(-100%, -50%) scale(0.8);"
+                } else {
+                    style = "z-index: 2;opacity: 0.8;transform:translate(-50%, -50%) scale(0.8);"
+                }
+                styleList.push({
+                    style: style
+                })
+            }
+            this.styleList = styleList;
+        },
+        swiperTouchS(e) {
+            let changedTouches = e.changedTouches || [];
+            this.touchs = this.touchs || {};
+            this.touchs.x1 = changedTouches[0].clientX;
+            this.touchs.y1 = changedTouches[0].clientY;
+            this.swiperTime && clearTimeout(this.swiperTime);
+        },
+        swiperTouchE(e) {
+            let changedTouches = e.changedTouches || [];
+            this.touchs.x2 = changedTouches[0].clientX;
+            this.touchs.y2 = changedTouches[0].clientY;
+            let touchs = this.touchs || {};
+            if (touchs.x1 > touchs.x2) {
+                this.swiperChangeEvent();
+            } else if (touchs.x1 < touchs.x2) {
+                this.swiperChangeEvent(false);
+            }
+        },
+    },
+    watch: {},
+    mounted() {
+        this.$nextTick(()=>{
+
+        })
+    },
+};
+</script>

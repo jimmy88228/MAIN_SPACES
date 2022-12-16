@@ -1,0 +1,86 @@
+<template>
+	<view class="startup flex-c-c">
+		<loading-view v-show="showLoading"></loading-view>
+	</view>
+</template>
+
+<script>
+	import LoadingView from '@/components/css3/loading/loading.vue';
+	import ScanCode from '@/common/helper/scan-code-handler.js';
+	import utils from '@/common/support/utils.js';
+	const app = getApp();
+	const pageOption = Page.BasePage({
+		components: {
+			LoadingView
+		},
+		data() {
+			return {
+				showLoading: false,
+				acInfo: null,
+				activityId: 0,
+			}
+		},
+		onLoad(options) {
+			this.options = options || {};
+			app.PM.setParams('initId', parseInt(this.options.id || 0) || app.PM.getParams('initId') || 0);
+			this.activityId = app.PM.getParams('initId');
+		},
+		onShow() {
+			this.init();
+		},
+		onReady() {
+			this.showLoading = true;
+		},
+		methods: {
+			init() {
+				// #ifdef H5
+				let optionStr = utils.paramsByJson(this.options || {});
+				this.redirectAction(`/pages/login/login?${optionStr}`);
+				// #endif
+
+				// #ifdef MP
+				ScanCode.scan().then((data) => {
+					this.initLogin(data);
+				})
+				// #endif
+			},
+			initLogin(data) {
+				return this._checkLogin().then(() => {
+					let isCheck = !!ScanCode.scene;
+					app.LM.loginBsnAsync(false, isCheck).then((res) => {
+						if (app.LM.recordId) {
+							if (data && data.pagePath) {
+								this.redirectAction("/" + data.pagePath + "?" + utils.paramsByJson(data.sceneOption))
+							} else {
+								if (!!app.IM.tcrUserInfo && (app.IM.tcrUserInfo.roleType == 'psyc_teacher' || app.IM.tcrUserInfo.roleType == 'class_teacher')) {
+									this.reLaunchAction(`/pages/work-bench/work-bench-detail/work-bench-detail`)
+								}else{
+									this.redirectAction('/pages/index/index');
+								}
+							}
+							ScanCode.clearData(); // 二维码流程走完释放扫码信息
+						} else {
+							if (ScanCode.scene) {
+								if (app.IM.authUserInfo.bindUsers > 0) {
+									this.redirectAction('/pages/user-switch/user-switch');
+								} else {
+									this.reLaunchAction('/pages/user-type-select/user-type-select');
+								}
+							} else {
+								this.reLaunchAction('/pages/user-type-select/user-type-select');
+							}
+						}
+					})
+				})
+			},
+		},
+	})
+	export default pageOption;
+</script>
+
+<style scoped>
+	.startup {
+		width: 100%;
+		height: 100vh;
+	}
+</style>

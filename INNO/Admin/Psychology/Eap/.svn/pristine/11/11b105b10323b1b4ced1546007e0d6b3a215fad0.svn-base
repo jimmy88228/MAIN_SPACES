@@ -1,0 +1,75 @@
+<template>
+  <Tabs :value="curTab" @on-click="changeTab" class="answer-list-index" :class="'list-len-'+listTabs.length">
+      <TabPane :label="item.model_name" :name="item.name" v-for="(item,index) in listTabs" :key="index">
+          <answerList :ref="item.name" :isShowTitle="listTabs.length==1"></answerList>
+      </TabPane>
+  </Tabs>
+</template>
+
+<script>
+import answerList from './list.vue'
+export default {
+  components: {
+    answerList,
+  },
+  data(){
+    return {
+      recordId: 0,
+      modelId: 0,
+      modalShow: false,
+      answerData: [],
+      type: "",
+      schoolId: 0,
+      loading: false,
+      modelName: '',
+      curTab:"",
+      listTabs:[]
+    }
+  },
+  methods:{ 
+    getList(){
+        let recordId = this.pageQuery.recordId || "";
+          return this.$MainApi.getAssignModelList({
+                data: { 
+                    record_id: recordId + "", 
+                },
+            })
+            .then((res) => {
+                let items = res.data && res.data.items||[];
+                items.forEach((item,index)=>{
+                    item.name = 'tab'+item.model_id+'_'+item.record_id;
+                    if(index == 0){
+                        this.curTab = item.name;
+                    }
+                })
+                this.listTabs = items;
+                setTimeout(() => {
+                    this.$refs[this.curTab] && this.$refs[this.curTab][0].loadData({modelId:this.listTabs[0].model_id,recordId:this.listTabs[0].record_id});
+                }, 500);
+            })
+    },
+    changeTab(name){
+        this.curTab = name;
+        let item = this.listTabs.find(item=>{
+            return item.name == name;
+        })
+        console.log('this.curTab',this.curTab,item)
+        this.$refs[this.curTab] && this.$refs[this.curTab][0].loadData({modelId:item.model_id,recordId:item.record_id});
+    }
+    
+  },
+  mounted(){
+    this.getList();
+  }
+}
+</script>
+
+<style lang="less">
+.answer-list-index{
+    &.list-len-1{
+        .ivu-tabs-bar{
+            display: none;
+        }
+    }
+}
+</style>

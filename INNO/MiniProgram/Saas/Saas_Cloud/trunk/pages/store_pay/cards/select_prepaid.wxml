@@ -1,0 +1,48 @@
+<!--pages/store_pay/cards/select_prepaid.wxml-->
+<view class="use_prepaid_page">
+  <view class="no_use_prepaid" bindtap="selectCard" >
+    <view class="radio_icon">
+      <image src="{{brand_info.icon_url}}micro_mall/return_active.png" mode="widthFix" wx:if="{{no_use_prepaid}}"/>
+      <image src="{{brand_info.icon_url}}micro_mall/return.png" mode="widthFix" wx:else/>
+    </view>
+    <text>不选择储值卡</text>
+  </view>
+  <scroll-view scroll-y class="prepaid_scroll">
+    <view class="prepaid_list">
+      <view class="prepaid_item" bindtap="selectCard" data-use_card_id="{{card.user_card_id}}" data-id="{{index}}"  wx:for="{{prepaid_list}}" wx:for-item="card" wx:key="index">
+        <view class="radio_icon">
+          <image src="{{brand_info.icon_url}}micro_mall/return_active.png" mode="widthFix" wx:if="{{prepaid_radio_list[index].selected}}"/>
+          <image src="{{brand_info.icon_url}}micro_mall/return.png" mode="widthFix" wx:else />
+        </view>
+        <view class="prepaid_cont">
+          <view class="prepaid_bg">
+            <image src="{{brand_info.icon_url}}micro_mall/prepaid_card_bg.png" mode="widthFix"/>
+          </view>
+          <view class="prepaid_msg">
+            <view class="card_code">{{card.user_card_code}}</view>
+            <view class="card_balance">
+              <view class="">可用余额</view>
+              <view class="card_balance_num">{{card.balance}}元</view>
+            </view>
+            <view class="card_value">面值:{{card.prepaid_card_value}}</view>
+          </view>
+          <view class="card_tip">
+            <text class="">有效期:{{card.from_time}} 至 {{card.to_time}}</text>
+          </view>
+        </view>
+      </view>
+
+      <!--储值卡为空-->
+      <view class="no_prepaid" wx:if="{{prepaid_list.length == 0 }}">
+        <image src="{{brand_info.icon_url}}micro_mall/coupon/bonus_none.png" mode="widthFix" />
+        <view class="text">储值卡为空</view>
+      </view>
+    </view>
+  </scroll-view>
+  <view class="confirm_use_box">
+    <view class="confirm_use_btn" style="background:{{brand_info.style.bg_color}}" bindtap="confirmUseCard">确定</view>
+  </view>
+</view>
+
+
+

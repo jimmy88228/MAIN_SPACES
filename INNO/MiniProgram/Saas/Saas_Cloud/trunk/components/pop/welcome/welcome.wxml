@@ -1,0 +1,10 @@
+<window class="window" ext-class="window-ext">
+	<view class="main {{isLong ? 'isLong' : ''}}" style="{{boxStyle}}" data-url="{{welcomeConf.path}}" catchtap="jumpAction">
+    <image class="main_bg" src="{{welcomeConf.img_url}}" bindload="imgLoad" mode="widthFix"/>
+    <view class="time_down_area" style="{{bTop ? 'top:' + bTop + 'px;' : ''}}{{bHeight ? 'height:' + bHeight + 'px' : ''}}">
+      <view class="time_down" catchtap="closeHandle">
+        <view class="" style="{{welcomeConf.button_style}}">跳过 {{DownSecond}}s</view>
+      </view>
+    </view>
+  </view>
+</window>

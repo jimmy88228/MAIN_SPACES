@@ -1,0 +1,7 @@
+<view class="prom_labels_container">
+  <block wx:for="{{labelList}}" wx:key="index">
+    <view class="label_content_container">
+      <view class="single_label_item text-flow">{{item}}</view>
+    </view>
+  </block>
+</view>

@@ -94,6 +94,12 @@ export default {
                 this.pageInfo.layout_type = this.pageType;
             }
             this.compList = get_module;
+            // 由于选择组件下标会触发显示组件响应数据，这里刷新一遍下标
+            let curIndex = this.commonInfo.curIndex;
+            this.commonInfo.curIndex = -1;
+            this.$nextTick(()=>{
+                this.commonInfo.curIndex = curIndex || -1;
+            })
         },
         settingInit(pageInfo={}){
             try {

@@ -1,0 +1,117 @@
+<template>
+<div class="">
+  <custom-modal class="batch-relate-dimension-modal hold-modal-zindex" ref="modal" :width="560" :closable="true" :isSlotHeader="true" :isSlotFooter="true">
+    <div slot="header">批量关联维度</div>
+    <div class="relate-dimension-cont _relate-dimension-cont">
+      <div class="relate-tip">选择关联范围</div>
+      <span class="choose-btn flex-c-c" @click="chooseProblemEvent">点击选择题目</span>
+      <div class="relate-tip">关联维度</div>
+      <div class="inline-b"> 
+        <dimensionSelect :modelId="modelId"  placeholder="选择维度"></dimensionSelect>
+      </div>
+    </div>
+    <div slot="footer">
+      <Button @click="dismiss">取消</Button>
+      <Button type="primary" @click="confirm()">确定并保存</Button>
+    </div>
+    <Spin fix v-if="pageLoading"></Spin>
+  </custom-modal>
+  <chooseProblem ref="chooseProblemRef" :modelId="modelId" :problemsData="problemsData"></chooseProblem>
+</div>
+</template>
+
+<script>
+import dimensionSelect from "../../components/dimension-select/index";
+import chooseProblem from "../choose-problem/index.vue";
+export default {
+  components: {
+    dimensionSelect,
+    chooseProblem
+  },
+  props: {
+    modelId: {
+      type: Number | String,
+      default: 0
+    },
+    problemsData: {
+      type: Array,
+      default: ()=>{
+        return []
+      }
+    },
+  },
+  data(){
+    return {
+      formData: {
+        dimensionData: [],
+      }
+    }
+  },
+  methods: {
+    dismiss() {
+      this.$refs.modal.dismiss();
+    },
+    showModal(detail){
+      // let dimensionData = detail.dimensionData || []
+      // this.formData.dimensionData = dimensionData ? JSON.parse(JSON.stringify(dimensionData)) : [];
+      console.log("触发")
+      this.$refs.modal.show();
+    },
+    chooseProblemEvent(){
+      this.$refs["chooseProblemRef"] && this.$refs["chooseProblemRef"].showModal()
+    },
+    confirm(){
+      
+    },
+    save(){
+        this.pageLoading = true
+        return this.$MainApi.scaleDimensionSave({
+            data:{
+                model_id:Number(this.modelId || 0),
+                dimension_data: this.formData.dimensionData
+            }
+        }).then(res=>{
+            if(res.code){
+              this.dismiss();
+              this.$emit("refresh")
+            }
+            res.message && this.$Message.warning(res.message);
+            return Promise.reject(res);
+        }).finally(()=>{
+          this.pageLoading = false;
+        })
+    }
+  }
+}
+</script>
+
+<style lang="less" scoped>
+.batch-relate-dimension-modal{
+  .choose-btn{
+    width: 124px;
+    height: 40px;
+    background: #ECF8FE;
+    font-size: 14px;
+    font-family: PingFangSC-Regular, PingFang SC;
+    font-weight: 400;
+    color: #008ACB;
+    line-height: 20px;
+    margin-bottom: 10px;
+    cursor: pointer;
+  }
+  .relate-dimension-cont{
+    margin: -10px 0px;
+  }
+  .relate-tip{
+    padding: 20px 0px 13px 0px; 
+  }
+}
+</style>
+<style lang="less">
+._relate-dimension-cont{
+  .ivu-form-item-error-tip{
+    padding-top: 2px;
+  }
+}
+
+</style>

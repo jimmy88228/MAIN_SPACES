@@ -1,0 +1,278 @@
+<template>
+  <view class="rank-area">
+    <page-nav :full="true" :isTransparent="true"></page-nav>
+    <image class="rank-header" :src="staticAddress + '/game/different/rank-header.jpg'" mode="widthFix"/>
+    <view class="rank-list-area">
+      <view class="rank-list">
+        <scroll-view class="rank-scroll" :scroll-y="true" @scrolltolower="getData">
+          <view class="rank-item" :class="{'curr-rank-item':  index == currRank}" v-for="(item, index) in rankList" :key="index">
+            <view class="item-left">
+              <view class="item-top-area" v-if="index < 3">
+                <image class="top-area-img" :src="staticAddress + '/game/different/top' + (Number(index) + 1) + '.png'" mode="widthFix"/>
+              </view>
+              <view v-else class="bold">
+                <view>TOP</view>
+                <view>{{Number(index) + 1}}</view>
+              </view>
+            </view>
+            <view class="item-cont">
+              <view class="item-name">{{item.name}}</view>
+              <view class="item-time">
+                <view class="time-tip">闯关记录</view>
+                <view class="time-val">{{item.time}}</view>
+              </view>
+              <view class="like-area">
+                <image class="like-img" @click="setLike(index, item.like)" :src="staticAddress + '/game/different/like.png'" mode="widthFix"/>
+                <view class="like-txt">{{item.like}}</view>
+              </view>
+            </view>
+          </view>
+        </scroll-view>
+      </view>
+    </view>
+    <newRecord ref="newRecordRef"></newRecord>
+  </view>
+</template>
+
+<script>
+import newRecord from "../../components/new-record/new-record.vue";
+const app = getApp();
+const pageOption = Page.BasePage({
+  components: { newRecord },
+  data() {
+    return {
+      options: {},
+      currRank: 10,
+      rankList: [
+        {
+          name: "快乐大使",
+          time: "01:18:06",
+          like: 23
+        },
+        {
+          name: "快乐大使快乐大使快乐大使快乐大使快乐大使",
+          time: "01:18:06",
+          like: 23
+        },
+        {
+          name: "快乐大使",
+          time: "01:18:06",
+          like: 23
+        },
+        {
+          name: "快乐大使",
+          time: "01:18:06",
+          like: 23
+        },
+        {
+          name: "快乐大使",
+          time: "01:18:06",
+          like: 23
+        },
+        {
+          name: "快乐大使",
+          time: "01:18:06",
+          like: 23
+        },
+        {
+          name: "快乐大使",
+          time: "01:18:06",
+          like: 23
+        },
+        {
+          name: "快乐大使",
+          time: "01:18:06",
+          like: 23
+        },
+        {
+          name: "快乐大使",
+          time: "01:18:06",
+          like: 23
+        },
+        {
+          name: "快乐大使",
+          time: "01:18:06",
+          like: 23
+        },
+        {
+          name: "快乐大使",
+          time: "01:18:06",
+          like: 23
+        },
+        {
+          name: "快乐大使",
+          time: "01:18:06",
+          like: 23
+        },
+        {
+          name: "快乐大使",
+          time: "01:18:06",
+          like: 23
+        }
+      ],
+      liking: false
+    };
+  },
+  onLoad(options) {
+    this.options = options || {};
+    this.$nextTick(()=>{
+      this.$refs["newRecordRef"] && this.$refs["newRecordRef"].showModal();
+    })
+  },
+  methods: {
+    setLike(index, like){
+      if(this.liking){
+        return
+      }
+      this.liking = true
+      setTimeout(()=>{
+        like = like + 1;
+        this.$set(this.rankList[index], "like", like)
+        this.liking = false
+      }, 500)
+    },
+    likeAnimate(){
+
+    },
+    getData(){
+      console.log("获取数据")
+    }
+  },
+  onShow() {
+    
+  },
+});
+export default pageOption;
+</script>
+
+<style lang="scss">
+.rank-area{
+  background-color:#FFCD00;
+  display: flex;
+  flex-direction: column;
+  height:calc(100vh);
+  overflow: hidden;
+  .rank-header{
+    width:100%;
+    display: block;
+  }
+  .rank-list-area{
+    flex: 1;
+    overflow: hidden;
+    padding: 0px 18rpx;
+  }
+  .rank-list{
+    width:100%;
+    height:100%;
+    background: #FFFFFF;
+    border-radius: 30rpx;
+    border-bottom-left-radius: 0px;
+    border-bottom-right-radius: 0px; 
+    position:relative;
+  }
+  .rank-scroll{
+    width:100%;
+    height:100%;
+    padding-top: 10rpx;
+    box-sizing: border-box;
+    position:relative;
+  }
+  .rank-item{
+    width:100%;
+    display: flex;
+    align-items: center;
+    .item-left{
+      width: 95rpx;
+      padding: 0px 10rpx;
+      flex-shrink: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      min-height: 152rpx;
+    }
+    .item-top-area{
+      
+    }
+    .top-area-img{
+      width: 48rpx;
+      display: block;
+    }
+    .item-cont{
+      flex: 1;
+      border-bottom: 1px solid #F2F2F2;
+      display: flex;
+      align-items: center;
+      // height: 100%;
+      min-height: 152rpx;
+    }
+    .item-name{
+      font-size: 26rpx;
+      font-family: PingFang SC;
+      font-weight: bold;
+      color: #333333;
+      line-height: 48rpx;
+      flex: 1;
+      padding-left: 20rpx;
+    }
+    .item-time{
+      flex-shrink: 0;
+      width: 158rpx;
+      text-align: center;
+    }
+    .time-tip{
+      font-size: 20rpx;
+      font-family: PingFang SC;
+      font-style: italic;
+      color: #B2B2B2;
+      line-height: 24rpx;
+      margin-top: 10rpx;
+    }
+    .time-val{
+      font-size: 28rpx;
+      font-family: Krungthep;
+      font-weight: bold;
+      font-style: italic;
+      color: #333333;
+      line-height: 48rpx;
+    }
+    .like-area{
+      width: 127rpx;
+      flex-shrink: 0;
+      text-align: center;
+    }
+    .like-img{
+      width:55rpx;
+      height: 55rpx;
+      display: block;
+      margin: 0 auto;
+      margin-top: 10rpx;
+    }
+    .like-txt{
+      font-size: 20rpx;
+      font-family: PingFang SC;
+      font-style: italic;
+      color: #B2B2B2;
+      line-height: 48rpx;
+    }
+  }
+  .curr-rank-item{
+    position:sticky;
+    bottom: 0px;
+    left: -18rpx;
+    background-color:rgba(81,44,0,0.89);
+    color:#fff !important;
+    .item-left{
+      min-height: 120rpx;
+      color:#fff !important;
+    }
+    .item-cont{
+      min-height: 120rpx;
+      border: 0 none;
+      .item-name,.time-tip,.time-val,.like-txt{
+        color:#fff;
+      }
+    }
+  }
+}
+</style>

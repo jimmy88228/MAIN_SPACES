@@ -1,0 +1,21 @@
+<view class="box">
+  <view class="tab_box">
+    <view class="content" bindtap='click' wx:for="{{list}}" wx:key='id' data-index-sort="{{index}}">
+      <block wx:if="{{item.order=='one'}}">
+        <view class=" title" style="{{item.active ? 'color:'+brandInfo.style.font_color :'color:#7f7f7f;'}}">{{item.text}}</view>
+        <view class="sort_bottom" style="{{item.active ? 'border-top-color:'+brandInfo.style.font_color : ''}}"></view>
+      </block>
+      <block wx:else>
+        <view class=" title" style="{{item.active!=null ? 'color:'+brandInfo.style.font_color : 'color:#7f7f7f;'}}">{{item.text}}</view>
+        <view class="price_sort">
+          <view class="sort_top" style="{{item.active==true ? 'border-bottom-color:'+brandInfo.style.font_color : ''}}"></view>
+          <view class="sort_bottom" style="{{item.active==false ? 'border-top-color:'+brandInfo.style.font_color : ''}}"></view>
+        </view>
+      </block> 
+      <view class="line"></view>
+    </view>
+  </view>
+  <view class='filter C_7f font_24' bindtap="toFilter" style='color:{{filter_active==true? brandInfo.style.font_color :""}}'>筛选</view>
+  <!-- <view class='filter' bindtap="toFilter" style="background: {{brandInfo.style.font_color}}">筛选</view> -->
+</view>
+<filter bindhidePanel="hidePanel" id='filter' parent-list="{{tabList}}" bindsearch="handleSearch" bindInfo="handleInfo" brand-info="{{brandInfo}}" />

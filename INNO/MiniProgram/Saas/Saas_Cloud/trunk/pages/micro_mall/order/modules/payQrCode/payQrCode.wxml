@@ -1,0 +1,11 @@
+<window class="window" ext-class="window-ext" catchtap="_noFn">
+	<view class="main" style="{{boxStyle}}" bintap="hideFn" >
+    <view class="header">微信支付</view>
+    <view class="content">
+      <canvas canvas-id="pay_qrcode" style="width: 450rpx;height: 450rpx;"></canvas>
+    </view>
+    <view class="footer">
+
+    </view>
+  </view>
+</window>

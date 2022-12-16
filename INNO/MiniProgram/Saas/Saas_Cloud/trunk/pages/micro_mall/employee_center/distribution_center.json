@@ -1,0 +1,10 @@
+{
+    "navigationBarTitleText": "",
+    "usingComponents": {
+        "brokerage": "/pages/micro_mall/employee_center/distribution_brokerage/distribution_brokerage",
+        "sales": "/pages/micro_mall/employee_center/distribution_sale/distribution_sale",
+        "bonus_sales": "/pages/micro_mall/employee_center/bonus_sale/bonus_sale",
+        "orders": "/pages/micro_mall/employee_center/distribution_orders/distribution_orders",
+        "service": "/pages/micro_mall/employee_center/distribution_service/distribution_service"
+    }
+}

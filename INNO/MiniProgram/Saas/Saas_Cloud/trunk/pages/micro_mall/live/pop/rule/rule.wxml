@@ -1,0 +1,14 @@
+<!--pages/component/login/login_by_phone.wxml-->
+<form bindsubmit="formAction" report-submit="true">
+<window class="window" ext-class="window-ext">
+    <view class="login_page" style="{{boxStyle}}">
+      <form bindsubmit="formAction" report-submit="true">
+        <view class="help_title">活动规则</view>
+        <scroll-view class="join_user_list" scroll-y="{{true}}">
+          <text class="rule_cont" space="nbsp">{{activityRule}}</text>
+        </scroll-view>
+      </form>
+      <view class="component_close" bindtap="dismiss"></view>
+    </view>
+</window>
+</form>

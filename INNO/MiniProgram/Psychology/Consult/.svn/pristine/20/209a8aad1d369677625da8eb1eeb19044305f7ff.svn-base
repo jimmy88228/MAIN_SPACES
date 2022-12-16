@@ -1,0 +1,104 @@
+<template>
+	<view>
+		<scroll-view class="list-scroll-content" :style="{height:scrollHeight + 'px'}" scroll-y>
+			<u-cell-group v-if="sessInfo.get_user_info != null">
+				<u-cell-item :arrow="false">
+					<view slot="title" class="title-box">昵 称</view>
+					<view slot="label" class="clamp label-box"></view>
+					<view slot="right-icon" class="right-box">
+						<view style="line-height: 1.5;">{{sessInfo.get_user_info.wx_nick_name}}</view>
+					</view>
+				</u-cell-item>
+				<u-cell-item :arrow="false">
+					<view slot="title" class="title-box">性 别</view>
+					<view slot="label" class="clamp label-box"></view>
+					<view slot="right-icon" class="right-box">
+						<view style="line-height: 1.5;">{{sessInfo.get_user_info.gender == 1 ? '男' : (sessInfo.get_user_info.gender == 2 ? '女' : '未设置') }}</view>
+					</view>
+				</u-cell-item>
+				<u-cell-item :arrow="false">
+					<view slot="title" class="title-box">手 机</view>
+					<view slot="label" class="clamp label-box"></view>
+					<view slot="right-icon" class="right-box">
+						<view style="line-height: 1.5;">{{sessInfo.get_user_info.mobile != null ? sessInfo.get_user_info.mobile : '无'}}</view>
+					</view>
+				</u-cell-item>
+				<u-cell-item :arrow="false">
+					<view slot="title" class="title-box">卡 号</view>
+					<view slot="label" class="clamp label-box"></view>
+					<view slot="right-icon" class="right-box">
+						<view style="line-height: 1.5;">{{sessInfo.get_user_info.card_num != null ? sessInfo.get_user_info.card_num : '无'}}</view>
+					</view>
+				</u-cell-item>
+				<u-cell-item :arrow="false">
+					<view slot="title" class="title-box">积 分</view>
+					<view slot="label" class="clamp label-box"></view>
+					<view slot="right-icon" class="right-box">
+						<view style="line-height: 1.5;">{{sessInfo.get_user_info.get_user_data != null ? sessInfo.get_user_info.get_user_data.integrals + ' 积分' : '无' }}</view>
+					</view>
+				</u-cell-item>
+				<u-cell-item :arrow="false">
+					<view slot="title" class="title-box">等 级</view>
+					<view slot="label" class="clamp label-box"></view>
+					<view slot="right-icon" class="right-box">
+						<view style="line-height: 1.5;">{{sessInfo.get_user_info.get_rank_info != null ? sessInfo.get_user_info.get_rank_info.rank_name : '无' }}</view>
+					</view>
+				</u-cell-item>
+				<u-cell-item :arrow="false">
+					<view slot="title" class="title-box">生 日</view>
+					<view slot="label" class="clamp label-box"></view>
+					<view slot="right-icon" class="right-box">
+						<view style="line-height: 1.5;">{{sessInfo.get_user_info.birthday != null ? sessInfo.get_user_info.birthday : '未设置' }}</view>
+					</view>
+				</u-cell-item>
+				<u-cell-item :arrow="false">
+					<view slot="title" class="title-box">所在地区</view>
+					<view slot="label" class="clamp label-box"></view>
+					<view slot="right-icon" class="right-box">
+						<view style="line-height: 1.5;">{{sessInfo.get_user_info.wx_province != null ? sessInfo.get_user_info.wx_province + ' '+ sessInfo.get_user_info.wx_city : '未设置' }}</view>
+					</view>
+				</u-cell-item>
+				<u-cell-item :arrow="false">
+					<view slot="title" class="title-box">注册时间</view>
+					<view slot="label" class="clamp label-box"></view>
+					<view slot="right-icon" class="right-box">
+						<view style="line-height: 1.5;">{{sessInfo.get_user_info.created_at_format}}</view>
+					</view>
+				</u-cell-item>
+			</u-cell-group>
+			
+		</scroll-view>
+	</view>
+</template>
+
+<script>
+/**
+ * 客服 - 用户基本信息
+ */	
+export default {
+	name: "csUserInfoBasic",
+	components:{
+	},
+	props:{
+		scrollHeight:{
+			type:Number,
+			default:500,
+		}
+	},
+	data() {
+		return {
+			// 会话详情
+			sessInfo:{},
+		}
+	},
+	methods:{
+		// 提供给父组件调用
+		init( sessInfo ){
+			this.sessInfo = sessInfo;
+		},
+	},
+}
+</script>
+
+<style lang="scss">
+</style>

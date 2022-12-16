@@ -1,0 +1,16 @@
+.commission_amount {
+    padding-left: 17rpx;
+    border-radius: 6rpx;
+    justify-content: start;
+    color: #fff;
+    margin-top: 20rpx;
+}
+.commission_icon {
+    width: 40rpx;
+    height: 40rpx;
+    display: inline-block;
+    margin-right: 8rpx;
+}
+.commission_values {
+    margin-left: 10rpx;
+}

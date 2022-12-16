@@ -1,0 +1,24 @@
+<!-- pages/micro_mall/custom_page/custom_page -->
+<view hidden="{{pageHidden}}">
+  <view class="box" id="box">
+    <page-nav holdStay="{{true}}" isHideBackOrHome="{{hideBackNav}}" title="{{pageTitle}}"></page-nav>
+  </view>
+  <indexHeader wx:if="{{false}}" top="{{navH}}" id="indexHeader"></indexHeader>
+  <storesForA wx:if="{{!hideIndexHeader}}" bindgetStoreMsg='getStoreMsg' top="{{navH}}" id="stores_a_id" show-stores-a="{{showStoresA}}"></storesForA>
+  <view class="index_page">
+    <micro-page
+    class="page_tab" 
+    id="mcPage" 
+    bindgetPageId="getPageId"
+    bindpageShareSaving="pageShareSaving"
+    isHideAllBtn="{{hideBackNav}}"
+    extraH="{{extraH}}"
+    isCustomNav="{{true}}"
+    custom-tab="{{customTab}}"></micro-page>
+  </view>
+</view>
+<welcome id="welcome"></welcome>
+<!-- 其他浮窗的容器 -->
+<outsideContainer id="outsideContainer" componentsCollection="{{outsideComponents}}" />
+
+ 

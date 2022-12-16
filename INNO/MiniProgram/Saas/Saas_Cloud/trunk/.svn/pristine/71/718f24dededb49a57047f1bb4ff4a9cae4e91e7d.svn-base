@@ -1,0 +1,6 @@
+{
+  "backgroundColor":"#fff",
+  "usingComponents": {
+    "btns": "/components/buttons/btns"
+  }
+}

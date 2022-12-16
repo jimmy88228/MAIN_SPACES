@@ -1,0 +1,182 @@
+<template>
+  <view class="caring-staff">
+    <page-nav>
+      <template slot="title">
+        <view>关爱人员</view>
+      </template>
+    </page-nav>
+    <view class="caring-staff-list">
+      <view class="caring-staff-item" v-for="(item,i) in caringList" :key="i">
+        <view class="flex-s-c caring-staff-info">
+          <view class="bold font-34">
+            {{item.userName}}
+          </view>
+          <template v-if="item.organizeType != 0">
+            <view class="warn-level warn-level-warning" v-if="item.type > 0">
+              {{item.str}}
+            </view>
+            <view class="warn-level warn-level-normal" v-else>
+              {{item.str}}
+            </view>
+          </template>
+          <view class="organization-type organization-type-referrals" v-if="item.organizeType == 2">
+            {{item.randStr}}
+          </view>
+          <view class="organization-type organization-type-out" v-if="item.organizeType == 0">
+            {{item.randStr}}
+          </view>
+        </view>
+        <view class="flex-b-c" v-if="item.organizeType != 0">
+          <view class="button flex-c-c" @click="turnPage" data-mode="referrals">
+            <image :src="referralIcon" mode="widthFix" />
+            <view class="C_555 font-22">请求转介</view>
+          </view>
+          <view class="button flex-c-c" @click="turnPage" data-mode="">
+            <image :src="mentalFileIcon" mode="widthFix" />
+            <view class="C_555 font-22">档案详情</view>
+          </view>
+          <view class="button flex-c-c" @click="turnPage" data-mode="intervene-record">
+            <image :src="interventionRecordIcon" mode="widthFix" />
+            <view class="C_555 font-22">干预记录</view>
+          </view>
+        </view>
+      </view>
+    </view>
+  </view>
+</template>
+
+<script>
+  const app = getApp();
+  const pageOption = Page.BasePage({
+    data() {
+      return {
+        interventionRecordIcon: require("@/static/caring-staff/intervention-record.png"),
+        mentalFileIcon: require("@/static/caring-staff/mental-file.png"),
+        referralIcon: require("@/static/caring-staff/referral.png"),
+        caringList: []
+      }
+    },
+    components: {
+
+    },
+    // onShareAppMessage(e){},
+    methods: {
+      loadData() {
+        let caringList = [];
+        for (let i = 0; i < 10; i++) {
+          let type = "";
+          let str = ""
+          let organizeType = Math.random() > 0.8 ? 2 : (Math.random() > 0.5 ? 0 : 1)
+          let randStr = organizeType == 2 ? "已转介至上馨机构" : (organizeType == 0 ? "已不再组织中" : "")
+          let rand = Math.random()
+          console.log(rand > 0.8)
+          if (rand > 0.8) {
+            type = "0";
+            str = "已解除"
+          } else if (rand > 0.6) {
+            type = "1";
+            str = "Ⅰ级"
+          } else if (rand > 0.4) {
+            type = "2";
+            str = "Ⅱ级";
+          } else {
+            type = "3";
+            str = "Ⅲ级"
+          }
+          caringList.push({
+            userName: "陈*瑄",
+            type,
+            str,
+            organizeType,
+            randStr
+          })
+        }
+        this.caringList = caringList
+      },
+      turnPage({currentTarget}){
+        let mode = currentTarget.dataset.mode;
+        this.jumpAction(`/pages/work-bench/${mode}/${mode}`)
+      }
+    },
+    onShow() {
+      this.loadData()
+    },
+    onReady() {
+
+    }
+  })
+  export default pageOption
+</script>
+
+<style lang="scss" scoped>
+  .caring-staff {
+    min-height: 100vh;
+    background-color: #F7F7F7;
+
+    .caring-staff-list {
+      padding: 30rpx 24rpx;
+
+      .caring-staff-item {
+        background: #FFFFFF;
+        padding: 15rpx;
+        border-radius: 20rpx;
+        margin-bottom: 20rpx;
+
+        .caring-staff-info {
+          margin: 50rpx 40rpx;
+
+          .warn-level {
+            font-size: 20rpx;
+            padding: 2rpx 8rpx;
+            border-radius: 5rpx;
+            font-size: 20rpx;
+            margin-left: 15rpx;
+          }
+
+          .warn-level-warning {
+            color: #E78532;
+            background: #FFF2E7;
+          }
+
+          .warn-level-normal {
+            color: #4F902C;
+            background: #EAF6E4;
+          }
+
+          .organization-type {
+            max-width: 200rpx;
+            font-size: 20rpx;
+            padding: 2rpx 8rpx;
+            border-radius: 5rpx;
+            font-size: 20rpx;
+            margin-left: 15rpx;
+          }
+
+          .organization-type-referrals {
+            background-color: #F9F5FE;
+            color: #947BDD;
+          }
+
+          .organization-type-out {
+            background-color: #DDDDDD;
+            color: #7F7F7F;
+          }
+        }
+
+        .button {
+          width: 216rpx;
+          height: 80rpx;
+          background: #FAFAFA;
+          border-radius: 10rpx;
+
+          &>image {
+            width: 32rpx;
+            height: 32rpx;
+            margin-right: 15rpx;
+          }
+        }
+      }
+    }
+
+  }
+</style>

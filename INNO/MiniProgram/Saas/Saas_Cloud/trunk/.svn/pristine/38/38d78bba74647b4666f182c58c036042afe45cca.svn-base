@@ -1,0 +1,7 @@
+{
+  "component": true,
+  "usingComponents": {
+    "carousel": "/components/custom/mods/carousel",
+    "advertise": "/components/custom/mods/advertise"   
+  }
+}

@@ -1,0 +1,13 @@
+.store-head{
+  position: relative;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center; 
+  box-sizing: border-box; 
+}
+.img-location{
+  width: 40rpx;
+  height: 40rpx;
+  margin-right: 10rpx;
+}

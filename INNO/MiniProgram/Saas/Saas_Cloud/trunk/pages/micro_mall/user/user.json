@@ -1,0 +1,20 @@
+{
+  "navigationBarTitleText": "个人中心",
+  "usingComponents": {
+    "cs": "/components/cs/custom_service",
+    "seedGrass":"/pages/micro_mall/user/seed_grass/seed_grass",
+    "btns":"/components/buttons/btns",
+    "adModule":"/pages/micro_mall/user/ad_module/ad_module",
+    "contactGuide": "/components/pop/contactGuide/contactGuide",
+    "contactStaff": "/components/pop/contactStaff/contactStaff",
+    "cardCode": "/components/pop/card_code/card_code",
+    "advertise": "/components/micro-page/micro-mix/items/advertise/advertise",
+    "userHeader": "./user_module/user_header/user_header",
+    "signMod":"/components/signMod/signMod",
+    "orderBar":"./user_module/order_bar/order_bar",
+    "assetsBar":"./user_module/assets_bar/assets_bar",
+    "userService":"./user_module/user_service/user_service",
+    "staffService": "./user_module/staff_service/staff_service",
+    "adsPop":"/components/pop/adsPop"
+  }
+}

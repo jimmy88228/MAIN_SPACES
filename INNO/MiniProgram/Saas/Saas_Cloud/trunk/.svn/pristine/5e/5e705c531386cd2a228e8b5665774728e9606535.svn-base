@@ -1,0 +1,5 @@
+<!--pages/micro_mall/questionnaire/rich/rich.wxml-->
+<import src="/components/thirdParty/wxParse/wxParse.wxml" />
+<view class="box">
+  <template is="wxParse" data="{{wxParseData:article.nodes}}" />
+</view>

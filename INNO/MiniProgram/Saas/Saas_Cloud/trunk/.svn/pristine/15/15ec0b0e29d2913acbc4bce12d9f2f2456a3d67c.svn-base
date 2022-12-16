@@ -1,0 +1,7 @@
+{
+    "component": true,
+    "usingComponents": {
+        "carousel": "/components/custom/mods/carousel",
+        "btns": "/components/buttons/btns"
+    }
+}

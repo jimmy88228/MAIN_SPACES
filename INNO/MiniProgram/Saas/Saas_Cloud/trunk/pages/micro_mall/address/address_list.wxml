@@ -1,0 +1,80 @@
+<!--pages/micro_mall/address/address_list.wxml-->
+<view class="address_page">
+  <view class="add_address_btns">
+    <view class="add_address_btn">
+      <button class="add_wx_addr_btn add_btn" catchtap="getWxAddress">
+        <image class="addr_icon" src="{{brand_info.icon_url}}micro_mall/wechat_logo.png" mode="aspectFit" />
+        <text class="new_addr_txt">获取微信地址</text>
+      </button>
+    </view>
+    <view class="btns_stay"></view>
+    <view class="add_address_btn">
+      <button class="add_addr_btn add_btn" bindtap="addNewAddress" style="background-color:{{brand_info.style.bg_color}};">
+        <image class="addr_icon add_addr_icon" src="{{brand_info.icon_url}}micro_mall/address/add_new.png" mode="aspectFit" />
+        <text class="new_addr_txt">添加新地址</text>
+      </button>
+    </view>
+  </view>
+  <block hidden="{{showImg}}">
+    <!-- <view class="store_info_container">
+      <view class="st_row">
+        <view class="st_title">所属店铺: </view>
+        <view class="st_content">广东省深圳市宝安区松岗星洲时代广场店广东省深圳市宝安区松岗星洲时代广场店</view>
+      </view>
+      <view class="st_row">
+        <view class="st_title">店铺地址: </view>
+        <view class="st_content">广东省广州市白云区同德街道上步村星洲时代广场店广东省广州市白云区同德街道上步村星洲时代广场店</view>
+      </view>
+    </view> -->
+
+    <view class="address_list" >
+      <view class="addr_item {{item.is_default == 1 ? 'selected' : ''}} {{options.userKey?'is_customer':''}}" data-addr_id="{{item.address_id}}" data-is_default="{{item.is_default}}" bindtap="setDafaultAddr"  style="border:{{item.is_default == 1 ? '2px solid '+brand_info.style.bg_color : ''}}" wx:for="{{addr_list}}" wx:key="index">
+        
+        <view class="item_info">
+          <text class="tit">收 件  人 :</text>
+          <text class="val">{{item.consignee}}</text>
+        </view>
+        <view class="item_info">
+          <text class="tit">所在地区:</text>
+          <text class="val" data-province="{{item.province}}" data-district="{{item.district}}" data-city="{{item.city}}">{{item.province_str}}-{{item.city_str}}-{{item.district_str}}</text>
+        </view>
+        <view class="item_info">
+          <text class="tit">详细地址:</text>
+          <text class="val">{{item.address}}</text>
+        </view>
+        <view class="item_info">
+          <text class="tit">手机号码:</text>
+          <text class="val">{{item.mobile}}</text>
+        </view>
+
+        <view class="addr_operation">
+          <view class="addr_operation_l">
+            <view class="edit_addr" data-index="{{index}}" catchtap="editAddress">
+              <image src="{{edit}}" mode="widthFix" />
+              <text>编辑</text>
+            </view>
+            <view class="del_addr" data-addr_id="{{item.address_id}}" catchtap="delAddress">
+              <image src="{{del}}" mode="widthFix" />
+              <text>删除</text>
+            </view>
+          </view>
+          <view class="addr_operation_r">
+            <view class="set_default_btn" wx:if="{{ visit_type == 'check' }}" style="background:{{brand_info.style.bg_color}}">设置默认</view>
+            <view  class="select_addr_btn" wx:else style="background:{{brand_info.style.bg_color}}">选择地址</view>
+            <!-- <view  class="select_addr_btn" wx:else data-addr_id="{{item.address_id}}" bindtap="ChoiceAddr" style="background:{{brand_info.style.bg_color}}">选择地址</view> -->
+            <!-- <view  class="select_addr_btn" wx:else data-addr_id="{{item.address_id}}" catchtap="ChoiceAddr" style="background:{{brand_info.style.bg_color}}">选择地址</view> -->
+            
+          </view>
+          
+        </view>
+        <!-- <icon type="success" size="16" class="select_icon" wx:if="{{item.is_default == 1}}"  color="{{brand_info.style.bg_color}}"/> -->
+      </view>
+
+    </view>
+    <view class="empty_state" wx:if="{{addr_list.length == 0 && isEmpty}}">
+      <image src="empty_icon" mode=""/>
+      <view class="empty_txt">暂无地址</view>
+    </view>
+  </block>
+</view>
+<dialog id="dialog"></dialog>

@@ -1,0 +1,138 @@
+<template>
+  <custom-modal class="hold-modal-zindex" :isSlotHeader="true" ref="modal" :width="530" :closable="true">
+    <div slot="header">导出数据</div>
+    <div class="export-survey-cont">
+      <Form :label-width="100">
+        <FormItem label="导出类型">
+          <rewrite-choose :data="exportTypes" v-model="exportType"></rewrite-choose>
+        </FormItem>
+        <FormItem label="选择量表" v-if="exportType == 'actData' || exportType == 'earlyWarning'">
+          <div class="base-320">
+            <data-select :multiple="exportType == 'actData'" type="inventory"></data-select>
+          </div>
+        </FormItem>
+        <FormItem label="题目选项" v-if="exportType == 'actData'">
+          <div class="base-320">
+            <Select>
+              <Option>按分数显示</Option>
+              <Option>按文字显示</Option>
+            </Select>
+          </div>
+        </FormItem>
+        <FormItem label="选择条件" v-if="exportType == 'earlyWarning' || exportType == 'joinState'">
+          <template v-if="exportType == 'earlyWarning'">
+            <rewrite-choose :data="conditionList" v-model="conditionType"></rewrite-choose>
+          </template>
+          <template v-if="exportType == 'joinState'">
+            <CheckboxGroup >
+              <Checkbox label="">
+                  <span>未参与</span>
+              </Checkbox>
+              <Checkbox label="">
+                  <span>未完成</span>
+              </Checkbox>
+              <Checkbox label="">
+                  <span>已完成</span>
+              </Checkbox>
+            </CheckboxGroup>
+          </template>
+        </FormItem>
+        <FormItem label="" v-if="conditionType == 'total'">
+          将根据量表总分预警线导出名单
+        </FormItem>
+        <FormItem label="选择维度" v-else-if="conditionType == 'dimension'">
+
+        </FormItem>
+      </Form>
+    </div>
+    <div class="flex-c-c" slot="footer">
+      <Button size="large" >取消</Button>
+      <Button size="large" type="primary"  >确认导出</Button>
+    </div>
+  </custom-modal>
+</template>
+
+<script>
+import rewriteChoose from '../../../../../components/rewrite/rewrite-choose/rewrite-choose.vue';
+export default {
+    components: { rewriteChoose },
+  data(){
+    return {
+      exportTypes: [
+        {
+          key: "actData",
+          name: "活动数据"
+        },
+        {
+          key: "earlyWarning",
+          name: "预警名单"
+        },
+        {
+          key: "joinState",
+          name: "参与情况"
+        }
+      ],
+      exportType: "actData",
+      conditionList: [
+        {
+          key: "total",
+          name: "按总分筛选"
+        },
+        {
+          key: "dimension",
+          name: "按维度筛选"
+        }
+      ],
+      conditionType: ""
+    }
+  },
+  methods: {
+    dismiss() {
+      this.$refs.modal.dismiss();
+    },
+    showModal(countInfo = {}){
+      this.$refs.modal.show();
+    }
+  }
+}
+</script>
+
+<style lang="less" scoped>
+.radio{
+        padding: 2px 10px;
+        border-radius: 2px;
+        background-color: #fff;
+        transition: all 0.2s;
+        border: 1px solid #DDDDDD;
+        margin-right: 10px;
+        .radio-cir{
+            width: 16px;
+            height: 16px;
+            background-color: #FFFFFF;
+            border: 1px solid #B2B2B2;
+            position: relative;
+            border-radius: 50%;
+            margin-right: 10px;
+        }
+        &.active{
+            background-color: #EFFAFF;
+            color: #008ACB;
+            .radio-cir{
+                background-color: #008ACB;
+                border: 1px solid #008ACB;
+                position: relative;
+                &::after{
+                    content: "";
+                    position: absolute;
+                    width: 7px;
+                    height: 7px;
+                    border-radius: 50%;
+                    left: 50%;
+                    top: 50%;
+                    transform: translate(-50%,-50%);
+                    background-color: #fff;
+                }
+            }   
+        }
+    }
+</style>

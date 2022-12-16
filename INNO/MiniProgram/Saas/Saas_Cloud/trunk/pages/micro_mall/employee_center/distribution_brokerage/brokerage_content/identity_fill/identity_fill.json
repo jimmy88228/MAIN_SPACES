@@ -1,0 +1,7 @@
+{
+  "navigationBarTitleText": "实名认证",
+  "usingComponents": {
+    "input-list":"/components/input-fill/input-list",
+    "showProtocol":"/pages/micro_mall/employee_center/distribution_brokerage/brokerage_content/showProtocol/showProtocol"
+  }
+}

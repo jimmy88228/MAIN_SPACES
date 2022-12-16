@@ -1,0 +1,4 @@
+@import "/common/base/page/default-wxss/index.wxss";
+.user-page{
+  padding-bottom: 16rpx;
+}

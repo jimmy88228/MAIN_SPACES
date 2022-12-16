@@ -1,0 +1,91 @@
+<template>
+  <view class="video-detail-page" :style="{'background-color':backgroundShow?'transparent':'#9AB9B2'}">
+    <image class="video-detail-background" v-if="videoDetail.videoBgPic" @error="backgroundError" :src="videoDetail.videoBgPic" mode="widthFix" />
+    <page-nav :bgStyle="'background:transparent'" isClose="true" full="false"></page-nav>
+    <video class="videoInfo" :src="videoDetail.videoUrl" :autoplay="videoOptions.autoplay" :enable-play-gesture="videoOptions.enablePlayGesture" :object-fit="videoOptions.objectFit"></video>
+    <view class="video-detail-info">
+      <view class="bold font-28 clamp m-b-25" :class="!!videoDetail.videoBgPic ? 'C_fff':'C_333'">{{videoDetail.videoTitle?videoDetail.videoTitle:""}}</view>
+      <view class="font-24 clamp2" :class="!!videoDetail.videoBgPic ? 'C_fff':'C_7f'">{{videoDetail.videoDescription?videoDetail.videoDescription:""}}</view>
+    </view>
+  </view>
+</template>
+
+<script>
+const app = getApp();
+const pageOption = Page.BasePage({
+  data() {
+    return {
+      options:{},
+      videoDetail:{},
+      videoOptions:{
+        autoplay:true,
+        objectFit:'contain',
+        enablePlayGesture:true
+      },
+      backgroundShow:true
+    };
+  },
+  onLoad(options) {
+    this.options = options;
+  },
+  onReady(){
+    this.init()
+  },
+  methods: {
+    init() {
+      this.$Http(this.$Apis.getVideo, {
+        data: {
+          id: this.options.id || 0,
+        },
+      }).then((res) => {
+        if (res.code == 1) {
+          this.videoDetail = res.data;
+        }
+      }).catch((err) => {
+          setTimeout(() => {
+            this.backAction()
+          }, 1500);
+        });
+    },    // 背景错误
+    backgroundError(){
+      console.log("背景错误了")
+      this.backgroundShow = false
+    },
+  },
+  onUnload() {},
+  onShow() {},
+});
+export default pageOption;
+</script>
+
+<style lang="scss" scoped>
+.video-detail-page {
+  width: 100%;
+  height: 100vh;
+  overflow: hidden;
+  position: relative;
+  .video-detail-background{
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    left: 0;
+    width: 100%;
+  }
+  .videoInfo {
+    position: absolute;
+    left: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 100%;
+    height: 500rpx;
+  }
+  .video-detail-info{
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    box-sizing: border-box;
+    padding: 48rpx 36rpx;
+  }
+}
+</style>
