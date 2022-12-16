@@ -3,15 +3,15 @@
 <scroll-view class="tab-bar-page-container" scroll-y>
   <view class="user-page">
     <!-- 用户头部 -->
-    <user-header />
+    <user-header userData="{{userData}}"/>
 
     <!-- 订单 -->
-    <order-bar />
+    <order-bar userData="{{userData}}"/>
 
     <!-- 会员 -->
     <user-service />
 
     <!-- 店员 -->
-    <staff-service />
+    <staff-service userData="{{userData}}"/>
   </view>
 </scroll-view>

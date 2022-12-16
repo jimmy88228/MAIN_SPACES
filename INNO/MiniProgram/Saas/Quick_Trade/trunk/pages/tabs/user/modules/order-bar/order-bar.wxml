@@ -13,19 +13,22 @@
     </view>
     <view class="user-row-main">
       <view class="user-row-list">
-        <view 
-          class="user-row-item"
-          style="width: {{(100 / 3) + ''}}%;"
-        >
-          <view class="user-row-item-icon">
-            <view class="user-row-item-image" style="background-image: url({{'http://devimgtest.innourl.com/SAAS_IMAGE/image/show/assets-icons-cargo_unpaid.png'}})"></view>
-            <view class="user-row-item-count">{{125 >= 100 ? "99+" : "125"}}</view>
+        <block wx:for="{{barList}}" wx:key="state">
+          <view
+            class="user-row-item"
+            style="width: {{(100 / barList.length) + ''}}%;"
+            catchtap="jump"
+          >
+            <view class="user-row-item-icon">
+              <view class="user-row-item-image" style="background-image: url({{item.img}})"></view>
+              <view class="user-row-item-count" wx:if="{{userData[item.key]>0}}">{{userData[item.key] >= 100 ? "99+" : userData[item.key]||0}}</view>
+            </view>
+            <view class="user-row-item-name">
+              {{item.title}}
+            </view>
           </view>
-          <view class="user-row-item-name">
-            待付款
-          </view>
-        </view>
-        <view 
+        </block>
+        <!-- <view 
           class="user-row-item"
           style="width: {{(100 / 3) + ''}}%;"
         >
@@ -48,7 +51,7 @@
           <view class="user-row-item-name">
             已发货
           </view>
-        </view>
+        </view> -->
       </view>
     </view>
   </view>

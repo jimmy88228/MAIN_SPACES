@@ -155,6 +155,7 @@ function getUserInfoEvent(){
       let data = e.data || {};this.setData({
         userData: {...this.data.userData || {},...data}, //为了额外添加的数据不被覆盖
       });
+      console.log('userDatauserData',this.data.userData)
       // this.phone = data.MobileNo || '';
       return Promise.resolve(data);
     }
