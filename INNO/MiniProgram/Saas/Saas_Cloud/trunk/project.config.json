@@ -43,7 +43,7 @@
         "useCompilerPlugins": false
     },
     "compileType": "miniprogram",
-    "libVersion": "2.19.5",
+    "libVersion": "2.17.0",
     "projectname": "CLOUD_NEW",
     "cloudfunctionTemplateRoot": "",
     "editorSetting": {

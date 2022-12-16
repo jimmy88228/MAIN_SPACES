@@ -26,38 +26,43 @@
     <slot />
   </view>
 
-  <!-- 弹窗 -->
-  <!-- <window class="window" ext-class="window-ext">
-    <from bindsubmit="formAction" report-submit="true">
-      <view class="service_popup" style="{{boxStyle}}">
-        <view class="service_cont">
-          <view class="share_item" wx:for="{{wayToGetAvatar}}" wx:key="index">
-            <view hover-class='none' class="share_item_btn">
-              <block wx:if="{{item === 'button.chooseAvatar'}}">
-                <button class="choose_avatar_btn avatar-btn-class" open-type="chooseAvatar" bindchooseavatar="handleChooseAvatar" bindtap="onceTap">
-                  上传头像
-                </button>
-              </block>
 
-              <block wx:elif="{{item === 'getuserprofile'}}">
-                <btns class="choose_avatar_btn avatar-btn-class" isLogin="{{false}}" loginType="REFRESH" limitTime="3000" bindclickFront="onceTap" bindclickcallback="afterAuthrized">
-                  使用微信头像
-                </btns>
-              </block>
+  <transition id="transitionId" show="{{transitionShow}}" name="slide-up" catchdismiss="dismiss">
+    <view class="popup-box"> 
+      <!-- 弹窗 --> 
+      <from bindsubmit="formAction" report-submit="true">
+        <view class="service_popup">
+          <view class="service_cont">
+            <view class="share_item" wx:for="{{wayToGetAvatar}}" wx:key="index">
+              <view hover-class='none' class="share_item_btn">
+                <block wx:if="{{item === 'button.chooseAvatar'}}">
+                  <button class="choose_avatar_btn avatar-btn-class" open-type="chooseAvatar" bindchooseavatar="handleChooseAvatar" bindtap="onceTap">
+                    上传头像
+                  </button>
+                </block>
 
-              <block wx:elif="{{item === 'byself'}}">
-                <button class="choose_avatar_btn avatar-btn-class" bindtap="chooseImageBtnTap">
-                  上传头像
-                </button>
-              </block>
+                <block wx:elif="{{item === 'getuserprofile'}}">
+                  <btns class="choose_avatar_btn avatar-btn-class" isLogin="{{false}}" loginType="REFRESH" limitTime="3000" bindclickFront="onceTap" bindclickcallback="afterAuthrized">
+                    使用微信头像
+                  </btns>
+                </block>
+
+                <block wx:elif="{{item === 'byself'}}">
+                  <button class="choose_avatar_btn avatar-btn-class" bindtap="chooseImageBtnTap">
+                    上传头像
+                  </button>
+                </block>
+              </view>
             </view>
           </view>
-        </view>
 
-        <view class="service_btn_area">
-          <button class="confirm_btn" hover-class='none' catchtap="closeList">取消</button>
+          <view class="service_btn_area">
+            <button class="confirm_btn" hover-class='none' catchtap="dismiss">取消</button>
+          </view>
         </view>
-      </view>
-    </from>
-  </window> -->
+      </from>
+    </view>
+  </transition>
+  <include src="/common/base/component/index.wxml" />
 </block>
+

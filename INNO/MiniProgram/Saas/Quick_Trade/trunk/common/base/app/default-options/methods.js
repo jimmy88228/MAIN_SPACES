@@ -7,6 +7,7 @@ import ApiRefs from "../../../manager/http-manager/index"
 import SH from "../../../helper/style-helper/index";
 import SIH from "../../../helper/system-info-helper/index";
 import LM from "../../../manager/login-manager/index";
+import Conf from "../../../../config/index";
 export default {
   get BP(){return BP}, // BasePage
   get BC(){return BC}, // BaseComponent
@@ -17,4 +18,5 @@ export default {
   get SH(){return SH}, // style-helper
   get SIH(){return SIH}, // system-info-helper
   get LM(){return LM}, // login-manager
+  get Conf(){return Conf}, // login-manager
 }

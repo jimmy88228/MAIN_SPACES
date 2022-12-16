@@ -34,6 +34,12 @@
                     "pathName": "pages/tabs/user/user",
                     "query": "",
                     "scene": null
+                },
+                {
+                    "name": "pages/tabs/user/update_avatar/update_avatar",
+                    "pathName": "pages/tabs/user/update_avatar/update_avatar",
+                    "query": "",
+                    "scene": null
                 }
             ]
         }

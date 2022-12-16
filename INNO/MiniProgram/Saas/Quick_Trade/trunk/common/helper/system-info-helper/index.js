@@ -44,6 +44,16 @@ class SystemInfoHelper {
     }
     return this._cookieId;
   }
+
+  
+  get sdkVersion() {
+    return this.systemInfo.SDKVersion;
+  }
+  
+  compareVersion(v1, v2) {
+    v2 || (v2 = this.sdkVersion);
+    return utils.compareVersion(v1, v2);
+  }
 }
 
 export default SystemInfoHelper.getInstance()

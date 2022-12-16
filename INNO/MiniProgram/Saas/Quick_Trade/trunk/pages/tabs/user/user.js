@@ -8,12 +8,10 @@ Page(App.BP({
     this.init();
   },
   init(){
-    App.LM.loginAsync(!this.inited).finally(()=>{
+    return App.LM.loginAsync(!this.inited).finally(()=>{
       this.getUserInfo();
       this.getUserOrderCount();
-    })
-    
-    this.getVisitStore();
+    }) 
   },
   getUserInfo(){
     return App.LM.reSetSimpleInfo().then(res=>{
@@ -42,14 +40,6 @@ Page(App.BP({
           }
         });
       } 
-    })
-  },
-  getVisitStore(){
-    return App.Http.QT_UserApi.getVisitStore({
-      data: { 
-      },
-    }).then(res=>{
-      console.log('res',res)
     })
   },
 }))

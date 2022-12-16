@@ -106,6 +106,7 @@ export const QT_DstbApi = new EasyHttp().setBaseUrl(apiDomain.QT_USERAPI).addReq
 export const QT_VsLogApi = new EasyHttp().setBaseUrl(apiDomain.QT_VSLOGAPI).addRequests(QT_VSlogApiList);
 
 export default {
+  UserApi,
   QT_UserApi,
   QT_RegApi,
   QT_DstbApi,

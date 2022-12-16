@@ -51,7 +51,8 @@ function validate(){
 
 function modifyUserPortrait(){
   let {avatar, nickName} = this.data;
-  app.UserApi.modifyUserPortrait({
+  console.log('avatar, nickName',avatar, nickName)
+  app.Http.UserApi.modifyUserPortrait({
     data: {
       avatarUrl: base64.encode(avatar),
       nickName,

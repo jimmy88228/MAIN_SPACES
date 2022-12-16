@@ -1,10 +1,11 @@
 <wxs src="./index.wxs" module="computed" />
-
-<view 
-  wx:if="{{ inited }}"
-  class="transition custom-class {{classes}}"
-  style="{{ computed.rootStyle({ currentDuration, display, customStyle }) }}"
-  bind:transitionend="onTransitionEnd"
->
-  <slot />
+<view class="transition-box"  wx:if="{{ inited && transitionShow }}">
+  <view
+    class="transition custom-class {{classes}}"
+    style="{{ computed.rootStyle({ currentDuration, display, customStyle }) }}"
+    bind:transitionend="onTransitionEnd"
+  >
+    <slot />
+  </view>
+  <view wx:if="{{inited&&transitionShow}}" hidden="{{!display}}" class="transition-bg" bindtap="dismiss" style="{{maskBg?'background:'+maskBg+';':''}}"></view> 
 </view>

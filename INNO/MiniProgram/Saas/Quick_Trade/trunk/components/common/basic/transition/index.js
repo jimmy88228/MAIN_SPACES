@@ -18,7 +18,7 @@ Component(App.BC({
     },
     show: {
       type: Boolean,
-      value: true,
+      value: false,
       observer: 'observeShow'
     },
     duration: {
@@ -30,11 +30,18 @@ Component(App.BC({
       type: String,
       value: 'fade',
     },
+    maskBg: {
+      type: String,
+      observer: function(val) {
+        val && this.setMaskBg(val);
+      }
+    },
   },
   data: {
     type: "",
     inited: false,
-    display: false
+    display: false,
+    transitionShow:false
   },
   ready() {
     if (this.data.show === true) {
@@ -46,7 +53,19 @@ Component(App.BC({
       if (value === old) return;
       value ? this.enter() : this.leave();
     },
+    show(){
+      this.clickShowed = true;
+      this.enter();
+    },
+    dismiss(){  
+      if(!this.clickShowed){
+        this.triggerEvent("dismiss");
+      }else{
+        this.leave()
+      }
+    },
     enter: function () {
+      this.setData({transitionShow:true})
       let {
         duration,
         name
@@ -100,6 +119,7 @@ Component(App.BC({
           }
           this.transitionEnded = false;
           setTimeout(() => {
+            this.setData({transitionShow:false});
             return this.onTransitionEnd();
           }, currentDuration);
           this.setData({
@@ -111,13 +131,19 @@ Component(App.BC({
     onTransitionEnd: function () {
       if (this.transitionEnded) return;
       this.transitionEnded = true;
+      console.log("after-".concat(this.status),'看看')
       this.triggerEvent("after-".concat(this.status));
       let {show, display} = this.data;
-      if (!show && display) {
+      if (!show && display && !this.clickShowed) {
         this.setData({
           display: false
         });
       }
+    },
+    setMaskBg(maskBg){
+      this.setData({
+        maskBg
+      })
     },
   },
 }))
