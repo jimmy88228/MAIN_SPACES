@@ -375,3 +375,9 @@ export const QT_DstbApiList = {
   //通过分销员code找店员id
   getStaffIdByStaffCode: "/api/StaffDstb/GetStaffIdByStaffCode?staffCode={staffCode}&brandCode={brandCode}"
 }
+
+// 商品
+export const QT_GoodsApiList = {
+  activityDetail: "/api/Activity/ActivityDetail",
+  getActivityGoodsInfo: "/api/Goods/GetActivityGoodsInfo"
+}

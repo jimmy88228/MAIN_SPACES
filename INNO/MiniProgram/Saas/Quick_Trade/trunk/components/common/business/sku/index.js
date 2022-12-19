@@ -5,6 +5,12 @@ import {
 } from './helper';
 const App = getApp();
 Component(App.BC({
+  properties: {
+    show: {
+      type: Boolean,
+      value: false
+    }
+  },
   data: {
     type: [ // type: 规格类型
       ['男裤', '女裤'],

@@ -30,22 +30,19 @@
 }
 
 /* 有店铺的那种样式类型 */
-.custom-nav-container.style-type-1{
-  background-color: var(--main-color);
-}
 .store-like-nav{
   display: flex;
   align-items: center;
   height: 100%;
-  background-color: var(--main-color);
+  padding-left: 12rpx;
 }
 .store-like-nav .back-or-home-btn{
   margin-right: 12rpx;
 }
 .store-logo-con{
-  width: 60rpx;
-  height: 60rpx;
-  margin-right: 12rpx;
+  width: 72rpx;
+  height: 72rpx;
+  margin-right: 20rpx;
 }
 .store-logo-image{
   width: 100%;
@@ -55,4 +52,8 @@
 .store-like-nav .store-name{
   color: #ffffff;
   font-size: 28rpx;
+}
+.store-like-nav .store-staff-name{
+  color: #9D1628;
+  font-size: 22rpx;
 }

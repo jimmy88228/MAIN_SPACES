@@ -1,10 +1,14 @@
 <!-- public 必须是第一个元素 -->
 <include src="/common/base/page/index.wxml" />
-<!-- 自定义导航栏 -->
-<custom-nav styleType="1" />
-<view class="index-page tab-bar-page-container had-custom-nav" >
+<wxs src="./index.wxs" module="f" />
+<view class="index-page tab-bar-page-container had-custom-nav">
   <!-- main-container -->
-  <scroll-view class="index-main" scroll-y>
+  <scroll-view class="index-main" scroll-y bindscrolltolower="handleScrollToLower">
+    <view class="index-main-nav">
+      <!-- 自定义导航栏 -->
+      <custom-nav styleType="1" />
+    </view>
+
     <view class="index-main-h">
       <view class="i-m-h-left">
         <view class="i-m-h-title">
@@ -13,18 +17,32 @@
         <view class="i-m-h-desc">限时限量 · 先抢先得</view>
       </view>
       <view class="i-m-h-right">
-        <view class="i-m-h-count-down-large"> 
-        <text class="c-d-h">05</text>:<text class="c-d-m">32</text>:<text class="c-d-s c-d-hightlight">12</text>
+        <view class="imh-started" wx:if="{{activityInfo.status == 1}}">
+          <view class="i-m-h-count-down-large">
+            <text class="c-d-h">{{f.NumberToString(countDownTime.hours)}}</text>:<text class="c-d-m">{{f.NumberToString(countDownTime.minutes)}}</text>:<text class="c-d-s c-d-hightlight">{{f.NumberToString(countDownTime.seconds)}}</text>
+          </view>
+          <view class="i-m-h-count-down-small">
+            <text class="i-m-h-cc">时</text>
+            <text class="i-m-h-cc">分</text>
+            <text class="i-m-h-cc">秒</text>
+          </view>
         </view>
-        <view class="i-m-h-count-down-small">
-          <text class="i-m-h-cc">时</text>
-          <text class="i-m-h-cc">分</text>
-          <text class="i-m-h-cc">秒</text>
+        <view class="imh-not-start-yet" wx:else>
+          <view class="imh-left">
+            <view class="imh-icon-clock icon-clock"></view>
+          </view>
+          <view class="imh-right">
+            <view class="imh-activity-status">活动未开始</view>
+            <view class="imh-not-start-cd">
+              <text class="imh-nscd-prefix">距开始</text>
+              <text class="imh-nscd-c-d-h">{{f.NumberToString(countDownTime.hours)}}</text>:<text class="c-d-m">{{f.NumberToString(countDownTime.minutes)}}</text>:<text class="c-d-s">{{f.NumberToString(countDownTime.seconds)}}</text>
+            </view>
+          </view>
         </view>
       </view>
     </view>
     <view class="index-main-goods-list-con">
-      <goods-list />
+      <goods-list id="goods-list" />
     </view>
   </scroll-view>
 </view>

@@ -1,0 +1,9 @@
+{
+  "component": true,
+  "usingComponents": {
+    "window": "/components/common/view/window/index",
+    "transition": "/components/common/basic/transition/index",
+    "sku": "/components/common/business/sku/index",
+    "btns": "/components/common/basic/buttons/index"
+  }
+}

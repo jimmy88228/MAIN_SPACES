@@ -15,6 +15,7 @@ import {
   QT_RegApiList,
   QT_DstbApiList,
   QT_VSlogApiList,
+  QT_GoodsApiList
 } from "./qt-api";
 
 const apiDomain = Conf.api_domain || {};
@@ -44,7 +45,7 @@ EasyHttp.setRequestHandler(req => {
     "platformSrc": Conf.PLATFORM && Conf.PLATFORM.TYPE,
     "userToken": LM && LM.userToken || "",
     "brandCode": Conf.BRAND_CODE,
-    "storeId":0,
+    "storeId": "32843" // 先写死
   })
   //LOG拦截器
   .addInterceptor((req, proceed) => {
@@ -60,7 +61,7 @@ EasyHttp.setRequestHandler(req => {
   .addInterceptor((req, proceed) => {
     console.log('reqreq',LM.userToken,req)
     req.headers && (req.headers.userToken = LM.userToken);
-    req.headers && (req.headers.storeId = 0);
+    req.headers && (req.headers.storeId = 32843);
     return proceed(req).then(resp => {
       if (resp.statusCode != 200) {
         return Promise.reject(resp);
@@ -104,11 +105,13 @@ export const QT_RegApi = new EasyHttp().setBaseUrl(apiDomain.QT_REGAPI).addReque
 export const QT_DstbApi = new EasyHttp().setBaseUrl(apiDomain.QT_USERAPI).addRequests(QT_DstbApiList);
 // 日志
 export const QT_VsLogApi = new EasyHttp().setBaseUrl(apiDomain.QT_VSLOGAPI).addRequests(QT_VSlogApiList);
+export const QT_GoodsApi = new EasyHttp().setBaseUrl(apiDomain.QT_GOODSAPI).addRequests(QT_GoodsApiList);
 
 export default {
   UserApi,
   QT_UserApi,
   QT_RegApi,
   QT_DstbApi,
-  QT_VsLogApi
+  QT_VsLogApi,
+  QT_GoodsApi
 }

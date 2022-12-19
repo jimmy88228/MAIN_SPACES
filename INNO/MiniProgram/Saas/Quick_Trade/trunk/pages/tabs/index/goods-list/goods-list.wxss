@@ -57,6 +57,8 @@ page{
   font-size: 28rpx;
   margin-top: 10rpx;
   margin-bottom: 28rpx;
+  height: 72rpx;
+  
 }
 .i-goods-cliff{
   display: inline-flex;
@@ -110,7 +112,7 @@ page{
   color: var(--main-color);
   font-weight: bold;
 }
-.i-goods-purchase-btn{
+button.i-goods-purchase-btn{
   width: 160rpx;
   height: 68rpx;
   background-color: var(--main-color);

@@ -6,6 +6,6 @@
   position: relative;
 }
 /* 带tabBar且带自定义导航栏的页面容器 */
-.tab-bar-page-container.had-custom-nav{
+/* .tab-bar-page-container.had-custom-nav{
   height: calc(100vh - var(--status-bar-height) - var(--nav-bar-height));
-}
+} */

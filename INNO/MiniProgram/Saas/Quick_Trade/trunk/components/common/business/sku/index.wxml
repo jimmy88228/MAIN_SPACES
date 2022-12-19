@@ -1,6 +1,6 @@
 
 
-<transition show="{{false}}" >
+<transition show="{{show}}" >
   <view class="sku-selector">
     <view class="sku-con">
       <view class="sku-type-list">

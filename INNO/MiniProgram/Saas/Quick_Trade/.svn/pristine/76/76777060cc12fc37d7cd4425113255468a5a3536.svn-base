@@ -1,7 +1,0 @@
-{
-  "component": true,
-  "usingComponents": {
-    "sku": "/components/common/view/sku/index",
-    "btns": "/components/common/basic/buttons/index"
-  }
-}

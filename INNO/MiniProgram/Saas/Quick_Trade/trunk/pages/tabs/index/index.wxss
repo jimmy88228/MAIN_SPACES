@@ -41,7 +41,7 @@
   opacity: 0.5;
   font-weight: 400;
 }
-.i-m-h-right{
+.imh-started{
   color: #ff92a1d3;
 }
 .i-m-h-count-down-large{
@@ -60,4 +60,25 @@
 .i-m-h-cc{
   flex: 1;
   text-align: center;
+}
+.imh-not-start-yet{
+  width: 240rpx;
+  height: 88rpx;
+  padding: 16rpx 20rpx;
+  border-radius: 16rpx;
+  background-color: #DB364D;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  color: #FF92A1;
+}
+.imh-icon-clock{
+  width: 40rpx;
+  height: 40rpx;
+}
+.imh-activity-status{
+  font-size: 20rpx;
+}
+.imh-not-start-cd{
+  font-size: 20rpx;
 }

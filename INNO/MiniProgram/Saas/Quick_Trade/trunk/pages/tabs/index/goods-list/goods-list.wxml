@@ -5,24 +5,24 @@
         <view class="i-goods-left">
           <view class="i-g-image-con">
             <!-- <view class="i-g-l-slogan">品牌</view> -->
-            <image class="i-g-image" src="{{item.pic}}" />
+            <image class="i-g-image" src="{{item.goods_img}}" />
           </view>
         </view>
         <view class="i-goods-right">
           <view class="i-goods-info">
-            <view class="i-goods-title">{{item.name}}</view>
-            <view class="i-goods-cliff">
+            <view class="i-goods-title text-flow2">{{item.goods_name}}</view>
+            <view class="i-goods-cliff" wx:if="{{item.market_price != item.sale_price}}">
               <view class="iconfont icon-xiajiang cliff-icon"></view>
-              <text>直降￥40</text>
+              <text>直降￥{{item.market_price - item.sale_price}}</text>
             </view>
             <view class="i-goods-price-con">
               <view class="i-goods-price">
                 <text class="i-g-rmb">￥</text>
-                <text class="i-g-price-number">239</text>
+                <text class="i-g-price-number">{{item.sale_price}}</text>
               </view>
-              <view class="i-goods-original-price">
+              <view class="i-goods-original-price" wx:if="{{item.market_price != item.sale_price}}">
                 <text class="i-g-o-rmb">￥</text>
-                <text class="i-g-original-price-number">239</text>
+                <text class="i-g-original-price-number">{{item.market_price}}</text>
               </view>
             </view>
           </view>
@@ -31,9 +31,10 @@
             <text class="i-c-d-pre">距结束</text>
             <text class="i-c-d-time">05:12:32</text>
           </view> -->
-            <view class="i-goods-purchase-btn" hover-class="active">
-              <btns bind:clickcallback="handlePurchaseTap">抢购</btns>
-            </view>
+            <button class="i-goods-purchase-btn" hover-class="active" catchtap="handlePurchaseTap">
+              抢购
+              <!-- <btns bind:clickcallback="">抢购</btns> -->
+            </button>
           </view>
         </view>
       </view>
@@ -45,6 +46,8 @@
     </view>
   </view>
 </view>
-<sku />
+<view class="index-goods-spec-com">
+  <goods-spec-pop id="goods-spec-pop" />
+</view>
 <!-- public -->
 <include src="/common/base/component/index.wxml" />

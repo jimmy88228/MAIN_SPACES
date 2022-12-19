@@ -1,53 +1,64 @@
 import WxApi from "../../../../common/utils/wxapi/index";
 const App = getApp();
 Component(App.BC({
-  ready() {
-    
-  },
   data: {
-    list: [
-      {
-        name: "阿迪小童男大童卫衣/长袖/套头衫潮流休闲HZ9216",
-        pic: "http://devimgtest.innourl.com/SAAS_IMAGE/images/INNO/goods/goods_thumb/20221209/20221209162022772_3815014.jpg"
-      },
-      {
-        name: "阿迪三叶草男子长裤潮流休闲HB7501",
-        pic: "http://devimgtest.innourl.com/SAAS_IMAGE/images/INNO/goods/goods_thumb/20221209/20221209160641542_3016147.jpg"
-      },
-      {
-        name: "耐克男子休闲鞋DUNK潮流休闲DQ7680-300",
-        pic: "http://devimgtest.innourl.com/SAAS_IMAGE/images/INNO/goods/goods_thumb/20221209/20221209155232839_3455401.jpg"
-      },
-      {
-        name: "耐克小童男大童卫衣/长袖/套头衫潮流休闲DO6976-010",
-        pic: "http://devimgtest.innourl.com/SAAS_IMAGE/images/INNO/goods/goods_thumb/20221209/20221209154947059_3058170.jpg"
-      },
-      {
-        name: "阿迪小童男大童卫衣/长袖/套头衫潮流休闲HZ9216",
-        pic: "http://devimgtest.innourl.com/SAAS_IMAGE/images/INNO/goods/goods_thumb/20221209/20221209162022772_3815014.jpg"
-      },
-      {
-        name: "阿迪三叶草男子长裤潮流休闲HB7501",
-        pic: "http://devimgtest.innourl.com/SAAS_IMAGE/images/INNO/goods/goods_thumb/20221209/20221209160641542_3016147.jpg"
-      },
-      {
-        name: "耐克男子休闲鞋DUNK潮流休闲DQ7680-300",
-        pic: "http://devimgtest.innourl.com/SAAS_IMAGE/images/INNO/goods/goods_thumb/20221209/20221209155232839_3455401.jpg"
-      },
-      {
-        name: "耐克小童男大童卫衣/长袖/套头衫潮流休闲DO6976-010",
-        pic: "http://devimgtest.innourl.com/SAAS_IMAGE/images/INNO/goods/goods_thumb/20221209/20221209154947059_3058170.jpg"
-      },
-    ]
+    list: [],
+    nomore: false,
+  },
+  ready() {
+
   },
   methods: {
+    loadData() {
+      setDefaultParams.call(this);
+      getActivityGoodsInfo.call(this)
+    },
+    loadNextPage() {
+      if (this.data.nomore) {
+        App.SMH.showToast({
+          title: "已经到底了哦"
+        })
+        return;
+      }
+      this.params.pageIndex++;
+      getActivityGoodsInfo.call(this);
+    },
     handleGoodsTap() {
       WxApi.navigateTo({
         url: "/pages/main/goods/index"
       })
     },
     handlePurchaseTap() {
-
+      this.goodsSpecPop = this.goodsSpecPop || this.selectComponent("#goods-spec-pop");
+      this.goodsSpecPop.showModal();
     }
   }
 }))
+
+function setDefaultParams() {
+  this.params = {
+    pageIndex: 1,
+    pageSize: 20
+  }
+}
+
+function getActivityGoodsInfo() {
+  let {pageIndex, pageSize} = this.params;
+  return App.Http.QT_GoodsApi.getActivityGoodsInfo({
+    params: {
+      pageIndex,
+      pageSize
+    }
+  })
+    .then(res => {
+      if (res.code == 1) {
+        let {list: _list, count} = res.data || {};
+        let currentList = this.data.list || [];
+        let list = pageIndex == 1 ? _list : [...currentList, ..._list];
+        let nomore = list.length >= count;
+        this.setData({list, nomore});
+        return res.data;
+      }
+      return Promise.reject(res.msg || "获取商品列表失败")
+    })
+}

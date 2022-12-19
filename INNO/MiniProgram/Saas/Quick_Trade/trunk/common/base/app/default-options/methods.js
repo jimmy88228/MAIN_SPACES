@@ -8,6 +8,7 @@ import SH from "../../../helper/style-helper/index";
 import SIH from "../../../helper/system-info-helper/index";
 import LM from "../../../manager/login-manager/index";
 import Conf from "../../../../config/index";
+import SMH from "../../../helper/show-message-helper/index";
 export default {
   get BP(){return BP}, // BasePage
   get BC(){return BC}, // BaseComponent
@@ -19,4 +20,5 @@ export default {
   get SIH(){return SIH}, // system-info-helper
   get LM(){return LM}, // login-manager
   get Conf(){return Conf}, // login-manager
+  get SMH(){return SMH}, // show-message-helper
 }

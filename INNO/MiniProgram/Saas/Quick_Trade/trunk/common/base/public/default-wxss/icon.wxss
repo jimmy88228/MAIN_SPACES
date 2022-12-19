@@ -11,3 +11,53 @@
 .icon-arrow:hover{
   opacity: 0.6;
 }
+.icon-close{
+  position: relative;
+  transform: rotate(45deg);
+}
+.icon-close::before,
+.icon-close::after{
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 32rpx;
+  height: 4rpx;
+  background-color: currentColor;
+}
+.icon-close::before{
+  transform: translate(-50%, -50%);
+}
+.icon-close::after{
+  transform: translate(-50%, -50%) rotate(90deg);
+}
+.icon-clock{
+  width: 40rpx;
+  height: 40rpx;
+  position: relative;
+  background-color: #ffffff;
+  border-radius: 50%;
+  color: var(--main-color);
+}
+.icon-clock::before{
+  position: absolute;
+  top: 56%;
+  left: 50%;
+  transform: translate(-50%, -100%);
+  content: "";
+  display: block;
+  width: 4rpx;
+  height: 40%;
+  background-color: currentColor;
+}
+.icon-clock::after{
+  position: absolute;
+  top: 56%;
+  left: 50%;
+  transform: translate(100%, -25%) rotate(135deg);
+  content: "";
+  display: block;
+  width: 4rpx;
+  height: 28%;
+  background-color: currentColor;
+}

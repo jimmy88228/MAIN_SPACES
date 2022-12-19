@@ -1,0 +1,8 @@
+<view class="window-root" wx:if="{{show ? show : _show}}">
+  <transition show="{{show}}" name="fade">
+    <view>
+      <view class="window-mask" catchtap="_noFn" catchtouchstart="_maskTap" catchtouchmove="_noFn"></view>
+      <slot />
+    </view>
+  </transition>
+</view>
