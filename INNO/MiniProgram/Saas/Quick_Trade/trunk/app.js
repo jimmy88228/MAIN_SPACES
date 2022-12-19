@@ -7,7 +7,6 @@ App(createMainApp({
     console.log("App.onLaunch", ops);
     LM.loginAsync().ignore(()=>{
       storeH.changeVisitStore(ops.query||{}).ignore((res)=>{
-        console.log('changeVisitStore ignore',res)
         storeH.getVisitStore();
       });
     })
