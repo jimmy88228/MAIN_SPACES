@@ -4,15 +4,13 @@
  *   processfinish(e) e: {wayToGetAvatar: "使用哪种方式上传", success: "是否成功", filePath: "图片地址"}
  */
 
-// import WindowBehaviors from "../../components/ui/cps/window/window-behaviors";
 import {getRecommendedWayToUpdateAvatar, chooseImage, uploadAvatar} from "./avatar-btn-utils.js"
 const App = getApp();
 
 Component(App.BC({
     externalClasses: ["avatar-btn-class"],
-    // behaviors: [WindowBehaviors],
     data: {
-      transitionShow:false,
+      show:false,
       wayToGetAvatar: getRecommendedWayToUpdateAvatar() || [],
     }, 
     methods: {
@@ -50,13 +48,10 @@ Component(App.BC({
           })
       },
       show(){
-        this.setData({transitionShow:true})
+        this.setData({show:true})
       },
       dismiss(){
-        this.setData({transitionShow:false}) 
-      },
-      jimmy(){
-        console.log('jimmyjimmy')
+        this.setData({show:false}) 
       }
     }
   })

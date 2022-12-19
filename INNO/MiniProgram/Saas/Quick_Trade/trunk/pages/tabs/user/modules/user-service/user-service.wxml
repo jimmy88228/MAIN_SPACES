@@ -18,11 +18,22 @@
           style="width: {{(100 / 3) + ''}}%;"
         >
           <view class="user-row-item-icon">
-            <view class="user-row-item-image" style="background-image: url({{'http://devimgtest.innourl.com/SAAS_IMAGE/image/show/assets-icons-cargo_unpaid.png'}})"></view>
-            <!-- <view class="user-row-item-count">{{125 >= 100 ? "99+" : "125"}}</view> -->
+            <view class="user-row-item-image" style="background-image:url(http://devimgtest.innourl.com/SAAS_IMAGE/////////////////////image/show/assets-icons-service5.png);"></view>
           </view>
           <view class="user-row-item-name">
             收货地址
+          </view>
+        </view>
+        <view 
+          bindtap="jump"
+          class="user-row-item"
+          style="width: {{(100 / 3) + ''}}%;"
+        >
+          <view class="user-row-item-icon">
+            <view class="user-row-item-image" style="background-image:url(http://devimgtest.innourl.com/SAAS_IMAGE/////////////////////image/show/assets-icons-service9.png);"></view>
+          </view>
+          <view class="user-row-item-name">
+            个人资料
           </view>
         </view>
       </view>

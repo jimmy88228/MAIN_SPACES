@@ -4,5 +4,10 @@ Component(App.BC({
     
   },
   methods: {
+    jump(){
+      wx.navigateTo({
+        url: "/pages/tabs/user/update_avatar/update_avatar"
+      })
+    }
   }
 }))

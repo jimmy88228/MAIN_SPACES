@@ -10,10 +10,23 @@ Component(App.BC({
       value: ""
     }
   },
-  ready() {
-    
+  pageLifetimes:{
+    show(){
+      App.StoreH.getVisitStoreByLogin().ignore(()=>{
+        this.setStoreInfo();
+      });
+    }
+  },
+  data:{
+    storeInfo:{}
   },
   methods: {
-    
+    setStoreInfo(){
+      let storeInfo = App.StoreH.storeInfo||{};
+      console.log('storeInfo',storeInfo)
+      this.setData({
+        storeInfo
+      })
+    }
   }
 }))

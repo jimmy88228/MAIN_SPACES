@@ -12,7 +12,7 @@
 }
 .form_row{
   border-bottom: 1px dotted #bbbbbb;
-  padding: 36rpx 36rpx 36rpx 120rpx;
+  padding: 36rpx 36rpx 36rpx 150rpx;
   position: relative;
   font-size: 28rpx;
 }
@@ -23,6 +23,9 @@
   z-index: 1;
   transform: translateY(-50%);
   font-weight: bold;
+}
+.form_row .mobile-input{
+
 }
 .avatar_wrapper {
   padding: 0;
@@ -96,4 +99,19 @@
 }
 .save_btn:active{
   opacity: 0.6;
+}
+.form_row .mobile-btn{ 
+  position:absolute;
+  top:50%;
+  right:30rpx;
+  display:flex;
+  justify-content: center;
+  align-items: center; 
+  color:#333;
+  border: 1px solid #333;
+  padding:0px 20rpx;
+  width: 200rpx;
+  height:50rpx;
+  border-radius:100rpx;
+  transform: translateY(-50%);
 }

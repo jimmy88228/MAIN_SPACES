@@ -14,11 +14,12 @@
     <block wx:elif="{{styleType == 1}}">
       <view class="store-like-nav">
         <view class="store-logo-con">
-          <image class="store-logo-image" src="https://thirdwx.qlogo.cn/mmopen/vi_32/DYAIOgq83ep2YhjKyBY79Z5hJRtLOWWvp342iajYT9fUPmas655PWATmGTDoDHetPw3YhUvTJhia9SNJRnaHuDkQ/132" />
+          <image class="store-logo-image" src="{{brand_info.logo_path}}micro_mall/login/login_logo.png" />
+          <!-- <image class="store-logo-image" src="https://thirdwx.qlogo.cn/mmopen/vi_32/DYAIOgq83ep2YhjKyBY79Z5hJRtLOWWvp342iajYT9fUPmas655PWATmGTDoDHetPw3YhUvTJhia9SNJRnaHuDkQ/132" /> -->
         </view>
         <view class="store-info-con">
-          <view class="store-name">马德里服饰</view>
-          <view class="store-staff-name">店员xxx</view>
+          <view class="store-name">{{storeInfo.storeName||''}}</view>
+          <view class="store-staff-name" wx:if="{{storeInfo.staffName}}">店员{{storeInfo.staffName||''}}</view>
         </view>
       </view>
     </block>

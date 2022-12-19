@@ -3,11 +3,11 @@ import Conf from "../../../config/index";
 import LM from "../login-manager/index";
 import SMH from "../../helper/show-message-helper/index"
 import WxApi from "../../utils/wxapi/index";
-
+import StoreH from "../../helper/store-helper/index"
 import {
   UserApiList,
-  // RegApiList,
-  // DstbApiList,
+  DstbApiList,
+  // RegApiList, 
   // VSlogApiList,
 } from "./http-api";
 import {
@@ -45,7 +45,7 @@ EasyHttp.setRequestHandler(req => {
     "platformSrc": Conf.PLATFORM && Conf.PLATFORM.TYPE,
     "userToken": LM && LM.userToken || "",
     "brandCode": Conf.BRAND_CODE,
-    "storeId": "32843" // 先写死
+    "storeId": StoreH && StoreH.storeInfo && StoreH.storeInfo.storeId||0
   })
   //LOG拦截器
   .addInterceptor((req, proceed) => {
@@ -61,7 +61,7 @@ EasyHttp.setRequestHandler(req => {
   .addInterceptor((req, proceed) => {
     console.log('reqreq',LM.userToken,req)
     req.headers && (req.headers.userToken = LM.userToken);
-    req.headers && (req.headers.storeId = 32843);
+    req.headers && (req.headers.storeId = StoreH.storeInfo && StoreH.storeInfo.storeId||0);
     return proceed(req).then(resp => {
       if (resp.statusCode != 200) {
         return Promise.reject(resp);
@@ -97,6 +97,7 @@ EasyHttp.setRequestHandler(req => {
 
 // 商城用户
 export const UserApi = new EasyHttp().setBaseUrl(apiDomain.USERAPI).addRequests(UserApiList);
+export const DstbApi = new EasyHttp().setBaseUrl(apiDomain.USERAPI).addRequests(DstbApiList);
 // 用户
 export const QT_UserApi = new EasyHttp().setBaseUrl(apiDomain.QT_USERAPI).addRequests(QT_UserApiList);
 // 注册登录
@@ -109,6 +110,7 @@ export const QT_GoodsApi = new EasyHttp().setBaseUrl(apiDomain.QT_GOODSAPI).addR
 
 export default {
   UserApi,
+  DstbApi,
   QT_UserApi,
   QT_RegApi,
   QT_DstbApi,

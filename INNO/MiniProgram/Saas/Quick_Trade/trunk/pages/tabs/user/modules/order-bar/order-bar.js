@@ -16,12 +16,12 @@ Component(App.BC({
       state:2,
       title:"待发货",
       key:'wait_to_shipping',
-      img:"http://devimgtest.innourl.com/SAAS_IMAGE/image/show/assets-icons-cargo_unpaid.png",
+      img:"http://devimgtest.innourl.com/SAAS_IMAGE/////////////////////image/show/assets-icons-cargo_deliver.png",
     },{
       state:3,
       title:"已发货",
       key:'wait_to_receiving',
-      img:"http://devimgtest.innourl.com/SAAS_IMAGE/image/show/assets-icons-cargo_unpaid.png",
+      img:"http://devimgtest.innourl.com/SAAS_IMAGE/////////////////////image/show/assets-icons-cargo_receive.png",
     },]
   },
   ready() {

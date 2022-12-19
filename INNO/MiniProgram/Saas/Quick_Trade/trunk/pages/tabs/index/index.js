@@ -29,7 +29,8 @@ Page(App.BP({
   handleScrollToLower() {
     this.goodsList = this.goodsList || this.selectComponent("#goods-list");
     this.goodsList.loadNextPage();
-  }
+  },
+  onShareAppMessage(){}
 }))
 
 function getActivityDetail() {

@@ -1,4 +1,4 @@
-<view class="order-bar-container" wx:if="{{true}}">
+<view class="order-bar-container" wx:if="{{userData.isStaff}}">
   <view class="user-row">
     <view class="user-row-header">
       <view class="user-row-left">

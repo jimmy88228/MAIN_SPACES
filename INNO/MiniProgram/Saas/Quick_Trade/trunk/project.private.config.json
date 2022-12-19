@@ -40,6 +40,18 @@
                     "pathName": "pages/tabs/user/update_avatar/update_avatar",
                     "query": "",
                     "scene": null
+                },
+                {
+                    "name": "pages/tabs/index/index",
+                    "pathName": "pages/tabs/index/index",
+                    "query": "fromUser=dad44263719078db&staffCode=13160675066&storeCode=NSWD",
+                    "scene": null
+                },
+                {
+                    "name": "pages/tabs/index/index",
+                    "pathName": "pages/tabs/index/index",
+                    "query": "staffCode=KL011&storeCode=NSWD",
+                    "scene": null
                 }
             ]
         }

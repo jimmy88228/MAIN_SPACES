@@ -78,8 +78,7 @@ function throttle_2(fn, wait) { // 立即调用版本
       }, wait)
     }
   }
-}
-
+} 
 
 function compareVersion(v1, v2) {
   console.log('v1, v2',v1, v2)
@@ -105,7 +104,13 @@ function compareVersion(v1, v2) {
   }
   return 0;
 }
-
+function getPageParamsStr(options){
+  let params = "";
+  for (let i in options){
+    params = params ? params + "&" + i + "=" + options[i] : i + "=" + options[i]
+  }
+  return params;
+}
 export default {
   requestAnimationFrame,
   uuid,
@@ -113,5 +118,6 @@ export default {
   debounce,
   throttle,
   throttle_2,
-  compareVersion
+  compareVersion,
+  getPageParamsStr
 }

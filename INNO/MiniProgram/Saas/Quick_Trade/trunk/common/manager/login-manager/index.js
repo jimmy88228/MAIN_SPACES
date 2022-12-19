@@ -1,6 +1,6 @@
 import WxApi from "../../utils/wxapi/index";
 import EB from "../../support/event-bus/index";
-import {QT_RegApi, QT_UserApi, QT_DstbApi, QT_VsLogApi} from "../http-manager/index";
+import {QT_RegApi, QT_UserApi, QT_DstbApi,DstbApi, QT_VsLogApi} from "../http-manager/index";
 import {UserApi} from "../http-manager/index";
 // import LgMg from "../log-manager/index";
 import PH from "../../helper/params-handler/index"
@@ -8,6 +8,7 @@ import Conf from "../../../config/index";
 import SIH from "../../helper/system-info-helper/index"
 import StorageH from "../../helper/storage-handler/index";
 import SMH from "../../helper/show-message-helper/index";
+import CDateH from "../../helper/cache-date-handler/index"
 // const STORAGE_SESSION_ID_KEY = "SESSION_ID",
 //   STORAGE_USER_TOKEN_KEY = "USER_TOKEN",
 //   STORAGE_USER_INFOS_KEY = "USER_INFOS",
@@ -20,6 +21,7 @@ const STORAGE_USER_INFOS_KEY = "USER_INFOS";
 const STORAGE_OPEN_ID_KEY = "O_ID";
 const STORAGE_SHARE_CODE_KEY = "SHARE_CODE";
 const STORAGE_USER_KEY = "USER_KEY";
+const STAFF_INFO_KEY = "STAFF_INFO";
 
 //注册请求
 function userRegister(showLoading, iData = {}) {
@@ -208,6 +210,28 @@ function getUserProfile(desc = "", noAuthHandlerF) {
   }
 }
 
+function checkIfStaffDstb(){ 
+  console.log('checkIfStaffDstb')
+  return DstbApi.checkIfStaffDstb({
+    params: {
+      userToken: this.userKey,
+      brandCode: Conf.BRAND_CODE
+    },
+    other: {
+      isShowLoad: false
+    }
+  }).then(e => {
+    if (e.code == "1") {
+      let data = e.data || {};
+      this.setStaffInfo(data);
+      // setTimeout(function () {
+      //   EB.call("staffInfoChange", this);
+      // }.bind(this), 150);
+      return Promise.resolve(data);
+    }
+    return Promise.reject({});
+  })
+}
 
 function checkIfStoreFn() {
   return UserApi.getStoreStaffInfo({
@@ -225,6 +249,7 @@ function checkIfStoreFn() {
     return Promise.reject(res)
   })
 }
+
 
 class LoginManager {
   static getInstance() {
@@ -253,6 +278,10 @@ class LoginManager {
     let sCode = StorageH.get(STORAGE_SHARE_CODE_KEY) || "";
     if (sCode) {
       this._shareCode = sCode;
+    }
+    let stf = StorageH.get(STAFF_INFO_KEY) || "";
+    if (stf) {
+      this._staffInfo = stf;
     }
     this._isCheckLogin = false;
     this.isCanUrPf = !!wx.getUserProfile; 
@@ -400,6 +429,42 @@ class LoginManager {
       }
       return res;
     })
+  }
+
+  checkIfStaff(checkCache = false) {
+    console.log('检测分销',this.staffInfo);
+    if (!this.userToken) {
+      return Promise.resolve({});
+    }
+    if (checkCache) {
+      let staffInfo = this.staffInfo || {};
+      if (staffInfo.isStaffDstbData) {
+        return Promise.resolve(staffInfo);
+      }
+    }
+    let h = this._csfh;
+    if (h) {
+      return h
+    };
+    this._csfh = h = CDateH.setCatchDate("checkStaff", 2).then(() => {
+      console.log('setCatchDate then')
+      return checkIfStaffDstb.call(this);
+    }).catch(() => {
+      console.log('setCatchDate catch')
+      return Promise.resolve(this.staffInfo||{});
+    }).finally(() => {
+      this._csfh && delete this._csfh;
+    })
+    return h;
+  } 
+  
+  setStaffInfo(staffInfo = {}) {
+    staffInfo && (staffInfo.private_code = (staffInfo && staffInfo.staffCode) ? staffInfo.staffCode : '');
+    if (staffInfo && staffInfo.staffCode && /^\d{11}$/.test(staffInfo.staffCode)) {
+      staffInfo.private_code = staffInfo.staffCode.slice(0, 3) + "****" + staffInfo.staffCode.slice(staffInfo.staffCode.length - 4);
+    }
+    this._staffInfo = staffInfo;
+    StorageH.set(STAFF_INFO_KEY, staffInfo);
   }
 
   // 保存数据

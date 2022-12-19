@@ -1,6 +1,7 @@
 {
   "navigationBarTitleText": "更新昵称/头像",
   "usingComponents": {
+    "btns": "/components/common/basic/buttons/index",
     "avatar-btn": "/components/common/basic/buttons/avatar-btn/avatar-btn"
   }
 }

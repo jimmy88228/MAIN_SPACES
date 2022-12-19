@@ -67,6 +67,13 @@
 .share_item .share_item_btn{
   height:100rpx;
 }
+.transition-box{
+  position: fixed;
+  width: 100%;
+  left: 0;
+  bottom: 0;
+  z-index: 999;
+}
 .popup-box{
   position: relative;
   /* left: 0;
