@@ -1,0 +1,6 @@
+<!--components/mp-module/mp-video/mp-video.wxml-->
+<video 
+    class="ext-video-class" 
+    src="{{src}}" 
+    controls="{{controls}}" 
+    poster="{{poster}}"></video>

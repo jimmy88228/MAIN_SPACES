@@ -1,0 +1,25 @@
+<!--components/micro-page/items/goods-list/goods-list.wxml-->
+<!-- 普通商品模块 -->
+<wxs module="dfCss" src="../../../help/defaultCss.wxs"></wxs>
+<import src="../component/template/gds-list-tpl.wxml"/>
+<view class="main {{!isInited?'init':''}}" id="main" style="{{dfCss.getDfCss(_data,screenWidth)}}"> 
+  <group-head bindonTap="onTap" group="{{_data.goodsGroup}}" show-tab="{{showTab && init}}" cur-tab="{{curTab}}">
+    <block wx:if="{{!_data.open_slide}}">
+      <!-- 平铺商品 -->
+      <!-- <block wx:if="{{listIndex == curTab}}" wx:for="{{_data.goodsGroup}}" wx:key="index" wx:for-item="listItem"
+        wx:for-index="listIndex">
+      </block> -->
+      <view class="list-box {{listData.length<=NumTextTrans[_data.layout]?'one-row':''}}" id="list-box{{listIndex}}" wx:if="{{listData.length>0}}">
+        <block wx:for="{{listData}}" wx:key="index" wx:for-item="listGoods" wx:for-index="listGoodsIndex">
+          <template is="gds-list-tpl" data="{{_data:_data,goodsJson:goodsJson,listGoods:listGoods,index:listGoodsIndex,main_font_color:main_font_color,tagJson:tagJson,customBuy:customBuy,showCommission:showCommission,commission: commission, promotionLabels: promotionLabels}}"></template>
+      </block>
+      </view>
+    </block>
+    <block wx:elif="{{_data.open_slide}}">
+      <!-- 轮播商品 -->
+      <swiper-mod goodsList="{{listData}}" dt="{{_data}}" isInited="{{isInited}}" tagJson="{{tagJson}}"></swiper-mod>
+    </block> 
+  </group-head>
+</view>
+
+<!-- <specView id="specView" ext-class="specView" isShowShipping isShowCart showCount bindshippingChange="shippingChange" bindconfirmSelect="confirmSpec"></specView> -->

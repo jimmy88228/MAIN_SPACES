@@ -1,0 +1,6 @@
+{
+  "navigationBarTitleText": "",
+  "usingComponents": {
+    "cs": "/components/cs/custom_service"
+  }
+}

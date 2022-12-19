@@ -1,0 +1,14 @@
+<!-- <block wx:if="{{justHidden||showed}}"> -->
+    <view class="window-root ext-class" wx:if="{{mask&&touchCancel}}" hidden="{{!showed || justHidden}}">
+        <view class="window-mask" hidden="{{justMaskBgHidden}}" style="{{maskStyle}}  {{maskBg?('background:'+maskBg+';'):''}}" catchtap="noFn" catchtouchstart="_maskTap" catchtouchmove="noFn"></view>
+        <slot></slot>
+    </view>
+    <view class="window-root ext-class" wx:elif="{{mask}}" hidden="{{!showed || justHidden}}">
+        <view class="window-mask" hidden="{{justMaskBgHidden}}" style="{{maskStyle}} {{maskBg?('background:'+maskBg+';'):''}}" catchtap="noFn" catchtouchmove="noFn"></view>
+        <slot></slot>
+    </view>
+    <view class="window-root ext-class" wx:else hidden="{{!showed || justHidden}}">
+        <view class="window-mask" hidden="{{justMaskBgHidden}}" style="{{maskStyle}} {{maskBg?('background:'+maskBg+';'):''}}"></view>
+        <slot></slot>
+    </view>
+<!-- </block> -->

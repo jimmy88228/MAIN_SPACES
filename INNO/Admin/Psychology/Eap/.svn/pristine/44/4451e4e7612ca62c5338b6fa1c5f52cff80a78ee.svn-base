@@ -1,0 +1,49 @@
+export default{
+  data(){
+    return {
+      columns: [
+        // {
+        //   type:"selection",
+        //   width: 60,
+        // },
+        {
+          title: "咨询人",
+          key: "name",
+          minWidth: 150
+        },
+        {
+          title: "手机号",
+          key: "mobilePhone",
+          minWidth: 200
+        },
+        {
+          title: "咨询师",
+          key: "consultantName",
+          minWidth: 150
+        },
+        {
+          title: "咨询方式",
+          key: "serviceWay",
+          minWidth: 150
+        },
+        {
+          title: "咨询结果",
+          key: "consultResult",
+          minWidth: 100,
+          slot:'consultResult'
+        },
+        {
+          title: "咨询日期",
+          key: "consultDate",
+          minWidth: 200
+        },
+        {
+          title: "操作",
+          slot: "handle",
+          align: "left",
+          width: 160
+        }
+      ]
+    }
+  }
+}

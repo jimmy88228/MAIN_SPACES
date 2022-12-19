@@ -1,0 +1,7 @@
+<view class='main'>
+    <view class='title'>当前可提取余额<text class='bold' style='color:{{brand_info.style.font_color}}'>{{balance}}元</text></view>
+    <input class='inputStyle' type='number'   bindinput="handleInput" style='border-color:{{brand_info.style.bg_color}}' type="text" value="{{value}}"></input>
+    <!-- <input bindtap="input_tap" disabled="{{can_cashout==0}}" class='inputStyle' type='digit'  bindinput="handleInput" style='border-color:{{brand_info.style.bg_color}}' type="text" value="{{value}}"></input> -->
+    <view class='tips'>当次提现最高{{max}}元，最低{{min}}元</view>
+    <button wx:if="{{showbtn}}" hover-class='none' disabled="{{balance == 0 || can_cashout==0}}" style='background:{{balance > 0 && can_cashout==1? brand_info.style.bg_color : "#ccc"}}' bindtap='confirm' class='button'>{{can_cashout==1?'申请提现':'维护中'}}</button>
+</view>

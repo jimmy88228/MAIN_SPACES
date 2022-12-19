@@ -1,0 +1,11 @@
+/* components/alignment/alignment.wxss */
+.alignment_container{
+  position: fixed;
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  z-index: 100;
+}
+.alignment_container>view:not(:last-of-type) {
+  margin-bottom: 8rpx;
+}

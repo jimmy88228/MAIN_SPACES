@@ -1,0 +1,8 @@
+{
+    "navigationBarTitleText": "",
+    "disableScroll":true,
+    "usingComponents": {
+        "listDetail": "/pages/micro_mall/distribution_center/distribution_orders_lists/list_detail/list_detail",
+        "tabNav": "/pages/micro_mall/distribution_center/distribution_orders_lists/tab_nav/tab_nav"
+    }
+}

@@ -1,0 +1,95 @@
+<template>
+  <hold-layout :isFull="true">
+    <searchForm @add="editResult()"></searchForm>
+    <Table ref="myTable" class="full-table" :columns="columns" :data="list" border :loading="tableLoading">
+      <template slot="scoring" slot-scope="{ row }">
+        <div class="flex-s-c"><span>{{row.min_value_str}}分</span>&nbsp;-&nbsp;<span>{{row.max_value_str}}分</span></div>
+      </template>
+      <template slot="desc" slot-scope="{ row }">
+        <div class="text-flow2 desc-text">
+          {{row.description}}
+        </div>
+      </template>
+      <template slot="handle" slot-scope="{ row }">
+        <div class="operate-area">
+          <a class="operate" v-hasAction="true" @click="editResult(row)">编辑</a>
+        </div>
+      </template>
+    </Table>
+    <rewrite-page slot="footer" :total="total" :current="page" :page-size="pageSize" :page-size-opts="pageSizeOpts" @on-change="e=>loadData(e)" @on-page-size-change="handlePageSizeChange" show-sizer show-elevator show-total transfer></rewrite-page>
+    <resultDetail ref="resultDetailRef" @confirm="handleUpdate"></resultDetail>
+  </hold-layout>
+</template>
+<script>
+import ListMixin from "@/helper/mixin/list-mixin";
+import searchForm from "./search-form";
+import mixins from "./mixins";
+import resultDetail from "./result-detail/index.vue";
+export default {
+  components: { searchForm, resultDetail },
+  mixins: [ListMixin, mixins],
+  data(){
+    return {
+      typeList: [],
+      inited:true,
+    }
+  },
+  methods: {
+    init(){
+      this.initColumns();
+      this.loadData();
+    },
+    initColumns(){
+      let type = this.pageQuery.type;
+      this.columns = this.columns.filter((item)=>{
+        if(type == 'dimension'){
+          return item.slot != 'scoring'
+        } else {
+          return item.key != 'related_key_str'
+        }
+      })
+    },
+    onLoadData(page, extraData) {
+      if(!this.pageQuery.testId){
+        return Promise.reject(); 
+      }
+      return this.$MainApi.tasteTestResultList({
+          data: {
+            type: this.pageQuery.type,
+            testId: this.pageQuery.testId,
+            filed:this.filed,
+            filedBy:this.filedBy,
+            ...extraData
+          },
+          other: {
+            isErrorMsg: true
+          }
+      })
+      .then((res) => {
+          if (res.code) {
+            let data = res.data || {};
+            let items = data.items || [];
+            if(this.pageQuery.type == 'scoring'){
+              items.map((item)=>{
+                item.min_value_str = item.min_value || '';
+                item.max_value_str = item.max_value || '';
+              })
+            }
+            this.data = {
+              total: data.total,
+              list: data.items
+            }
+          }
+      });
+    },
+    editResult(row){
+      this.$refs["resultDetailRef"] && this.$refs["resultDetailRef"].showModal(row);
+    }
+  }
+}
+</script>
+
+<style scoped lang="less">
+.desc-text{
+}
+</style>

@@ -1,0 +1,8 @@
+<!-- 这里可以放公共组件 -->
+<!-- 由于这里用了page-meta 所以引入这个文件时，必须是页面的第一个元素 -->
+<!-- page节点配置元素 -->
+<page-meta
+  page-style="{{pageStyle || ''}}"
+/>
+<!-- public -->
+<include src="/common/base/public/index.wxml" />

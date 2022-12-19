@@ -1,0 +1,205 @@
+<template>
+  <div class="editor-body" v-bar>
+    <div class="editor-body-view bg-page">
+      <div class="view-header-line"></div>
+      <div class="view-header" ></div>
+      <div class="view-body" :style="getPageStyle">
+        <draggable class="draggable-box" :list="compList" v-bind="dragOptions" :group="{name:'itemBox'}" @start="dragStart" @end="dragEnd" @change="dragChange">
+          <div class="comp-item" v-for="(item, index) in compList" :key="item.module_type + '|' + index" @click="itemChange(index, true)">
+            <moduleContain :itemInfo="item" :itemIndex="index" :selected="commonInfo.curIndex == index" @remove="removeComp">
+							<!--广告图-->
+              <imageAdView :compInfo="item" v-if="item.module_type == 'IMAGE-AD'"></imageAdView>
+              <videoMdView :compInfo="item" v-if="item.module_type == 'VIDEO-MD'"></videoMdView>
+              <audioMdView :compInfo="item" v-if="item.module_type == 'AUDIO-MD'"></audioMdView>
+              <articleMdView :compInfo="item" v-if="item.module_type == 'ARTICLE-MD'"></articleMdView>
+							<!--个人中心 -- 头部-->
+							<userHeaderView :compInfo="item" v-else-if="item.module_type == 'USER-HEADER'"></userHeaderView>
+							<!--个人中心 -- 功能服务-->
+							<userServiceView :compInfo="item" v-else-if="item.module_type == 'USER-SERVICE'"></userServiceView>
+            </moduleContain>
+          </div>
+
+        </draggable>
+      </div>
+    </div>
+  </div>
+</template>
+
+<script>
+import draggable from "vuedraggable";
+import moduleContain from "./component/container/module-contain";
+import imageAdView from "./widgets/image-ad/image-ad-view";
+import videoMdView from "./widgets/video-md/video-md-view";
+import audioMdView from "./widgets/audio-md/audio-md-view";
+import articleMdView from "./widgets/article-md/article-md-view";
+import userHeaderView from "./widgets/user-center/user-header-view.vue";
+import userServiceView from "./widgets/user-center/user-service-view.vue";
+export default {
+  name: "editorBody",
+  components: {
+    draggable,
+    moduleContain,
+    imageAdView,
+    videoMdView,
+    audioMdView,
+    articleMdView,
+		userHeaderView,
+		userServiceView
+  },
+  props: {
+    compList: {
+      type: Array,
+      default: () => [],
+    },
+		pageInfo: {
+      type: Object,
+      default: () => {},
+    },
+    pageType: {
+      type: String,
+      default: "NONE",
+    },
+    commonInfo:{
+      type:Object,
+      default:() => {}
+    }
+  },
+  data() {
+    return {
+    };
+  },
+  computed: {
+    dragOptions() {
+      return {
+        animation: 200,
+        group: "description",
+        disabled: false,
+        ghostClass: "ghost",
+        chosenClass: "chosen",
+      };
+    },
+    // 页面背景设置
+    getPageStyle() {
+			let pageInfo = this.pageInfo || {};
+			let pageSetting = pageInfo.setting || {};
+			let pageStyle = {}
+			if(pageSetting.backgroundColor){
+				pageStyle["background-color"] = pageSetting.backgroundColor;
+			}
+			if(pageSetting.backgroundImage){
+				pageStyle["background-image"] = "url(" + pageSetting.backgroundImage + ")";
+				pageStyle["background-repeat"] = "no-repeat";
+				pageStyle["background-size"] = "100% auto";
+				pageStyle["background-position"] = "center " + pageSetting.backgroundPosition;
+			}
+			return pageStyle;
+    },
+    // maxSort(){
+    //   let compList = this.compList || [];
+    //   let maxSort = 0;
+    //   for(let i = 0; i < compList.length; i++){
+    //     let sort = compList.sort || 0;
+    //     if(sort > maxSort){
+    //       maxSort = sort;
+    //     }
+    //   }
+    //   if(!maxSort) maxSort = compList.length;
+    //   return maxSort;
+    // }
+  },
+  methods: {
+    itemChange(index) {
+      if (index || index == 0) {
+        this.commonInfo.curIndex = index;
+      }
+    },
+    dragChange(e) {
+      console.log('dragChange',e);
+      if (e.added) {
+        // 添加时更新选中项
+        let newIndex = e.added.newIndex;
+        console.log('newIndex',newIndex,this.commonInfo.curIndex,this.commonInfo.curIndex < 0,!(this.commonInfo.curIndex < newIndex))
+        if(this.commonInfo.curIndex < 0){
+          this.commonInfo.curIndex = newIndex;
+        } else if (!(this.commonInfo.curIndex < newIndex)) {
+          this.commonInfo.curIndex += 1;
+        }
+      }
+    },
+    dragStart(e) {
+      this.itemChange(e.oldIndex);
+    },
+    dragEnd(e) {
+      this.itemChange(e.newIndex);
+    },
+    // 删除组件
+    removeComp(index) {
+      if (this.commonInfo.curIndex == index) {
+        this.commonInfo.curIndex = -1;
+      }
+      this.$delete(this.compList, index);
+      this.$nextTick(() => {
+        this.commonInfo.curIndex = index;
+      });
+    },
+  },
+  mounted() {},
+};
+</script>
+
+<style lang="less">
+.editor-body {
+  width: 100%;
+  height: 100%;
+  .editor-body-view {
+    width: 415px; //375+40
+    padding: 20px;
+    background: rgba(239, 239, 239, 0.17);
+    margin: 0 auto;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    min-height: calc(100% + 0px);
+    position: relative;
+    // border:1px solid #dcdee2;
+    // border-top: 0px;
+    .view-header-line{
+      position: sticky;
+      top:0px;
+      right:0px;
+      width:100%;
+      // border-top:1px solid #dcdee2;
+    }
+    .view-header {
+      position: absolute;
+      top: 22px;
+      right: 21px;
+      z-index: 15;
+      background: url("@/assets/images/pages/page-header-tip.png") top center
+        no-repeat;
+      background-size: 100% auto;
+      width: 80px;
+      height: 30px;
+      overflow: hidden;
+    }
+    .no-header{
+      height: 0px;
+    }
+    .view-body {
+      position: relative;
+      flex: 1;
+      .draggable-box {
+        min-height: calc(100vh - 300px);
+      }
+    }
+  }
+  .ghost {
+    opacity: 0.5;
+  }
+  .chosen {
+    background: rgba(255,255,255,0.3);
+    padding: 0px;
+  }
+}
+</style>
+

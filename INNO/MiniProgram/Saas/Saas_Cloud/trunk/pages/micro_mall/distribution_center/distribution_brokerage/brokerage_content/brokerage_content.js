@@ -1,0 +1,71 @@
+const app = getApp();
+import PageJump from "../../../../../common/helper/page-jump.js";
+Page(app.BP({
+    data: {
+        _value: ['0.00'], 
+    },
+    onLoad: function(options) {
+        this.options = options;
+        let staff_right = this.data.brand_info.icon_url + "micro_mall/staff/staff_right.png";
+        let staff_rmb = this.data.brand_info.icon_url + "micro_mall/staff/staff_rmb.png";
+        let staff_bg = this.data.brand_info.icon_url + "micro_mall/staff/staff_bg.png";
+        let status = options.status || 0;
+        this.setData({
+            staff_right: staff_right,
+            staff_rmb: staff_rmb,
+            staff_bg: staff_bg,
+            status
+        })
+    },
+    onShow: function() {
+        loadData.call(this)
+    }, 
+    jump(e) {
+        console.log(e.currentTarget.dataset.num);
+        let jumpNum = e.currentTarget.dataset.num;
+        if (jumpNum == 0) {
+            wx.navigateTo({
+                url: '/pages/micro_mall/distribution_center/distribution_brokerage/distribution_details/distribution_details',
+            })
+        } else if (jumpNum == 1) {
+            let storage = app.StorageH.get("SIMPLE_USER_INFO") || {};
+            if(storage.needVerify == 1){
+                let params = {
+                    func_type:"FILL_IDCARD",
+                    fromRoute:"brokerage",
+                    balance:this.data.dataDetail.account_balance || 0
+                };
+                PageJump(params)
+            }else{
+                wx.navigateTo({
+                    url: `/pages/micro_mall/distribution_center/distribution_brokerage/distribution_take_out/distribution_take_out?balance=${this.data.dataDetail.account_balance || 0}`,
+                })
+            }
+        } else {
+            wx.navigateTo({
+                url: `/pages/micro_mall/distribution_center/distribution_orders_lists/distribution_orders_lists?currentIndex=${0}&type=record`,
+            })
+        }
+    },
+}))
+
+
+function loadData() {
+    app.CL_DistrApi.staffDstbInfo({
+        params: {
+            // brandCode: app.Conf.BRAND_CODE,
+            // userToken: app.LM.userKey
+        },
+        other: {
+            isShowLoad: true
+        }
+    }).then(res => {
+        if (res.code == 1) {
+            let dataDetail = res.data || {};
+            this.setData({
+                dataDetail: dataDetail
+            }); 
+        }
+        return res
+    })
+}  

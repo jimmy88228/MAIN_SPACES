@@ -1,0 +1,135 @@
+.hide{
+  display:none !important;
+}
+.d_flex{
+  display: -webkit-box; 
+  display: -moz-box; 
+  display: -ms-flexbox; 
+  display: -webkit-flex;
+  display: flex;
+  align-items :center;
+}
+.flex1{
+  -webkit-box-flex: 1 ;
+  -moz-box-flex: 1;             
+  -webkit-flex: 1;
+  -ms-flex: 1 ; 
+  flex: 1;
+}
+.alert_bg{
+  position:fixed;
+  top:0px;
+  left:0px;
+  width:100%;
+  height:100%;
+  background:rgba(0,0,0,0.5);
+  opacity:0;
+  transition: opacity .2s;
+  -moz-transition: opacity .2s;
+}
+.alert_bg.isshow{
+  opacity:1;
+}
+.alert_area{
+  position:fixed;
+  top:40%;
+  left:50%;
+  width:581rpx;
+  border-radius:20rpx;
+  background:#fff;
+  text-align:center;
+  transform:translate(-50%,-50%);
+  -ms-transform:translate(-50%,-50%);
+  -moz-transform:translate(-50%,-50%); 	
+  -webkit-transform:translate(-50%,-50%);
+  -o-transform:translate(-50%,-50%);
+}
+.alert_cont{
+  padding-top:70rpx;
+  padding-bottom:50rpx;
+}
+.alert_title{
+  font-weight:bold;
+  font-size:32rpx;
+}
+.alert_content{
+  font-size:28rpx;
+  color:#7f7f7f;
+  margin-top:30rpx;
+}
+.alert_btns{
+  width:100%;
+  height:76rpx;
+  border-top:1px solid #efefef;
+}
+.alert_btn_area{
+  
+}
+.alert_btn{
+  width:100%;
+  font-size:26rpx;
+  height:76rpx;
+  line-height:76rpx;
+}
+.alert_area.isshow{
+  animation: show_alert .32s;
+  -moz-animation: show_alert .32s;
+  -ms-animation: show_alert .32s;
+  -o-animation: show_alert .32s;
+  -webkit-animation: show_alert .32s;
+	animation-fill-mode: forwards;
+  -moz-animation-fill-mode: forwards;
+  -ms-animation-fill-mode: forwards;
+  -o-animation-fill-mode: forwards;
+  -webkit-animation-fill-mode: forwards;
+}
+.alert_area.ishide{
+  animation: hide_alert .32s;
+  -moz-animation: hide_alert .32s;
+  -ms-animation: hide_alert .32s;
+  -o-animation: hide_alert .32s;
+  -webkit-animation: hide_alert .32s;
+	animation-fill-mode: forwards;
+  -moz-animation-fill-mode: forwards;
+  -ms-animation-fill-mode: forwards;
+  -o-animation-fill-mode: forwards;
+  -webkit-animation-fill-mode: forwards;
+}
+@keyframes show_alert {
+  0% {
+    transform:translate(-50%,-50%), scale(0);
+  }
+  40%{
+  	transform:translate(-50%,-50%), scale(1.2);
+  }
+  60% {
+    transform:translate(-50%,-50%), scale(1);
+  }
+}
+@-webkit-keyframes show_alert {
+ 0% {
+    -webkit-transform:translate(-50%,-50%), scale(0);
+  }
+  40%{
+  	-webkit-transform:translate(-50%,-50%), scale(1.2);
+  }
+  60% {
+    -webkit-transform:translate(-50%,-50%), scale(1);
+  }
+}
+@keyframes hide_alert {
+  0% {
+    opacity:1;
+  }
+  100% {
+    opacity:0;
+  }
+}
+@-webkit-keyframes hide_alert {
+ 0% {
+    opacity:1;
+  }
+  100% {
+    opacity:0;
+  }
+}

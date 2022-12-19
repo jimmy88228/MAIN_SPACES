@@ -1,0 +1,132 @@
+<view class="orderListPage">
+    <view class="{{options.orderType == 'order_exchange'?'fixed_shadow':''}}"></view>
+    <view class="ordertTab oh" wx:if="{{options.orderType != 'order_exchange'}}">
+        <view class="fl orderTabTit" id="{{tabNum0}}" bindtap="onTabClick" style="{{ clickTabId == tabNum0  ? 'color: '+brand_info.style.font_color+';border-color:'+brand_info.style.font_color+';' : '' }}">
+            <text>代客订单</text>
+            <view class='lines' wx:if="{{clickTabId == tabNum0}}" style="background: {{brand_info.style.font_color}}"></view>
+        </view>
+        <view class="fr orderTabTit" id="{{tabNum1}}" style="{{ clickTabId == tabNum1  ? 'color: '+brand_info.style.font_color+';border-color:'+brand_info.style.font_color+';' : '' }}" bindtap="onTabClick">
+            <text>代客退单</text>
+            <view class='lines' wx:if="{{clickTabId == tabNum1}}" style="background: {{brand_info.style.font_color}}"></view>
+        </view>
+    </view>
+    <view class="orderLists {{options.orderType == 'order_exchange'?'shadow':''}}" hidden="{{!isReady}}">
+        <block>
+            <search style="{{clickTabId == tabNum0?'':'display:none;'}}" id="search" class="search" bindonTapConfirm="onTapConfirm"></search>
+        </block>
+        <view class="orderListItem mobileList oh" style="display:{{ clickTabId == tabNum0  ? 'block' : 'none'}}">
+            <view class="item" wx:for="{{mobileList}}" wx:key="index">
+                <view class='order_wrapper'>
+                    <view class='header_info'>
+                        <view class='order_sn'>
+                            <text class='number'>{{order_text}}</text>{{item.orderSn || item.returnSn}}
+                            <text wx:if="{{item.platform_src=='mwin'}}" style='color:{{brand_info.style.font_color}}; {{l_bg_color}}' class='label'>数字屏</text>
+                        </view>
+                        <view class='font_26 status'>{{item.orderStatus || item.stateName}}</view>
+                    </view>
+                    <view class='product' wx:if="{{item.goodsList.length == 1}}">
+                        <view class='pro_pic pro_pic_wrapper'>
+                            <image src="{{empty_url}}" mode="aspectFit" class='pro_pic' wx:if="{{item.goodsList[0].thumbUrl == ''}}" />
+                            <image src="{{item.goodsList[0].thumbUrl}}" mode="aspectFit" class='pro_pic' wx:else/>
+                        </view>
+                        <view>
+                            <view class='pro_name pro_item'>{{item.goodsList[0].goodsName}}</view>
+                            <view class='pro_attr pro_item'>{{item.goodsList[0].goodsAttr}}</view>
+                            <view class='pro_number pro_item'>x {{item.goodsList[0].goodsNumber || item.goodsList[0].returnNumber}}</view>
+                        </view>
+                    </view>
+                    <scroll-view scroll-x class='more product' wx:else>
+                        <view class='pro_pic pro_pic_wrapper' wx:for="{{item.goodsList}}" wx:for-item="multi" wx:for-index="multiIndex" wx:key="multiIndex">
+                            <image src="{{empty_url}}" mode="aspectFit" class='pro_pic' wx:if="{{multi.thumbUrl == ''}}" />
+                            <image src="{{multi.thumbUrl}}" mode="aspectFit" class='pro_pic' wx:else/>
+                        </view>
+                    </scroll-view>
+                    <view class='price_number'>
+                        <text class='product_num'>{{item.goodsNumber || item.returnNumber}}件商品</text>
+                        <text class='product_price'>金额</text>
+                        <text class="the_price">{{item.orderAmount >= 0 ? '¥' + item.orderAmount : item.totalAmount }}</text>
+                    </view>
+                </view>
+                <view class='the_line'></view>
+                <view class='msg_box'>
+                    <view wx:if="{{item.orderType == 9 || item.isValetOrder == 1 || item.platform_src=='mwin' || item.return_status == 1}}" class='assist_guest'>
+                        <view wx:if="{{item.orderType == 9 || item.isValetOrder == 1}}" style='color:{{brand_info.style.font_color}}; {{l_bg_color}}' class='label'>代客单</view>
+                        <text wx:if="{{item.platform_src=='mwin'}}" style='color:{{brand_info.style.font_color}}; {{l_bg_color}}' class='label'>数字屏</text>
+                        <text wx:if="{{item.return_status == 1 && !item.returnSn}}" style='color:{{brand_info.style.font_color}}; {{l_bg_color}}' class='label'>退换货</text>
+                    </view>
+
+                    <view class='btn_group'>
+                        <navigator capture-catch:tap="jumpToComment" wx:if="{{item.can_comment == '1'}}" data-order_id="{{item.orderId}}" class="comment_btn" style="color:{{brand_info.style.font_color}}; border: 1px solid {{brand_info.style.font_color}}">评价</navigator>
+                        <button class='detail_btn' bindtap="onPageJump" data-order_id="{{item.orderId}}" data-order_sn="{{item.orderSn}}" data-return_id="{{item.returnId}}"   data-return_sn="{{item.returnSn}}"    data-parent_order_sn="{{item.parent_order_sn}}" style="background: {{brand_info.style.font_color}}"
+                            data-sign="false">{{btn_text}}</button>
+                    </view>
+                </view>
+
+            </view>
+        </view>
+        <view class="orderListItem storeList oh" style="display:{{ clickTabId == tabNum1  ? 'block' : 'none'}}">
+            <view class="item" wx:for="{{mobileList}}"  wx:key="index">
+                <view class='order_wrapper'>
+                    <view class='header_info'>
+                        <view class='order_sn'>
+                            <text class='number'>{{order_text}}</text>{{item.orderSn || item.returnSn}}
+                            <text wx:if="{{item.platform_src=='mwin'}}" style='color:{{brand_info.style.font_color}}; {{l_bg_color}}' class='label'>数字屏</text>
+                        </view>
+                        <view class='status font_26'>{{item.order_status_str || item.stateName}}</view>
+                    </view>
+                    <view class='product' wx:if="{{item.goodsList.length == 1}}">
+                        <view class='pro_pic pro_pic_wrapper'>
+                            <image src="{{empty_url}}" mode="aspectFit" class='pro_pic' wx:if="{{item.goodsList[0].thumbUrl == ''}}" />
+                            <image src="{{item.goodsList[0].thumbUrl}}" mode="aspectFit" class='pro_pic' wx:else/>
+                        </view>
+                        <view>
+                            <view class='pro_name pro_item'>{{item.goodsList[0].goodsName}}</view>
+                            <view class='pro_attr pro_item'>{{item.goodsList[0].goodsAttr}}</view>
+                            <view class='pro_number pro_item'>x {{item.goodsList[0].goodsNumber || item.goodsList[0].returnNumber}}</view>
+                        </view>
+                    </view>
+                    <view class='more product' wx:else>
+                        <view class='pro_pic pro_pic_wrapper' wx:for="{{item.goodsList}}" wx:for-item="multi" wx:for-index="multiIndex" wx:key="multiIndex">
+                            <image src="{{empty_url}}" mode="aspectFit" class='pro_pic' wx:if="{{multi.thumbUrl == ''}}" />
+                            <image src="{{multi.thumbUrl}}" mode="aspectFit" class='pro_pic' wx:else/>
+                        </view>
+                    </view>
+                    <view class='price_number'>
+                        <text class='product_num'>{{item.goodsNumber || item.totalGoodsNumber}}件商品</text>
+                        <text class='product_price'>金额</text>
+                        <text class="the_price">{{item.orderAmount >= 0 ? '¥' + item.orderAmount : item.totalAmount }}</text>
+                    </view>
+                </view>
+                <view class='the_line'></view>
+                   <view class='msg_box'>
+                    <view wx:if="{{item.orderType == 9 || item.isValetOrder == 1 || item.platform_src=='mwin'}}" class='assist_guest'>
+                        <view wx:if="{{item.orderType == 9 || item.isValetOrder == 1}}" style='color:{{brand_info.style.font_color}}; {{l_bg_color}}' class='label'>代客单</view>
+                        <text wx:if="{{item.platform_src=='mwin'}}" style='color:{{brand_info.style.font_color}}; {{l_bg_color}}' class='label'>数字屏</text>
+                    </view>
+
+                    <view class='btn_group'>
+                        <navigator capture-catch:tap="jumpToComment" wx:if="{{item.can_comment == '1'}}" data-order_id="{{item.orderId}}" class="comment_btn" style="color:{{brand_info.style.font_color}}; border: 1px solid {{brand_info.style.font_color}}">评价</navigator>
+                        <button class='detail_btn' bindtap="onPageJump" data-order_sn="{{item.orderSn}}" data-order_id="{{item.orderId}}" data-return_id="{{item.returnId}}"   data-parent_order_sn="{{item.parent_order_sn}}" style="background: {{brand_info.style.font_color}}"  data-return_sn="{{item.returnSn}}"   
+                            data-sign="false">{{btn_text}}</button>
+                    </view>
+                </view>
+
+            </view>
+        </view>
+    </view>
+</view>
+
+<view hidden="{{!isReady}}">
+    <!--没有手机订单-->
+    <view class="emptyOrder" wx:if="{{clickTabId == tabNum0 && isEmptyMobile}}">
+        <image src="{{empty_order}}" />
+        <view>暂无订单</view>
+    </view>
+    <!--没有店铺订单-->
+    <view class="emptyOrder" wx:if="{{clickTabId == tabNum1 && isEmptyMobile}}">
+        <image src="{{empty_order}}" />
+        <view>暂无订单</view>
+    </view>
+</view>
+<!--客服-->
+<cs id="csId"></cs>

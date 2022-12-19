@@ -1,0 +1,65 @@
+function getSetConfig(config = {}, brandConfig){
+	let brandCode = config.brandCode;
+	let env = config.env;
+	console.log("[brandCode].env", `${brandCode}`)
+	return {
+		...config,
+		...brandConfig,
+		...((allBrandConfig[brandCode] && allBrandConfig[brandCode][env]) || {})
+	}
+}
+export default getSetConfig;
+
+const allBrandConfig = {
+	// 
+	survey: {
+		dev: {
+			appCode: "SURVEY_INNO",
+			appType: "edu",
+			platformSrc: "WXAPP",
+			staticConfig: "https://psyimage.innourl.com/v/asset/edu/general/static",
+			"apiDomain": {
+				"USERAPI": "https://surveyapi.innourl.com",
+					"REGAPI": "https://surveyapi.innourl.com",
+					"WECHATAPI": "https://surveyapi.innourl.com",
+					"EDEAPI": "https://surveyapi.innourl.com",
+					"EVALUATEAPI": "https://surveyapi.innourl.com",
+					"PAGEAPI": "https://surveyapi.innourl.com",
+					"COMMONAPI": "https://surveyapi.innourl.com",
+					"RESOURCEAPI": "https://surveyapi.innourl.com",
+					"CONSULTANTAPI": "https://surveyapi.innourl.com",
+					"COMMISSIONERAPI": "https://surveyapi.innourl.com",
+					"SUPERVISIONAPI": "https://surveyapi.innourl.com",
+					"ARCHIVESAPI": "https://surveyapi.innourl.com",
+					"SUPERVISORAPI": "https://surveyapi.innourl.com",
+					"PSYSERVICEAPI": "https://surveyapi.innourl.com",
+					"TEACHERAPI": "https://surveyapi.innourl.com",
+					"REPORTAPI": "https://surveyapi.innourl.com",
+			}
+		},
+		prod: {
+			appCode: "SURVEY_INNO",
+			appType: "edu",
+			platformSrc: "WXAPP",
+			staticConfig: "https://psyimage.innourl.com/v/asset/edu/general/static",
+			"apiDomain": {
+				"USERAPI": "https://edupsyapi.innourl.com",
+				"REGAPI": "https://edupsyapi.innourl.com",
+				"WECHATAPI": "https://edupsyapi.innourl.com",
+				"EDEAPI": "https://edupsyapi.innourl.com",
+				"EVALUATEAPI": "https://edupsyapi.innourl.com",
+				"PAGEAPI": "https://edupsyapi.innourl.com",
+				"COMMONAPI": "https://edupsyapi.innourl.com",
+				"RESOURCEAPI": "https://edupsyapi.innourl.com",
+				"CONSULTANTAPI": "https://edupsyapi.innourl.com",
+				"COMMISSIONERAPI": "https://edupsyapi.innourl.com",
+				"SUPERVISIONAPI": "https://edupsyapi.innourl.com",
+				"ARCHIVESAPI": "https://edupsyapi.innourl.com",
+				"SUPERVISORAPI": "https://edupsyapi.innourl.com",
+				"PSYSERVICEAPI": "https://edupsyapi.innourl.com",
+				"TEACHERAPI": "https://edupsyapi.innourl.com",
+				"REPORTAPI": "https://edupsyapi.innourl.com",
+			}
+		}
+	}
+}

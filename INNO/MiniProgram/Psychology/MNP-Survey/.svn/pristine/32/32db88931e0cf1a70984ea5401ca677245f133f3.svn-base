@@ -1,0 +1,252 @@
+<template>
+  <view>
+    <page-nav :full="false" :hideBtn="true">
+      <view slot="title">填写信息</view>
+    </page-nav>
+    <view class="select-user-type" :style="{'height':`calc(100vh - ${navHeight}px)`}">
+      <view class="select-user-title">请先选择身份进入</view>
+      <view class="select-section">
+        <view class="select-item " @click="selectAction" data-type="none">
+          <image :src="requireStatic('/user-type-select/type-student.png')" mode="scaleToFill" />
+          <view class="select-action">
+            <view>我是学生</view>
+            <view class="action-button action-student">
+              <image v-if="selectType == 'none'" class="selected-option" :src="requireStatic('user-type-select.png')"
+                mode="aspectFit" />
+            </view>
+          </view>
+        </view>
+        <view class="select-item " @click="selectAction" data-type="child">
+          <image :src="requireStatic('/user-type-select/type-parents.png')" mode="scaleToFill" />
+          <view class="select-action">
+            <view>我是家长</view>
+            <view class="action-button action-parents">
+              <image v-if="selectType == 'child'" class="selected-option" :src="requireStatic('user-type-select.png')"
+                mode="aspectFit" />
+            </view>
+          </view>
+        </view>
+        <view class="select-item " @click="selectAction" data-type="teacher" v-if="showTeacher">
+          <image :src="requireStatic('/user-type-select/type-teacher.png')" mode="scaleToFill" />
+          <view class="select-action">
+            <view>我是老师</view>
+            <view class="action-button action-teacher">
+              <image v-if="selectType == 'teacher'" class="selected-option" :src="requireStatic('user-type-select.png')"
+                mode="aspectFit" />
+            </view>
+          </view>
+        </view>
+      </view>
+      <view class="button-area">
+        <view @click="confirmSelect">确认</view>
+      </view>
+    </view>
+    <work-bench ref="workBench" @loadSuccess="loadOrganizeSuccess" @selected="selectClass"></work-bench>
+  </view>
+</template>
+
+<script>
+  import SMH from "@/common/helper/show-msg-handler.js"
+  import SIH from "@/common/helper/sys-infos-handler"
+  import workBench from "@/components/custom-page/work-bench/work-bench"
+  import ScanCode from '@/common/helper/scan-code-handler.js';
+
+
+
+  const app = getApp();
+  const pageOption = Page.BasePage({
+    components: {
+      workBench
+    },
+    data() {
+      return {
+        showLoading: false,
+        acInfo: null,
+        activityId: 0,
+        selectType: "",
+        navHeight: SIH.navPlace,
+        showTeacher: true
+      }
+    },
+    onLoad(options) {},
+    onShow() {
+      if (ScanCode.currScanInfo.sceneOption) {
+        this.$nextTick(() => {
+          this.showTeacher = !!ScanCode.currScanInfo.sceneOption.showTeacher
+        })
+      }
+      app.IM.getAuthUserInfo();
+    },
+    onReady() {},
+    methods: {
+      selectAction({
+        currentTarget
+      }) {
+        this.selectType = currentTarget.dataset.type
+      },
+      confirmSelect() {
+        if (!this.selectType) {
+          SMH.showToast({
+            title: "请先选择身份噢"
+          })
+          return
+        }
+        app.IM.initUserInfo();
+        if (this.selectType == 'none' || this.selectType == 'child') {
+          app.LM.removeLoginData('tcrUserInfos');
+          app.LM.removeLoginData('recordId');
+          if ((app.IM.authUserInfo.bindChild <= 0 && this.selectType == 'child') || (app.IM.authUserInfo
+              .bindStudent <= 0 && this.selectType == 'none')) {
+            // 当前所选类型没绑定学生
+            this.jumpAction(
+              `/pages/information/information?type=${this.selectType}&fromRoute=/pages/user-switch/user-switch`)
+          } else {
+            // 当前所选类型有绑定学生
+            this.jumpAction(
+              `/pages/user-switch/user-switch?selectType=${this.selectType == 'child'?1:2}&fromRoute=/pages/startup/startup`
+            )
+          }
+        } else if (this.selectType == 'teacher') {
+          app.IM.checkBindTeacher().then(res => {
+            if (ScanCode.currScanInfo.sceneOption) {
+              this.reLaunchAction("/pages/startup/startup")
+            } else {
+              if (res.roleType == "class_teacher") {
+                // 班主任
+                if (res.classList.length == 1) {
+                  app.SM.saveStructureInfo(res.classList[0])
+                  this.reLaunchAction(`/pages/work-bench/work-bench-detail/work-bench-detail`)
+                } else {
+                  let ref = "workBench";
+                  this.$refs[ref].loadData();
+                }
+              } else {
+                // 心理老师
+                this.reLaunchAction(`/pages/work-bench/work-bench-detail/work-bench-detail`)
+              }
+            }
+          }).catch(err => {
+            this.jumpAction(`/pages/teacher-register/teacher-register`)
+          })
+        }
+      },
+      showOrganizeLsit() {
+        let ref = "workBench";
+        this.$refs[ref].showBench();
+      },
+      loadOrganizeSuccess(e) {
+        console.log(e, "加载成功")
+      },
+      selectClass() {
+        this.reLaunchAction(`/pages/work-bench/work-bench-detail/work-bench-detail`)
+      },
+    }
+  })
+  export default pageOption;
+</script>
+
+<style lang="scss" scoped>
+  .select-user-type {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 45rpx;
+    box-sizing: border-box;
+
+    // 标题
+    .select-user-title {
+      font-size: 46rpx;
+      margin-bottom: 75rpx;
+    }
+
+    // 选项
+    .select-section {
+      .select-item {
+        box-sizing: border-box;
+        padding: 45rpx;
+        font-size: 36rpx;
+        font-weight: bold;
+        position: relative;
+        height: 230rpx;
+        width: 100%;
+        border-radius: 20rpx;
+        margin-bottom: 50rpx;
+        display: flex;
+        justify-content: flex-end;
+        align-items: center;
+
+        &>image {
+          position: absolute;
+          left: 0;
+          top: 0;
+          width: 100%;
+          height: 100%;
+        }
+
+        .select-action {
+          display: flex;
+          align-items: center;
+          line-height: 50rpx;
+          z-index: 2;
+
+          .action-button {
+            position: relative;
+            margin-left: 20rpx;
+            width: 34rpx;
+            height: 34rpx;
+            background: #FFFFFF;
+            border-radius: 50%;
+
+            .selected-option {
+              position: absolute;
+              top: 50%;
+              left: 50%;
+              transform: translate(-50%, -50%);
+              width: 48rpx;
+              height: 48rpx;
+            }
+
+            view {
+              border-radius: 50%;
+              width: 15rpx;
+              height: 15rpx;
+            }
+          }
+
+        }
+      }
+
+      .action-student {
+        border: 4rpx solid rgba(33, 176, 20, 0.13);
+      }
+
+      .action-parents {
+        border: 4rpx solid #FDEACD;
+      }
+
+      .action-teacher {
+        border: 4rpx solid #E5EFF5;
+      }
+    }
+
+    // 按钮
+    .button-area {
+      width: 100%;
+
+      view {
+        margin: 50rpx auto 0;
+        width: 400rpx;
+        height: 100rpx;
+        background: #F9F9F9;
+        border-radius: 50rpx;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 36rpx;
+        color: #21B014;
+      }
+    }
+
+  }
+</style>

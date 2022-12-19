@@ -1,0 +1,8 @@
+{
+  "component": true,
+  "usingComponents": {
+    "swiper-mod":"/components/micro-page/micro-mix/items/component/goods-swiper/swiper",
+    "group-head":"/components/micro-page/micro-mix/items/component/group-head/group-head",
+    "promotionLabel":"/components/promotionLabel/promotionLabel"
+  }
+}

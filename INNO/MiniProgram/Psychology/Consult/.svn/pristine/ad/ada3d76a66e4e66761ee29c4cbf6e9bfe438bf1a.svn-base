@@ -1,0 +1,38 @@
+import Conf from "../../config/config.js";
+import { WechatApiList, UserApiList, EduApiList,EvaluateApiList, pageManageApiList,resourceApiList,consultantApiList, commonApiList,interveneApiList,supervisionApiList,archivesApiList,commissionerApiList,gameApiList,authApiList} from './http.api.js';
+function addRequests(apiList, apiHost){
+	if(apiList instanceof Object){
+		for(let i in apiList){
+			let api  = apiList[i];
+			if(api instanceof Object){
+				api.u = apiHost + api.u;
+				api.m = api.m ? api.m : '';
+			} else if(typeof(api) == 'string'){
+				api = apiHost + api
+			}
+			apiList[i] = api;
+		}
+		return apiList;
+	}
+	return {};
+}
+let apiDomain = Conf.apiDomain || {};
+
+// 拼装API
+export const Apis = {
+	...addRequests(WechatApiList, apiDomain.WECHATAPI),
+	...addRequests(EduApiList, apiDomain.EDEAPI),
+	...addRequests(UserApiList, apiDomain.USERAPI),
+	...addRequests(EvaluateApiList, apiDomain.EVALUATEAPI),
+	...addRequests(pageManageApiList, apiDomain.PAGEAPI),
+	...addRequests(resourceApiList, apiDomain.RESOURCEAPI),
+	...addRequests(consultantApiList, apiDomain.CONSULTANTAPI),
+	...addRequests(commonApiList, apiDomain.COMMONAPI),
+	...addRequests(supervisionApiList, apiDomain.SUPERVISIONAPI),
+	...addRequests(interveneApiList, apiDomain.SUPERVISORAPI),
+	...addRequests(archivesApiList, apiDomain.ARCHIVESAPI),
+	...addRequests(commissionerApiList,apiDomain.COMMISSIONERAPI),
+	...addRequests(gameApiList,apiDomain.GAMEAPI),
+	...addRequests(authApiList,apiDomain.AUTHAPI),
+}
+console.log("install", Apis)

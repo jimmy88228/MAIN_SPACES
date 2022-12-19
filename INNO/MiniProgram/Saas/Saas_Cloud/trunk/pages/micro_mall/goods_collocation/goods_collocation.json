@@ -1,0 +1,11 @@
+{
+  "navigationBarTitleText": "搭配套餐",
+  "usingComponents": {
+    "loginPage": "/components/login/login_by_phone",
+    "toasts":"/components/ui/cps/toasts/toasts",
+    "share": "/pages/micro_mall/goods/popup/share",
+    "shareImg": "/pages/micro_mall/goods/popup/shareImg",
+    "btns": "/components/buttons/btns",
+    "cart":"/pages/micro_mall/goods_collocation/cart/cart"
+  }
+}

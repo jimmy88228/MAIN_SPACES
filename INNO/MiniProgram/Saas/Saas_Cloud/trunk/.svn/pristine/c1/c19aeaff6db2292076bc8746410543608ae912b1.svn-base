@@ -1,0 +1,501 @@
+/* pages/micro_mall/bargain/bargain/bargain_detail.wxss */
+page{
+    background: #f5f5f5;
+}
+.bargain_detail_wrapper{
+    position: relative;
+}
+.banner, .active_banner{
+    position: relative;
+    width: 750rpx;
+}
+.rules_wrapper{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: absolute;
+    right: 10rpx;
+    top: 15rpx;
+    width: 146rpx;
+    height: 48rpx;
+    line-height: 48rpx;
+    border-radius: 20px;
+    border: 1px solid #fff;
+    font-size: 22rpx;
+    color: #fff;
+    background: rgba(0, 0, 0, .7);
+}
+.rules_title{
+    margin-right: 6rpx;
+}
+.rules_img{
+    width: 26rpx;
+}
+/*  */
+.bargain_wrapper{
+    position: relative;
+    /* top: 250rpx;
+    left: 0; */
+    width: 100%;
+    border-radius: 20px 20px 0 0;
+    background: #fff;
+    z-index: 1;
+}
+.bargain_item{
+    display: flex;
+    align-items: center;
+    padding: 48rpx 60rpx 50rpx 60rpx;
+    box-shadow:0px 2rpx 20rpx 1px rgba(127,127,127,0.13);
+}
+.product_img_wrapper{
+    flex-basis: 200rpx;
+    margin-right: 30rpx;
+    width: 200rpx;
+    height: 200rpx;
+}
+.product_img{
+    width: 200rpx;
+    height: 200rpx;
+    border-radius: 4px;
+}
+.product_info_wrapper{
+    flex-grow: 1;
+    flex-shrink: 1;
+    padding-top: 10rpx;
+}
+.product_name, .product_code{
+    width: 410rpx;
+    white-space: pre-wrap;
+}
+.product_name{
+    font-size: 26rpx;
+    line-height: 38rpx;
+    margin-bottom: 10rpx;
+    width: 100%;
+    display: -webkit-box;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp:2;
+}
+.product_code{
+    font-size: 24rpx;
+    color: #7f7f7f;
+    margin-bottom: 20rpx;
+}
+.product_primary{
+    font-size: 24rpx;
+    color: #7f7f7f;
+    margin-bottom: 10rpx;
+}
+.money_sign:before{
+    content: '￥';
+    font-size: 24rpx;
+}
+.money_sign2:before{
+    content: '￥';
+    font-size: 30rpx;
+    font-weight: 600;
+}
+.product_primary_title, .product_primary_price{
+    display: inline-block;
+    vertical-align: middle;
+    color: #7f7f7f;
+}
+.product_price_title, .product_price_wrapper{
+    display: inline-block;
+    vertical-align: baseline;
+}
+.product_price_title{
+    font-size: 26rpx;
+}
+.product_price_wrapper{
+    font-size: 34rpx;
+}
+.product_price{
+    font-size: 34rpx;
+    font-weight: 600;
+}
+/*  */
+.bargain_info{
+    position: relative;
+    /* top: 546rpx;
+    left: 0; */
+    width: 100%;
+}
+.bargain_status{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 60rpx 35rpx 50rpx 35rpx;
+    box-sizing: border-box;
+    background: #fff;
+}
+.help_tips{
+    text-align: center;
+    font-size: 30rpx;
+    font-weight: 600;
+    margin-bottom: 30rpx;
+}
+.end_time{
+    text-align: center;
+    font-size: 26rpx;
+    font-weight: 600;
+}
+.calc_time{
+    font-size: 28rpx;
+}
+.bargain_proress_wrapper{
+    position: relative;
+    width:620rpx;
+    height: 120rpx;
+    margin: 40rpx auto 0 auto;
+}
+.bargain_proress{
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    width:620rpx;
+    height:14rpx;
+    background:rgba(178,178,178,1);
+    border:1px solid rgba(178, 178, 178, 1);
+    opacity:0.2;
+    border-radius:7px;
+}
+.haggle{
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    background: linear-gradient(to right,#FFB03E, #E11B1B);
+    height:15rpx;
+    border-radius:7px;
+    transition: width .4s linear;
+}  
+.haggle_circle{
+    position: absolute;
+    left: 50%;
+    bottom: 0;
+    transform: translateX(-50%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 40rpx;
+    height: 40rpx;
+    border-radius: 50%;
+    background: #E11B1B;
+}
+.haggle_circle_inner{
+    width: 16rpx;
+    height: 16rpx;
+    border-radius: 50%;
+    background: #fff;
+}
+.price_block{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width:668rpx;
+    margin-top: 20rpx;
+    margin-bottom: 50rpx;
+}
+.primary_price, .bargain_price{
+    font-size:26rpx;
+    color:rgba(0,0,0,1);
+}
+.money_sign3:before{
+    content: '￥';
+    font-size:26rpx;
+}
+.haggle_wrapper{
+    position: absolute;
+    left: 0;
+    bottom: -16rpx;
+    min-width: 126rpx;
+    height: 116rpx;
+    transition: left .4s linear;
+}
+.haggle_circle{
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 48rpx;
+    height: 48rpx;
+    border-radius: 50%;
+    background: #E11B1B;
+}
+.haggle_circle_inner{
+    width: 20rpx;
+    height: 20rpx;
+    background: #fff;
+}
+.haggle_price{
+    /* width: 100%; */
+    /* top: 16rpx; */
+    position: absolute;
+    top: -26rpx;
+    left: 50%;
+    transform: translateX(-50%);    
+    font-size: 22rpx;
+    z-index: 2;
+    color: #fff;
+    text-align: center;
+    opacity: 0;
+    transition: opacity .2s linear .6s;
+    white-space: nowrap;
+    padding: 22rpx 16rpx;
+    /* padding: 26rpx 20rpx; */
+    border-radius: 20rpx;
+    line-height: 22rpx;
+}
+
+.p_box{
+    position: absolute;
+    bottom: -10rpx;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 0;
+    height: 0;
+    border-left: 10rpx solid transparent;
+    border-right: 10rpx solid transparent;
+    border-top: 10rpx solid transparent; 
+}
+.tip_bg{
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 126rpx;
+    height: 68rpx;
+    z-index: 1;
+    opacity: 0;
+    transition: opacity .2s linear .6s;
+}
+.common_btn{
+    width: 392rpx;
+    margin: 0 auto;
+    height: 87rpx;
+    line-height: 87rpx;
+    text-align: center;
+    border-radius: 30px;
+    font-size: 28rpx;
+    color: #fff;
+    box-shadow: 0 0 10rpx 0 rgba(0,0,0,.1);
+}
+.interact_btn{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.common_btn2{
+    width: 280rpx;
+    height: 87rpx;
+    line-height: 87rpx;
+    text-align: center;
+    border-radius: 30px;
+    font-size: 28rpx;
+    color: #fff;
+    /* border: 1px solid; */
+    box-shadow: 0 0 10rpx 0 rgba(0,0,0,.1);
+}
+.common_btn._dis{
+    box-shadow: none;
+    color:#b2b2b2;
+}
+.buy{
+    margin-right: 26rpx;
+}
+
+.bg_distance{
+    width: 100%;
+    height: 10rpx;
+    background: #f5f5f5;
+}
+.bargain_record{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 46rpx 23rpx;
+    background: #fff;
+    /* padding-bottom: 146rpx; */
+}
+.add_btm{
+    /* padding-bottom: 180rpx; */
+}
+.bargain_record_title{
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    width: 600rpx;
+    height: 34rpx;
+    margin: 0 auto;
+    position: relative;
+    margin-bottom: 25rpx;
+}
+.line{
+    width: 240rpx;
+    height: 4rpx;
+}
+.line_wrap{
+    transform: rotate(180deg);
+}
+.friends{
+    text-align: center;
+    font-size: 24rpx;
+    color: #7f7f7f;
+    margin-bottom: 62rpx;
+}
+.friends_bargain{
+    display: flex;
+    align-items: flex-start;
+    justify-content: flex-start;
+    flex-wrap: wrap;
+    width: 710rpx;
+    margin-right: -26rpx;
+}
+.friends_bargain_item{
+    width: 120rpx;
+    overflow: hidden;
+}
+.friends_bargain_item {
+    margin-right: 26rpx;
+    margin-bottom: 20rpx;
+}
+.friends_bargain_item:nth-child(5n) {
+    margin-right: 0;
+}
+.avatar_wrapper{
+    position: relative;
+    width: 76rpx;
+    height: 88rpx;
+    margin: 0 auto;
+    margin-bottom: 14rpx;
+    overflow: hidden;
+}
+.avatar{
+    width: 74rpx;
+    height: 74rpx;
+    border-radius: 50%;
+}
+.is_self{
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    bottom: 0;
+    width: 100%;
+    height: 26rpx;
+    line-height: 26rpx;
+    text-align: center;
+    border-radius: 10px;
+    font-size: 20rpx;
+    color: #fff;
+}
+.friends_name{
+    width: 100%;
+    height: 30rpx;
+    line-height: 30rpx;
+    font-size: 24rpx;
+    margin-bottom: 20rpx;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    text-align: center;
+    overflow:hidden;
+}
+.money{
+    font-size: 24rpx;
+    text-align: center;
+}
+.pay_status{
+    font-size: 24rpx;
+    color: #7f7f7f;
+    margin-top: 20rpx;
+    text-align: center;
+}
+/* 弹窗 */
+.pop_bg {
+    position: fixed;
+    top: 0px;
+    left: 0px;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 2;
+}
+
+.msg_scroll {
+    height: 400rpx;
+    max-height: 400rpx;
+    margin-bottom: 88rpx;
+}
+
+.msg_pop_cont, .size_pop_cont{
+    position: fixed;
+    bottom: 0;
+    width: 750rpx;
+    padding: 25rpx;
+    box-sizing: border-box;
+    z-index: 999;
+    max-height: 850rpx;
+}
+
+.msg_c_title {
+    padding: 16rpx 0px;
+}
+
+.rule_content {
+    line-height: 40rpx;
+}
+
+.msg_collage_btn {
+    width: 700rpx;
+    height: 88rpx;
+    line-height: 88rpx;
+    color: #fff;
+    position: absolute;
+    bottom: 22rpx;
+    left: 25rpx;
+}
+
+.msg_title {
+    margin: 15rpx 0 40rpx 0;
+}
+
+.msg_img {
+    width: 20rpx;
+    height: 20rpx;
+    position: absolute;
+    right: 8rpx;
+    top: 24rpx;
+    padding: 20rpx;
+}
+
+.pop_bg.isshow {
+    animation: bg_show 0.32s;
+    animation-fill-mode: forwards;
+}
+
+.pop_bg.ishide {
+    animation: bg_hide 0.32s;
+    animation-fill-mode: forwards;
+}
+
+.style_cont.isshow {
+    animation: bottom_slip 0.32s;
+    animation-fill-mode: forwards;
+}
+
+.style_cont.ishide {
+    animation: bottom_slip_out 0.32s;
+    animation-fill-mode: forwards;
+}
+
+.msg_pop_cont.isshow {
+    animation: bottom_slip 0.32s;
+    animation-fill-mode: forwards;
+}
+
+.msg_pop_cont.ishide {
+    animation: bottom_slip_out 0.32s;
+    animation-fill-mode: forwards;
+}

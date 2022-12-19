@@ -1,0 +1,54 @@
+import AuthorizeSet from "./authorize-set.js"
+const Options = {
+  // duration: 10000,
+  numberOfChannels: 1,
+  format: 'mp3',
+}
+class recorderManager {
+    static getInstance() {
+        if (!recorderManager.instance) {
+            recorderManager.instance = new recorderManager();
+        }
+        return recorderManager.instance;
+    }
+    constructor() { 
+      // this._recordM = null;
+      this.options = JSON.parse(JSON.stringify(Options));
+		}
+    // get recordM(){
+    //   return this._recordM;
+    // }
+    getRecorder(options={},extra={}){
+      if(options){
+        for(let key in options){
+          this.options[key] = options[key];
+        }
+      }
+      return AuthorizeSet.checkAuthorize('record',()=>{
+        extra.isShowToast && uni.showToast({title:"开始录制语音"})
+      },()=>{
+        extra.isShowToast && uni.showToast({title:"授权失败,无法录音",icon:'fail'})
+      }).then(()=>{
+        let recordM = wx.getRecorderManager();
+        recordM.onInterruptionBegin(()=>{
+          recordM.stop();
+        })
+        return {recordM,options:this.options};
+      })
+    }
+    check(isShowToast){
+      let authorize = true;
+      return AuthorizeSet.checkAuthorize('record',(isAuthorize,isAlreadyAuthorize)=>{
+        if(!isAlreadyAuthorize){
+          isShowToast && uni.showToast({title:"授权成功"});
+        }
+      },()=>{
+        authorize = false;
+        isShowToast && uni.showToast({title:"授权失败,无法录音",icon:'fail'})
+      }).then(()=>{
+        return authorize;
+      })
+    }
+    
+}
+export default recorderManager.getInstance();

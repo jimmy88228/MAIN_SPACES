@@ -1,0 +1,51 @@
+<template>
+	<view class="user">
+		<custom-page :userInfo="bsnUserInfo" :hold-nav="true" nav-mode="None" ref="customPageRef"></custom-page>
+	</view>
+</template>
+
+<script>
+	const app = getApp();
+	const pageOption = Page.BasePage({
+		data() {
+			return {
+				imgUser:'',
+			}
+		},
+		// onShareAppMessage(e){},
+		methods: {
+			reFreshInfo(){
+				this._getUserInfo().then(res=>{
+					this.bsnUserInfo = res;
+				})
+			},
+			getMinePageDetail(){
+				return this.$Http(this.$Apis.getMinePageDetail,{
+				  other:{
+				    isShowLoad: true
+				  }
+				}).then(res=>{
+				  if(res.code == 1){
+				    let data = res.data || {};
+				    this.$refs["customPageRef"].initData(data);
+				  }
+				})
+			}
+		},
+		onShareAppMessage(e){
+			return {
+				// path: "/pages/user/user",
+			}
+		},
+		onShow(){
+			this._checkLogin().then(()=>{
+				this.reFreshInfo();
+			})
+			this.getMinePageDetail();
+		},
+	})
+	export default pageOption 
+</script>
+
+<style lang="scss" scoped>
+</style>

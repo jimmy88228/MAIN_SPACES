@@ -1,0 +1,191 @@
+<template>
+  <view>
+
+    <view class="time-select">
+      <template v-for="(item,i) in formatData">
+        <view class="flex" v-if="item.noExistExpired" :key="i">
+          <view class="flex-col-1 flex-c-c">
+            <view class="font-24">{{item.timeGroup}}</view>
+            <view class="font-20 C_B1 m-t-15" v-if="item.scheduleInfos.length>0 && item.existAppointment">已约满</view>
+          </view>
+          <view class="time-select-group" :style="i == formatData.length-1 && 'border-bottom:none;padding-bottom:0'">
+            <template v-if="item.scheduleInfos <= 0">
+              <view class="time-select-item flex-col  flex flex-c-c time-rest">
+                <view>休息</view>
+              </view>
+            </template>
+            <template v-else>
+              <template v-for="(timeItem,timeIndex) in item.scheduleInfos">
+                <view :style="timeItem.existAppointment && 'pointer-events: none;'"
+                  :class="['time-select-item','flex-col', 'flex','flex-c-c',timeItem.existAppointment && 'time-full',selecedtScheduleId === timeItem.scheduleId && 'time-select-item-act']"
+                  :key="timeIndex" :data-item="timeItem" @click="selectTime" v-if="!timeItem.existExpired">
+                  <view>{{timeItem.beginTime}}</view>
+                  <view>-</view>
+                  <view>{{timeItem.endTime}}</view>
+                  <view class="time-full-tips" v-if="timeItem.existAppointment">约满</view>
+                </view>
+              </template>
+            </template>
+          </view>
+        </view>
+      </template>
+    </view>
+  </view>
+</template>
+
+<script>
+  const pageOption = Page.BaseComp({
+    props: {
+      timeData: {
+        type: Object,
+        default: {
+          refreshData: true,
+          timeData: []
+        }
+      }
+    },
+    data() {
+      return {
+        moreIcon: '/more.png',
+        emptyIcon: "/list-empty.png",
+        selecedtScheduleId: "",
+        showLoading: true,
+        selectedItem: {
+          beginTime:"",
+          endTime:"",
+          existAppointment:"",
+          existExpired:"",
+          scheduleId:""
+        },
+        formatData: []
+      }
+    },
+    methods: {
+      selectTime({
+        currentTarget
+      }) {
+        let dataset = currentTarget.dataset || {};
+        let item = dataset.item || {};
+        this.selecedtScheduleId = item.scheduleId;
+        this.selectedItem = item;
+        this.$emit("selectedTime", item)
+      },
+      initSelected(){
+        this.selecedtScheduleId = "";
+        this.selectedItem = {
+          beginTime:"",
+          endTime:"",
+          existAppointment:"",
+          existExpired:"",
+          scheduleId:""
+        };
+        this.$emit("selectedTime", this.selectedItem)
+      }
+    },
+    watch: {
+      timeData: {
+        handler(nV) {
+          this.$nextTick(() => {
+            if (!nV.refreshData) {
+              this.formatData = nV.timeData
+              this.timeData.refreshData = false
+            } else {
+              this.selecedtScheduleId = ""
+              this.selectedItem = {}
+              this.$emit("selectedTime", {})
+              this.timeData.refreshData = true
+            }
+          })
+        },
+        immediate: true,
+        deep: true
+      }
+    }
+  })
+  export default pageOption
+</script>
+
+<style lang="scss" scoped>
+  .empty {
+    width: 100%;
+    height: 700rpx;
+    box-sizing: border-box;
+
+    .empty-icon {
+      width: 254rpx;
+      height: 254rpx;
+      margin: 0 auto 60rpx;
+    }
+  }
+
+  .time-select {
+    width: 100%;
+    padding: 26rpx;
+    box-sizing: border-box;
+    transition: height 0.5s;
+
+    .time-select-group {
+      width: 490rpx;
+      padding-bottom: 12rpx;
+      padding-top: 25rpx;
+      display: flex;
+      flex-wrap: wrap;
+      box-sizing: border-box;
+      border-bottom: 2rpx solid rgba($color: #979797, $alpha: 0.2);
+
+      .time-select-item {
+        width: 116rpx;
+        height: 122rpx;
+        border-radius: 33rpx;
+        font-size: 21rpx;
+        font-weight: bold;
+        box-sizing: border-box;
+        border: 1px solid #333333;
+        margin-right: 8rpx;
+        margin-bottom: 14rpx;
+        position: relative;
+
+        .time-full-tips {
+          position: absolute;
+          left: 0;
+          text-align: center;
+          font-size: 18rpx;
+          top: -14rpx;
+          width: 48rpx;
+          height: 27rpx;
+          background: #F7F7F7;
+          border-radius: 6rpx;
+          border: 2rpx solid #D4D4D4;
+        }
+      }
+
+      .time-select-item-act {
+        background: #DDFDD9;
+        opacity: 0.4;
+        border: 1px solid $uni-main-color;
+        color: $uni-main-color;
+      }
+
+      .time-full {
+        // background: rgba($color: #F7F7F7, $alpha: 0.4);
+        color: rgba($color: #222222, $alpha: 0.4);
+        border: 2rpx solid rgba($color: #333333, $alpha: 0.4);
+      }
+
+      .time-rest {
+        color: rgba($color: #222222, $alpha: 0.4);
+        background: rgba($color: #DDDDDD, $alpha: 0.4);
+        border: 2rpx solid rgba($color: #333333, $alpha: 0.4);
+      }
+
+      .time-select-item:nth-child(4n) {
+        margin-right: 0;
+      }
+    }
+  }
+
+  .loading-view {
+    width: 100%;
+    height: 100%;
+  }
+</style>

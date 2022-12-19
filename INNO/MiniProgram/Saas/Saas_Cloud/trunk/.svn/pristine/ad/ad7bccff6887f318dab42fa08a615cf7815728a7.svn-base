@@ -1,0 +1,30 @@
+.prom_labels_container{
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.label_content_container{
+  max-width: 100%;
+  margin-right: 8rpx;
+  margin-top: 2rpx;
+  margin-bottom: 2rpx;
+}
+.single_label_item{
+  /* background: linear-gradient(to right,#F6D1A7, #ec9c41); */
+  background: #ec7500;
+  padding: 12rpx 12rpx;
+  border-radius: 4rpx;
+  font-size: 24rpx;
+  color: #ffffff;
+  max-width: 100%;
+}
+.single_label_item:not(:last-of-type){
+  margin-right: 8rpx;
+}
+.text-flow {
+  word-break: break-all;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  letter-spacing: 0;
+  white-space: nowrap;
+}

@@ -1,0 +1,95 @@
+<view class='tab_box'>
+  <view wx:for="{{tabShow}}" wx:key="index" class='tab_item {{current==item.id?"bold":""}}' catchtap='handleTab' data-type="{{item.id}}" style='{{"color:"+brand_info.style.font_color+";"}}'>
+    <view class=''>
+      <text class='vertical mr_10'>{{item.txt}}</text>
+      <text style='color:{{brand_info.style.font_color}}' class='minWidth  ml_5 vertical bold font_32'>{{item.id==0?develop_mum:binding_staffs}}</text>
+      <text class="vertical" style='color:{{brand_info.style.font_color}};'>人</text>
+    </view>
+    <block wx:if="{{staff_code}}">
+      <view class='staff_code {{staff_show_user_dock != 1?"end":""}}'>{{staff_code}}</view>
+      <view wx:if="{{staff_show_user_dock == 1}}" bindtap="onTap" data-type="sync" class="img-sync-box absolute flex-s-c">
+        <!-- <image src="{{img_sync}}" mode="aspectFit" class="img-sync"></image> -->
+        <view style="background-color: {{brand_info.style.bg_color}};" hover-class="none" class="sync-btn flex-c-c">同步会员</view>
+      </view>
+    </block>
+  </view>
+  <view class='line' wx:if="{{tabShow.length>1}}" style='background:{{brand_info.style.bg_color}};left:{{leftWidth}}'></view>
+</view>
+<view class='title' style='{{l_bg_color}} color:{{brand_info.style.font_color}}'>
+  <view class='flex'>粉丝昵称</view>
+  <view class='flex Small arrow_box' bindtap="onTap" data-type="time_show">
+    <view class="arrow_text">{{cur_text||"加入时间"}}</view>
+    <view class="arrow" style="border-top-color:{{brand_info.style.bg_color}};"></view>
+
+    <view wx:if="{{timeBoxShow}}" class="btn_time_bg" catchtap="onTap" data-type="time_cancel"></view>
+    <view class="timeBox" style="{{timeBoxShow?'display:flex;':''}}" catchtap="onTap" data-type="time_cancel">
+      <view class="t_b_item" wx:if="{{!cur_text}}">
+        <text class="arrow_text">加入时间</text>
+        <view class="arrow" style="border-top-color:{{brand_info.style.bg_color}};"></view>
+      </view>
+      <view class="t_b_item" wx:else>
+        <text class="arrow_text">{{cur_text}}</text>
+        <view class="arrow" style="border-top-color:{{brand_info.style.bg_color}};"></view>
+      </view>
+      <view wx:if="{{item.sort!=cur_sort}}" catchtap="onTap" data-type="time_sel" data-sort="{{item.sort}}" data-name="{{item.name}}" class="t_b_item" wx:for="{{timeBox}}" wx:key="sort">
+        <text>{{item.name}}</text>
+      </view>
+    </view>
+  </view>
+  <view class='flex'>等级</view>
+  <!-- <view class='flex Large'>手机</view> -->
+  <view class='flex Large'>卡号</view>
+</view>
+<!-- <view class='scroll_tabs'> -->
+<scroll-view hidden='{{none[current]}}' lower-threshold='100' class='scroll_box' bindscrolltolower="handleScroll" scroll-y>
+  <view class='content' wx:for="{{list[current]}}" wx:key="key" data-name="{{item.real_name}}" data-card_num="{{item.card_num}}" data-type="show" data-rank="{{item.rank_name}}" data-join-time="{{item.reg_time}}" data-mobile_phone="{{item.mobile_phone}}"
+    catchtap='showDetail'>
+    <view class='user flex'>
+      <text class="user_name">{{item.real_name}}</text>
+    </view>
+    <view class='time_box Small'>
+      <view class='date'>{{item.reg_time[0]}}</view>
+      <view class='time'>{{item.reg_time[1]}}</view>
+    </view>
+    <view class='flex'>{{item.rank_name}}</view>
+    <view class='flex price_box Large'>
+      <view class='min_box'>
+        <!-- <text>{{item.mobile_phone}}</text> -->
+        <text>{{item.card_num}}</text>
+      </view>
+      <!-- <image src="{{staff_right}}" mode='widthFix' class='img'></image> -->
+    </view>
+
+  </view>
+</scroll-view>
+<view class='none' hidden='{{!none[current]}}'>没有找到任何结果</view>
+<view class='date_box {{filter?"isShow":"isHide"}}'>
+  <view class='content_box box_title'>
+    <view class='left'>粉丝详情</view>
+    <view class='right'></view>
+  </view>
+  <view class='content_box'>
+    <view class='left'>昵称</view>
+    <view class='right'>{{name}}</view>
+  </view>
+  <view class='content_box'>
+    <view class='left'>用户等级</view>
+    <view class='right'>{{rank}}</view>
+  </view>
+  <!-- <view class='content_box'>
+            <view class='left'>最后点击</view>
+            <view class='right'>{{last}}</view>
+        </view> -->
+  <view class='content_box'>
+    <view class='left'>卡号</view>
+    <view class='right'>{{card_num}}</view>
+    <!-- <view class='left'>手机</view>
+    <view class='right'>{{mobile_phone}}</view> -->
+  </view>
+  <view class='content_box'>
+    <view class='left'>加入时间</view>
+    <view class='right'>{{joinTime}}</view>
+  </view>
+</view>
+<!-- </view> -->
+<view class='black_bg {{filter?"isShow":"isHide"}}' catchtap='showDetail'></view>

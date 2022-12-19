@@ -1,0 +1,22 @@
+<!--pages/micro_mall/shopping/cart_list/tips_window/tips_window.wxml-->
+<window class="window" ext-class="window-ext">
+  <view class="box" style="{{boxStyle}}" catchtouchmove="_noFn">
+    <block wx:if="{{type != 'fail'}}">
+      <view class="tips_title">{{title}}</view>
+      <view class="content">
+        <view class="tips_box" wx:for="{{tipsArr}}" wx:key="index">
+          <image src="{{item.goodsImg}}" mode="aspectFit" class="img_goods"></image>
+          <view class="goods_title">{{item.goodsName}}</view>
+        </view>
+      </view>
+      <button hover-class="none" class="btn" catchtap="close">知道了</button>
+    </block>
+    <block wx:else>
+      <view class="fail_box">
+        <text class="fail_title">{{text}}</text>
+        <!-- <view class="fail_title" wx:for="{{text}}" wx:key="index">{{item}}</view> -->
+      </view>
+      <button hover-class="none" class="btn" catchtap="close">关闭</button>
+    </block>
+  </view>
+</window>

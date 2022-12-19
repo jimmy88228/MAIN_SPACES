@@ -1,0 +1,47 @@
+{
+    "projectname": "%E5%BF%AB%E9%80%9F%E4%BA%A4%E6%98%93",
+    "setting": {
+        "compileHotReLoad": true
+    },
+    "description": "项目私有配置文件。此文件中的内容将覆盖 project.config.json 中的相同字段。项目的改动优先同步到此文件中。详见文档：https://developers.weixin.qq.com/miniprogram/dev/devtools/projectconfig.html",
+    "libVersion": "2.25.4",
+    "condition": {
+        "plugin": {
+            "list": []
+        },
+        "game": {
+            "list": []
+        },
+        "gamePlugin": {
+            "list": []
+        },
+        "miniprogram": {
+            "list": [
+                {
+                    "name": "",
+                    "pathName": "pages/main/index/index",
+                    "query": "aa=22",
+                    "scene": 1005
+                },
+                {
+                    "name": "",
+                    "pathName": "pages/tabs/user/user",
+                    "query": "jimmy=441",
+                    "scene": null
+                },
+                {
+                    "name": "pages/tabs/user/user",
+                    "pathName": "pages/tabs/user/user",
+                    "query": "",
+                    "scene": null
+                },
+                {
+                    "name": "pages/tabs/user/update_avatar/update_avatar",
+                    "pathName": "pages/tabs/user/update_avatar/update_avatar",
+                    "query": "",
+                    "scene": null
+                }
+            ]
+        }
+    }
+}

@@ -1,0 +1,92 @@
+<template>
+  <Tabs :value="curTab" @on-click="changeTab" class="answer-list-index" :class="'list-len-'+listTabs.length">
+      <TabPane :label="item.model_name" :name="item.name" v-for="(item,index) in listTabs" :key="index">
+        <div v-show="curIndex == index" :class="listTabs.length>1?'mt-style':''">
+          <answerList :ref="item.name" :isShowTitle="listTabs.length==1"></answerList>
+        </div>
+      </TabPane>
+  </Tabs>
+</template>
+
+<script>
+import answerList from './list.vue'
+export default {
+  components: {
+    answerList,
+  },
+  data(){
+    return {
+      recordId: 0,
+      modelId: 0,
+      modalShow: false,
+      answerData: [],
+      type: "",
+      schoolId: 0,
+      loading: false,
+      modelName: '',
+      curTab:"",
+      listTabs:[],
+      curIndex:0
+    }
+  },
+  methods:{ 
+    getList(){
+        let recordId = this.pageQuery.recordId || "";
+        let modelId = this.pageQuery.modelId || "";
+          return this.$MainApi.getAssignModelList({
+                data: { 
+                    record_id: recordId + "", 
+                },
+            })
+            .then((res) => {
+                let items = res.data && res.data.items||[];
+                items.forEach((item,index)=>{
+                    item.name = 'tab'+item.model_id+'_'+item.record_id;
+                })
+                this.listTabs = items;
+                this.$nextTick(()=>{
+                    let tabName = ''
+                    if(recordId && modelId){
+                        tabName = 'tab' + modelId + '_' + recordId;
+                    } else {
+                        tabName = items[0].name;
+                    }
+                    this.changeTab(tabName);
+                })
+            })
+    },
+    changeTab(name){
+        this.curTab = name;
+        let curIndex = 0;
+        let item = this.listTabs.find((item,index)=>{
+            curIndex = index;
+            return item.name == name;
+        })
+        this.curIndex = curIndex;
+        this.$refs[this.curTab] && this.$refs[this.curTab][0].loadData({modelId:item.model_id,recordId:item.record_id});
+    }
+    
+  },
+  mounted(){
+    this.getList();
+  }
+}
+</script>
+
+<style lang="less">
+.answer-list-index{
+    &.list-len-1{
+        .ivu-tabs-bar{
+            display: none;
+        }
+    }
+}
+</style>
+
+<style lang="less" scoped>
+.answer-list-index{
+    .mt-style{
+        margin-top: 40px;
+    }    
+}
+</style>

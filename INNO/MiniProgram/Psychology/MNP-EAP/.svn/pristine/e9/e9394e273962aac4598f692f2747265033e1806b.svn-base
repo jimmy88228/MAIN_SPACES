@@ -1,0 +1,132 @@
+<style lang="scss">
+</style>
+<template>
+	<div></div>
+</template>	
+
+<script>
+/**
+ * 客服websocket 组件
+ */
+export default {
+	name: 'kefuWebsocket',
+	data() {
+		return {
+			timeoutObj:null,
+			serverTimeoutObj:null,
+			reconnectData:null,
+			lockReconnect:false,    // 避免重复连接，因为onerror之后会立即触发 onclose
+			
+			wsUrl: '',
+			closeWs: true,
+		}
+	},
+	methods:{
+		// 初始化websocket，提供给父组件使用
+		initData( info ){
+			this.wsUrl = info.wsUrl +'user/'+ uni.getStorageSync('userToken');
+			this.closeWs = false;
+			
+			// 连接websocket
+			uni.connectSocket({
+				url: this.wsUrl,
+			});
+			
+			// websocket事件
+			uni.onSocketOpen( (res) => {
+				console.log('kefu-WebSocket连接已打开！');
+				
+				// 打开链接后，开启心跳
+				this.heartBeat();
+			});
+			uni.onSocketMessage( (res) => {
+				console.log('收到服务器内容：' + res.data);
+				
+				// 把收到的信息发给父组件处理
+				this.$emit('on-message', JSON.parse(res.data) );
+				
+				// 收到消息会刷新心跳检测，如果一直收到消息，就推迟心跳发送
+				this.heartBeat();
+			});
+			uni.onSocketError( (res) => {
+				if( process.env.NODE_ENV === 'development' ){
+					uni.showToast({
+						title: 'ws出错',
+						icon: 'none',
+					});
+				}
+				
+				// 触发websocket 的重连
+				this.reconnect();
+			});
+			uni.onSocketClose( (res) => {
+				console.log('kefu-WebSocket 已关闭！');
+				
+				// 触发websocket 的重连
+				this.reconnect();
+			});
+		},
+		// websocket 心跳
+		heartBeat(){
+			if( this.closeWs ){
+				// 关闭ws 的情况下，不再发送心跳
+				return;
+			}
+			
+			this.timeoutObj && clearTimeout(this.timeoutObj);
+			this.serverTimeoutObj && clearTimeout(this.serverTimeoutObj);
+			
+			this.timeoutObj = setTimeout(()=>{
+				var page = getCurrentPages();
+				
+				// 发送心跳数据 
+				uni.sendSocketMessage({
+					data: JSON.stringify({
+						action: "heart",
+						current_router: page[page.length-1].route,
+					}),
+				});
+				console.log('发送心跳数据...' ); 
+				this.serverTimeoutObj = setTimeout(()=> {
+					// 如果  N秒之后没有收到 后台返回的心跳检测数据 断开socket，断开后会启动重连机制
+					uni.closeSocket();
+				}, 10000); // 心跳得不到响应，发生重连的时间
+			}, 30000 ); // 30s 一次心跳监测
+		}, 
+		// socket重连
+		reconnect( ){
+			if( this.closeWs ){
+				// 关闭ws 的情况下，不再重连
+				return;
+			}
+			
+			console.log('reconnect...');
+			//这里很关键，因为连接失败之后之后会相继触发 连接关闭，不然会连接上两个 WebSocket
+			if( this.lockReconnect ){
+				console.log('return reconnect');
+				return ;
+			}
+			else{
+				var that = this;
+				this.lockReconnect = true;
+				this.reconnectData && clearTimeout( this.reconnectData );
+				this.reconnectData = setTimeout( ()=>{
+					console.log('reconnecting');
+		
+					// 重新发起websocket
+					uni.connectSocket({
+						url: this.wsUrl,
+					});
+		
+					that.lockReconnect = false;
+				},3000); // 发起重连的停顿时间
+			}
+		}, 
+	},
+	destroyed(){
+		this.closeWs = true;
+		// 退出页面，自动关闭ws
+		uni.closeSocket();
+	}
+}
+</script>		

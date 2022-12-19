@@ -1,0 +1,37 @@
+<!--pages/micro_mall/lottery/confirm_prize/confirm_prize.wxml-->
+<view class="confirm_prize">
+    <view class="gift_status">
+        <view class="status_text">{{statusText}}</view>
+        <view class="tips" wx:if="{{status == 0}}">请完善收货信息,领取奖品</view>
+        <view class="order express_area" wx:if="{{expressNo}}">
+          <view>物流单号: {{expressNo}}</view>
+          <view class="check_express" data-express-no="{{expressNo}}"  catchtap="checkExpress">查看物流</view>
+        </view>
+    </view>
+    <view class="adress_module">
+        <view class="address_title">
+            <view>收货地址</view>
+        </view>
+        <view class="address_content" bindtap="{{status === 0 ? 'changeAddress' : ''}}">
+            <view class="user_info" wx:if="{{isSelected}}">
+                <view class="item strong_item">{{consignee}} {{mobileNo}}</view>
+                <view class="item">{{addressDetail}}</view>
+            </view>
+            <view class="user_info" wx:else>
+                请选择地址
+            </view>
+            <image src="{{rightbutton}}" class="r_arrow" mode="widthFix" wx:if="{{status === 0}}"/>
+        </view>
+        <view class="prize">
+            <view class="prize_inner">
+                <image class="prize_icon" mode="widthFix" src="{{prizeImg}}"/>
+                <view class="prize_name">{{prizeName}}</view>
+            </view>
+        </view>
+    </view>
+    <view class="time">
+        <view class="time_title">中奖时间</view>
+        <view class="create_time">{{createTime}}</view>
+    </view>
+    <button wx:if="{{status == 0}}" class="confirm_btn" bindtap="confirm">领取奖品</button>
+</view>

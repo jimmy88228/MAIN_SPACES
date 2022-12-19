@@ -1,0 +1,81 @@
+<!--pages/integral/myIntegral.wxml-->
+<view class="integralPage {{showTab ? 'tab_top' : ''}}" hidden='{{showImg}}'>
+    <view class="integral_head">
+        <view wx:if="{{showTab}}" class='tab_box oh ordertTab'>
+            <view 
+            class="fl orderTabTit {{currentIndex == indexNum ? 'current' : 'C_7f'}}" 
+            style="{{ currentIndex == indexNum  ? 'color: '+brand_info.style.font_color+';border-color:'+brand_info.style.font_color+';' : '' }}" 
+            wx:for="{{tabList}}" 
+            wx:key="label" 
+            wx:for-index="indexNum"
+            data-num="{{indexNum}}" 
+            catchtap="changeTab">
+                <text>{{item.value}}</text>
+                <view class='lines' wx:if="{{currentIndex == indexNum}}" style="background: {{brand_info.style.font_color}}"></view>
+            </view>
+        </view>
+        <view class="integralState">
+            <view class="integralTxt" hidden='{{currentIndex != tabList[0].label}}'>
+                <view class="table">
+                    <view class="table_cell" wx:if="{{integral_info.enable_exchange_tips == 1 && tempShow}}">可用积分<text>（100积分 = {{integral_info.exchange_rate * 100}}元）</text>
+                    </view>
+                    <view class="table_cell integral_operates"></view>
+                </view>
+                <view class="integralTit">
+                    <view>可用积分</view>
+                    <view wx:if="{{integral_info.historyPoint && integral_info.historyPoint>0}}">累积积分 {{integral_info.historyPoint}}</view>
+                </view>
+                <view class="integralNum">
+                    <text class="integralNumTxt">{{integral_info.totalPoint}}</text>
+                    <view class="integralNumTip bg_E70408 inline_b" wx:if="{{integral_info.enable_exchange_tips == 1 && tempShow}}">
+                        可抵{{integral_info.exchange_money}}元
+                        <image class="num_tip_icon" src="{{deduction_url}}" mode="widthFix" />
+                    </view>
+                </view>
+            </view>
+            <view class="integralTxt" hidden='{{currentIndex != tabList[1].label}}'>
+                <view class="integralTit">
+                    <view>近一个月失效积分</view>
+                </view>
+                <view class="integralNum">
+                    <text class="integralNumTxt">{{totalExpirePoint}}</text> 
+                </view>
+            </view> 
+            <image src="{{url}}" mode='widthFix' />
+            <view class='bg_color' style='background:{{brand_info.style.bg_color}};'></view>
+        </view>
+    </view>
+    <!-- <view class="integralList">
+    <view class="integralItem" wx:for="{{integral_list}}" wx:key="index">
+      <view class="oh">
+        <text class="fl"  style="{{item.point > 0 ? 'color:'+brand_info.style.font_color+';' : '' }}">积分数: {{item.point }}</text>
+        <text class="fr">{{item.operDate}}</text>
+      </view>
+      <view class="oh">
+        <text class="fl">{{item.remark}}</text>
+      </view>
+    </view>
+  </view> -->
+    <view class='title_box' hidden='{{currentIndex!= tabList[1].label || (integral_list.length == 0)}}'>
+        <view class='title'>积分失效日期</view>
+        <view class='title'>即将失效积分</view>
+    </view>
+    <view class="list_area">
+        <scroll-view scroll-y style="padding-top:{{(currentIndex == tabList[1].label && (integral_list.length != 0)) ? '92' : '0'}}rpx)" bindscrolltolower="handle_scroll" class='integral_list'>
+            <view class='integral_item' hidden='{{currentIndex!= tabList[0].label}}' wx:for="{{integral_list}}" wx:key="index">
+                <view class='time_item'>
+                    <view class='time_info'>{{item.operDate}}</view>
+                    <view class='remark'>{{item.remark}}</view>
+                </view>
+                <view class='integral'>{{item.point>0?'+':''}}{{item.point}}</view>
+            </view>
+            <view class='expire_box' hidden='{{currentIndex!= tabList[1].label}}' wx:for="{{integral_list}}" wx:key="index">
+                <view class='font_24 flex_1'>{{item.expireDate}}</view>
+                <view class='flex_1 bold'>{{item.expirePoint}}</view>
+            </view>
+            <view class="no_data_area" wx:if="{{integral_list.length == 0}}">暂时没有记录</view>
+        </scroll-view>
+    </view>
+</view>
+<!--首页-->
+<pageHome id="pageHome"></pageHome>

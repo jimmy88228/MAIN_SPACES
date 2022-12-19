@@ -1,0 +1,310 @@
+<template>
+  <div class="audio-edit-form">
+    <div class="flex">
+      <Form :label-width="100" style="width:auto;" :model="formData" ref="formDataRef" :rules="ruleValidate">
+        <FormItem label="上传音频" prop="path">
+          <uploadBtn 
+          type="AUDIO" 
+          :isMulti="false" 
+          name="file" 
+          :extraParams="{file_type: 'audio'}"
+          :customUploading="uploadIng"
+          @beforeUpload="uploadIng = true;"
+          @uploadSuccess="uploadSuccess"
+          @handleUploadError="uploadIng = false"
+          @handleFormatError="uploadIng = false"
+          @handleMaxSize="uploadIng = false"
+          >
+            <Button :loading="uploadIng" type="primary">{{ formData.path ? '重新上传' : '上传音频' }}</Button>
+          </uploadBtn>
+          <p class="upload-file" v-if="uploadAudio.fileName">{{uploadAudio.fileName}}</p>
+          <custom-input v-show="false" v-model="formData.path" />
+        </FormItem>
+        <FormItem label="音频名称" prop="title">
+          <custom-input size="large" class="base-320" v-model="formData.title" :show-word-limit="true" :maxlength="30"></custom-input>
+        </FormItem>
+        <FormItem label="音频封面" prop="cover_pic">
+          <img-view 
+          uploadType="audio"
+          :img="formData.cover_pic" 
+          @selectImg="(data)=>{ selectImg(data, 'cover_pic') }" 
+          :width="87" 
+          @delImg="formData.cover_pic = ''"></img-view>
+          <p class="desc-notice">建议尺寸：800像素 * 800像素，图片大小不得超过 2M</p>
+        </FormItem>
+        <FormItem label="音频背景" prop="bg_pic">
+          <img-view 
+          uploadType="audio"
+          :img="formData.bg_pic" 
+          @selectImg="(data)=>{ selectImg(data, 'bg_pic') }" 
+          width="89" 
+          height="116" 
+          @delImg="formData.bg_pic = ''"></img-view>
+          <p class="desc-notice">建议尺寸：600像素 * 1300像素，图片大小不得超过 3M</p>
+        </FormItem>
+        <FormItem label="音频分组" prop="group_id">
+          <data-select :defaultValue="0" type="audio-group" valueKey="group_id" nameKey="group_name" size="large" class="base-320" v-model="formData.group_id"></data-select>
+        </FormItem>
+      </Form>
+      <div class="audio-preview">
+        <div class="preview-item" :class="isDetail ? 'preview-item-detail' : ''">
+          <div class="preview-title">音频封面详情效果</div>
+          <div class="preview-cont" :style="isDetail ? 'background-image:url('+ formData.bg_pic +');' : ''">
+            <div class="preview-backdrop" v-if="!isDetail">
+              <img :src="formData.cover_pic"/>
+            </div>
+            <div class="cont-main">
+              <p class="text-flow">{{formData.name}}</p>
+              <img :src="formData.cover_pic" v-if="!isDetail"/>
+            </div>
+            <operateBar style="position:absolute; left:0px;bottom:0px; width:100%;"></operateBar>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div style="margin-left:100px;">
+        <Button style="padding: 0px 30px;" type="primary" @click="confirm">确 认</Button>
+      </div>
+  </div>
+</template>
+
+<script>
+import operateBar from "../components/operate-bar.vue";
+import uploadBtn from "@/components/UI-components/module/upload-view/upload.vue";
+export default {
+  components: { operateBar, uploadBtn },
+  data() {
+    return {
+      formData: {
+        title: "",
+        cover_pic: "",
+        bg_pic: "",
+        description: "",
+        path: "",
+        time_length: "",
+        group_id: 0
+      },
+      uploadIng: false,
+      uploadAudio: {},
+      ruleValidate: {
+        path: [
+          {
+            required: true,
+            validator: this._checkString,
+            trigger: "blur",
+            message: "请上传音频",
+          },
+        ],
+        title: [
+          {
+            required: true,
+            validator: this._checkString,
+            trigger: "blur",
+            message: "请填写音频名称",
+          },
+        ],
+        cover_pic: [
+          {
+            required: true,
+            validator: this._checkString,
+            trigger: "blur",
+            message: "请上传音频封面图",
+          },
+        ],
+        // bg_pic: [
+        //   {
+        //     required: true,
+        //     validator: this._checkString,
+        //     trigger: "blur",
+        //     message: "请上传音频详情背景图",
+        //   },
+        // ],
+        // group_id: [
+        //   {
+        //     required: true,
+        //     validator: this._checkThanInt,
+        //     message: "请选择音频分组",
+        //     trigger: "blur",
+        //   },
+        // ],
+      },
+    };
+  },
+  computed:{
+    isDetail(){
+      return this.formData.bg_pic
+    }
+  },
+  methods: {
+    loadData(){
+      let pageQuery = this.pageQuery || {};
+      let id = Number(pageQuery.id) || 0;
+      if(id){
+        this.formData.id = id;
+        this.$store.commit("setPageLoading", true);
+        return this.$MainApi
+        .getAudioInfo({
+          data: {
+            id: id
+          },
+        })
+        .then((res) => {
+          if (res.code) {
+            let data = res.data || {};
+            let formData = {
+              id: id,
+              title: data.title || "",
+              cover_pic: data.cover_pic || "",
+              bg_pic: data.bg_pic || "",
+              path: data.path || "",
+              time_length: data.time_length || "",
+              group_id: Number(data.group_id) || 0
+            }
+            this.formData = formData || {};
+          }
+        }).finally(()=>{
+          this.$store.commit("setPageLoading", false);
+        })
+      }
+    },
+    selectImg(data, key){
+      console.log("selectImg",data);
+      this.formData[key] = data;
+    },
+    uploadSuccess(data){
+      console.log("data", data);
+      this.uploadIng = false;
+      let detail = data[0].src || {};
+      this.uploadAudio = detail;
+      this.formData.path = detail.filePath;
+      this.formData.time_length = detail.duration;
+      this.formData.cover_pic = detail.coverImage;
+    },
+    confirm(){
+      this.$refs["formDataRef"].validate((valid) => {
+          if (valid) {
+            this.confirmReq();
+          } else {
+              this.$Message.error('请完善相关信息');
+          }
+      })
+    },
+    confirmReq(){
+      let formData = this.formData;
+      let req = Number(formData.id) ? 'audioUpdate' : 'audioAdd';
+      this.$store.commit("setPageLoading", true);
+      return this.$MainApi[req]({
+          data: formData,
+        })
+        .then((res) => {
+          if (res.code) {
+            this.$Message.success(res.message || (Number(formData.consultant_id) ? '编辑成功' : '添加成功'))
+            this.$router.back();
+          } else {
+            this.$Message.warning(res.message || (Number(formData.consultant_id) ? '编辑失败' : '添加失败'))
+          }
+        }).finally(()=>{
+          setTimeout(()=>{
+            this.$store.commit("setPageLoading", false);
+          }, 350)
+        })
+    }
+  },
+  mounted(){
+    this.loadData();
+  }
+};
+</script>
+
+<style lang="less" scoped>
+.audio-edit-form{
+  .upload-file{
+    margin-top: 10px;
+    padding-left: 25px;
+    line-height: 25px;
+    background-image:url("~@/assets/images/file.png");
+    background-repeat: no-repeat;
+    background-size: 18px 22px;
+    background-position: left center;
+  }
+  .audio-preview{
+    display: flex;
+    padding-left: 10%;
+    .preview-item{
+      padding: 0px 10px;
+    }
+    .preview-title{
+      font-size: 13px;
+      font-family: PingFangSC-Regular, PingFang SC;
+      font-weight: 400;
+      color: #7F7F7F;
+      line-height: 18px;
+      margin-bottom: 10px;
+    }
+    .preview-cont{
+      width:300px;
+      height: 533px;
+      border: 1px solid #eee;
+      background-color:#FCFCFC;
+      position: relative;
+      overflow: hidden;
+      background-repeat:no-repeat;
+      background-size: 100% auto;
+      background-position: center center;
+      .preview-backdrop{
+        position:absolute;
+        top:0px;
+        left: 0px;
+        width:100%;
+        height:100%;
+        -webkit-filter: blur(90px);   
+        filter: blur(90px);
+        overflow: hidden;
+        img{
+          position:absolute;
+          top: 30%;
+          left: 50%;
+          transform: translate(-50%, -50%);
+          width:150%;
+        }
+      }
+      .preview-backdrop::after{
+        content: '';   
+        position: absolute;   
+        top: 0;
+        right: 0;
+        bottom: 0; 
+        left: 0;
+        opacity: 0.5;
+        -webkit-filter: blur(100px);   
+        filter: blur(100px);
+        background-color:#fff;
+      }
+      .cont-main{
+        position: absolute;
+        top: 90px;
+        left: 50%;
+        transform: translateX(-50%);
+        font-family: PingFangSC-Regular, PingFang SC;
+        p{
+          margin-bottom: 10px;
+          font-size: 14px;
+        }
+        img{
+          width: 120px;
+          display: block;
+          margin: 0 auto;
+        }
+      }
+    }
+    .preview-item-detail{
+      .cont-main{
+        p{
+          color:#efefef;
+        }
+        
+      }
+    }
+  }
+}
+</style>

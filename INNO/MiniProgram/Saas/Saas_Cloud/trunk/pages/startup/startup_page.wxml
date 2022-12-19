@@ -1,0 +1,8 @@
+<!--pages/startup/startup_page.wxml-->
+<import src="/components/css3/loading/loading-around/loading-around.wxml" />
+<view class="position_r">
+  <view class="start_up_tip flex-c-c flex-col">
+    <template is="loading-around"></template>
+    <view class="tip">跳转中</view>
+  </view>
+</view>

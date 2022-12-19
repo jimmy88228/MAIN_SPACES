@@ -1,0 +1,252 @@
+<template>
+    <div>
+        <Drawer class="page-drawer-area" :transfer="false" :inner="true" :closable="false" v-model="drawerShow" :width="530">
+            <div class="class-edit-area" :style="'padding-top:' +  _pageScrollTop + 'px;'" v-bar>
+                <div>
+                    <div class="edit-title bold">{{title}}</div>
+                    <div class="edit-cont">
+                        <div class="edit-cont-area">
+                            <Form :label-width="100" :model="studentInfo" ref="studentInfoForm" :rules="ruleValidate">
+                                <FormItem label="姓名" prop="name">
+                                    <Input class="base-320" v-model="studentInfo.name"></Input>
+                                </FormItem>
+                                <FormItem label="学号" prop="new_student_number">
+                                    <Input class="base-320" v-model="studentInfo.new_student_number"></Input>
+                                </FormItem>
+                                <FormItem label="性别" prop="sex">
+                                    <RadioGroup v-model="studentInfo.sex">
+                                        <Radio :label="item.id" v-for="item in sexGroup" :key="item.key">{{item.name}}</Radio>
+                                    </RadioGroup>
+                                </FormItem>
+                                <FormItem label="校区" prop="campus_id">
+                                    <campusSelect class="base-320" v-model="studentInfo.campus_id" :schoolId="studentInfo.school_id" @change="changeCampus"></campusSelect>
+                                </FormItem>
+                                <FormItem label="学年" prop="campus_id">
+                                    <!-- <campusSelect class="base-320" v-model="studentInfo.campus_id" :schoolId="studentInfo.school_id" @change="changeCampus"></campusSelect> -->
+                                    <date-time format="yyyy" v-model="studentInfo.school_year" type="year"></date-time>
+                                </FormItem>
+                                <FormItem label="班级" prop="grade_id">
+                                    <data-select class="base-320" type="grade" ref="gradeSelectRef" v-model="studentInfo.grade_id" :params="{ campus_id: studentInfo.campus_id }" valueKey="class_id" nameKey="class_name"></data-select>
+                                </FormItem>
+                            </Form>
+                            <div class="edit-foot">
+                                <Button class="m-r-10" type="primary" @click="checkStudentInfo">保存</Button>
+                                <Button @click="drawerShow = false">取消</Button>
+                            </div>
+                            <Spin fix v-if="pageLoading"></Spin>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </Drawer>
+    </div>
+</template>
+
+<script>
+import campusSelect from "@/components/view-components/campus-select/index";
+export default {
+    name: "editSchoolMaint",
+    props: {
+        title: {
+            type: String,
+            default: "档案编辑",
+        },
+    },
+    components: { campusSelect },
+    data() {
+        return {
+            drawerShow: false,
+            structureId: 0,
+            sexGroup: [
+                {
+                    key: "male",
+                    id: 1,
+                    name: "男",
+                },
+                {
+                    key: "female",
+                    id: 2,
+                    name: "女",
+                },
+            ],
+            studentInfo: {
+                school_id: 0,
+                old_student_number: "",
+                new_student_number: "",
+                name: "",
+                sex: -1,
+                grade_id: 0,
+                campus_id: 0,
+                school_year: ''
+            },
+            adminList: [],
+            ruleValidate: {
+                new_student_number: [
+                    {
+                        required: true,
+                        type: "string",
+                        validator: this._checkString,
+                        message: "请完善学生学号",
+                        trigger: "change",
+                    },
+                ],
+                name: [
+                    {
+                        required: true,
+                        type: "string",
+                        validator: this._checkString,
+                        message: "请填写学生名称",
+                        trigger: "change",
+                    },
+                ],
+                school_year: [
+                    {
+                        required: true,
+                        type: "string",
+                        validator: this._checkString,
+                        message: "请选择学年",
+                        trigger: "change",
+                    },
+                ],
+                sex: [
+                    {
+                        required: true,
+                        type: "number",
+                        validator: this._checkThanInt,
+                        message: "请选择学生性别",
+                        trigger: "blur",
+                    },
+                ],
+                grade_id: [
+                    {
+                        required: true,
+                        type: "number",
+                        validator: this._checkThanInt,
+                        message: "请选择学生班级",
+                        trigger: "change",
+                    },
+                ],
+                campus_id: [
+                    {
+                        required: true,
+                        type: "number",
+                        validator: this._checkThanInt,
+                        message: "请选择学生校区",
+                        trigger: "change",
+                    },
+                ],
+            },
+        };
+    },
+    methods: {
+        showDrawer(studentInfo = {}) {
+            this.drawerShow = true;
+            this.$refs["studentInfoForm"] && this.$refs["studentInfoForm"].resetFields(); 
+            let _studentInfo = {
+                school_id: studentInfo.school_id || this._structureId || 0,
+                old_student_number: studentInfo.student_number || "",
+                new_student_number: studentInfo.student_number || "",
+                name: studentInfo.student_name || "",
+                sex: studentInfo.student_sex || 1,
+                grade_id: Number(studentInfo.class_id) || 0,
+                campus_id: Number(studentInfo.campus_id) || 0,
+                school_year: studentInfo.school_year ? studentInfo.school_year + '' : ""
+            };
+            this.$set(this, "studentInfo", _studentInfo);
+            if (studentInfo.campus_id) {
+                this.changeCampus();
+            }
+        },
+        changeCampus(change) {
+            this.$nextTick(() => {
+                this.$refs["gradeSelectRef"].getData();
+                if (change) this.studentInfo.grade_id = 0;
+            });
+        },
+        checkStudentInfo() {
+            this.$refs["studentInfoForm"].validate((valid) => {
+                if (valid) {
+                    this.updateStudentInfo();
+                } else {
+                    this.$Message.warning("请完善信息");
+                }
+            });
+        },
+        updateStudentInfo() {
+            let studentInfo = this.studentInfo || {};
+            this.pageLoading = true;
+            let req = studentInfo.old_student_number ? 'studentUpdate' : 'studentAdd';
+            return this.$MainApi[req]({
+                    data: {
+                        ...studentInfo,
+                        student_number: studentInfo.new_student_number
+                    },
+                })
+                .then((res) => {
+                    if (res.code) {
+                        this.$Message.success(res.message || "编辑成功");
+                        this.confirmUpdate();
+                    } else {
+                        this.$Message.warning(res.message || "编辑失败");
+                    }
+                })
+                .finally(() => {
+                    this.pageLoading = false;
+                });
+        },
+        confirmUpdate() {
+            this.drawerShow = false;
+            this.$emit("confirm");
+        },
+    },
+    mounted() {},
+};
+</script>
+
+<style lang="less" scoped>
+@import "@/assets/css/variables.less";
+.page-drawer-area {
+    .edit-cont-area{
+      border: 0 !important;
+    }
+    .admin-area {
+        border: 1px solid #ddd;
+        border-radius: 5px;
+        padding: 5px;
+        min-height: 32px;
+        line-height: 1.5;
+        padding: 4px 7px;
+        .admin-list {
+            display: flex;
+            width: 100%;
+            padding-right: 10px;
+            min-height: 100%;
+            .admin-item {
+                padding: 0px 10px;
+                line-height: 1.5;
+                color: @primary-color;
+                border: 1px solid fade(@primary-color, 30%);
+                border-radius: @default-radius;
+                background-color: fade(@primary-color, 10%);
+                position: relative;
+                margin: 2px;
+                .admin-close {
+                    position: absolute;
+                    top: 0px;
+                    right: 0px;
+                    transform: translate(50%, -50%);
+                    cursor: pointer;
+                    opacity: 0;
+                    transition: opacity @transition-time;
+                }
+            }
+            .admin-item:hover .admin-close {
+                opacity: 1;
+            }
+        }
+        .add-admin {
+            flex-shrink: 0;
+        }
+    }
+}
+</style>

@@ -1,0 +1,7 @@
+{
+  "component": true,
+  "usingComponents": {
+    "swiper-mod":"/components/micro-page/micro-mix/items/component/goods-swiper/swiper",
+    "progress_bar": "/components/progress_bar/progress_bar"
+  }
+}

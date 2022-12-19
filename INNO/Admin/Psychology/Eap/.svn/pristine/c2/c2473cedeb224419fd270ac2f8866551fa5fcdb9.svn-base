@@ -1,0 +1,174 @@
+<template>
+    <div class="act-table">
+        <Table ref="myTable" :columns="columns" :data="list" border :loading="tableLoading">
+            <template slot="activity_name" slot-scope="{ row }">
+                <div class="box">
+                    <div class="item" style="margin-bottom:0;">
+                    <!-- <div class="item" style="margin-bottom:0;justify-content:flex-start;"> -->
+                        <div>{{row.activity_name}}</div>
+                    </div>
+                </div>
+            </template>
+            <template slot="model_name" slot-scope="{ row }">
+                <div class="box">
+                    <div class="item" v-for="item in (row.get_model_record || [])" :key="item.model_id">
+                        <div>{{item.model_name}}</div>
+                    </div>
+                </div>
+            </template>
+            <template slot="start_time" slot-scope="{ row }">
+                <div class="box">
+                    <div class="item" v-for="item in (row.get_model_record || [])" :key="item.model_id">
+                        <div>{{item.start_time}}</div>
+                    </div>
+                </div>
+            </template>
+            <template slot="survey_time" slot-scope="{ row }">
+                <div class="box">
+                    <div class="item" v-for="item in (row.get_model_record || [])" :key="item.model_id">
+                        <div>{{item.survey_time}}</div>
+                    </div>
+                </div>
+            </template>
+            <template slot="state_str" slot-scope="{ row }">
+                <div class="box">
+                    <div class="item" v-for="item in (row.get_model_record || [])" :key="item.model_id">
+                        <div>{{item.state_str}}</div>
+                    </div>
+                </div>
+            </template>
+            <template slot="coefficient_points" slot-scope="{ row }">
+                <div class="box">
+                    <div class="item" v-for="item in (row.get_model_record || [])" :key="item.model_id">
+                        <div>{{item.coefficient_points}}</div>
+                    </div>
+                </div>
+            </template>
+            <template slot="survey_result" slot-scope="{ row }">
+                <div class="box">
+                    <div class="item" v-for="item in (row.get_model_record || [])" :key="item.model_id">
+                        <div>{{item.survey_result}}</div>
+                    </div>
+                </div>
+            </template>
+            <template slot="handle" slot-scope="{ row }">
+                <div class="box">
+                    <div v-for="item in (row.get_model_record || [])" :key="item.model_id" class="operate-area item" >
+                        <a class="operate" v-hasAction="[item.handle.report]" @click="checkReport(item)">查看报告</a>
+                        <a class="operate" v-hasAction="[item.handle.answer]" @click="checkAnswer(item)">查看答案</a>
+                    </div>
+                </div>
+            </template>
+        </Table>
+        <rewrite-page :total="total" :current="page" :page-size="pageSize" :page-size-opts="pageSizeOpts" @on-change="e=>loadData(e)" @on-page-size-change="handlePageSizeChange" show-sizer show-elevator show-total transfer></rewrite-page>
+        <!-- <answer ref="answerRef"></answer> -->
+    </div>
+</template>
+
+<script>
+import ListMixin from "@/helper/mixin/list-mixin";
+import mixins from "./mixins";
+// import answer from "@/models/survey/activity/assess/answer/index";
+export default {
+    name: "actRecordTable",
+    mixins: [ListMixin, mixins],
+    // components: { answer },
+    props: {
+        userId: String | Number,
+        type: String
+    },
+    data() {
+        return {
+            searchForm: {
+                searchq: "",
+                school_id: 0,
+                state: -1, // -1 全部 0:未审核  1:审核通过  2:复核已通过
+            },
+        };
+    },
+    methods: {
+        onLoadData(page, extraData) {
+            return this.$MainApi
+                .psychologyFilesActivity({
+                    data: {
+                        user_id: this.userId,
+                        ...extraData,
+                    },
+                })
+                .then((res) => {
+                    if (res.code) {
+                        let data = res.data || {};
+                        this.data = {
+                            total: data.total,
+                            list: data.items,
+                        };
+                    }
+                });
+        },
+        checkReport(row) {
+            this.$router.push({
+                name: this.type == 'earlyWarn' ? "earlyWarnPsychicFilesReport" : "psychicFilesReport",
+                query: {
+                    modelId: Number(row.model_id),
+                    recordId: row.record_id + "",
+                    type: this.type || "psychic",
+                    userId: this.userId + "",
+                },
+            });
+        },
+        checkAnswer(row) {
+            this.$router.push({
+                name: this.type == 'earlyWarn' ? "earlyWarnPsychicFilesAnswer" : "psychicFilesAnswer",
+                query: {
+                    modelName: row.model_name,
+                    modelId: Number(row.model_id),
+                    recordId: row.record_id + "",
+                    type: this.type || "psychic",
+                    userId: this.userId + "",
+                },
+            });
+        },
+    },
+    mounted() {},
+    watch: {
+        userId: {
+            handler(nV) {
+                if (nV) this.loadData();
+            },
+            immediate: true,
+        },
+    },
+};
+</script>
+
+<style lang="less">
+.act-table{ 
+    .ivu-table-cell{
+        height: 100%;
+    }
+    .ivu-table-cell-slot{
+        height: 100%;
+    } 
+}
+</style>
+<style lang="less" scoped>
+.act-table{ 
+    .box{
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+    }
+    .item{
+        flex: 1;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+    .item:first-child{
+        margin-bottom: 5px;
+    }
+    .operate-area{
+        margin-top: 0;
+    }
+}
+</style>

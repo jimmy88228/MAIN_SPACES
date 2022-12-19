@@ -1,0 +1,6 @@
+{
+  "component": true,
+  "usingComponents": {
+    "more-load-view":"/components/css3/more-load-view/more-load-view"
+  }
+}

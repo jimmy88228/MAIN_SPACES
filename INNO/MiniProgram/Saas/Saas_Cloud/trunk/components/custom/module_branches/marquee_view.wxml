@@ -1,0 +1,23 @@
+<view class="main">
+	<scroll-view class='scroll-box' scroll-x wx:if="{{installData.length>0}}">
+		<view class="f_box">
+			<view 
+      class="f_item" 
+      bindtap='pageJump' 
+      data-type="click" 
+      wx:for="{{installData}}" 
+      data-group_id="{{baseInfo.this_group_id}}"
+      data-activity_id="{{item.activityId}}"
+      data-goods_id="{{item.goodsId}}"
+      data-module_type="{{baseInfo.bindType}}"
+      wx:key="index"
+      >
+        <image src="{{item.picture}}" class="img_goods" mode="aspectFit"></image>
+        <view wx:if="{{baseInfo.showGoodsPrice=='1'}}" class="price_box" style="color:{{ac_conf.theme_color}};border-color:{{ac_conf.theme_color}};">
+          <text class="unit">{{item.price}}</text>
+          <!-- <text class="market_price" wx:if="{{item.marketPrice > 0 && item.marketPrice != item.price}}">{{item.marketPrice}}</text> -->
+        </view>
+			</view>
+		</view>
+	</scroll-view>
+</view>

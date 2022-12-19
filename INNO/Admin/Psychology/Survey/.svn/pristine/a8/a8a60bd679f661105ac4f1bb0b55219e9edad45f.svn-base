@@ -1,0 +1,6 @@
+[BUILD] # 编译配置
+BUILD_DEP_IMAGE="node:16-alpine3.14"
+BUILD_CMD="sh ./deploy/build.sh"
+
+[SERVICE] # 服务配置
+SERVICE_CONFIG="./deploy/services.yml"

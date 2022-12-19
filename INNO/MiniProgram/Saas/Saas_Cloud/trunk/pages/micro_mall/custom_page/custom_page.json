@@ -1,0 +1,14 @@
+{
+  "navigationBarTitleText": "加载中",
+  "navigationStyle":"custom",
+  "usingComponents": {
+    "pageHome": "/components/sceneOperate/pageHome",
+    "indexHeader": "/components/indexHead/indexHeader",
+    "page-nav": "/components/page-nav/page-nav",
+    "welcome": "/components/pop/welcome/welcome",
+    "micro-page": "/components/micro-page/micro-mix/micro-page/micro-page", 
+    "storesForA":"/components/indexHead/storesForA"
+
+    
+  }
+}

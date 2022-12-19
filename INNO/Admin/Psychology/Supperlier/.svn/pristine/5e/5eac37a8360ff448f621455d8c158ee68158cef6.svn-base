@@ -1,0 +1,312 @@
+<template>
+	<div class="custom-input-box inline-b" :style='boxStyle'>
+		<!-- 
+			这里的type 由于用了iview的input, 
+			即使设置了type为number, 还是number为true的情况下，仍可输入数字以外的值，
+			而且为number的情况下，输入多个小数点会导致value被重置为空;
+			这里用了iview的input ,同时js重写了number逻辑， 知悉！！！
+			:type='(type == "number") ? "text" : type' 
+		-->
+		<Input 
+		ref="myInput" 
+		:value="inputValue" 
+		:type='(type == "number") ? "text" : type' 
+		:placeholder='placeholder'
+		:clearable='clearable'
+		:disabled='disabled'
+		:readonly='readonly'
+		:maxlength='dfMaxlength'
+		:show-word-limit='showWordLimit && type!="number"'
+		:icon='icon'
+		:size='size'
+		:rows='rows'
+		:class="[showWordLimit?'showWordLimitClass':'',clearable?'clearableClass':'',customClass]"
+		:style="customStyle"
+		:search="search"
+		@on-change='inputChange'
+		@on-enter='inputEnter'
+		@on-focus='inputFocus'
+		@on-click='inputClick'
+		@on-blur='inputBlur'
+		@on-search='inputSearch'
+		@on-clear='inputClear'
+		></Input>
+	</div>
+</template>
+<script>
+	const UnLimitType = /^(textarea)+$|^(url)+$/g;
+	export default{
+		name: 'customInput',
+		model: {
+			prop: 'value',
+			event: 'on-change'
+		},
+		props: {
+			type: {
+				type: String,
+				default: 'text'
+			},
+			value:{
+				type: String | Number,
+				default(){
+					return ''
+				}
+			},
+			placeholder: {
+				type: String,
+				default: ''
+			},
+			clearable: {
+				type: Boolean,
+				default: false
+			},
+			disabled: {
+				type: Boolean,
+				default: false
+			},
+			readonly: {
+				type: Boolean,
+				default: false
+			},
+			maxlength: {
+				type: Number | String,
+				default: ''
+			},
+			showWordLimit: {
+				type: Boolean,
+				default: true
+			},
+			icon: {
+				type: String,
+				default: ''
+			},
+			number: {
+				type: Boolean,
+				default: false
+			},
+			size:{
+				type: String,
+				default(){
+					return 'default'
+				}
+			},
+			min: {
+				type: Number | String,
+				default: ''
+			},
+			max: {
+				type: Number | String,
+				default: ''
+			},
+			rows: {
+				type: Number | String,
+				default: 2
+			},
+			beforeChange: {
+				type: Function
+			},
+			isInt: {
+				type: Boolean,
+				default: false
+			},
+			'customClass':{
+				type: String,
+				default(){
+					return ''
+				}
+			},
+			'customStyle':{
+				type: String | Function,
+				default(){
+					return ''
+				}
+			},
+			'boxStyle':{
+				type: String,
+				default(){
+					return ''
+				}
+			},
+			'search': {
+				type: Boolean,
+				default: false
+			},
+			'toFixed': {
+				type: Number,
+				default: 2
+			}
+		},
+		data(){
+			return {
+				inputValue: '',
+			}
+		},
+		computed:{
+			dfMaxlength(){
+				if(this.type && !UnLimitType.test(this.type) && !this.maxlength){ //默认限制100长度
+					return 100;
+				} else {
+					return this.maxlength || '';
+				}
+			}
+		},
+		methods:{
+			inputChange(e){
+				if(typeof(this.beforeChange) == 'function'){
+					if(this.$util.isPromise(this.beforeChange)){
+						this.beforeChange().then(()=>{
+							this.changeCallback(e);
+						}) .catch(()=>{
+							this.holdCallback();
+						})
+					} else {
+						if(this.beforeChange()){
+							this.changeCallback(e);
+						} else {
+							this.holdCallback();
+						}
+					}
+				} else {
+					this.changeCallback(e);
+				}
+			},
+			changeCallback(e){
+				let target = e.target || {};
+				let data = target.value || '';
+				if(data == this.inputValue) return;
+				if(this.type == 'number' || this.number){
+					data = this.getNumberValue(data);
+					let min = parseFloat(this.min);
+					let max = parseFloat(this.max);
+					if((min || min == 0) && (max || max == 0) && min > max){
+						min = max;
+					}
+					if((min || min == 0) && (data || data == 0)){
+						data = min > data ? min : data;
+					}
+					if((max || max == 0) && (data || data == 0)){
+						data = data > max ? max : data;
+					}
+					let maxlength = Math.min(8, this.dfMaxlength); //number类型默认限制8位长度
+					if(maxlength && String(parseFloat(data||0)).length>maxlength){ //最大长度 (number类型的时候maxlength属性不生效，需要通过逻辑限制)
+						data = Number( String(data||0).slice(0,maxlength) ); 
+					}
+					if(this.isInt){ //整数类型过滤
+						data = parseInt(data || min || 0);
+					}
+				}
+				this.$nextTick(()=>{
+					this.setOriginInput(data);
+					this.inputValue = data;
+					this.$emit('on-change', data);
+				})
+			},
+			holdCallback(){
+				this.$nextTick(()=>{
+					let value = this.value || '';
+					this.setOriginInput(value);
+					this.inputValue = value;
+					this.$emit('on-change', value);
+				})
+			},
+			inputEnter(){
+				this.$emit('on-enter', { value: this.inputValue });
+			},
+			inputFocus(){
+				this.$emit('on-focus', { value: this.inputValue });
+			},
+			inputClick(){
+				this.$emit('on-click')
+			},
+			inputBlur(){
+				this.$emit('on-blur', { value: this.inputValue })
+			},
+			inputSearch(data){
+				this.$emit('on-search', data)
+			},
+			inputClear(){
+				this.$emit('on-clear')
+			},
+			focus(){
+				this.$refs['myInput'].focus();
+			},
+			setOriginInput(value){
+				let myInputElem = this.$refs['myInput'].$el;
+				let inputElem = myInputElem.getElementsByClassName('ivu-input')[0];
+				if(inputElem){
+					inputElem.value = value;
+				}
+			},
+			getNumberValue(data){
+				if(typeof(data) == 'string'){
+					// 处理为纯数字data
+					let dataArr = data.match(/[0-9]+([.]{1}[0-9]{0}){0,1}/g);
+					data = dataArr instanceof Array ? dataArr.join("") : '';
+					let firstPoint = data.indexOf('.');
+					if(firstPoint != -1){
+						// 存在多个.
+						let pointArr = data.split(".");
+						if(pointArr.length > 2){
+							data = pointArr.splice(0, 1) + '.' + pointArr.join("");
+						}
+						if(this.toFixed && data[data.length - 1] != '.' && this.toFixed < 3){
+
+							// data = Number(parseInt(parseFloat(data) * Math.pow(10,this.toFixed))/Math.pow(10,this.toFixed));
+							data = Number((data +'').substring(0, firstPoint)) + Number((data + '').substr(firstPoint, this.toFixed));
+						}
+					}
+				}
+				return data;
+			}
+		},
+		mounted(){
+		},
+		watch:{
+			value:{
+				handler(nV) {
+					let value = (nV || nV == 0) ? nV : '';
+					if(this.type == 'number' || this.number){
+						value = this.getNumberValue(value);
+					}
+					this.inputValue = value;
+				},
+				immediate: true
+			},
+			min: {
+				handler(nV){
+					if(this.type == 'number' || this.number){
+						nV = parseFloat(nV);
+					}
+				},
+				immediate: true
+			},
+			max: {
+				handler(nV){
+					if(this.type == 'number' || this.number){
+						nV = parseFloat(nV);
+					}
+				},
+				immediate: true
+			}
+		}
+	}
+</script>
+<style lang="less" scoped>
+.custom-input-box{ 
+	min-width: 120px;
+}
+</style>
+<style lang="less">
+.custom-input-box{
+	.showWordLimitClass{
+		.ivu-input{
+			padding-right: 46px;
+		}
+	}
+	.clearableClass{
+		.ivu-input{
+			padding-right: 25px;
+		}
+	}
+}
+</style>

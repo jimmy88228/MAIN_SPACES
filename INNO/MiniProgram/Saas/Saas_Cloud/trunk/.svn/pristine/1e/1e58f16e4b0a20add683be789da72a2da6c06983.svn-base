@@ -1,0 +1,102 @@
+.box{
+  position: fixed;
+  opacity: 0;
+  z-index: 3;
+  transform:translate(-50%,-130%);
+  width: 240rpx;
+  height: 208.5rpx;
+}
+
+.img_like_action{
+  width: 100%;
+  height: 100%;
+}
+
+
+.like_squre{
+  position: absolute;
+  background: #E40A23;
+  /* opacity: 0; */
+  z-index: 4;
+  border-radius:0 0 0 10rpx;
+  box-shadow: -10rpx 10rpx 10rpx 0 rgba(0,0,0,0.1);
+  width: 100%;
+  height: 100%;
+} 
+.like{
+  position: absolute;
+  background: #E40A23;
+  /* opacity: 0; */
+  z-index: 3;
+  border-radius:0 0 0 10rpx;
+  width: 100%;
+  height: 100%;
+} 
+.like::before{
+  content: "";
+  position: absolute;
+  background: #E40A23;
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  top: -50%;
+  left: 0;
+  box-shadow: 0 0 12rpx 10rpx rgba(0,0,0,0.1);
+}
+
+.like::after{
+  content: "";
+  position: absolute;
+  background: #E40A23;
+  width: 100%;
+  height: 100%;
+  /* border-radius:0 50% 50% 0; */
+  border-radius: 50%;
+  left: 50%;
+  top: 0;
+  box-shadow: 0 0 12rpx 10rpx rgba(0,0,0,0.1);
+}
+
+.squre2{
+  position: absolute;
+  z-index: 7;
+  left: 0;
+  top: 0rpx;
+  opacity: 1;
+  width: 144rpx;
+  height: 62rpx;
+  transform: rotate(-30deg);
+  background: #E40A23;
+  border-radius: 70% 20% 20% 0;
+}
+
+@keyframes animShow_l
+{
+0% {opacity: 0.6;transform:translate(-50%,-130%) rotate(-8deg) scale(1.3,1.3);}
+10% {opacity: 1;transform:translate(-50%,-130%) rotate(-8deg) scale(0.9,0.9);}
+35% {opacity: 1;transform:translate(-50%,-130%) rotate(-8deg) scale(1,1);}
+60% {opacity: 1;transform:translate(-50%,-130%) rotate(-8deg) scale(1,1);}
+80% {opacity: 0.3;transform:translate(-50%,-160%) rotate(-8deg) scale(1.1,1.1);}
+100% {opacity: 0.1;transform:translate(-50%,-190%) rotate(-8deg) scale(1.4,1.4);}
+}
+
+@keyframes animShow_r
+{
+0% {opacity: 0.6;transform:translate(-50%,-130%) rotate(8deg) scale(1.3,1.3);}
+10% {opacity: 1;transform:translate(-50%,-130%) rotate(8deg) scale(0.9,0.9);}
+35% {opacity: 1;transform:translate(-50%,-130%) rotate(8deg) scale(1,1);}
+60% {opacity: 1;transform:translate(-50%,-130%) rotate(8deg) scale(1,1);}
+80% {opacity: 0.3;transform:translate(-50%,-160%) rotate(8deg) scale(1.1,1.1);}
+100% {opacity: 0.1;transform:translate(-50%,-190%) rotate(8deg) scale(1.4,1.4);}
+}
+
+@keyframes animShow
+{
+0% {opacity: 0.6;transform:translate(-50%,-130%) scale(1.3,1.3);}
+10% {opacity: 1;transform:translate(-50%,-130%) scale(0.9,0.9);}
+35% {opacity: 1;transform:translate(-50%,-130%) scale(1,1);}
+60% {opacity: 1;transform:translate(-50%,-130%) scale(1,1);}
+80% {opacity: 0.3;transform:translate(-50%,-160%) scale(1.1,1.1);}
+100% {opacity: 0.1;transform:translate(-50%,-190%) scale(1.4,1.4);}
+}
+ 

@@ -1,0 +1,57 @@
+<!--components/calendar/signMsg/signMsg.wxml-->
+<view class="sign" style="{{signStyleBox}}">
+  <slot name="msg"></slot> 
+  <view class="sign_btn_box {{fromType}} {{signData.sign_status == 1 && signData.needSignDay?'_mt':''}} {{btnSize}}">
+    <block wx:if="{{signData.sign_status == 0}}">
+      <button class="sign_btn" style="background-color:#b2b2b2;{{btnSize != 'large' && signData.isContinue?'padding:0 15rpx;':''}}">
+        <text wx:if="{{signData.isContinue}}">已连续签</text>
+        <text wx:else>已签到</text>
+        <text wx:if="{{inited}}">{{signOrderActivityInfo.activityId?signOrderActivityInfo.sumContinueDay : signData.sign_num}}天</text>
+      </button>
+    </block>
+    <block wx:else>
+      <view class="sign_btn">
+        <block wx:if="{{!isLogin}}">
+          <btns isLogin="{{isLogin}}" bindclickcallback="createAppSign">
+            签到
+          </btns>
+        </block>
+        <block wx:else>
+          <button class="sign_in_btn" bindtap="createAppSign">
+            签到
+          </button>
+        </block>
+      </view>
+      <view class="sign_tip_box" wx:if="{{inited && ((!signOrderActivityInfo.activityId && signData.needSignDay) || signOrderActivityInfo.activityId)}}">
+      <!-- <view class="sign_tip_box" wx:if="{{signData.needSignDay}}"> -->
+        <view class="sign_tip">
+          <block wx:if="{{!signOrderActivityInfo.activityId}}">
+            <text wx:if="{{!signData.isContinue}}">连续</text>
+            <text wx:else>再</text>
+            <text>签到{{signData.needSignDay}}天得好礼哟</text>
+          </block>
+          <block wx:else>
+            <!-- 签到下单活动 -->
+            <block wx:if="{{signOrderActivityInfo.nextGetContinueInfo.nextGetContinueDay >=0}}">
+              <text wx:if="{{signOrderActivityInfo.currentSort <= 1 && signOrderActivityInfo.currentContinueDay<=0}}">连续</text>
+              <text wx:else>再连续</text>
+            </block>
+            <block wx:if="{{signOrderActivityInfo.currentSort <= 1}}">
+              <text>签到{{signOrderActivityInfo.nextGetContinueInfo.nextGetContinueDay}}天得好礼哟</text>
+            </block>
+            <block wx:elif="{{signOrderActivityInfo.nextGetContinueInfo.nextGetContinueDay>0}}">
+              <text>签到{{signOrderActivityInfo.nextGetContinueInfo.nextGetContinueDay}}天升级礼品</text>
+            </block>
+            <block wx:elif="{{signOrderActivityInfo.currentSort >= signOrderActivityInfo.detailList.length}}">
+              <text>任意下单领取签到礼</text>
+            </block>
+            <block wx:else>
+              <text>再连续签到1天升级礼品</text>
+            </block>
+          </block>
+        </view>
+        <view class="arrow"></view>
+      </view>
+    </block>
+  </view>
+</view>

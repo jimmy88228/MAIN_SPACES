@@ -1,0 +1,6 @@
+{
+    "component": true,
+    "usingComponents": {
+        "staffSelector": "/pages/micro_mall/employee_center/popup/staff_selector/staff_selector"
+    }
+}

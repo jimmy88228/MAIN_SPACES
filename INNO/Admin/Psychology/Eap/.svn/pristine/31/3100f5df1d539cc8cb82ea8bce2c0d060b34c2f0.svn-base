@@ -1,0 +1,197 @@
+import organizeBg from "@/assets/images/organize.bg.png";
+import organizeDef from "@/assets/images/organize.def.png";
+import organizeSelectedDef from "@/assets/images/organize.selected.def.png";
+import topIcon from "@/assets/images/top.png";
+export default {
+    data() {
+        return {
+            c_organizeList: [],
+            c_checkData: [],
+            c_searchData: [],
+            c_searchTimer: null,
+        }
+    },
+    computed: {
+        ids() {
+            let c_checkData = this.c_checkData || [];
+            let ids = [];
+            c_checkData.map((item) => {
+                if (item.id || item.id == 0) {
+                    ids.push(Number(item.id));
+                }
+            });
+            return ids || [];
+        },
+    },
+    methods: {
+        /**
+         * _selectData： 选择的集合
+         * extra ： {
+         *  parentName: 父集合
+         *  parentIds： 父集合ID
+         *  pChecked：父选项
+         * }
+        */
+        _initTreeData(data,  _selectData = [], extra = { parentName: [], parentIds: [], pChecked: false}) {
+            extra = extra || {};
+            let parentName = extra.parentName || []; 
+            let parentIds = extra.parentIds || [];
+            let pChecked = extra.pChecked || false;
+            if (data instanceof Array) {
+                for (let i = 0; i < data.length; i++) {
+                    let id = Number(data[i].id) + ""; // 由于系统顶级id为0 ，tree组件不支持id为0的情况，所以id调整为字符串
+                    let sIndex = this.ids.indexOf(Number(id));
+                    let cur_item = this.c_checkData[sIndex] || {};
+                    let title = data[i].structure_name || data[i].title || "";
+                    data[i].title = title;
+                    data[i].id = id;
+                    data[i].checked = sIndex != -1 || (this.isRelation && pChecked)? true : false;
+                    data[i].expand = (data[i].checked || extra.expandHold) ? true : false;
+                    data[i].pChecked = pChecked;
+                    data[i].selected = false;
+                    data[i].parentName = parentName;
+                    data[i].parentIds = parentIds;
+                    data[i].disabled = cur_item.disabled || false //初始化的时候不可删除项设置disabled
+                    data[i].disableDel = cur_item.disableDel || false;
+                    // 倒叙
+                    try {
+                        data[i].reversePName = parentName.join("/").split('').reverse().join('').split('/');
+                        data[i].reverseTitle = title.split('').reverse().join('');
+                      } catch (error) {}
+                    
+                    data[i].getson_count = data[i].getson_count || 0
+                    data[i].icon = this.isModal ? (id == 0 ? "" : organizeBg) : (id == 0 ? topIcon : organizeDef);
+                    data[i].selectIcon = this.isModal ? (id == 0 ? "" : organizeBg) : (id == 0 ? topIcon : organizeSelectedDef);
+                    // 初始化时，由于外面传进来的字段可能不包含所需字段，类似父元素等，所以再次赋值给选择集
+                    if (data[i].checked) {
+                        _selectData.push(data[i]);
+                    }
+                    let children = data[i].children;
+                    if (children && children.length > 0) {
+                        this._initTreeData(children, _selectData, {
+                            ...extra,
+                            parentName: [...parentName, title],
+                            parentIds: [...parentIds, id],
+                            pChecked: data[i].checked
+                        });
+                        data[i].render = this.setRender(true);
+                    } else {
+                        data[i].render = this.setRender();
+                    }
+
+                }
+            }
+            let _treeData = data;
+            return {
+                _selectData,
+                _treeData
+            };
+        },
+        _searchTreeHandle(value) {
+            value = value || "";
+            let c_organizeList = this.c_organizeList;
+            if (this.c_searchTimer) {
+                clearTimeout(this.c_searchTimer);
+                this.c_searchTimer = null;
+            }
+            this.c_searchTimer = setTimeout(() => {
+                this.c_searchData = [];
+                if (value) {
+                    this._handleTreeData(c_organizeList, "search", value);
+                } else {
+                    this._handleTreeData(c_organizeList, "initSelect", value);
+                }
+            }, 350)
+        },
+        _searchTreeCheck(state, item) {
+            this._handleTreeData(
+                this.c_organizeList,
+                "checked",
+                {
+                    ...item,
+                    checked: state
+                }
+            );
+        },
+        _handleTreeData(data, key, curr, addCount = 0) {
+            // addCount : checked父元素时，相应新增的子元素数量，确保点击顺序
+            if (data instanceof Array) {
+                for (let i = 0; i < data.length; i++) {
+                    let item = data[i] || {};
+                    let title = item.title || "";
+                    switch (key) {
+                        case "search": // 搜索
+                            if (
+                                title.indexOf(curr) != -1 ||
+                                !curr ||
+                                curr.indexOf(title) != -1 ||
+                                !title
+                            ) {
+                                let _item = JSON.parse(JSON.stringify(item));
+                                delete _item.children;
+                                this.c_searchData.push(_item);
+                            }
+                            break;
+                        case "initSelect": // 初始化选择时
+                            if (this.ids.indexOf(Number(item.id)) != -1) {
+                                item.checked = true;
+                            } else {
+                                item.checked = false;
+                            }
+                            break;
+                        case "selected":
+                            if(item.id == (curr && curr.id)){
+                                item.selected = true;
+                            } else {
+                                item.selected = false;
+                            }
+                            break;
+                        case "checked":
+                            if (item.id == (curr && curr.id) || item.parentIds.indexOf(curr && curr.id) != -1) {
+                                item[key] = curr[key]; //curr[key] : 点击元素的当前勾选状态
+                                let idIndex = this.ids.indexOf(Number(item.id));
+                                if (item.id == (curr && curr.id)) { //定位到点击的元素
+                                    item.expand = true;
+                                    if (curr[key]){
+                                        if (idIndex == -1) {
+                                            this.c_checkData.push(item) 
+                                        }
+                                    } else {
+                                        if (idIndex != -1) {
+                                            this.c_checkData.splice(idIndex, 1);
+                                        }
+                                    }
+                                } else { //点击的元素的下级元素
+                                    let pidIndex = this.ids.indexOf(curr && Number(curr.id));
+                                    item.pChecked = curr[key];
+                                    if (curr[key]) { // (勾选) 操作元素的下级，检测是否在选择集合中存在，不存在则添加，否：不处理
+                                        if (idIndex == -1) {
+                                            this.c_checkData.splice(pidIndex + 1 + addCount, 0, item);
+                                            addCount++;
+                                        };
+                                    } else { //(取消勾选) 删除选择集合中元素
+                                        if(item.disableDel){ //不能删除项：补上checked
+                                            item.checked = true;
+                                        }else{ //可删除项
+                                            if (idIndex != -1) this.c_checkData.splice(idIndex, 1);
+                                        }
+                                    }
+                                    // console.log('c_checkData',item.id,curr.id,curr[key]?'操作元素的下级':'删除选择合集中的元素',item.id == (curr && curr.id) , item.parentIds.indexOf(curr && curr.id) != -1, idIndex , JSON.parse(JSON.stringify(this.c_checkData)))
+                                }
+                            }
+                            break;
+                        default:
+                            ;
+                    }
+                    if (item.children && item.children.length > 0) {
+                        addCount = this._handleTreeData(item.children, key, curr, addCount).addCount;
+                    }
+                }
+                return {
+                    addCount,
+                    data
+                };
+            }
+        },
+    }
+}

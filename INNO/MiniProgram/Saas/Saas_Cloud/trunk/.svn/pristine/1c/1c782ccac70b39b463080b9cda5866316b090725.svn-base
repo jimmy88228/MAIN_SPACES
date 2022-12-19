@@ -1,0 +1,42 @@
+<view class="cr_container">
+  <view class="cr_header">
+    <sifter id="sifter" bindconfirm="handleSiftConfirm" totalAmount="{{totalAmount}}" totalCount="{{totalCount}}" />
+    <search id="search" class="search" searchType="employee" placeText="输入单号、手机号搜索" bindonTapConfirm="handleSearchConfirm"></search>
+  </view>
+  <scroll-view class="cr_main" scroll-y refresher-enabled 
+    bindrefresherrefresh="refreshData"
+    refresher-triggered="{{refreshing}}"
+    bindscrolltolower="scrollToLower"
+  >
+    <view class="stay_line"></view>
+
+    <view class="bouns_order_container" style="--theme_color:{{brand_info.style.bg_color}}">
+      <view class="bo_list" wx:if="{{list.length}}">
+        <block wx:for="{{list}}" wx:key="index">
+          <view class="bo_item" bindtap="handleTap" data-tap-type="order" data-order-id="{{item.orderId}}">
+            <view class="bo_row">
+              <view class="row_left font_28 bold">订单号: {{item.orderSn}}</view>
+              <view class="row_right"></view>
+            </view>
+            <view class="bo_row">
+              <view class="row_left C_7f font_22">活动名称: {{item.activityName}}</view>
+              <view class="row_right"></view>
+            </view>
+            <view class="bo_row">
+              <view class="row_left C_7f font_22">会员昵称: {{item.userName || ""}}</view>
+              <view class="row_right font_28 bold">金额: {{item.price || 0}}</view>
+            </view>
+          </view>
+          <view class="stay_line"></view>
+        </block>
+      </view>
+      <view class="bo_list" wx:else>
+        <view class="no_data_area">
+          暂无更多数据
+        </view>
+      </view>
+    </view>
+  </scroll-view>
+
+  <dialog id="pageDialog" />
+</view>

@@ -1,0 +1,274 @@
+<template>
+    <hold-layout :isFull="true">
+        <!-- <div class="structure-box" v-bar>
+            <div class="flex-s-c">
+                <div @click="strucOnChange(key)" class="pointer structure-item C_7f" :class="{'active':curStrucId == key}" v-for="(item,key) in structureList" :key="key">
+                    {{item}}
+                </div>
+            </div>
+        </div> -->
+        <rewrite-area class="flex-b-c">
+            <rewrite-search v-model="searchForm.searchq" @search="()=>loadData()" placeholder="请输入关键词"></rewrite-search>
+            <Button @click="editPage()" type="primary" v-hasAction="'page_maintenance_add'">新建页面</Button>
+        </rewrite-area>
+        <Table ref="myTable" class="full-table" :columns="columns" :data="list" border :loading="tableLoading">
+            <template slot="title" slot-scope="{ row, index }">
+                <p>{{row.layout_name}}</p>
+                <Tag color="blue" v-if="row.is_home == 1">主页</Tag>
+            </template>
+            <template slot="spread" slot-scope="{ row, index }">
+                <p class="operate-line">
+                    <a class="operate" @click="createCode(row)" v-hasAction="true">二维码</a>
+                    <rewrite-tooltip theme="light" v-hasAction="true">
+                        <a class="operate" slot="_tip">生成链接</a>
+                        <div slot="_content" class="flex-s-c">
+                            <div class="text-flow m-r-10" style="width:auto;">{{getCopyLink(row)}}</div>
+                            <a @click="createLink(row)">复制</a>
+                        </div>
+                    </rewrite-tooltip>
+                </p>
+            </template>
+            <template slot="sort" slot-scope="{ row, index }">
+                <Poptip v-model="row.sortTipShow" placement="right">
+                    <p class="pointer">
+                        {{row.oldSort}}
+                        <Icon class="fs-14" type="md-create" />
+                    </p>
+                    <div slot="content">
+                        <div>
+                            排序值
+                            <InputNumber :min="1" v-model="row.sort"></InputNumber>
+                            数字小排前
+                        </div>
+                        <div class="p-t-10 p-b-5 text-r">
+                            <Button size="small" type="primary" @click="setSort(row, index)" v-hasAction="'page_maintenance_sort'">确定</Button>
+                        </div>
+                    </div>
+                </Poptip>
+
+            </template>
+            <template slot="handle" slot-scope="{ row, index }">
+                <div class="operate-area">
+                    <p class="operate-line">
+                        <a class="operate" @click="editPage(row.id)" v-hasAction="'page_maintenance_update'">编辑</a>
+                        <a class="operate" v-if="row.is_home != 1" @click="setHomePage(row.id)" v-hasAction="[curStrucId==0,row.is_home != 1, 'page_maintenance_home_page']">设置为主页</a>
+                    </p>
+                    <p class="operate-line">
+                        <!-- <a class="operate" @click="copyLink(row.copy_link)" v-hasAction="'page_maintenance_copy_link'">复制链接</a> -->
+                        <Poptip placement="left" confirm title="确定删除该页面吗?" @on-ok="removeItem(row.id, index)" v-hasAction="'page_maintenance_remove'">
+                            <a class="operate">删除</a>
+                        </Poptip>
+
+                    </p>
+                </div>
+            </template>
+        </Table>
+        <rewrite-page slot="footer" :total="total" :current="page" :page-size="pageSize" :page-size-opts="pageSizeOpts" @on-change="e=>loadData(e)" @on-page-size-change="handlePageSizeChange" show-sizer show-elevator show-total transfer></rewrite-page>
+    </hold-layout>
+</template>
+<script>
+import ListMixin from "@/helper/mixin/list-mixin";
+import mixins from "./mixins";
+const CUSTOM_PAGE = 'pages/custom/page/page';
+export default {
+    mixins: [ListMixin, mixins],
+    components: {},
+    data() {
+        return {
+            searchForm: {
+                searchq: "",
+            },
+            structureList:{},
+            curStrucId:0,
+        };
+    },
+    methods: {
+        init(){
+            // return this.$MainApi.pageStructureData({
+            //     data:{}
+            // }).then(res=>{
+            //     if(res.code){
+            //         let data = res.data || {};
+            //         let items = data.items || {};
+            //         this.structureList = items;
+            //     }
+            // })
+            
+        },
+        onLoadData(page, extraData) {
+            return this.$MainApi
+                .pageList({
+                    data: {
+                        ...this.searchForm,
+                        ...extraData,
+                        structure_id: Number(this.curStrucId||0)
+                    },
+                })
+                .then((res) => {
+                    if (res.code) {
+                        let data = res.data || {};
+                        let items = data.items || [];
+                        items.map((item) => {
+                            this.$set(item, "oldSort", item.sort);
+                            this.$set(item, "sortTipShow", false);
+                        });
+                        this.data = {
+                            total: data.total,
+                            list: items,
+                        };
+                    }
+                });
+        },
+        editPage(id) {
+            this.$router.push({
+                name: "editCustomPage",
+                query: {
+                    pageId: Number(id) || 0,
+                    strucId:Number(this.curStrucId)||0
+                },
+            });
+        },
+        setSort(row, index) {
+            console.log("row", row);
+            if (!Number(row.id) || row.sort == row.oldSort) {
+                return;
+            }
+            return this.$MainApi
+                .pageSort({
+                    data: {
+                        id: row.id,
+                        sort: Number(row.sort),
+                    },
+                })
+                .then((res) => {
+                    if (res.code) {
+                        // this.$nextTick(() => {
+                        //     this.$set(this.data.list[index], "sort", row.sort);
+                        //     this.$set(
+                        //         this.data.list[index],
+                        //         "oldSort",
+                        //         row.sort
+                        //     );
+                        //     console.log("this.oldSort", this.data.list[index]);
+                        // });
+                        this.$Message.success(res.message || "设置成功");
+                        this.$set(this.data.list[index], 'sortTipShow', false);
+                        this.handleUpdate();
+                    } else {
+                        this.$set(this.data.list[index], "sort", row.oldSort);
+                        this.$Message.warning(res.message || "设置失败");
+                    }
+                });
+        },
+        setHomePage(id) {
+            if (!Number(id)) {
+                this.$Message.warning("无效ID");
+                return Promise.reject();
+            }
+            return this.$MainApi
+                .setHomePage({
+                    data: {
+                        id: id,
+                    },
+                })
+                .then((res) => {
+                    if (res.code) {
+                        this.handleUpdate();
+                        this.$Message.success(res.message || "设置成功");
+                    } else {
+                        this.$Message.warning(res.message || "设置失败");
+                    }
+                })
+                .finally(() => {
+                    this.tableLoading = false;
+                });
+        },
+        copyLink(text) {
+            this.$utils.copyText(text);
+        },
+        removeItem(id, index) {
+            this.batchRemoveItemReq(id).then(() => {
+                this.delItem(index);
+            });
+        },
+        batchRemoveItemReq(id) {
+            if (!Number(id)) {
+                this.$Message.warning("无效ID");
+                return Promise.reject();
+            }
+            this.tableLoading = true;
+            return this.$MainApi
+                .pageRemove({
+                    data: {
+                        id: id,
+                    },
+                })
+                .then((res) => {
+                    if (res.code) {
+                        this.$Message.success(res.message || "删除成功");
+                        return Promise.resolve();
+                    } else {
+                        this.$Message.warning(res.message || "删除失败");
+                        return Promise.reject();
+                    }
+                })
+                .finally(() => {
+                    this.tableLoading = false;
+                });
+        },
+        strucOnChange(id){
+            if(this.curStrucId==id)return
+            this.curStrucId = id||0;
+            this.loadData(1);
+        },
+        createLink(row) {
+            let url = this.getCopyLink(row);
+            this.$utils.copyText(url);
+        },
+        getCopyLink(row){
+            return CUSTOM_PAGE + '?page_id=' + row.id || 0;
+        },
+        createCode(row) {
+            this.$UIModule({
+                mode: "code-view",
+                props: {
+                    codeTip: `<p class="big-tip">${row.layout_name||""}</p>`,
+                    excessivePage:"pages/platform-startup/platform-startup"
+                },
+                options: {
+                    path: CUSTOM_PAGE,
+                    params: {
+                        page_id: row.id,
+                    },
+                    codeId: `customPage:${row.id}`
+                }
+            });
+        },
+    },
+    mounted() {
+        this.init();
+    },
+    activated(){
+        this.loadData();
+        
+    }
+};
+</script>
+
+<style lang="less" scoped>
+.structure-box{
+    height: 50px;
+    padding-left: 2px;
+    width: 100%;
+}
+.structure-item{
+    font-size: 16px;
+    line-height: 40px;
+    margin-right: 30px;
+    flex-shrink: 0;
+    &.active{
+        color: #008ACB;
+        font-weight: bold;
+    }
+}
+</style>

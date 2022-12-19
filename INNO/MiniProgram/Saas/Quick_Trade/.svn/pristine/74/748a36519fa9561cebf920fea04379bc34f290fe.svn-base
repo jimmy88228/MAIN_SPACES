@@ -1,0 +1,30 @@
+<view class="custom-nav-container style-type-{{styleType}}">
+  <view class="nav-box style-type-{{styleType}}">
+    <!-- 普通样式 -->
+    <block wx:if="{{styleType == 0}}">
+      <view class="normal-nav">
+        <view class="c-n-left">
+          <view class="icon-arrow left"></view>
+        </view>
+        <view class="c-n-center">{{title}}</view>
+        <view class="c-n-right"></view>
+      </view>
+    </block>
+    <!-- 首页那个导航样式 -->
+    <block wx:elif="{{styleType == 1}}">
+      <view class="store-like-nav">
+        <view class="back-or-home-btn" style="visibility: hidden;">
+          <view class="icon-arrow left"></view>
+        </view>
+        <view class="store-logo-con">
+          <image class="store-logo-image" src="https://thirdwx.qlogo.cn/mmopen/vi_32/DYAIOgq83ep2YhjKyBY79Z5hJRtLOWWvp342iajYT9fUPmas655PWATmGTDoDHetPw3YhUvTJhia9SNJRnaHuDkQ/132" />
+        </view>
+        <view class="store-name">
+          马德里服饰
+        </view>
+      </view>
+    </block>
+  </view>
+</view>
+<!-- public -->
+<include src="/common/base/component/index.wxml" />

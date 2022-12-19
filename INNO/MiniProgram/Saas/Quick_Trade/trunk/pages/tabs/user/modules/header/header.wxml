@@ -1,0 +1,17 @@
+<view class="user-header-container">
+  <view class="u-h-info">
+    <view class="u-h-info-z">
+      <view class="u-h-avatar-con" bindtap="showUpdateAvatarPage">
+        <image class="u-h-avatar" src="{{userData.portrait_path||''}}" />
+        <image class="change-avatar-icon" mode="aspectFit" src="https://devimgtest.innourl.com/wechat_applet_image/icon/default//user/refresh.png"></image>
+      </view>
+      <view class="u-h-username">{{userData.realName||''}}</view>
+      <view class="u-h-grade">{{userData.rankName||''}}</view>
+    </view>
+    <!-- <image class="rank-img" mode="widthFix" src="{{userData.rank_image}}"></image> -->
+    <image class="rank-img" mode="widthFix" src="{{userData.rank_image||'https://devimgtest.innourl.com/SAAS_IMAGE/images/INNO/index/gallery/20220811/20220811182214012_5324611.png'}}"></image>
+  </view>
+  
+</view>
+<!-- public -->
+<include src="/common/base/component/index.wxml" />

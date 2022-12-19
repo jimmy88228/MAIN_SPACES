@@ -1,0 +1,9 @@
+{
+  "navigationBarTitleText": "商品详情",
+  "usingComponents":{
+    "embed_custom_module":"/components/custom/embed_custom/embed_custom",
+    "couponTip": "/pages/micro_mall/goods/module/coupon/tip",
+    "specView": "/components/selectSpec/specView",
+    "btns": "/components/buttons/btns"
+  }
+}

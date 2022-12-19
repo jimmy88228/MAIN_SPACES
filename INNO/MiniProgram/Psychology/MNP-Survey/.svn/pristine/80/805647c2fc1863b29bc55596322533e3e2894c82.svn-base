@@ -1,0 +1,10 @@
+.MP{
+  .answer{
+    .answer-item {
+      width: 480rpx;
+      min-height: 116rpx;
+      background: #FAFAFA; 
+      border:none;
+    } 
+  }
+}

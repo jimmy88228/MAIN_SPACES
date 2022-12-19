@@ -1,0 +1,13 @@
+.member_item{
+  padding:10rpx 6rpx;
+  text-align:left;
+}
+.members{
+  padding-top:10rpx;
+}
+.m_item_l{
+  width:100rpx;
+}
+.m_item_r{
+  
+}

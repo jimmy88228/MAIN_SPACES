@@ -1,0 +1,125 @@
+/* pages/micro_mall/goods/module/tips/activty_tip.wxss */
+.activity_tip{
+  width:100%;
+  background-color:#fff;
+  padding:10rpx 5rpx;
+  padding-bottom:30rpx;
+  box-sizing:border-box;
+}
+.a_scroll{
+  width:100%;
+}
+.a_list{
+  white-space:nowrap;
+}
+.a_item{
+  display:inline-block;
+  vertical-align: middle;
+  margin-left:16rpx;
+  background-color:#FBF0EC;
+  border-radius:200rpx;
+  overflow:hidden;
+  
+}
+.a_item_stay{
+  display:flex;
+  width:100%;
+  align-items: center;
+}
+.a_tip{
+  height: 40rpx;
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 0 8rpx 0 12rpx;
+  background-color:#FEE2D6;
+}
+.img_logo{
+  width: 26rpx;
+  height: 26rpx;
+}
+.price_tip{
+  font-size:18rpx;
+  color:#FF370C;
+  padding:0rpx 6rpx 0rpx 8rpx;
+  line-height: 18rpx;
+}
+.price_txt{
+  display:inline-block;
+  vertical-align: middle;
+  font-size:24rpx;
+  font-weight:bold;
+  color:#FF370C;
+  line-height: 24rpx;
+}
+.arrow{
+  width:7rpx;
+  height:12rpx;
+  display:inline-block;
+  vertical-align: middle;
+  margin:0px 16rpx 0 12rpx;
+}
+
+.teaserBox{
+  width:100%;
+  background-color:#fff;
+  padding:10rpx 0;
+  padding-bottom:30rpx;
+  box-sizing:border-box;
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.teaserLogo{
+  border-radius: 24rpx;
+  overflow: hidden;
+  /* background-color: #FEE2D6; */
+  background-color: #FBF0EC;
+  line-height: 22rpx;
+  display: inline-flex;
+  align-items: center;
+}
+._v_m{
+   display: inline-block;
+   vertical-align: middle;
+}
+.img_teaser{
+  width: 15rpx;
+  height: 15rpx;
+  padding: 8rpx 6rpx 8rpx 8rpx;
+  background-color: #FEE2D6;
+}
+.teaserTips{
+  background-color: #FBF0EC;
+  padding:0 10rpx;
+  font-size: 18rpx;
+  line-height: 18rpx;
+  color: #FF370C;
+}
+.teaserTime,.teaserMsg{
+  font-size: 22rpx;
+  line-height: 22rpx;
+  padding: 0 10rpx;
+  color: #FF3400;
+}
+.teaser_go{
+  border-radius: 12rpx;
+  overflow: hidden;
+  background-color: rgba(246, 246, 246, 1);
+  color: #7f7f7f;
+  display: inline-flex;
+  align-items: center;
+  padding: 6rpx 10rpx;
+  /* line-height: 22rpx; */
+}
+.img_right{
+  width: 7rpx;
+  height: 12rpx;
+  padding-left: 6rpx;
+}
+.go_text{
+  font-size: 18rpx;
+  line-height: 18rpx;
+}

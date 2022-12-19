@@ -1,0 +1,152 @@
+<template>
+  <hold-layout :isFull="true" :style="activityInfo.activityName ? 'margin-top: -15px' : ''">
+    <div class="activity-name">{{activityInfo.activityName}}</div>
+    <searchForm :searchForm="searchForm" @search="loadData()"></searchForm>
+    <Table ref="myTable" class="full-table" :columns="columns" :data="list" border :loading="tableLoading"  @on-sort-change="sortChange">
+      <template slot="create_time" slot-scope="{ row }">
+          <p class="p-t-5 p-b-5">{{row.record_create_time || "--"}}</p>
+      </template>
+      <template slot="complete_time" slot-scope="{ row }">
+          <p class="p-t-5 p-b-5">{{row.record_complete_time || '--'}}</p>
+      </template>
+      <template slot="handle" slot-scope="{ row }">
+          <div class="operate-area">
+            <a class="operate" @click="report(row)" v-hasAction="[row.handle.report]" >报告</a>
+            <a class="operate" @click="answer(row)" v-hasAction="[row.handle.answer]">答案</a>
+          </div>
+      </template>
+    </Table>
+    <rewrite-page
+    slot="footer"
+    :total="total"
+    :current="page"
+    :page-size="pageSize"
+    :page-size-opts="pageSizeOpts"
+    @on-change="e=>loadData(e)"
+    @on-page-size-change="handlePageSizeChange"
+    show-sizer
+    show-elevator
+    show-total
+    transfer
+    ></rewrite-page>
+    <!-- <answer ref="answerRef"></answer> -->
+  </hold-layout>
+</template>
+
+<script>
+import ListMixin from "@/helper/mixin/list-mixin";
+import searchForm from "./search-form.vue";
+import mixins from "./mixins";
+// import answer from "../answer/index";
+export default {
+  name: "assessResult",
+  mixins: [ListMixin, mixins],
+  components: { searchForm },
+  data(){
+    return {
+      searchForm: {
+          class_id: 0,
+          activityid: 0,
+          searchq: "",
+          state: "",
+          school_id: 0,
+          campus_id: 0,
+          grade_id: 0,
+          field: "",
+          fieldBy: "desc"
+      },
+      inited:false,
+      activityInfo: {}
+    }
+  },
+  methods:{
+    initData(){
+      let state = this.pageQuery.state;
+      if(!isNaN(parseInt(state))){
+        this.searchForm.state = state;
+      }
+    },
+    onLoadData(page, extraData) {
+      let type = this.pageQuery.type;
+      if(!this.inited){
+        this.searchForm.activityid = Number(this.pageQuery.activityId);
+        if(Number(this.pageQuery.schoolId)) {this.searchForm.school_id = Number(this.pageQuery.schoolId) || 0;}
+        this.searchForm.campus_id = Number(this.pageQuery.campusId) || 0;
+        this.searchForm.class_id = Number(this.pageQuery.gradeId) || 0;
+        this.searchForm.grade_id = Number(this.pageQuery.gradeId) || 0;
+        this.inited = true;
+      }
+      let req = type == 'task' ? 'assessmentTaskResult' : 'appraisalScheduleResult';
+      return this.$MainApi[req]({
+          data: {
+              ...this.searchForm,
+              ...extraData,
+          },
+      })
+      .then((res) => {
+          if (res.code) {
+              let data = res.data || {};
+              this.activityInfo.activityName = data.activity_name;
+              this.data = {
+                  total: data.total,
+                  list: data.items,
+              };
+          }
+      });
+    },
+    sortChange(detail){
+      this.searchForm.field = detail.key || "";
+      this.searchForm.fieldBy = detail.order || "desc";
+      this.loadData();
+    },
+    report(row){
+      this.$UIModule({
+          mode: "clause-view",
+          success: () => {
+            this.$router.push({
+              name: this.pageQuery.type == 'task' ? "assessTaskReport" : "assessReport",
+              query: {
+                type: this.pageQuery.type,
+                modelId: Number(row.model_id),
+                recordId: row.id || row.record_id,
+                userId: Number(row.user_id)
+              }
+            })
+          }
+      })
+    },
+    answer(row){
+      this.$UIModule({
+          mode: "clause-view",
+          success: () => {
+            this.$router.push({
+              name: this.pageQuery.type == 'task' ? "assessTaskAnswer" : "assessAnswer",
+              query: {
+                modelName: this.pageQuery.modelName,
+                type: this.pageQuery.type,
+                modelId: Number(row.model_id),
+                recordId: row.id || row.record_id,
+              }
+            })
+          }
+      })
+    }
+  },
+  mounted() {
+      this.initData();
+      this.loadData();
+  },
+}
+</script>
+
+<style lang="less" scoped>
+.activity-name{
+  padding-left:10px; 
+  font-size: 16px;
+  font-family: PingFangSC-Regular, PingFang SC;
+  font-weight: 400;
+  color: #7F7F7F;
+  line-height: 22px;
+  margin-bottom: 15px;
+}
+</style>

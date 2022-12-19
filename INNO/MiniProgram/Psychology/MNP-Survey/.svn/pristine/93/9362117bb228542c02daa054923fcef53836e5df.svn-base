@@ -1,0 +1,17 @@
+/*
+ * 全局公共样式和字体图标
+*/
+@font-face {
+	font-family: 'KaiTi_GB2312';
+	font-weight: normal;
+	font-style: normal;
+	src: url('./static/fonts/KaiTi_GB2312.ttf') format('truetype');
+}
+
+.KaiTi_GB2312 {
+	font-family: "KaiTi_GB2312" !important;
+	font-size: 16px;
+	font-style: normal;
+	-webkit-font-smoothing: antialiased;
+	-moz-osx-font-smoothing: grayscale;
+}

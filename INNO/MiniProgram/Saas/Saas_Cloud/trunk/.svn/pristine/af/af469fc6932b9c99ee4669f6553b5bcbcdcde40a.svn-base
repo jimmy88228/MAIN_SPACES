@@ -1,0 +1,40 @@
+<block>
+  <view class="bonus_order_page">
+    <view class="bonus_o_header" style='background:linear-gradient(-53deg,{{brand_info.style.bg_color}},{{bg_color}})'>
+      <view class="bonus_acti_name">{{order_info.activityName}}</view>
+      <viwe class="bonus_o_fund">
+        <view class="bonus_o_sn">订单编号 {{order_info.orderSn}} <text class="bonus_o_copy" bindtap="copy">复制</text></view>
+        <view class="bonus_o_add_time">支付时间 {{order_info.payTime}}</view>
+      </viwe>
+    </view>
+
+    <view class="bonus_o_module">
+      <view class="module_title">下单会员</view>
+      <view class="module_content">
+        <view class="customer_info">
+          <view class="customer_name">用户名/卡号： {{order_info.userName}}/{{order_info.cardNum}}</view>
+          <view class="customer_phone">手机号： {{order_info.mobile}}</view>
+        </view>
+      </view>
+    </view>
+
+    <view class="bonus_o_module">
+      <view class="module_title">发放的优惠券</view>
+      <view class="module_content">
+        <block wx:for="{{order_info.bonusNameListArr}}" wx:key="index">
+          <view class="bonus_item">{{item}}</view>
+        </block>
+      </view>
+    </view>
+
+    <view class="bonus_o_module">
+      <view class="module_title">资费详情</view>
+      <view class="module_content">
+        <view class="order_fee_row bold" style='color:{{brand_info.style.font_color}}'>
+          <view class="of_name">订单总价</view>
+          <view class="of_value">￥{{order_info.price}}</view>
+        </view>
+      </view>
+    </view>
+  </view>
+</block>

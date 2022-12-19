@@ -1,0 +1,3 @@
+<!-- 全局公共组件容器 页面和组件继承 -->
+<!-- Loading组件 -->
+<loading id="loading" />

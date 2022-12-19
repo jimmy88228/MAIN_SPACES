@@ -1,0 +1,7 @@
+{
+  "component": true,
+  "usingComponents": {
+    "btns": "/components/common/basic/buttons/index",
+    "transition": "/components/common/basic/transition/index"
+  }
+}

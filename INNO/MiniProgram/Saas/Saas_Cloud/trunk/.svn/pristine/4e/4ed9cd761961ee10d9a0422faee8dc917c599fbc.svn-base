@@ -1,0 +1,7 @@
+{
+  "component": true,
+  "usingComponents": {
+    "window": "/components/ui/cps/window/window",
+    "progress":"./progress/progress"
+  }
+}

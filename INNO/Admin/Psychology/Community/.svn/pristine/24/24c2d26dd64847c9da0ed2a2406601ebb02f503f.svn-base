@@ -1,0 +1,113 @@
+<template> 
+    <swiper 
+        class="custom-swiper swiper-no-swiping"
+        ref="carousel"
+        @ready="init"
+        @swiper="onSwiper"
+        @slideChangeTransitionEnd="slideChangeTransitionEnd"
+        :options="swiperOption"
+        :modules="modules"
+        :mousewheel="true"
+    >
+        <slot></slot>
+        <!-- <swiper-slide>
+            <div>Slide 1</div>
+        </swiper-slide>
+         <swiper-slide>
+            <div>Slide 2</div>
+        </swiper-slide>
+         <swiper-slide>
+            <div>Slide 3</div>
+        </swiper-slide> -->
+    </swiper>
+</template>
+
+<script>
+import { Swiper, SwiperSlide  } from 'vue-awesome-swiper' 
+  
+
+import 'swiper/css/swiper.css'
+
+// import { Swiper, SwiperSlide } from 'swiper/vue'; 
+// import { Navigation, Pagination, Scrollbar, A11y } from 'swiper';
+// import { useSwiper } from 'swiper/vue';
+
+
+// import 'swiper/css';
+// import 'swiper/css/autoplay';
+
+export default {
+    name:"customSwiperName",
+    props: {
+        settings: {
+            type: Object,
+            default:()=>({}) 
+        }, 
+    },
+    data() {
+        return {
+            current:0,
+            modules: [],
+            swiperInstance:null,
+            swiperOption:{
+                direction: 'vertical',
+                slidesPerView: 1,
+                spaceBetween: 30,
+                mousewheel: false,
+                speed:1500, 
+            } 
+        }
+    },
+    components: {
+        Swiper,
+        SwiperSlide,
+    }, 
+    computed:{ 
+    },
+    methods: {
+        init(e) {
+            this.swiperInstance = e;
+            this.$emit('init');
+        },
+        beforeChange(e) {
+             this.$emit('beforeChange',e);
+        },
+        slideChangeTransitionEnd() {
+            this.current = this._this().activeIndex;   
+            this.$emit('afterChange',this._this().activeIndex);
+            // console.log('afterChangeafterChange',this._this().activeIndex)
+        },
+        goTo(index){
+            // console.log('goTogoTo',index)
+            this._this().slideTo(index);
+        },
+        next(){
+            return
+            console.log('next')
+            this._this().next();
+        },
+        getCurrent(){
+            return this.current;
+        }, 
+        onSwiper (e) {
+        },
+        
+        _this(){
+            return  this.swiperInstance||{};
+        },
+    }, 
+    setup(){ 
+    },
+    mounted() { 
+    }, 
+}
+</script>
+<style lang="less">
+.custom-swiper{
+    .swiper-wrapper{
+        transition-timing-function:'linear';
+    }
+}
+</style>
+<style lang="less" scoped>
+</style>

@@ -1,0 +1,76 @@
+<!--pages/micro_mall/seeding_grass/my_collect/my_collect.wxml-->
+<form bindsubmit="formAction" report-submit="true">
+  <view class="user_collect">
+      <view class="collects">
+        <view class="l_collect collect">
+          <view class="collect_item" wx:for="{{l_collect}}" wx:key="index">
+            
+            <block>
+              <view class="p_item_img">
+                <image src="{{item.cover_path}}" mode="widthFix"/>
+                <button class="p_item_play" hover-class='none' wx:if="{{item.media_type == 1}}">
+                  <image src="{{brand_info.icon_url}}micro_mall/seed_grass/video.png" mode="aspectFit"/>
+                </button>
+              </view>
+              <view class="p_item_tit">{{item.pub_title}}</view>
+              <view class="table p_item_tip">
+                <view class="table_cell t_l">
+                  <image src="{{item.portrait_path}}" class="user_portrait" mode="aspectFit"/>
+                  <text class="v_m">{{item.real_name}}</text>
+                </view>
+                <view class="table_cell t_r">
+                  <block>
+                    <image class="like_icon" src="{{brand_info.icon_url}}micro_mall/seed_grass/grass_like_active.png" wx:if="{{item.hasLike}}" mode="aspectFit"/>
+                    <image class="like_icon" src="{{brand_info.icon_url}}micro_mall/seed_grass/grass_like.png" wx:else mode="aspectFit"/>
+                  </block>
+                  <text class="like_txt">{{item.likes}}</text>
+                </view>
+              </view>
+            </block>
+            <block>
+              <button hover-class='none' class="item_click_btn" data-id="{{item.id}}" catchtap='getDetail'></button>
+              <button hover-class='none' class="p_item_del" data-id="{{item.id}}" data-type="left" catchtap="removeCollect">
+                <image src="{{brand_info.icon_url}}micro_mall/seed_grass/grass_delete.png" mode="aspectFit"/>
+              </button>
+            </block>
+          </view>
+        </view>
+        <view class="r_collect collect" >
+          <view class="collect_item" wx:for="{{r_collect}}" wx:key="index">
+            
+            <block>
+              <view class="p_item_img">
+                <image src="{{item.cover_path}}" mode="widthFix"/>
+                <button class="p_item_play" hover-class='none' wx:if="{{item.media_type == 1}}">
+                  <image src="{{brand_info.icon_url}}micro_mall/seed_grass/video.png" mode="aspectFit"/>
+                </button>
+              </view>
+              <view class="p_item_tit">{{item.pub_title}}</view>
+              <view class="table p_item_tip">
+                <view class="table_cell t_l">
+                  <image src="{{item.portrait_path}}" class="user_portrait" mode="aspectFit"/>
+                  <text class="v_m">{{item.real_name}}</text>
+                </view>
+                <view class="table_cell t_r">
+                  <block>
+                    <image class="like_icon" src="{{brand_info.icon_url}}micro_mall/seed_grass/grass_like_active.png" wx:if="{{item.hasLike}}" mode="aspectFit"/>
+                    <image class="like_icon" src="{{brand_info.icon_url}}micro_mall/seed_grass/grass_like.png" wx:else mode="aspectFit"/>
+                  </block>
+                  <text class="like_txt">{{item.likes}}</text>
+                </view>
+              </view>
+            </block>
+            <block>
+              <button hover-class='none' class="item_click_btn" data-id="{{item.id}}" catchtap='getDetail'></button>
+              <button hover-class='none' class="p_item_del" data-id="{{item.id}}" data-type="right" catchtap="removeCollect">
+                <image src="{{brand_info.icon_url}}micro_mall/seed_grass/grass_delete.png" mode="aspectFit"/>
+              </button>
+            </block>
+          </view>
+        </view>
+      </view>
+      <view class="no_data_area" wx:if="{{l_collect.length == 0 && r_collect.length == 0}}">暂时还没有数据</view>
+    </view>
+  </form>
+  <!---->
+  <dialog id="pageDialog"></dialog>

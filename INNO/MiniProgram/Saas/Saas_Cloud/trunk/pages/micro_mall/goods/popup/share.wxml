@@ -1,0 +1,95 @@
+<!--pages/goods/popup/service.wxml-->
+<window class="window" ext-class="window-ext">
+  <from bindsubmit="formAction" report-submit="true">
+    <view class="service_popup {{customTab?isIphoneX?'_xpb':'_pb':''}}" style="{{boxStyle}}">
+        <view class="service_cont {{shareType + '_CONT'}}">
+          <block wx:if="{{shareType == 'NORMAL_ROW' || shareType == 'SECKILL_HELP' || shareType == 'STAFF_SHARE_HELP'}}">
+            <view 
+            class="share_item"
+            wx:for="{{shareList}}" 
+            wx:key="index"
+            wx:if="{{item.showed}}">
+            <block wx:if="{{item.shareId == 1}}">
+                <image class="share_icon" src="{{brand_info.default_icon_url}}share/wechat_share.png" />
+                <view class="share_txt">分享给好友</view>
+                <button 
+                  open-type='share'
+                  hover-class='none'
+                  class="share_item_btn"
+                  >
+                </button>
+              </block>
+              <block wx:elif="{{item.shareId == 3}}">
+                <image class="share_icon" src="{{brand_info.default_icon_url}}share/poster_share.png" />
+                <view class="share_txt">生成分享海报</view>
+                <button
+                  catchtap="chooseShareType" 
+                  hover-class='none'
+                  class="share_item_btn"
+                  data-share-id="{{item.shareId}}">
+                </button>
+              </block>
+              <block wx:else>
+                <image class="share_icon" src="{{item.icon}}" />
+                <view class="share_txt">{{item.shareTip}}</view>
+                <button
+                  catchtap="chooseShareType" 
+                  hover-class='none'
+                  class="share_item_btn"
+                  data-share-id="{{item.shareId}}">
+                </button> 
+              </block>
+            </view> 
+          </block>
+          <block wx:else>
+            <view 
+              class="share_item"
+              wx:for="{{shareList}}" 
+              wx:key="index"
+              wx:if="{{item.showed}}">
+              <block wx:if="{{item.shareId == 1}}">
+                <button 
+                  open-type='share'
+                  hover-class='none'
+                  class="share_item_btn"
+                  >
+                  {{item.shareTip}}
+                </button>
+              </block>
+              <block wx:else>
+                <button 
+                  catchtap="chooseShareType" 
+                  hover-class='none'
+                  class="share_item_btn"
+                  data-share-id="{{item.shareId}}">
+                  {{item.shareTip}}
+                </button>
+              </block>
+            </view>
+          </block>
+        </view>
+        <view class="wx_sub_area" wx:if="{{shareType == 'SECKILL_HELP' && tplsList.length > 0 && (acState == 1 || acState == 2)}}">
+          <block>
+            <image class="sub_icon" src="{{brand_info.default_icon_url}}share/selected.png" wx:if="{{((acState == 2 && subState.SECKILL_START == 1) || (acState == 2 && subState.SECKILL_LAUNCH_SUCC == 1))}}"/>
+            <image class="sub_icon" src="{{brand_info.default_icon_url}}share/no_select.png" wx:else/>
+          </block>
+          <text class="sub_txt">获取秒杀资格后通知我</text>
+          <button hover-class="none" class="wx_sub_btn" catchtap="subscriptNormal" data-bool="{{((acState == 2 && subState.SECKILL_START == 1) || (acState == 2 && subState.SECKILL_LAUNCH_SUCC == 1))}}"></button>
+          <!-- <button hover-class="none" class="wx_sub_btn" catchtap="selectEvent" data-bool="{{((acState == 2 && subState.SECKILL_START == 1) || (acState == 2 && subState.SECKILL_LAUNCH_SUCC == 1))}}"></button> -->
+        </view>
+
+        <view class="wx_sub_area" wx:elif="{{shareType == 'NORMAL_ROW' && tplsList.length > 0 && acState == 0}}">
+          <block>
+            <image class="sub_icon" src="{{brand_info.default_icon_url}}share/selected.png" wx:if="{{subState.BARGAIN_PROGRESS == 1 || subState.BARGAIN_SUCC == 1}}"/>
+            <image class="sub_icon" src="{{brand_info.default_icon_url}}share/no_select.png" wx:else/>
+          </block>
+          <text class="sub_txt">订阅此次砍价活动进度</text>
+          <button hover-class="none" class="wx_sub_btn" catchtap="subscriptNormal" data-bool="{{subState.BARGAIN_PROGRESS == 1 || subState.BARGAIN_SUCC == 1}}"></button>
+        </view>
+
+        <view class="service_btn_area" wx:if="{{shareType != 'SECKILL_HELP' && shareType != 'STAFF_SHARE_HELP' && shareType != 'NORMAL_ROW'}}">
+          <button class="confirm_btn" hover-class='none' catchtap="closeList">取消</button>
+        </view>
+    </view>
+  </from>
+</window>

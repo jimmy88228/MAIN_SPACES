@@ -1,0 +1,531 @@
+﻿{
+  "code": true,
+  "message": "欢迎 张三，登录成功！",
+  "accessToken": "9ed1449f049f2eb425eb439b456de8f0",
+  "adminName": "张三",
+  "initialMenu": [
+    {
+      "title": "心理测评",
+      "actionCode": "psychologyAppraisal",
+      "children": [
+        {
+          "title": "测评活动",
+          "actionCode": "appraisalActivity",
+          "isPath": true,
+          "children": [
+            {
+              "title": "列表",
+              "actionCode": "appraisal_activity_list",
+              "realPath": [
+                "appraisalActivity/list"
+              ]
+            },
+            {
+              "title": "创建",
+              "actionCode": "appraisal_activity_add",
+              "realPath": [
+                "appraisalActivity/add"
+              ]
+            },
+            {
+              "title": "删除",
+              "actionCode": "appraisal_activity_remove",
+              "realPath": [
+                "appraisalActivity/remove"
+              ]
+            },
+            {
+              "title": "编辑",
+              "actionCode": "appraisal_activity_update",
+              "realPath": [
+                "appraisalActivity/Info",
+                "appraisalActivity/update"
+              ]
+            },
+            {
+              "title": "关联学校",
+              "actionCode": "appraisal_activity_school",
+              "realPath": [
+                "appraisalActivity/school"
+              ]
+            },
+            {
+              "title": "（批量）添加关联学校",
+              "actionCode": "appraisal_activity_batch_add_school",
+              "realPath": [
+                "appraisalActivity/batchAddSchool"
+              ]
+            },
+            {
+              "title": "（批量）取消关联学校",
+              "actionCode": "appraisal_activity_batch_cancel_school",
+              "realPath": [
+                "appraisalActivity/batchCancelSchool"
+              ]
+            },
+            {
+              "title": "测评进度",
+              "actionCode": "appraisal_activity_schedule",
+              "realPath": [
+                "appraisalActivity/schedule"
+              ]
+            },
+            {
+              "title": "测评结果",
+              "actionCode": "appraisal_activity_result",
+              "realPath": [
+                "appraisalActivity/result"
+              ]
+            },
+            {
+              "title": "测评报告",
+              "actionCode": "appraisal_activity_report",
+              "realPath": [
+                "appraisalActivity/report"
+              ]
+            },
+            {
+              "title": "测评答案",
+              "actionCode": "appraisal_activity_answer",
+              "realPath": [
+                "appraisalActivity/answer"
+              ]
+            }
+          ]
+        },
+        {
+          "title": "量表管理",
+          "actionCode": "inventoryManagement",
+          "isPath": true,
+          "children": [
+            {
+              "title": "列表",
+              "actionCode": "inventory_management_list",
+              "realPath": [
+                "inventoryManagement/list"
+              ]
+            },
+            {
+              "title": "查看",
+              "actionCode": "inventory_management_view",
+              "realPath": [
+                "inventoryManagement/view"
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "学习工作",
+      "actionCode": "schoolWork",
+      "children": [
+        {
+          "title": "学生档案",
+          "actionCode": "studentFile",
+          "isPath": true,
+          "children": [
+            {
+              "title": "列表",
+              "actionCode": "student_file_list",
+              "realPath": [
+                "studentFile/list"
+              ]
+            },
+            {
+              "title": "编辑",
+              "actionCode": "student_file_update",
+              "realPath": [
+                "studentFile/Info",
+                "studentFile/update"
+              ]
+            },
+            {
+              "title": "（批量）删除",
+              "actionCode": "student_file_batch_remove",
+              "realPath": [
+                "studentFile/batchRemove"
+              ]
+            },
+            {
+              "title": "批量导入",
+              "actionCode": "student_file_batch_import",
+              "realPath": [
+                "studentFile/batchTpl",
+                "studentFile/batchImport"
+              ]
+            },
+            {
+              "title": "心理档案",
+              "actionCode": "student_file_psychology_files",
+              "realPath": [
+                "studentFile/psychologyFiles"
+              ]
+            }
+          ]
+        },
+        {
+          "title": "测评任务",
+          "actionCode": "assessmentTasks",
+          "isPath": true,
+          "children": [
+            {
+              "title": "列表",
+              "actionCode": "assessment_tasks_list",
+              "realPath": [
+                "assessmentTasks/list"
+              ]
+            },
+            {
+              "title": "创建",
+              "actionCode": "assessment_tasks_add",
+              "realPath": [
+                "assessmentTasks/add"
+              ]
+            },
+            {
+              "title": "删除",
+              "actionCode": "assessment_tasks_remove",
+              "realPath": [
+                "assessmentTasks/remove"
+              ]
+            },
+            {
+              "title": "编辑",
+              "actionCode": "assessment_tasks_update",
+              "realPath": [
+                "assessmentTasks/Info",
+                "assessmentTasks/update"
+              ]
+            },
+            {
+              "title": "生成二维码(学校)",
+              "actionCode": "assessment_tasks_school_code",
+              "realPath": [
+                "assessmentTasks/schoolCode"
+              ]
+            },
+            {
+              "title": "生成链接(学校)",
+              "actionCode": "assessment_tasks_school_link",
+              "realPath": [
+                "assessmentTasks/schoolLink"
+              ]
+            },
+            {
+              "title": "关联班级列表",
+              "actionCode": "assessment_tasks_class_list",
+              "realPath": [
+                "assessmentTasks/classList"
+              ]
+            },
+            {
+              "title": "（批量）关联",
+              "actionCode": "assessment_tasks_batch_class_add",
+              "realPath": [
+                "assessmentTasks/classAdd"
+              ]
+            },
+            {
+              "title": "（批量）取消关联",
+              "actionCode": "assessment_tasks_batch_class_cancel",
+              "realPath": [
+                "assessmentTasks/classCancel"
+              ]
+            },
+            {
+              "title": "（批量）生成二维码",
+              "actionCode": "assessment_tasks_batch_class_code",
+              "realPath": [
+                "assessmentTasks/batchClassCode"
+              ]
+            },
+            {
+              "title": "（批量）生成链接",
+              "actionCode": "assessment_tasks_batch_class_link",
+              "realPath": [
+                "assessmentTasks/batchClassLink"
+              ]
+            }
+          ]
+        },
+        {
+          "title": "班级维护",
+          "actionCode": "classMaintenance",
+          "isPath": true,
+          "children": [
+            {
+              "title": "列表",
+              "actionCode": "class_maintenance_list",
+              "realPath": [
+                "inventoryManagement/list"
+              ]
+            },
+            {
+              "title": "添加",
+              "actionCode": "class_maintenance_add",
+              "realPath": [
+                "inventoryManagement/add"
+              ]
+            },
+            {
+              "title": "批量创建",
+              "actionCode": "class_maintenance_batch_import",
+              "realPath": [
+                "inventoryManagement/batchTpl",
+                "inventoryManagement/batchImport"
+              ]
+            },
+            {
+              "title": "编辑",
+              "actionCode": "class_maintenance_edit",
+              "realPath": [
+                "inventoryManagement/Info",
+                "inventoryManagement/update"
+              ]
+            },
+            {
+              "title": "移除",
+              "actionCode": "class_maintenance_remove",
+              "realPath": [
+                "inventoryManagement/remove"
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "组织架构",
+      "actionCode": "organizationalStructure",
+      "children": [
+        {
+          "title": "学校维护",
+          "actionCode": "schoolMaintenance",
+          "isPath": true,
+          "children": [
+            {
+              "title": "列表",
+              "actionCode": "school_maintenance_list",
+              "realPath": [
+                "schoolMaintenance/list"
+              ]
+            },
+            {
+              "title": "查看",
+              "actionCode": "school_maintenance_view",
+              "realPath": [
+                "schoolMaintenance/view"
+              ]
+            },
+            {
+              "title": "创建",
+              "actionCode": "school_maintenance_add",
+              "realPath": [
+                "schoolMaintenance/add"
+              ]
+            },
+            {
+              "title": "批量创建",
+              "actionCode": "school_maintenance_batch_import",
+              "realPath": [
+                "schoolMaintenance/batchTpl",
+                "schoolMaintenance/batchImport"
+              ]
+            },
+            {
+              "title": "(批量)删除",
+              "actionCode": "school_maintenance_batch_remove",
+              "realPath": [
+                "schoolMaintenance/batchRemove"
+              ]
+            },
+            {
+              "title": "编辑",
+              "actionCode": "school_maintenance_update",
+              "realPath": [
+                "schoolMaintenance/Info",
+                "schoolMaintenance/update"
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "预警管理",
+      "actionCode": "forewarningManagement",
+      "children": [
+        {
+          "title": "预警学生列表",
+          "actionCode": "forewarningStudent",
+          "isPath": true,
+          "children": []
+        }
+      ]
+    },
+    {
+      "title": "页面管理",
+      "actionCode": "pageManagement",
+      "children": [
+        {
+          "title": "页面维护",
+          "actionCode": "pageMaintenance",
+          "isPath": true,
+          "children": [
+            {
+              "title": "列表",
+              "actionCode": "page_maintenance_list",
+              "realPath": [
+                "pageMaintenance/list"
+              ]
+            },
+            {
+              "title": "创建",
+              "actionCode": "page_maintenance_add",
+              "realPath": [
+                "pageMaintenance/add"
+              ]
+            },
+            {
+              "title": "编辑",
+              "actionCode": "page_maintenance_update",
+              "realPath": [
+                "pageMaintenance/Info",
+                "pageMaintenance/update"
+              ]
+            },
+            {
+              "title": "删除",
+              "actionCode": "page_maintenance_remove",
+              "realPath": [
+                "pageMaintenance/remove"
+              ]
+            },
+            {
+              "title": "复制链接",
+              "actionCode": "page_maintenance_copy_link",
+              "realPath": [
+                "pageMaintenance/copyLink"
+              ]
+            },
+            {
+              "title": "设置主页",
+              "actionCode": "page_maintenance_home_page",
+              "realPath": [
+                "pageMaintenance/homePage"
+              ]
+            }
+          ]
+        },
+        {
+          "title": "个人中心",
+          "actionCode": "personalCenter",
+          "isPath": true,
+          "children": [
+            {
+              "title": "查看",
+              "actionCode": "personal_center_view",
+              "realPath": [
+                "personalCenter/view"
+              ]
+            },
+            {
+              "title": "保存",
+              "actionCode": "personal_center_save",
+              "realPath": [
+                "personalCenter/save"
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "系统设置",
+      "actionCode": "systemSettings",
+      "children": [
+        {
+          "title": "人员管理",
+          "actionCode": "peopleManagement",
+          "isPath": true,
+          "children": []
+        },
+        {
+          "title": "角色管理",
+          "actionCode": "roleManagement",
+          "isPath": true,
+          "children": []
+        }
+      ]
+    }
+  ],
+  "state": 0,
+  "hasactionCode": [
+    "psychologyAppraisal",
+    "appraisalActivity",
+    "appraisal_activity_list",
+    "appraisal_activity_add",
+    "appraisal_activity_remove",
+    "appraisal_activity_update",
+    "appraisal_activity_school",
+    "appraisal_activity_batch_add_school",
+    "appraisal_activity_batch_cancel_school",
+    "appraisal_activity_schedule",
+    "appraisal_activity_result",
+    "appraisal_activity_report",
+    "appraisal_activity_answer",
+    "inventoryManagement",
+    "inventory_management_list",
+    "inventory_management_view",
+    "schoolWork",
+    "studentFile",
+    "student_file_list",
+    "student_file_update",
+    "student_file_batch_remove",
+    "student_file_batch_import",
+    "student_file_psychology_files",
+    "assessmentTasks",
+    "assessment_tasks_list",
+    "assessment_tasks_add",
+    "assessment_tasks_remove",
+    "assessment_tasks_update",
+    "assessment_tasks_school_code",
+    "assessment_tasks_school_link",
+    "assessment_tasks_class_list",
+    "assessment_tasks_batch_class_add",
+    "assessment_tasks_batch_class_cancel",
+    "assessment_tasks_batch_class_code",
+    "assessment_tasks_batch_class_link",
+    "classMaintenance",
+    "class_maintenance_list",
+    "class_maintenance_add",
+    "class_maintenance_batch_import",
+    "class_maintenance_edit",
+    "class_maintenance_remove",
+    "organizationalStructure",
+    "schoolMaintenance",
+    "school_maintenance_list",
+    "school_maintenance_view",
+    "school_maintenance_add",
+    "school_maintenance_batch_import",
+    "school_maintenance_batch_remove",
+    "school_maintenance_update",
+    "forewarningManagement",
+    "forewarningStudent",
+    "pageManagement",
+    "pageMaintenance",
+    "page_maintenance_list",
+    "page_maintenance_add",
+    "page_maintenance_update",
+    "page_maintenance_remove",
+    "page_maintenance_copy_link",
+    "page_maintenance_home_page",
+    "personalCenter",
+    "personal_center_view",
+    "personal_center_save",
+    "systemSettings",
+    "peopleManagement",
+    "roleManagement"
+  ]
+}

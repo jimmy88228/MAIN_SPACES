@@ -1,0 +1,6 @@
+<template name="loadingId">
+  <view class="la-ball-spin-rotate la-3x">
+    <view class="cir"></view>
+    <view class="cir"></view>
+  </view>
+</template>

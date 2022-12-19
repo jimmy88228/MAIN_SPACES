@@ -1,0 +1,234 @@
+<template>
+  <hold-layout slot="right" class="content-data-layout-area">
+    <div class="content-data-layout">
+      <filterView ref="filterViewRef" 
+      :chooseData="chooseData" 
+      :total="total"
+      :realTotal="realTotal"
+      :type="type" 
+      :typeStr="typeStr" 
+      :isShowClassify="isShowClassify" 
+      :isShowTipsBox="isShowTipsBox" 
+      @groupChange="groupChange"
+      @checkChange="checkChange"
+      ></filterView>
+      <materialList 
+      :type="type" 
+      :list="list" 
+      :isView="isView"
+      :target_id="reqParams.target_id"
+      :distribute="reqParams.distribute"
+      :chooseData="chooseData" 
+      @selectItem="selectItem" 
+      @cancelItem="cancelItem"></materialList>
+    </div>
+    <rewrite-page slot="footer" :total="total" :current="page" :page-size="pageSize" :page-size-opts="pageSizeOpts" @on-change="e=>loadData(e)" @on-page-size-change="handlePageSizeChange" show-sizer show-elevator show-total transfer></rewrite-page>
+    <Spin fix v-if="pageLoading"></Spin>
+  </hold-layout>
+</template>
+
+<script>
+import ListMixin from "@/helper/mixin/list-mixin";
+import filterView from "@/components/view-components/material-view/view/filter-view.vue";
+import materialList from "@/components/view-components/material-view/material-list.vue";
+import StringUtil from "@/helper/utils/string-util.js";
+export default {
+  mixins: [ListMixin],
+  props: {
+    type: String,
+    typeStr: String,
+    isShowClassify: Boolean,
+    isShowTipsBox: Boolean,
+    isView: Boolean,  
+    isMulti: Boolean,
+    chooseData: {
+      type: Array,
+      default: function() {
+        return []
+      }
+    }
+  },
+  components: {
+    filterView,
+    materialList,
+  },
+  data() {
+    return {
+      reqKey: {
+        video: "getVideoList",
+        audio: "getAudioList",
+        article: "getArticleList",
+        psychic: "psychologicalList",
+        course: "courseManagementList",
+        exam: "getExamList"
+      },
+      reqParams: {
+        is_all: 0,
+        distribute: 0, // 是否显示分配情况
+        target_id: 0 //所属组织
+      },
+      realTotal: 0
+    };
+  },
+  computed:{
+    ids(){
+      let chooseData = this.chooseData || [];
+      let ids = [];
+      chooseData.map((item)=>{
+        if(item.id){
+          ids.push(item.id);
+        }
+      })
+      return ids;
+    }
+  },
+  methods: {
+    getData(params = {}){
+      this.reqParams = params || {};
+      // if(!this.list || this.list.length == 0) {
+      //   this.loadData();
+      // }
+      this.loadData();
+      this.$refs["filterViewRef"] && this.$refs["filterViewRef"].initData();
+    },
+    refeshData(params = {}){
+      this.reqParams = params || {};
+      this.loadData();
+    },
+    onLoadData(page, extraData) {
+      this.pageLoading = true;
+      let reqParams = this.reqParams;
+      return this.loadDataReq(reqParams, extraData)
+        .then((res) => {
+          if (res.code) {
+            let data = res.data || {};
+            let items = data.items || [];
+            items.map((item)=>{
+              if(!item.id) item.id = item.consultant_id || 0;
+              if(!item.cover_pic) item.cover_pic = item.profile_picture || "";
+              if(!item.cover) item.cover = item.cover_pic || "";
+              if(!item.title) item.title = item.name || "";
+              if(!item.summary) item.summary = item.description || "";
+              if(!item.duration_str) item.duration_str = StringUtil.getTimeStr(item.time_length) || "";
+              switch(this.type){
+                case "exam":
+                  item.title = item.model_name;
+                  break;
+              }
+            })
+            this.realTotal = data.total; // 不准确，需要获取全部数据，剔除已分配
+            this.data = {
+              total: data.total,
+              list: items,
+            };
+            return Promise.resolve();
+          }
+        }).finally(()=>{
+          this.pageLoading = false;
+        })
+    },
+    loadDataReq(reqParams, extraData = {}){
+      let req = this.reqKey[this.type];
+      if(!req) return;
+      return this.$MainApi[req]({
+          data: {
+            ...reqParams,
+            ...extraData,
+          },
+        })
+    },
+    groupChange(group_id){
+      this.reqParams.group_id = group_id || 0;
+      this.loadData();
+    },
+    selectItem(detail){
+      let { index, item } = detail;
+      console.log('selectItem',this.isMulti,detail)
+      if(!this.isMulti){
+        if(this.$root.selectData && typeof(this.$root.selectData) == 'object'){
+          for(let key in this.$root.selectData){
+            this.$root.selectData[key] = [];
+          }
+        }
+        // this.$root.selectData[this.type] = [];
+        this.$root.selectData[this.type].push(item);
+      }else{
+        this.chooseData.push(item);
+      }
+      this.$refs["filterViewRef"] && this.$refs["filterViewRef"].initCheck();
+    },
+    cancelItem(detail){
+      let { index, delIndex, item } = detail;
+      this.chooseData.splice(delIndex, 1);
+      this.$refs["filterViewRef"] && this.$refs["filterViewRef"].initCheck();
+    },
+    checkChange(state){
+      if(state){
+        this.pageLoading = true;
+        this.loadDataReq({
+          ...this.reqParams,
+          page: 1,
+          pageSize: 2000
+          // is_all: 1
+        }).then((res)=>{
+          if(res.code){
+            let data = res.data || {};
+            let items = data.items || [];
+            let selectData = [];
+            let realTotal = 0;
+            items.map((item)=>{
+              if(!item.id) item.id = item.consultant_id || 0;
+              if(!item.cover_pic) item.cover_pic = item.profile_picture || "";
+              if(!item.cover) item.cover = item.cover_pic || "";
+              if(!item.title) item.title = item.name || "";
+              if(!item.summary) item.summary = item.description || "";
+              if(!item.duration_str) item.duration_str = StringUtil.getTimeStr(item.time_length) || "";
+              switch(this.type){
+                case "exam":
+                  item.title = item.model_name;
+                  break;
+              }
+              if(!item.target_id || item.target_id != this.reqParams.target_id){
+                realTotal = realTotal + 1;
+                if(this.ids.indexOf(item.id) == -1){
+                  selectData.push(item)
+                }
+              }
+            })
+            this.realTotal = realTotal;
+            this.$root.selectData[this.type].push(...selectData)
+          }
+        }).finally(()=>{
+          this.pageLoading = false;
+        })
+      } else {
+        let chooseData = this.chooseData || [];
+        let cantRemove = []; // 不可取消元素
+        let target_id = (this.reqParams && this.reqParams.target_id) || 0
+        chooseData.map((item)=>{
+          if(((item.target_id == target_id || item.get_distribution_count == 1) && target_id) || item._disabled){
+            cantRemove.push(item);
+          }
+        })
+        this.$root.selectData[this.type] = cantRemove || [];
+      }
+    }
+  },
+  mounted(){}
+};
+</script>
+
+<style lang="less" scoped>
+.content-data-layout-area{
+  display: flex;
+  flex-direction: column;
+  padding:0px 10px;
+  height:100%;
+  position:relative;
+  .content-data-layout{
+    display: flex;
+    flex-direction: column;
+    height:100%;
+  }
+}
+</style>

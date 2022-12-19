@@ -1,0 +1,409 @@
+<template>
+    <div class="dimension-dropDown-area">
+        <Dropdown class="dimension-dropDown" trigger="custom" :visible="isVisible" :transfer="transfer" @on-visible-change="visibleChange" @on-clickoutside="clickoutside">
+            <div class="dimension-dropDown-input" ref="" :class="{ 'multiple-dropDown-input': multiple && selectView.length }" @click="getFocus">
+                <span v-if="multiple">
+                    <Tag :fade="false" class="m-r-5 m-b-5" closable v-for="(item, index) in selectView" :key="index" @on-close="removeValue(index)">{{item.dimension_name}}</Tag>
+                </span>
+                <Input :disabled="disabled" :class="{'multiple-input': multiple && selectView.length}" ref="dropInputRef" :size="size" :placeholder="(multiple && selectView.length) ? '' : placeholder" :value="selectView.dimension_name" 
+                @on-focus="visibleChange(true)" @on-change="screentData" @on-blur="screentBlur"></Input>
+                <div class="dropdown-icons">
+                    <Icon :size="16" class="dropdown-icon dropdown-close" @click.stop="clearData()" v-if="selectView.id || selectView.length" style="margin-right: -15px;" type="md-close-circle" />
+                    <Icon class="dropdown-icon" :class="{'rotated': isVisible}" type="ios-arrow-down"></Icon>
+                </div>
+            </div>
+            <DropdownMenu slot="list" class="dimension-dropDownMenu">
+                <vue-scroll class="dropDown-scroll" v-bar :style="viewStyle">
+                    <div>
+                        <DropdownItem 
+                        v-for="(item, index) in dimensionData" 
+                        :key="item.id" 
+                        v-show="!item.isHide" 
+                        :name="item.id"
+                        :class="{'selected': setSelect(item)}">
+                            <div class="dropdown-item" @click.stop="selectDrop(item)">
+                            <span class="w-break"> {{item.dimension_name}}</span>
+                            <Icon class="select-icon" :size="18" type="md-checkmark" />
+                            </div>
+                        </DropdownItem>
+                        <div v-if="showNum == 0" class="invalid text-c" style="padding: 30px 0px;">
+                            暂无数据，可自行添加
+                        </div>
+                    </div>
+                </vue-scroll>
+                <DropdownItem divided name="add" v-if="canEdit">
+                    <div class="add-area" @click.stop="">
+                        <div class="add-input-area" @click="addEdit">
+                            编辑与创建
+                        </div>
+                    </div>
+                </DropdownItem>
+            </DropdownMenu>
+        </Dropdown>
+        <editDimension :modelId="modelId" ref="editDimensionRef" @refresh="refresh"></editDimension>
+    </div>
+</template>
+
+<script>
+import editDimension from "./edit-dimension.vue";
+export default {
+    components: { editDimension },
+    data() {
+        return {
+            isVisible: false,
+            isAdd: false,
+            isAddTxt: false,
+            addLoading: false,
+            keyWord: "",
+            dimensionData: [],
+            loadDataHold: null,
+            showNum: 0,
+            selectValue: 0
+        };
+    },
+    model: {
+        prop: "value",
+        event: "change",
+    },
+    props: {
+        multiple: {
+            type: Boolean,
+            default: false
+        },
+        value: {
+            type: String | Number | Array,
+            default() {
+                return 0;
+            },
+        },
+        modelId: {
+            type: Number | String,
+            default: 0,
+        },
+        transfer: {
+            type: Boolean,
+            default: false
+        },
+        placeholder: String,
+        size: {
+            type: String,
+            default: "default" 
+        },
+        disabled: Boolean,
+        canEdit: {
+            type: Boolean,
+            default: true
+        }
+    },
+    computed:{
+        selectView(){
+            let selectValue = this.selectValue;
+            let selectView = null;
+            let dimensionData = this.dimensionData || [];
+            if(this.multiple){
+                selectView = [];
+                if(selectValue instanceof Array && selectValue.length){
+                    selectValue = JSON.parse(JSON.stringify(selectValue));
+                    for(let i = 0; i < dimensionData.length; i++){
+                        let result = selectValue.indexOf(dimensionData[i].id);
+                        if(result != -1){
+                            selectView.push(dimensionData[i]);
+                            selectValue.splice(result, 1);
+                        }
+                        if(!selectValue || selectValue.length == 0){
+                            break;
+                        }
+                    }
+                }
+            } else {
+                selectView = {};
+                if(selectValue && selectValue != 0){
+                    for(let i = 0; i < dimensionData.length; i++){
+                        if(dimensionData[i].id == selectValue){
+                            selectView = this.dimensionData[i] || {};
+                            break;
+                        }
+                    }
+                }
+                if(!selectView.dimension_name){
+                    selectView.dimension_name = '';
+                }
+            }
+            return selectView; 
+        },
+        viewStyle(){
+            let dimensionData = this.dimensionData || [];
+            let itemH = 42, num = 0;
+            dimensionData.map((item)=>{
+                if(!item.isHide){
+                    num++;
+                }
+            })
+            this.showNum = num;
+            return num ? `height: ${ itemH * num }px` : '';
+        }
+    },
+    methods: {
+        setSelect(item){
+            if(this.multiple){
+                if(item.id && (this.selectValue.indexOf(item.id) != -1)){
+                    return true
+                }
+            } else {
+                if(item.id && this.selectValue == item.id){
+                    return true
+                }
+            }
+        },
+        clickoutside(event){
+            this.visibleChange(false)
+        },
+        getFocus(){
+            this.$refs["dropInputRef"] && this.$refs["dropInputRef"].focus();
+        },
+        visibleChange(visible) {
+            this.isVisible = visible;
+        },
+        addEdit(){
+            this.$refs["editDimensionRef"] && this.$refs["editDimensionRef"].showModal({
+                dimensionData: this.dimensionData
+            });
+        },
+        removeValue(index){
+            if((index || index == 0) && this.selectValue instanceof Array){
+                this.selectValue.splice(index, 1)
+            }
+        },
+        clearData(){
+            if(this.multiple){
+                this.selectValue = [];
+            } else {
+                this.selectValue = 0;
+            }
+            this.$nextTick(()=>{
+                this.$emit("change", this.selectValue);
+                this.$emit("changeData", this.selectView);
+            })
+        },
+        screentData(e){ // 关键词筛选
+            let keyWord = (e.target && e.target.value) || "";
+            this.keyWord = keyWord;
+            for(let i = 0; i < this.dimensionData.length; i++){
+                let dimensionItem = this.dimensionData[i] || {}
+                let dimension_name = dimensionItem.dimension_name;
+                let isHide = false;
+                if(dimension_name.indexOf(keyWord) != -1 || keyWord.indexOf(dimension_name) != -1){
+                    isHide = false;
+                } else {
+                    isHide = true;
+                }
+                if(isHide != this.dimensionData[i].isHide){
+                    this.$set(this.dimensionData[i], "isHide", isHide);
+                }
+            }
+        },
+        screentBlur(e){ // 输入关键词后恢复选择项
+            if(this.multiple) { return; } 
+            try {
+               let dropInputRef = this.$refs['dropInputRef'] || {};
+                dropInputRef.$refs['input'].value = this.selectView.dimension_name;
+                dropInputRef.$refs['input']._value = this.selectView.dimension_name; 
+            } catch (error) {  
+            }
+        },
+        selectDrop(item){
+            if(this.multiple){
+                let index = this.selectValue.indexOf(item.id);
+                if(index != -1){
+                    this.selectValue.splice(index, 1);
+                } else if(item.id){
+                    this.selectValue.push(item.id)
+                }
+            } else {
+                this.selectValue = item.id
+            }
+            this.$nextTick(()=>{
+                this.$emit("change", this.selectValue);
+                this.$emit("changeData", this.selectView);
+                if(!this.multiple){
+                    this.visibleChange(false)
+                }
+            })
+        },
+        onLoadData(modelId) {
+            if (!modelId) return Promise.reject();
+            if (this.loadDataHold) {
+                return this.loadDataHold;
+            }
+            this.loadDataHold = this.$MainApi
+                .scaleDimensionInfo({
+                    data: {
+                        id: modelId,
+                    },
+                })
+                .then((res) => {
+                    if (res.code) {
+                        let data = res.data || {};
+                        let items = data.items || [];
+                        for(let i = 0; i < items.length; i++){
+                            items[i].oldName = items[i].dimension_name;
+                            items[i].isEdit = false;
+                            items[i].loading = false;
+                        }
+                        this.dimensionData = items;
+                    }
+                }).finally(()=>{
+                    setTimeout(()=>{
+                        this.loadDataHold = null;
+                    }, 200)
+                })
+            return this.loadDataHold;
+        },
+        refresh(){
+            this.onLoadData(this.modelId);
+        }
+    },
+    watch: {
+        modelId: {
+            handler(nV) {
+                if (Number(nV)) {
+                    this.onLoadData(nV);
+                } else {
+                    this.dimensionData = [];
+                }
+            },
+            immediate: true,
+        },
+        value: {
+            handler(nV) {
+                this.selectValue = nV;
+            },
+            deep: true,
+            immediate: true,
+        },
+    },
+};
+</script>
+
+<style lang="less">
+@import "@/assets/css/variables.less";
+.dimension-dropDown-area{
+}
+.dimension-dropDown {
+    width: 100%;
+    position: relative;
+    .dimension-dropDown-input {
+        background-color:#fff;
+        border: 1px solid #efefef;
+        border-radius: 4px;
+        padding-right: 35px;
+        transition: all .35s;
+        .dropdown-icons {
+            position: absolute;
+            top: 50%;
+            right: 0px;
+            transform: translateY(-50%);
+            color: #808695;
+        }
+        .dropdown-icon{
+            cursor: pointer;
+            padding: 9px;
+            transition: transform 0.35s;
+        }
+        .dropdown-close{
+            opacity: 0;
+            transition: opacity 0.35s;
+        }
+        .rotated {
+            transform: rotate(180deg);
+        }
+        .ivu-input{
+            border: 0 none;
+        }
+        .multiple-input{
+            width: 60px;
+            .ivu-input{
+                outline:none;
+                box-shadow: unset;
+            }
+        }
+        &:focus{
+            box-shadow: 0 0 0 2px rgb(45 140 240 / 20%);
+        }
+    }
+    .dimension-dropDown-input:hover{
+        .dropdown-close{
+            opacity: 1;
+        }
+    }
+    .multiple-dropDown-input{
+        padding-left: 10px;
+    }
+    
+       
+    .ivu-select-dropdown {
+        width: 100%;
+        left: 0px !important;
+        padding: 0px;
+        .ivu-dropdown-menu {
+            .ivu-dropdown-item{
+                padding: 0px;
+            }
+            .ivu-dropdown-item.selected{
+                background-color:#fff;
+                color: @link-color;
+            }
+            .ivu-dropdown-item-divided{
+                background-color: #fff;
+                margin-top: 0px;
+                border: 0 none;
+                border-radius: 4px;
+            }
+            .ivu-dropdown-item-divided::before{
+                margin: 0px;
+                height: 0px;
+            }
+        }
+    }
+    
+    .dropdown-item {
+        padding:10px;
+        display: flex;
+        justify-content: space-between;
+        .select-icon{
+            display: none;
+        }
+    }
+    .selected{
+        .select-icon{
+            display: block;
+        }
+    }
+    .add-area {
+        .add-input-area {
+            display: flex;
+            position: relative;
+            width: 100%;
+            height: 40px;
+            background: #ECF8FE;
+            border-radius: 4px;
+            font-size: 13px;
+            font-family: PingFangSC-Regular, PingFang SC;
+            font-weight: 400;
+            color: #008ACB;
+            align-items: center;
+            justify-content: center;
+        }
+        .add-btn-area.is-add {}
+    }
+    .dropDown-scroll{
+        min-height: 100px;
+        max-height: 200px;
+    }
+}
+// .dimension-select-area{
+//     .ivu-select-dropdown{
+
+//     }
+// }
+</style>

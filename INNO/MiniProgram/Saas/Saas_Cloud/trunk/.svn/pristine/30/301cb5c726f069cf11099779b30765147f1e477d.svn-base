@@ -1,0 +1,15 @@
+<!--pages/micro_mall/prepaid/erp/prepaid_card_code.wxml-->
+<window class="window" ext-class="window-ext">
+    <view class="card_code_content">
+        <view class="card_code">
+            <view class="tips">查看口令</view>
+            <view wx:if="{{getCodeVaild}}">
+                <view class="codes" style="color: {{isInvaild ? '#acacac' : '#000'}}">{{captcha}}</view>
+                <view class="count_down">{{countDown}}</view>
+            </view>
+            <view wx:else class="invalid">
+                无有效验证码
+            </view>
+        </view>
+    </view>
+</window>

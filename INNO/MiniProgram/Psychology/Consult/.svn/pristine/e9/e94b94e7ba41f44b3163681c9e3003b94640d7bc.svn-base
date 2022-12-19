@@ -1,0 +1,74 @@
+function getSetConfig(config = {}, brandConfig) {
+	let brandCode = config.brandCode;
+	let env = config.env;
+	console.log("[brandCode].env", `${brandCode}`)
+	return {
+		...config,
+		...brandConfig,
+		...((allBrandConfig[brandCode] && allBrandConfig[brandCode][env]) || {})
+	}
+}
+export default getSetConfig;
+const allBrandConfig = { 
+	CONSULT: {
+		dev: {
+			supplierCode:"PSYC_CONSULT_SX", 
+			// staticConfig: "https://surveyadmin.innourl.com/v/asset/consult/general/static",
+			staticConfig: "https://psyimage.innourl.com/v/asset/consult/general/static",
+			"apiDomain": {
+				"USERAPI": "https://devgovpsyapi.innourl.com/consult",
+				"REGAPI": "https://devgovpsyapi.innourl.com/consult",
+				"WECHATAPI": "https://devgovpsyapi.innourl.com/consult",
+				"EDEAPI": "https://devgovpsyapi.innourl.com/consult",
+				"EVALUATEAPI": "https://devgovpsyapi.innourl.com/consult",
+				"PAGEAPI": "https://devgovpsyapi.innourl.com/consult",
+				"RESOURCEAPI": "https://devgovpsyapi.innourl.com/consult",
+				"CONSULTANTAPI": "https://devgovpsyapi.innourl.com/consult",
+				"COMMONAPI": "https://devgovpsyapi.innourl.com/consult",
+				"SUPERVISIONAPI": "https://devgovpsyapi.innourl.com/consult",
+				"SUPERVISORAPI": "https://devgovpsyapi.innourl.com/consult",
+				"WARNINGAPI": "https://devgovpsyapi.innourl.com/consult",
+				"ARCHIVESAPI": "https://devgovpsyapi.innourl.com/consult",
+				"COMMISSIONERAPI": "https://devgovpsyapi.innourl.com/consult",
+				"GAMEAPI": "https://devgovpsyapi.innourl.com/consult",
+				"AUTHAPI": "https://devgovpsyapi.innourl.com/consult",
+				"TREEHOLEAPI": "https://devgovpsyapi.innourl.com/consult",
+				"PSYSERVICEAPI": "https://devgovpsyapi.innourl.com/consult",
+				"FUNTESTAPI": "https://devgovpsyapi.innourl.com/consult",
+				"SPECIALSECTIONAPI": "https://devgovpsyapi.innourl.com/consult",
+				"EXAMAPI": "https://devgovpsyapi.innourl.com/consult",
+				"COURSEAPI": "https://devgovpsyapi.innourl.com/consult",
+				"LOGAPI": "https://devgovpsyapi.innourl.com/consult/log",
+			}
+		},
+		prod: {
+			supplierCode:"PSYC_CONSULT_SX", 
+			staticConfig: "https://psyimage.innourl.com/v/asset/consult/general/static", 
+			"apiDomain": {  
+				"USERAPI": "https://devgovpsyapi.innourl.com/consult",
+				"REGAPI": "https://devgovpsyapi.innourl.com/consult",
+				"WECHATAPI": "https://devgovpsyapi.innourl.com/consult",
+				"EDEAPI": "https://devgovpsyapi.innourl.com/consult",
+				"EVALUATEAPI": "https://devgovpsyapi.innourl.com/consult",
+				"PAGEAPI": "https://devgovpsyapi.innourl.com/consult",
+				"RESOURCEAPI": "https://devgovpsyapi.innourl.com/consult",
+				"CONSULTANTAPI": "https://devgovpsyapi.innourl.com/consult",
+				"COMMONAPI": "https://devgovpsyapi.innourl.com/consult",
+				"SUPERVISIONAPI": "https://devgovpsyapi.innourl.com/consult",
+				"SUPERVISORAPI": "https://devgovpsyapi.innourl.com/consult",
+				"WARNINGAPI": "https://devgovpsyapi.innourl.com/consult",
+				"ARCHIVESAPI": "https://devgovpsyapi.innourl.com/consult",
+				"COMMISSIONERAPI": "https://devgovpsyapi.innourl.com/consult",
+				"GAMEAPI": "https://devgovpsyapi.innourl.com/consult",
+				"AUTHAPI": "https://devgovpsyapi.innourl.com/consult",
+				"TREEHOLEAPI": "https://devgovpsyapi.innourl.com/consult",
+				"PSYSERVICEAPI": "https://devgovpsyapi.innourl.com/consult",
+				"FUNTESTAPI": "https://devgovpsyapi.innourl.com/consult",
+				"SPECIALSECTIONAPI": "https://devgovpsyapi.innourl.com/consult",
+				"EXAMAPI": "https://devgovpsyapi.innourl.com/consult",
+				"COURSEAPI": "https://devgovpsyapi.innourl.com/consult",
+				"LOGAPI": "https://devgovpsyapi.innourl.com/consult/log",
+			}
+		} 
+	},
+}

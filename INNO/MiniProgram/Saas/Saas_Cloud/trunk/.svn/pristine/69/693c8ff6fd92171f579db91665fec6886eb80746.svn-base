@@ -1,0 +1,43 @@
+var interval = 20;
+var times = 50;
+var run = function (newValue, oldValue, ownerInstance, instance,valueTemp,numTemp,middle,slc) {
+    if(!newValue)return
+      valueTemp = parseFloat(parseFloat(middle + valueTemp).toFixed(2));
+      numTemp += 1;
+    if (valueTemp >= newValue || (numTemp > times)) {
+          slc.setStyle({
+            "--content" : '"' + newValue + '"'
+          })
+          return
+    } else {
+      var s = getDate().getTime();
+      var fn = function () {
+        if (getDate().getTime() - s > interval) { 
+              slc.setStyle({
+                "--content" : '"' + valueTemp.toFixed(2) + '"'
+              })
+              run(newValue,oldValue,ownerInstance,instance,valueTemp,numTemp,middle,slc);
+        } else {
+            instance.requestAnimationFrame(fn);
+        }
+      }
+      fn(); 
+    }
+} 
+
+module.exports = {
+    changeVal:function (newValue, oldValue, ownerInstance, instance){
+      if(newValue){
+        var valueTemp = 0,numTemp=0;
+        var len = newValue.length;
+        for(var i = 0;i<len;i++){
+          var slc = ownerInstance.selectComponent('#value_' + i);
+          var middle = parseFloat((newValue[i] / times).toFixed(2));
+          if (middle == 0 && newValue[i] > 0.01) {
+            middle = 0.01;
+          }
+          run(newValue[i],oldValue && oldValue[i],ownerInstance,instance,valueTemp,numTemp,middle,slc);
+        }
+      }
+    }
+}

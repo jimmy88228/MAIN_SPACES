@@ -1,0 +1,7 @@
+{
+    "navigationBarTitleText": "确认订单",
+    "usingComponents": {
+        "dialog": "/components/ui/cps/dialog/dialog",
+        "orderSync": "/components/pop/order-sync/order-sync"
+    }
+}

@@ -1,0 +1,251 @@
+@import "/app.wxss";
+page{
+    height: 100%;
+}
+.scroll_view_box {
+    flex: 1;
+}
+
+scroll-view {
+    width: 100%;
+    box-sizing: border-box; 
+    height: calc(100% - 188rpx);
+}
+.wrappers{
+    padding: 0 20rpx;
+}
+.goods_list {
+    padding: 0 10rpx;
+    padding-bottom: 45rpx;
+    position: relative;
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+}
+
+.goods_item {
+    width: 49%;
+    background: #fff;
+    margin-bottom:10rpx;
+    position: relative;
+}
+
+.goods_item:nth-child(1), .goods_item:nth-child(2) {
+    margin-top: 0;
+}
+
+.goods_img {
+    display: block;
+    width: 100%;
+    height: 360rpx;
+}
+
+.goods_name {
+    padding: 0px 10rpx;
+    margin-top: 19rpx;
+    margin-bottom: 16rpx;
+    /* height:30rpx; */
+    color: #333;
+    word-break: break-all;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 1;
+    -webkit-box-orient: vertical;
+    font-size: 22rpx;
+    line-height: 22rpx;
+    /* line-height: 37rpx; */
+}
+
+.label {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 60rpx;
+    background: #000;
+    color: #fff;
+    margin-top: 22rpx;
+}
+.content-box{
+    padding-right: 145rpx;
+    box-sizing: border-box;
+}
+.content {
+    font-size: 28rpx;
+    /* color: rgba(193, 92, 135, 1); */
+    line-height: 37rpx;
+    margin-left: 10rpx;
+    font-weight: bold;
+}
+
+.coupon_box {
+    box-sizing: border-box;
+    padding: 18rpx;
+    /* margin: 0 20rpx; */
+    margin-bottom: 20rpx;
+    width:100%;
+    background: rgba(255, 255, 255, 1);
+    border-radius: 10rpx;
+    border: 1px solid #efefef;
+    box-sizing: border-box;
+}
+/* .coupon_box:first-child {
+    margin-top: 0rpx;
+}
+.coupon_box:last-child {
+    margin-bottom: 16rpx;
+} */
+.counpon {
+    width: 490rpx;
+    height: 245rpx;
+    /* height: 185rpx; */
+}
+
+.counpon_content {
+    width: 184rpx;
+    flex-basis: 184rpx;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 245rpx;
+    background:rgba(251,251,251,1);
+    position:relative;
+}
+.counpon_content .counpon_line{
+  border-left:6rpx dashed #fff;
+  position:absolute;
+  top:0px;
+  left:0px;
+  transform: translateX(-50%);
+  width:0px;
+  height:100%;
+}
+.counpon_content .top_clip{
+  content:"";
+  width:25rpx;
+  height:25rpx;
+  background-color:#fff;
+  position:absolute;
+  top:0px;
+  left:0px;
+  transform: translate(-50%,-50%);
+  border-radius:100%;
+  box-shadow: 0 -5rpx 0px rgba(205,113,143, .3) inset;
+  z-index:10;
+}
+.counpon_content .bottom_clip{
+  content:"";
+  width:25rpx;
+  height:25rpx;
+  background-color:#fff;
+  position:absolute;
+  bottom:0px;
+  left:0px;
+  transform: translate(-50%,50%);
+  border-radius:100%;
+  box-shadow: 0 5rpx 0px rgba(205,113,143, .3) inset;
+  z-index:10;
+}
+
+
+
+.point {
+    margin-top: 4rpx;
+    font-size: 24rpx;
+    font-weight: 500;
+    /* color: rgba(205, 113, 143, 1); */
+    line-height: 37rpx;
+}
+
+.button {
+    margin-top: 21rpx;
+    border-radius: 4rpx;
+    overflow: hidden;
+}
+
+.padding_top0 {
+    padding-top: 20rpx;
+}
+
+.padding_top1 {
+    /* padding-top: 34rpx; */
+}
+
+.signs{
+    margin:0 2rpx;
+}
+.coupon_wrapper{
+    max-width:417rpx;
+    max-height:154rpx;
+    margin-right: 33rpx;
+    overflow: hidden;
+}
+.title{
+    font-size: 26rpx;
+    color:#333;
+    word-break: break-all;
+    margin-left:10rpx;
+    display: inline-block;
+    vertical-align: middle;
+}
+.card_wrap{
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+}
+/* .title_name{
+    display:flex;
+    align-items:center;
+} */
+.icon_store{
+    display: inline-block;
+    vertical-align: middle;
+    width: 40rpx;
+    height: 40rpx;
+}
+.bottom_cont{
+    display: flex;
+    align-items: center;
+    margin-top:18rpx;
+    /* overflow:hidden; */
+    box-shadow: 0 0 10rpx rgba(205,113,143, .3);
+}
+.property_box {
+    position: relative;
+    width: 100%;
+    padding: 15rpx 7rpx 12rpx 7rpx;
+    color: rgb(176, 176, 176);
+    box-sizing: border-box;
+}
+
+.propertyClass {
+    height: 100%;
+    display: flex;
+    align-items: center;
+    margin-left: 8rpx;
+    font-size: 20rpx;
+    color: rgba(127, 127, 127, 1);
+    /* line-height: 37rpx; */
+}
+.market_price{
+    font-size:22rpx;
+    font-weight:normal;
+    text-decoration:line-through;
+    color:rgba(84,84,84,.5);
+    margin-top: 6rpx;
+    margin-left: 10rpx;
+}
+.exchange_number{
+  font-size:20rpx;
+  color:#999999;
+  margin-top: 6rpx;
+  margin-left: 10rpx;
+}
+.countDownBox{
+    position: absolute;
+    bottom: 0;
+    right: 5rpx; 
+    border-radius: 4rpx;
+    overflow: hidden;
+}

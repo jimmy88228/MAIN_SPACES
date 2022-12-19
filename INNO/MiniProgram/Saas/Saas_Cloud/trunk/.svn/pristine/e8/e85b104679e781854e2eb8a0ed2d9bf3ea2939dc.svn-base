@@ -1,0 +1,16 @@
+{
+  "component": true,
+  "backgroundColor": "#ffffff",
+  "usingComponents": {
+    "marqueeView": "/components/custom/marquee_view",
+    "btns": "/components/buttons/btns",
+    "carousel":"/components/custom/module_branches/carousel",
+    "advertise":"/components/custom/module_branches/advertise",
+    "activities":"/components/custom/module_branches/activities",
+    "multiActivities":"/components/custom/module_branches/multiActivities",
+    "goodsList":"/components/custom/module_branches/goodsList",
+    "userCard": "/components/custom/module_branches/userCard",
+    "adNav": "/components/custom/module_branches/adNav",
+    "notice": "/components/custom/module_branches/notice/notice"
+    }
+}

@@ -1,0 +1,58 @@
+page{
+  background-color: #f3f3f3;
+  font-size: 24rpx;
+}
+.bonus_o_header{
+  width: 750rpx;
+  line-height: 24rpx;
+  font-size: 24rpx;
+  padding: 45rpx 35rpx 36rpx 30rpx;
+  color: #fff;
+  box-sizing: border-box
+}
+.bonus_acti_name{
+  font-size: 36rpx;
+  color: rgba(255, 255, 255, 1);
+  line-height: 36rpx;
+  margin-bottom: 28rpx;
+  font-weight: 600;
+  letter-spacing: 2rpx
+}
+.bonus_o_sn{
+  margin-bottom: 15rpx
+}
+.bonus_o_copy{
+  margin-left: 20rpx;
+  font-size: 24rpx;
+  line-height: 24rpx;
+  color: #fff;
+  border-radius: 6rpx;
+  padding: 4rpx 6rpx;
+  border: 1px solid #fff
+}
+.bonus_o_module{
+  width: 750rpx;
+  box-sizing: border-box;
+  margin-top: 10rpx;
+  padding: 30rpx;
+  background: #fff;
+  margin-bottom: 10rpx;
+}
+.bonus_o_module>.module_title{
+  display: block;
+  padding-bottom: 16rpx;
+  color: #7f7f7f;
+}
+.customer_name{
+  margin-bottom: 12rpx;
+}
+.order_fee_row{
+  display: flex;
+  justify-content: space-between;
+  color: #1b1b1b;
+  font-size: 26rpx;
+  line-height: 48rpx
+}
+.bold {
+  font-weight: bold;
+}

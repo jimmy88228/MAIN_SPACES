@@ -1,0 +1,6 @@
+<!--保存进度弹框-->
+<view class="tip_toast" wx:if="{{showed}}">
+  <view class="tip_toast_cont">
+    <view class="tip_cont">正在保存图片（{{showData.current}}/{{showData.total}}）：{{showData.percent}}</view>
+  </view>
+</view>

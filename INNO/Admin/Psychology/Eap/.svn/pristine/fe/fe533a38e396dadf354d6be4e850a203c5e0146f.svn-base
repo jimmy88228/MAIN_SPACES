@@ -1,0 +1,381 @@
+<template>
+  <Form class="md-form" ref="formValidate" :model="dynamic_setting" label-position="top">
+    <div class="content-box" v-if="isShowClassSet">
+        <div class="content-title">样式设置</div>
+        <div class="style-box flex-s-c flex-wrap">
+            <div class="content pointer" :class="[`type-${item.type}`,`row-${styleBox.length}`]" @click="styleSwitch(item)" v-for="(item,index) in styleBox" :key="index">
+                <div 
+                    class="style flex-c-c" 
+                    :class="[dynamic_setting.type == 'list' && item.type == 'list' || 
+                    (dynamic_setting.type == 'row' && item.type == 'row' && dynamic_setting.row == item.row) ? 'active' : '']">
+                    <div class="row-item" v-for="(row_item,index) in item.rowArr" :key="index">
+                        <div class="main-item"></div>
+                        <div v-if="item.type == 'list'" class="tips-item-box">
+                            <div class="tips-item"></div>
+                            <div class="tips-item"></div>
+                        </div>
+                        <div v-if="item.type == 'row'" class="tips-item"></div>
+                    </div>
+                </div>
+                <div class="desc">{{item.desc}}</div>
+            </div>
+        </div>
+    </div>
+    <div class="content-box">
+        <div class="content-title">内容设置</div>
+        <!-- <div v-if="compInfo.module_data[curGroup] != null && compInfo.module_data[curGroup].length > 1" class="mods-list-box">
+            <FormItem label="切换当前Tab ( 仅用于预览效果 )">
+                <RadioGroup v-model="dynamic_setting.currTab">
+                    <Radio v-for="(citem,cindex) in compInfo.module_data[curGroup]" :key="cindex" :label="'tab'+cindex">{{ citem.name }}</Radio>
+                </RadioGroup>
+            </FormItem> 
+        </div> -->
+        <div v-for="(item,index) in compInfo.module_data[curGroup]" :name="index" :key="index" class="group-item-list" @click="cardClick(index)">
+            <mdFormItem :pageInfo="pageInfo" :type="type" :groupItem="item" :groupIndex="index" @on-change="onModsListChange"></mdFormItem>
+        </div>
+        <div class="add-group-area" v-if="compInfo.module_data[curGroup] && compInfo.module_data[curGroup].length == 0">
+            <Button long @click="addGroup">添加{{curName}}组</Button>
+        </div>
+    </div>
+    <div class="content-box" v-if="isShowSetting">
+        <div class="content-title m-b-20">{{curName}}设置</div>
+        <template v-if="type == 'audio'">
+          <div class="flex-b-c m-b-20">
+              <div class="C_7f"><span>跳转播放</span><span class="C_B2 m-l-5">点击跳转至播放详情页</span></div>
+              <div class="cir-box" :class="{'active':dynamic_setting.playMode==1}" @click="setDynamic('playMode',1)"></div>
+          </div>
+          <!-- <div class="flex-b-c m-b-20">
+              <div class="C_7f"><span>页面播放</span><span class="C_B2 m-l-5">点击直接播放</span></div>
+              <div class="cir-box" :class="{'active':dynamic_setting.playMode==2}" @click="setDynamic('playMode',2)"></div> 
+          </div> -->
+          <div class="flex-b-c m-b-20">
+              <div class="C_7f">显示{{curName}}标题</div>
+              <div class="flex-s-c">
+                  <span class="m-r-5 C_B2">{{dynamic_setting.showTitle==1?'已显示':'不显示'}}</span>
+                  <i-switch :value="dynamic_setting.showTitle" @on-change="data=>setDynamic('showTitle',data)" v-model="dynamic_setting.showTitle" :true-value="1" :false-value="0"></i-switch>
+              </div>
+          </div>
+          <div class="flex-b-c m-b-20">
+              <div class="C_7f">显示{{curName}}时间</div>
+              <div class="flex-s-c">
+                  <span class="m-r-5 C_B2">{{dynamic_setting.showMsg==1?'已显示':'不显示'}}</span>
+                  <i-switch :value="dynamic_setting.showMsg" @on-change="data=>setDynamic('showMsg',data)" v-model="dynamic_setting.showMsg" :true-value="1" :false-value="0"></i-switch>
+              </div>
+          </div>
+          <!-- <div class="flex-b-c">
+              <div class="C_7f">显示{{curName}}按钮</div>
+              <div class="flex-s-c">
+                  <span class="m-r-5 C_B2">{{dynamic_setting.showBtn==1?'已显示':'不显示'}}</span>
+                  <i-switch :value="dynamic_setting.showBtn" @on-change="data=>setDynamic('showBtn',data)" :true-value="1" :false-value="0"></i-switch>
+              </div>
+          </div> -->
+        </template>
+        <template v-if="type == 'article'">
+          <div class="flex-b-c m-t-20 m-b-10">
+              <div class="C_7f">显示文章标题</div>
+              <div class="flex-s-c">
+                  <span class="m-r-5 C_B2">{{dynamic_setting.showTitle==1?'已显示':'不显示'}}</span>
+                  <i-switch :value="dynamic_setting.showTitle" @on-change="data=>setDynamic('showTitle',data)" :true-value="1" :false-value="0"></i-switch>
+              </div>
+          </div>
+          <div class="flex-b-c">
+              <div class="C_7f">显示摘要信息</div>
+              <div class="flex-s-c">
+                  <span class="m-r-5 C_B2">{{dynamic_setting.showMsg==1?'已显示':'不显示'}}</span>
+                  <i-switch :value="dynamic_setting.showMsg" @on-change="data=>setDynamic('showMsg',data)" :true-value="1" :false-value="0"></i-switch>
+              </div>
+          </div>
+        </template>
+        <template v-if="type == 'video'">
+          <div class="flex-b-c m-t-20 m-b-10">
+              <div class="C_7f">显示视频标题</div>
+              <div class="flex-s-c">
+                  <span class="m-r-5 C_B2">{{dynamic_setting.showTitle==1?'已显示':'不显示'}}</span>
+                  <i-switch :value="dynamic_setting.showTitle" @on-change="data=>setDynamic('showTitle',data)" :true-value="1" :false-value="0"></i-switch>
+              </div>
+          </div>
+          <div class="flex-b-c m-t-20 m-b-10">
+              <div class="C_7f">显示视频信息</div>
+              <div class="flex-s-c">
+                  <span class="m-r-5 C_B2">{{dynamic_setting.showMsg==1?'已显示':'不显示'}}</span>
+                  <i-switch :value="dynamic_setting.showMsg" @on-change="data=>setDynamic('showMsg',data)" :true-value="1" :false-value="0"></i-switch>
+              </div>
+          </div>
+        </template>
+    </div>
+  </Form>
+</template>
+
+<script>
+import draggable from "vuedraggable";
+import mdFormItem from "./md-form-item.vue";
+import confMixin from "./conf.js"
+
+  export default {
+    mixins:[confMixin],
+    components: {
+      draggable,
+      mdFormItem
+    },
+    props: {
+      type: {
+        type: String,
+        default: ""
+      },
+      dynamic_setting: {
+        type: Object,
+        default: function(){
+          return {}
+        }
+      },
+      compInfo: {
+        type: Object,
+        default: function(){
+          return {}
+        }
+      },
+      pageInfo: {
+            type: Object,
+            default:() => {
+                return {}
+            }
+        }, 
+      styleBox: {
+        type: Array,
+        default: function(){
+          return []
+        }
+      },
+    },
+    data() {
+      return { 
+      }
+    },
+    computed:{
+      curGroup(){
+        return this.keyInfo[this.type] && this.keyInfo[this.type].groupKey || ""
+      },
+      curName(){
+        return this.keyInfo[this.type] && this.keyInfo[this.type].name || ""
+      },
+      isShowClassSet(){
+        return this.type != 'broadcast'
+      },
+      isShowSetting(){
+        return this.type != 'broadcast'
+      },
+    },
+    methods: {
+      // getGroup() {
+      //   return this.keyInfo[this.type] && this.keyInfo[this.type].groupKey || ""
+      // },
+      // getName() {
+      //   return this.keyInfo[this.type] && this.keyInfo[this.type].name || ""
+      // },
+      styleSwitch(item){
+        this.$emit('styleSwitch',item);
+      },
+      cardClick(index){
+        this.$emit('cardClick',index);
+      },
+      addGroup(){
+        this.$emit('addGroup');
+      },
+      setDynamic(key,value){
+        console.log('setDynamic',key,value);
+        this.$emit('setDynamic',key,value);
+      },
+      onModsListChange(){
+        this.$emit('onModsListChange');
+      }
+    },
+  }
+</script>
+
+
+<style lang="less" scoped>
+.md-form {
+    font-size: 13px;
+    .mods-list-box {
+        background-color: #efefef;
+        padding: 8px 5px 5px 5px;
+        border-radius: 5px;
+
+        .ivu-form-item {
+            margin-bottom: 5px;
+        }
+        .add-group-area {
+            position: sticky;
+            left: 0px;
+            bottom: 0px;
+            text-align: center;
+            width: 100%;
+            padding: 0px 10px;
+            .ivu-btn {
+                box-shadow: 0 0 10px #999;
+            }
+        }
+    }
+    .group-item-list {
+        // border-radius: 5px;
+        // margin-bottom: 12px;
+        position: relative;
+        padding: 0px;
+        // background: #fff;
+        // font-size: 12px;
+        .close {
+            position: absolute;
+            right: -10px;
+            top: -10px;
+            font-size: 10px;
+            cursor: pointer;
+            z-index: 1;
+            display: none;
+            color: red;
+            font-size: 22px;
+        }
+        .handle_group {
+            position: absolute;
+            right: 25px;
+            top: -10px;
+            font-size: 10px;
+            cursor: move;
+            display: none;
+            color: #2d8cf0;
+            font-size: 22px;
+        }
+        &:hover {
+            .close,
+            .handle_group {
+                display: block;
+            }
+        }
+    }
+    .ghost {
+        opacity: 0.5;
+    } 
+    .form-title{
+        background: #f8f8f8;
+        padding: 10px 16px;
+        border-radius: 4px;
+        margin-bottom: 20px;
+    }
+    .content-box{
+        background: rgba(239, 239, 239, 0.17);
+        padding: 16px;
+        border-radius: 4px;
+        margin-bottom: 20px;
+    }
+    .content-title{
+        margin-bottom: 10px;
+        font-size: 13px;
+    }
+    .style-box{
+        // padding-top: 10px;
+    }
+    .content{
+        width: 30%;
+        text-align: center;
+    }
+    .row-1{
+        margin-right: 0;
+    }
+    .row-2{
+        margin-right: 10px;
+    }
+    .row-3{
+        margin-right: 5%;
+        &:nth-child(3n){
+            margin-right: 0;
+        }
+        &:last-child{
+            margin-right: 0;
+        }
+    }
+    .style{
+        min-height: 52px;
+        padding:0 8px;
+        border-radius: 4px;
+        border: 1px solid transparent;
+        &.active{
+            background: #EFFAFF;
+            border: 1px solid #95DDFF;
+        }
+    }
+    .row-item{
+        width: 85%;
+        margin-right: 2px;
+        &:last-child{
+            margin-right: 0;
+        }
+    }
+    .main-item{
+        width: 100%;
+        background: #008ACB;
+        opacity: 0.69;
+        height: 14px;
+         
+    }
+    .tips-item{
+        width: 50%;
+        margin-top: 2px;
+        background: #008ACB;
+        opacity: 0.26;
+        height: 3px;
+    }
+    .type-list{
+        .style{
+            flex-direction: column;
+        }
+        .row-item{
+            display: flex;
+            align-items: center;
+            margin-right: 0;
+            margin-bottom: 3px;
+            width: auto;
+            &:last-child{
+                margin-bottom: 0;
+            }
+        }
+        .main-item{
+            width: 10px;
+            height: 9px;
+            margin-right: 4px;
+        }
+        .tips-item{
+            width: 10px;
+            height: 3px;
+            margin-bottom: 3px;
+            margin-top: 0; 
+            &:first-child{
+                width: 19px;
+            }
+            &:last-child{
+                margin-bottom: 0;
+            }
+        }
+    }
+    .cir-box{
+        width: 16px;
+        height: 16px;
+        border-radius: 50%;
+        background: #ECECEC;
+        position: relative; 
+        &::after{
+            content: "";
+            position: absolute;
+            width: 40%;
+            height: 40%;
+            border-radius: 50%;
+            background: #fff;
+            z-index: 1;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%,-50%);
+        }
+        &.active{
+            background: #008ACB;
+        }
+    }
+}
+</style>

@@ -1,0 +1,8 @@
+{
+  "component": true,
+  "usingComponents": {
+    "btns": "/components/buttons/btns",
+    "advertise":"/components/custom/module_branches/advertise",
+    "goodsList":"/components/custom/module_branches/goodsList"
+  }
+}

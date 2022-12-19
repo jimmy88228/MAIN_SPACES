@@ -1,0 +1,184 @@
+<template>
+  <div class="resource-detail">
+    <div class="resource-detail-header flex-b-c">
+      <div>{{targetInfo.name}}</div>
+      <div><Button type="primary" @click="getResource">分配资源</Button></div>
+    </div>
+    <div class="resource-detail-content">
+      <Tabs :value="tabKey" @on-click="changeTabs">
+        <TabPane label="视频内容" name="video">
+          <videoView ref="resource-video"></videoView>
+        </TabPane>
+        <TabPane label="音频内容" name="audio">
+          <audioView ref="resource-audio"></audioView>
+        </TabPane>
+        <TabPane label="文章内容" name="article">
+          <articleView ref="resource-article"></articleView>
+        </TabPane>
+        <TabPane label="心理咨询师" name="psychic">
+          <psychicView ref="resource-psychic"></psychicView>
+        </TabPane>
+      </Tabs>
+    </div>
+    
+  </div>
+</template>
+
+<script>
+import videoView from "@/components/view-components/material-view/view/video-view.vue";
+import audioView from "@/components/view-components/material-view/view/audio-view.vue";
+import articleView from "@/components/view-components/material-view/view/article-view.vue";
+import psychicView from "@/components/view-components/material-view/view/psychic-view.vue";
+export default {
+  components: { videoView, audioView, articleView, psychicView },
+  data() {
+    return {
+      targetInfo: {},
+      tabKey: "video",
+      materialData: {},
+      reqKey: {
+        video: "distributeVideo",
+        audio: "distributeAudio",
+        article: "distributeArticle",
+        psychic:"distributeConsultant"
+      },
+      formData: {
+
+      },
+    }
+  },
+  methods: {
+    init(){
+      let pageQuery = this.pageQuery || {};
+      this.targetInfo = {
+        id: pageQuery.id,
+        name: pageQuery.name
+      }
+      this.changeTabs('video');
+    },
+    changeTabs(name){
+      this.$refs['resource-' + name] && this.$refs['resource-' + name].getData({
+        target_id: this.targetInfo.id || 0
+      });
+    },
+    getResource(){
+      this.$UIModule({
+        mode: "material-modal",
+        props: {
+          guideIndex: 1,
+          isShowTabs: true,
+          isShowClassify: true,
+          currType: "video"
+        },
+        options: {
+          reqParams: {
+            target_id: this.targetInfo.id
+          }
+        },
+        success(data){
+          let reqCallback = [];
+          if(data.video && data.video.length > 0){
+            reqCallback.push(this.setResource('video', this.getArrIds(data.video)));
+          }
+          if(data.audio && data.audio.length > 0){
+            reqCallback.push(this.setResource('audio', this.getArrIds(data.audio)));
+          }
+          if(data.article && data.article.length > 0){
+            reqCallback.push(this.setResource('article', this.getArrIds(data.article)));
+          }
+          if(data.psychic && data.psychic.length > 0){
+            reqCallback.push(this.setResource('psychic', this.getArrIds(data.psychic)));
+          }
+          if(reqCallback.length > 0){
+            Promise.all(reqCallback).finally(()=>{
+              this.changeTabs(this.tabKey);
+            })
+          }
+        }
+      })
+    },
+    getArrIds(arr, idKey = 'id'){
+      let str = ""
+      if(arr instanceof Array){
+        arr.map((item)=>{
+          let id = item[idKey];
+          if(id){
+            str = str ? str + "," + id : id
+          }
+        })
+      }
+      return str;
+    },
+    setResource(type, data){
+      let req = this.reqKey[this.type] || "";
+      if(!req || !this.targetInfo.id) return;
+      return this.$MainApi[req]({
+          data: {
+            id: this.targetInfo.id,
+            add_ids: data,
+            del_ids: []
+          },
+        })
+        .then((res) => {
+          if (res.code) {
+            let data = res.data || {};
+            this.data = {
+              total: data.total,
+              list: data.items,
+            };
+          }
+        })
+    },
+    confirm(){
+      this.$refs["formDataRef"].validate((valid) => {
+          if (valid) {
+
+          } else {
+              this.$Message.error('请完善相关信息');
+          }
+      })
+    }
+  },
+  mounted(){
+    this.init();
+  }
+};
+</script>
+
+<style lang="less" scoped>
+.resource-detail{
+  display: flex;
+  flex-direction: column;
+  height:100%;
+  .resource-detail-header{
+    font-size: 18px;
+    font-family: PingFangSC-Semibold, PingFang SC;
+    font-weight: 600;
+    color: #171717;
+    line-height: 25px;
+    padding-left: 10px;
+    margin-bottom: 15px;
+  }
+}
+</style>
+<style lang="less">
+.resource-detail{
+  .resource-detail-content{
+    flex: 1;
+    overflow: hidden;
+    .ivu-tabs{
+      width:100%;
+      height:100%;
+      display: flex;
+      flex-direction: column;
+      .ivu-tabs-ink-bar{
+        display: none;
+      }
+      .ivu-tabs-content{
+        flex: 1;
+      }
+    }
+  }
+}
+  
+</style>

@@ -1,0 +1,94 @@
+<template>
+  <view>
+    <view class="article-detail-page">
+      <page-nav isClose="true"></page-nav>
+      <view class="clamp2 bold font-40 m-b-25">{{
+        articleDetail.articleTitle
+      }}</view>
+      <view class="C_7f font-24 m-b-20">
+        <text class="m-r-30">
+          {{
+            articleDetail.supplierName
+              ? "来源 " + articleDetail.supplierName
+              : ""
+          }}</text><text>{{ formatDate || "" }}</text>
+      </view>
+      <view v-if="articleDetail.articleDescription.trim().length > 0" class="article-detail-tips m-b-35">
+        {{ articleDetail.articleDescription }}
+      </view>
+      <!-- <view class="">
+        <bctosRichText :nodes="articleDetail.articleContent"></bctosRichText>
+      </view> -->
+      <view class="content_box">
+        <wxparser :rich-text="articleDetail.articleContent" />
+      </view>
+    </view>
+  </view>
+</template>
+
+<script>
+  import bctosRichText from "@/common/support/bctos-rich-text/bctos-rich-text.vue";
+  const app = getApp();
+  const pageOption = Page.BasePage({
+    data() {
+      return {
+        options: {},
+        articleDetail: {},
+      };
+    },
+    components: {
+      bctosRichText,
+    },
+    onLoad(options) {
+      this.options = options;
+    },
+    onReady() {
+      this.init();
+    },
+    computed: {
+      formatDate() {
+        let articleDetail = this.articleDetail;
+        let date = articleDetail.createTime ?
+          articleDetail.createTime.slice(0, -3) :
+          "";
+        return date;
+      },
+    },
+    methods: {
+      init() {
+        this.$Http(this.$Apis.getArticle, {
+          data: {
+            id: this.options.id || 0,
+          },
+        }).then((res) => {
+          if (res.code == 1) {
+            this.articleDetail = res.data;
+          }
+        }).catch((err) => {
+          setTimeout(() => {
+            this.backAction()
+          }, 1500);
+        });
+      },
+    },
+    onUnload() {},
+    onShow() {},
+  });
+  export default pageOption;
+</script>
+
+<style lang="scss" scoped>
+  .article-detail-page {
+    padding: 30rpx 50rpx 135rpx 50rpx;
+    box-sizing: border-box;
+
+    .article-detail-tips {
+      padding: 21rpx;
+      background: #f9f9f9;
+      font-size: 24rpx;
+      line-height: 40rpx;
+      color: #7f7f7f;
+      border-radius: 11rpx;
+    }
+  }
+</style>

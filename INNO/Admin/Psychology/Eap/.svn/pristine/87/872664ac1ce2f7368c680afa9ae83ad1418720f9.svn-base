@@ -1,0 +1,43 @@
+export default{
+  data(){
+    return {
+      columns: [
+        {
+          title: "客户资源",
+          slot: "customer",
+          minWidth: 400
+        },
+        {
+          title: "音频",
+          key: "customer",
+          minWidth: 100,
+          align: "center",
+        },
+        {
+          title: "视频",
+          key: "customer",
+          minWidth: 100,
+          align: "center",
+        },
+        {
+          title: "文章",
+          key: "customer",
+          minWidth: 100,
+          align: "center",
+        },
+        {
+          title: "心理专员",
+          key: "customer",
+          minWidth: 120,
+          align: "center",
+        },
+        {
+          title: "操作",
+          slot: "handle",
+          align: "center",
+          width: 120
+        }
+      ]
+    }
+  }
+}

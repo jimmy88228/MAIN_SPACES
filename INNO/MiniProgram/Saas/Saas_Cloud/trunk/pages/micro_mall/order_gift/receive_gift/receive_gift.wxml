@@ -1,0 +1,15 @@
+<import src="../module/gift_goods.wxml" />
+<page-nav holdStay="{{true}}" bgStyle="background: none;"></page-nav>
+<view class="gift_page">
+  <view class="gift_detail">
+    <view class="detail_tip">多单有礼 {{receiveDetail.rewardName}}</view>
+    <view class="canvas_box">
+      <view class="hide_canvas">
+        <canvas class="goods_code" canvas-id="goodsCode"></canvas>
+      </view>
+      <image src="{{goodsCode}}" class="goods_code" mode="aspectFit"></image>
+      <view class="user_code_txt">{{receiveDetail.exchangeCode}}</view>
+    </view>
+    <template is="gift-goods" data="{{data: receiveDetail}}"></template>
+  </view>
+</view>

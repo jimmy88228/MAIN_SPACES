@@ -1,0 +1,142 @@
+/* pages/micro_mall/buy/modules/redPopup/redPopup.wxss */
+.main{
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  min-height: 900rpx;
+  width: 100%;
+  background: #fff;
+  padding: 30rpx 0;
+  padding-bottom: 140rpx;
+  box-sizing: border-box;
+}
+.main.ipX{
+  padding-bottom: 178rpx;
+}
+.main .title{
+  padding-bottom: 35rpx;
+}
+.close{
+  position: absolute;
+  right: 8rpx;
+  top: 4rpx;  
+  width: 50rpx;
+  height: 50rpx;
+  transform: rotate(45deg);
+  padding: 16rpx;
+  z-index:2;
+}
+.line{
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%,-50%);
+  background:#b2b2b2;
+}
+.row{
+  width: 30rpx;
+  height: 4rpx;
+}
+.col{
+  width: 4rpx;
+  height: 30rpx;
+}
+.padding_box{
+  padding: 0 52rpx;
+  box-sizing: border-box;
+  position: relative;
+}
+.main .use_box{
+  background: #FAFAFA;
+  border-radius: 10rpx;
+  border-radius: 10rpx;
+  height: 100rpx;
+  padding: 0 22rpx;
+  width: 690rpx;
+  margin: 0 auto;
+}
+.main .tips_box{
+  padding: 0;
+}
+.tips_title_box{
+  padding-top:30rpx;
+}
+.tips_item{
+  padding: 30rpx 0;
+  padding-bottom: 0;
+}
+/* .tips_item:first-child{
+  padding-bottom: 0;
+} */
+.t_i_msg_box{
+  line-height: 36rpx;
+}
+.btn{
+  position: fixed;
+  bottom: 30rpx;
+  width: 690rpx;
+  color: #fff;
+  border-radius: 6rpx;
+  left: 50%;
+  transform: translateX(-50%);
+  line-height: 80rpx;
+  font-weight: bold;
+}
+.tips_msg_box{
+  position: relative;
+  max-height: 500rpx;
+  overflow: scroll;
+}
+.use_select{
+  padding-right: 44rpx;
+}
+.select_box{ 
+  position: absolute;
+  right: 22rpx;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 32rpx;
+  height: 32rpx;
+  border-radius: 50%;
+  background: #bdbdbd;
+}
+.correct{
+  transform: rotate(-45deg);
+  width: 10rpx;
+  height: 6rpx;  
+  border-left:1px solid #fff;
+  border-bottom: 1px solid #fff;
+  background: transparent;
+}
+.tip_label_box{
+  padding: 15rpx;
+}
+.tip_label{
+  width: 22rpx;
+  height: 22rpx;
+  border-radius: 50%;
+  background-color: #fff;
+  border:1px solid #bdbdbd;
+}
+.tip_label::after{
+  content: "i";
+  font-size: 16rpx;
+  line-height: 16rpx;
+  color: #bdbdbd;
+}
+.t_t_item{
+  line-height: 24rpx;
+}
+.select_img{
+  width: 32rpx;
+  height: 32rpx;
+  position: absolute;
+  right: 22rpx;
+  top: 50%;
+  transform: translateY(-50%); 
+}
+.tip{
+  padding: 15rpx;
+  width: 32rpx;
+  height: 32rpx;
+}

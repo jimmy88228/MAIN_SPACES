@@ -1,0 +1,8 @@
+{
+     "navigationBarTitleText": "预售订单",
+     "backgroundColor": "#EFEFEF",
+     "enablePullDownRefresh": true,
+     "usingComponents": {
+        "tabbar": "/components/custom/tabBar"
+    }
+}

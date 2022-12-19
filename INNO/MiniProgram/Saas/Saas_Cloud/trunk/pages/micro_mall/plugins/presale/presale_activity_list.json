@@ -1,0 +1,11 @@
+{
+    "navigationBarTitleText": "预售首页",
+    "backgroundColor": "#EFEFEF",
+    "enablePullDownRefresh": true,
+    "usingComponents": {
+        "tabbar": "/components/custom/tabBar",
+        "search": "/components/search/s_view",
+        "act-count-down":"/components/act-count-down/act-count-down"
+    }
+}
+ 
