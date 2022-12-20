@@ -22,6 +22,8 @@
   display: flex;
   align-items: center;
   transition: opacity 0.1s ease;
+  color: #7f7f7f;
+  margin-right: 8rpx;
 }
 
 .check-more:active{
@@ -30,7 +32,7 @@
 
 .check-more-text {
   color: var(--normal-text-color);
-  margin-right: 8rpx;
+  margin-right: 2rpx;
   font-size: 24rpx;
 }
 

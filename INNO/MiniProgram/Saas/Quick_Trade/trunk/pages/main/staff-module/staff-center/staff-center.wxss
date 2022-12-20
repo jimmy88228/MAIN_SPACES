@@ -1,0 +1,21 @@
+/* pages/main/staff-module/staff-center/staff-center.wxss */
+@import "/common/base/page/default-wxss/index.wxss";
+
+.staff-center{
+    padding: 30rpx;
+    box-sizing: border-box;
+}
+.header{
+    width: 98rpx;
+    height: 98rpx;
+    margin-bottom: 4rpx;
+    position: relative;
+}
+.summary-box{
+    box-sizing: border-box;
+    padding: 0 30rpx;
+    margin-top: 40rpx;
+}
+.order-box{
+    margin-top: 60rpx;
+}

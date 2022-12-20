@@ -13,5 +13,11 @@ export default {
   hideLoading() {
     let loadingComponent = this.getPublicComponent("loading");
     return loadingComponent ? loadingComponent.hideLoading() : Promise.reject("hideLoadingError") 
-  }
+  },
+  
+  getDataset(e,type) {
+    let dataset = e && e.currentTarget && e.currentTarget.dataset || {};
+    if(type)return dataset[type]
+    return dataset;
+  },
 }

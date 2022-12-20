@@ -370,5 +370,6 @@ export const DstbApiList = {
   checkIfStaffDstb: "/api/StaffDstb/CheckIfStaffDstb?userToken={userToken}&brandCode={brandCode}",
   getMyFanList: "/api/StaffDstb/GetMyFanList?userToken={userToken}&pageIndex={pageIndex}&pageSize={pageSize}&brandCode={brandCode}",
   //通过分销员code找店员id
-  getStaffIdByStaffCode:"/api/StaffDstb/GetStaffIdByStaffCode?staffCode={staffCode}&brandCode={brandCode}"
+  getStaffIdByStaffCode:"/api/StaffDstb/GetStaffIdByStaffCode?staffCode={staffCode}&brandCode={brandCode}",
+  get_StaffDstbInfo:"/api/Staff/Get_StaffDstbInfo"
 }

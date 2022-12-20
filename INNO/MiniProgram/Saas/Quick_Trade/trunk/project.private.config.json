@@ -52,6 +52,12 @@
                     "pathName": "pages/tabs/index/index",
                     "query": "staffCode=jimmy&storeCode=NSWD",
                     "scene": null
+                },
+                {
+                    "name": "pages/main/staff-module/staff-center/staff-center",
+                    "pathName": "pages/main/staff-module/staff-center/staff-center",
+                    "query": "",
+                    "scene": null
                 }
             ]
         }

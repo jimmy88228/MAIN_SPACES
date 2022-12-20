@@ -2,7 +2,7 @@
   <view class="user-row">
     <view class="user-row-header">
       <view class="user-row-left">
-        <view class="user-row-title">我的订单</view>
+        <view class="user-row-title">{{baseInfo[fromType].title||"我的订单"}}</view>
       </view>
       <view class="user-row-right">
         <view class="check-more">
@@ -18,6 +18,7 @@
             class="user-row-item"
             style="width: {{(100 / barList.length) + ''}}%;"
             catchtap="jump"
+            data-item="{{item}}"
           >
             <view class="user-row-item-icon">
               <view class="user-row-item-image" style="background-image: url({{item.img}})"></view>

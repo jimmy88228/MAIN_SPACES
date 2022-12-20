@@ -6,7 +6,9 @@ export const pageColor = {
   "deep-text-color": "#333333",
   "normal-text-color": "#777777",
   "cancel-text-color": "#b2b2b2",
+  "tint-text-color": "#7f7f7f",
   "normal-border-color": "#efefef",
+
 }
 
 export const pageSize = {
