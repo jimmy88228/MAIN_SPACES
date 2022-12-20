@@ -15,7 +15,7 @@
 
 .user-row-title {
   color: var(--deep-text-color);
-  font-size: 28rpx;
+  font-size: 24rpx;
 }
 
 .check-more {

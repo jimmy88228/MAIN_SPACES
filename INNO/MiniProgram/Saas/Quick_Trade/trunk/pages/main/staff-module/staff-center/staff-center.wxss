@@ -6,16 +6,22 @@
     box-sizing: border-box;
 }
 .header{
-    width: 98rpx;
-    height: 98rpx;
+    width: 110rpx;
+    height: 110rpx;
     margin-bottom: 4rpx;
+    border-radius: 50%;
+    overflow: hidden;
     position: relative;
 }
 .summary-box{
     box-sizing: border-box;
     padding: 0 30rpx;
     margin-top: 40rpx;
+    font-size: 24rpx;
 }
 .order-box{
     margin-top: 60rpx;
+}
+.name{
+    font-size: 24rpx;
 }
