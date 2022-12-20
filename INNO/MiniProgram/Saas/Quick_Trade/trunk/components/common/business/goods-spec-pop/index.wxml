@@ -1,4 +1,4 @@
-<window show="{{show}}" bindmasktap="handleMaskTap" name="slide-from-bottom">
+<window show="{{show}}" bindmasktap="toggle" name="slide-from-bottom">
   <transition show="{{show}}" name="slide-from-bottom" class="goods-spec-container" customStyle="width: 100%;height: 100%">
     <view class="goods-spec-main">
       <view class="g-s-spec-detail">
@@ -17,19 +17,18 @@
         </view>
       </view>
       <view class="g-s-sku-container">
-        <view class="g-s-sku-title">规格</view>
         <scroll-view scroll-y class="g-s-sku-main">
-          <sku id="sku" show />
+          <sku id="sku" show bind:select="handleSkuSelect" />
         </scroll-view>
       </view>
       <view class="g-s-purchase-count-con">
         <view class="gspcc-prefix">购买数量</view>
         <view class="gspcc-main">
-          <view class="gspcc-tips">没人限购1件</view>
+          <view class="gspcc-tips">每人限购1件</view>
           <view class="gspcc-number-control">
-            <view class="gspcc-minus disabled">-</view>
+            <view class="gspcc-minus icon-minus disabled"></view>
             <input class="gspcc-number-input" value="{{1}}" />
-            <view class="gspcc-plus">+</view>
+            <view class="gspcc-plus icon-plus"></view>
           </view>
         </view>
       </view>
@@ -41,12 +40,12 @@
       </view>
     </view>
     <view class="goods-spec-short-cut">
-      <view class="gssc-left">
+      <view class="gssc-left" wx:if="{{showShortCut}}">
         <view class="gscc-menu-icon iconfont icon-list"></view>
         <view class="gscc-entry">商品详情</view>
       </view>
-      <view class="gssc-right">
-        <view class="gssc-close icon-close" catchtap="toggle"></view>
+      <view class="gssc-right" catchtap="toggle">
+        <view class="gssc-close icon-close"></view>
       </view>
     </view>
   </transition>

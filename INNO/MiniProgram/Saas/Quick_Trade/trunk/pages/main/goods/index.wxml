@@ -1,6 +1,7 @@
 <!-- public 必须是第一个元素 -->
 <include src="/common/base/page/index.wxml" />
-<view class="goods-info-page">
+<wxs src="./index.wxs" module="f" />
+<view class="goods-info-page" wx:if="{{goods_info && goods_info.goods_id}}">
   <scroll-view class="goods-info-main" scroll-y>
     <view class="goods-images-con">
       <swiper 
@@ -12,7 +13,7 @@
         circular
         catchtap="handleImageSwiperTap"
       >
-        <block wx:for="{{10}}" wx:key="index">
+        <block wx:for="{{goods_gallery}}" wx:key="index">
           <swiper-item class="goods-images-swpier-item">
             <view class="g-i-s-i-image-con">
               <image class="g-i-s-i-image" src="http://devimgtest.innourl.com/SAAS_IMAGE/images/INNO/goods/gallery/20221209/20221209161853497_0305216.jpg" lazy-load  mode="aspectFit" />
@@ -28,17 +29,17 @@
           <view class="g-i-c-price-con">
             <view class="g-i-c-price">
               <text class="g-i-c-rmb">￥</text>
-              <text class="g-i-c-price-text">199</text>
+              <text class="g-i-c-price-text">{{goods_info.sale_price}}</text>
             </view>
-            <view class="g-i-c-trend">
+            <view class="g-i-c-trend" hidden="{{goods_info.market_price == goods_info.sale_price}}">
               <view class="iconfont icon-xiajiang g-i-c-trend-icon"></view>
-              <view class="g-i-c-trend-text">直降￥40</view>
+              <view class="g-i-c-trend-text">直降￥{{goods_info.market_price - goods_info.sale_price}}</view>
             </view>
           </view>
           <!-- 划线价 -->
-          <view class="g-i-c-original-price">
+          <view class="g-i-c-original-price" hidden="{{goods_info.market_price == goods_info.sale_price}}">
               <text class="g-i-c-rmb">￥</text>
-              <text class="g-i-c-original-price-text">239</text>
+              <text class="g-i-c-original-price-text">{{goods_info.market_price}}</text>
           </view>
         </view>
         <view class="g-i-c-right">
@@ -48,7 +49,7 @@
             </view>
             <view class="g-i-c-c-d-text">
                 <text class="c-d-prefix">距结束 </text>
-                <text class="c-d-time">05: 12: 32</text>
+                <text class="c-d-time">{{f.NumberToString(countDownTime.hours)}}: {{f.NumberToString(countDownTime.minutes)}}: {{f.NumberToString(countDownTime.seconds)}}</text>
               </view>
           </view>
         </view>
@@ -57,17 +58,17 @@
     <view class="goods-info-basic-con">
       <view class="g-i-b-main">
         <view class="g-i-b-left">
-          <view class="g-i-b-goods-name">耐克小童男大童卫衣/长袖</view>
+          <view class="g-i-b-goods-name">{{goods_info.goods_name}}</view>
           <view class="g-i-b-goods-sn">
-            <text class="goods-sn-prefix">商品编号</text>
-            <text class="goods-sn-text">0001843710</text>
+            <text class="goods-sn-prefix">商品编号 </text>
+            <text class="goods-sn-text">{{goods_info.goods_sn}}</text>
           </view>
         </view>
         <view class="g-i-b-right">
           <view class="g-i-b-btn-group">
             <view class="g-i-b-btn-item">
-              <button class="g-i-b-btn">
-                <view class="icon-share-con">
+              <button class="g-i-b-btn" >
+                <view class="icon-share-con" hover-class="active">
                   <view class="iconfont icon-fenxiang share-icon"></view>
                 </view>
                 <view class="g-i-b-btn-text">分享</view>
@@ -93,7 +94,7 @@
           <view class="g-i-d-title">详情</view>
         </view>
         <view class="g-i-d-main">
-          
+          <rich-text wx:if="{{goods_info.goods_detail}}" nodes="{{goods_info.goods_detail}}" />
         </view>
       </view>
     </view>
@@ -103,7 +104,7 @@
     <view class="g-i-f-main">
       <view class="g-i-f-left">
         <view class="g-i-f-btn-group">
-          <button class="g-i-f-btn">
+          <button class="g-i-f-btn" hover-class="active" catchtap="navigateF" data-delta="{{-1}}">
             <view class="iconfont icon-list g-i-f-list-icon"></view>
             <view class="g-i-f-btn-text">返回列表</view>
           </button>
@@ -111,9 +112,13 @@
       </view>
       <view class="g-i-f-right">
         <view class="gif-main-btn-group">
-          <button class="goods-info-purchase-btn">立即购买</button>
+          <button class="goods-info-purchase-btn" hover-class="active" catchtap="handlePurchaseBtnTap">立即购买</button>
         </view>
       </view>
     </view>
   </view>
+</view>
+
+<view class="index-goods-spec-com">
+  <goods-spec-pop id="goods-spec-pop" />
 </view>

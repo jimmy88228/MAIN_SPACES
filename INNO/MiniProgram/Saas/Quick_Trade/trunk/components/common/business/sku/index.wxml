@@ -1,15 +1,19 @@
-
-
-<transition show="{{show}}" >
+<transition show="{{show}}">
   <view class="sku-selector">
     <view class="sku-con">
       <view class="sku-type-list">
-        <view class="sku-type-item"  wx:for="{{type}}" wx:for-item="skuTypeList"  wx:for-index="typeIndex" wx:key="index" >
+        <view class="sku-type-item" wx:for="{{type}}" wx:for-item="skuTypeList" wx:for-index="typeIndex" wx:key="index">
           <view class="sku-type-header">sku类型</view>
           <view class="sku-list">
-            <view class="sku-item {{availablePrimeRef[(valueInLabel[skuItem])] ? '': 'disabled'}} {{selectedRef[skuItem] ? 'selected' : ''}}" wx:for="{{skuTypeList}}" wx:for-item="skuItem" wx:key="index" catchtap="onClickSelType" data-type="{{skuItem}}" data-prime="{{valueInLabel[skuItem]}}" data-prime-index="{{typeIndex}}">
-              {{skuItem}}
-            </view>
+            <block wx:for="{{skuTypeList}}" wx:for-item="skuItem" wx:key="index">
+              <view 
+                class="sku-item {{availablePrimeRef[(valueInLabel[skuItem])] ? '': 'disabled'}} {{selectedRef[skuItem] ? 'selected' : ''}}" 
+                data-type="{{skuItem}}"
+                data-prime="{{valueInLabel[skuItem]}}"
+                data-prime-index="{{typeIndex}}"
+                catchtap="onClickSelType"
+              >{{skuItem}}</view>
+            </block>
           </view>
         </view>
       </view>

@@ -1,6 +1,8 @@
 @import "/common/base/component/default-wxss/index.wxss";
 page{
-  --goods-spec-height: 920rpx;
+  --goods-spec-min-height: 920rpx;
+  --sku-max-height: 360rpx;
+  --goods-spec-max-height: calc(var(--goods-spec-min-height) + var(--sku-max-height));
 }
 
 
@@ -9,15 +11,14 @@ page{
   bottom: 0;
   left: 0;
   width: 100%;
-  height: var(--goods-spec-height);
   z-index: 10020;
 }
 .goods-spec-main{
   border-top-left-radius: 30rpx;
   border-top-right-radius: 30rpx;
   background-color: #ffffff;
-  width: 100%;
-  height: 100%;
+  min-height: var(--goods-spec-min-height);
+  max-height: var(--goods-spec-max-height);
   padding: 24rpx 32rpx;
   display: flex;
   flex-direction: column;
@@ -29,14 +30,15 @@ page{
 .g-s-spec-image-con{
   width: 194rpx;
   height: 194rpx;
-  border-radius: 12rpx;
   margin-right: 28rpx;
   background: #D8D8D8;
   border: 1px solid #d8d8d8;
+  border-radius: 12rpx;
 }
 .g-s-spec-image{
   width: 100%;
   height: 100%;
+  border-radius: 12rpx;
 }
 .g-d-spec-info{
   display: flex;
@@ -64,14 +66,9 @@ page{
 .g-s-sku-container{
   margin-bottom: 80rpx;
 }
-.g-s-sku-title{
-  font-size: 28rpx;
-  color: var(--deep-text-color);
-  margin-bottom: 24rpx;
-}
 .g-s-sku-main{
   min-height: 60rpx;
-  max-height: 240rpx;
+  max-height: var(--sku-max-height);
 }
 .g-s-purchase-count-con{
   border-top: 1px solid #ebebeb;
@@ -79,7 +76,7 @@ page{
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin-bottom: 16rpx;
+  margin-bottom: 48rpx;
 }
 .gspcc-prefix{
   font-size: 28rpx;
@@ -153,7 +150,8 @@ page{
 .gssc-left{
   display: flex;
   align-items: center;
-  margin-right: 8rpx;
+  padding-right: 24rpx;
+  border-right: 1px solid #979797;
 }
 .gscc-menu-icon{
   width: 16rpx;
@@ -168,7 +166,6 @@ page{
   font-size: 24rpx;
 }
 .gssc-right{
-  border-left: 1px solid #979797;
   padding-left: 24rpx;
 }
 .gssc-close{

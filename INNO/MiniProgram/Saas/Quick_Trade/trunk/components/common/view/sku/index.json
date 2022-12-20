@@ -1,6 +1,0 @@
-{
-  "component": true,
-  "usingComponents": {
-    "transition": "/components/common/basic/transition/index"
-  }
-}

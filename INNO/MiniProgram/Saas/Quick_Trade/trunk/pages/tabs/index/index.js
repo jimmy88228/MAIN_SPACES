@@ -5,7 +5,6 @@ const App = getApp();
 Page(App.BP({
   data: {
     activityInfo: {},
-    activityStatus: 0, // 0未开始 1已开始 2已过期
     countDownTime: {
       hours: 0,
       minutes: 0,

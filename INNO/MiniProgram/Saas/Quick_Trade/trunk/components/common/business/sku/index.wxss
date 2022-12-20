@@ -1,8 +1,8 @@
 @import "/common/base/component/default-wxss/index.wxss";
 .sku-type-header{
   font-size: 28rpx;
-  color: #333333;
-  margin-bottom: 12rpx;
+  color: var(--deep-text-color);
+  margin-bottom: 16rpx;
 }
 .sku-item{
   display: inline-block;
@@ -10,8 +10,10 @@
   border-radius: 10rpx;
   background-color: #ffffff;
   border: 1px solid #7f7f7f;
+  margin-left: 2rpx;
   margin-right: 16rpx;
   margin-bottom: 12rpx;
+  font-size: 28rpx;
   color: #7f7f7f;
 }
 .sku-item.selected{

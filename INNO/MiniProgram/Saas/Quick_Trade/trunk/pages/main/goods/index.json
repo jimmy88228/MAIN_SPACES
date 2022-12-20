@@ -1,4 +1,6 @@
 {
   "navigationBarTitleText": "商品详情",
-  "usingComponents": {}
+  "usingComponents": {
+    "goods-spec-pop": "/components/common/business/goods-spec-pop/index"
+  }
 }

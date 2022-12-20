@@ -5,7 +5,7 @@
   left: 0;
   bottom: 0;
   right: 0;
-  z-index: 8999;
+  z-index: 98999;
 }
 
 .loading_masker{
@@ -14,8 +14,8 @@
   left: 0;
   bottom: 0;
   right: 0;
-  z-index: 9010;
-  background-color: hsla(0,0%,100%,0.9);
+  z-index: 99010;
+  /* background-color: hsla(0,0%,100%,0.05); */
 }
 
 .loading_icon{
@@ -23,7 +23,7 @@
   top: 50%;
   left: 50%;
   transform: translate(-50%,-50%);
-  z-index: 9020;
+  z-index: 99020;
 }
 
 .loading_icon,

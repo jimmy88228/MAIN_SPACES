@@ -47,7 +47,7 @@
   </view>
 </view>
 <view class="index-goods-spec-com">
-  <goods-spec-pop id="goods-spec-pop" />
+  <goods-spec-pop id="goods-spec-pop" show-short-cut />
 </view>
 <!-- public -->
 <include src="/common/base/component/index.wxml" />
