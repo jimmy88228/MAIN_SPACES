@@ -4,7 +4,9 @@
         "pages/tabs/user/user",
         "pages/main/goods/index",
         "pages/tabs/user/update_avatar/update_avatar",
-        "pages/main/staff-module/staff-center/staff-center"
+        "pages/main/staff-module/staff-center/staff-center",
+        "pages/main/staff-module/activity/index",
+        "pages/main/staff-module/repository/index"
     ],
     "tabBar": {
         "custom": true,

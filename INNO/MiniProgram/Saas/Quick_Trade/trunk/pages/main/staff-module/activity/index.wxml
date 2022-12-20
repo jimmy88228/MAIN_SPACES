@@ -1,0 +1,16 @@
+<!--pages/main/staff-module/activity/index.wxml-->
+<view class="activity">
+    <view class="box">
+        <view class="time-box flex-c-c">
+            <view>开始时间</view>
+            <view>{{acInfo.start_time}}</view>
+        </view>
+        <view class="time-box flex-c-c">
+            <view>结束时间</view>
+            <view>{{acInfo.end_time}}</view>
+        </view> 
+    </view>
+    <view class="goods-list">
+        <block></block>
+    </view>
+</view>

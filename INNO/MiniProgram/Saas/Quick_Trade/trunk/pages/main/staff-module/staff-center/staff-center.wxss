@@ -1,6 +1,4 @@
 /* pages/main/staff-module/staff-center/staff-center.wxss */
-@import "/common/base/page/default-wxss/index.wxss";
-
 .staff-center{
     padding: 30rpx;
     box-sizing: border-box;
