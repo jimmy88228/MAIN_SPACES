@@ -22,6 +22,7 @@ const STORAGE_OPEN_ID_KEY = "O_ID";
 const STORAGE_SHARE_CODE_KEY = "SHARE_CODE";
 const STORAGE_USER_KEY = "USER_KEY";
 const STAFF_INFO_KEY = "STAFF_INFO";
+const STORE_STAFF_INFO_KEY = "STORE_STAFF_INFO";
 
 //注册请求
 function userRegister(showLoading, iData = {}) {
@@ -211,7 +212,6 @@ function getUserProfile(desc = "", noAuthHandlerF) {
 }
 
 function checkIfStaffDstb(){ 
-  console.log('checkIfStaffDstb')
   return DstbApi.checkIfStaffDstb({
     params: {
       userToken: this.userKey,
@@ -224,31 +224,30 @@ function checkIfStaffDstb(){
     if (e.code == "1") {
       let data = e.data || {};
       this.setStaffInfo(data);
-      // setTimeout(function () {
-      //   EB.call("staffInfoChange", this);
-      // }.bind(this), 150);
-      return Promise.resolve(data);
+      return data
     }
     return Promise.reject({});
   })
 }
 
-function checkIfStoreFn() {
+function getStoreStaffInfo(){ 
   return UserApi.getStoreStaffInfo({
     params: {
       userToken: this.userKey,
-      brandCode: Conf.BRAND_CODE,
+      brandCode: Conf.BRAND_CODE
     },
     other: {
-      isShowLoad: true
+      isShowLoad: false
     }
-  }).then(res => {
-    if (res.code == 1){
-      return Promise.resolve(res)
+  }).then(e => {
+    if (e.code == "1") {
+      let data = e.data || {};
+      this.setStoreInfo(data); 
+      return data
     }
-    return Promise.reject(res)
+    return Promise.reject({});
   })
-}
+} 
 
 
 class LoginManager {
@@ -282,6 +281,10 @@ class LoginManager {
     let stf = StorageH.get(STAFF_INFO_KEY) || "";
     if (stf) {
       this._staffInfo = stf;
+    }
+    let sstf = StorageH.get(STORE_STAFF_INFO_KEY) || "";
+    if (sstf) {
+      this._storeInfo = sstf;
     }
     this._isCheckLogin = false;
     this.isCanUrPf = !!wx.getUserProfile; 
@@ -431,7 +434,7 @@ class LoginManager {
     })
   }
 
-  checkIfStaff(checkCache = false) {
+  checkIfStaff(checkCache = true) {
     console.log('检测分销',this.staffInfo);
     if (!this.userToken) {
       return Promise.resolve({});
@@ -456,7 +459,34 @@ class LoginManager {
       this._csfh && delete this._csfh;
     })
     return h;
-  } 
+  }
+  
+  checkIfStore(checkCache = true) {
+    console.log('检测店员',this.storeInfo);
+    if (!this.userToken) {
+      return Promise.resolve({});
+    }
+    if (checkCache) {
+      let storeInfo = this.storeInfo || {};
+      if (storeInfo.staff_code) {
+        return Promise.resolve(storeInfo);
+      }
+    }
+    let h = this._csth;
+    if (h) {
+      return h
+    };
+    this._csth = h = CDateH.setCatchDate("checkStore", 2).then(() => {
+      console.log('setCatchDate2 then')
+      return getStoreStaffInfo.call(this);
+    }).catch(() => {
+      console.log('setCatchDate2 catch')
+      return Promise.resolve(this.storeInfo||{});
+    }).finally(() => {
+      this._csth && delete this._csth;
+    })
+    return h;
+  }
   
   setStaffInfo(staffInfo = {}) {
     staffInfo && (staffInfo.private_code = (staffInfo && staffInfo.staffCode) ? staffInfo.staffCode : '');
@@ -465,6 +495,11 @@ class LoginManager {
     }
     this._staffInfo = staffInfo;
     StorageH.set(STAFF_INFO_KEY, staffInfo);
+  }
+  
+  setStoreInfo(storeInfo) {
+    this._storeInfo = storeInfo||{};
+    StorageH.set(STORE_STAFF_INFO_KEY, storeInfo);
   }
 
   // 保存数据

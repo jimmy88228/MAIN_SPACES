@@ -9,9 +9,9 @@ function defaultSet(page) {
                 if (LM.isLogin && LM.shareCode) {
                     shareData = {...shareData,fromUser:LM.shareCode};
                 }
-                let staffInfo = LM.staffInfo||{};
+                let storeStaff = LM.storeInfo||{};
                 let storeInfo = storeH.storeInfo||{};
-                let staffCode = storeInfo.staffCode||staffInfo.staffCode,storeCode=storeInfo.storeCode;
+                let staffCode = storeStaff.staff_code||storeInfo.staffCode,storeCode=storeInfo.storeCode;
                 if (staffCode) {
                     shareData = {...shareData,staffCode} 
                 }

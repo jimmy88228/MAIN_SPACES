@@ -38,11 +38,12 @@ class storeManager {
 
     changeVisitStore(params){
         // params.staffCode = "KL011";
-        console.log('paramsparams',params)
-        if(params.staffCode||params.storeCode){
+        let {staffCode,storeCode}=params;
+        if(staffCode||storeCode){
             return Http.QT_UserApi.changeVisitStore({
                 data: { 
-                    ...(params||{})
+                    staffCode,
+                    storeCode,
                 },
             })
         }

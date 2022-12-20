@@ -6,6 +6,8 @@ App(createMainApp({
   onLaunch(ops) {
     console.log("App.onLaunch", ops);
     LM.loginAsync().ignore(()=>{
+      LM.checkIfStaff(false);
+      LM.checkIfStore(false);
       storeH.changeVisitStore(ops.query||{}).ignore((res)=>{
         storeH.getVisitStore();
       });

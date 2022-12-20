@@ -50,7 +50,7 @@
                 {
                     "name": "pages/tabs/index/index",
                     "pathName": "pages/tabs/index/index",
-                    "query": "staffCode=KL011&storeCode=NSWD",
+                    "query": "staffCode=jimmy&storeCode=NSWD",
                     "scene": null
                 }
             ]
