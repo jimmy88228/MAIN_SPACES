@@ -1,0 +1,17 @@
+.bold{
+    font-weight: bold;
+} 
+.triangle-top{  
+    width: 0;
+    height: 0;
+    margin-top: -8rpx;
+    border: 10rpx solid transparent;
+    border-bottom-color:#000; 
+}
+.triangle-bottom{   
+    width: 0;
+    height: 0;
+    border: 10rpx solid transparent;
+    margin-bottom: -8rpx;
+    border-top-color:#000; 
+}

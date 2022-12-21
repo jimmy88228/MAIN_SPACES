@@ -1,0 +1,75 @@
+.goods-list{
+    width: 100%;
+    height: 100%;
+    position: relative;
+}
+.item-box{
+    background-color: #fff;
+    border-radius: 20rpx;
+    overflow: hidden;
+    margin-bottom: 24rpx;
+}
+.item-box:last-child{
+    margin-bottom: 0;
+}
+.img-goods{ 
+    width: 130rpx;
+    height: 130rpx;
+    background: #D8D8D8;
+    border-radius: 8rpx;
+    margin-right: 30rpx ;
+}
+.msg-box{
+    padding-top: 2rpx;
+}
+.content-box{
+    padding-bottom: 18rpx;
+}
+.title{
+    color: #7F7F7F;
+    margin-right: 20rpx;
+}
+.goods-box{
+    padding: 30rpx;
+    box-sizing: border-box;
+}
+.content{}
+.btn-box{
+    width: 100%;
+    padding: 20rpx 10rpx 20rpx 20rpx;
+    background: rgb(249, 249, 249);
+}
+.op-btn{
+    width: 140rpx;
+    height: 66rpx;
+    background: #FFFFFF;
+    border-radius: 6rpx;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    margin-right: 12rpx;
+}
+.op-btn:last-of-type{
+    margin-right: 0;
+} 
+.op-btn.sm{
+    width: 75rpx;
+    height: 66rpx;
+}
+.goods-btn-box{
+    position:sticky;
+    bottom: 0;
+    width: 100%; 
+    background-color: #F2F2F2;
+    padding-top:20rpx;
+    box-sizing: border-box;
+}
+.export-btn,.add-btn{
+    width: 340rpx;
+    height: 96rpx;
+    background: #FFFFFF;
+    border-radius: 10rpx;   
+    color: #42B0CA;
+    font-size: 30rpx;
+}

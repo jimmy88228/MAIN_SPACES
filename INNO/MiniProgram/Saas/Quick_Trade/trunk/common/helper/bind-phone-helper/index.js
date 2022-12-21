@@ -49,8 +49,7 @@ function bindWxPhone(params) {
       }
     }).then(res => {
       if (res.code == 1 && res.data) {
-        LM.reSetSimpleInfo();
-        return res
+        return LM.reSetSimpleInfo();
       }
       return Promise.reject(res);
     }).catch(e => {
@@ -70,8 +69,7 @@ function changeWxPhone(params){
     }
   }).then(res => {
     if (res.code == 1 && res.data) {
-      LM.reSetSimpleInfo();
-      return res
+      return LM.reSetSimpleInfo();
     }
     return Promise.reject(res);
   }).catch(e => { 

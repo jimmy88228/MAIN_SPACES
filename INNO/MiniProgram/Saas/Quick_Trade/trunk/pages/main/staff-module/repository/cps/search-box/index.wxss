@@ -1,0 +1,57 @@
+/* pages/main/staff-module/repository/cps/search-box/index.wxss */
+.search-box{
+    position: fixed;
+    left: 0;
+    top: 0;
+    z-index: 98;
+}
+.category{
+    position: fixed;
+    left: 0;
+    top: 0;
+    width: 150rpx;
+    height: 100%;
+    background: #FFFFFF;
+    z-index: 98;
+}
+.cat-item{
+    width: 100%;
+    height: 106rpx;
+    background: #F2F2F2;
+    color: #42B0CA;
+}
+.cat-item.active{
+    color: #42B0CA;
+}
+.input-box{ 
+    position: fixed;
+    left: 0;
+    top: 0;
+    width: 100%;
+    padding: 12rpx 22rpx 12rpx 168rpx;
+    box-sizing: border-box;
+    height: 106rpx;
+    z-index: 97;
+    background: #f2f2f2;
+}
+.search-input{
+    width: 100%;
+    height: 100%;
+    background: #FAFAFA;
+    border-radius: 10rpx;
+    box-sizing: border-box;
+    padding-left: 30rpx;
+}
+.placehold-text{
+    color: rgba(51,51,51,0.3);
+}
+/* <view class="search-box">
+    <view class="category">
+        <view class="cat-item" wx:for="{{categoryList}}" :key="index">
+            {{item.name}}
+        </view>
+    </view>
+    <view class="input-box">
+        <input class="search-input" placeholder="搜索商品名称" bindinput="onInput" >
+    </view>
+</view> */

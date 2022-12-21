@@ -46,10 +46,20 @@
     justify-content: space-between;
     align-items: flex-end;
 }
+.flex-b-c{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
 .flex-e-c{
     display: flex;
     justify-content:flex-end;
     align-items: center;
+}
+.flex-e-e{
+    display: flex;
+    justify-content:flex-end;
+    align-items: flex-end;
 }
 
 .flex-none {
@@ -87,6 +97,11 @@
 .fixed {
     position: fixed;
 }
+
 .border-box{
     box-sizing: border-box;
+}
+
+.f-s-0{
+    flex-shrink: 0;
 }

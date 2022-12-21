@@ -1,0 +1,47 @@
+<!--pages/main/staff-module/repository/cps/goods-list/index.wxml-->
+<view class="goods-list flex flex-col">
+    <view class="edit-box flex-b-c">
+        <view class="add-btn flex-c-c">+新增商品</view>
+        <view class="edit-btn flex-c-c">编辑分类</view>
+    </view>
+    <scroll-view scroll-y class="scroll-view flex-1">
+        <block wx:for="{{goodsList}}" wx:key="index">
+            <view class="list">
+                <view class="msg-box flex">
+                    <image src="" mode="aspectFit" class="goods-img f-s-0"></image>
+                    <view class="content flex-1">
+                        <view class="goods-name bold">{{item.title||'测试'}}</view>
+                        <view class="price bold">{{item.price||'99'}}</view>
+                        <view>
+                            <span class="title">尺码</span>
+                            <span class="value bold">{{item.spec||"M"}}</span>
+                        </view>
+                        <view>
+                            <span class="title">库存</span>
+                            <span class="value bold">{{item.num||22}}</span>
+                        </view>
+                    </view>
+                </view>
+                <view class="btn-box flex-b-c">
+                    <view class="cir-sel flex-c-c {{true?'active':''}}"></view>
+                    <view class="op-btn-box flex-c-c">
+                        <view class="op-btn">编辑</view>
+                        <view class="op-btn">复制</view>
+                        <view class="op-btn">删除</view>
+                    </view>
+                </view>
+            </view>
+        </block>
+    
+    </scroll-view>
+    <view class="footer-btn-box flex-b-c">
+        <view class="all-sel-box flex-c-c">
+            <view class="cir-sel flex-c-c {{true?'active':''}}"></view>
+            <view class="all-sel">全选</view>
+        </view>
+        <view class="confirm-btn flex-c-c flex-col">
+            <view class="confirm bold">确认</view>
+            <view class="selected">已选{{1}}件</view>
+        </view>
+    </view>
+</view>

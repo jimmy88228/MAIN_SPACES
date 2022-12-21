@@ -58,6 +58,18 @@
                     "pathName": "pages/main/staff-module/staff-center/staff-center",
                     "query": "",
                     "scene": null
+                },
+                {
+                    "name": "pages/main/staff-module/activity/index",
+                    "pathName": "pages/main/staff-module/activity/index",
+                    "query": "",
+                    "scene": null
+                },
+                {
+                    "name": "pages/main/staff-module/repository/index",
+                    "pathName": "pages/main/staff-module/repository/index",
+                    "query": "",
+                    "scene": null
                 }
             ]
         }

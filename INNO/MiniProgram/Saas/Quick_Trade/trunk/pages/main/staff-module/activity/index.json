@@ -1,3 +1,5 @@
 {
-  "usingComponents": {}
+  "usingComponents": {
+    "goods-list":"./cps/goods-list/index"
+  }
 }

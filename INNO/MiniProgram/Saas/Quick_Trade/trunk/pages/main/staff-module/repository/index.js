@@ -1,11 +1,11 @@
 // pages/main/staff-module/repository/index.js
-Page({
-
-    /**
-     * 页面的初始数据
-     */
+const App = getApp();
+Page(App.BP({  
     data: {
-
+        categoryList:[{
+            name:"全部"
+        }],
+        goodsList:[{},{},{},{},{},]
     },
 
     /**
@@ -63,4 +63,4 @@ Page({
     onShareAppMessage: function () {
 
     }
-})
+}))

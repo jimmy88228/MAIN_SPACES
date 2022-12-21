@@ -1,1 +1,44 @@
 /* pages/main/staff-module/activity/index.wxss */
+page{
+    background-color: #F2F2F2;
+    height: 100%;
+}
+.activity{
+    height: 100%;
+    padding: 25rpx;
+    box-sizing: border-box;
+}
+.box{
+    font-size: 30rpx;
+    border-radius: 20rpx;
+    background-color: #fff;
+    padding: 30rpx;
+    margin-bottom: 30rpx;
+}
+.time-box{
+    padding: 0 0 0 15rpx;
+}
+.time-box:first-child{
+    margin-bottom: 45rpx;
+}
+.goods-list{
+    overflow: hidden;
+}
+.save-btn-box{
+    width: 100%;
+    height: 160rpx;
+}
+.preview-btn{
+    width: 213rpx;
+    height: 110rpx;
+    border-radius: 20rpx;
+    background-color: #fff;
+}
+.save-btn{
+    width: 270rpx;
+    height: 110rpx; 
+    margin-left: 18rpx;
+    background: #42B0CA;
+    border-radius: 20rpx;
+    color: #fff;
+}

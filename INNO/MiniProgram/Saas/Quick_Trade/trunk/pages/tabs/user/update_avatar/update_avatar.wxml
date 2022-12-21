@@ -20,7 +20,7 @@
     <view class="form_row">
       <text class="prefix">手机号码</text>
       <view class="form_row_input">
-        <view class="mobile-input">{{mobile||'13160675066'}}</view>
+        <view class="mobile-input">{{mobile||'--'}}</view>
       </view>
       <button class="mobile-btn" open-type='getPhoneNumber' bindgetphonenumber="bindPhoneHandle">{{user_info.mobilePhone ? '更换手机号' : '绑定微信手机号'}}</button>
     </view>

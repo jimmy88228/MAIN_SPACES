@@ -2,7 +2,8 @@
 const App = getApp();
 Page(App.BP({
     data:{
-        acInfo:{}
+        acInfo:{},
+        goodsList:[{},{},{},{},{},{}]
     }, 
     onShow(){
         this.loadData();

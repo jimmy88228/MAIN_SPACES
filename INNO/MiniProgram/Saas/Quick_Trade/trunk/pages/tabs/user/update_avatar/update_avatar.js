@@ -5,6 +5,7 @@ Page(App.BP({
   data:{
     avatar: "",
     nickName: "", 
+    mobile:"",
   },
   onLoad(){
     updatePageUserProfile.call(this)
@@ -28,23 +29,27 @@ Page(App.BP({
     modifyUserPortrait.call(this);
   },
   bindPhoneHandle(e){
-    console.log('bindPhoneHandle',e)
     let userInfo = App.LM.userInfo||{};
-    console.log('userInfo',userInfo.mobilePhone,userInfo)
+    console.log('bindPhoneHandle',e,App.LM.userInfo);
     if(userInfo.mobilePhone){
-      return BindPhoneHelper.changePhoneNumber(e);
+      return BindPhoneHelper.changePhoneNumber(e).then(()=>{
+        this.updatePageUserProfile();
+      });
     }else{
-      return BindPhoneHelper.getPhoneNumber(e);
+      return BindPhoneHelper.getPhoneNumber(e).then(()=>{
+        this.updatePageUserProfile();
+      });
     }
   },
 }))
 
 function updatePageUserProfile(){
   let userInfo = App.LM.userInfo || {};
-  let {portrait_path: avatar, realName: nickName} = userInfo;
+  let {portrait_path: avatar, realName: nickName,mobilePhone:mobile} = userInfo;
   this.setData({
     avatar,
-    nickName
+    nickName,
+    mobile
   })
 }
 

@@ -1,0 +1,38 @@
+<!--pages/main/staff-module/activity/cps/goods-list/index.wxml-->
+
+<scroll-view class="goods-list" scroll-y >
+    <view class="">
+        <block wx:for="{{list}}" wx:key="index" wx:for-item="listItem">
+            <view class="item-box">
+                <view class="flex goods-box">
+                    <image  src="" class="img-goods f-s-0"></image>
+                    <view class="msg-box flex-1">
+                        <view class="content-box" wx:for="{{msgList}}" wx:key="key" wx:for-item="msgItem">
+                            <span class="title">{{msgItem.name}}</span>
+                            <span class="content">{{listItem[msgItem.key]}}</span>
+                        </view> 
+                    </view>
+                </view>
+                <view class="btn-box flex-b-c">
+                    <view class="flex">
+                        <view class="op-btn">编辑</view>
+                        <view class="op-btn">下架</view>
+                    </view>
+                    <view class="flex">
+                        <view class="op-btn">置顶</view> 
+                        <view class="op-btn sm">
+                            <view class="triangle-top"></view>
+                        </view> 
+                        <view class="op-btn sm">
+                            <view class="triangle-bottom"></view>
+                        </view> 
+                    </view>
+                </view>
+            </view>
+        </block>
+    </view>
+    <view class="goods-btn-box flex-b-c">
+        <view class="export-btn flex-c-c">商品导入</view>
+        <view class="add-btn flex-c-c">新增商品</view>
+    </view>
+</scroll-view>

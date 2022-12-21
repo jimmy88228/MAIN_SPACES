@@ -1,2 +1,7 @@
 <!--pages/main/staff-module/repository/index.wxml-->
-<text>pages/main/staff-module/repository/index.wxml</text>
+<view class="repository">
+    <search-box category-list="{{categoryList}}"></search-box>
+    <view class="goods-list-box">
+        <goods-list goods-list="{{goodsList}}"></goods-list>
+    </view>
+</view>

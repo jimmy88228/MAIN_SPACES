@@ -380,8 +380,8 @@ export const QT_DstbApiList = {
 // 商品
 export const QT_GoodsApiList = {
   activityDetail: "/api/Activity/ActivityDetail",
+  getActivityNoCachDetail: "/api/Activity/GetActivityNoCachDetail",
   getActivityGoodsInfo: "/api/Goods/GetActivityGoodsInfo",
-  getActivityNoCachDetail: "/api/Goods/GetActivityNoCachDetail",
   get_Sumary_GoodsDetailData: "/api/Goods/Get_Sumary_GoodsDetailData?goodsId={goodsId}",
   get_Sumary_GoodsProductInfo: "/api/Goods/Get_Sumary_GoodsProductInfo?goodsId={goodsId}&colorId={colorId}",
 

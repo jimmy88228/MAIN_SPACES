@@ -1,0 +1,11 @@
+<!--pages/main/staff-module/repository/cps/search-box/index.wxml-->
+<!-- <view class="search-box">
+</view> -->
+<view class="category">
+    <view class="cat-item bold flex-c-c" wx:for="{{categoryList}}" :key="index">
+        {{item.name}}
+    </view>
+</view>
+<view class="input-box">
+    <input class="search-input" placeholder-class="placehold-text" placeholder="搜索商品名称" bindinput="onInput" />
+</view>

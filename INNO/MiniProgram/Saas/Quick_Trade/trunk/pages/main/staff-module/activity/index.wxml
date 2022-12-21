@@ -1,16 +1,20 @@
 <!--pages/main/staff-module/activity/index.wxml-->
-<view class="activity">
+<view class="activity flex flex-col">
     <view class="box">
-        <view class="time-box flex-c-c">
+        <view class="time-box flex-b-c">
             <view>开始时间</view>
-            <view>{{acInfo.start_time}}</view>
+            <view class="bold">{{acInfo.start_time}}</view>
         </view>
-        <view class="time-box flex-c-c">
+        <view class="time-box flex-b-c">
             <view>结束时间</view>
-            <view>{{acInfo.end_time}}</view>
+            <view class="bold">{{acInfo.end_time}}</view>
         </view> 
     </view>
-    <view class="goods-list">
-        <block></block>
+    <view class="goods-list flex-1">
+        <goods-list list="{{goodsList}}"></goods-list>
+    </view>
+    <view class="save-btn-box flex-e-e">
+        <view class="preview-btn flex-c-c">预览</view>
+        <view class="save-btn flex-c-c">保存</view>
     </view>
 </view>
