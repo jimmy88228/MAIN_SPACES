@@ -22,7 +22,7 @@
   display: flex;
   align-items: center;
   transition: opacity 0.1s ease;
-  color: #7f7f7f;
+  color: var(--tint-text-color);
   margin-right: 8rpx;
 }
 

@@ -1,0 +1,7 @@
+{
+  "navigationStyle": "custom",
+  "navigationBarTitleText": "订单详情",
+  "usingComponents": {
+    "custom-nav": "/components/common/view/custom-nav/index"
+  }
+}

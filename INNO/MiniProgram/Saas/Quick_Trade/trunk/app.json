@@ -9,6 +9,15 @@
         "pages/main/staff-module/repository/index",
         "pages/main/cart/checkout/checkout"
     ],
+    "subPackages": [
+      {
+        "root": "pages/micro_mall/order",
+        "pages": [
+          "order_list",
+          "order_info"
+        ]
+      }
+    ],
     "tabBar": {
         "custom": true,
         "borderStyle": "black",

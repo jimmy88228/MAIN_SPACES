@@ -6,7 +6,7 @@
       </view>
       <view class="user-row-right">
         <view class="check-more">
-          <view class="check-more-text">查看全部</view>
+          <view class="check-more-text" catchtap="jump" data-item="{{checkMoreItem}}">查看全部</view>
           <view class="icon-arrow"></view>
         </view>
       </view>

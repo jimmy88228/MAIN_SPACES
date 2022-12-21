@@ -1,3 +1,4 @@
+import WxApi from "../../../../common/utils/wxapi/index";
 const App = getApp();
 Component(App.BC({
   properties: {
@@ -26,6 +27,11 @@ Component(App.BC({
       console.log('storeInfo',storeInfo)
       this.setData({
         storeInfo
+      })
+    },
+    naviBack() {
+      WxApi.navigateBack({
+        delta: 1
       })
     }
   }

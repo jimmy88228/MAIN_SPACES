@@ -43,7 +43,7 @@
       </view>
     </view>
     <view class="goods-spec-short-cut">
-      <view class="gssc-left" wx:if="{{showShortCut}}">
+      <view class="gssc-left" wx:if="{{showShortCut}}" bindtap="handleShortCutTap">
         <view class="gscc-menu-icon iconfont icon-list"></view>
         <view class="gscc-entry">商品详情</view>
       </view>

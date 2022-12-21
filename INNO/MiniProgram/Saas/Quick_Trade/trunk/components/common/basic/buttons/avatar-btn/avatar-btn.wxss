@@ -43,7 +43,7 @@
 }
 .s_item_desc{
   font-size:24rpx;
-  color:#7f7f7f;
+  color:var(--tint-text-color);
   margin-bottom:49rpx;
 }
 .service_btn_area{

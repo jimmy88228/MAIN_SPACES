@@ -9,12 +9,12 @@
   padding: 8rpx 32rpx;
   border-radius: 10rpx;
   background-color: #ffffff;
-  border: 1px solid #7f7f7f;
+  border: 1px solid var(--tint-text-color);
   margin-left: 2rpx;
   margin-right: 16rpx;
   margin-bottom: 12rpx;
   font-size: 28rpx;
-  color: #7f7f7f;
+  color: var(--tint-text-color);
 }
 .sku-item.selected{
   border: 1px solid var(--main-color);

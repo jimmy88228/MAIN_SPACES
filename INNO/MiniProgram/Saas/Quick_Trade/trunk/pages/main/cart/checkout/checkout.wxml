@@ -117,7 +117,7 @@
         </text>
       </view>
       <view class="checkout-f-confirm-btn-con">
-        <button class="checkout-f-confirm-btn">立即支付</button>
+        <button class="checkout-f-confirm-btn" hover-class="active" bindtap="handleTakeOrderBtnTap">立即支付</button>
       </view>
     </view>
   </view>

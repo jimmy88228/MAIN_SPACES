@@ -57,3 +57,25 @@
   color: #9D1628;
   font-size: 22rpx;
 }
+
+/* 订单详情导航样式 */
+.custom-nav-container.style-type-2{
+  background-color: var(--main-color);
+}
+.order-nav{
+  height: 100%;
+  background-color: var(--main-color);
+  display: flex;
+  align-items: center;
+}
+.order-nav .c-n-left{
+  display: flex;
+  align-items: center;
+}
+.order-nav .icon-arrow{
+  margin-right: 60rpx;
+}
+.order-nav .order-status{
+  color: #ffffff;
+  font-size: 36rpx;
+}

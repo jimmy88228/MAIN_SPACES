@@ -173,7 +173,7 @@ page{
 }
 .g-i-b-btn-text{
   font-size: 20rpx;
-  color: #7F7F7F;
+  color: var(--tint-text-color);
 }
 .goods-info-service-con{
   transform: translateY(calc(var(--row-translateY) * 2));
@@ -193,7 +193,7 @@ page{
 }
 .g-i-s-item-prefix{
   font-size: 28rpx;
-  color: #7F7F7F;
+  color: var(--tint-text-color);
   margin-right: 36rpx;
 }
 .g-i-s-item-content{
@@ -213,7 +213,7 @@ page{
 }
 .g-i-d-title{
   font-size: 28rpx;
-  color: #7F7F7F;
+  color: var(--tint-text-color);
 }
 .g-i-d-main{
 
@@ -257,7 +257,7 @@ button.g-i-f-btn{
 }
 .g-i-f-btn-text{
   font-size: 24rpx;
-  color: #7F7F7F;
+  color: var(--tint-text-color);
 }
 .g-i-f-right{
   width: 80%;

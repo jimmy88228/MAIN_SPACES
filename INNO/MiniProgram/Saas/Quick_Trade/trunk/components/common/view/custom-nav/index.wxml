@@ -23,6 +23,16 @@
         </view>
       </view>
     </block>
+    <!-- 订单中心 -->
+    <block wx:elif="{{styleType == 2}}">
+      <view class="order-nav">
+        <view class="c-n-left">
+          <view class="icon-arrow left" bindtap="naviBack"></view>
+          <view class="order-status">{{title}}</view>
+        </view>
+        <view class="c-n-right"></view>
+      </view>
+    </block>
   </view>
 </view>
 <!-- public -->

@@ -33,6 +33,7 @@ Component(App.BC({
       let goodsId = e.currentTarget.dataset.goodsId || 0;
       getSumaryGoodsProductInfo.call(this, goodsId)
       .then(data => {
+        data.goodsId = goodsId;
         this.goodsSpecPop = this.goodsSpecPop || this.selectComponent("#goods-spec-pop");
         this.goodsSpecPop.showModal(data)
       })

@@ -41,7 +41,7 @@ class storeManager {
         let {staffCode,storeCode}=params;
         if(staffCode||storeCode){
             return Http.QT_UserApi.changeVisitStore({
-                data: { 
+                data: {
                     staffCode,
                     storeCode,
                 },

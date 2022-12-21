@@ -1,0 +1,117 @@
+<!-- public 必须是第一个元素 -->
+<include src="/common/base/page/index.wxml" />
+
+<view class="order-info-page">
+  <!-- 自定义导航栏 -->
+  <custom-nav styleType="2" title="已发货" />
+  <!-- 贴一块上去 -->
+  <view class="extend-nav-view">
+    <view class="order-status-row">还剩5天1时自动确认</view>
+  </view>
+
+  <view class="order-info-main">
+    <view class="order-info-view">
+      <view class="order-info-view-main order-info-store-con">
+        <view class="oisc-order-sn">
+          <view class="oisc-order-sn-text">订单号 221213123123123123000</view>
+          <view class="oisc-order-sn-copy icon-copy">复制</view>
+        </view>
+
+        <view class="order-info-store-info">
+          <view class="oisi-store-address">广州市天河区天环广场A区328</view>
+          <view class="oisi-store-detail">
+            <view class="oisi-staff">店员: XXXX</view>
+            <view class="oisi-store-phone">门店电话: 020-1239868</view>
+          </view>
+        </view>
+      </view>
+    </view>
+
+    <view class="order-info-view">
+      <view class="order-info-view-main order-info-package-container">
+        <view class="oiac-row">
+          <view class="circle-icon"></view>
+          <view class="oiac-package">
+            <view class="oiac-package-header">
+              <view class="oiac-package-title">你购买的商品已拆分为2个包裹发出</view>
+              <view class="oiac-package-right-arrow icon-arrow"></view>
+            </view>
+            <view class="oiac-package-list">
+              <view class="oiac-package-item">
+                <view class="oiac-pi-left">
+                  <view class="oiac-pi-icon">包裹1</view>
+                  <view class="oiac-pi-number">1880000120033911</view>
+                </view>
+                <view class="oiac-pi-right">
+                  <view class="oiac-pi-copy icon-copy">复制</view>
+                </view>
+              </view>
+            </view>
+          </view>
+        </view>
+        <view class="oiac-row">
+          <view class="circle-icon"></view>
+          <view class="oiac-delivery-info">
+            <view class="oiac-consignee-info">
+              <view class="oiac-consignee">宇斯</view>
+              <view class="oiac-phone">158202083179</view>
+            </view>
+            <view class="oiac-address">
+              广东省广州市越秀区新宇宙1012号
+            </view>
+          </view>
+        </view>
+      </view>
+    </view>
+
+    <view class="order-info-view">
+      <view class="order-info-view-main order-info-goods-cost-con">
+        <view class="order-info-goods-container">
+          <view class="order-info-goods-list">
+            <view class="order-info-goods-item">
+              <view class="oigi-left">
+                <view class="oigi-img-con">
+                  <image class="oigi-image" src="http://gosoimg.igoso.com.cn/images/goso/index/gallery/20221119/20221119093602677_6534161.jpg" />
+                </view>
+              </view>
+              <view class="oigi-middle">
+                <view class="oigi-name">11月-消费赠惊喜福袋</view>
+                <view class="oigi-spec">
+                  <text>规格名称</text>
+                </view>
+                <view class="oigi-price">￥199.00</view>
+              </view>
+              <view class="oigi-right">
+                <view class="oigi-goods-number">x1</view>
+              </view>
+            </view>
+          </view>
+        </view>
+        <view class="order-info-cost-container">
+          <view class="oicc-row">
+            <view class="oicc-left">商品总价</view>
+            <view class="oicc-right">￥239.00</view>
+          </view>
+          <view class="oicc-row">
+            <view class="oicc-left">优惠金额</view>
+            <view class="oicc-right">-￥40.00</view>
+          </view>
+          <view class="oicc-row black-font">
+            <view class="oicc-left">订单总价</view>
+            <view class="oicc-right">￥199.00</view>
+          </view>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <view class="order-info-footer">
+    <view class="order-info-f-left"></view>
+    <view class="order-info-f-right">
+      <view class="oifr-btn-group">
+        <button class="oifr-btn grey">查看物流</button>
+        <button class="oifr-btn primary">确认收货</button>
+      </view>
+    </view>
+  </view>
+</view>

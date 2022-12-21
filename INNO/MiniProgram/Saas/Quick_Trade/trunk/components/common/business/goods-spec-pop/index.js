@@ -16,11 +16,12 @@ Component(App.BC({
     selectedProductNumber: 1, // 已选产品数量
   },
   methods: {
-    showModal({skuList = [], productList = []}) {
+    showModal({skuList = [], productList = [], goodsId = 0}) {
       this.initSkuCompnent({skuList, productList});
       this.setData({
         skuList,
-        productList
+        productList,
+        goodsId
       }, () => {
         this.toggle();
       })
@@ -60,6 +61,9 @@ Component(App.BC({
       src && WxApi.previewImage({
         urls: [src]
       });
+    },
+    handleShortCutTap() {
+      if (this.data.goodsId) WxApi.navigateTo({url: `/pages/main/goods/index?goods_id=${this.data.goodsId}`})
     },
     toggle() {
       this.setData({show: !this.data.show})
