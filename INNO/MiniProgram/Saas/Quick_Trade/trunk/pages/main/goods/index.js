@@ -15,14 +15,26 @@ Page(App.BP({
     goods_info: {},
     img_domain: "",
   },
+  onLoad(pageQuery) {
+    this.pageQuery = pageQuery;
+  },
   onShow() {
     getGoodsDetail.call(this)
       .then(data => handleGoodsDetail.call(this, data))
   },
   handlePurchaseBtnTap() {
-    getSumaryGoodsProductInfo.call(this);
-    this.goodsSpecPop = this.goodsSpecPop || this.selectComponent("#goods-spec-pop");
-    this.goodsSpecPop.showModal({})
+    getSumaryGoodsProductInfo.call(this)
+      .then(data => {
+        this.goodsSpecPop = this.goodsSpecPop || this.selectComponent("#goods-spec-pop");
+        this.goodsSpecPop.showModal(data)
+      })
+      .catch(err => {
+        console.log("handlePurchaseBtnTap err", err);
+        App.SMH.showToast({title: err})
+      })
+  },
+  handleImageSwiperTap() {
+    
   },
   navigateF(e) {
     const dataset = e.currentTarget.dataset || {};
@@ -42,7 +54,7 @@ function getGoodsDetail() {
   this.showLoading();
   return App.Http.QT_GoodsApi.get_Sumary_GoodsDetailData({
     params: {
-      goodsId: 1
+      goodsId: this.pageQuery.goods_id || 0
     }
   })
     .then(res => {
@@ -69,7 +81,11 @@ function getSumaryGoodsProductInfo() {
     }
   })
     .then(res => {
-      console.log("res", res)
+      if (res.code == 1) {
+        let {CategoryInfoList: skuList, ListGoodsProductInfo: productList} = res.data || {};
+        return {skuList, productList}
+      }
+      return Promise.reject(res.msg || "获取商品数据失败");
     })
 }
 

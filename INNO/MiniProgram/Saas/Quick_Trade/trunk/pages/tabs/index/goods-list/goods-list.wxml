@@ -1,6 +1,6 @@
 <view class="i-goods-list-container">
   <view class="i-goods-list">
-    <view class="i-goods-item" wx:for="{{list}}" wx:key="index" hover-class="active" bindtap="handleGoodsTap">
+    <view class="i-goods-item" wx:for="{{list}}" wx:key="index" hover-class="active" bindtap="handleGoodsTap" data-goods-id="{{item.goods_id}}">
       <view class="i-goods-item-main">
         <view class="i-goods-left">
           <view class="i-g-image-con">
@@ -31,7 +31,7 @@
             <text class="i-c-d-pre">距结束</text>
             <text class="i-c-d-time">05:12:32</text>
           </view> -->
-            <button class="i-goods-purchase-btn" hover-class="active" catchtap="handlePurchaseTap">
+            <button class="i-goods-purchase-btn" hover-class="active" catchtap="handlePurchaseTap" data-goods-id="{{item.goods_id}}">
               抢购
               <!-- <btns bind:clickcallback="">抢购</btns> -->
             </button>

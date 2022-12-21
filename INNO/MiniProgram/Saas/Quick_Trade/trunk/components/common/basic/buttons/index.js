@@ -9,6 +9,10 @@ Component(App.BC({
     tapInterval: { // 点击限流间隔时间
       type: Number,
       value: 0
+    },
+    disabled: { // 是否不可用
+      type: Boolean,
+      value: false
     }
   },
   data: {

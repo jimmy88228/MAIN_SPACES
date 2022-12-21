@@ -13,10 +13,10 @@
         circular
         catchtap="handleImageSwiperTap"
       >
-        <block wx:for="{{goods_gallery}}" wx:key="index">
+        <block wx:for="{{goods_gallery}}" wx:key="id">
           <swiper-item class="goods-images-swpier-item">
             <view class="g-i-s-i-image-con">
-              <image class="g-i-s-i-image" src="http://devimgtest.innourl.com/SAAS_IMAGE/images/INNO/goods/gallery/20221209/20221209161853497_0305216.jpg" lazy-load  mode="aspectFit" />
+              <image class="g-i-s-i-image" src="{{item.goods_img}}" lazy-load  mode="aspectFit" />
             </view>
           </swiper-item>
         </block>

@@ -1,0 +1,124 @@
+<!-- public 必须是第一个元素 -->
+<include src="/common/base/page/index.wxml" />
+
+<view class="checkout-page">
+  <view class="checkout-main">
+    <view class="checkout-view">
+      <view class="checkout-row">
+        <view class="checkout-row-left">付款方式</view>
+        <view class="checkout-row-right">
+          <radio-group class="checkout-radio-group">
+            <radio class="checkout-radio" color="#F5475F" />代客下单
+          </radio-group>
+        </view>
+      </view>
+      <view class="checkout-row">
+        <view class="checkout-row-left">配送方式</view>
+        <view class="checkout-row-right">
+          <radio-group class="checkout-radio-group">
+            <radio class="checkout-radio" color="#F5475F"/>门店自提
+            <radio class="checkout-radio" color="#F5475F"/>快递配送
+          </radio-group>
+        </view>
+      </view>
+      <view class="checkout-row">
+        <view class="checkout-row-left">备注</view>
+        <view class="checkout-row-right">
+          <input class="cr-remark-input" placeholder-class="cr-remark-input-placeholder" placeholder="选填 输入备注" value="" />
+        </view>
+      </view>
+    </view>
+
+    <view class="checkout-view">
+      <view class="delivery-header">取货信息</view>
+      <view class="delivery-main">
+        <view class="de-main-left">
+          <view class="delivery-label">取货门店</view>
+        </view>
+        <view class="de-main-right">
+          <view class="delivery-info">
+            <view class="delivery-address">广州市天河区天环广场A区328</view>
+            <view class="delivery-client-info">
+              <view class="dci-staff">店员: XXXX</view>
+              <view class="dci-phone">电话: 020-1239868</view>
+            </view>
+          </view>
+        </view>
+      </view>
+    </view>
+
+    <view class="checkout-view">
+      <view class="checkout-goods-con">
+        <view class="checkout-goods-list">
+          <view class="checkout-goods-item">
+            <view class="cgi-left">
+              <view class="cgi-goods-img-con">
+                <image class="cgi-goods-img" src="http://devimgtest.innourl.com/SAAS_IMAGE/images/INNO/goods/goods_thumb/20221209/20221209155232839_3455401.jpg" />
+              </view>
+            </view>
+            <view class="cgi-middle">
+              <view class="cgi-goods-name">耐克男子休闲鞋DUNK潮流休闲DQ7680-300</view>
+              <view class="cgi-goods-sn">HZ9216</view>
+              <view class="cgi-goods-spec-list">
+                <text>红色 </text>
+                <text>L码 </text>
+                <text>高性价比 </text>
+              </view>
+            </view>
+            <view class="cgi-right">
+              <view class="cgi-goods-price">
+                <text class="cgi-goods-rmb">￥</text>
+                <text class="cgi-goods-price-text">199.00</text>
+              </view>
+              <view class="cgi-goods-number">x1</view>
+            </view>
+          </view>
+        </view>
+      </view>
+    </view>
+
+    <view class="checkout-view">
+      <view class="checkout-row">
+        <view class="checkout-row-left">商品总价</view>
+        <view class="checkout-row-right">
+          <view class="checkout-row-price">
+            ￥239.00
+          </view>
+        </view>
+      </view>
+      <view class="checkout-row">
+        <view class="checkout-row-left">商品优惠</view>
+        <view class="checkout-row-right">
+          <view class="checkout-row-price">
+            -￥40.00
+          </view>
+        </view>
+      </view>
+      <!-- <view class="checkout-row">
+        <view class="checkout-row-left"></view>
+        <view class="checkout-row-right">
+          <view class="checkout-row-total-price">
+            <text class="crtp-prefix">合计</text>
+            <text class="cttp-text">￥199.00</text>
+          </view>
+        </view>
+      </view> -->
+    </view>
+  </view>
+
+  <view class="checkout-footer">
+    <view class="checkout-footer-row">
+      <view class="checkout-f-total-number">共1件</view>
+      <view class="checkout-f-total-price-con">
+        <text class="cftp-prefix">实付</text>
+        <text class="cftp-price">
+          <text class="cftp-rmb">￥</text>
+          <text class="cftp-text">199.00</text>
+        </text>
+      </view>
+      <view class="checkout-f-confirm-btn-con">
+        <button class="checkout-f-confirm-btn">立即支付</button>
+      </view>
+    </view>
+  </view>
+</view>

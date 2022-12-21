@@ -106,6 +106,11 @@ page{
   justify-content: center;
   color: var(--deep-text-color);
   font-size: 36rpx;
+  transition: opacity 0.1s ease;
+}
+.gspcc-minus.active,
+.gspcc-plus.active{
+  opacity: 0.5;
 }
 .gspcc-minus.disabled,
 .gspcc-plus.disabled{
@@ -132,13 +137,29 @@ page{
   display: flex;
   align-items: center;
 }
-.g-s-purchase-btn{
+.g-s-purchase-btn-con{
   flex: 1;
   height: 100rpx;
   border-radius: 48rpx;
+}
+.g-s-purchase-btn{
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   background-color: var(--main-color);
+  transition: opacity 0.15s ease;
+  border-radius: 48rpx;
   color: #ffffff;
-  line-height: 100rpx;
+}
+.g-s-purchase-btn.disabled{
+  color: #c5c8ce;
+  background-color: #f7f7f7;
+  border-color: #dcdee2;
+}
+.g-s-purchase-btn.active{
+  opacity: 0.7;
 }
 .goods-spec-short-cut{
   position: absolute;

@@ -6,7 +6,8 @@
         "pages/tabs/user/update_avatar/update_avatar",
         "pages/main/staff-module/staff-center/staff-center",
         "pages/main/staff-module/activity/index",
-        "pages/main/staff-module/repository/index"
+        "pages/main/staff-module/repository/index",
+        "pages/main/cart/checkout/checkout",
     ],
     "tabBar": {
         "custom": true,

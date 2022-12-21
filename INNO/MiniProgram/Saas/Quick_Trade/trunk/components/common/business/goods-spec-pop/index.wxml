@@ -3,16 +3,16 @@
     <view class="goods-spec-main">
       <view class="g-s-spec-detail">
         <view class="g-s-spec-image-con">
-          <image class="g-s-spec-image" src="http://devimgtest.innourl.com/SAAS_IMAGE/images/INNO/goods/goods_thumb/20221209/20221209160641542_3016147.jpg" />
+          <image class="g-s-spec-image" src="{{selectedProductInfo.goods_gallery && selectedProductInfo.goods_gallery[0].goods_img}}" bindtap="previewImage" data-src="{{selectedProductInfo.goods_gallery && selectedProductInfo.goods_gallery[0].goods_img}}" />
         </view>
         <view class="g-d-spec-info">
-          <view class="g-d-s-i-price"><text class="gdsi-price-rmb">￥</text><text class="gdsi-price-text">199</text></view>
+          <view class="g-d-s-i-price"><text class="gdsi-price-rmb">￥</text><text class="gdsi-price-text">{{selectedProductInfo.sale_price}}</text></view>
           <view class="already-chosen">
-            <text class="already-chosen-text">已选xx</text>
+            <text class="already-chosen-text">已选<block wx:for="{{selectedSku}}" wx:key="index">"{{item.name}}" </block></text>
           </view>
           <view class="gdsi-goods-sn">
             <text class="gdsi-prefix">商品编号 </text>
-            <text class="gdsi-goods-sn-text">007123123912</text>
+            <text class="gdsi-goods-sn-text">{{selectedProductInfo.product_sn}}</text>
           </view>
         </view>
       </view>
@@ -24,18 +24,21 @@
       <view class="g-s-purchase-count-con">
         <view class="gspcc-prefix">购买数量</view>
         <view class="gspcc-main">
-          <view class="gspcc-tips">每人限购1件</view>
+          <!-- <view class="gspcc-tips">每人限购1件</view> -->
           <view class="gspcc-number-control">
-            <view class="gspcc-minus icon-minus disabled"></view>
-            <input class="gspcc-number-input" value="{{1}}" />
-            <view class="gspcc-plus icon-plus"></view>
+            <view class="gspcc-minus icon-minus {{!selectSkuFinished || selectedProductNumber <= 1 ? 'disabled' : ''}}" 
+            hover-class="active" data-disabled="{{!selectSkuFinished || selectedProductNumber <= 1 ? 'disabled' : ''}}" bindtap="handleProductNumberResize" data-num="-1"></view>
+            <input class="gspcc-number-input" type="number" value="{{selectedProductNumber}}" disabled="{{!selectSkuFinished}}" bindinput="handleProductNumberInput" />
+            <view class="gspcc-plus icon-plus {{!selectSkuFinished || selectedProductNumber >= selectedProductInfo.goods_number ? 'disabled' : ''}}" hover-class="active" data-disabled="{{!selectSkuFinished || selectedProductNumber >= selectedProductInfo.goods_number ? 'disabled' : ''}}" bindtap="handleProductNumberResize" data-num="1"></view>
           </view>
         </view>
       </view>
 
       <view class="g-s-footer">
         <view class="g-s-purchase-btn-group">
-          <btns class="g-s-purchase-btn">立即购买</btns>
+          <btns class="g-s-purchase-btn-con" disabled="{{!selectSkuFinished}}" bind:clickcallback="handlePurchaseButtonTap">
+            <view class="g-s-purchase-btn {{!selectSkuFinished ? 'disabled': ''}}" hover-class="active">立即购买</view>
+          </btns>
         </view>
       </view>
     </view>

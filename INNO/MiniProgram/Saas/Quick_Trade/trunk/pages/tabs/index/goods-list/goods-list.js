@@ -23,14 +23,23 @@ Component(App.BC({
       this.params.pageIndex++;
       getActivityGoodsInfo.call(this);
     },
-    handleGoodsTap() {
+    handleGoodsTap(e) {
+      let goodsId = e.currentTarget.dataset.goodsId || 0;
       WxApi.navigateTo({
-        url: "/pages/main/goods/index"
+        url: `/pages/main/goods/index?goods_id=${goodsId}`
       })
     },
-    handlePurchaseTap() {
-      this.goodsSpecPop = this.goodsSpecPop || this.selectComponent("#goods-spec-pop");
-      this.goodsSpecPop.showModal();
+    handlePurchaseTap(e) {
+      let goodsId = e.currentTarget.dataset.goodsId || 0;
+      getSumaryGoodsProductInfo.call(this, goodsId)
+      .then(data => {
+        this.goodsSpecPop = this.goodsSpecPop || this.selectComponent("#goods-spec-pop");
+        this.goodsSpecPop.showModal(data)
+      })
+      .catch(err => {
+        console.log("handlePurchaseBtnTap err", err);
+        App.SMH.showToast({title: err})
+      })
     }
   }
 }))
@@ -60,5 +69,21 @@ function getActivityGoodsInfo() {
         return res.data;
       }
       return Promise.reject(res.msg || "获取商品列表失败")
+    })
+}
+
+function getSumaryGoodsProductInfo(goods_id) {
+  return App.Http.QT_GoodsApi.get_Sumary_GoodsProductInfo({
+    params: {
+      goodsId: goods_id,
+      colorId: 0
+    }
+  })
+    .then(res => {
+      if (res.code == 1) {
+        let {CategoryInfoList: skuList, ListGoodsProductInfo: productList} = res.data || {};
+        return {skuList, productList}
+      }
+      return Promise.reject(res.msg || "获取商品数据失败");
     })
 }

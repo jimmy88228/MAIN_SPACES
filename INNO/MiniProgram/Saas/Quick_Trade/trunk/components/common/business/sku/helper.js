@@ -20,8 +20,8 @@ function cloneTwo(o) {
  * @param {Int} num 质数范围
  * @returns []
  */
-export function getPrime(total) {
-  return PRIME_NUMBERS.slice(0, total)
+export function getPrime(index) {
+  return PRIME_NUMBERS[index];
 }
 
 /**
