@@ -28,6 +28,7 @@
 		},
 		onLaunch: function (ops) {
 			console.log("app onlaunch", ops);
+			LM.logout('all');
 			if (ops.path == undefined) {
 				uni.redirectTo({
 					url: 'pages/public/404'
