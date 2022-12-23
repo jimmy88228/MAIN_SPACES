@@ -6,7 +6,7 @@ page{
   --row-translateY: -20rpx;
   --row-background-color: #ffffff;
   --row-gap-margin: 12rpx; 
-  --goods-info-footer-height: 140rpx;
+  --goods-info-footer-height: calc(140rpx + env(safe-area-inset-bottom));
 }
 .goods-info-page{
   width: 100vw;
@@ -231,6 +231,7 @@ page{
   height: var(--goods-info-footer-height);
   display: flex;
   align-items: center;
+  padding-bottom: env(safe-area-inset-bottom);
 }
 .g-i-f-left{
   width: 20%;

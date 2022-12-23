@@ -22,7 +22,7 @@ Page(App.BP({
       })
       .then(() => {
         this.goodsList = this.goodsList || this.selectComponent("#goods-list");
-        this.goodsList.loadData();
+        this.goodsList.loadData({activityId: this.data.activityInfo.id || 0});
       })
   },
   handleScrollToLower() {

@@ -10,6 +10,7 @@ import LM from "../../../manager/login-manager/index";
 import Conf from "../../../../config/index";
 import SMH from "../../../helper/show-message-helper/index";
 import StoreH from "../../../helper/store-helper/index";
+import AS from "../../../helper/authorize-helper/index";
 
 export default {
   get BP(){return BP}, // BasePage
@@ -24,4 +25,5 @@ export default {
   get Conf(){return Conf}, // login-manager
   get SMH(){return SMH}, // show-message-helper
   get StoreH(){return StoreH}, // StoreH
+  get AS(){return AS}, // authorize
 }

@@ -54,6 +54,7 @@ function getGoodsDetail() {
   this.showLoading();
   return App.Http.QT_GoodsApi.get_Sumary_GoodsDetailData({
     params: {
+      activityId: this.pageQuery.activity_id || 0,
       goodsId: this.pageQuery.goods_id || 0
     }
   })
@@ -76,6 +77,7 @@ function getSumaryGoodsProductInfo() {
   let {goods_id} = this.data.goods_info || {};
   return App.Http.QT_GoodsApi.get_Sumary_GoodsProductInfo({
     params: {
+      activityId: this.pageQuery.activity_id || 0,
       goodsId: goods_id,
       colorId: 0
     }

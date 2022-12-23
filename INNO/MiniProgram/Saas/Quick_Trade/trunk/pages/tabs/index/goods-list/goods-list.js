@@ -9,7 +9,8 @@ Component(App.BC({
 
   },
   methods: {
-    loadData() {
+    loadData({activityId = 0}) {
+      this.activityId = activityId;
       setDefaultParams.call(this);
       getActivityGoodsInfo.call(this)
     },
@@ -26,7 +27,7 @@ Component(App.BC({
     handleGoodsTap(e) {
       let goodsId = e.currentTarget.dataset.goodsId || 0;
       WxApi.navigateTo({
-        url: `/pages/main/goods/index?goods_id=${goodsId}`
+        url: `/pages/main/goods/index?activity_id=${this.activityId}&goods_id=${goodsId}`
       })
     },
     handlePurchaseTap(e) {
@@ -34,6 +35,7 @@ Component(App.BC({
       getSumaryGoodsProductInfo.call(this, goodsId)
       .then(data => {
         data.goodsId = goodsId;
+        data.activityId = this.activityId;
         this.goodsSpecPop = this.goodsSpecPop || this.selectComponent("#goods-spec-pop");
         this.goodsSpecPop.showModal(data)
       })
@@ -76,6 +78,7 @@ function getActivityGoodsInfo() {
 function getSumaryGoodsProductInfo(goods_id) {
   return App.Http.QT_GoodsApi.get_Sumary_GoodsProductInfo({
     params: {
+      activityId: this.activityId || 0,
       goodsId: goods_id,
       colorId: 0
     }

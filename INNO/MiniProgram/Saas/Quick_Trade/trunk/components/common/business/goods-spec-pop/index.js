@@ -54,7 +54,7 @@ Component(App.BC({
       this.setData({selectedProductNumber});
     },
     handlePurchaseButtonTap() {
-      WxApi.navigateTo({url: "/pages/main/cart/checkout/checkout"})
+      WxApi.navigateTo({url: `/pages/main/cart/checkout/checkout?activity_product_id=${this.data.selectedProductInfo.activity_product_id}&goods_number=${this.data.selectedProductNumber}`})
     },
     previewImage(e) {
       const src = e.currentTarget.dataset.src || "";

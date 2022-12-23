@@ -55,7 +55,7 @@ page{
 }
 .already-chosen{
   font-size: 28rpx;
-  color: var(--tint-text-color);
+  color: #7F7F7F;
   margin-bottom: 8rpx;
 }
 .gdsi-goods-sn{
@@ -87,7 +87,7 @@ page{
   align-items: center;
 }
 .gspcc-tips{
-  color: var(--tint-text-color);
+  color: #7f7f7f;
   font-size: 24rpx;
   margin-right: 24rpx;
 }
@@ -131,6 +131,7 @@ page{
   flex: 1;
   display: flex;
   align-items: flex-end;
+  padding-bottom: env(safe-area-inset-bottom);
 }
 .g-s-purchase-btn-group{
   width: 100%;
@@ -183,7 +184,7 @@ page{
   line-height: 16rpx;
 }
 .gscc-entry{
-  color: var(--tint-text-color);
+  color: #7f7f7f;
   font-size: 24rpx;
 }
 .gssc-right{

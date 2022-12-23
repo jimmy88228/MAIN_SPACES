@@ -10,7 +10,9 @@ const visitApi = Conf.visitApiType ? VISIT_APICONF[Conf.visitApiType] : VISIT_AP
 
 // 品牌(域名跟User一样)
 const BrandApiList = {
-  getMenuList: "/api/Brand/Get_MenuList?brandCode={brandCode}"
+  getMenuList: "/api/Brand/Get_MenuList?brandCode={brandCode}",
+  //支付方式
+  getPaymentList: "/api/Brand/GetPaymentList?brandCode={brandCode}",
 }
 // 用户
 export const UserApiList = {

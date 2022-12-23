@@ -398,3 +398,82 @@ export const QT_GoodsApiList = {
   get_Sumary_GoodsProductInfo: "/api/Goods/Get_Sumary_GoodsProductInfo?goodsId={goodsId}&colorId={colorId}",
 
 }
+
+//订单
+export const QT_BuyApiList = {
+  /* 
+  Order
+  */
+  getUserOrderCount: "/api/Order/Get_UserOrderCount",
+  cancelOrder: {
+    u: "/api/Order/CancelOrder",
+    m: "post"
+  },
+  cancelOrderGoods: {
+    u: "/api/Order/CancelOrderGoods",
+    m: "post"
+  },
+  updateOrderAddress: {
+    u: "/api/Order/UpdateOrderAddress",
+    m: "post"
+  },
+  receiveOrderGoods: {
+    u: "/api/Order/ReceiveOrderGoods",
+    m: "post"
+  }, 
+  getCancelReasonList: "/api/Order/GetCancelReasonList",
+  getReturnReasonList: "/api/Order/GetReturnReasonList",
+  getOrderList: "/api/Order/GetOrderList?orderType={orderType}&pageIndex={pageIndex}&pageSize={pageSize}&searchStr={searchStr}",
+  getOrderDetail: "/api/Order/GetOrderDetail?orderId={orderId}",
+  getInvoiceList:"/api/Order/GetInvoiceList?orderId={orderId}",
+  getInvoiceInfo:"/api/Order/GetInvoiceInfo?orderId={orderId}&shippingId={shippingId}&invoiceNo={invoiceNo}",
+  checkOrderPay:"/api/Order/CheckOrderPay?orderId={orderId}",
+
+  /* 
+  Checkout
+  */
+  checkout: {
+    u: "/api/Checkout/Checkout",
+    m: "post"
+  },
+  addOrder: {
+    u: "/api/Checkout/AddOrder",
+    m: "post"
+  },
+  getCheckoutBonusList: {
+    u: "/api/Checkout/GetCheckoutBonusList",
+    m: "post"
+  },
+  orderForCustom:{
+    u: "/api/Checkout/OrderForCustom", // 代客下单
+    m:"post"
+  },
+  extendOrderReceiptTime: {
+    u: "/api/Order/ExtendOrderReceiptTime",
+    m: "post"
+  },
+
+  /*
+  ReturnOrder
+  */
+  createReturnOrder:{
+    u:"/api/ReturnOrder/CreateReturnOrder",
+    m:"post"
+  },
+  getReturnOrderList:"/api/ReturnOrder/GetReturnOrderList?returnType={returnType}&searchStr={searchStr}&pageIndex={pageIndex}&pageSize={pageSize}",
+  getReturnOrderDetail:"/api/ReturnOrder/GetReturnOrderDetail?returnId={returnId}",
+  updateReturnOrderShipping:{
+    u:"/api/ReturnOrder/UpdateReturnOrderShipping",
+    m:"post"
+  }, 
+  createReturnOrderBatch:{
+    u:"/api/ReturnOrder/CreateReturnOrderBatch",
+    m:"post"
+  }, 
+  /*
+  RefundOrder
+  */
+ getRefundOrderList:"/api/RefundOrder/GetRefundOrderList?searchStr={searchStr}&pageIndex={pageIndex}&pageSize={pageSize}",
+ getRefundOrderDetail:"/api/RefundOrder/GetRefundOrderDetail?refundId={refundId}",
+
+}

@@ -50,7 +50,7 @@ class LoginManager {
 	
   //异步登录
   loginAsync(showLoading) {
-    console.log('loginAsync',this.userToken,this._loginHold)
+    console.log('loginAsync',this.userToken)
     if (this.isLogin) return Promise.resolve(this.userToken);
 		if(this._loginHold) return this._loginHold;
     this._loginHold = this.getWxSessionIdAsync().then((sessionId)=>{

@@ -1,0 +1,36 @@
+<!-- public 必须是第一个元素 -->
+<include src="/common/base/page/index.wxml" />
+
+<view class="addr_edit_page">
+  <view class="addr_edit_item" style="border-color: {{check_null.consignee_is_null ? brand_info.style.bg_color : '' }}" >
+    <text class="tip">收货人：</text>
+    <view class="input_val">
+      <input class="val" maxlength="50" type="text" placeholder="收货人" data-input_type='consignee' bindinput="bindKeyInput" value="{{address_data.consignee}}"/>
+    </view>
+  </view>
+  <view class="addr_edit_item" style="border-color: {{check_null.mobile_is_null ? brand_info.style.bg_color : '' }}">
+    <text class="tip  {{address_data.mobile && !validate_mobile?'C_FD0003':''}}">手机号码：</text>
+    <view class="input_val">
+      <input class="val" type="number" placeholder="请输入手机号码" data-input_type='mobile' maxlength='11' bindinput="validateMobileNumber" value="{{address_data.mobile}}"/>
+    </view>
+  </view>
+  <view class="addr_edit_item" style="border-color: {{check_null.district_is_null ? brand_info.style.bg_color : '' }}">
+    <text class="tip">所在地区：</text>
+    <view class="input_val">
+      <view class="val" placeholder="省份/直辖市-城市-地区" bindtap="showRegionSelect">{{address_data.province_str}}-{{address_data.city_str}}-{{address_data.district_str}}</view>
+    </view>
+  </view>
+  <view class="addr_edit_item" style="border-color: {{check_null.address_is_null ? brand_info.style.bg_color : '' }}">
+    <text class="tip">详细地址：</text>
+    <view class="input_val">
+      <input class="val" maxlength="100" type="text" placeholder="详细地址" data-input_type='address' bindinput="bindKeyInput" value="{{address_data.address}}"/>
+    </view>
+  </view>
+<!-- 
+  <view class="auto_parse_con">
+    <deliveryArea bind:parse="handleDeliveryParse" />
+  </view> -->
+  <view class="save_addr_btn" style="background:{{brand_info.style.bg_color}};" bindtap="saveAddress">保存</view>
+</view>
+
+<areaSelect id="areaSelect"></areaSelect>

@@ -15,7 +15,8 @@ import {
   QT_RegApiList,
   QT_DstbApiList,
   QT_VSlogApiList,
-  QT_GoodsApiList
+  QT_GoodsApiList,
+  QT_BuyApiList
 } from "./qt-api";
 
 const apiDomain = Conf.api_domain || {};
@@ -107,6 +108,8 @@ export const QT_DstbApi = new EasyHttp().setBaseUrl(apiDomain.QT_USERAPI).addReq
 // 日志
 export const QT_VsLogApi = new EasyHttp().setBaseUrl(apiDomain.QT_VSLOGAPI).addRequests(QT_VSlogApiList);
 export const QT_GoodsApi = new EasyHttp().setBaseUrl(apiDomain.QT_GOODSAPI).addRequests(QT_GoodsApiList);
+// 订单
+export const QT_BuyApi = new EasyHttp().setBaseUrl(apiDomain.QT_BUYAPI).addRequests(QT_BuyApiList);
 
 export default {
   UserApi,
@@ -115,5 +118,6 @@ export default {
   QT_RegApi,
   QT_DstbApi,
   QT_VsLogApi,
-  QT_GoodsApi
+  QT_GoodsApi,
+  QT_BuyApi
 }

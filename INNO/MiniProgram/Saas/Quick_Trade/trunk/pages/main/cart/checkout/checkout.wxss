@@ -1,9 +1,10 @@
 @import "/common/base/page/default-wxss/index.wxss";
 page {
   background-color: #F0F0F0;
+  --checkout-footer-height: calc(120rpx + env(safe-area-inset-bottom));
 }
 .checkout-main{
-  padding: 20rpx
+  padding: 20rpx 20rpx calc(var(--checkout-footer-height) + 20rpx) 20rpx;
 }
 .checkout-view{
   background-color: #ffffff;
@@ -19,6 +20,13 @@ page {
   align-items: center;
   justify-content: space-between;
   font-size: 24rpx;
+}
+.checkout-row-right{
+  display: flex;
+  align-items: center;
+}
+.checkout-icon-radio{
+  margin-right: 16rpx;
 }
 .checkout-radio-group{
   display: flex;
@@ -43,6 +51,28 @@ page {
 .delivery-main{
   padding: 0 30rpx 30rpx 34rpx;
   display: flex;
+  transition: opacity 0.1s ease;
+}
+.delivery-main.active{
+  opacity: 0.6;
+}
+.delivery-info{
+  width: 100%;
+}
+.delivery-client{
+  display: flex;
+  align-items: center;
+  width: 100%;
+  margin-bottom: 12rpx;
+}
+.delivery-consignee{
+  margin-right: 24rpx;
+  font-size: 28rpx;
+  font-weight: bold;
+}
+.delivery-arrow-con{
+  flex: 1;
+  text-align: right;
 }
 .delivery-label{
   width: 104rpx;
@@ -79,6 +109,10 @@ page {
 }
 .checkout-goods-item{
   display: flex;
+  margin-bottom: 24rpx;
+}
+.checkout-goods-item:last-of-type{
+  margin-bottom: 0;
 }
 .cgi-left{
   margin-right: 24rpx;
@@ -127,7 +161,7 @@ page {
   left: 0;
   z-index: 10;
   width: 100%;
-  height: calc(120rpx + env(safe-area-inset-bottom));
+  height: var(--checkout-footer-height);
   padding-bottom: env(safe-area-inset-bottom);
   background-color: #ffffff;
 }

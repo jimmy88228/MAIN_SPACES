@@ -63,6 +63,7 @@ page{
   transform: translateY(-50%);
   width: 114rpx;
   height: 68rpx;
+  z-index: 6;
 }
 button.order-search-btn{
   width: 100%;
@@ -71,6 +72,10 @@ button.order-search-btn{
   border-radius: 12rpx;
   font-size: 26rpx;
   color: #333333;
+  transition: opacity 0.1s ease;
+}
+button.order-search-btn.active{
+  opacity: 0.7;
 }
 .order-list-tab-swiper{
   height: calc(100% - var(--order-list-tab-height) - var(--tab-search-con-height));
@@ -108,9 +113,15 @@ button.order-search-btn{
   margin-bottom: 32rpx;
 }
 .order-item-main{
+  margin-bottom: 46rpx;
+}
+.order-item-goods-item{
   display: flex;
   align-items: center;
-  margin-bottom: 46rpx;
+  margin-bottom: 16rpx;
+}
+.order-item-goods-item:last-of-type{
+  margin-bottom: 0;
 }
 .order-item-m-img-con{
   width: 160rpx;

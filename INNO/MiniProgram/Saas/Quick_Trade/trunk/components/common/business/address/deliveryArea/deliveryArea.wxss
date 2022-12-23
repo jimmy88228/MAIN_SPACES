@@ -1,0 +1,33 @@
+.delivery_text_area{
+  position: relative;
+  background: #f6f6f6;
+  padding: 20rpx;
+  width: 100%;
+  min-height: 200rpx;
+  box-sizing: border-box;
+}
+.dt_btngroup{
+  position: absolute;
+  bottom: 16rpx;
+  right: 16rpx;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+}
+.dt_btngroup>button{
+  margin: 0 8rpx;
+  width: 128rpx;
+  height: 56rpx;
+  font-size: 24rpx;
+  border-radius: 100rpx;
+  transition: all 0.2s ease;
+}
+.dt_btngroup>button.active{
+  opacity: 0.6;
+}
+.dt_clear_btn{
+  color: #666666;
+}
+.dt_confirm_btn{
+  color: #ffffff;
+}

@@ -95,3 +95,26 @@
 .icon-plus::after{
   transform: translate(-50%, -50%) rotate(90deg);
 }
+.icon-radio{
+  display: inline-block;
+  width: 34rpx;
+  height: 34rpx;
+  border: 1px solid #dddddd;
+  border-radius: 50%;
+  position: relative;
+}
+.icon-radio.active{
+  background-color: var(--main-color);
+}
+.icon-radio.active::before{
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -60%) rotate(-45deg);
+  width: 10rpx;
+  height: 4rpx;
+  border: 1px solid;
+  border-color: transparent transparent currentColor currentColor;
+  color: #ffffff;
+}
