@@ -42,6 +42,10 @@ Page(App.BP({
         this.setData({dateString})
     },
     save(){
+        if(!this.data.dateString){
+            App.SMH.showToast({title:"请先设置活动结束时间"});
+            return
+        }
         return Promise.all([this.setTime()]).then(res=>{
             console.log('all',res);
             let title="保存成功";
