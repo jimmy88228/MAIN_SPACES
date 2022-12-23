@@ -1,0 +1,11 @@
+<!--pages/main/staff-module/repository/goods/detail/index.wxml-->
+<view class="detail">
+    <view class="textarea-box">
+        <textarea placeholder="输入内容…" placeholder-class="placehold-text" maxlength="100" class="textarea" bindinput="onInput" value="{{inpuVal}}" />
+        <view class="add-btn flex-c-c">+ 添加图片</view>
+    </view>
+</view>
+<view class="footer flex-e-c">
+    <view class="preview-btn flex-c-c">预览</view>
+    <view class="save-btn flex-c-c">保存</view>
+</view>

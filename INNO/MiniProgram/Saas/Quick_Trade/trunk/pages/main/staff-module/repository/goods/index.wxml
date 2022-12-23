@@ -1,0 +1,58 @@
+<!--pages/main/staff-module/repository/goods/index.wxml-->
+<view class="goods">
+    <view class="box">
+        <view class="msg-box">
+            <view class="title-box flex-b-c">
+                <view class="">商品设置</view>
+                <view class="set-btn-box flex">
+                    <span class="set-btn flex-c-c">复制</span>
+                    <span class="set-btn flex-c-c">删除</span>
+                </view>
+            </view>
+            <input class="name-input" placeholder-class="placehold-text" placeholder="输入商品名称与关键字…" bindinput="onInput" data-key="name" value="{{goodsInfo.name}}" />
+            <view class="img-box flex">
+                <block wx:for="{{goodsInfo.goods}}" wx:key="index">
+                    <image src="" class="img-goods" mode="aspectFit"></image>
+                </block>
+                <view class="add-goods flex-c-c">
+                    <view class="add-icon"></view>
+                </view>
+            </view>
+            <view class="content-box">
+                <view class="content flex-b-c">
+                    <view class="title">原价</view>
+                    <view class="flex-c-c">
+                        <input class="goods-input" placeholder-class="placehold-text" placeholder="请输入价格" bindinput="onInput" data-key="price" value="{{goodsInfo.price}}" />
+                        <span>元</span>
+                    </view>
+                </view>
+                <view class="content flex-b-c">
+                    <view class="title">秒杀</view>
+                    <view class="flex-c-c">
+                        <input class="goods-input" placeholder-class="placehold-text" placeholder="请输入价格" bindinput="onInput" data-key="skPrice" value="{{goodsInfo.price}}" />
+                        <span>元</span>
+                    </view>
+                </view>
+                <view class="content flex-b-c">
+                    <view class="title">库存</view>
+                    <view class="flex-c-c">
+                        <input class="goods-input" placeholder-class="placehold-text" placeholder="不限" bindinput="onInput" />
+                        <span>件</span>
+                    </view>
+                </view>
+            </view>
+            <view class="shipping-box flex-b-c">
+                <view class="">物流方式设置</view>
+                <view class="arrow-right"></view>
+            </view>
+        </view> 
+    </view>
+    <view class="add-btn-box flex">
+        <view class="add-btn flex-c-c" bindtap="jumpAction" data-url="/pages/main/staff-module/repository/goods/spec/index">添加规格</view>
+        <view class="add-btn flex-c-c" bindtap="jumpAction" data-url="/pages/main/staff-module/repository/goods/detail/index">添加详情</view>
+        <view class="add-btn flex-c-c">添加款号</view>
+    </view>
+    <view class="footer flex-e-c">
+        <view class="save-btn flex-c-c">保存</view>
+    </view>
+</view>

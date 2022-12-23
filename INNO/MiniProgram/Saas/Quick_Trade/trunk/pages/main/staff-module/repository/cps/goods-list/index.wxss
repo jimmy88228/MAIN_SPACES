@@ -58,8 +58,8 @@
 }
 .cir-sel.active::after{
     content:"";
-    width: 10rpx;
-    height: 4rpx;
+    width: 12rpx;
+    height: 6rpx;
     border-left: 1px solid #fff;
     border-bottom: 1px solid #fff;
     transform: rotate(-45deg);

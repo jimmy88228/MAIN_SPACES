@@ -1,0 +1,120 @@
+/* pages/main/staff-module/repository/goods/index.wxss */
+page{
+    background: #F2F2F2;
+}
+.goods{
+    padding: 25rpx;
+    box-sizing: border-box;
+    padding-bottom: 154rpx;
+}
+.box{
+    padding: 45rpx;
+    background: #FFFFFF;
+    border-radius: 20rpx 20rpx 0px 0px;
+    overflow: hidden;
+}
+.msg-box{ 
+    font-size: 24rpx;
+}
+.title-box{
+    color: #7F7F7F;
+}
+.name-input{
+    font-size: 32rpx;
+    margin: 50rpx 0;
+}
+.placehold-text{
+    color: #B2B2B2;
+}
+.set-btn{
+    width: 80rpx;
+    height: 50rpx;
+}
+.img-box{
+    padding-bottom: 55rpx;
+    border-bottom: 1px solid #EFEFEF;
+}
+.img-goods{
+    width: 160rpx;
+    height: 160rpx;
+    background: #D8D8D8;
+}
+.add-goods{
+    width: 160rpx;
+    height: 160rpx;
+    background: #F6F6F6;
+    position: relative;
+}
+.add-icon{ 
+    width: 4rpx;
+    height: 40rpx;
+    background-color: #b2b2b2;
+}
+.add-icon::after{
+    content:"";
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%,-50%);
+    width: 40rpx;
+    height: 4rpx;
+    background-color: #b2b2b2;
+}
+.content-box{
+    padding: 40rpx 0;
+}
+.content{
+    margin-bottom: 40rpx;
+}
+.content:last-of-type{
+    margin-bottom: 0;
+}
+.goods-input{
+    text-align: right;
+    padding-right: 30rpx;
+    box-sizing: border-box;
+}
+.shipping-box{
+    width: 613rpx;
+    height: 80rpx;
+    padding:0 30rpx;
+    background: #F9F9F9;
+    border-radius: 6rpx;
+    color: #5A5A5A;
+}
+.add-btn-box{
+    padding:30rpx 0 30rpx 45rpx;
+    background-color: rgb(249, 249, 249);
+    border-radius: 0 0 20rpx 20rpx;
+}
+.add-btn{
+    width: 180rpx;
+    height: 70rpx;
+    background: #FFFFFF;
+    border-radius: 6rpx;
+    border: 1px solid #FFFFFF;
+    margin-right: 14rpx;
+}
+.add-btn:last-of-type{
+    margin-right: 0;
+}
+.footer{
+    position: fixed;
+    left: 0;
+    bottom: 0;
+    width: 750rpx;
+    height: 154rpx;
+    background: #F2F2F2;
+    border-top: 1px solid #E3E3E3;
+    box-sizing: border-box;
+    box-sizing: border-box;
+    padding:0 30rpx;
+}
+.save-btn{
+    width: 270rpx;
+    height: 110rpx;
+    background: #42B0CA;
+    border-radius: 20rpx;
+    color: #fff;
+    font-size: 30rpx;
+} 

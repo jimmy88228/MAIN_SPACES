@@ -25,7 +25,7 @@ Component(App.BC({
       title:"商品库",
       key:'goods',
       img:"http://devimgtest.innourl.com/SAAS_IMAGE/image/show/assets-icons-service17.png",
-      url:""
+      url:"/pages/main/staff-module/repository/index"
     },]
   },
   ready() {

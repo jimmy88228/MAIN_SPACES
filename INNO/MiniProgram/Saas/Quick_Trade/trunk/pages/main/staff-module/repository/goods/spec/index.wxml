@@ -1,0 +1,53 @@
+<!--pages/main/staff-module/repository/goods/spec/index.wxml-->
+<view class="spec">
+    <view class="box">
+        <view class="title-box flex-b-c">
+            <view class="bold">设置常用规格</view>
+            <view class="op-text" bindtap="jumpAction" data-url="/pages/main/staff-module/repository/goods/spec/edit/index">管理</view>
+        </view>
+        <view class="flex">
+            <block wx:for="{{specInfo}}" wx:key="index">
+                <view class="cir-sel flex-c-c {{true?'active':''}}"></view>
+                <view class="spec-name">{{item.name}}</view>
+            </block> 
+        </view>
+    </view>
+    <view class="box">
+        <view class="title-box flex-b-c">
+            <view class="bold">{{specInfo[curSel].name}}</view>
+            <view class="delete-box flex-c-c">
+                <view class="delete"></view>
+            </view>
+        </view>
+        <block wx:for="{{specInfo[curSel].list}}" wx:key="id">
+            <view class="spec-box flex-c-c">
+                <view>{{item.name}}</view>
+                <view class="delete-box flex-c-c">
+                    <view class="delete"></view>
+                </view>
+            </view> 
+        </block>
+    </view>
+    <view class="setting flex-b-c">
+        <view class="title bold">规格设置</view>
+        <view class="op-text">批量设置</view>
+    </view>
+    <block wx:for="{{specInfo[curSel].list}}" wx:key="id">
+        <view class="box">
+            <view class="spec-title">{{specInfo[curSel].name}}/{{item.name}}</view>
+            <view class="flex">
+                <view class="price-box f-s-0">
+                    <view class="price-title">原价</view>
+                    <input type="number"  class="goods-input" placeholder-class="placehold-text" placeholder="请输入" bindinput="onInput" data-key="price" /> 
+                </view> 
+                <view class="sn-box flex-1">
+                    <view class="sn-title">商品编码</view>
+                    <input class="goods-input" placeholder-class="placehold-text" placeholder="输入商品编码（非必填）" bindinput="onInput" data-key="sn" /> 
+                </view> 
+            </view>
+        </view>
+    </block>
+    <view class="footer flex-e-c">
+        <view class="save-btn flex-c-c">完成</view>
+    </view>
+</view>

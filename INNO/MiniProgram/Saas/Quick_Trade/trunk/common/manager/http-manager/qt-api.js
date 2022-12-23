@@ -381,6 +381,18 @@ export const QT_DstbApiList = {
 export const QT_GoodsApiList = {
   activityDetail: "/api/Activity/ActivityDetail",
   getActivityNoCachDetail: "/api/Activity/GetActivityNoCachDetail",
+  activityUpdateOrInsert:{
+    u:"/api/Activity/ActivityUpdateOrInsert",
+    m:"post"
+  },
+  getActivityGoodsInfo:{
+    u:"/api/Activity/GetActivityGoodsInfo",
+    m:"post"
+  },
+  activityProductUpdateOrInsert:{
+    u:"/api/Activity/ActivityProductUpdateOrInsert",
+    m:"post"
+  },
   getActivityGoodsInfo: "/api/Goods/GetActivityGoodsInfo",
   get_Sumary_GoodsDetailData: "/api/Goods/Get_Sumary_GoodsDetailData?goodsId={goodsId}",
   get_Sumary_GoodsProductInfo: "/api/Goods/Get_Sumary_GoodsProductInfo?goodsId={goodsId}&colorId={colorId}",

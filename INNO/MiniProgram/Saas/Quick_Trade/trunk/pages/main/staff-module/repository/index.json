@@ -1,4 +1,5 @@
 {
+  "navigationBarTitleText": "",
   "usingComponents": {
     "search-box" :"./cps/search-box/index",
     "goods-list" :"./cps/goods-list/index"

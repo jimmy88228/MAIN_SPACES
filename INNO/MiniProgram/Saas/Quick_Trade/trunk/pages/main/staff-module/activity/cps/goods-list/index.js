@@ -8,6 +8,10 @@ Component(App.BC({
         list:{
             type:Array,
             value:[]
+        },
+        inited:{
+            type:Boolean,
+            value:false
         }
     },
     data: {
@@ -23,6 +27,12 @@ Component(App.BC({
         }]
     },
     methods: {
-        
+        editGoods(e){
+            let id = this.getDataset(e,'id')||0;
+            this.jumpAction(`/pages/main/staff-module/repository/goods/index?id=${id}`);
+        },
+        onImport(){
+            this.jumpAction('/pages/main/staff-module/repository/index');
+        }
     }
 }))

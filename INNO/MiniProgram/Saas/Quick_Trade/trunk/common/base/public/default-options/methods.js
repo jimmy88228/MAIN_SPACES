@@ -20,4 +20,22 @@ export default {
     if(type)return dataset[type]
     return dataset;
   },
+
+  jumpAction(e){
+    let url=e;
+    if(e && typeof(e) == 'object'){
+      url = this.getDataset(e,'url')||"";
+    }
+    url = (!url || url.indexOf('/') == 0) ? url : ('/'+url);
+    if(url){
+      wx.navigateTo({
+        url,
+        fail:()=>{
+          wx.reLaunch({
+            url,
+          })
+        }
+      })
+    } 
+  }
 }

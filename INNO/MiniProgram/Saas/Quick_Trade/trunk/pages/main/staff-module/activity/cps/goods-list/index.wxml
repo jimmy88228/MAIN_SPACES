@@ -1,7 +1,10 @@
 <!--pages/main/staff-module/activity/cps/goods-list/index.wxml-->
 
-<scroll-view class="goods-list" scroll-y >
-    <view class="">
+<scroll-view class="goods-list" scroll-y wx:if="{{inited}}" > 
+    <view class="tips bold" wx:if="{{list.length<=0}}">
+        添加参与活动商品
+    </view>
+    <view class="" wx:else>
         <block wx:for="{{list}}" wx:key="index" wx:for-item="listItem">
             <view class="item-box">
                 <view class="flex goods-box">
@@ -15,7 +18,7 @@
                 </view>
                 <view class="btn-box flex-b-c">
                     <view class="flex">
-                        <view class="op-btn">编辑</view>
+                        <view class="op-btn" bindtap="editGoods" data-id="{{listItem.id}}">编辑</view>
                         <view class="op-btn">下架</view>
                     </view>
                     <view class="flex">
@@ -32,7 +35,7 @@
         </block>
     </view>
     <view class="goods-btn-box flex-b-c">
-        <view class="export-btn flex-c-c">商品导入</view>
-        <view class="add-btn flex-c-c">新增商品</view>
+        <view class="export-btn flex-c-c" bindtap="onImport">商品导入</view>
+        <view class="add-btn flex-c-c" bindtap="editGoods">新增商品</view>
     </view>
 </scroll-view>

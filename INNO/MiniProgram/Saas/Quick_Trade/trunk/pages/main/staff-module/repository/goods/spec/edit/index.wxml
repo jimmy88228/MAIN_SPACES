@@ -1,0 +1,12 @@
+<!--pages/main/staff-module/repository/goods/spec/edit/index.wxml-->
+<view class="spec-edit">
+    <block wx:for="{{[1]}}" wx:key="index">
+        <view class="box">
+            <view class="name bold">尺码</view>
+            <view class="value bold">{{'S/M/L'}}</view>
+        </view> 
+    </block> 
+    <view class="footer flex-e-c">
+        <view class="add-btn flex-c-c" bindtap="jumpAction" data-url="/pages/main/staff-module/repository/goods/spec/add/index">添加常用规格</view>
+    </view>
+</view>

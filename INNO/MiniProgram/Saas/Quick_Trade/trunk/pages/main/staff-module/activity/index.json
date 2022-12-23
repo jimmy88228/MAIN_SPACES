@@ -1,5 +1,7 @@
 {
+  "navigationBarTitleText": "",
   "usingComponents": {
-    "goods-list":"./cps/goods-list/index"
+    "goods-list":"./cps/goods-list/index",
+    "time-picker":"/components/common/view/time-picker/index"
   }
 }

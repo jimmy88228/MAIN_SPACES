@@ -1,0 +1,43 @@
+/* pages/main/staff-module/repository/goods/spec/add/index.wxss */
+.spec-add{
+    padding: 25rpx;
+}
+.box{
+    padding: 40rpx;
+    font-size: 28rpx;
+    background-color: #fff;
+    border-radius: 20rpx;
+}
+.spec-input{
+    margin-bottom: 32rpx;
+}
+.placehold-text{
+    color: #B2B2B2;
+}
+.add-btn{
+    width: 197rpx;
+    height: 80rpx;
+    background: #FFFFFF;
+    border-radius: 10rpx;
+    border: 1px solid #E1E1E1;
+}
+.footer{
+    position: fixed;
+    left: 0;
+    bottom: 0;
+    width: 750rpx;
+    height: 154rpx;
+    background: #F2F2F2;
+    border-top: 1px solid #E3E3E3;
+    box-sizing: border-box;
+    box-sizing: border-box;
+    padding:0 30rpx;
+}
+.save-btn{
+    width: 270rpx;
+    height: 110rpx;
+    background: #42B0CA;
+    border-radius: 20rpx;
+    color: #fff;
+    font-size: 30rpx;
+} 

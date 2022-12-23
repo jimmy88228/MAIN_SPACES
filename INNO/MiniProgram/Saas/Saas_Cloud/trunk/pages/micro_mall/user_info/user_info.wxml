@@ -3,10 +3,10 @@
   <block>
     <!--必填-->
     <view class="info_group">
-      <block wx:if="{{personal_page.required.length > 0}}">
+      <block wx:if="{{true||personal_page.required.length > 0}}">
         <view class="info_tip" wx:if="{{user_info.profileModify != 1}}">必填项</view>
         <view class="" wx:for="{{personal_page.required}}" wx:key="index">
-          <view class="info_item" wx:if="{{item === 'name'}}">
+          <!-- <view class="info_item" wx:if="{{item === 'name'}}">
             <text class="info_tit">姓名</text>
             <input type="nickname" placeholder="姓名" class="info_input" data-key="nickName" bindinput="bindChange" value="{{nickName}}"></input>
           </view>
@@ -19,11 +19,12 @@
           <view class="info_item" wx:elif="{{item === 'email'}}">
             <text class="info_tit">邮箱</text>
             <input placeholder="邮箱" class="info_input" data-key="email" bindinput="bindChange" value="{{email}}"></input>
-          </view>
-          <view class="info_item" wx:elif="{{item === 'birthday'}}">
+          </view> -->
+          <view class="info_item" wx:if="{{true||item === 'birthday'}}">
             <text class="info_tit">生日</text>
-            <block wx:if="{{info.birthday == '1900-01-01' || info.birthday == ''}}">
-              <picker class="info_input" data-key="birthday" mode="date" value="{{birthday}}" start="{{preDateStr}}" end="{{nowDateStr}}" bindchange="bindChange">
+            <block wx:if="{{true||info.birthday == '1900-01-01' || info.birthday == ''}}">
+              <picker class="info_input" data-key="birthday" mode="date" value="{{birthday}}"  bindchange="bindChange">
+              <!-- <picker class="info_input" data-key="birthday" mode="date" value="{{birthday}}" start="{{preDateStr}}" end="{{nowDateStr}}" bindchange="bindChange"> -->
                 <view class="picker {{birthday ? '' : 'C_7f'}}">{{birthday || '请选择生日日期'}}</view>
               </picker>
             </block>

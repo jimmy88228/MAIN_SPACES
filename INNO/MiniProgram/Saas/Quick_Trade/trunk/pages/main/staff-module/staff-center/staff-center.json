@@ -1,4 +1,5 @@
 {
+  "navigationBarTitleText": "店员中心",
   "usingComponents": {
     "order-bar": "/pages/tabs/user/modules/order-bar/order-bar"
   }

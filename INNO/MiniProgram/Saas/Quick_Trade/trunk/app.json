@@ -7,16 +7,21 @@
         "pages/main/staff-module/staff-center/staff-center",
         "pages/main/staff-module/activity/index",
         "pages/main/staff-module/repository/index",
-        "pages/main/cart/checkout/checkout"
+        "pages/main/cart/checkout/checkout",
+        "pages/main/staff-module/repository/goods/index",
+        "pages/main/staff-module/repository/goods/spec/index",
+        "pages/main/staff-module/repository/goods/detail/index",
+        "pages/main/staff-module/repository/goods/spec/edit/index",
+        "pages/main/staff-module/repository/goods/spec/add/index"
     ],
     "subPackages": [
-      {
-        "root": "pages/micro_mall/order",
-        "pages": [
-          "order_list",
-          "order_info"
-        ]
-      }
+        {
+            "root": "pages/micro_mall/order",
+            "pages": [
+                "order_list",
+                "order_info"
+            ]
+        }
     ],
     "tabBar": {
         "custom": true,

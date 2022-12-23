@@ -1,0 +1,36 @@
+/* pages/main/staff-module/repository/goods/spec/edit/index.wxss */
+.spec-edit{
+    padding: 25rpx;
+}
+.box{
+    padding: 40rpx;
+    font-size: 28rpx;
+    background: #FFFFFF;
+    border-radius: 20rpx;
+}
+.name{ 
+    margin-bottom: 26rpx;
+}
+.value{
+    color: #B2B2B2;
+}
+.footer{
+    position: fixed;
+    left: 0;
+    bottom: 0;
+    width: 750rpx;
+    height: 154rpx;
+    background: #F2F2F2;
+    border-top: 1px solid #E3E3E3;
+    box-sizing: border-box;
+    box-sizing: border-box;
+    padding:0 30rpx;
+}
+.add-btn{
+    width: 270rpx;
+    height: 110rpx;
+    background: #42B0CA;
+    border-radius: 20rpx;
+    color: #fff;
+    font-size: 30rpx;
+} 
