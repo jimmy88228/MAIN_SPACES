@@ -96,15 +96,16 @@ function getSumaryGoodsProductInfo() {
 }
 
 function setCountDown() {
-  if (!this.countDown) {
-    this.countDown = new CountDown();
-  }
   let {
     status,
     start_time,
-    end_time
+    end_time,
+    date: server_time,
   } = this.data.activity_info,
     targetDate = new Date(status == 1 ? end_time : start_time);
+  if (!this.countDown) {
+    this.countDown = new CountDown(new Date(server_time) || new Date());
+  }
   console.log("targetDate", targetDate)
   this.countDown.setTarget(targetDate);
   if (!this.countDown.isRunning) {
@@ -112,7 +113,8 @@ function setCountDown() {
       if (e.value <= 0) {
         stopCountDown.call(this);
       } else {
-        let hours = parseInt((e.value % (24 * 3600 * 1000)) / (3600 * 1000));
+        let days = parseInt(e.value / (1000 * 60 * 60 * 24));
+        let hours = parseInt(days * 24 + (e.value % (24 * 3600 * 1000)) / (3600 * 1000));
         let minutes = parseInt((e.value % (3600 * 1000)) / (60 * 1000));
         let seconds = parseInt((e.value % (1000 * 60)) / 1000);
         this.setData({

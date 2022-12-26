@@ -3,7 +3,7 @@
 <wxs src="./filter.wxs" module="f" />
 <view class="order-info-page">
   <!-- 自定义导航栏 -->
-  <custom-nav styleType="2" title="{{orderInfo.orderStatus}}" />
+  <custom-nav styleType="2" title="{{orderInfo.orderStatus}}{{valetInfo.isValetOrder == 1 ? '(代客单)': ''}} " />
   <!-- 贴一块上去 -->
   <view class="extend-nav-view">
     <view class="order-status-row" wx:if="{{menuInfo.needPay == 1 && orderInfo.serverTime < orderInfo.autoCancelTime}}">还剩{{f.countDownObjToStr(count_down)}}自动取消</view>

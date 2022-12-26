@@ -11,7 +11,7 @@ function theFrontPart(appQuery, appOnLaunch, next) { // onLaunch的前半部分(
     .finally(() => LM.checkIfStaff(false))
     .finally(() => LM.checkIfStore(false))
     .finally(() => storeH.changeVisitStore(appQuery.query||{}))
-    .finally(() => storeH.getVisitStore())
+    .finally(() => storeH.getVisitStore(false, appQuery.query || {}))
     .finally(() => {
       appOnLaunch && appOnLaunch.call(this, appQuery);
       WxApi.hideLoading();

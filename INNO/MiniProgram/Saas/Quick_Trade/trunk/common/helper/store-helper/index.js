@@ -22,12 +22,14 @@ class storeManager {
             return this.getVisitStore(true);
         })
     }
-    getVisitStore(cache){
+    getVisitStore(cache, options){
         if(cache && this._storeInfo){
             return Promise.resolve(this._storeInfo);
         }
         return Http.QT_UserApi.getVisitStore({
-            data: { },
+            params: {
+              staffCode: options.staffCode || ""
+            }
         }).then(res=>{
             if(res.code == 1){
                 this.setStoreInfo(res.data);
