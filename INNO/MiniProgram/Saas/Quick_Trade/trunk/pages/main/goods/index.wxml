@@ -67,7 +67,7 @@
         <view class="g-i-b-right">
           <view class="g-i-b-btn-group">
             <view class="g-i-b-btn-item">
-              <button class="g-i-b-btn" >
+              <button class="g-i-b-btn" open-type="share" >
                 <view class="icon-share-con" hover-class="active">
                   <view class="iconfont icon-fenxiang share-icon"></view>
                 </view>

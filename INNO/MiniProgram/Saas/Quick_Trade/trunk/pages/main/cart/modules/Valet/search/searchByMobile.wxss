@@ -1,0 +1,50 @@
+.search_area{
+  width:80%;
+  position:fixed;
+  top:50%;
+  left:50%;
+  transform: translate(-50%,-50%);
+  border-radius:10rpx;
+  background-color:#fff;
+  padding:20rpx;
+}
+.s_tit{
+  padding:20rpx 10rpx;
+}
+.s_cont{
+  padding:10rpx;
+}
+.search_input{
+  padding:5rpx 10rpx;
+  border:1px solid #efefef;
+  border-radius:10rpx;
+  /* box-shadow: 0px 0px 15rpx #b2b2b2 inset; */
+}
+.s_btns{
+  padding:10rpx;
+  padding-top:20rpx;
+  text-align:right;
+}
+.search_btn{
+  width:150rpx;
+  height: 60rpx;
+  display:inline-block;
+  text-align:center;
+  margin-left:15rpx;
+  overflow:hidden;
+  border-radius:6rpx;
+}
+.search_btn button {
+  width: 100%;
+  height: 100%;
+  transition: opacity 0.1s ease;
+}
+search_btn button.active{
+  opacity: 0.7;
+}
+.confirm-btn{
+  background-color: var(--main-color);
+}
+.deny-btn{
+  background-color: transparent;
+}

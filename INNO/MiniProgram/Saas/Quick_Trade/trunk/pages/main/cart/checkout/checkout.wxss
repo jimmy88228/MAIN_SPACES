@@ -12,7 +12,32 @@ page {
   margin-bottom: 20rpx;
   padding: 12rpx 0;
 }
-
+.valet-container{
+  padding: 28rpx 24rpx 28rpx 28rpx;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  transition: opacity 0.1s ease;
+}
+.valet-container.active{
+  opacity: 0.5;
+}
+.valet-title{
+  color: var(--tint-text-color);
+  margin-bottom: 20rpx;
+}
+.member_item{
+  font-size: 24rpx;
+  margin-bottom: 16rpx;
+  padding-left: 8rpx;
+  color: #333333;
+}
+.m_item_l{
+  margin-right: 68rpx;
+}
+.m_item_r{
+  color: #333333;
+}
 .checkout-row{
   height: 80rpx;
   padding: 28rpx 24rpx 28rpx 28rpx;
@@ -38,7 +63,7 @@ page {
 }
 .cr-remark-input{
   width: 480rpx;
-  text-align: left;
+  text-align: right;
 }
 .cr-remark-input-placeholder{
   text-align: right;
@@ -64,6 +89,9 @@ page {
   align-items: center;
   width: 100%;
   margin-bottom: 12rpx;
+}
+.delivery-add-tips{
+  color: #7f7f7f;
 }
 .delivery-consignee{
   margin-right: 24rpx;
@@ -120,10 +148,13 @@ page {
 .cgi-goods-img-con{
   width: 150rpx;
   height: 150rpx;
+  background-color: #F1F1F1;
+  border-radius: 10rpx;
 }
 .cgi-goods-img{
   width: 100%;
   height: 100%;
+  border-radius: 10rpx;
 }
 .cgi-middle{
   width: 360rpx;

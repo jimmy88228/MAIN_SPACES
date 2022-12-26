@@ -1,3 +1,74 @@
+export const PayType = {
+  /// 储值卡支付
+  prepaid_card: {
+    type: "prepaid_card",
+    id: 0,
+  },
+  /// 充值卡支付
+  recharge_card:{
+    type: "recharge_card",
+    id: 1
+  },
+  /// 拼团
+  pin: {
+    type: "pin",
+    id:2
+  },
+  /// 店铺支付
+  sp: {
+    type: "sp",
+    id:3
+  },
+  /// 预售定金
+  presale:{
+    type: "presale",
+    id:4
+  } ,
+  /// 预售尾款
+  presale2:{
+    type: "presale2",
+    id:5
+  } ,
+  /// 付费会员支付
+  upgrade: {
+    type: "upgrade",
+    id:6
+  },
+  /// 付费购券支付
+  buyb: {
+    type: "buyb",
+    id:7
+  },
+  /// 积分商城支付
+  bp: {
+    type: "bp",
+    id:8
+  },
+  /// 砍价支付
+  bargain: {
+    type: "bargain",
+    id:9
+  },
+  /// 申请分销员
+  staff: {
+    type: "staff",
+    id:10
+  },
+  /// 助力秒杀
+  seckill: {
+    type: "seckill",
+    id:11
+  },
+  /// 普通商城订单
+  order: {
+    type: "order",
+    id: 12
+  }
+}
+//---------------------------------------------
+
+
+
 // import Conf from "../../conf.js"
 // import { uuid16ByTime } from "../../utils/normal/index";
 // import AppUtil from "../helper/app-utils.js";

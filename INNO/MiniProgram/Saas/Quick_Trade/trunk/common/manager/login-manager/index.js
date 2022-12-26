@@ -1,5 +1,4 @@
 import WxApi from "../../utils/wxapi/index";
-import EB from "../../support/event-bus/index";
 import {QT_RegApi, QT_UserApi, QT_DstbApi,DstbApi, QT_VsLogApi} from "../http-manager/index";
 import {UserApi} from "../http-manager/index";
 // import LgMg from "../log-manager/index";
@@ -9,12 +8,7 @@ import SIH from "../../helper/system-info-helper/index"
 import StorageH from "../../helper/storage-handler/index";
 import SMH from "../../helper/show-message-helper/index";
 import CDateH from "../../helper/cache-date-handler/index"
-// const STORAGE_SESSION_ID_KEY = "SESSION_ID",
-//   STORAGE_USER_TOKEN_KEY = "USER_TOKEN",
-//   STORAGE_USER_INFOS_KEY = "USER_INFOS",
-//   STORAGE_OPEN_ID_KEY = "O_ID";
 
-// --------------------------
 const STORAGE_SESSION_ID_KEY = "SESSION_ID";
 const STORAGE_USER_TOKEN_KEY = "USER_TOKEN";
 const STORAGE_USER_INFOS_KEY = "USER_INFOS";
@@ -551,9 +545,6 @@ class LoginManager {
     if (data.userInfo) {
       this.saveUserInfo(data.userInfo);
     }
-    if (data.isTotalNewUser) { // 注册接口返回的: "是否全新用户" 区分商城和云店的
-      StorageH.set("isTotalNewUser", 2, 60 * 24);
-    }
   } 
   logout() { //注销 openId / cookieId、token、userInfo
     this.removeLoginData();
@@ -624,9 +615,6 @@ class LoginManager {
   }
   get userInfos() {
     return this._userInfos;
-  }
-  get isTotalNewUser() { // >=1 是新会员，==2 是新会员+一次弹出优惠券机会
-    return StorageH.get("isTotalNewUser") || 0
   }
 }
 export default LoginManager.getInstance(); 

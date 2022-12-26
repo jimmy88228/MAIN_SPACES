@@ -11,13 +11,16 @@ Page(App.BP({
       addressId: 0, // 地址ID, // 快递配送时有效
       consignee: "", // 店铺自提时的收货人
       mobile: "", // 店铺自提时的联 系电话
-      customShareCode: "", // 代客下单的目标会员
+      customShareCode: "", // 代客下单的目标会员shareCode
       paymentId: 0, // 支付方式ID
     },
 
+    storeStaffInfo: App.LM.storeInfo || {}, // 店员信息(如果该会员是店员才有, 默认{})
+    valetInfo: {}, // 代客下单
+
     cartList: [], // 商品列表
     orderInfo: {}, // 订单信息
-    shippingInfo: {}, // 
+    shippingInfo: {}, // 快递信息
   },
 
   onLoad(query) {
@@ -45,7 +48,21 @@ Page(App.BP({
     initCheckoutData.call(this)
       .then(() => this.checkout())
   },
-
+  handleValetRadioTap() {
+    this.ValetModule = this.ValetModule || this.selectComponent("#ValetModule");
+    this.ValetModule.changeValet();
+  },
+  getvaletinfo(e){
+    const valetInfo = e.detail || {};
+    this.setData({
+      'checkoutData.customShareCode': valetInfo.shareCode || "",
+      'checkoutData.addressId': 0,
+      'checkoutData.consignee': valetInfo.realName || "自提会员",
+      'checkoutData.mobile': valetInfo.mobilePhone || "",
+      valetInfo
+    })
+    this.checkout();
+  },
   handleShippingWayRadioChange(e) {
     let shippingWay = e.detail.value || 1;
     if (shippingWay === this.data.checkoutData.shippingWay) return;
@@ -54,7 +71,12 @@ Page(App.BP({
 
   handleDeliveryAddressTap() {
     this.userIsNavigatedToChooseAddress = 1;
-    WxApi.navigateTo({url: "/pages/main/address/address-list/index"})
+    if (this.data.checkoutData.customShareCode) { // 是代客下单
+      let valetInfo = this.data.valetInfo || {};
+      WxApi.navigateTo({url: `/pages/main/address/address-list/index?userToken=${valetInfo.userToken}`})
+    } else {
+      WxApi.navigateTo({url: "/pages/main/address/address-list/index"})
+    }
   },
 
   handleRemarkInput(e) {
@@ -110,7 +132,11 @@ Page(App.BP({
   },
 
   validate() {
-    return ""
+    let {shippingWay, addressId, consignee, mobile} = this.data.checkoutData;
+    if (shippingWay === 0 && addressId == 0) return "请选择收货地址";
+    else if (shippingWay === 1 && !consignee) return "请输入联系人";
+    else if (shippingWay === 1 && !mobile) return "请输入手机号码";
+    return "" 
   },
 
   handleTakeOrderBtnTap() {
@@ -121,7 +147,7 @@ Page(App.BP({
     }
     return addOrderRequest.call(this)
       .then(data => {
-        WxApi.navigateTo({url: `/pages/micro_mall/order/order_info?order_id=${data.orderId}`})
+        WxApi.redirectTo({url: `/pages/micro_mall/order/order_info?order_id=${data.orderId}&first_time_topay=1`})
       })
   },
 }))
@@ -136,6 +162,7 @@ function initCheckoutData() {
         paymentList,
         'checkoutData.activityProductId': Number(this.pageQuery.activity_product_id) || 0,
         'checkoutData.goodsNumber': Number(this.pageQuery.goods_number) || 1,
+        'checkoutData.shippingWay': Number(this.pageQuery.shippingWay) || 0,
         'checkoutData.paymentId': paymentId,
         'checkoutData.consignee': App.LM.userInfo.realName || "自提会员",
         'checkoutData.mobile': App.LM.userInfo.mobile || "",
@@ -172,7 +199,7 @@ function addOrderRequest() {
     addressId: shippingInfo.isStore ? 0 : shippingInfo.addressId,
     consignee: shippingInfo.isStore ? shippingInfo.consignee : "",
     mobile: shippingInfo.isStore ? shippingInfo.mobilePhone : "",
-    customShareCode: "",
+    customShareCode: checkoutData.customShareCode || "",
     paymentId: checkoutData.paymentId,
     clientSessionId: 0,
     remark

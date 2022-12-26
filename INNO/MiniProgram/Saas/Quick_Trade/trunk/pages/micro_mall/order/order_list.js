@@ -134,7 +134,7 @@ function loadOrderList() {
   return App.Http.QT_BuyApi.getOrderList({
       params: {
         orderType: activeTabIndex,
-        staffType: App.LM.storeInfo && App.LM.storeInfo.staffId ? 1 : 0,
+        staffType: this.pageQuery.staff_type ? 1 : 0,
         isOrderForCustom: 0,
         searchStr: this.searchStr,
         pageIndex,

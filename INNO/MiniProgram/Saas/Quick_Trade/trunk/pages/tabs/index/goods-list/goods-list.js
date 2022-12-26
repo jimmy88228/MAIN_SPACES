@@ -50,16 +50,18 @@ Component(App.BC({
 function setDefaultParams() {
   this.params = {
     pageIndex: 1,
-    pageSize: 20
+    pageSize: 20,
+    activityId: this.activityId
   }
 }
 
 function getActivityGoodsInfo() {
-  let {pageIndex, pageSize} = this.params;
+  let {pageIndex, pageSize, activityId} = this.params;
   return App.Http.QT_GoodsApi.getActivityGoodsInfo({
     params: {
       pageIndex,
-      pageSize
+      pageSize,
+      activityId
     }
   })
     .then(res => {

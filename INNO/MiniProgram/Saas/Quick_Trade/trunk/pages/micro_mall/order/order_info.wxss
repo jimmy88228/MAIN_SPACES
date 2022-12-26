@@ -1,6 +1,14 @@
 @import "/common/base/page/default-wxss/index.wxss";
 page{
   background-color: #F0F0F0;
+  --order-info-footer-height: calc(100rpx + env(safe-area-inset-bottom));
+}
+.order-info-page{
+  width: 100vw;
+  height: 100vh;
+}
+.order-info-main{
+  padding-bottom: var(--order-info-footer-height);
 }
 .extend-nav-view{
   height: 80rpx;
@@ -48,6 +56,11 @@ page{
 }
 .icon-copy.active{
   opacity: 0.5;
+}
+.oisi-store-name{
+  color: #171717;
+  font-size: 24rpx;
+  margin-bottom: 16rpx;
 }
 .oisi-store-address{
   color: #171717;
@@ -134,10 +147,33 @@ page{
   color: #222222;
   line-height: 32rpx;
   margin-bottom: 16rpx;
+  font-weight: bold;
+}
+.oiac-consignee{
+  margin-right: 12rpx;
 }
 .oiac-address{
   font-size: 24rpx;
   color: #7f7f7f;
+}
+.pick-code-container{
+  padding: 72rpx;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+.pick-code-title{
+  font-size: 28rpx;
+  color: #BCBCBC;
+  margin-bottom: 16rpx;
+}
+.pick-code-text{
+  font-size: 80rpx;
+  color: #222222;
+  font-weight: 600;
+  letter-spacing: 12rpx;
+  line-height: 112rpx;
 }
 .order-info-goods-cost-con{
   padding: 32rpx 28rpx 40rpx 40rpx;
@@ -204,12 +240,35 @@ page{
 .oicc-row.black-font{
   color: #222222;
 }
+.o-i-remark-container{
+  padding: 24rpx;
+}
+.remark-title{
+  font-size: 24rpx;
+  color: #7f7f7f;
+  margin-bottom: 12rpx;
+}
+.order-info-change-status-con{
+  padding: 20rpx;
+  width: 100%;
+}
+button.oics-btn{
+  width: 400rpx;
+  height: 80rpx;
+  background-color: var(--main-color);
+  border-radius: 100rpx;
+  color: #ffffff;
+  transition: opacity 0.1s ease;
+}
+button.oics-btn.active{
+  opacity: 0.7;
+}
 .order-info-footer{
   position: fixed;
   left: 0;
   bottom: 0;
   width: 100%;
-  height: calc(100rpx + env(safe-area-inset-bottom));
+  height: var(--order-info-footer-height);
   background-color: #ffffff;
   display: flex;
   align-items: center;
@@ -228,6 +287,10 @@ button.oifr-btn{
   font-size: 24rpx;
   color: #7f7f7f;
   margin-right: 18rpx;
+  transition: opacity 0.1s ease;
+}
+button.oifr-btn.active{
+  opacity: 0.5;
 }
 button.oifr-btn:last-of-type{
   margin-right: 0;

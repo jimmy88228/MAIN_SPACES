@@ -14,6 +14,7 @@ Component(App.BC({
     selectedSku: [], //已选择的sku列表
     selectedProductInfo: {}, // 已选中的产品信息
     selectedProductNumber: 1, // 已选产品数量
+    shippingWay: 0, // 0快递配送、1门店自提
   },
   methods: {
     showModal({skuList = [], productList = [], goodsId = 0}) {
@@ -53,8 +54,13 @@ Component(App.BC({
       if (selectedProductNumber <= 0 || selectedProductNumber > productGoodsNumber) return;
       this.setData({selectedProductNumber});
     },
+    handleShippingWayRadioChange(e) {
+      let shippingWay = e.detail.value || 1;
+      if (shippingWay === this.data.shippingWay) return;
+      this.setData({shippingWay: Number(shippingWay)})
+    },
     handlePurchaseButtonTap() {
-      WxApi.navigateTo({url: `/pages/main/cart/checkout/checkout?activity_product_id=${this.data.selectedProductInfo.activity_product_id}&goods_number=${this.data.selectedProductNumber}`})
+      WxApi.navigateTo({url: `/pages/main/cart/checkout/checkout?activity_product_id=${this.data.selectedProductInfo.activity_product_id}&goods_number=${this.data.selectedProductNumber}&shippingWay=${this.data.shippingWay}`})
     },
     previewImage(e) {
       const src = e.currentTarget.dataset.src || "";

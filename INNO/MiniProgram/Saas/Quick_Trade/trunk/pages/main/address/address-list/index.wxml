@@ -5,14 +5,14 @@
 <view class="address_page">
   <view class="add_address_btns">
     <view class="add_address_btn">
-      <button class="add_wx_addr_btn add_btn" catchtap="getWxAddress">
+      <button class="add_wx_addr_btn add_btn" hover-class="active" catchtap="getWxAddress">
         <image class="addr_icon" src="{{brand_info.icon_url}}micro_mall/wechat_logo.png" mode="aspectFit" />
         <text class="new_addr_txt">获取微信地址</text>
       </button>
     </view>
     <view class="btns_stay"></view>
     <view class="add_address_btn">
-      <button class="add_addr_btn add_btn" bindtap="addNewAddress" style="background-color:{{brand_info.style.bg_color}};">
+      <button class="add_addr_btn add_btn" hover-class="active" bindtap="addNewAddress">
         <image class="addr_icon add_addr_icon" src="{{brand_info.icon_url}}micro_mall/address/add_new.png" mode="aspectFit" />
         <text class="new_addr_txt">添加新地址</text>
       </button>
@@ -20,7 +20,7 @@
   </view>
   <block hidden="{{showImg}}">
     <view class="address_list" >
-      <view class="addr_item {{item.is_default == 1 ? 'selected' : ''}}" data-addr_id="{{item.address_id}}" data-is_default="{{item.is_default}}" bindtap="setDafaultAddr"  style="border:{{item.is_default == 1 ? '2px solid '+brand_info.style.bg_color : ''}}" wx:for="{{addr_list}}" wx:key="index">
+      <view class="addr_item {{item.is_default == 1 ? 'selected' : ''}}" data-addr_id="{{item.address_id}}" data-is_default="{{item.is_default}}" bindtap="setDafaultAddr"  wx:for="{{addr_list}}" wx:key="index">
         <view class="item_info">
           <text class="tit">收 件  人 :</text>
           <text class="val">{{item.consignee}}</text>
@@ -50,8 +50,8 @@
             </view>
           </view>
           <view class="addr_operation_r">
-            <view class="set_default_btn" wx:if="{{ visit_type == 'check' }}" style="background:{{brand_info.style.bg_color}}">设置默认</view>
-            <view  class="select_addr_btn" wx:else style="background:{{brand_info.style.bg_color}}">选择地址</view>
+            <view class="set_default_btn" hover-class="active" wx:if="{{ visit_type == 'check' }}">设置默认</view>
+            <view  class="select_addr_btn" wx:else>选择地址</view>
           </view>
         </view>
       </view>

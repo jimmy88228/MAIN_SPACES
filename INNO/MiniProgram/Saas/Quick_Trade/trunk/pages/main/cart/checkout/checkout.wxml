@@ -4,10 +4,30 @@
 <view class="checkout-page">
   <view class="checkout-main">
     <view class="checkout-view">
-      <view class="checkout-row">
+      <view class="checkout-row" wx:if="{{storeStaffInfo.staff_id}}">
         <view class="checkout-row-left">付款方式</view>
-        <view class="checkout-row-right">
-          <view class="icon-radio checkout-icon-radio {{true?'active':''}}"></view>代客下单
+        <view class="checkout-row-right" bindtap="handleValetRadioTap">
+          <view class="icon-radio checkout-icon-radio {{checkoutData.customShareCode?'active':''}}"></view>代客下单
+        </view>
+      </view>
+      <view class="valet-container" hover-class="active" catchtap="handleValetRadioTap" wx:if="{{checkoutData.customShareCode}}">
+        <view class="valet-main">
+            <view class="valet-title">下单会员</view>
+            <view class="member_item">
+              <text class="m_item_l">昵称</text>
+              <text class="m_item_r">{{valetInfo.realName}}</text>
+            </view>
+            <view class="member_item">
+              <text class="m_item_l">手机</text>
+              <text class="m_item_r">{{valetInfo.mobilePhone}}</text>
+            </view>
+            <view class="member_item">
+              <text class="m_item_l">卡号</text>
+              <text class="m_item_r">{{valetInfo.cardNum}}</text>
+            </view>
+        </view>
+        <view class="valet-right">
+            <view class="icon-arrow"></view>
         </view>
       </view>
       <view class="checkout-row">
@@ -31,7 +51,7 @@
     <view class="checkout-view" hidden="{{shippingInfo.isStore === 1}}">
       <view class="delivery-header">收货地址</view>
       <view class="delivery-main" hover-class="active" bindtap="handleDeliveryAddressTap">
-        <view class="delivery-info">
+        <view class="delivery-info" wx:if="{{shippingInfo.addressId}}">
           <view class="delivery-client">
             <view class="delivery-consignee">{{shippingInfo.consignee}}</view>
             <view class="delivery-mobile-phone">{{shippingInfo.mobilePhone}}</view>
@@ -43,7 +63,14 @@
             <view class="dci-address-detail">{{shippingInfo.provinceName}}{{shippingInfo.cityName}}{{shippingInfo.districtName}}{{shippingInfo.address}}</view>
           </view>
         </view>
-        
+        <view class="delivery-info" wx:else>
+          <view class="delivery-client">
+            <view class="delivery-add-tips">请选择收货地址</view>
+            <view class="delivery-arrow-con">
+              <view class="delivery-arrow-icon icon-arrow"></view>
+            </view>
+          </view>
+        </view>
       </view>
     </view>
 
@@ -154,3 +181,8 @@
     </view>
   </view>
 </view>
+<Valet 
+  id="ValetModule" 
+  bindgetvaletinfo="getvaletinfo"
+  bindcheckValetOrder="checkValetOrder"
+></Valet>

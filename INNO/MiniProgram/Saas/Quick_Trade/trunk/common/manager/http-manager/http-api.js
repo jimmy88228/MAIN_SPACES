@@ -12,7 +12,7 @@ const visitApi = Conf.visitApiType ? VISIT_APICONF[Conf.visitApiType] : VISIT_AP
 const BrandApiList = {
   getMenuList: "/api/Brand/Get_MenuList?brandCode={brandCode}",
   //支付方式
-  getPaymentList: "/api/Brand/GetPaymentList?brandCode={brandCode}",
+  getPaymentList: "/api/Brand/GetPaymentList?brandCode={brandCode}"
 }
 // 用户
 export const UserApiList = {

@@ -16,6 +16,9 @@ page{
   width:100%;
   box-sizing:border-box;
 }
+.addr_edit_item.warning{
+  border-color: var(--main-color);
+}
 .addr_edit_item .tip{
   width:130rpx;
   display:table-cell;
@@ -39,6 +42,7 @@ page{
   border-radius:10rpx;
   text-align:center;
   line-height:80rpx;
+  background-color: var(--main-color);
 }
 .region_select_bg{
   position:fixed;

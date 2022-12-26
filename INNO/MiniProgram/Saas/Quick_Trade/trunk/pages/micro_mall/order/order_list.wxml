@@ -27,7 +27,7 @@
         <block wx:for="{{orderTabList}}" wx:for-item="orderTab" wx:for-index="orderTabIndex" wx:key="state">
           <swiper-item class="order-list-tab-swiper-item">
             <scroll-view class="oltsi-content" scroll-y bindscrolltolower="handleScrollToLower">
-              <view class="oltsi-order-list">
+              <view class="oltsi-order-list" wx:if="{{orderTab.list && orderTab.list.length}}">
                 <block wx:for="{{orderTab.list}}" wx:key="index">
                   <view class="oltsi-order-item" hover-class="active" bindtap="handleOrderItemTap" data-order-id="{{item.orderId}}">
                     <!-- header -->
@@ -74,6 +74,9 @@
                     </view>
                   </view>
                 </block>
+              </view>
+              <view class="oltsi-order-list-nodata" wx:else>
+                暂无订单
               </view>
             </scroll-view>
           </swiper-item>

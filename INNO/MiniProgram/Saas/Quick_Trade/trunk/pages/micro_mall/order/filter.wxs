@@ -1,0 +1,12 @@
+function countDownObjToStr(count_down = {}) {
+  var str = "";
+  if (count_down.day) str += (count_down.day + "天");
+  if (count_down.hour) str += (count_down.hour + "时");
+  if (count_down.min) str += (count_down.min + "分");
+
+  return str;
+}
+
+module.exports = {
+  countDownObjToStr: countDownObjToStr
+};

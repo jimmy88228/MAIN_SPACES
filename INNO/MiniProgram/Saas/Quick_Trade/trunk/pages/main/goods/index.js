@@ -21,6 +21,10 @@ Page(App.BP({
   onShow() {
     getGoodsDetail.call(this)
       .then(data => handleGoodsDetail.call(this, data))
+      .catch(err => {
+        console.log("onShow", err);
+        App.SMH.showToast({title: err});
+      })
   },
   handlePurchaseBtnTap() {
     getSumaryGoodsProductInfo.call(this)

@@ -10,7 +10,8 @@ const visitApi = Conf.visitApiType ? VISIT_APICONF[Conf.visitApiType] : VISIT_AP
 
 // 品牌(域名跟User一样)
 const QT_BrandApiList = {
-  getMenuList: "/api/Brand/Get_MenuList?brandCode={brandCode}"
+  getMenuList: "/api/Brand/Get_MenuList?brandCode={brandCode}",
+  getShippingList: "/api/Brand/getShippingList?brandCode={brandCode}"
 }
 // 用户
 export const QT_UserApiList = {
@@ -420,7 +421,11 @@ export const QT_BuyApiList = {
   receiveOrderGoods: {
     u: "/api/Order/ReceiveOrderGoods",
     m: "post"
-  }, 
+  },
+  updateOrderStatus: {
+    u: "/api/Order/UpdateOrderStatus",
+    m: "post"
+  },
   getCancelReasonList: "/api/Order/GetCancelReasonList",
   getReturnReasonList: "/api/Order/GetReturnReasonList",
   getOrderList: "/api/Order/GetOrderList?orderType={orderType}&pageIndex={pageIndex}&pageSize={pageSize}&searchStr={searchStr}",
@@ -476,4 +481,10 @@ export const QT_BuyApiList = {
  getRefundOrderList:"/api/RefundOrder/GetRefundOrderList?searchStr={searchStr}&pageIndex={pageIndex}&pageSize={pageSize}",
  getRefundOrderDetail:"/api/RefundOrder/GetRefundOrderDetail?refundId={refundId}",
 
+}
+
+//支付
+export const QT_PayApiList = {
+  unifiedCloudShopOrder:"/api/Pay/UnifiedQuickTradeOrder?payType={payType}&orderId={orderId}&brandCode={brandCode}",
+  unifiedCloudShopOrderByCode: "/api/Pay/UnifiedQuickTradeOrderByCode?payType={payType}&orderId={orderId}&brandCode={brandCode}"
 }

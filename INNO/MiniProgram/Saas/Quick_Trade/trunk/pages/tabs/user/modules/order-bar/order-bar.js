@@ -8,7 +8,18 @@ Component(App.BC({
     },
     fromType:{
       type: String,
-      value:""
+      value:"",
+      observer(newVal) {
+        if (newVal === "staff") {
+          let barList = this.data.barList || [];
+          barList.forEach(item => {
+            item.url += `&staff_type=1`
+          })
+          this.setData({
+            barList
+          })
+        }
+      }
     }
   },
   data:{
@@ -51,6 +62,7 @@ Component(App.BC({
     jump(e){
       console.log('userData',this.data.userData)
       let item = this.getDataset(e,'item')||{};
+      
       JumpHelp.jump(item); 
     }
   }

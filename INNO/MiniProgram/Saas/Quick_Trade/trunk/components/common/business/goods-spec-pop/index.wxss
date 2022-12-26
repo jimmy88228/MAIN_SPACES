@@ -76,7 +76,7 @@ page{
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin-bottom: 48rpx;
+  margin-bottom: 12rpx;
 }
 .gspcc-prefix{
   font-size: 28rpx;
@@ -126,6 +126,21 @@ page{
 }
 .gspcc-plus{
   margin-left: 8rpx;
+}
+.gsdtc-radio-group{
+  padding: 12rpx;
+  margin-bottom: 24rpx;
+}
+.gsdtc-radio-view{
+  margin-bottom: 20rpx;
+  display: flex;
+  align-items: center;
+}
+.gsdtc-radio-view:last-of-type{
+  margin-bottom: 0;
+}
+.spec-radio{
+  transform: scale(0.65);
 }
 .g-s-footer{
   flex: 1;

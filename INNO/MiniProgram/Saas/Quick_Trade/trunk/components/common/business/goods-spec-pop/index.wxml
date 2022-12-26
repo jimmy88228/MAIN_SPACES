@@ -33,6 +33,18 @@
           </view>
         </view>
       </view>
+      <view class="g-s-delivery-type-con">
+        <view class="gsdtc-main">
+          <radio-group class="gsdtc-radio-group" bindchange="handleShippingWayRadioChange">
+            <view class="gsdtc-radio-view">
+              <radio class="spec-radio" color="#F5475F" checked="{{shippingWay === 0}}" value="{{0}}" />快递配送
+            </view>
+            <view class="gsdtc-radio-view">
+              <radio class="spec-radio" color="#F5475F" checked="{{shippingWay === 1}}" value="{{1}}" />门店自提
+            </view>
+          </radio-group>
+        </view>
+      </view>
 
       <view class="g-s-footer">
         <view class="g-s-purchase-btn-group">
