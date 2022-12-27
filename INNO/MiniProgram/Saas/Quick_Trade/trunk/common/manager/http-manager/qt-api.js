@@ -397,7 +397,12 @@ export const QT_GoodsApiList = {
   getActivityGoodsInfo: "/api/Goods/GetActivityGoodsInfo",
   get_Sumary_GoodsDetailData: "/api/Goods/Get_Sumary_GoodsDetailData?goodsId={goodsId}",
   get_Sumary_GoodsProductInfo: "/api/Goods/Get_Sumary_GoodsProductInfo?goodsId={goodsId}&colorId={colorId}",
-
+  getGoodsInfo: "/api/Goods/GetGoodsInfo?activityId={activityId}", 
+  activityGoodsInfo: "/api/Activity/ActivityGoodsInfo?activityId={activityId}",
+  activityGoodsUpdateOrInsert:{
+    u:"/api/Activity/ActivityGoodsUpdateOrInsert",
+    m:"post"
+  },
 }
 
 //订单

@@ -24,6 +24,7 @@
 }
 .content-box{
     padding-bottom: 18rpx;
+    line-height: 38rpx;
 }
 .title{
     color: #7F7F7F;
@@ -56,6 +57,16 @@
 .op-btn.sm{
     width: 75rpx;
     height: 66rpx;
+}
+.op-btn.disabled{
+    color: #dfdfdf; 
+    pointer-events: none;
+}
+.op-btn.disabled .triangle-top{
+    border-bottom-color:#dfdfdf;
+}
+.op-btn.disabled .triangle-bottom{
+    border-top-color:#dfdfdf;
 }
 .goods-btn-box{
     position:sticky;

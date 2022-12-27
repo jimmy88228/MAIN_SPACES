@@ -76,6 +76,12 @@
                     "pathName": "pages/main/staff-module/repository/goods/spec/add/index",
                     "query": "",
                     "scene": null
+                },
+                {
+                    "name": "pages/main/staff-module/activity/index",
+                    "pathName": "pages/main/staff-module/activity/index",
+                    "query": "",
+                    "scene": null
                 }
             ]
         }

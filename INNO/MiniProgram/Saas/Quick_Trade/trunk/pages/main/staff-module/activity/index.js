@@ -8,18 +8,84 @@ Page(App.BP({
         dateString:"",
         setting:false,
         today:getToday().replace(/\//g, "-"),
-    }, 
+        acGoodsInfo:{}
+    },
     onShow(){
+        this.checkSet();
+    }, 
+    onLoad(){ 
         this.loadData();
     },
+    checkSet(){
+        if(this.data.inited){
+            let curSetGoodsInfo = App.StorageH.get('curSetGoodsInfo') || {}; 
+            let curGetGoodsList = App.StorageH.get('curGetGoodsList') || {}; 
+            let acGoodsInfo = this.data.acGoodsInfo||{};
+            console.log('checkSet',curSetGoodsInfo,curGetGoodsList,curGetGoodsList.activity_id , curGetGoodsList.activity_id , acGoodsInfo.activity_id);
+            if(curGetGoodsList.activity_id && (curGetGoodsList.activity_id == acGoodsInfo.activity_id)){
+                let goodsList = curGetGoodsList.goodsList||[];
+                goodsList = goodsList.map(item=>{
+                    return {
+                        sale_price:item.market_price||0,
+                        goods_number:item.goods_number||0,
+                        goods_name:item.goods_name||"",
+                        goods_img:item.goods_img||"",
+                        goods_id:item.goods_id||0,
+                        // product_sn:item.product_sn
+                    }
+                })
+                acGoodsInfo.goods_Infos = goodsList;
+                this.setData({acGoodsInfo});
+                console.log('看看',acGoodsInfo);
+                App.StorageH.remove('curGetGoodsList')
+            }
+            if(curSetGoodsInfo.activity_id && (curSetGoodsInfo.activity_id == acGoodsInfo.activity_id)){
+                let goodsInfo = curSetGoodsInfo.goodsInfo||{};
+                let index = acGoodsInfo.goods_Infos.findIndex(item=>item.goods_id == goodsInfo.goods_id);
+                if(index>-1){
+                    goodsInfo.goods_img = goodsInfo.goodsImgs[0];
+                    delete goodsInfo.goodsImgs;
+                    acGoodsInfo.goods_Infos[index] = goodsInfo
+                    console.log('看看',index,goodsInfo,acGoodsInfo);
+                    this.setData({acGoodsInfo})
+                    App.StorageH.remove('curSetGoodsInfo')
+                }
+            }
+        }
+    },
     loadData(){
-        this.setData({inited:true})
+        return this.getActivityNoCachDetail().then(()=>{
+            return this.activityGoodsInfo();
+        });
+    },
+    getActivityNoCachDetail(){ 
         return getActivityNoCachDetail().then(res=>{
             if(res.code==1){
                 let acInfo = res.data||{};
                 this.setData({acInfo,dateString:acInfo.status == 1 && acInfo.end_time || ""})
                 console.log('dateString',this.data.dateString)
             }
+            return res
+        })
+    },
+    activityGoodsInfo(){
+        return activityGoodsInfo({activityId:this.data.acInfo.id||0}).then(res=>{
+            if(res.code==1){ 
+                let acGoodsInfo = res.data||{};  
+                acGoodsInfo.insertOrupdate = acGoodsInfo.goods_Infos.length>0 ? 1:0;
+                this.setData({acGoodsInfo,inited:true});
+                console.log('goods_Infos',this.data.acGoodsInfo)
+            }
+            return res
+        })
+    },
+    activityGoodsUpdateOrInsert(){
+        let acGoodsInfo = this.data.acGoodsInfo||{};
+        return activityGoodsUpdateOrInsert({...acGoodsInfo,insertOrupdate:acGoodsInfo.insertOrupdate}).then(res=>{
+        // return activityGoodsUpdateOrInsert({...acGoodsInfo,insertOrupdate:acGoodsInfo.goods_Infos.length==0?1:acGoodsInfo.insertOrupdate}).then(res=>{
+            if(res.code==1){  
+            }
+            return res
         })
     },
     setTime(){ 
@@ -46,20 +112,29 @@ Page(App.BP({
             App.SMH.showToast({title:"请先设置活动结束时间"});
             return
         }
-        return Promise.all([this.setTime()]).then(res=>{
+        return Promise.all([this.setTime(),this.activityGoodsUpdateOrInsert(this.data.acGoodsInfo||{})]).then(res=>{
             console.log('all',res);
             let title="保存成功";
             for(let i = 0,len=res.length;i<len;i++){
                 let item = res[i]||{};
                 if(item.code!=1){
-                    title = "保存失败,请确认数据无误";
+                    title = item.msg||"保存失败,请确认数据无误";
                     break;
                 }
             } 
-            App.SMH.showToast({title});
-            return res
+            return this.loadData().then(()=>{
+                App.SMH.showToast({title});
+            })
         })
-    }
+    },
+    onChangeList(e){
+        let detail = e.detail||{};
+        let list = detail.list||[]; 
+        console.log(list);
+        this.setData({
+            'acGoodsInfo.goods_Infos':list
+        })
+    },
 
 }))
 function  getActivityNoCachDetail(){
@@ -67,9 +142,21 @@ function  getActivityNoCachDetail(){
         data:{},
     })
 }
+function  activityGoodsInfo(params){
+    return App.Http.QT_GoodsApi.activityGoodsInfo({
+        data:params||{},
+    })
+}
 
 function activityUpdateOrInsert(params){
     return App.Http.QT_GoodsApi.activityUpdateOrInsert({
+        data:params
+    })
+}
+
+function activityGoodsUpdateOrInsert(params){
+    console.log(params,'activityGoodsUpdateOrInsert');
+    return App.Http.QT_GoodsApi.activityGoodsUpdateOrInsert({
         data:params
     })
 }

@@ -2,65 +2,50 @@
 const App = getApp();
 Page(App.BP({  
     data: {
+        isSelect:false,
         categoryList:[{
             name:"全部"
-        }],
-        goodsList:[{},{},{},{},{},]
-    },
-
-    /**
-     * 生命周期函数--监听页面加载
-     */
+        }], 
+    }, 
     onLoad: function (options) {
-
+        this.options = options;
+        this.setData({
+            isSelect:options.fromType == 'activity'
+        })
+        this.loadData();
+    },  
+    loadData(){
+        getGoodsInfo({activityId:(this.options.activity_id||0)}).then(res=>{
+            if(res.code==1){
+                let goodsList = res.data||[];
+                this.setData({goodsList});
+            }
+            return res;
+        })
     },
-
-    /**
-     * 生命周期函数--监听页面初次渲染完成
-     */
-    onReady: function () {
-
+    onSelect(e){
+        let detail = e.detail||{};
+        let {index,item} = detail; 
+        if(item){
+            this.setData({[`goodsList[${index}]`]:item})
+        }
     },
-
-    /**
-     * 生命周期函数--监听页面显示
-     */
-    onShow: function () {
-
+    onSelectAll(e){
+        let detail = e.detail||{};
+        let {goodsList} = detail; 
+        if(goodsList){
+            this.setData({goodsList})
+        }
     },
-
-    /**
-     * 生命周期函数--监听页面隐藏
-     */
-    onHide: function () {
-
-    },
-
-    /**
-     * 生命周期函数--监听页面卸载
-     */
-    onUnload: function () {
-
-    },
-
-    /**
-     * 页面相关事件处理函数--监听用户下拉动作
-     */
-    onPullDownRefresh: function () {
-
-    },
-
-    /**
-     * 页面上拉触底事件的处理函数
-     */
-    onReachBottom: function () {
-
-    },
-
-    /**
-     * 用户点击右上角分享
-     */
-    onShareAppMessage: function () {
-
+    save(e){
+        let detail = e.detail ||{};
+        let goodsList = detail.goodsList||[];
+        App.StorageH.set('curGetGoodsList',{activity_id:this.options.activity_id,goodsList}) || ""; 
+        wx.navigateBack()
     }
 }))
+function getGoodsInfo(params){
+    return App.Http.QT_GoodsApi.getGoodsInfo({
+        data: params,
+    })
+}

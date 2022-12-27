@@ -8,22 +8,22 @@
         <block wx:for="{{goodsList}}" wx:key="index">
             <view class="list">
                 <view class="msg-box flex">
-                    <image src="" mode="aspectFit" class="goods-img f-s-0"></image>
+                    <image src="{{item.goods_img||''}}" mode="aspectFit" class="goods-img f-s-0"></image>
                     <view class="content flex-1">
-                        <view class="goods-name bold">{{item.title||'测试'}}</view>
-                        <view class="price bold">{{item.price||'99'}}</view>
+                        <view class="goods-name bold">{{item.goods_name||''}}</view>
+                        <view class="price bold">{{item.market_price||''}}</view>
                         <view>
                             <span class="title">尺码</span>
-                            <span class="value bold">{{item.spec||"M"}}</span>
+                            <span class="value bold">{{item.spec_name||''}}</span>
                         </view>
                         <view>
                             <span class="title">库存</span>
-                            <span class="value bold">{{item.num||22}}</span>
+                            <span class="value bold">{{item.goods_number||''}}</span>
                         </view>
                     </view>
                 </view>
                 <view class="btn-box flex-b-c">
-                    <view class="cir-sel flex-c-c {{true?'active':''}}"></view>
+                    <view wx:if="{{isSelect}}" class="cir-sel flex-c-c {{item.isSelected?'active':''}}" bindtap="onSelect" data-index="{{index}}" data-item="{{item}}"></view>
                     <view class="op-btn-box flex-c-c">
                         <view class="op-btn" bindtap="jumpAction" data-url="pages/main/staff-module/repository/goods/index">编辑</view>
                         <view class="op-btn">复制</view>
@@ -34,14 +34,14 @@
         </block>
     
     </scroll-view>
-    <view class="footer-btn-box flex-b-c">
-        <view class="all-sel-box flex-c-c">
-            <view class="cir-sel flex-c-c {{true?'active':''}}"></view>
+    <view class="footer-btn-box flex-b-c" wx:if="{{isSelect}}">
+        <view class="all-sel-box flex-c-c" bindtap="selectAll">
+            <view class="cir-sel flex-c-c {{isSelectAll?'active':''}}"></view>
             <view class="all-sel">全选</view>
         </view>
-        <view class="confirm-btn flex-c-c flex-col">
-            <view class="confirm bold">确认</view>
-            <view class="selected">已选{{1}}件</view>
+        <view class="confirm-btn flex-c-c flex-col" bindtap="save">
+            <view class="confirm bold" >确认</view>
+            <view class="selected">已选{{selectNum}}件</view>
         </view>
     </view>
 </view>

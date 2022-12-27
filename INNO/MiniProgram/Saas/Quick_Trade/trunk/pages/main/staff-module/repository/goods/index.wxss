@@ -33,15 +33,15 @@ page{
 .img-box{
     padding-bottom: 55rpx;
     border-bottom: 1px solid #EFEFEF;
+    flex-wrap: wrap;
 }
 .img-goods{
-    width: 160rpx;
-    height: 160rpx;
-    background: #D8D8D8;
+    width: 152rpx;
+    height: 152rpx; 
 }
 .add-goods{
-    width: 160rpx;
-    height: 160rpx;
+    width: 152rpx;
+    height: 152rpx;
     background: #F6F6F6;
     position: relative;
 }
