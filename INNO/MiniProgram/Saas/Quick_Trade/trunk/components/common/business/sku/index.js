@@ -52,7 +52,7 @@ Component(App.BC({
       if (skuList.length === selectedItems.length) { // 已选择完毕
         result.finished = true;
         canChooseProduct.some(item => {
-          if (item.ProductSpecList.every(spec => selectedRef[spec.spec_id])) {
+          if (item.product_specList.every(spec => selectedRef[spec.spec_id])) {
             result.productInfo = item;
             return true
           }
@@ -68,7 +68,7 @@ function initSku() {
   let skuCount = 0;
   const valueInLabel = {};
   skuList.forEach(spu => {
-    let skus = spu.SpecInfoList || [];
+    let skus = spu.specinfo_list || [];
     skus.forEach(skuItem => {
       let {spec_id} = skuItem;
       valueInLabel[spec_id] = getPrime(skuCount);
@@ -77,10 +77,10 @@ function initSku() {
   })
   // 根据规格坐标，排序质数坐标
   const way = skuList.map((i) => {
-    return i.SpecInfoList.map(ii => valueInLabel[ii.spec_id]);
+    return i.specinfo_list.map(ii => valueInLabel[ii.spec_id]);
   });
   const sku = productList.map(item => ({
-    skuPrime: item.ProductSpecList.map(ii => valueInLabel[ii.spec_id]),
+    skuPrime: item.product_specList.map(ii => valueInLabel[ii.spec_id]),
     ...item
   }))
   // 筛选可选的 SKU
@@ -123,7 +123,7 @@ function selectSkuHandle({
   } else if (light[primeIndex].includes(2)) {
     // 如果同规格中，有选中，则先移除选中，
     // 获取需要移除的同行规格
-    const removeType = (stateType[primeIndex].SpecInfoList)[light[primeIndex].indexOf(2)].spec_id;
+    const removeType = (stateType[primeIndex].specinfo_list)[light[primeIndex].indexOf(2)].spec_id;
     // 获取需要提出的同行规格质数
     const removePrime = valueInLabel[removeType];
     // 移除

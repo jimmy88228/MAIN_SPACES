@@ -23,10 +23,21 @@
         </view>
       </view>
 
-      <swiper class="order-list-tab-swiper" current="{{activeTabIndex}}" bindchange="handleSwiperChange">
+      <swiper class="order-list-tab-swiper"
+        current="{{activeTabIndex}}" 
+        bindchange="handleSwiperChange"
+      >
         <block wx:for="{{orderTabList}}" wx:for-item="orderTab" wx:for-index="orderTabIndex" wx:key="state">
           <swiper-item class="order-list-tab-swiper-item">
-            <scroll-view class="oltsi-content" scroll-y bindscrolltolower="handleScrollToLower">
+            <scroll-view 
+              class="oltsi-content" 
+              scroll-y
+              refresher-enabled
+              enable-passive
+              refresher-triggered="{{pullDownRefreshing}}"
+              bindrefresherrefresh="handleRefresh"
+              bindscrolltolower="handleScrollToLower"
+            >
               <view class="oltsi-order-list" wx:if="{{orderTab.list && orderTab.list.length}}">
                 <block wx:for="{{orderTab.list}}" wx:key="index">
                   <view class="oltsi-order-item" hover-class="active" bindtap="handleOrderItemTap" data-order-id="{{item.orderId}}">
@@ -62,7 +73,7 @@
                     <!-- footer -->
                     <view class="order-item-footer">
                       <view class="order-item-f-left">
-                        <view class="order-item-store-address">{{item.storeName}}</view>
+                        <view class="order-item-store-address text-flow">{{item.storeName}}</view>
                       </view>
                       <view class="order-item-f-right">
                         <view class="order-item-total-number">共{{item.goodsNumber}}件</view>

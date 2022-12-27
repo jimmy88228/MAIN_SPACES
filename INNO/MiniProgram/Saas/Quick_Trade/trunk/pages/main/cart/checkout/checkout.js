@@ -165,7 +165,7 @@ function initCheckoutData() {
         'checkoutData.shippingWay': Number(this.pageQuery.shippingWay) || 0,
         'checkoutData.paymentId': paymentId,
         'checkoutData.consignee': App.LM.userInfo.realName || "自提会员",
-        'checkoutData.mobile': App.LM.userInfo.mobile || "",
+        'checkoutData.mobile': App.LM.userInfo.mobilePhone || "",
       })
     })
 }
@@ -201,7 +201,7 @@ function addOrderRequest() {
     mobile: shippingInfo.isStore ? shippingInfo.mobilePhone : "",
     customShareCode: checkoutData.customShareCode || "",
     paymentId: checkoutData.paymentId,
-    clientSessionId: 0,
+    clientSessionId: "",
     remark
   }
   this.showLoading();

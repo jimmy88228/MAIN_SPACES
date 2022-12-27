@@ -37,8 +37,20 @@ Page(App.BP({
         App.SMH.showToast({title: err})
       })
   },
-  handleImageSwiperTap() {
-    
+  handleSwpierItemTap(e) {
+    const goodsGallery = this.data.goods_gallery || [];
+    let src = this.getDataset(e, "src");
+    WxApi.previewImage({
+      urls: goodsGallery.map(item => item.goods_img),
+      current: src
+    })
+  },
+  handleShareBtnTap() {
+    this.sharePop = this.sharePop || this.selectComponent("#share-pop");
+    this.sharePop.showModal()
+      .then(selectedItem => {
+        console.log("selectedItem", selectedItem)
+      })
   },
   navigateF(e) {
     const dataset = e.currentTarget.dataset || {};
@@ -101,8 +113,9 @@ function setCountDown() {
     start_time,
     end_time,
     date: server_time,
-  } = this.data.activity_info,
-    targetDate = new Date(status == 1 ? end_time : start_time);
+  } = this.data.activity_info;
+  start_time = start_time.replace(/-/g, '/'), end_time = end_time.replace(/-/g, '/'), server_time = server_time.replace(/-/g, '/'); // 兼容ios
+  let targetDate = new Date(status == 1 ? end_time : start_time);
   if (!this.countDown) {
     this.countDown = new CountDown(new Date(server_time) || new Date());
   }

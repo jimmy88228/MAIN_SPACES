@@ -62,19 +62,18 @@ function setCountDown() {
     start_time,
     end_time,
     date: server_time,
-  } = this.data.activityInfo,
-    targetDate = new Date(status == 1 ? end_time : start_time);
+  } = this.data.activityInfo;
+  start_time = start_time.replace(/-/g, '/'), end_time = end_time.replace(/-/g, '/'), server_time = server_time.replace(/-/g, '/'); // 兼容ios
+  let targetDate = new Date(status == 1 ? end_time : start_time);
   if (!this.countDown) {
     this.countDown = new CountDown(new Date(server_time) || new Date());
   }
-  console.log("targetDate", targetDate)
   this.countDown.setTarget(targetDate);
   if (!this.countDown.isRunning) {
     this.countDown.start(e => {
       if (e.value <= 0) {
         stopCountDown.call(this);
       } else {
-        console.log(e.value)
         let days = parseInt(e.value / (1000 * 60 * 60 * 24));
         let hours = parseInt(days * 24 + (e.value % (24 * 3600 * 1000)) / (3600 * 1000));
         let minutes = parseInt((e.value % (3600 * 1000)) / (60 * 1000));

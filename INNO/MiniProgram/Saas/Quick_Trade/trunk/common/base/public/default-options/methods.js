@@ -37,5 +37,13 @@ export default {
         }
       })
     } 
+  },
+  tabBarToggle(show = undefined) {
+    let pages = getCurrentPages() || [],
+      curPage = pages[pages.length - 1],
+      tabBar = curPage.getTabBar && curPage.getTabBar() || null;
+    if (tabBar && typeof tabBar.tabBarToggle === "function") {
+      tabBar.tabBarToggle(show);
+    }
   }
 }

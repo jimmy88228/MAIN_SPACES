@@ -13,8 +13,9 @@
   transform: rotate(-135deg);
   width: 24rpx;
   height: 24rpx;
-  margin-left: 20rpx;
+  margin-left: 36rpx;
   color: var(--deep-text-color);
+  line-height: 36rpx;
 }
 .normal-nav{
   display: flex;
@@ -52,6 +53,7 @@
 .store-like-nav .store-name{
   color: #ffffff;
   font-size: 28rpx;
+  max-width: 360rpx;
 }
 .store-like-nav .store-staff-name{
   color: #9D1628;
@@ -73,7 +75,7 @@
   align-items: center;
 }
 .order-nav .icon-arrow{
-  margin-right: 60rpx;
+  margin-right: 48rpx;
 }
 .order-nav .order-status{
   color: #ffffff;

@@ -59,6 +59,36 @@ EasyHttp.setRequestHandler(req => {
       return Promise.reject(err);
     });
   })
+    //session，token自动更新拦截器
+    .addInterceptor((req, proceed) => {
+      return proceed(req).then(resp => {
+          let data = resp;
+          // let other = req.other;
+          if(data.code == 1001){//token失效
+            console.log('token失效')
+            LM.pastLogout();
+            return LM.loginAsync(false).then(()=>{
+              if (LM.isLogin && req.headers["userToken"] != LM.userToken){
+                req.headers["userToken"] = LM.userToken;
+                console.log("重新登录成功, 触发重发");
+                return proceed(req); //重发
+              }
+              return Promise.reject({ code: 1001, msg: "登录授权已过期，请刷新重试", tag: LOG_TAG });
+            })
+          } else if(data.code == 1002){ //未注册
+            
+          } else if(data.code == 10000){ // WxSessionKey已过期
+            LM.createWxSessionId(false).then(() => {
+              SMH.showToast({
+                title: "状态已过期，请重新授权",
+                duration: 3000,
+              })
+            });
+            return Promise.reject({ ...data, tag: LOG_TAG });
+          }
+          return data;
+      });
+  })
   //数据预处理拦截器
   .addInterceptor((req, proceed) => {
     console.log('reqreq',LM.userToken,req)

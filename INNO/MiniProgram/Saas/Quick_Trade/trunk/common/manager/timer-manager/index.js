@@ -107,6 +107,7 @@ export default Timer;
 export class CountDown {
     constructor(rightTime, initTime = new Date()) {
         if (rightTime && initTime) {
+          console.log("rightTime", rightTime, "initTime", initTime)
             this._dt = rightTime.getTime() - initTime.getTime();
         } else {
             this._dt = 0;

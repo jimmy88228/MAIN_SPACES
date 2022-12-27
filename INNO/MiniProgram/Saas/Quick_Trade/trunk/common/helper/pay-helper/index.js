@@ -27,7 +27,11 @@ class payManager {
       isNeedUser
     }).then(e => {
       console.log('getPaymentInfoHandle then', e, checkMod)
-      return Fnc.requestPayment(e);
+      if (e.code == 1) {
+        return Fnc.requestPayment(e);
+      } else {
+        return Promise.reject(e && e.msg || "支付失败")
+      }
     })
   }
   getUnifiedorderByOrderId(params = {}) {

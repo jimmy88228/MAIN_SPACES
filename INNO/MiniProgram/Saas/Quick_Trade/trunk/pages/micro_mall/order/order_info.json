@@ -3,6 +3,8 @@
   "navigationBarTitleText": "订单详情",
   "usingComponents": {
     "custom-nav": "/components/common/view/custom-nav/index",
-    "change-order-status-pop": "./modules/change-order-status-pop/index"
+    "change-order-status-pop": "./modules/change-order-status-pop/index",
+    "transition": "/components/common/basic/transition/index",
+    "pay-qrcode": "./modules/pay-qrcode/index"
   }
 }

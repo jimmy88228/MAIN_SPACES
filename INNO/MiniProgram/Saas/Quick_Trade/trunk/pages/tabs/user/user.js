@@ -47,10 +47,10 @@ Page(App.BP({
     })
   },
   checkIdentity(){
-    return App.LM.checkIfStaff().then(res=>{
-      let staffInfo = res || {};
-      this.setUserData({isStaff:staffInfo.isStaffDstbData || false});
-      console.log('isStaff',this.data.userData.isStaff)
+    return App.LM.checkIfStore().then(res=>{
+      let storeStaffInfo = res || {};
+      this.setUserData({isStaff: !!storeStaffInfo.staff_id || false});
+      console.log('storeStaffInfo',storeStaffInfo)
     })
   },
   clickcallback(){

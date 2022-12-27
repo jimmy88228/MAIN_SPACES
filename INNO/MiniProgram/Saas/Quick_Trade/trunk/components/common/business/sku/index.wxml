@@ -5,7 +5,7 @@
         <view class="sku-type-item" wx:for="{{skuList}}" wx:for-item="skuType" wx:for-index="typeIndex" wx:key="index">
           <view class="sku-type-header">{{skuType.cat_name}}</view>
           <view class="sku-list">
-            <block wx:for="{{skuType.SpecInfoList}}" wx:for-item="skuItem" wx:key="index">
+            <block wx:for="{{skuType.specinfo_list}}" wx:for-item="skuItem" wx:key="index">
               <view 
                 class="sku-item {{availablePrimeRef[(valueInLabel[skuItem.spec_id])] ? '': 'disabled'}} {{selectedRef[skuItem.spec_id] ? 'selected' : ''}}" 
                 data-spec-item="{{skuItem}}"

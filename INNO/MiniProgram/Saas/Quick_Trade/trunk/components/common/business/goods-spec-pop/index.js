@@ -72,7 +72,12 @@ Component(App.BC({
       if (this.data.goodsId) WxApi.navigateTo({url: `/pages/main/goods/index?goods_id=${this.data.goodsId}`})
     },
     toggle() {
-      this.setData({show: !this.data.show})
+      let show = this.data.show;
+      this.tabBarToggle(show);
+      WxApi.nextTick(() => {
+        this.setData({show: !show})
+      })
     },
+    noFn() {}
   }
 }))

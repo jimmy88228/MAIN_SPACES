@@ -15,12 +15,12 @@ const CHANGE_ORDER_STATUS_REF = {
     title: "待发货",
     value: 0
   }, // 改成0 就是待发货
-  "待提货": {
+  "待取货": {
     title: "已自提",
     value: 2
   }, // 改成2 就是已自提
-  "已完成": {
-    title: "待提货",
+  "已自提": {
+    title: "待取货",
     value: 0
   }, // 已提货 改成0 待提货
 }
@@ -38,7 +38,8 @@ Page(App.BP({
       hour: 0,
       min: 0,
       sec: 0
-    }
+    },
+    foldBtnActive: false, // 是否打开折叠的按钮组
   },
   onLoad(query) {
     this.pageQuery = query;
@@ -122,6 +123,35 @@ Page(App.BP({
       .then(res => {
         getOrderPayStatus.call(this)
       })
+      .catch(err => {
+        console.log("toPay err", err);
+        App.SMH.showToast({title: err && err.msg || err || "支付失败"});
+      })
+  },
+  toPayByQrCode(){
+    return PayH.unifiedCloudShopOrderByCode("order", this.orderId)
+      .then(code_url => {
+        this.payQrCode = this.payQrCode || this.selectComponent("#pay-qrcode");
+        return this.payQrCode.initData({content: code_url, afterDismiss: () => {this.stopGetOrderPayStatus = true}});
+      })
+      .then(getOrderPayStatus.bind(this))
+      .catch(err => {
+        console.log("toPayByQrCode err", err);
+        App.SMH.showToast({title: err && err.msg || err || "支付失败"});
+      })
+  },
+  handleMoreBtnTap() {
+    this.setData({foldBtnActive: !this.data.foldBtnActive})
+  },
+  onShareAppMessage() {
+    let orderSn = this.pageQuery.order_sn;
+    let orderId = this.pageQuery.order_id;
+    let title = '帮我付款才是真友谊';
+    console.log('分享', orderId, 'this:', this);
+    return {
+      path: `pages/micro_mall/order/order_info?order_sn=${orderSn}&order_id=${orderId}`,
+      title: title,
+    };
   },
   backToHome() {
     WxApi.reLaunch({url: "/pages/tabs/index/index"})
@@ -130,6 +160,7 @@ Page(App.BP({
 
 function getOrderInfo() {
   let orderId = this.orderId || 0;
+  let staffType = this.pageQuery.staff_type || 0;
   if (!orderId) {
     App.SMH.showToast({
       title: "订单Id不存在"
@@ -139,7 +170,8 @@ function getOrderInfo() {
   this.showLoading();
   return App.Http.QT_BuyApi.getOrderDetail({
       params: {
-        orderId
+        orderId,
+        staffType
       }
     })
     .then(res => {
@@ -296,11 +328,18 @@ function updateBtnContainer(){
       "name":"返回首页",
       "status": !(menuInfo.needPay)
     },
+    {
+      "key":'pay_qrcode',
+      "tap":'toPayByQrCode',
+      "name":"代付码",
+      "status": (menuInfo.canQrcodePay) && orderInfo.orderStatus == '待付款'
+    },
     // {
-    //   "key":'pay_qrcode',
-    //   "tap":'toPayByQrCode',
-    //   "name":"代付码",
-    //   "status": (menuInfo.canQrcodePay) && orderInfo.orderStatus == '待付款'
+    //   "key":'pay_for',
+    //   "tap":'',
+    //   "openType":"share",
+    //   "name":"代付",
+    //   "status": menuInfo.canSharePay == 1
     // },
     // {
     //   "key":'delay_receive',
@@ -347,6 +386,7 @@ function getOrderPayStatus() {
   .then(e => {
     if (e.code == "1") {
       if (e.data == 1) {
+        this.payQrCode && this.payQrCode.dismiss();
         getOrderInfo.call(this);
       } else if (e.data == 0) {
         if (this.stopGetOrderPayStatus){

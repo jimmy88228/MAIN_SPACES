@@ -162,6 +162,7 @@ button.order-search-btn.active{
 .order-item-store-address{
   font-size: 22rpx;
   color: #171717;
+  max-width: 400rpx;
 }
 .order-item-f-right,
 .order-item-total-price{

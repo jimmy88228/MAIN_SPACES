@@ -137,11 +137,24 @@
   </view>
 
   <view class="order-info-footer">
-    <view class="order-info-f-left"></view>
+    <view class="order-info-f-left">
+      <view class="order-info-f-more-btn-con" hover-class="active" wx:if="{{foldBtnArr && foldBtnArr.length}}" catchtap="handleMoreBtnTap">
+        <view class="iconfont icon-list oif-more-icon"></view>
+        <button class="oif-more-btn">更多</button>
+      </view>
+      <transition show="{{foldBtnActive}}"> 
+        <view class="fold_fix_bg" bindtap="handleMoreBtnTap" data-type="fold_btn_toggle"></view>
+        <view class="oif-fold-btn-list">
+          <block wx:for="{{foldBtnArr}}" wx:key="key">
+            <button class="oif-fold-btn {{item.className}}" open-type="{{item.openType}}" hover-class="active" wx:if="{{item.status}}" bindtap="{{item.tap}}">{{item.name}}</button>
+          </block>
+        </view>
+      </transition>
+    </view>
     <view class="order-info-f-right">
       <view class="oifr-btn-group">
         <block wx:for="{{unfoldBtnArr}}" wx:key="key">
-          <button class="oifr-btn {{item.className}}" hover-class="active" wx:if="{{item.status}}" bindtap="{{item.tap}}">{{item.name}}</button>
+          <button class="oifr-btn {{item.className}}" hover-class="active" wx:if="{{item.status}}" open-type="{{item.openType}}" bindtap="{{item.tap}}">{{item.name}}</button>
         </block>
       </view>
     </view>
@@ -149,3 +162,4 @@
 </view>
 
 <change-order-status-pop id="change-order-status-pop" bind:confirm="handleChangeOrderStatusConfirm" />
+<pay-qrcode id="pay-qrcode" />

@@ -11,7 +11,7 @@
         <view class="i-goods-right">
           <view class="i-goods-info">
             <view class="i-goods-title text-flow2">{{item.goods_name}}</view>
-            <view class="i-goods-cliff" wx:if="{{item.market_price != item.sale_price}}">
+            <view class="i-goods-cliff" wx:if="{{item.market_price > item.sale_price}}">
               <view class="iconfont icon-xiajiang cliff-icon"></view>
               <text>直降￥{{item.market_price - item.sale_price}}</text>
             </view>

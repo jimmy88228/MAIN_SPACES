@@ -59,6 +59,7 @@ Page(App.BP({
     orderTabList: JSON.parse(JSON.stringify(DEFAULT_ORDER_TAB_LIST)),
     activeTabIndex: 0, // 选中tab的index
     _searchStr: "", // 搜索关键字(临时存着，点了搜索才赋值给searchStr)
+    pullDownRefreshing: false, // 下拉刷新中
   },
   onLoad(query) {
     this.pageQuery = query;
@@ -107,10 +108,16 @@ Page(App.BP({
       [`orderTabList[${activeTabIndex}]params.pageIndex`]: orderTab.params.pageIndex + 1,
     }, loadOrderList.bind(this))
   },
+  handleRefresh() {
+    this.setData({pullDownRefreshing: true})
+    refreshCurrentOrderTab.call(this)
+      .then(() => {this.setData({pullDownRefreshing: false})})
+  },
   handleOrderItemTap(e) {
     let orderId = this.getDataset(e, "orderId");
+    let staffType = this.pageQuery.staff_type || 0
     WxApi.navigateTo({
-      url: `/pages/micro_mall/order/order_info?order_id=${orderId}`
+      url: `/pages/micro_mall/order/order_info?order_id=${orderId}&staff_type=${staffType}`
     })
   }
 }))
@@ -172,8 +179,12 @@ function loadOrderList() {
 function refreshCurrentOrderTab() {
   let activeTabIndex = this.data.activeTabIndex || 0;
   this.searchStr = "";
-  this.setData({
-    [`orderTabList[${activeTabIndex}]params.pageIndex`]: 1,
-    [`orderTabList[${activeTabIndex}].nomore`]: false,
-  }, loadOrderList.bind(this))
+  return new Promise(rs => {
+    this.setData({
+      [`orderTabList[${activeTabIndex}]params.pageIndex`]: 1,
+      [`orderTabList[${activeTabIndex}].nomore`]: false,
+    }, () => {
+      loadOrderList.call(this).finally(res => rs(res))
+    })
+  })
 }

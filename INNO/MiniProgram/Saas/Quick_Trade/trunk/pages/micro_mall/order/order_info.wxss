@@ -275,6 +275,74 @@ button.oics-btn.active{
   justify-content: space-between;
   padding: 20rpx 28rpx calc(20rpx + env(safe-area-inset-bottom)) 20rpx;
 }
+.order-info-f-more-btn-con{
+  width: 100rpx;
+  display: flex;
+  align-items: center;
+  transition: opacity 0.1s ease;
+  position: relative;
+}
+.order-info-f-more-btn-con.active{
+  opacity: 0.5;
+}
+.fold_fix_bg{
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 8;
+}
+.oif-more-icon{
+  font-size: 40rpx;
+  line-height: 40rpx;
+  color: #171717;
+}
+button.oif-more-btn{
+  width: 100%;
+}
+.oif-fold-btn-list{
+  position: absolute;
+  top: -20rpx;
+  left: 20rpx;
+  transform: translateY(-100%);
+  border-radius: 10rpx 10rpx 10rpx 0;
+  border-top: 6rpx solid #000;
+  border-left: 6rpx solid #000;
+  border-right: 6rpx solid transparent;
+  border-bottom: 6rpx solid transparent;
+  background-color: #000;
+  z-index: 11;
+}
+.oif-fold-btn-list::before{
+  position: absolute;
+  bottom: -15rpx;
+  left: -6rpx;
+  z-index: 1;
+  content: "";
+  display: block;
+  border-top: 6rpx solid #000;
+  border-left: 6rpx solid #000;
+  border-right: 6rpx solid transparent;
+  border-bottom: 6rpx solid transparent;
+}
+button.oif-fold-btn{
+  padding: 12rpx 18rpx;
+  line-height: 54rpx;
+  color: #ffffff;
+  font-size: 24rpx;
+  line-height: 36rpx;
+  min-width: 120rpx;
+  width: auto;
+  border-bottom: 1px solid #eeeeee;
+  transition: opacity 0.1s ease;
+}
+button.oif-fold-btn:last-of-type{
+  border-bottom: none;
+}
+button.oif-fold-btn.active{
+  opacity: 0.7;
+}
 .oifr-btn-group{
   display: flex;
   align-items: center;

@@ -1,0 +1,7 @@
+{
+  "component": true,
+  "usingComponents": {
+    "window": "/components/common/view/window/index",
+    "transition": "/components/common/basic/transition/index"
+  }
+}

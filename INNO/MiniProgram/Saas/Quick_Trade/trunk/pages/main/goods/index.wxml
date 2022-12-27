@@ -11,10 +11,9 @@
         interval="4000"
         duration="500"
         circular
-        catchtap="handleImageSwiperTap"
       >
         <block wx:for="{{goods_gallery}}" wx:key="id">
-          <swiper-item class="goods-images-swpier-item">
+          <swiper-item class="goods-images-swpier-item" catchtap="handleSwpierItemTap" data-src="{{item.goods_img}}" >
             <view class="g-i-s-i-image-con">
               <image class="g-i-s-i-image" src="{{item.goods_img}}" lazy-load  mode="aspectFit" />
             </view>
@@ -67,7 +66,7 @@
         <view class="g-i-b-right">
           <view class="g-i-b-btn-group">
             <view class="g-i-b-btn-item">
-              <button class="g-i-b-btn" open-type="share" >
+              <button class="g-i-b-btn" bindtap="handleShareBtnTap">
                 <view class="icon-share-con" hover-class="active">
                   <view class="iconfont icon-fenxiang share-icon"></view>
                 </view>
@@ -119,6 +118,6 @@
   </view>
 </view>
 
-<view class="index-goods-spec-com">
-  <goods-spec-pop id="goods-spec-pop" />
-</view>
+<goods-spec-pop id="goods-spec-pop" />
+<share-pop id="share-pop" />
+<poster-pop id="poster-pop" />

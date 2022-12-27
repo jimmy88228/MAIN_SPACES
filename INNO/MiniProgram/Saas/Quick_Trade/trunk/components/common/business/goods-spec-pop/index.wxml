@@ -1,6 +1,6 @@
 <window show="{{show}}" bindmasktap="toggle" name="slide-from-bottom">
   <transition show="{{show}}" name="slide-from-bottom" class="goods-spec-container" customStyle="width: 100%;height: 100%">
-    <view class="goods-spec-main">
+    <view class="goods-spec-main" catchtap="noFn">
       <view class="g-s-spec-detail">
         <view class="g-s-spec-image-con">
           <image class="g-s-spec-image" src="{{selectedProductInfo.goods_gallery && selectedProductInfo.goods_gallery[0].goods_img}}" bindtap="previewImage" data-src="{{selectedProductInfo.goods_gallery && selectedProductInfo.goods_gallery[0].goods_img}}" />
