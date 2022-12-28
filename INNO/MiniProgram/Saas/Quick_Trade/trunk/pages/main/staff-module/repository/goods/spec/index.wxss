@@ -42,10 +42,7 @@ page{
 }
 .spec-name{
     margin-right: 38rpx;
-} 
-.spec-name:last-of-type{
-    margin-right: 0;
-}
+}  
 .delete-box{
     width:40rpx;
     height:40rpx;
@@ -102,7 +99,10 @@ page{
 }
 .price-box{
     padding-right: 14rpx;
-    width: 140rpx; 
+    width: 33%; 
+} 
+.sn-box{
+    padding-right: 14rpx;
 }
 .price-title,.sn-title{
     color: #7f7f7f;

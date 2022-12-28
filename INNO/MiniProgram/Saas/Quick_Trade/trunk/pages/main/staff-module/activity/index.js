@@ -16,6 +16,11 @@ Page(App.BP({
     onLoad(){ 
         this.loadData();
     },
+    loadData(){
+        return this.getActivityNoCachDetail().then(()=>{
+            return this.activityGoodsInfo();
+        });
+    }, 
     checkSet(){
         if(this.data.inited){
             let curSetGoodsInfo = App.StorageH.get('curSetGoodsInfo') || {}; 
@@ -35,7 +40,7 @@ Page(App.BP({
                         // product_sn:item.product_sn
                     }
                 })
-                acGoodsInfo.goods_Infos = goodsList;
+                acGoodsInfo.goods_Infos = this.listConcat(goodsList);
                 this.setData({acGoodsInfo});
                 console.log('看看',acGoodsInfo);
                 App.StorageH.remove('curGetGoodsList')
@@ -44,7 +49,8 @@ Page(App.BP({
                 let goodsInfo = curSetGoodsInfo.goodsInfo||{};
                 let index = acGoodsInfo.goods_Infos.findIndex(item=>item.goods_id == goodsInfo.goods_id);
                 if(index>-1){
-                    goodsInfo.goods_img = goodsInfo.goodsImgs[0];
+                    goodsInfo.goods_img = goodsInfo.goodsImgs[0] || '';
+                    acGoodsInfo.goods_gallery = goodsInfo.goodsImgs;
                     delete goodsInfo.goodsImgs;
                     acGoodsInfo.goods_Infos[index] = goodsInfo
                     console.log('看看',index,goodsInfo,acGoodsInfo);
@@ -54,10 +60,11 @@ Page(App.BP({
             }
         }
     },
-    loadData(){
-        return this.getActivityNoCachDetail().then(()=>{
-            return this.activityGoodsInfo();
-        });
+    listConcat(list){
+        let acGoodsInfo = this.data.acGoodsInfo||{};
+        let goodsList = acGoodsInfo.goods_Infos||[];
+        let ids = goodsList.map(item=>item.goods_id);
+        return goodsList.concat(list.filter(item=>!ids.includes(item.goods_id)));
     },
     getActivityNoCachDetail(){ 
         return getActivityNoCachDetail().then(res=>{
@@ -81,11 +88,12 @@ Page(App.BP({
         })
     },
     activityGoodsUpdateOrInsert(){
-        let acGoodsInfo = this.data.acGoodsInfo||{};
+        if(!this.data.acInfo.id) return Promise.resolve({code:1});//创建活动后才能保存商品
+        let acGoodsInfo = JSON.parse(JSON.stringify(this.data.acGoodsInfo||{}));
+        let goods_Infos = acGoodsInfo.goods_Infos||[];
+        acGoodsInfo.goods_Infos=goods_Infos.map((item,index)=>({...item,sort:index}));
         return activityGoodsUpdateOrInsert({...acGoodsInfo,insertOrupdate:acGoodsInfo.insertOrupdate}).then(res=>{
-        // return activityGoodsUpdateOrInsert({...acGoodsInfo,insertOrupdate:acGoodsInfo.goods_Infos.length==0?1:acGoodsInfo.insertOrupdate}).then(res=>{
-            if(res.code==1){  
-            }
+            if(res.code==1){}
             return res
         })
     },
@@ -110,7 +118,7 @@ Page(App.BP({
     },
     save(){
         this.checkValid();
-        return Promise.all([this.setTime(),this.activityGoodsUpdateOrInsert(this.data.acGoodsInfo||{})]).then(res=>{
+        return Promise.all([this.setTime(),this.activityGoodsUpdateOrInsert()]).then(res=>{
             console.log('all',res);
             let title="保存成功",success=true;
             for(let i = 0,len=res.length;i<len;i++){
@@ -131,7 +139,7 @@ Page(App.BP({
         let title = "";
         if(!this.data.dateString){
             title = '请先设置活动结束时间'; 
-        } else if(this.data.acGoodsInfo.goods_Infos<=0){
+        } else if(this.data.acInfo.id && this.data.acGoodsInfo.goods_Infos<=0){
             title = '请先添加活动商品'; 
         }
         if(title){

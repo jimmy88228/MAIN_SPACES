@@ -390,10 +390,6 @@ export const QT_GoodsApiList = {
     u:"/api/Activity/GetActivityGoodsInfo",
     m:"post"
   },
-  activityProductUpdateOrInsert:{
-    u:"/api/Activity/ActivityProductUpdateOrInsert",
-    m:"post"
-  },
   getActivityGoodsInfo: "/api/Goods/GetActivityGoodsInfo",
   get_Sumary_GoodsDetailData: "/api/Goods/Get_Sumary_GoodsDetailData?goodsId={goodsId}",
   get_Sumary_GoodsProductInfo: "/api/Goods/Get_Sumary_GoodsProductInfo?goodsId={goodsId}&colorId={colorId}",
@@ -403,6 +399,15 @@ export const QT_GoodsApiList = {
     u:"/api/Activity/ActivityGoodsUpdateOrInsert",
     m:"post"
   },
+  activityProductUpdateOrInsert:{
+    u:"/api/Activity/ActivityProductUpdateOrInsert",
+    m:"post"
+  },
+  activityGoodsProductInfo:{
+    u:"/api/Activity/ActivityGoodsProductInfo",
+    m:"post"
+  }, 
+  getGoodsProduct: "/api/Goods/GetGoodsProduct",
 }
 
 //订单

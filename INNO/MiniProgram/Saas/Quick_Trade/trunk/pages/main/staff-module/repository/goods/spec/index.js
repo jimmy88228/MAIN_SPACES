@@ -2,17 +2,130 @@
 const App = getApp();
 Page(App.BP({   
     data: {
-        specInfo:{
+        specInfo:{ //暂时没接口，先用测试数据
             "size":{
                 name:"规格",
-                list:[{name:"大",id:1},{name:"中",id:2}]
+                list:[{name:"大",id:1}]
             },
             "color":{
                 name:"颜色",
-                list:[{name:"红",id:3},{name:"黑",id:4}]
+                list:[{name:"红",id:3}]
             }
         },
-        curSel:"size"
+        detail:{},
+        productInfo:{},
+        curSel:"size",
+        
     },
-    
+    onLoad(options){
+        this.options = options;
+        this.setData({options})
+        this.id = this.options.id && this.options.id.split(',') || [];
+        // this.getGoodsProduct();
+        this.activityGoodsProductInfo();
+    },
+    checkOptions(data){
+        let productInfo = data||this.data.productInfo||{}; 
+        let {market_price,sale_price,product_sn,goods_number} = this.options;
+        console.log('market_price,sale_price,product_sn,goods_number',market_price,sale_price,product_sn,goods_number)
+        for(let key in productInfo){
+            let item = productInfo[key]||{};
+            if(market_price || market_price == 0){
+                item.market_price = market_price
+            }
+            if(sale_price || sale_price == 0){
+                item.sale_price = sale_price
+            }
+            if(product_sn){
+                item.product_sn = product_sn
+            }
+            if(goods_number || goods_number == 0){
+                item.goods_number = goods_number;
+            } 
+        }
+        console.log('productInfo',productInfo)
+        this.setData({productInfo});
+    },
+    getGoodsProduct(){
+        return getGoodsProduct()
+    },
+    activityGoodsProductInfo(){
+        if(this.id.length<=0){this.checkOptions(); return Promise.reject();};
+        let params = {
+            id:this.id.map(item=>parseInt(item)),
+            activityId:this.options.activityId
+        }
+        return activityGoodsProductInfo(params).then(res=>{
+            if(res.code==1){
+                let data = res.data||{};
+                let productEntities = data.productEntities||[];
+                let productInfo = {};
+                productEntities.forEach(item=>{
+                    productInfo[item.product_id] = item;
+                });
+                console.log('productInfo',productInfo);
+                this.checkOptions(productInfo);
+            }
+        })
+    },
+    onSelect(e){
+        let curSel = this.getDataset(e,'index');
+        console.log(e,curSel)
+        this.setData({curSel})
+    },
+    deleteSpec(e){
+        let index = this.getDataset(e,'index');
+        let specInfo = this.data.specInfo||{},curSel = this.data.curSel;
+        if(index==-1){
+            delete specInfo[curSel]
+        }else{
+            specInfo[curSel] && specInfo[curSel].list && specInfo[curSel].list.splice(index,1);
+        }
+        console.log('index',index,specInfo)
+        this.setData({specInfo})
+    },
+    onInput(e){
+        let key = this.getDataset(e,'key');
+        let id = this.getDataset(e,'id');
+        let value = e.detail && e.detail.value; 
+        this.setData({
+            [`productInfo.${id}.${key}`]:value
+        })
+    },
+    save(){
+        return this.activityProductUpdateOrInsert();
+    },
+    activityProductUpdateOrInsert(){
+        let productInfo = this.data.productInfo || {};
+        for(let key in productInfo){
+            let item = productInfo[key];
+            let params = {
+                ...item
+            }
+            console.log('params',params)
+            return activityProductUpdateOrInsert(params).then(res=>{
+                let title = "保存成功";
+                if(res.code==1){}else{
+                    title = res.msg||"保存失败";
+                } 
+                App.SMH.showToast({title})
+                return res;
+            })
+        }
+    },
 }))
+function getGoodsProduct(){
+    return App.Http.QT_GoodsApi.getGoodsProduct({
+        data: {},
+    })
+}
+function activityGoodsProductInfo(params){
+    return App.Http.QT_GoodsApi.activityGoodsProductInfo({
+        data: params,
+    })
+}
+function activityProductUpdateOrInsert(params){
+    return App.Http.QT_GoodsApi.activityProductUpdateOrInsert({
+        data: params,
+    })
+}

@@ -6,23 +6,23 @@
             <view class="op-text" bindtap="jumpAction" data-url="/pages/main/staff-module/repository/goods/spec/edit/index">管理</view>
         </view>
         <view class="flex">
-            <block wx:for="{{specInfo}}" wx:key="index">
-                <view class="cir-sel flex-c-c {{true?'active':''}}"></view>
+            <view wx:for="{{specInfo}}" wx:key="index" class="flex-c-c" bindtap="onSelect" data-index="{{index}}">
+                <view class="cir-sel flex-c-c {{curSel==index?'active':''}}"></view>
                 <view class="spec-name">{{item.name}}</view>
-            </block> 
+            </view> 
         </view>
     </view>
     <view class="box">
         <view class="title-box flex-b-c">
             <view class="bold">{{specInfo[curSel].name}}</view>
-            <view class="delete-box flex-c-c">
+            <view class="delete-box flex-c-c" bindtap="deleteSpec" data-index="-1">
                 <view class="delete"></view>
             </view>
         </view>
         <block wx:for="{{specInfo[curSel].list}}" wx:key="id">
             <view class="spec-box flex-c-c">
                 <view>{{item.name}}</view>
-                <view class="delete-box flex-c-c">
+                <view class="delete-box flex-c-c" bindtap="deleteSpec" data-index="{{index}}">
                     <view class="delete"></view>
                 </view>
             </view> 
@@ -35,19 +35,29 @@
     <block wx:for="{{specInfo[curSel].list}}" wx:key="id">
         <view class="box">
             <view class="spec-title">{{specInfo[curSel].name}}/{{item.name}}</view>
-            <view class="flex">
-                <view class="price-box f-s-0">
-                    <view class="price-title">原价</view>
-                    <input type="number"  class="goods-input" placeholder-class="placehold-text" placeholder="请输入" bindinput="onInput" data-key="price" /> 
-                </view> 
+            <view class="flex {{options.fromType=='activity'?'flex-wrap':''}}">
+                <block>
+                    <view class="price-box f-s-0" wx:if="{{options.fromType=='activity'}}">
+                        <view class="price-title">秒杀价</view>
+                        <input type="number" value="{{productInfo[item.id].sale_price}}" class="goods-input" placeholder-class="placehold-text" placeholder="请输入" bindinput="onInput" data-key="sale_price" data-id="{{item.id}}"/> 
+                    </view> 
+                    <view class="price-box f-s-0">
+                        <view class="price-title">原价</view>
+                        <input type="number" value="{{productInfo[item.id].market_price}}" class="goods-input" placeholder-class="placehold-text" placeholder="请输入" bindinput="onInput" data-key="market_price" data-id="{{item.id}}"/> 
+                    </view> 
+                    <view class="price-box f-s-0" wx:if="{{options.fromType=='activity'}}">
+                        <view class="price-title">库存</view>
+                        <input type="number" value="{{productInfo[item.id].goods_number}}" class="goods-input" placeholder-class="placehold-text" placeholder="请输入" bindinput="onInput" data-key="goods_number" data-id="{{item.id}}" /> 
+                    </view> 
+                </block>
                 <view class="sn-box flex-1">
                     <view class="sn-title">商品编码</view>
-                    <input class="goods-input" placeholder-class="placehold-text" placeholder="输入商品编码（非必填）" bindinput="onInput" data-key="sn" /> 
+                    <input class="goods-input"  value="{{productInfo[item.id].product_sn}}" placeholder-class="placehold-text" placeholder="输入商品编码（非必填）" bindinput="onInput" data-key="product_sn" data-id="{{item.id}}" /> 
                 </view> 
             </view>
         </view>
     </block>
     <view class="footer flex-e-c">
-        <view class="save-btn flex-c-c">完成</view>
+        <view class="save-btn flex-c-c" bindtap="save">完成</view>
     </view>
 </view>

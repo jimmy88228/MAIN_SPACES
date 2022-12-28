@@ -32,7 +32,7 @@
                 {
                     "name": "pages/tabs/user/user",
                     "pathName": "pages/tabs/user/user",
-                    "query": "",
+                    "query": "storeCode=NSWD&staffCode=jimmy",
                     "scene": null
                 },
                 {
@@ -81,6 +81,12 @@
                     "name": "pages/main/staff-module/activity/index",
                     "pathName": "pages/main/staff-module/activity/index",
                     "query": "",
+                    "scene": null
+                },
+                {
+                    "name": "pages/main/staff-module/repository/goods/spec/index",
+                    "pathName": "pages/main/staff-module/repository/goods/spec/index",
+                    "query": "id=1&activityId=11&fromType=activity&market_price=441&sale_price=0.01&product_sn=123123&goods_number=1111",
                     "scene": null
                 }
             ]

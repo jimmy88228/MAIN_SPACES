@@ -39,6 +39,10 @@ Component(App.BC({
             this.jumpAction(`/pages/main/staff-module/repository/goods/index?goodsInfo=${transData}&activity_id=${this.properties.activity_id}&isEdit=1&fromType=activity`);
         },
         onImport(){
+            if(!this.properties.activity_id){
+                App.SMH.showToast({title:"请先保存活动"})
+                return
+            }
             this.jumpAction(`/pages/main/staff-module/repository/index?fromType=activity&activity_id=${this.properties.activity_id||0}`);
         },
         sortTap(e){

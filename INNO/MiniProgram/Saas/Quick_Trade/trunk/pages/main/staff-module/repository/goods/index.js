@@ -3,15 +3,18 @@ import WxApi from "../../../../../common/utils/wxapi/index";
 const App = getApp();
 Page(App.BP({   
     data: {
-        goodsInfo:{},
+        goodsInfo:{
+            goodsImgs:[]
+        },
         isEdit:false,
     },
     onLoad(options){
         this.options = options;
-        let isEdit = options.isEdit==1,goodsInfo={};
+        let isEdit = options.isEdit==1,goodsInfo=this.data.goodsInfo;
         isEdit && (goodsInfo = JSON.parse(decodeURIComponent(options.goodsInfo||'{}')))
         this.setData({
             isEdit,
+            options,
             goodsInfo
         })
         console.log('goodsInfo',goodsInfo)
@@ -47,5 +50,17 @@ Page(App.BP({
         }else{
 
         }
+    },
+    delImg(e){
+        let index = this.getDataset(e,'index');
+        let goodsInfo = this.data.goodsInfo||{};
+        goodsInfo.goodsImgs.splice(index,1);
+        this.setData({goodsInfo})
+    },
+    jumpSpec(){
+        let goodsInfo = this.data.goodsInfo||{};
+        let options = this.options||{};
+        let url = `/pages/main/staff-module/repository/goods/spec/index?id=${goodsInfo.activity_product_id||''}&activityId=${options.activity_id||0}&fromType=${options.fromType||''}&market_price=${goodsInfo.market_price||0}&sale_price=${goodsInfo.sale_price||0}&product_sn=${goodsInfo.product_sn||''}&goods_number=${goodsInfo.goods_number||0}`;
+        this.jumpAction(url);
     },
 })) 

@@ -35,6 +35,9 @@ page{
     border-bottom: 1px solid #EFEFEF;
     flex-wrap: wrap;
 }
+.img-goods-box{
+    position: relative;
+}
 .img-goods{
     width: 152rpx;
     height: 152rpx; 
@@ -118,3 +121,28 @@ page{
     color: #fff;
     font-size: 30rpx;
 } 
+
+.delete-box{
+    width:40rpx;
+    height:40rpx;
+    position: absolute;
+    top: -15rpx;
+    right: -4rpx;
+    transform: rotate(-45deg);
+    z-index: 2;
+}
+.delete{
+    width: 24rpx;
+    height: 2rpx;
+    background-color: #000;
+}
+.delete::after{
+    content: "";
+    width: 2rpx;
+    height: 24rpx;
+    background-color: #000;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%,-50%);
+}
