@@ -24,7 +24,8 @@ Page(App.BP({
             console.log('checkSet',curSetGoodsInfo,curGetGoodsList,curGetGoodsList.activity_id , curGetGoodsList.activity_id , acGoodsInfo.activity_id);
             if(curGetGoodsList.activity_id && (curGetGoodsList.activity_id == acGoodsInfo.activity_id)){
                 let goodsList = curGetGoodsList.goodsList||[];
-                goodsList = goodsList.map(item=>{
+                
+                goodsList = goodsList.filter(item=>item.isSelected).map(item=>{
                     return {
                         sale_price:item.market_price||0,
                         goods_number:item.goods_number||0,
@@ -108,24 +109,35 @@ Page(App.BP({
         this.setData({dateString})
     },
     save(){
-        if(!this.data.dateString){
-            App.SMH.showToast({title:"请先设置活动结束时间"});
-            return
-        }
+        this.checkValid();
         return Promise.all([this.setTime(),this.activityGoodsUpdateOrInsert(this.data.acGoodsInfo||{})]).then(res=>{
             console.log('all',res);
-            let title="保存成功";
+            let title="保存成功",success=true;
             for(let i = 0,len=res.length;i<len;i++){
                 let item = res[i]||{};
                 if(item.code!=1){
                     title = item.msg||"保存失败,请确认数据无误";
+                    success = false;
                     break;
                 }
             } 
-            return this.loadData().then(()=>{
+            !success && App.SMH.showToast({title});
+            return success && this.loadData().then(()=>{
                 App.SMH.showToast({title});
             })
         })
+    },
+    checkValid(){ 
+        let title = "";
+        if(!this.data.dateString){
+            title = '请先设置活动结束时间'; 
+        } else if(this.data.acGoodsInfo.goods_Infos<=0){
+            title = '请先添加活动商品'; 
+        }
+        if(title){
+            App.SMH.showToast({title});
+            throw title
+        }
     },
     onChangeList(e){
         let detail = e.detail||{};
