@@ -31,9 +31,11 @@ Component(App.BC({
       })
     },
     handlePurchaseTap(e) {
-      let goodsId = e.currentTarget.dataset.goodsId || 0;
+      let item = this.getDataset(e, "item");
+      let goodsId = item.goods_id || 0;
       getSumaryGoodsProductInfo.call(this, goodsId)
       .then(data => {
+        data.goodsImg = item.goods_img || "";
         data.goodsId = goodsId;
         data.activityId = this.activityId;
         this.goodsSpecPop = this.goodsSpecPop || this.selectComponent("#goods-spec-pop");

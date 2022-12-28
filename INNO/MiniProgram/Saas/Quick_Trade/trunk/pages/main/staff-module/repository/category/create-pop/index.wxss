@@ -1,0 +1,48 @@
+@import "/common/base/component/default-wxss/index.wxss";
+.cate-create-pop-container{
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 10020;
+  background-color: #F7F4F8;
+  border-radius: 20rpx;
+  width: 600rpx;
+}
+.cate-create-pop-main{
+  padding: 24rpx;
+}
+.cate-create-pop-header{
+  text-align: center;
+  padding: 20rpx;
+  line-height: 36rpx;
+  font-size: 28rpx;
+  position: relative;
+}
+.ccph-close{
+  position: absolute;
+  right: 32rpx;
+  top: 32rpx
+}
+.ccpm-input{
+  width: 100%;
+  height: 80rpx;
+  border: 1px solid #cccccc;
+  border-radius: 10rpx;
+  padding: 20rpx ;
+  box-sizing: border-box;
+}
+.cate-create-pop-footer{
+  height: 80rpx;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  padding: 12rpx;
+}
+button.ccpf-confirm-btn{
+  background-color: var(--main-color);
+  border-radius: 10rpx;
+  height: 100%;
+  width: 200rpx;
+  color: #ffffff;
+}

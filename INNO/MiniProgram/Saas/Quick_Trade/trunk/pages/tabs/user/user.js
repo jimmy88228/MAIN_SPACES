@@ -49,7 +49,7 @@ Page(App.BP({
   checkIdentity(){
     return App.LM.checkIfStore().then(res=>{
       let storeStaffInfo = res || {};
-      this.setUserData({isStaff: !!storeStaffInfo.staff_id || false});
+      this.setUserData({isStaff: !!storeStaffInfo.staff_id || false, staffType: storeStaffInfo.staff_type});
       console.log('storeStaffInfo',storeStaffInfo)
     })
   },

@@ -31,7 +31,7 @@
             <text class="i-c-d-pre">距结束</text>
             <text class="i-c-d-time">05:12:32</text>
           </view> -->
-            <button class="i-goods-purchase-btn" hover-class="active" catchtap="handlePurchaseTap" data-goods-id="{{item.goods_id}}">
+            <button class="i-goods-purchase-btn" hover-class="active" catchtap="handlePurchaseTap" data-item="{{item}}">
               抢购
               <!-- <btns bind:clickcallback="">抢购</btns> -->
             </button>

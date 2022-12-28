@@ -22,19 +22,19 @@
     <view class="address_list" >
       <view class="addr_item {{item.is_default == 1 ? 'selected' : ''}}" data-addr_id="{{item.address_id}}" data-is_default="{{item.is_default}}" bindtap="setDafaultAddr"  wx:for="{{addr_list}}" wx:key="index">
         <view class="item_info">
-          <text class="tit">收 件  人 :</text>
+          <text class="tit">收 件  人 ：</text>
           <text class="val">{{item.consignee}}</text>
         </view>
         <view class="item_info">
-          <text class="tit">所在地区:</text>
+          <text class="tit">所在地区：</text>
           <text class="val" data-province="{{item.province}}" data-district="{{item.district}}" data-city="{{item.city}}">{{item.province_str}}-{{item.city_str}}-{{item.district_str}}</text>
         </view>
         <view class="item_info">
-          <text class="tit">详细地址:</text>
+          <text class="tit">详细地址：</text>
           <text class="val">{{item.address}}</text>
         </view>
         <view class="item_info">
-          <text class="tit">手机号码:</text>
+          <text class="tit">手机号码：</text>
           <text class="val">{{item.mobile}}</text>
         </view>
 

@@ -12,7 +12,9 @@
         "pages/main/staff-module/repository/goods/spec/index",
         "pages/main/staff-module/repository/goods/detail/index",
         "pages/main/staff-module/repository/goods/spec/edit/index",
-        "pages/main/staff-module/repository/goods/spec/add/index"
+        "pages/main/staff-module/repository/goods/spec/add/index",
+        "pages/main/staff-module/repository/category/index",
+        "pages/main/staff-module/repository/category/detail/index"
     ],
     "subPackages": [
       {

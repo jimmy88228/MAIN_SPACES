@@ -32,6 +32,10 @@
 .cosc-prefix{
   font-size: 24rpx;
   margin-right: 16rpx;
+  flex-shrink: 0;
+}
+.cosc-input-container{
+  flex: 1;
 }
 .cosc-input{
   width: 100%;

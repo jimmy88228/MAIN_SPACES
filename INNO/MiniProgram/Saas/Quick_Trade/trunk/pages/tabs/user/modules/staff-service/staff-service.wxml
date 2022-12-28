@@ -4,12 +4,7 @@
       <view class="user-row-left">
         <view class="user-row-title">店员服务</view>
       </view>
-      <view class="user-row-right">
-        <view class="check-more">
-          <view class="check-more-text">查看全部</view>
-          <view class="icon-arrow"></view>
-        </view>
-      </view>
+      <view class="user-row-right"></view>
     </view>
     <view class="user-row-main">
       <view class="user-row-list"> 
@@ -18,6 +13,7 @@
             class="user-row-item"
             style="width: {{(100 / barList.length) + ''}}%;"
             catchtap="jump"
+            hidden="{{(item.state == 2 || item.state == 3) && userData.staffType != 1}}"
             data-item="{{item}}"
           >
             <view class="user-row-item-icon">

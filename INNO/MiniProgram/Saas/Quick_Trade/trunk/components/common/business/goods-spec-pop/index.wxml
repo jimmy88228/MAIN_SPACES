@@ -3,7 +3,7 @@
     <view class="goods-spec-main" catchtap="noFn">
       <view class="g-s-spec-detail">
         <view class="g-s-spec-image-con">
-          <image class="g-s-spec-image" src="{{selectedProductInfo.goods_gallery && selectedProductInfo.goods_gallery[0].goods_img}}" bindtap="previewImage" data-src="{{selectedProductInfo.goods_gallery && selectedProductInfo.goods_gallery[0].goods_img}}" />
+          <image class="g-s-spec-image" src="{{goodsImg}}" bindtap="previewImage" data-src="{{goodsImg}}" />
         </view>
         <view class="g-d-spec-info">
           <view class="g-d-s-i-price"><text class="gdsi-price-rmb">￥</text><text class="gdsi-price-text">{{selectedProductInfo.sale_price}}</text></view>

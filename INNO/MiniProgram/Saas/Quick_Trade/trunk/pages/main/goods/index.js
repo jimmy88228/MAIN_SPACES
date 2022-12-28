@@ -29,6 +29,7 @@ Page(App.BP({
   handlePurchaseBtnTap() {
     getSumaryGoodsProductInfo.call(this)
       .then(data => {
+        data.goodsImg = this.data.goods_info.goods_img || "";
         this.goodsSpecPop = this.goodsSpecPop || this.selectComponent("#goods-spec-pop");
         this.goodsSpecPop.showModal(data)
       })
@@ -49,8 +50,27 @@ Page(App.BP({
     this.sharePop = this.sharePop || this.selectComponent("#share-pop");
     this.sharePop.showModal()
       .then(selectedItem => {
-        console.log("selectedItem", selectedItem)
+        if (selectedItem.shareId === 2) { // 生成海报
+          let {goods_info, activity_info} = this.data;
+          let posterData = {
+            ...goods_info,
+            ...activity_info
+          }
+          this.posterPop = this.posterPop || this.selectComponent("#poster-pop");
+          this.posterPop.showModal({type: "goods", data: posterData});
+        }
       })
+  },
+  onShareAppMessage(e) {
+    let {goods_name} = this.data.goods_info;
+    let {goods_id, activity_id} = this.pageQuery || this.options;
+    let firstImage = this.data.goods_gallery[0] || {};
+    return {
+      title: goods_name,
+      imageUrl: firstImage.goods_img || "",
+      goods_id,
+      activity_id
+    }
   },
   navigateF(e) {
     const dataset = e.currentTarget.dataset || {};

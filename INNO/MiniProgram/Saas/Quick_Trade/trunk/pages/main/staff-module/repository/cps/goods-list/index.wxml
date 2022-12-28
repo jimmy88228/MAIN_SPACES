@@ -2,7 +2,7 @@
 <view class="goods-list flex flex-col">
     <view class="edit-box flex-b-c">
         <view class="add-btn flex-c-c" bindtap="jumpAction" data-url="/pages/main/staff-module/repository/goods/index">+新增商品</view>
-        <view class="edit-btn flex-c-c">编辑分类</view>
+        <view class="edit-btn flex-c-c" bindtap="jumpAction" data-url="/pages/main/staff-module/repository/category/index">编辑分类</view>
     </view>
     <scroll-view scroll-y class="scroll-view flex-1">
         <block wx:for="{{goodsList}}" wx:key="index">

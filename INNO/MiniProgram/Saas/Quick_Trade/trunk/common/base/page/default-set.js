@@ -6,6 +6,15 @@ function defaultSet(page) {
         return {
             onShareAppMessage : function (...args){
                 let shareData = page.onShareAppMessage.call(this, ...args)||{};
+                let title =  "", imageUrl = "";
+                if (shareData.title) {
+                  title = shareData.title;
+                  delete shareData.title;
+                }
+                if (shareData.imageUrl) {
+                  imageUrl = shareData.imageUrl;
+                  delete shareData.imageUrl;
+                }
                 if (LM.isLogin && LM.shareCode) {
                     shareData = {...shareData,fromUser:LM.shareCode};
                 }
@@ -21,7 +30,7 @@ function defaultSet(page) {
                 let path = (shareData.path||this.route) + '?' + Utils.getPageParamsStr(shareData);
                 shareData.path = path;
                 console.log('shareData',shareData)
-                return (shareData || {})
+                return ({...shareData, title, imageUrl} || {})
             }
         }
     }else{

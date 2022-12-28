@@ -1,1 +1,31 @@
 @import "/common/base/component/default-wxss/index.wxss";
+/* --status-bar-height: 20px;--nav-bar-height: 40px */
+.poster-container{
+  position: absolute;
+  top: calc(50% - var(--nav-bar-height));
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 10080;
+}
+.canvas-container{
+  width: 600rpx;
+  height: 600rpx;
+}
+.poster-canvas{
+  width: 100%;
+  height: 100%;
+}
+.poster-footer{
+  width: 100%;
+}
+button.poster-save-btn{
+  width: 100%;
+  height: 90rpx;
+  background-color: var(--main-color);
+  color: #ffffff;
+  border-radius: 0;
+  transition: opacity 0.1s ease;
+}
+button.poster-save-btn.active{
+  opacity: 0.95;
+}

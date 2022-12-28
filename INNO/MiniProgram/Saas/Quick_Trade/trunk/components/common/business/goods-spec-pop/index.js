@@ -9,6 +9,8 @@ Component(App.BC({
     }
   },
   data: {
+    goodsId: 0, // 商品id,
+    goodsImg: "", // 商品图片
     show: false,
     selectSkuFinished: false, // 是否完成选择sku
     selectedSku: [], //已选择的sku列表
@@ -17,12 +19,13 @@ Component(App.BC({
     shippingWay: 0, // 0快递配送、1门店自提
   },
   methods: {
-    showModal({skuList = [], productList = [], goodsId = 0}) {
+    showModal({skuList = [], productList = [], goodsId = 0, goodsImg = ""}) {
       this.initSkuCompnent({skuList, productList});
       this.setData({
         skuList,
         productList,
-        goodsId
+        goodsId,
+        goodsImg
       }, () => {
         this.toggle();
       })

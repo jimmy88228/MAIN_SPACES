@@ -15,7 +15,7 @@ Page(App.BP({
       paymentId: 0, // 支付方式ID
     },
 
-    storeStaffInfo: App.LM.storeInfo || {}, // 店员信息(如果该会员是店员才有, 默认{})
+    storeStaffInfo: {}, // 店员信息(如果该会员是店员才有, 默认{})
     valetInfo: {}, // 代客下单
 
     cartList: [], // 商品列表
@@ -25,7 +25,10 @@ Page(App.BP({
 
   onLoad(query) {
     this.pageQuery = query;
-    initCheckoutData.call(this)
+    this.setData({
+      storeStaffInfo: App.LM.storeInfo
+    });
+    initCheckoutData.call(this);
   },
 
   onShow() {

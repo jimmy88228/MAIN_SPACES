@@ -19,7 +19,7 @@ Component(App.BC({
       title:"活动管理",
       key:'activity',
       img:"http://devimgtest.innourl.com/SAAS_IMAGE/image/show/assets-icons-service28.png",
-      url:"/pages/main/staff-module/activity/index"
+      url:"/pages/main/staff-module/activity/index",
     },{
       state:3,
       title:"商品库",

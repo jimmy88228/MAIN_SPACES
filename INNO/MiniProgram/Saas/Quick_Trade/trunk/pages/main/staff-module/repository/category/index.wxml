@@ -1,0 +1,30 @@
+<!-- public 必须是第一个元素 -->
+<include src="/common/base/page/index.wxml" />
+
+<view class="goods-category-edit-page" bindtap="jumpAction" data-url="/pages/main/staff-module/repository/category/detail/index">
+  <scroll-view class="goods-category-edit-main" scroll-y >
+    <view class="gce-list">
+      <block wx:for="{{20}}" wx:key="index">
+        <view class="gce-item" hover-class="active">
+          <view class="gce-item-left">
+            <view class="gcei-name">
+              <text class="gcei-name-text">A类型</text>
+              <text class="gcei-name-quantity">（20个）</text>
+            </view>
+          </view>
+          <view class="gce-item-right">
+            <view class="icon-arrow gcei-arrow"></view>
+          </view>
+        </view>
+      </block>
+    </view>
+  </scroll-view>
+
+  <view class="goods-catefory-edit-footer">
+    <view class="gcef-btn-group">
+      <button class="gcef-btn" catchtap="handleAddCateBtnTap">添加商品分类</button>
+    </view>
+  </view>
+</view>
+
+<create-pop id="create-pop" />

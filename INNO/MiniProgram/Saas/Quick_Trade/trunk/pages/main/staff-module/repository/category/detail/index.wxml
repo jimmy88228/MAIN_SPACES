@@ -1,0 +1,28 @@
+<!-- public 必须是第一个元素 -->
+<include src="/common/base/page/index.wxml" />
+
+<view class="category-detail-page">
+  <view class="category-detail-main">
+    <scroll-view class="category-detail-list" scroll-y>
+      <block wx:for="{{20}}" wx:key="index">
+        <view class="cdl-item">
+          <view class="msg-box flex">
+            <image src="https://devimgtest.innourl.com/SAAS_IMAGE/images/INNO/goods/goods_thumb/20221209/20221209162022772_3815014.jpg" mode="aspectFit" class="goods-img f-s-0"></image>
+            <view class="content flex-1">
+              <view class="goods-name bold">Puma X Ami Paris联名款系列男子外套/夹克53599801</view>
+              <view class="price bold">18</view>
+              <view>
+                <span class="title">尺码</span>
+                <span class="value bold">34、36</span>
+              </view>
+              <view>
+                <span class="title">库存</span>
+                <span class="value bold">20</span>
+              </view>
+            </view>
+          </view>
+        </view>
+      </block>
+    </scroll-view>
+  </view>
+</view>
