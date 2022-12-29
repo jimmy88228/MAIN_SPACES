@@ -27,12 +27,12 @@ Page(App.BP({
             let curGetGoodsList = App.StorageH.get('curGetGoodsList') || {}; 
             let acGoodsInfo = this.data.acGoodsInfo||{};
             console.log('checkSet',curSetGoodsInfo,curGetGoodsList);
-            if(curGetGoodsList.activity_id && (curGetGoodsList.activity_id == acGoodsInfo.activity_id)){
+            if(curGetGoodsList.activity_id && (curGetGoodsList.activity_id == acGoodsInfo.activity_id)){ //商品导入
                 let goodsList = curGetGoodsList.goodsList||[]; 
                 goodsList = goodsList.filter(item=>item.isSelected).map(item=>{
                     return {
-                        sale_price:item.market_price||0,
-                        goods_number:item.goods_number||0,
+                        sale_price:0,
+                        goods_number:0,
                         goods_name:item.goods_name||"",
                         goods_img:item.goods_img||"",
                         goods_id:item.goods_id||0,
@@ -44,7 +44,7 @@ Page(App.BP({
                 console.log('看看',acGoodsInfo);
                 App.StorageH.remove('curGetGoodsList')
             }
-            if(curSetGoodsInfo.activity_id && (curSetGoodsInfo.activity_id == acGoodsInfo.activity_id)){
+            if(curSetGoodsInfo.activity_id && (curSetGoodsInfo.activity_id == acGoodsInfo.activity_id)){ //编辑、新增商品
                 let goodsInfo = curSetGoodsInfo.goodsInfo||{};
                 let index = acGoodsInfo.goods_Infos.findIndex(item=>item.goods_id == goodsInfo.goods_id);
                 console.log('看看',index)
@@ -74,8 +74,9 @@ Page(App.BP({
         return getActivityNoCachDetail().then(res=>{
             if(res.code==1){
                 let acInfo = res.data||{};
-                this.setData({acInfo,dateString:acInfo.status == 1 && acInfo.end_time || ""})
-                console.log('dateString',this.data.dateString)
+                acInfo.end_time_show = acInfo.status == 1 && acInfo.end_time || "";
+                acInfo.start_time_show = acInfo.status == 1 && acInfo.start_time || "";
+                this.setData({acInfo})
             }
             return res
         })
@@ -104,21 +105,23 @@ Page(App.BP({
     setTime(){ 
         let acInfo = this.data.acInfo||{};
         let storeInfo = App.StoreH.storeInfo||{};
-        let start_time = acInfo.id && acInfo.status == 1 && acInfo.start_time || this.data.today;
+        let start_time = acInfo.start_time_show||"";
+        let end_time = acInfo.end_time_show||"";
         let params = {
-            "ActityId": acInfo.id||0,
-            "start_time": start_time,
-            "end_time": this.data.dateString||"", 
-            "store_id": storeInfo.storeId||0,
+            ActityId: acInfo.id||0,
+            start_time,
+            end_time, 
+            store_id: storeInfo.storeId||0,
         }
         return activityUpdateOrInsert(params);
     },
     onTimeChange(e){
         console.log(e);
+        let key = this.getDataset(e,'key')||"";
         this.setData({setting:true})
-        let detail = e.detail||{};
+        let detail = e.detail||{}; 
         let dateString = detail.dateString||"";
-        this.setData({dateString})
+        this.setData({[`acInfo.${key}`]:dateString})
     },
     save(){
         this.checkValid();
@@ -140,11 +143,25 @@ Page(App.BP({
         })
     },
     checkValid(){ 
-        let title = "";
-        if(!this.data.dateString){
+        let title = "",acInfo = this.data.acInfo;
+        if(!acInfo.start_time_show){
+            title = '请先设置活动开始时间'; 
+        } else if(!acInfo.end_time_show){
             title = '请先设置活动结束时间'; 
-        } else if(this.data.acInfo.id && this.data.acGoodsInfo.goods_Infos<=0){
+        }else if (this.data.acInfo.id && this.data.acGoodsInfo.goods_Infos<=0){
             title = '请先添加活动商品'; 
+        }else if(this.data.acInfo.id){
+            let acGoodsInfo = this.data.acGoodsInfo||{};
+            let goods_Infos = acGoodsInfo.goods_Infos||[];
+            let index = -1;
+            let valid = goods_Infos.every((item,i)=>{
+                index = i;
+                console.log('every',i,item)
+                return item.sale_price>0;
+            });
+            if(!valid){
+                title = `请先完善第${index+1}个商品的sku信息`; 
+            }
         }
         if(title){
             App.SMH.showToast({title});

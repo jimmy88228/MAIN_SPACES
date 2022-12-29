@@ -3,22 +3,17 @@
     <view class="box">
         <view class="time-box flex-b-c">
             <view>开始时间</view>
-            <view class="bold">
-                <block wx:if="{{acInfo.id && acInfo.status == 1}}">{{acInfo.start_time}}</block>
-                <block wx:else>{{today}}</block>
-            </view> 
+            <time-picker bindchange="onTimeChange" data-key="start_time_show" value="{{acInfo.start_time_show}}" >
+                <view wx:if="{{(acInfo.start_time_show)}}" class="bold">{{acInfo.start_time_show}}</view>
+                <view wx:else class="setting">设置</view>
+            </time-picker> 
         </view>
         <view class="time-box flex-b-c">
             <view>结束时间</view> 
-            <time-picker bindchange="onTimeChange" value="{{dateString}}" >
-                <view wx:if="{{(dateString)}}" class="bold">{{dateString}}</view>
+            <time-picker bindchange="onTimeChange" data-key="end_time_show" value="{{acInfo.end_time_show}}" >
+                <view wx:if="{{(acInfo.end_time_show)}}" class="bold">{{acInfo.end_time_show}}</view>
                 <view wx:else class="setting">设置</view>
             </time-picker>
-            <!-- <view wx:if="{{(acInfo.id && acInfo.status == 1)}}" class="bold">{{acInfo.end_time}}</view>
-            <time-picker bindchange="onTimeChange" value="{{dateString}}" wx:else>
-                <view wx:if="{{(setting && dateString)}}" class="bold">{{dateString}}</view>
-                <view wx:else class="setting">设置</view>
-            </time-picker> -->
         </view>
     </view>
     <view class="goods-list flex-1">
