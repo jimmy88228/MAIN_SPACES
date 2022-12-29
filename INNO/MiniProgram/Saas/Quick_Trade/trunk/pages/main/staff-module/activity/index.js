@@ -26,10 +26,9 @@ Page(App.BP({
             let curSetGoodsInfo = App.StorageH.get('curSetGoodsInfo') || {}; 
             let curGetGoodsList = App.StorageH.get('curGetGoodsList') || {}; 
             let acGoodsInfo = this.data.acGoodsInfo||{};
-            console.log('checkSet',curSetGoodsInfo,curGetGoodsList,curGetGoodsList.activity_id , curGetGoodsList.activity_id , acGoodsInfo.activity_id);
+            console.log('checkSet',curSetGoodsInfo,curGetGoodsList);
             if(curGetGoodsList.activity_id && (curGetGoodsList.activity_id == acGoodsInfo.activity_id)){
-                let goodsList = curGetGoodsList.goodsList||[];
-                
+                let goodsList = curGetGoodsList.goodsList||[]; 
                 goodsList = goodsList.filter(item=>item.isSelected).map(item=>{
                     return {
                         sale_price:item.market_price||0,
@@ -48,11 +47,16 @@ Page(App.BP({
             if(curSetGoodsInfo.activity_id && (curSetGoodsInfo.activity_id == acGoodsInfo.activity_id)){
                 let goodsInfo = curSetGoodsInfo.goodsInfo||{};
                 let index = acGoodsInfo.goods_Infos.findIndex(item=>item.goods_id == goodsInfo.goods_id);
-                if(index>-1){
+                console.log('看看',index)
+                if(index>-1 || (!goodsInfo.goods_id)){
                     goodsInfo.goods_img = goodsInfo.goodsImgs[0] || '';
                     acGoodsInfo.goods_gallery = goodsInfo.goodsImgs;
                     delete goodsInfo.goodsImgs;
-                    acGoodsInfo.goods_Infos[index] = goodsInfo
+                    if(!goodsInfo.goods_id){
+                        acGoodsInfo.goods_Infos.push(goodsInfo);
+                    }else{
+                        acGoodsInfo.goods_Infos[index] = goodsInfo
+                    }
                     console.log('看看',index,goodsInfo,acGoodsInfo);
                     this.setData({acGoodsInfo})
                     App.StorageH.remove('curSetGoodsInfo')
