@@ -64,7 +64,7 @@ Page(App.BP({
   onLoad(query) {
     this.pageQuery = query;
     this.searchStr = ""; // 搜索关键字
-    switchActiveTab.call(this, query.orderType)
+    switchActiveTab.call(this, query.orderType || "all")
   },
   onShow() {
     loadOrderList.call(this)

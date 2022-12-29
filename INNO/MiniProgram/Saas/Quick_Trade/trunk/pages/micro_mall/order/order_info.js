@@ -143,16 +143,35 @@ Page(App.BP({
   handleMoreBtnTap() {
     this.setData({foldBtnActive: !this.data.foldBtnActive})
   },
-  onShareAppMessage() {
-    let orderSn = this.pageQuery.order_sn;
-    let orderId = this.pageQuery.order_id;
-    let title = '帮我付款才是真友谊';
-    console.log('分享', orderId, 'this:', this);
-    return {
-      path: `pages/micro_mall/order/order_info?order_sn=${orderSn}&order_id=${orderId}`,
-      title: title,
-    };
+  cancelOrder() {
+    WxApi.showModal({
+      title: "取消订单",
+      content: "确定要取消订单吗？",
+    })
+     .then(info => {
+       if (info.confirm) {
+         cancelOrder.call(this)
+          .then(() => {
+            App.SMH.showToast("取消订单成功");
+            getOrderInfo.call(this)
+          })
+          .catch(err => {
+            App.SMH.showToast({title: err});
+            console.log("cancelOrder err", err)
+          })
+       }
+     })
   },
+  // onShareAppMessage() {
+  //   let orderSn = this.pageQuery.order_sn;
+  //   let orderId = this.pageQuery.order_id;
+  //   let title = '帮我付款才是真友谊';
+  //   console.log('分享', orderId, 'this:', this);
+  //   return {
+  //     path: `pages/micro_mall/order/order_info?order_sn=${orderSn}&order_id=${orderId}`,
+  //     title: title,
+  //   };
+  // },
   backToHome() {
     WxApi.reLaunch({url: "/pages/tabs/index/index"})
   },
@@ -223,11 +242,25 @@ function updateOrderStatus(formData) {
     })
 }
 
+function cancelOrder() {
+  return App.Http.QT_BuyApi.cancelOrder({
+    data: {
+      orderId: this.orderId
+    }
+  })
+    .then(res => {
+      if (res.code == 1) {
+        return res.data
+      }
+      return Promise.reject(res.msg || "取消订单失败")
+    })
+}
+
 function checkIfNeedCallPayImmediately() {
-  let menuInfo = this.data.menuInfo || {};
+  let {menuInfo, valetInfo = {}} = this.data || {};
   if (menuInfo.needPay && this.first_time_topay > 0) {
     this.first_time_topay = 0;
-    this.toPay();
+    (valetInfo.isValetOrder == 1 && valetInfo.isOrderUser != 1 && menuInfo.canQrcodePay == 1) ? this.toPayByQrCode() : this.toPay();
   }
 }
 

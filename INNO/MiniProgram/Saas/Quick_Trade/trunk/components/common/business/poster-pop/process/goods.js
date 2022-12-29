@@ -10,16 +10,16 @@ export default goodsInfo => {
   end_time_str = dateUtils.format(dateUtils.parse(end_time), "yyyy/MM/dd"),
   activity_time_str = (start_time_str === end_time_str ? start_time_str : `${start_time_str}-${end_time_str}`); 
   return Promise.resolve([
-    {
-      type: Image,
-      url: "https://devimgtest.innourl.com/SAAS_IMAGE/images/INNO/index/gallery/20220815/20220815173859464_1140213.png",
-      x: 0,
-      y: 0,
-      mode: "scaleToFill",
-      width: (750),
-      height: (750),
-      zIndex: 0
-    },
+    // {
+    //   type: Image,
+    //   url: "https://devimgtest.innourl.com/SAAS_IMAGE/images/INNO/index/gallery/20220815/20220815173859464_1140213.png",
+    //   x: 0,
+    //   y: 0,
+    //   mode: "scaleToFill",
+    //   width: (750),
+    //   height: (750),
+    //   zIndex: 0
+    // },
     {
       type: Image,
       url: goods_img,

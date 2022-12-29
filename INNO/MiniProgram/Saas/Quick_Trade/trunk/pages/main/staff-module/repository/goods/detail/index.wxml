@@ -1,11 +1,32 @@
 <!--pages/main/staff-module/repository/goods/detail/index.wxml-->
-<view class="detail">
-    <view class="textarea-box">
-        <textarea placeholder="输入内容…" placeholder-class="placehold-text" maxlength="100" class="textarea" bindinput="onInput" value="{{inpuVal}}" />
-        <view class="add-btn flex-c-c">+ 添加图片</view>
+<include src="/common/base/page/index.wxml" />
+<view class="detail-page">
+  <scroll-view class="detail" scroll-y>
+    <view class="detail-display-container">
+      <view class="detail-display-list">
+        <block wx:for="{{nodeArray}}" wx:key="id">
+          <view class="detail-display-item">
+            <block wx:if="{{item.type === 'text'}}">
+              <view style="{{item.style}}">{{item.value}}</view>
+            </block>
+            <block wx:elif="{{item.type === 'image'}}">
+              <image style="{{item.style}}" src="{{item.src}}" />
+            </block>
+          </view>
+        </block>
+      </view>
     </view>
+    <view class="textarea-box">
+      <textarea placeholder="输入内容…" placeholder-class="placehold-text" auto-height maxlength="200" class="textarea" bindinput="onInput" value="{{inputVal}}">
+        <button class="text-save-btn" hover-class="active" bindtap="addHtml" data-type="text">暂存</button>
+      </textarea>
+      <view class="add-btn flex-c-c" hover-class="active" bindtap="addHtml" data-type="image">+ 添加图片</view>
+    </view>
+  </scroll-view>
+  <view class="footer flex-e-c">
+    <view class="preview-btn flex-c-c" hover-class="active" catchtap="handlePreviewBtnTap">预览</view>
+    <view class="save-btn flex-c-c" hover-class="active" catchtap="handleSaveBtnTap">保存</view>
+  </view>
 </view>
-<view class="footer flex-e-c">
-    <view class="preview-btn flex-c-c">预览</view>
-    <view class="save-btn flex-c-c">保存</view>
-</view>
+
+<preview-pop id="preview-pop" />

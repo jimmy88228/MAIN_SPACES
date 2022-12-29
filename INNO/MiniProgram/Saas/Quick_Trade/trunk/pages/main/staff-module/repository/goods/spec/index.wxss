@@ -20,6 +20,14 @@ page{
     font-size: 26rpx;  
     color: #42B0CA;
 }
+.spec-list-view{
+  width: 100%;
+  overflow-x: scroll;
+  flex-wrap: nowrap;
+}
+.spec-list-view view{
+  flex-shrink: 0;
+}
 .cir-sel{
     width: 36rpx;
     height: 36rpx;

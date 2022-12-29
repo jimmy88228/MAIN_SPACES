@@ -85,7 +85,7 @@
             <view class="delivery-address">{{shippingInfo.storeName}}</view>
             <view class="delivery-client-info">
               <view class="dci-staff">店员: {{shippingInfo.staffName}}</view>
-              <view class="dci-phone">电话: 020-1239868</view>
+              <view class="dci-phone">电话: {{shippingInfo.storePhone}}</view>
             </view>
           </view>
         </view>

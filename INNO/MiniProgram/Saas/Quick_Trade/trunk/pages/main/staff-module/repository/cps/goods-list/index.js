@@ -55,6 +55,38 @@ Component(App.BC({
         delete(e){
             let item = this.getDataset(e,'item')||{};
             this.triggerEvent('onDelete',{item});
+        },
+        editGoods(e){ 
+          let goodsInfo = this.getDataset(e,'item')||{}; 
+          goodsInfo.goodsImgs = goodsInfo.goods_img?[goodsInfo.goods_img]:[];
+          let transData = encodeURIComponent(JSON.stringify(goodsInfo));
+          this.jumpAction(`/pages/main/staff-module/repository/goods/index?goodsInfo=${transData}&activity_id=${this.properties.activity_id}&isEdit=1`);
+        },
+        copy(e) {
+          let goodsId = this.getDataset(e, "goodsId");
+          copyGoods(goodsId)
+            .then(() => {
+              this.triggerEvent('onRefresh');
+            })
+            .catch(err => {
+              console.log("copy err", err);
+              App.SMH.showToast({title: err});
+            })
         }
     }
 }))
+
+function copyGoods(goodsId = 0) {
+  if (!goodsId) return Promise.reject("商品id 不能为0");
+  return App.Http.QT_GoodsApi.copyGoods({
+    params: {
+      goodsId
+    }
+  })
+    .then(res => {
+      if (res.code == 1) {
+        return res.data
+      }
+      return Promise.reject(res.msg || "复制商品失败")
+    })
+}

@@ -11,12 +11,13 @@ Component(App.BC({
       value:"",
       observer(newVal) {
         if (newVal === "staff") {
-          let barList = this.data.barList || [];
+          let {barList = [], checkMoreItem = {}} = this.data || {};
           barList.forEach(item => {
             item.url += `&staff_type=1`
           })
           this.setData({
-            barList
+            barList,
+            'checkMoreItem.url': checkMoreItem.url + `?staff_type=1`
           })
         }
       }

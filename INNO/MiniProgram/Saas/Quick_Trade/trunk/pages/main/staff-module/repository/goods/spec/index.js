@@ -29,7 +29,8 @@ Page(App.BP({
         this.setData({options})
         this.ids = this.options.id && this.options.id.split(',') || [];
         // this.getGoodsProduct();
-        this.activityGoodsProductInfo();
+        this.getSpecCategoryInfo();
+        options.fromType === "activity" ? this.activityGoodsProductInfo(): undefined;
     },
     checkOptions(data){
         let productInfo = data||this.data.productInfo||{}; 
@@ -68,6 +69,16 @@ Page(App.BP({
     },
     getGoodsProduct(){
         return getGoodsProduct()
+    },
+    getSpecCategoryInfo() {
+      this.showLoading();
+      return getSpecCategoryInfo()
+        .then(data => {
+          this.setData({specInfo: handleSpecInfo(data)})
+        })
+        .finally(() => {
+          this.hideLoading();
+        })
     },
     activityGoodsProductInfo(){
         if(this.ids.length<=0){this.createDefault(); return Promise.reject();};
@@ -142,6 +153,31 @@ function getGoodsProduct(){
         data: {},
     })
 }
+
+function getSpecCategoryInfo() {
+  return App.Http.QT_GoodsApi.getSpecCategoryInfo()
+    .then(res => {
+      if (res.code == 1) {
+        return res.data || []
+      }
+      return Promise.reject(res.msg || "获取规格信息失败")
+    })
+}
+
+function handleSpecInfo(specList) {
+  let specInfo = {};
+  specList.forEach((spec, index) => {
+    specInfo[index === 1 ? "default" : spec.specCatName] = {
+      name: spec.specCatName,
+      list: (spec.SpecInfoList).map(item => ({
+        name: item.specName || "",
+        id: item.specId
+      }))
+    }
+  })
+  return specInfo
+}
+
 function activityGoodsProductInfo(params){
     return App.Http.QT_GoodsApi.activityGoodsProductInfo({
         data: params,

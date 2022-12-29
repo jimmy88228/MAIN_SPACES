@@ -25,8 +25,8 @@
                 <view class="btn-box flex-b-c">
                     <view wx:if="{{isSelect}}" class="cir-sel flex-c-c {{item.isSelected?'active':''}}" bindtap="onSelect" data-index="{{index}}" data-item="{{item}}"></view>
                     <view class="op-btn-box flex-c-c">
-                        <view class="op-btn" bindtap="jumpAction" data-url="pages/main/staff-module/repository/goods/index">编辑</view>
-                        <view class="op-btn">复制</view>
+                        <view class="op-btn" bindtap="editGoods" data-item="{{item}}">编辑</view>
+                        <view class="op-btn" bindtap="copy" data-goods-id="{{item.goods_id}}">复制</view>
                         <view class="op-btn" bindtap="delete" data-item="{{item}}">删除</view>
                     </view>
                 </view>

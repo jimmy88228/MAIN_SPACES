@@ -1,0 +1,27 @@
+@import "/common/base/component/default-wxss/index.wxss";
+.preview-container{
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 10080;
+  --row-background-color: #ffffff;
+  --horizental-padding: 40rpx;
+  --tint-text-color: #7f7f7f;
+  width: 100vw;
+  padding: 36rpx var(--horizental-padding) 24rpx var(--horizental-padding);
+}
+.preview-main{
+  background-color: var(--row-background-color);
+}
+.g-i-d-header{
+  margin-bottom: 20rpx;
+}
+.g-i-d-title{
+  font-size: 28rpx;
+  color: var(--tint-text-color);
+}
+.g-i-d-main{
+  width: 100%;
+  height: 80vh;
+}

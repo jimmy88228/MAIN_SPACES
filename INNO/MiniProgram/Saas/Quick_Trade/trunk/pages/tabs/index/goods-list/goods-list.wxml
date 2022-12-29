@@ -45,6 +45,10 @@
       </view> -->
     </view>
   </view>
+
+  <button class="i-goods-share-btn" hover-class="active" open-type="share" catchtap="noFn">
+    <view class="i-goods-share-icon icon-fenxiang iconfont"></view>
+  </button>
 </view>
 <view class="index-goods-spec-com">
   <goods-spec-pop id="goods-spec-pop" show-short-cut />

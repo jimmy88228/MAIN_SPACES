@@ -59,6 +59,9 @@ Page(App.BP({
         let goodsList = detail.goodsList||[];
         App.StorageH.set('curGetGoodsList',{activity_id:this.options.activity_id,goodsList}) || ""; 
         wx.navigateBack()
+    },
+    onRefresh() { // 刷新
+      this.loadData();
     }
 }))
 function getGoodsInfo(params){

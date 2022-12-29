@@ -1,0 +1,14 @@
+<include src="/common/base/component/index.wxml" />
+
+<window show="{{show}}" duration="{{windowDuration}}" bind:masktap="dismiss" class="preview-pop-window">
+  <view class="preview-container">
+    <view class="preview-main">
+      <scroll-view class="g-i-d-main" scroll-y >
+        <view class="g-i-d-header">
+          <view class="g-i-d-title">详情</view>
+        </view>
+        <rich-text nodes="{{htmlStr}}" />
+      </scroll-view>
+    </view>
+  </view>
+</window>

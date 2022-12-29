@@ -45,7 +45,8 @@ Component(App.BC({
         console.log("handlePurchaseBtnTap err", err);
         App.SMH.showToast({title: err})
       })
-    }
+    },
+    noFn() {}
   }
 }))
 

@@ -56,7 +56,7 @@ function createAndDrawPoster({type, data}) {
         canvas.create({
           query: '.poster-canvas', // 必传，canvas元素的查询条件
           rootWidth: 750, // 参考设备宽度 (即开发时UI设计稿的宽度，默认375，可改为750)
-          // bgColor: '#fff', // 背景色，默认透明
+          bgColor: '#fff', // 背景色，默认透明
           component: this, // 自定义组件内需要传 this
           radius: 0 // 海报图圆角，如果不需要可不填
         })

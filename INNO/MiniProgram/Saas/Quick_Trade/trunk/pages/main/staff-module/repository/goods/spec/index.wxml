@@ -1,11 +1,13 @@
 <!--pages/main/staff-module/repository/goods/spec/index.wxml-->
+<!-- public 必须是第一个元素 -->
+<include src="/common/base/page/index.wxml" />
 <view class="spec">
     <view class="box" wx:if="{{options.fromType != 'activity'}}">
         <view class="title-box flex-b-c">
             <view class="bold">设置常用规格</view>
             <view class="op-text" bindtap="jumpAction" data-url="/pages/main/staff-module/repository/goods/spec/edit/index">管理</view>
         </view>
-        <view class="flex">
+        <view class="flex spec-list-view">
             <view wx:for="{{specInfo}}" wx:key="index" class="flex-c-c" bindtap="onSelect" data-index="{{index}}">
                 <view class="cir-sel flex-c-c {{curSel==index?'active':''}}"></view>
                 <view class="spec-name">{{item.name}}</view>

@@ -2,6 +2,9 @@
 page{
   --background-color: #ffffff;
 }
+.i-goods-list-container{
+  position: relative;
+}
 .i-goods-item{
   padding: 28rpx;
   border-radius: 20rpx;
@@ -139,6 +142,25 @@ button.i-goods-purchase-btn{
   font-size: 20rpx;
   color: #D7B58B;
 }
-.i-g-purchase-tips .i-g-p-tip{
-  
+button.i-goods-share-btn{
+  position: fixed;
+  bottom: calc(var(--tab-bar-page-bottom) + 20rpx);
+  right: 20rpx;
+  z-index: 1;
+  width: 100rpx;
+  height: 100rpx;
+  background-color: rgba(0, 0, 0, 0.34);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: opacity 0.1s ease;
+}
+.i-goods-share-btn.active{
+  opacity: 0.5;
+}
+.i-goods-share-icon{
+  color: #ffffff;
+  font-size: 48rpx;
+  font-weight: normal;
 }

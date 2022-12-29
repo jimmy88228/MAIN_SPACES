@@ -408,8 +408,18 @@ export const QT_GoodsApiList = {
     m:"post"
   }, 
   getGoodsProduct: "/api/Goods/GetGoodsProduct",
+  updateGoodsDetails: {
+    u: "/api/Goods/UpdateGoodsDetails",
+    m: "post"
+  },
+  getGoodsDetails :"/api/Goods/GetGoodsDetails?goodsId={goodsId}",
   deleteGoodsInfo: "/api/Goods/DeleteGoodsInfo?goodsId={goodsId}",
-}
+  copyGoods: "/api/Goods/CopyGoods?goodsId={goodsId}",
+  getSpecCategoryInfo: "/api/Goods/GetSpecCategoryInfo", // 获取所有规格列表
+  createOrUpdateGoodsProduct: {
+    u: "/api/Goods/CreateOrUpdateGoodsProduct",
+    m: "post"
+  },}
 
 //订单
 export const QT_BuyApiList = {
