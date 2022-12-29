@@ -29,7 +29,7 @@
                         <span>元</span>
                     </view>
                 </view>
-                <view class="content flex-b-c" wx:if="{{fromType=='activity'}}">
+                <view class="content flex-b-c" wx:if="{{options.fromType=='activity'}}">
                     <view class="title">秒杀</view>
                     <view class="flex-c-c">
                         <input class="goods-input" placeholder-class="placehold-text" placeholder="请输入价格" bindinput="onInput" data-key="sale_price" value="{{goodsInfo.sale_price}}" />
@@ -42,7 +42,7 @@
                         <input class="goods-input" placeholder-class="placehold-text" placeholder="请输入款号" bindinput="onInput" data-key="product_sn" value="{{goodsInfo.product_sn}}" />
                     </view>
                 </view> 
-                <view class="content flex-b-c" wx:if="{{fromType=='activity'}}">
+                <view class="content flex-b-c" wx:if="{{options.fromType=='activity'}}">
                     <view class="title">库存</view>
                     <view class="flex-c-c">
                         <input class="goods-input" placeholder-class="placehold-text" placeholder="不限" bindinput="onInput" data-key="goods_number" value="{{goodsInfo.goods_number}}" />

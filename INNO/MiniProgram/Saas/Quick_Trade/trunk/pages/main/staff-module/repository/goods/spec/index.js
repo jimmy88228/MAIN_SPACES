@@ -28,9 +28,11 @@ Page(App.BP({
         this.options = options;
         this.setData({options})
         this.ids = this.options.id && this.options.id.split(',') || [];
-        // this.getGoodsProduct();
-        this.getSpecCategoryInfo();
-        options.fromType === "activity" ? this.activityGoodsProductInfo(): undefined;
+        if(this.options.fromType == 'activity'){
+            this.activityGoodsProductInfo()
+        }else{
+            this.getSpecCategoryInfo();
+        }
     },
     checkOptions(data){
         let productInfo = data||this.data.productInfo||{}; 
@@ -66,9 +68,6 @@ Page(App.BP({
             this.setData({specInfo})
         }
         this.checkOptions();
-    },
-    getGoodsProduct(){
-        return getGoodsProduct()
     },
     getSpecCategoryInfo() {
       this.showLoading();
@@ -148,11 +147,6 @@ Page(App.BP({
         }) 
     },
 }))
-function getGoodsProduct(){
-    return App.Http.QT_GoodsApi.getGoodsProduct({
-        data: {},
-    })
-}
 
 function getSpecCategoryInfo() {
   return App.Http.QT_GoodsApi.getSpecCategoryInfo()
