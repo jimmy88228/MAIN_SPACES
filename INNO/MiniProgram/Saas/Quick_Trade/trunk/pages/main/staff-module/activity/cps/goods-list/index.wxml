@@ -36,6 +36,6 @@
     </view>
     <view class="goods-btn-box flex-b-c">
         <view class="export-btn flex-c-c" bindtap="onImport">商品导入</view>
-        <view class="add-btn flex-c-c" bindtap="editGoods">新增商品</view>
+        <view class="add-btn flex-c-c" bindtap="addGoods">新增商品</view>
     </view>
 </scroll-view>

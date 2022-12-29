@@ -1,9 +1,9 @@
 // pages/main/staff-module/repository/goods/spec/index.js
 const App = getApp();
 Page(App.BP({   
-    data: {
-        specInfo:{ //暂时没接口，先用测试数据
-            "size":{
+    data: { 
+        specInfo:{ //暂时没接口，先用测试数据 
+            "default":{
                 name:"规格",
                 list:[{name:"大",id:1}]
             },
@@ -13,23 +13,31 @@ Page(App.BP({
             }
         },
         detail:{},
-        productInfo:{},
-        curSel:"size",
+        productInfo:{
+            'default':{ 
+                market_price:"",
+                sale_price:"",
+                product_sn:"",
+                goods_number:"",
+            }
+        },
+        curSel:"default",
         
     },
     onLoad(options){
         this.options = options;
         this.setData({options})
-        this.id = this.options.id && this.options.id.split(',') || [];
+        this.ids = this.options.id && this.options.id.split(',') || [];
         // this.getGoodsProduct();
         this.activityGoodsProductInfo();
     },
     checkOptions(data){
         let productInfo = data||this.data.productInfo||{}; 
         let {market_price,sale_price,product_sn,goods_number} = this.options;
-        console.log('market_price,sale_price,product_sn,goods_number',market_price,sale_price,product_sn,goods_number)
+        console.log('market_price,sale_price,product_sn,goods_number',market_price,sale_price,product_sn,goods_number,productInfo)
         for(let key in productInfo){
             let item = productInfo[key]||{};
+            console.log('进来',key,item)
             if(market_price || market_price == 0){
                 item.market_price = market_price
             }
@@ -46,24 +54,39 @@ Page(App.BP({
         console.log('productInfo',productInfo)
         this.setData({productInfo});
     },
+    createDefault(){
+        if(this.options.fromType == 'activity'){
+            let specInfo = { 
+                "default":{
+                    name:"",
+                    list:[{id:0}]
+                }
+            }
+            this.setData({specInfo})
+        }
+        this.checkOptions();
+    },
     getGoodsProduct(){
         return getGoodsProduct()
     },
     activityGoodsProductInfo(){
-        if(this.id.length<=0){this.checkOptions(); return Promise.reject();};
+        if(this.ids.length<=0){this.createDefault(); return Promise.reject();};
         let params = {
-            id:this.id.map(item=>parseInt(item)),
+            id:this.ids.map(item=>parseInt(item)),
             activityId:this.options.activityId
         }
         return activityGoodsProductInfo(params).then(res=>{
             if(res.code==1){
                 let data = res.data||{};
                 let productEntities = data.productEntities||[];
-                let productInfo = {};
+                let productInfo = {},specInfo={'default':{list:[]}};
                 productEntities.forEach(item=>{
                     productInfo[item.product_id] = item;
                 });
+                specInfo.default.list = productEntities||[];
+                this.setData({specInfo})
                 console.log('productInfo',productInfo);
+                console.log('specInfo',specInfo);
                 this.checkOptions(productInfo);
             }
         })

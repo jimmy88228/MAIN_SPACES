@@ -1,6 +1,6 @@
 <!--pages/main/staff-module/repository/goods/spec/index.wxml-->
 <view class="spec">
-    <view class="box">
+    <view class="box" wx:if="{{options.fromType != 'activity'}}">
         <view class="title-box flex-b-c">
             <view class="bold">设置常用规格</view>
             <view class="op-text" bindtap="jumpAction" data-url="/pages/main/staff-module/repository/goods/spec/edit/index">管理</view>
@@ -12,7 +12,7 @@
             </view> 
         </view>
     </view>
-    <view class="box">
+    <view class="box" wx:if="{{options.fromType != 'activity' && specInfo[curSel].list.length>0}}">
         <view class="title-box flex-b-c">
             <view class="bold">{{specInfo[curSel].name}}</view>
             <view class="delete-box flex-c-c" bindtap="deleteSpec" data-index="-1">
@@ -34,7 +34,7 @@
     </view>
     <block wx:for="{{specInfo[curSel].list}}" wx:key="id">
         <view class="box">
-            <view class="spec-title">{{specInfo[curSel].name}}/{{item.name}}</view>
+            <view class="spec-title" wx:if="{{options.fromType != 'activity'}}">{{specInfo[curSel].name}}/{{item.name}}</view>
             <view class="flex {{options.fromType=='activity'?'flex-wrap':''}}">
                 <block>
                     <view class="price-box f-s-0" wx:if="{{options.fromType=='activity'}}">

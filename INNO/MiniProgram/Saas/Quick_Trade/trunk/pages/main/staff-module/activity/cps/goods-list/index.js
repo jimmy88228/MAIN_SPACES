@@ -31,8 +31,10 @@ Component(App.BC({
         }]
     },
     methods: {
-        editGoods(e){
-            let id = this.getDataset(e,'id')||0;
+        addGoods(){
+            this.jumpAction(`/pages/main/staff-module/repository/goods/index?activity_id=${this.properties.activity_id}&fromType=activity`);
+        },
+        editGoods(e){ 
             let goodsInfo = this.getDataset(e,'item')||{}; 
             goodsInfo.goodsImgs = goodsInfo.goods_img?[goodsInfo.goods_img]:[];
             let transData = encodeURIComponent(JSON.stringify(goodsInfo));
