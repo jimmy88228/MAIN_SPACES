@@ -51,6 +51,10 @@ Component(App.BC({
         save(e){
             let goodsList = this.properties.goodsList||[];
             this.triggerEvent('save',{goodsList})
+        },
+        delete(e){
+            let item = this.getDataset(e,'item')||{};
+            this.triggerEvent('onDelete',{item});
         }
     }
 }))

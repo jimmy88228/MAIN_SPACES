@@ -38,7 +38,7 @@ Component(App.BC({
             let goodsInfo = this.getDataset(e,'item')||{}; 
             goodsInfo.goodsImgs = goodsInfo.goods_img?[goodsInfo.goods_img]:[];
             let transData = encodeURIComponent(JSON.stringify(goodsInfo));
-            this.jumpAction(`/pages/main/staff-module/repository/goods/index?goodsInfo=${transData}&activity_id=${this.properties.activity_id}&isEdit=1&fromType=activity`);
+            this.jumpAction(`/pages/main/staff-module/repository/goods/index?goodsInfo=${transData}&activity_id=${this.properties.activity_id}&isEdit=1&fromType=activity&goodsId=${goodsInfo.goods_id||0}`);
         },
         onImport(){
             if(!this.properties.activity_id){

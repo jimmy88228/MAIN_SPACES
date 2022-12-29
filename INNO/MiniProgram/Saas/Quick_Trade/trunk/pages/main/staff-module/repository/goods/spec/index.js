@@ -120,21 +120,21 @@ Page(App.BP({
     },
     activityProductUpdateOrInsert(){
         let productInfo = this.data.productInfo || {};
-        for(let key in productInfo){
-            let item = productInfo[key];
-            let params = {
-                ...item
-            }
-            console.log('params',params)
-            return activityProductUpdateOrInsert(params).then(res=>{
-                let title = "保存成功";
-                if(res.code==1){}else{
-                    title = res.msg||"保存失败";
-                } 
-                App.SMH.showToast({title})
-                return res;
-            })
+        let productList = Object.values(productInfo); 
+        let params = {
+            goodsId:this.options.goodsId||0,
+            activityId:this.options.activityId||0,
+            productList,
         }
+        console.log('Object.values',Object.values(productInfo))
+        return activityProductUpdateOrInsert(params).then(res=>{
+            let title = "保存成功";
+            if(res.code==1){}else{
+                title = res.msg||"保存失败";
+            } 
+            App.SMH.showToast({title})
+            return res;
+        }) 
     },
 }))
 function getGoodsProduct(){

@@ -408,6 +408,7 @@ export const QT_GoodsApiList = {
     m:"post"
   }, 
   getGoodsProduct: "/api/Goods/GetGoodsProduct",
+  deleteGoodsInfo: "/api/Goods/DeleteGoodsInfo?goodsId={goodsId}",
 }
 
 //订单

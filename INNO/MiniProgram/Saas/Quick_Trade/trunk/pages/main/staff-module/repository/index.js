@@ -15,7 +15,7 @@ Page(App.BP({
         this.loadData();
     },  
     loadData(){
-        getGoodsInfo({activityId:(this.options.activity_id||0)}).then(res=>{
+        return getGoodsInfo({activityId:(this.options.activity_id||0)}).then(res=>{
             if(res.code==1){
                 let goodsList = res.data||[];
                 this.setData({goodsList});
@@ -37,6 +37,23 @@ Page(App.BP({
             this.setData({goodsList})
         }
     },
+    onDelete(e){
+        let detail = e.detail||{};
+        let {item} = detail;  
+        let params = {
+            goodsId:item.goods_id
+        }
+        return deleteGoodsInfo(params).then(res=>{
+            if(res.code==1){
+                return this.loadData().then(()=>{
+                    App.SMH.showToast({title:"删除成功"});
+                })
+            }else{
+                App.SMH.showToast({title:res.msg||"删除失败"});
+                return res;
+            }
+        })
+    },
     save(e){
         let detail = e.detail ||{};
         let goodsList = detail.goodsList||[];
@@ -46,6 +63,11 @@ Page(App.BP({
 }))
 function getGoodsInfo(params){
     return App.Http.QT_GoodsApi.getGoodsInfo({
+        data: params,
+    })
+}
+function deleteGoodsInfo(params){
+    return App.Http.QT_GoodsApi.deleteGoodsInfo({
         data: params,
     })
 }

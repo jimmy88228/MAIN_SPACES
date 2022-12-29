@@ -27,7 +27,7 @@
                     <view class="op-btn-box flex-c-c">
                         <view class="op-btn" bindtap="jumpAction" data-url="pages/main/staff-module/repository/goods/index">编辑</view>
                         <view class="op-btn">复制</view>
-                        <view class="op-btn">删除</view>
+                        <view class="op-btn" bindtap="delete" data-item="{{item}}">删除</view>
                     </view>
                 </view>
             </view>
