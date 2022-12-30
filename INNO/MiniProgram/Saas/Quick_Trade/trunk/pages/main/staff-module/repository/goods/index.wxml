@@ -39,7 +39,7 @@
                 <view class="content flex-b-c">
                     <view class="title">款号</view>
                     <view class="flex-c-c">
-                        <input class="goods-input" placeholder-class="placehold-text" placeholder="请输入款号" bindinput="onInput" data-key="product_sn" value="{{goodsInfo.product_sn}}" />
+                        <input class="goods-input" placeholder-class="placehold-text" placeholder="请输入款号" bindinput="onInput" data-key="goods_sn" value="{{goodsInfo.goods_sn}}" />
                     </view>
                 </view> 
                 <view class="content flex-b-c" wx:if="{{options.fromType=='activity'}}">

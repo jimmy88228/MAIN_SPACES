@@ -104,6 +104,7 @@ Page(App.BP({
       createOrUpdateGoods.call(this, goodsInfo)
         .then(data => {
           App.SMH.showToast({title: "保存成功"});
+          WxApi.navigateBack()
         })
         .catch(err => {
           App.SMH.showToast({title: err})
@@ -121,7 +122,7 @@ Page(App.BP({
   jumpSpec() {
     let goodsInfo = this.data.goodsInfo || {};
     let options = this.options || {};
-    let url = `/pages/main/staff-module/repository/goods/spec/index?id=${goodsInfo.activity_product_id||""}&activityId=${options.activity_id||0}&fromType=${options.fromType||''}&market_price=${goodsInfo.market_price||0}&sale_price=${goodsInfo.sale_price||0}&product_sn=${goodsInfo.product_sn||''}&goods_number=${goodsInfo.goods_number||0}&product_id=${goodsInfo.product_id}&goodsId=${goodsInfo.goods_id}`;
+    let url = `/pages/main/staff-module/repository/goods/spec/index?id=${goodsInfo.activity_product_id||""}&activityId=${options.activity_id||0}&fromType=${options.fromType||''}&market_price=${goodsInfo.market_price||0}&sale_price=${goodsInfo.sale_price||0}&goods_sn=${goodsInfo.goods_sn||''}&goods_number=${goodsInfo.goods_number||0}&product_id=${goodsInfo.product_id}&goodsId=${goodsInfo.goods_id}`;
     this.jumpAction(url);
   },
   getAcitvityGoodsInfo(){ 
@@ -153,9 +154,9 @@ function handleGoodsGallery() {
 }
 
 function createOrUpdateGoods({
-  goodsId = 0,
+  goods_id: goodsId = 0,
   goods_name: goodsName,
-  product_sn: goodsSn,
+  goods_sn: goodsSn,
   market_price: marketPrice
 }) {
   let goodsRelativePathList = this.goodsRelativePathList || [];
