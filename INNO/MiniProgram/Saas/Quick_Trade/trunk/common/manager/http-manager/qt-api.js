@@ -419,7 +419,13 @@ export const QT_GoodsApiList = {
   createOrUpdateGoodsProduct: {
     u: "/api/Goods/CreateOrUpdateGoodsProduct",
     m: "post"
-  },}
+  },
+  deleteSpecCategoryInfo: "/api/Goods/DeleteSpecCategoryInfo?catId={catId}",
+  createOrUpdateCategoryInfo: {
+    u: "/api/Goods/CreateOrUpdateCategoryInfo",
+    m: "post"
+  }
+}
 
 //订单
 export const QT_BuyApiList = {

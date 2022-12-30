@@ -1,3 +1,5 @@
+const { default: WxApi } = require("../../../../../../common/utils/wxapi/index");
+
 // pages/main/staff-module/repository/goods/spec/index.js
 const App = getApp();
 Page(App.BP({   
@@ -120,13 +122,16 @@ Page(App.BP({
     onInput(e){
         let key = this.getDataset(e,'key');
         let id = this.getDataset(e,'id');
+        let specCatId = this.getDataset(e,'specCatId');
         let value = e.detail && e.detail.value; 
         this.setData({
-            [`productInfo.${id}.${key}`]:value
+            [`productInfo.${id}.${key}`]:value,
+            [`productInfo.${id}.specCatId`]: specCatId
         })
     },
     save(){
-        return this.activityProductUpdateOrInsert();
+        let fromType = this.options.fromType || "";
+        return fromType === "activity" ? this.activityProductUpdateOrInsert() : this.createOrUpdateGoodsProduct();
     },
     activityProductUpdateOrInsert(){
         let productInfo = this.data.productInfo || {};
@@ -146,6 +151,43 @@ Page(App.BP({
             return res;
         }) 
     },
+    createOrUpdateGoodsProduct() {
+      let goodsId = this.options.goodsId || 0;
+      let productInfo = this.data.productInfo || {};
+      let specInfo = this.data.specInfo || {};
+      let productList = [];
+      for (let specId of Object.keys(productInfo)) {
+        if (specId === "default") continue;
+        console.log("specId", specId, productInfo[specId], productInfo[specId].specCatId, specInfo)
+        productList.push({
+          productId: 0,
+          productSn: productInfo[specId].product_sn,
+          marketPrice: productInfo[specId].market_price,
+          specList: (specInfo[(productInfo[specId].specCatId)].list || []).map(item => ({
+            specId: item.id,
+            specName: item.name
+          })),
+        })
+      }
+      return App.Http.QT_GoodsApi.createOrUpdateGoodsProduct({
+        data: {
+          goodsId,
+          productList
+        }
+      })
+        .then(res => {
+          if (res.code == 1) {
+            App.SMH.showToast({title: "保存成功"});
+            setTimeout(() => {WxApi.navigateBack()}, 500);
+            return res.data
+          }
+          return Promise.reject(res.msg || "保存规格失败")
+        })
+        .catch(err => {
+          App.SMH.showToast({title: err});
+          console.log("createOrUpdateGoodsProduct err", err)
+        })
+    }
 }))
 
 function getSpecCategoryInfo() {
@@ -161,12 +203,13 @@ function getSpecCategoryInfo() {
 function handleSpecInfo(specList) {
   let specInfo = {};
   specList.forEach((spec, index) => {
-    specInfo[index === 1 ? "default" : spec.specCatName] = {
+    specInfo[index === 0 ? "default" : spec.specCatId] = {
       name: spec.specCatName,
       list: (spec.SpecInfoList).map(item => ({
         name: item.specName || "",
         id: item.specId
-      }))
+      })),
+      specCatId: spec.specCatId
     }
   })
   return specInfo

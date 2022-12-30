@@ -57,7 +57,7 @@
         </view> 
     </view>
     <view class="add-btn-box flex">
-        <view class="add-btn flex-c-c" bindtap="jumpSpec">添加规格</view>
+        <view class="add-btn flex-c-c" wx:if="{{isEdit == 1}}" bindtap="jumpSpec">添加规格</view>
         <view class="add-btn flex-c-c" wx:if="{{isEdit == 1}}" bindtap="jumpAction" data-url="/pages/main/staff-module/repository/goods/detail/index?goods_id={{goodsInfo.goods_id}}">添加详情</view>
         <!-- <view class="add-btn flex-c-c">添加款号</view> -->
     </view>

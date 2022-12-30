@@ -3,7 +3,7 @@ page{
     background-color: #F2F2F2;
 }
 .spec{
-    padding: 25rpx;
+    padding: 25rpx 25rpx calc(25rpx + 154rpx) 25rpx;
     box-sizing: border-box;
     font-size: 28rpx;
 }
@@ -142,6 +142,7 @@ page{
     box-sizing: border-box;
     box-sizing: border-box;
     padding:0 30rpx;
+    z-index: 5;
 }
 .save-btn{
     width: 270rpx;
@@ -150,4 +151,8 @@ page{
     border-radius: 20rpx;
     color: #fff;
     font-size: 30rpx;
+    transition: opacity 0.1s ease;
+}
+.save-btn.active{
+  opacity: 0.7;
 }

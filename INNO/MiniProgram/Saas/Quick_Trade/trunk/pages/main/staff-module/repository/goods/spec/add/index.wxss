@@ -20,6 +20,10 @@
     background: #FFFFFF;
     border-radius: 10rpx;
     border: 1px solid #E1E1E1;
+    transition: opacity 0.1s ease;
+}
+.add-btn.active{
+  opacity: 0.7;
 }
 .footer{
     position: fixed;

@@ -8,7 +8,7 @@
             <view class="op-text" bindtap="jumpAction" data-url="/pages/main/staff-module/repository/goods/spec/edit/index">管理</view>
         </view>
         <view class="flex spec-list-view">
-            <view wx:for="{{specInfo}}" wx:key="index" class="flex-c-c" bindtap="onSelect" data-index="{{index}}">
+            <view wx:for="{{specInfo}}" wx:key="specCatId" class="flex-c-c" bindtap="onSelect" data-index="{{index}}">
                 <view class="cir-sel flex-c-c {{curSel==index?'active':''}}"></view>
                 <view class="spec-name">{{item.name}}</view>
             </view> 
@@ -54,12 +54,12 @@
                 </block>
                 <view class="sn-box flex-1">
                     <view class="sn-title">商品编码</view>
-                    <input class="goods-input"  value="{{productInfo[item.id].product_sn}}" placeholder-class="placehold-text" placeholder="输入商品编码（非必填）" bindinput="onInput" data-key="product_sn" data-id="{{item.id}}" /> 
+                    <input class="goods-input"  value="{{productInfo[item.id].product_sn}}" placeholder-class="placehold-text" placeholder="输入商品编码" bindinput="onInput" data-key="product_sn" data-id="{{item.id}}" data-spec-cat-id="{{specInfo[curSel].specCatId}}" /> 
                 </view> 
             </view>
         </view>
     </block>
     <view class="footer flex-e-c">
-        <view class="save-btn flex-c-c" bindtap="save">完成</view>
+        <view class="save-btn flex-c-c" hover-class="active" bindtap="save">完成</view>
     </view>
 </view>

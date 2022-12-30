@@ -1,12 +1,26 @@
 <!--pages/main/staff-module/repository/goods/spec/edit/index.wxml-->
+<!-- public 必须是第一个元素 -->
+<include src="/common/base/page/index.wxml" />
 <view class="spec-edit">
-    <block wx:for="{{[1]}}" wx:key="index">
-        <view class="box">
-            <view class="name bold">尺码</view>
-            <view class="value bold">{{'S/M/L'}}</view>
-        </view> 
-    </block> 
-    <view class="footer flex-e-c">
-        <view class="add-btn flex-c-c" bindtap="jumpAction" data-url="/pages/main/staff-module/repository/goods/spec/add/index">添加常用规格</view>
+  <block wx:for="{{specInfo}}" wx:for-item="spec" wx:for-index="specIndex" wx:key="specCatId">
+    <view class="box">
+      <view class="box-left">
+        <view class="name bold">{{spec.specCatName}}</view>
+        <view class="value bold">
+          <block wx:for="{{spec.SpecInfoList}}" wx:key="specId">
+            {{index === 0 ? '':'/'}}{{item.specName}}
+          </block>
+        </view>
+      </view>
+      <view class="box-right">
+        <view class="box-button-group">
+          <view class="box-btn" hover-class="active" catchtap="handleDeleteBtnTap" data-cat-id="{{spec.specCatId}}">删除</view>
+          <view class="box-btn" hover-class="active" catchtap="handleModifyBtnTap">修改</view>
+        </view>
+      </view>
     </view>
+  </block>
+  <view class="footer flex-e-c">
+    <view class="add-btn flex-c-c" bindtap="jumpAction" data-url="/pages/main/staff-module/repository/goods/spec/add/index">添加常用规格</view>
+  </view>
 </view>
