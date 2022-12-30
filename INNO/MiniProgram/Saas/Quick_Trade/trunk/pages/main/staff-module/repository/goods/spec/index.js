@@ -4,15 +4,7 @@ const { default: WxApi } = require("../../../../../../common/utils/wxapi/index")
 const App = getApp();
 Page(App.BP({   
     data: { 
-        specInfo:{ //暂时没接口，先用测试数据 
-            "default":{
-                name:"规格",
-                list:[{name:"大",id:1}]
-            },
-            "color":{
-                name:"颜色",
-                list:[{name:"红",id:3}]
-            }
+        specInfo:{ //暂时没接口，先用测试数据  
         },
         detail:{},
         productInfo:{

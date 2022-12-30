@@ -424,7 +424,8 @@ export const QT_GoodsApiList = {
   createOrUpdateCategoryInfo: {
     u: "/api/Goods/CreateOrUpdateCategoryInfo",
     m: "post"
-  }
+  },
+  getAcitvityGoodsInfo: "/api/Goods/GetAcitvityGoodsInfo?goodsId={goodsId}&activityId={activityId}",
 }
 
 //订单

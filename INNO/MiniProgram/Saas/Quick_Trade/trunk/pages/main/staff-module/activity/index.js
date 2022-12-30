@@ -47,7 +47,6 @@ Page(App.BP({
             if(curSetGoodsInfo.activity_id && (curSetGoodsInfo.activity_id == acGoodsInfo.activity_id)){ //编辑、新增商品
                 let goodsInfo = curSetGoodsInfo.goodsInfo||{};
                 let index = acGoodsInfo.goods_Infos.findIndex(item=>item.goods_id == goodsInfo.goods_id);
-                console.log('看看',index)
                 if(index>-1 || (!goodsInfo.goods_id)){
                     goodsInfo.goods_img = goodsInfo.goodsImgs[0] || '';
                     acGoodsInfo.goods_gallery = goodsInfo.goodsImgs;
