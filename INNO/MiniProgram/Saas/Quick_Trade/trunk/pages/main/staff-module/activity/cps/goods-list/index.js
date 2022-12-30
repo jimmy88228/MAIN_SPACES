@@ -32,7 +32,7 @@ Component(App.BC({
     },
     methods: {
         addGoods(){
-            this.jumpAction(`/pages/main/staff-module/repository/goods/index?activity_id=${this.properties.activity_id}&fromType=activity`);
+            this.jumpAction(`/pages/main/staff-module/repository/goods/index?activity_id=${this.properties.activity_id}&fromType=activityAdd`);
         },
         editGoods(e){ 
             let goodsInfo = this.getDataset(e,'item')||{}; 

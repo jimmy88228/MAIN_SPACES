@@ -44,7 +44,7 @@ Page(App.BP({
         })
     },
     save(){
-        if(this.options.fromType == 'activity'){
+        if(this.options.fromType == 'activity' || this.options.fromType == 'activityAdd'){
             App.StorageH.set('curSetGoodsInfo',{activity_id:this.options.activity_id||0,goodsInfo:this.data.goodsInfo});
             wx.navigateBack();
         }else{
