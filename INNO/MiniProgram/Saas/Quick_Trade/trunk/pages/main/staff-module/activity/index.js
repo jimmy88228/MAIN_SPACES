@@ -47,9 +47,10 @@ Page(App.BP({
             if(curSetGoodsInfo.activity_id && (curSetGoodsInfo.activity_id == acGoodsInfo.activity_id)){ //编辑、新增商品
                 let goodsInfo = curSetGoodsInfo.goodsInfo||{};
                 let index = acGoodsInfo.goods_Infos.findIndex(item=>item.goods_id == goodsInfo.goods_id);
+                console.log('index',index,acGoodsInfo.goods_Infos)
                 if(index>-1 || (goodsInfo.isAdd)){
-                    goodsInfo.goods_img = goodsInfo.goodsImgs[0] || '';
-                    acGoodsInfo.goods_gallery = goodsInfo.goodsImgs;
+                    goodsInfo.goods_img = goodsInfo.goods_img || '';
+                    acGoodsInfo.goods_gallery = goodsInfo.goodsImgs||goodsInfo.goods_gallery||[];
                     delete goodsInfo.goodsImgs;
                     if(goodsInfo.isAdd){
                         acGoodsInfo.goods_Infos.push(goodsInfo);

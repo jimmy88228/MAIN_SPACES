@@ -11,7 +11,7 @@ Page(App.BP({
             'default':{ 
                 market_price:"",
                 sale_price:"",
-                product_sn:"",
+                goods_sn:"",
                 goods_number:"",
             }
         },
@@ -30,8 +30,8 @@ Page(App.BP({
     },
     checkOptions(data){
         let productInfo = data||this.data.productInfo||{}; 
-        let {market_price,sale_price,product_sn,goods_number} = this.options;
-        console.log('market_price,sale_price,product_sn,goods_number',market_price,sale_price,product_sn,goods_number,productInfo)
+        let {market_price,sale_price,goods_sn,goods_number} = this.options;
+        console.log('market_price,sale_price,goods_sn,goods_number',market_price,sale_price,goods_sn,goods_number,productInfo)
         for(let key in productInfo){
             let item = productInfo[key]||{};
             console.log('进来',key,item)
@@ -41,8 +41,8 @@ Page(App.BP({
             if(sale_price || sale_price == 0){
                 item.sale_price = sale_price
             }
-            if(product_sn){
-                item.product_sn = product_sn
+            if(goods_sn){
+                item.goods_sn = goods_sn
             }
             if(goods_number || goods_number == 0){
                 item.goods_number = goods_number;
@@ -153,7 +153,7 @@ Page(App.BP({
         console.log("specId", specId, productInfo[specId], productInfo[specId].specCatId, specInfo)
         productList.push({
           productId: 0,
-          productSn: productInfo[specId].product_sn,
+          productSn: productInfo[specId].goods_sn,
           marketPrice: productInfo[specId].market_price,
           specList: (specInfo[(productInfo[specId].specCatId)].list || []).map(item => ({
             specId: item.id,

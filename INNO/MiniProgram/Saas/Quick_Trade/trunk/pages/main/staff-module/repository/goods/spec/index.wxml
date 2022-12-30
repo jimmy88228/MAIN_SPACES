@@ -54,7 +54,7 @@
                 </block>
                 <view class="sn-box flex-1">
                     <view class="sn-title">商品编码</view>
-                    <input class="goods-input"  value="{{productInfo[item.id].product_sn}}" placeholder-class="placehold-text" placeholder="输入商品编码" bindinput="onInput" data-key="product_sn" data-id="{{item.id}}" data-spec-cat-id="{{specInfo[curSel].specCatId}}" /> 
+                    <input class="goods-input"  value="{{productInfo[item.id].goods_sn}}" placeholder-class="placehold-text" placeholder="输入商品编码" bindinput="onInput" data-key="goods_sn" data-id="{{item.id}}" data-spec-cat-id="{{specInfo[curSel].specCatId}}" /> 
                 </view> 
             </view>
         </view>

@@ -28,6 +28,9 @@ Component(App.BC({
         },{
             key:"goods_number",
             name:"抢购数量",
+        },{
+            key:"goods_sn",
+            name:"商品款号",
         }]
     },
     methods: {
@@ -36,9 +39,12 @@ Component(App.BC({
         },
         editGoods(e){ 
             let goodsInfo = this.getDataset(e,'item')||{}; 
-            goodsInfo.goodsImgs = goodsInfo.goods_img?[goodsInfo.goods_img]:[];
-            let transData = encodeURIComponent(JSON.stringify(goodsInfo));
-            this.jumpAction(`/pages/main/staff-module/repository/goods/index?goodsInfo=${transData}&activity_id=${this.properties.activity_id}&isEdit=1&fromType=activity&goodsId=${goodsInfo.goods_id||0}`);
+            console.log('goodsInfo',goodsInfo);
+            let goods_gallery = goodsInfo.goods_gallery||[];
+            goodsInfo.goodsImgs = goods_gallery.length<=0?[goodsInfo.goods_img]:goods_gallery;
+            // let transData = encodeURIComponent(JSON.stringify(goodsInfo));
+            this.jumpAction(`/pages/main/staff-module/repository/goods/index?activity_id=${this.properties.activity_id}&isEdit=1&fromType=activity&goodsId=${goodsInfo.goods_id||0}`);
+            // this.jumpAction(`/pages/main/staff-module/repository/goods/index?goodsInfo=${transData}&activity_id=${this.properties.activity_id}&isEdit=1&fromType=activity&goodsId=${goodsInfo.goods_id||0}`);
         },
         onImport(){
             if(!this.properties.activity_id){

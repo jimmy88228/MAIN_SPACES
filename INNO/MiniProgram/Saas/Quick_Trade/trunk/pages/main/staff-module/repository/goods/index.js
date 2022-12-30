@@ -94,6 +94,7 @@ Page(App.BP({
         .then(goodsId => {
           goodsInfo.goods_id = goodsId||0;
           goodsInfo.isAdd = true;
+          this.setData({goodsInfo})
           App.SMH.showToast({title: "保存成功"});
           cb();
         })
@@ -122,10 +123,12 @@ Page(App.BP({
   jumpSpec() {
     let goodsInfo = this.data.goodsInfo || {};
     let options = this.options || {};
-    let url = `/pages/main/staff-module/repository/goods/spec/index?id=${goodsInfo.activity_product_id||""}&activityId=${options.activity_id||0}&fromType=${options.fromType||''}&market_price=${goodsInfo.market_price||0}&sale_price=${goodsInfo.sale_price||0}&goods_sn=${goodsInfo.goods_sn||''}&goods_number=${goodsInfo.goods_number||0}&product_id=${goodsInfo.product_id}&goodsId=${goodsInfo.goods_id}`;
+    let url = `/pages/main/staff-module/repository/goods/spec/index?id=${goodsInfo.activity_product_id||""}&activityId=${options.activity_id||0}&fromType=${options.fromType||''}&market_price=${goodsInfo.market_price||0}&sale_price=${goodsInfo.sale_price||0}&goods_sn=${goodsInfo.goods_sn||''}&goods_number=${goodsInfo.goods_number||0}&goodsId=${goodsInfo.goods_id||0}`;
+    console.log('goodsInfo',goodsInfo)
     this.jumpAction(url);
   },
   getAcitvityGoodsInfo(){ 
+      if(!this.options.goodsId){return Promise.reject()};
       let params = {
         goodsId:this.options.goodsId||0,
         activityId:this.options.activity_id||0,
@@ -134,6 +137,7 @@ Page(App.BP({
           if(res.code==1){
               let data = res.data||{};
               let goodsInfo = data.goodsInfo||{};
+              goodsInfo.goods_id = this.options.goodsId||0;
               this.setData({goodsInfo});
           }
       })
