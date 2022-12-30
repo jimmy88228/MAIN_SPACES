@@ -415,7 +415,7 @@ export const QT_GoodsApiList = {
   getGoodsDetails :"/api/Goods/GetGoodsDetails?goodsId={goodsId}",
   deleteGoodsInfo: "/api/Goods/DeleteGoodsInfo?goodsId={goodsId}",
   copyGoods: "/api/Goods/CopyGoods?goodsId={goodsId}",
-  getSpecCategoryInfo: "/api/Goods/GetSpecCategoryInfo", // 获取所有规格列表
+  getSpecCategoryInfo: "/api/Goods/GetSpecCategoryInfo?catId={catId}", // 获取所有规格列表
   createOrUpdateGoodsProduct: {
     u: "/api/Goods/CreateOrUpdateGoodsProduct",
     m: "post"
@@ -423,6 +423,19 @@ export const QT_GoodsApiList = {
   deleteSpecCategoryInfo: "/api/Goods/DeleteSpecCategoryInfo?catId={catId}",
   createOrUpdateCategoryInfo: {
     u: "/api/Goods/CreateOrUpdateCategoryInfo",
+    m: "post"
+  },
+  createOrUpdateSpecCategory: {
+    u: "/api/Goods/CreateOrUpdateSpecCategory",
+    m: "post"
+  },
+  createOrUpdateSpecInfo: {
+    u: "/api/Goods/CreateOrUpdateSpecInfo",
+    m: "post"
+  },
+  deleteSpecInfo: "/api/Goods/DeleteSpecInfo?specId={specId}",
+  createOrUpdateGoods: {
+    u: "/api/Goods/CreateOrUpdateGoods",
     m: "post"
   },
   getAcitvityGoodsInfo: "/api/Goods/GetAcitvityGoodsInfo?goodsId={goodsId}&activityId={activityId}",

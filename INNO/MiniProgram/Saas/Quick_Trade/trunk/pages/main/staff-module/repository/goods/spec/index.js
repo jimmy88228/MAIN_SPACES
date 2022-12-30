@@ -183,7 +183,11 @@ Page(App.BP({
 }))
 
 function getSpecCategoryInfo() {
-  return App.Http.QT_GoodsApi.getSpecCategoryInfo()
+  return App.Http.QT_GoodsApi.getSpecCategoryInfo({
+    params: {
+      catId: 0
+    }
+  })
     .then(res => {
       if (res.code == 1) {
         return res.data || []

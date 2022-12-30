@@ -8,7 +8,7 @@
         <block wx:for="{{goodsList}}" wx:key="index">
             <view class="list">
                 <view class="msg-box flex">
-                    <image src="{{item.goods_img||''}}" mode="aspectFit" class="goods-img f-s-0"></image>
+                    <image src="{{item.goods_img || ''}}" mode="aspectFit" class="goods-img f-s-0"></image>
                     <view class="content flex-1">
                         <view class="goods-name bold">{{item.goods_name||''}}</view>
                         <view class="price bold">{{item.market_price||''}}</view>

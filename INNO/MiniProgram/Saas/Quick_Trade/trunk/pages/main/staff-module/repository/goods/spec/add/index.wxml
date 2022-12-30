@@ -2,14 +2,16 @@
 <!-- public 必须是第一个元素 -->
 <include src="/common/base/page/index.wxml" />
 <view class="spec-add">
-    <view class="box">
-        <input class="spec-input" bindinput="onInput" placeholder-class="placehold-text" placeholder="请输入规格类型名称" />
-        <!-- <block wx:for="[1]" wx:key="index">
-            <view class="">测试规格</view>
-        </block> -->
-        <view class="add-btn flex-c-c bold" hover-class="active" bindtap="handleAddSpecBtnTap">+添加规格</view>
-    </view> 
-    <view class="footer flex-e-c">
-        <view class="save-btn flex-c-c">保存</view>
+  <view class="box">
+    <input class="spec-input" value="{{specCatName}}" bindinput="onInput" bindblur="onSpecCatSave" placeholder-class="placehold-text" placeholder="请输入规格类型名称" />
+    <view class="spec-list">
+      <block wx:for="{{specList}}" wx:key="index">
+        <view class="spec-item" hover-class="active" bindlongpress="handleItemLongPress" data-spec-id="{{item.specId}}">{{item.specName}}</view>
+      </block>
     </view>
+    <view class="add-btn flex-c-c bold" hover-class="active" bindtap="handleAddSpecBtnTap">+添加规格</view>
+  </view>
+  <view class="footer flex-e-c">
+    <view class="save-btn flex-c-c" bindtap="back">返回</view>
+  </view>
 </view>

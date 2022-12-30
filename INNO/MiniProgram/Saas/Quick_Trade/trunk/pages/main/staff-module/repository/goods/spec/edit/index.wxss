@@ -1,6 +1,7 @@
 /* pages/main/staff-module/repository/goods/spec/edit/index.wxss */
 .spec-edit{
     padding: 25rpx;
+    padding-bottom: calc(25rpx + 154rpx);
 }
 .box{
     padding: 40rpx;
@@ -9,6 +10,13 @@
     border-radius: 20rpx;
     display: flex;
     justify-content: space-between;
+    margin-bottom: 12rpx;
+}
+.box:last-of-type{
+  margin-bottom: 0;
+}
+.box-right{
+  flex-shrink: 0;
 }
 .box-button-group{
   display: flex;

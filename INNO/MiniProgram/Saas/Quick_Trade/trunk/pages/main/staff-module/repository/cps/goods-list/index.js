@@ -11,6 +11,10 @@ Component(App.BC({
         isSelect:{
             type:Boolean,
             value:false
+        },
+        domainPath: {
+          type: String, 
+          value: ""
         }
     }, 
     data: {
@@ -57,9 +61,12 @@ Component(App.BC({
             this.triggerEvent('onDelete',{item});
         },
         editGoods(e){ 
+          
           let goodsInfo = this.getDataset(e,'item')||{}; 
+          console.log("item", goodsInfo)
           goodsInfo.goodsImgs = goodsInfo.goods_img?[goodsInfo.goods_img]:[];
           let transData = encodeURIComponent(JSON.stringify(goodsInfo));
+          App.StorageH.set("ReposityGoodsGallery", {galleryList: goodsInfo.galleryList || [], domainPath: this.properties.domainPath});
           this.jumpAction(`/pages/main/staff-module/repository/goods/index?goodsInfo=${transData}&activity_id=${this.properties.activity_id}&isEdit=1`);
         },
         copy(e) {

@@ -5,7 +5,8 @@ Page(App.BP({
         isSelect:false,
         categoryList:[{
             name:"全部"
-        }], 
+        }],
+        domainPath: ""
     }, 
     onLoad: function (options) {
         this.options = options;
@@ -17,8 +18,12 @@ Page(App.BP({
     loadData(){
         return getGoodsInfo({activityId:(this.options.activity_id||0)}).then(res=>{
             if(res.code==1){
-                let goodsList = res.data||[];
-                this.setData({goodsList});
+                let goodsList = res.data && res.data.goodsInfoSimpleInfos ||[];
+                let domainPath = res.data && res.data.domainPath || "";
+                this.setData({
+                  goodsList,
+                  domainPath
+                });
             }
             return res;
         })

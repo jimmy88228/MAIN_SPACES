@@ -2,6 +2,6 @@
 <view class="repository">
     <search-box category-list="{{categoryList}}"></search-box>
     <view class="goods-list-box">
-        <goods-list bindsave="save" bindonSelect="onSelect" bindonSelectAll="onSelectAll" is-select="{{isSelect}}" goods-list="{{goodsList}}" bindonRefresh="onRefresh" ></goods-list>
+        <goods-list bindsave="save" bindonSelect="onSelect" bindonSelectAll="onSelectAll" is-select="{{isSelect}}" goods-list="{{goodsList}}" bindonRefresh="onRefresh" domain-path="{{domainPath}}" ></goods-list>
     </view>
 </view>
