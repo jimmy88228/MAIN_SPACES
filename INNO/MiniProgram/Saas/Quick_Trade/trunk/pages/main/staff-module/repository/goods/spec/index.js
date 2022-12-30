@@ -56,7 +56,7 @@ Page(App.BP({
             let specInfo = { 
                 "default":{
                     name:"",
-                    list:[{id:0}]
+                    list:[{id:'default'}]
                 }
             }
             this.setData({specInfo})

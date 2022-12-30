@@ -14,16 +14,16 @@ Page(App.BP({
   },
   onLoad(options) {
     this.options = options;
-    let isEdit = options.isEdit == 1,
-      goodsInfo = this.data.goodsInfo;
-    isEdit && (goodsInfo = JSON.parse(decodeURIComponent(options.goodsInfo || '{}')));
+    let isEdit = options.isEdit == 1;
+    //   goodsInfo = this.data.goodsInfo;
+    // isEdit && (goodsInfo = JSON.parse(decodeURIComponent(options.goodsInfo || '{}')));
     this.setData({
-      isEdit,
-      options,
-      goodsInfo
+        isEdit,
+        options,
+        //   goodsInfo
     })
-    handleGoodsGallery.call(this)
-    console.log('goodsInfo', goodsInfo)
+    this.getAcitvityGoodsInfo();
+    handleGoodsGallery.call(this) 
   },
   onInput(e) {
     let key = this.getDataset(e, 'key');
@@ -80,14 +80,27 @@ Page(App.BP({
     // })
   },
   save() {
+    let goodsInfo = this.data.goodsInfo||{};
     if (this.options.fromType == 'activity' || this.options.fromType == 'activityAdd') {
-      App.StorageH.set('curSetGoodsInfo', {
-        activity_id: this.options.activity_id || 0,
-        goodsInfo: this.data.goodsInfo
-      });
-      wx.navigateBack();
+      let cb = ()=>{
+        App.StorageH.set('curSetGoodsInfo', {
+            activity_id: this.options.activity_id || 0,
+            goodsInfo
+          });
+          wx.navigateBack();
+      }
+      if(this.options.fromType=='activityAdd'){
+        createOrUpdateGoods.call(this, goodsInfo)
+        .then(goodsId => {
+          goodsInfo.goods_id = goodsId||0;
+          goodsInfo.isAdd = true;
+          App.SMH.showToast({title: "保存成功"});
+          cb();
+        })
+      }else{
+        cb();
+      }  
     } else {
-      let goodsInfo = this.data.goodsInfo || {};
       createOrUpdateGoods.call(this, goodsInfo)
         .then(data => {
           App.SMH.showToast({title: "保存成功"});
@@ -110,6 +123,19 @@ Page(App.BP({
     let options = this.options || {};
     let url = `/pages/main/staff-module/repository/goods/spec/index?id=${goodsInfo.activity_product_id||""}&activityId=${options.activity_id||0}&fromType=${options.fromType||''}&market_price=${goodsInfo.market_price||0}&sale_price=${goodsInfo.sale_price||0}&product_sn=${goodsInfo.product_sn||''}&goods_number=${goodsInfo.goods_number||0}&product_id=${goodsInfo.product_id}&goodsId=${goodsInfo.goods_id}`;
     this.jumpAction(url);
+  },
+  getAcitvityGoodsInfo(){ 
+      let params = {
+        goodsId:this.options.goodsId||0,
+        activityId:this.options.activity_id||0,
+      }
+      return getAcitvityGoodsInfo(params).then(res=>{
+          if(res.code==1){
+              let data = res.data||{};
+              let goodsInfo = data.goodsInfo||{};
+              this.setData({goodsInfo});
+          }
+      })
   },
 }))
 
@@ -150,5 +176,11 @@ function createOrUpdateGoods({
         return res.data
       }
       return Promise.reject(res.msg || `${goodsId ? '新建' : '编辑'}商品失败`)
+    })
+}
+
+function getAcitvityGoodsInfo(params){
+    return App.Http.QT_GoodsApi.getAcitvityGoodsInfo({
+        data: params
     })
 }
