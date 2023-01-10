@@ -1,4 +1,5 @@
 <!--pages/main/staff-module/activity/index.wxml-->
+<include src="/common/base/page/index.wxml" />
 <view class="activity flex flex-col">
     <view class="box">
         <view class="time-box flex-b-c">
@@ -17,7 +18,7 @@
         </view>
     </view>
     <view class="goods-list flex-1">
-        <goods-list bindchange="onChangeList" list="{{acGoodsInfo.goods_Infos||[]}}" activity_id="{{acGoodsInfo.activity_id}}" inited="{{inited}}"></goods-list>
+        <goods-list id="goods-list" bindcheckSetTime="checkSetTime" bindchange="onChangeList" bindonDelete="onDelete" domainPath="{{domainPath}}" list="{{acGoodsInfo.goods_Infos||[]}}" activity_id="{{acInfo.id||0}}" inited="{{inited}}"></goods-list>
     </view>
     <view class="footer flex-e-e">
         <!-- <view class="preview-btn flex-c-c">预览</view> -->

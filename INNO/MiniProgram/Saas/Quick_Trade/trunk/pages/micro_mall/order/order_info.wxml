@@ -5,10 +5,25 @@
   <!-- 自定义导航栏 -->
   <custom-nav styleType="2" title="{{orderInfo.orderStatus}}{{valetInfo.isValetOrder == 1 ? '(代客单)': ''}} " />
   <!-- 贴一块上去 -->
-  <view class="extend-nav-view" wx:if="{{menuInfo.needPay == 1 && orderInfo.serverTime < orderInfo.autoCancelTime}}">
+  <view class="extend-nav-view" wx:if="{{(menuInfo.needPay == 1 || menuInfo.canQrcodePay == 1) && orderInfo.serverTime < orderInfo.autoCancelTime}}">
     <view class="order-status-row">还剩{{f.countDownObjToStr(count_down)}}自动取消</view>
   </view>
-  <view class="extend-nav-view" style="height: 10rpx;" wx:else ></view>
+  <view class="extend-nav-view" wx:elif="{{orderInfo.autoReceiveTime}}">
+    <view class='order-status-row'>
+        预计 {{orderInfo.autoReceiveTime}} 自动收货
+    </view>
+  </view>
+  <!-- <view class="extend-nav-view" wx:elif="{{orderInfo.autoReceiveTime && menuInfo.extendReceiptDay > 0}}">
+    <view class='order-status-row'>
+      <block wx:if="{{orderInfo.hadExtendRecepit == 0}}">
+        延长收货后,预计 {{orderInfo.autoReceiveTime}} 超时自动收货
+      </block>
+      <block wx:else>
+        预计 {{orderInfo.autoReceiveTime}} 超时自动收货
+      </block>
+    </view>
+  </view> -->
+  <view class="extend-nav-view" style="height: 10rpx;" wx:else></view>
 
   <view class="order-info-main">
     <!-- 门店信息 -->
@@ -24,7 +39,7 @@
           <view class="oisi-store-address">{{storeInfo.storeAreaName}}/{{storeInfo.storeAddr}}</view>
           <view class="oisi-store-detail">
             <view class="oisi-staff">店员: {{storeInfo.staffName}}</view>
-            <view class="oisi-store-phone">门店电话: {{storeInfo.storePhone}}</view>
+            <view class="oisi-store-phone">门店电话: {{!storeInfo.storePhone || storeInfo.storePhone == "" ? '无' : storeInfo.storePhone}}</view>
           </view>
         </view>
       </view>
@@ -34,7 +49,7 @@
     <view class="order-info-view" wx:if="{{addressInfo && addressInfo.isInstore == 0}}">
       <view class="order-info-view-main order-info-package-container">
         <view class="oiac-row" wx:if="{{orderInfo.invoiceNo}}">
-          <view class="circle-icon"></view>
+          <view class="circle-icon iconfont icon-a-package1-fill"></view>
           <view class="oiac-package">
             <view class="oiac-package-header">
               <view class="oiac-package-title">你购买的商品已发出</view>
@@ -54,7 +69,7 @@
           </view>
         </view>
         <view class="oiac-row">
-          <view class="circle-icon"></view>
+          <view class="circle-icon iconfont icon-location"></view>
           <view class="oiac-delivery-info">
             <view class="oiac-consignee-info">
               <view class="oiac-consignee">{{addressInfo.consignee}}</view>
@@ -69,7 +84,7 @@
     </view>
 
     <!-- 取货码 -->
-    <view class="order-info-view" wx:if="{{addressInfo.isInstore > 0}}">
+    <view class="order-info-view" wx:if="{{addressInfo.isInstore > 0}}" hidden="{{orderInfo.payStatus == '待付款'}}">
       <view class="order-info-view-main">
         <view class="pick-code-container">
           <view class="pick-code-title">取货码</view>
@@ -143,7 +158,7 @@
         <view class="iconfont icon-list oif-more-icon"></view>
         <button class="oif-more-btn">更多</button>
       </view>
-      <transition show="{{foldBtnActive}}"> 
+      <transition show="{{foldBtnActive}}">
         <view class="fold_fix_bg" bindtap="handleMoreBtnTap" data-type="fold_btn_toggle"></view>
         <view class="oif-fold-btn-list">
           <block wx:for="{{foldBtnArr}}" wx:key="key">

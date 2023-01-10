@@ -15,11 +15,11 @@
 
       <view class="order-list-search-container">
         <view class="order-search-con">
-          <input class="order-search" type="text" placeholder-class="order-search-placeholder" placeholder="请输入商品名称" value="{{_searchStr}}" bindinput="handleSearchInput">
+          <input class="order-search" type="text" placeholder-class="order-search-placeholder" placeholder="请输入商品名称/收货手机号/取件码" value="{{_searchStr}}" bindinput="handleSearchInput">
+          </input>
           <view class="order-search-suffix">
             <button class="order-search-btn" hover-class="active" bindtap="handleSearchBtnTap">搜索</button>
           </view>
-          </input>
         </view>
       </view>
 
@@ -63,7 +63,7 @@
                           <view class="order-item-m-right">
                             <view class="order-item-m-name">{{goods.goodsName}}</view>
                             <view class="order-item-m-spec">
-                              <text>{{goods.goodsAttr}}</text>
+                              <text class="text-flow2">{{goods.goodsAttr}}</text>
                             </view>
                           </view>
                         </view>

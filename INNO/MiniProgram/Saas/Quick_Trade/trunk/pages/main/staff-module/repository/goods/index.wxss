@@ -1,14 +1,15 @@
 /* pages/main/staff-module/repository/goods/index.wxss */
 page{
     background: #F2F2F2;
+    --save-footer-height: calc(142rpx + env(safe-area-inset-bottom));
 }
 .goods{
     padding: 25rpx;
     box-sizing: border-box;
-    padding-bottom: 154rpx;
+    padding-bottom: var(--save-footer-height);
 }
 .box{
-    padding: 45rpx;
+    padding: 45rpx 45rpx 0 45rpx;
     background: #FFFFFF;
     border-radius: 20rpx 20rpx 0px 0px;
     overflow: hidden;
@@ -18,6 +19,9 @@ page{
 }
 .title-box{
     color: #7F7F7F;
+}
+.input-text{
+  padding-right: 30rpx;
 }
 .name-input{
     font-size: 32rpx;
@@ -31,22 +35,22 @@ page{
     height: 50rpx;
 }
 .img-box{
-    padding-bottom: 55rpx;
+    padding-bottom: 30rpx;
     border-bottom: 1px solid #EFEFEF;
     flex-wrap: wrap;
 }
 .img-goods-box{
     position: relative;
+    margin-bottom: 30rpx;
+    margin-right: 30rpx;
 }
-.img-goods{
-    width: 152rpx;
-    height: 152rpx; 
+.img-goods,.add-goods{
+    width: 154rpx;
+    height: 154rpx; 
 }
-.add-goods{
-    width: 152rpx;
-    height: 152rpx;
-    background: #F6F6F6;
+.add-goods{  
     position: relative;
+    background: #F6F6F6;
 }
 .add-icon{ 
     width: 4rpx;
@@ -77,6 +81,9 @@ page{
     padding-right: 30rpx;
     box-sizing: border-box;
 }
+.goods-input.sn{
+  padding-right: 0;
+}
 .shipping-box{
     width: 613rpx;
     height: 80rpx;
@@ -96,7 +103,7 @@ page{
     background: #FFFFFF;
     border-radius: 6rpx;
     border: 1px solid #FFFFFF;
-    margin-right: 14rpx;
+    margin-right: 30rpx;
 }
 .add-btn:last-of-type{
     margin-right: 0;
@@ -105,13 +112,13 @@ page{
     position: fixed;
     left: 0;
     bottom: 0;
-    width: 750rpx;
-    height: 154rpx;
-    background: #F2F2F2;
-    border-top: 1px solid #E3E3E3;
-    box-sizing: border-box;
-    box-sizing: border-box;
     padding:0 30rpx;
+    padding-bottom: env(safe-area-inset-bottom);
+    width: 690rpx;
+    min-height: 142rpx; 
+    box-sizing: unset;
+    background: #F2F2F2;
+    border-top: 1px solid #E3E3E3; 
 }
 .save-btn{
     width: 270rpx;
@@ -123,24 +130,26 @@ page{
 } 
 
 .delete-box{
-    width:40rpx;
-    height:40rpx;
+    width:30rpx;
+    height:30rpx;
     position: absolute;
     top: -15rpx;
     right: -4rpx;
     transform: rotate(-45deg);
     z-index: 2;
+    border: 1px solid #5f5f5f;
+    border-radius: 50%;
 }
 .delete{
-    width: 24rpx;
+    width: 70%;
     height: 2rpx;
-    background-color: #000;
+    background-color: #5f5f5f;
 }
 .delete::after{
     content: "";
     width: 2rpx;
-    height: 24rpx;
-    background-color: #000;
+    height: 70%;
+    background-color: #5f5f5f;
     position: absolute;
     left: 50%;
     top: 50%;

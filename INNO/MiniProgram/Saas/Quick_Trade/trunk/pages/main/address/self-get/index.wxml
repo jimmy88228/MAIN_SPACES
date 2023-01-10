@@ -22,6 +22,6 @@
     </view>
   </view>
   <view class="page_main_btn">
-    <button class="l_default_btn" catchtap='submitStore' style="{{brand_info.style.font_color ? 'background-color:'+brand_info.style.bg_color+';' : ''}}">确定</button>
+    <button class="l_default_btn" catchtap='submitStore' hover-class="active">确定</button>
   </view>
 </view>

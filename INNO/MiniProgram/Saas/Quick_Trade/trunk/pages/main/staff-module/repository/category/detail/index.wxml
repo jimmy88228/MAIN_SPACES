@@ -3,26 +3,29 @@
 
 <view class="category-detail-page">
   <view class="category-detail-main">
-    <scroll-view class="category-detail-list" scroll-y>
-      <block wx:for="{{20}}" wx:key="index">
+    <scroll-view class="category-detail-list" scroll-y bindscrolltolower="handleScrollToLower" wx:if="{{list.length}}">
+      <block wx:for="{{list}}" wx:key="goods_id">
         <view class="cdl-item">
           <view class="msg-box flex">
-            <image src="https://devimgtest.innourl.com/SAAS_IMAGE/images/INNO/goods/goods_thumb/20221209/20221209162022772_3815014.jpg" mode="aspectFit" class="goods-img f-s-0"></image>
+            <image src="{{item.goods_img || ''}}" mode="aspectFit" class="goods-img f-s-0"></image>
             <view class="content flex-1">
-              <view class="goods-name bold">Puma X Ami Paris联名款系列男子外套/夹克53599801</view>
-              <view class="price bold">18</view>
-              <view>
-                <span class="title">尺码</span>
-                <span class="value bold">34、36</span>
+              <view class="goods-name bold text-flow2">{{item.goods_name}}</view>
+              <view class="price bold">￥{{item.market_price||''}}</view>
+              <view class="text-flow" wx:for="{{item.specList}}" wx:key="catId" wx:for-item="specCat" wx:for-index="specCatIndex">
+                <span class="title">{{specCat.catName || ""}}</span>
+                  <span class="value bold"><block wx:for="{{specCat.specList}}" wx:key="specId">{{index!=0?'/':''}}{{item.specName}}</block></span>
               </view>
-              <view>
+              <!-- <view>
                 <span class="title">库存</span>
                 <span class="value bold">20</span>
-              </view>
+              </view> -->
             </view>
           </view>
         </view>
       </block>
     </scroll-view>
+    <view wx:else class="cdl-nodata flex-c-c">
+      暂无数据
+    </view>
   </view>
 </view>

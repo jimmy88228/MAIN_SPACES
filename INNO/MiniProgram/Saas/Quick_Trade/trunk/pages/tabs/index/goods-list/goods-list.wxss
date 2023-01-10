@@ -117,8 +117,11 @@ page{
   font-weight: bold;
 }
 button.i-goods-purchase-btn{
-  width: 160rpx;
+  min-width: 160rpx;
+  max-width: 220rpx;
+  width: unset;
   height: 68rpx;
+  padding: 0 40rpx;
   background-color: var(--main-color);
   color: #ffffff;
   font-size: 32rpx;
@@ -142,7 +145,7 @@ button.i-goods-purchase-btn{
   font-size: 20rpx;
   color: #D7B58B;
 }
-button.i-goods-share-btn{
+.i-goods-share-btn{
   position: fixed;
   bottom: calc(var(--tab-bar-page-bottom) + 20rpx);
   right: 20rpx;

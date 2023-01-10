@@ -266,7 +266,7 @@ function checkIfNeedCallPayImmediately() {
 
 function setCountDown() {
   let {menuInfo, orderInfo} = this.data;
-  if (menuInfo.needPay && MyDate.parse(orderInfo.autoCancelTime) > MyDate.parse(orderInfo.serverTime)) {
+  if ((menuInfo.needPay || menuInfo.canQrcodePay)&& MyDate.parse(orderInfo.autoCancelTime) > MyDate.parse(orderInfo.serverTime)) {
     this.setData({
       showTimeOut: true
     })

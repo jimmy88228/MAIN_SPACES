@@ -10,6 +10,7 @@ let _config = getSetConfig({
   BRAND_CODE: BRAND_CODE, // 品牌名称
   iconFileName: ICONNAME, // 品牌icon文件夹
   visitApiType: API_TYPE,
+  barCodeApiType: API_TYPE,
   dataCacheTime: 3,//页面缓存时间（分钟）
   PAGE_SIZE: 20,
   PLATFORM:{

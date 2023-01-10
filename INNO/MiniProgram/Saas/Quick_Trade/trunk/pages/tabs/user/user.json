@@ -4,7 +4,6 @@
     "user-header": "./modules/header/header",
     "order-bar": "./modules/order-bar/order-bar",
     "user-service": "./modules/user-service/user-service",
-    "staff-service": "./modules/staff-service/staff-service",
-    "btns": "/components/common/basic/buttons/index"
+    "staff-service": "./modules/staff-service/staff-service"
   }
 }

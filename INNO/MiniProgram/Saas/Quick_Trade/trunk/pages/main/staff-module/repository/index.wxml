@@ -1,7 +1,9 @@
 <!--pages/main/staff-module/repository/index.wxml-->
+<!-- public 必须是第一个元素 -->
+<include src="/common/base/page/index.wxml" />
 <view class="repository">
-    <search-box category-list="{{categoryList}}"></search-box>
+    <search-box bindonConfirm="onConfirm" category-list="{{categoryList}}" bindonCatSelect="onCatSelect" ></search-box>
     <view class="goods-list-box">
-        <goods-list bindsave="save" bindonSelect="onSelect" bindonSelectAll="onSelectAll" is-select="{{isSelect}}" goods-list="{{goodsList}}" bindonRefresh="onRefresh" domain-path="{{domainPath}}" ></goods-list>
+        <goods-list bindscrolltolower="scrolltolower" bindsave="save" bindonSelect="onSelect" bindonSelectAll="onSelectAll" is-select="{{isSelect}}" goods-list="{{goodsList}}" bindonDelete="onDelete" bindonRefresh="onRefresh" domain-path="{{domainPath}}" ></goods-list>
     </view>
 </view>

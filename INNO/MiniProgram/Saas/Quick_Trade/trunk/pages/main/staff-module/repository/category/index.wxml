@@ -1,15 +1,15 @@
 <!-- public 必须是第一个元素 -->
 <include src="/common/base/page/index.wxml" />
 
-<view class="goods-category-edit-page" bindtap="jumpAction" data-url="/pages/main/staff-module/repository/category/detail/index">
-  <scroll-view class="goods-category-edit-main" scroll-y >
+<view class="goods-category-edit-page">
+  <scroll-view class="goods-category-edit-main" scroll-y bindscrolltolower="handleScrollToLower" >
     <view class="gce-list">
-      <block wx:for="{{20}}" wx:key="index">
-        <view class="gce-item" hover-class="active">
+      <block wx:for="{{list}}" wx:key="index">
+        <view class="gce-item" hover-class="active" bindtap="jumpAction" data-url="/pages/main/staff-module/repository/category/detail/index?id={{item.id}}">
           <view class="gce-item-left">
             <view class="gcei-name">
-              <text class="gcei-name-text">A类型</text>
-              <text class="gcei-name-quantity">（20个）</text>
+              <text class="gcei-name-text">{{item.catName}}</text>
+              <text class="gcei-name-quantity">（{{item.catGoodsNum || 0}}个）</text>
             </view>
           </view>
           <view class="gce-item-right">

@@ -8,6 +8,7 @@ import SIH from "../../helper/system-info-helper/index"
 import StorageH from "../../helper/storage-handler/index";
 import SMH from "../../helper/show-message-helper/index";
 import CDateH from "../../helper/cache-date-handler/index"
+import StoreH from "../../helper/store-helper/index";
 
 const STORAGE_SESSION_ID_KEY = "SESSION_ID";
 const STORAGE_USER_TOKEN_KEY = "USER_TOKEN";
@@ -22,11 +23,9 @@ const STORE_STAFF_INFO_KEY = "STORE_STAFF_INFO";
 function userRegister(showLoading, iData = {}) {
   iData = iData || {};
   console.log('进来 userRegister', iData)
-  let paramsJson = PH.paramsJson() || {};
-  let storeId = paramsJson.store_id || (paramsJson.options && paramsJson.options.query && paramsJson.options.query.store_id) || 0;
-  if (paramsJson.staff_id && storeId) {
-    storeId = 0;
-  }
+  let storeInfo = StoreH.storeInfo || {};
+  let storeId = storeInfo.storeId || 0;
+  let staffId = storeInfo.staffId || 0;
   let userInfo = iData.userInfo || {};
   let url = this.isCanUrPf ? 'registerByUserProfile' : 'userRegister';
   let data = {
@@ -36,8 +35,8 @@ function userRegister(showLoading, iData = {}) {
     profileEncryptData: iData && iData.encryptedData || "",
     sessionId: iData.sessionId || 0,
     shareCode: iData.shareCode || "",
-    storeId: storeId,
-    staffId: paramsJson.staff_id || 0,
+    storeId,
+    staffId,
   }
   if(this.isCanUrPf){
     data = {
@@ -62,6 +61,7 @@ function userRegister(showLoading, iData = {}) {
     SMH.showToast({
       title: error && error.errMsg || error.msg
     })
+    return Promise.reject(error);
   })
 }
 
@@ -78,8 +78,11 @@ function userLogin(sessionId, showLoading) {
       })
     })
     .then(e => {
-      e.data = e.data || {};
-      return e;
+      if(e.code == 1){
+        e.data = e.data || {};
+        return e;
+      }
+      return Promise.reject(e)
     }).catch(error => {
       this.removeLoginData();
       return Promise.reject(error);
@@ -89,12 +92,11 @@ function userLogin(sessionId, showLoading) {
 }
 
 //获取用户信息
-function getUserExtraInfos(token, isShowLoad = true) {
-  if (!token) return Promise.reject({});
-  return UserApi.getUserSimpleInfo({
+function getUserExtraInfos(shareCode, isShowLoad = true) {
+  if (!shareCode) return Promise.reject({});
+  return QT_UserApi.getUserSimpleInfo({
     params: {
-      userToken: token,
-      brandCode: Conf.BRAND_CODE,
+      shareCode:shareCode
     },
     other: {
       isShowLoad: isShowLoad
@@ -340,8 +342,9 @@ class LoginManager {
           register: false
         });
         if (!data.userKey) return Promise.reject("loginAsync->data.userKey不存在");
-        return getUserExtraInfos.call(this, data.userKey);
+        return getUserExtraInfos.call(this, data.shareCode);
       }).finally(() => {
+        
         //500毫秒后释放；
         setTimeout(() => {
           this._loginAsyncHold && delete this._loginAsyncHold;
@@ -382,7 +385,7 @@ class LoginManager {
         return userRegister.call(this, showLoading, e)
       })
       .then(userData => {
-        return getUserExtraInfos.call(this, userData.userKey).then(userInfo => {
+        return getUserExtraInfos.call(this, userData.shareCode).then(userInfo => {
           this.saveLoginData({
             ...userData,
             userInfo: userInfo,
@@ -392,8 +395,8 @@ class LoginManager {
         })
       });
   }
-  getUserSimpleInfo(userToken) {
-    return getUserExtraInfos.call(this, userToken)
+  getUserSimpleInfo(shareCode) {
+    return getUserExtraInfos.call(this, shareCode)
   }
   getUserTokenAsync(showLoading, noAuthHandlerF) {
     return this.userToken ?
@@ -411,15 +414,15 @@ class LoginManager {
 
   reSetSimpleInfo() {
     if (!this.userKey) return Promise.reject();
-    return UserApi.getUserSimpleInfo({
+    return QT_UserApi.getUserSimpleInfo({
       params: {
-        brandCode: Conf.BRAND_CODE,
-        userToken: this.userKey || ""
+        shareCode:this.shareCode
       },
       other: {
         isShowLoad: false
       }
     }).then(res => {
+      console.log('getUserSimpleInfo',res)
       if (res.code == "1") {
         let data = res.data || {};
         this.saveUserInfo(data);
@@ -563,10 +566,12 @@ class LoginManager {
     StorageH.remove(STORAGE_USER_TOKEN_KEY);
     StorageH.remove(STORAGE_USER_INFOS_KEY);
     StorageH.remove(STORAGE_SHARE_CODE_KEY);
+    StorageH.remove(STORAGE_USER_KEY);
     delete this._openId;
     delete this._userToken;
     delete this._userInfos;
     delete this._shareCode;
+    delete this._userKey;
     delete this._loginAsyncHold;
   }
   pastRemoveLoginData() {
@@ -581,7 +586,7 @@ class LoginManager {
 
   //get数据
   get isLogin() {
-    return !!this.userToken && !!this.userKey && !!this.userInfo.uId && !!this.openId;
+    return !!this.userToken && !!this.userKey && !!this.openId;
   }
   get isCheckLogin() {
     return this._isCheckLogin || false;

@@ -9,19 +9,22 @@ Component(App.BC({
             type:Array,
             value:[]
         }
-    },
-
-    /**
-     * 组件的初始数据
-     */
+    }, 
     data: {
-
-    },
-
-    /**
-     * 组件的方法列表
-     */
+      searchInfo:{},
+      curId:0,
+    }, 
     methods: {
-
+      onInput(e){
+        this.onInputPublic(e);
+      },
+      onConfirm(){
+        this.triggerEvent('onConfirm',this.data.searchInfo.name)
+      }, 
+      onCatSelect(e){
+        let id = this.getDataset(e,'id');
+        this.setData({curId:id})
+        this.triggerEvent('onCatSelect',id);
+      }
     }
 }))

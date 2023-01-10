@@ -55,6 +55,7 @@
         ]
     },
     "window": {
+        "backgroundColor":"#F2F2F2",
         "backgroundTextStyle": "light",
         "navigationStyle": "default",
         "navigationBarBackgroundColor": "#fff",
@@ -62,7 +63,13 @@
         "navigationBarTextStyle": "black"
     },
     "usingComponents": {
-        "public-component": "/common/base/public/component/index"
+        "public-component": "/common/base/public/component/index",
+        "btns": "/components/common/basic/buttons/index",
+        "transition": "/components/common/basic/transition/index",
+        "window": "/components/common/view/window/index",
+        "custom-pop":"/components/common/basic/pop/custom-pop/index",
+        "ori-input":"/components/common/view/ori-cpts/ori-input/index",
+        "ori-scroll-view":"/components/common/view/ori-cpts/ori-scroll-view/index"
     },
     "requiredPrivateInfos": [
       "chooseAddress"

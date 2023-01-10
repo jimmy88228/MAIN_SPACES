@@ -1,8 +1,6 @@
-import {handleAppQuery} from "./helper";
 import LCC from "../../../helper/lifecycle-controller/index"
 function theFrontPart(appQuery, appOnLaunch, next) { // onLaunch的前半部分(全局)
   console.log("App.onLaunch", appQuery);
-  handleAppQuery(appQuery);
   appOnLaunch && appOnLaunch.call(this);
   this.inLifeCycle = "AfterOnLaunch";
   next();

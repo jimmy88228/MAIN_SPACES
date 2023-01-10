@@ -23,7 +23,7 @@
     padding-top: 2rpx;
 }
 .content-box{
-    padding-bottom: 18rpx;
+    padding-bottom: 15rpx;
     line-height: 38rpx;
 }
 .title{

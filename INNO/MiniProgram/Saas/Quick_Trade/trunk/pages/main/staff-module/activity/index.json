@@ -1,5 +1,5 @@
 {
-  "navigationBarTitleText": "",
+  "navigationBarTitleText": "创建活动",
   "usingComponents": {
     "goods-list":"./cps/goods-list/index",
     "time-picker":"/components/common/view/time-picker/index"

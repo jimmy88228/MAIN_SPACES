@@ -1,6 +1,6 @@
 import myProxy from "../../support/proxy/index";
 
-const MAX_BLOCKING_TIME = 5 * 1000; // 最长阻塞时间 ms
+const MAX_BLOCKING_TIME = 20 * 1000; // 最长阻塞时间 ms
 
 class LifeCycleController {
   static getInstance() {

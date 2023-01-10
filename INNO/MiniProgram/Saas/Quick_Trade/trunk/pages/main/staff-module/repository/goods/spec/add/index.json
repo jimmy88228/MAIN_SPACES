@@ -1,4 +1,6 @@
 {
   "navigationBarTitleText":"常用规格设置",
-  "usingComponents": {}
+  "usingComponents": {
+    "add-pop":"/pages/main/staff-module/repository/goods/spec/add/add-pop/index"
+  }
 }

@@ -33,11 +33,12 @@ Page(App.BP({
     console.log('bindPhoneHandle',e,App.LM.userInfo);
     if(userInfo.mobilePhone){
       return BindPhoneHelper.changePhoneNumber(e).then(()=>{
-        this.updatePageUserProfile();
+        updatePageUserProfile.call(this);
       });
     }else{
       return BindPhoneHelper.getPhoneNumber(e).then(()=>{
-        this.updatePageUserProfile();
+        App.SMH.showToast({title: "已绑定手机号码"})
+        updatePageUserProfile.call(this);
       });
     }
   },

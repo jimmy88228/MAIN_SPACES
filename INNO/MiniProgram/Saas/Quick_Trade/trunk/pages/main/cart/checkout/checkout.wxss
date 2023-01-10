@@ -58,8 +58,9 @@ page {
   align-items: center;
 }
 .checkout-radio{
-  transform: scale(0.65);
-  margin-left: 36rpx;
+  transform: scale(0.68); 
+  transform-origin:top right;
+  font-size: 36rpx;
 }
 .cr-remark-input{
   width: 480rpx;

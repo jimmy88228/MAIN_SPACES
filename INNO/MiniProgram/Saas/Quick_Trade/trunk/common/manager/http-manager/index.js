@@ -9,6 +9,7 @@ import {
   DstbApiList,
   // RegApiList, 
   // VSlogApiList,
+  BarCodeApiList,
 } from "./http-api";
 import {
   QT_UserApiList,
@@ -17,7 +18,7 @@ import {
   QT_VSlogApiList,
   QT_GoodsApiList,
   QT_BuyApiList,
-  QT_PayApiList
+  QT_PayApiList,
 } from "./qt-api";
 
 const apiDomain = Conf.api_domain || {};
@@ -130,6 +131,8 @@ EasyHttp.setRequestHandler(req => {
 // 商城用户
 export const UserApi = new EasyHttp().setBaseUrl(apiDomain.USERAPI).addRequests(UserApiList);
 export const DstbApi = new EasyHttp().setBaseUrl(apiDomain.USERAPI).addRequests(DstbApiList);
+// 商城 码
+export const BarCodeApi = new EasyHttp().setBaseUrl(apiDomain.BARCODEAPI).addRequests(BarCodeApiList); 
 // 用户
 export const QT_UserApi = new EasyHttp().setBaseUrl(apiDomain.QT_USERAPI).addRequests(QT_UserApiList);
 // 注册登录
@@ -147,11 +150,12 @@ export const QT_NewPayApi = new EasyHttp().setBaseUrl(apiDomain.QT_NEWPAYAPI).ad
 export default {
   UserApi,
   DstbApi,
+  BarCodeApi,
   QT_UserApi,
   QT_RegApi,
   QT_DstbApi,
   QT_VsLogApi,
   QT_GoodsApi,
   QT_BuyApi,
-  QT_NewPayApi
+  QT_NewPayApi,
 }

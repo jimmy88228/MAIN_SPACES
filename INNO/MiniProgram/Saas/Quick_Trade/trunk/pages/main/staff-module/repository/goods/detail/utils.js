@@ -8,14 +8,14 @@ let FileSystemManager = null;
 const MAX_SIZE = 2 * 1000 * 1024; // 上传图片最大体积 2M
 const CAN_USE_CHOOSE_MEDIA = wx.canIUse && wx.canIUse("chooseMedia") || false; // 可以使用新的方法选择图片
 
-export function chooseImage(){
+export function chooseImage(count = 1){
   retainSessionH.saveRetainSession({
     shortPath: (getCurrentPages().slice(-1)[0] || {}).route,
     shortHome: true
   })
   if (CAN_USE_CHOOSE_MEDIA) {
     return WxApi.chooseMedia({
-      count: 1,
+      count: count,
       mediaType: ['image'],
       sourceType: ['album', 'camera'],
       sizeType: ['compressed']
@@ -24,14 +24,14 @@ export function chooseImage(){
       let tempFiles = res.tempFiles || [];
       let list = tempFiles.map(item => ({
         type: item.sizeType,
-        path: tempFilePath,
+        path: item.tempFilePath,
         size: item.size
       }))
       return Promise.resolve(list)
     })
   }
   return WxApi.chooseImage({
-    count: 1,
+    count: count,
     sourceType: ['album', 'camera'],
     sizeType: ['compressed']
   })
@@ -130,7 +130,7 @@ function uploadImageRequest({filePath, suffix}){
     try {data = JSON.parse(res.data)} catch (error) {}
     let domain_path = data.data && data.data.ImgDomain || "";
     let file_path = data.data && data.data.file_path || "";
-    return Promise.resolve(domain_path + file_path)
+    return Promise.resolve({domain_path, file_path})
   })
   .finally(() => {SMH.hideLoading()})
 }

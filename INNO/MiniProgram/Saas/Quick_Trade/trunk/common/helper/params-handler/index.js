@@ -1,4 +1,9 @@
 import StorageH from "../../helper/storage-handler/index";
+import LM from "../../manager/login-manager/index";
+import Conf from "../../../config/index";
+import { BarCodeApi } from "../../manager/http-manager/index";
+
+
 class ParamsManager {
   static getInstance() {
     if (!ParamsManager.instance) {
@@ -10,12 +15,22 @@ class ParamsManager {
     let paramJson = StorageH.get("PAGE_PARAMS_JSON") || {};
     this._paramsJson = paramJson || {};
   }
-  initParam(options){
+  initStatus(){
+    this.isScanWXCodeLog = false;
+  }
+  /**
+   * 
+   * @param {Object} options 进入App参数
+   * @returns {Object} options 处理后的App参数 
+   */
+  initParam(options){ 
     let query = options.query;
     if (query.barCodeId || query.scene){ //为定好的协议参数，通过解析协议获取需要的数据
       console.log(query, "scanWXLOG前参数")
+      return scanWXCodeLog.call(this, query);
     }
     this.handleParams({ options: options });
+    return Promise.resolve(options)
   }
   handleParams(obj) {
     this.mergePageParam(obj);
@@ -68,6 +83,54 @@ class ParamsManager {
     }
     return paramsJson;
   }
+}
+
+function scanWXCodeLog(options = {}) {
+  if (!options.barCodeId && !options.scene) return Promise.resolve(options);
+  return BarCodeApi.scanWXCodeLog({
+    data: {
+      "barCodeId": options.barCodeId || "",
+      "scence": options.scene || "",
+      brandCode: Conf.BRAND_CODE,
+      userToken: LM.userKey
+    },
+    other: {
+      isShowLoad: true
+    }
+  }).then(e => {
+    if (e.code == "1") {
+      console.log(e,"scanWXCodeLog 请求后的参数 data")
+      let data = e.data;
+      let p_scene = data.p_scene || "";
+         p_scene = JSON.parse(p_scene);
+      let fromUser = data.userToken;
+      let opKind = data.opKind;
+      let p_path = data.p_path || "";
+      let { extendParam1,extendParam2,extendParam3 } = data;
+      p_scene = {
+        fromUser,
+        opKind,
+        extendParam1,
+        extendParam2,
+        extendParam3,
+        p_path,
+        ...p_scene
+      }
+      //须保留兼容之前的
+      this.saveParams(p_scene);
+      this.handleParams(p_scene);
+      //
+      this.isScanWXCodeLog = true;
+      //
+      // let _time = setTimeout(function(){
+      //   clearTimeout(_time);
+      //   EB.call("SceneParamsChange", this);
+      // }.bind(this),350);
+      //
+      return this.paramJson().options || options;
+    }
+    return options;
+  })
 }
 
 export default ParamsManager.getInstance();

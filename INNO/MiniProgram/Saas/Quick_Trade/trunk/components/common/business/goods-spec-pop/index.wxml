@@ -11,7 +11,7 @@
             <text class="already-chosen-text">已选<block wx:for="{{selectedSku}}" wx:key="index">"{{item.name}}" </block></text>
           </view>
           <view class="gdsi-goods-sn">
-            <text class="gdsi-prefix">商品编号 </text>
+            <text class="gdsi-prefix">商品编码 </text>
             <text class="gdsi-goods-sn-text">{{selectedProductInfo.product_sn}}</text>
           </view>
         </view>
@@ -36,12 +36,12 @@
       <view class="g-s-delivery-type-con">
         <view class="gsdtc-main">
           <radio-group class="gsdtc-radio-group" bindchange="handleShippingWayRadioChange">
-            <view class="gsdtc-radio-view">
-              <radio class="spec-radio" color="#F5475F" checked="{{shippingWay === 0}}" value="{{0}}" />快递配送
-            </view>
-            <view class="gsdtc-radio-view">
-              <radio class="spec-radio" color="#F5475F" checked="{{shippingWay === 1}}" value="{{1}}" />门店自提
-            </view>
+            <radio class="spec-radio" color="#F5475F" checked="{{shippingWay === 0}}" value="{{0}}">
+              <text class="spec-shipping">快递配送</text>
+            </radio>
+            <radio class="spec-radio" color="#F5475F" checked="{{shippingWay === 1}}" value="{{1}}">
+              <text class="spec-shipping">门店自提</text>
+            </radio>
           </radio-group>
         </view>
       </view>
@@ -49,7 +49,12 @@
       <view class="g-s-footer">
         <view class="g-s-purchase-btn-group">
           <btns class="g-s-purchase-btn-con" disabled="{{!selectSkuFinished}}" bind:clickcallback="handlePurchaseButtonTap">
-            <view class="g-s-purchase-btn {{!selectSkuFinished ? 'disabled': ''}}" hover-class="active">立即购买</view>
+            <block wx:if="{{!hasInventory}}">
+              <view class="g-s-purchase-btn disabled" hover-class="active">已售罄</view>
+            </block>
+            <block wx:else>
+              <view class="g-s-purchase-btn {{!selectSkuFinished ? 'disabled': ''}}" hover-class="active">立即购买</view>
+            </block>
           </btns>
         </view>
       </view>

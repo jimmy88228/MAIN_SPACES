@@ -3,7 +3,7 @@
 <scroll-view class="tab-bar-page-container" scroll-y>
   <view class="user-page">
     <!-- 用户头部 -->
-    <user-header userData="{{userData}}"/>
+    <user-header userData="{{userData}}" isLogin="{{isLogin}}"/>
 
     <!-- 订单 -->
     <order-bar userData="{{userData}}"/>

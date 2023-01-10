@@ -1,0 +1,33 @@
+<include src="/common/base/component/index.wxml" />
+<custom-pop id="custom-pop">
+  <view class="custom-pop-box flex-c-c flex-col">
+    <view class="batch-box f-s-0 flex-c-c" wx:if="{{fromType == 'activity'}}">
+        <view class="batch-title">秒杀价</view>
+        <ori-input errTip="秒杀价" class="ori-label" validArray="{{['NUMBER_MAX_6']}}" type="digit" ext-class="batch-input" ext-placeholder-class="placehold-text" placeholder="请输入秒杀价" bindinput="onBatchInput" 
+        data-key="salePrice"/> 
+    </view>
+    <view class="batch-box f-s-0 flex-c-c">
+        <view class="batch-title">原价</view>
+        <ori-input errTip="原价" class="ori-label" validArray="{{['NUMBER_MAX_6']}}" type="digit" ext-class="batch-input" ext-ext-placeholder-class="placehold-text" placeholder="请输入原价" bindinput="onBatchInput" 
+        data-key="marketPrice"/> 
+    </view>
+    <view class="batch-box f-s-0 flex-c-c" wx:if="{{fromType == 'activity'}}">
+        <view class="batch-title">库存</view>
+        <ori-input maxlength="6" type="number" ext-class="batch-input" ext-placeholder-class="placehold-text" placeholder="请输入库存" bindinput="onBatchInput" 
+        data-key="goodsNumber"/> 
+    </view>
+    <view class="batch-box f-s-0 flex-c-c">
+        <view class="batch-title">商品编码</view>
+        <ori-input type="text" ext-class="batch-input" ext-placeholder-class="placehold-text" maxlength="20" placeholder="请输入商品编码" bindinput="onBatchInput" 
+        data-key="productSn"/> 
+    </view>
+    <view class="confirm-box flex-b-c">
+      <view bindtap="dismiss" class="cancel-btn flex-1 flex-c-c">
+        取消
+      </view>
+      <view bindtap="confirm" class="confirm-btn flex-1 flex-c-c">
+        确定
+      </view>
+    </view>
+  </view>
+</custom-pop>

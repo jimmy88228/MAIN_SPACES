@@ -29,7 +29,6 @@
 .goods-img{
     width: 170rpx;
     height: 170rpx;
-    background: #D8D8D8;
 }
 .content{
     padding-top: 2rpx;
@@ -106,3 +105,6 @@
     font-size: 26rpx;
     color: #CBF2FB;
 } 
+.m-b-10{
+  margin-bottom: 10rpx;
+}

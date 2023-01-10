@@ -1,7 +1,14 @@
 import WxApi from "../../../../common/utils/wxapi/index";
 const App = getApp();
+const purchaseButtonTextRef = {
+  0: "活动未开始",
+  1: "抢购",
+  2: "活动已过期"
+}
 Component(App.BC({
   data: {
+    activityStatus: 0,  //活动状态: 0活动未开始，1正在进行中，2活动已过期
+    purchaseButtonText: "抢购", // 购买按钮文案 
     list: [],
     nomore: false,
   },
@@ -9,10 +16,14 @@ Component(App.BC({
 
   },
   methods: {
-    loadData({activityId = 0}) {
+    loadData({activityId = 0, activityStatus = 0}) {
       this.activityId = activityId;
+      this.setData({
+        activityStatus,
+        purchaseButtonText: purchaseButtonTextRef[activityStatus]
+      });
       setDefaultParams.call(this);
-      getActivityGoodsInfo.call(this)
+      getActivityGoodsInfo.call(this);
     },
     loadNextPage() {
       if (this.data.nomore) {
@@ -46,6 +57,29 @@ Component(App.BC({
         App.SMH.showToast({title: err})
       })
     },
+    handleShareBtnTap() {
+      this.tabBarToggle();
+      this.sharePop = this.sharePop || this.selectComponent("#share-pop");
+      this.sharePop.showModal({needLogin: true})
+        .then(selectedItem => {
+          if (selectedItem.shareId === 2) { // 生成海报
+            let posterData = {
+              info:{
+                opKind: "QT_INDEX",
+              },
+              scene: {
+                "shareType": "QT_INDEX",
+                ...this.pageQuery
+              }
+            }
+            this.posterPop = this.posterPop || this.selectComponent("#poster-pop");
+            this.posterPop.showModal({type: "index", data: posterData});
+          }
+        })
+        .finally(() => {
+          this.tabBarToggle();
+        })
+    },
     noFn() {}
   }
 }))
@@ -71,6 +105,7 @@ function getActivityGoodsInfo() {
       if (res.code == 1) {
         let {list: _list, count} = res.data || {};
         let currentList = this.data.list || [];
+        _list = _list.map(item=>({...item,down_price:App.Utils.StringUtils._toFixed(item.market_price - item.sale_price,2)}))
         let list = pageIndex == 1 ? _list : [...currentList, ..._list];
         let nomore = list.length >= count;
         this.setData({list, nomore});

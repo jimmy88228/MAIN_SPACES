@@ -1,4 +1,6 @@
 <!--pages/main/staff-module/repository/goods/index.wxml-->
+<!-- public 必须是第一个元素 -->
+<include src="/common/base/page/index.wxml" />
 <view class="goods">
     <view class="box">
         <view class="msg-box">
@@ -9,7 +11,7 @@
                     <span class="set-btn flex-c-c">删除</span> -->
                 </view>
             </view>
-            <input class="name-input" placeholder-class="placehold-text" placeholder="输入商品名称与关键字…" bindinput="onInput" data-key="goods_name" value="{{goodsInfo.goods_name}}" />
+            <ori-input errTip="商品名称" class="ori-label" validArray="{{['NOT_EMPTY']}}" maxlength="50" ext-class="name-input" ext-placeholder-class="placehold-text" placeholder="输入商品名称与关键字…" bindinput="onInput" data-key="goods_name" value="{{goodsInfo.goods_name}}" />
             <view class="img-box flex">
                 <view wx:for="{{goodsInfo.goodsImgs}}" wx:key="index" class="img-goods-box">
                     <image src="{{item}}" class="img-goods" mode="aspectFit"></image>
@@ -25,28 +27,58 @@
                 <view class="content flex-b-c">
                     <view class="title">原价</view>
                     <view class="flex-c-c">
-                        <input class="goods-input" placeholder-class="placehold-text" placeholder="请输入价格" bindinput="onInput" data-key="market_price" value="{{goodsInfo.market_price}}" />
+                        <block wx:if="{{fromType=='activity' || (isEdit == 1 || goodsInfo.min_market_price>0)}}">
+                          <view class="input-text">
+                            {{goodsInfo.min_market_price}}
+                            <block wx:if="{{goodsInfo.min_market_price != goodsInfo.max_market_price}}">
+                              <span class="p-l-5 p-r-5">-</span>
+                              {{goodsInfo.max_market_price}}
+                            </block>
+                          </view>
+                        </block>
+                        <ori-input errTip="原价" wx:else class="ori-label" validArray="{{['NUMBER_LG_0','NUMBER_MAX_6']}}" ext-class="goods-input" placeholder-class="placehold-text" placeholder="请输入原价" bindinput="onInput" data-key="market_price" value="{{goodsInfo.market_price}}" />
                         <span>元</span>
                     </view>
                 </view>
                 <view class="content flex-b-c" wx:if="{{options.fromType=='activity'}}">
                     <view class="title">秒杀</view>
                     <view class="flex-c-c">
-                        <input class="goods-input" placeholder-class="placehold-text" placeholder="请输入价格" bindinput="onInput" data-key="sale_price" value="{{goodsInfo.sale_price}}" />
+                        <view class="input-text">
+                          {{goodsInfo.min_price}}
+                          <block wx:if="{{goodsInfo.min_price != goodsInfo.max_price}}">
+                            <span class="p-l-5 p-r-5">-</span>
+                            {{goodsInfo.max_price}}
+                          </block>
+                        </view>
                         <span>元</span>
                     </view>
                 </view>
                 <view class="content flex-b-c">
                     <view class="title">款号</view>
                     <view class="flex-c-c">
-                        <input class="goods-input" placeholder-class="placehold-text" placeholder="请输入款号" bindinput="onInput" data-key="goods_sn" value="{{goodsInfo.goods_sn}}" />
+                        <ori-input class="ori-label" errTip="款号" maxlength="10" validArray="{{['NOT_EMPTY']}}" ext-class="goods-input sn" placeholder-class="placehold-text" placeholder="请输入款号" bindinput="onInput" data-key="goods_sn" value="{{goodsInfo.goods_sn}}" />
                     </view>
                 </view> 
                 <view class="content flex-b-c" wx:if="{{options.fromType=='activity'}}">
                     <view class="title">库存</view>
                     <view class="flex-c-c">
-                        <input class="goods-input" placeholder-class="placehold-text" placeholder="不限" bindinput="onInput" data-key="goods_number" value="{{goodsInfo.goods_number}}" />
+                        <view class="input-text">
+                          {{goodsInfo.goods_number}}
+                        </view>
+                        <!-- <view class="input-text" wx:if="{{(goodsInfo.insert == 0 || goodsInfo.sum_goods_number>0) && hasSku}}">
+                          {{goodsInfo.insert == 0?goodsInfo.goods_number:goodsInfo.sum_goods_number}}
+                        </view>
+                        <ori-input wx:else errTip="库存" class="ori-label" validArray="{{['NUMBER_LG_0','NUMBER_MAX_6']}}" ext-class="goods-input" placeholder-class="placehold-text" placeholder="不限" bindinput="onInput" data-key="goods_number" value="{{goodsInfo.goods_number}}" />
+                        -->
                         <span>件</span>
+                    </view>
+                </view>
+                <view class="content flex-b-c" wx:if="{{options.fromType!='activity'}}">
+                    <view class="title">分类</view>
+                    <view class="flex-c-c">
+                      <view bindtap="pickerShow">
+                        {{catList[curCat] && catList[curCat].catName || ''}}
+                      </view>
                     </view>
                 </view>
             </view>
@@ -56,12 +88,13 @@
             </view> -->
         </view> 
     </view>
-    <view class="add-btn-box flex" wx:if="{{isEdit == 1}}">
-        <view class="add-btn flex-c-c" bindtap="jumpSpec">添加规格</view>
-        <view class="add-btn flex-c-c" bindtap="jumpAction" data-url="/pages/main/staff-module/repository/goods/detail/index?goods_id={{goodsInfo.goods_id}}">添加详情</view>
+    <view class="add-btn-box flex">
+        <view id="add-label" class="add-btn flex-c-c" bindtap="jumpSpec">添加规格</view>
+        <view class="add-btn flex-c-c" bindtap="jumpDetailEdit">添加详情</view>
         <!-- <view class="add-btn flex-c-c">添加款号</view> -->
     </view>
     <view class="footer flex-e-c">
-        <view class="save-btn flex-c-c" bindtap="save">保存</view>
+        <view class="save-btn flex-c-c" bindtap="handleSaveBtnTap">保存</view>
     </view>
 </view>
+<cat-pop curCat="{{curCat}}" catList="{{catList}}" id="cat-pop" bindrefreshPickerList="refreshPickerList"></cat-pop>

@@ -4,7 +4,11 @@ Component(App.BC({
     userData: {
       type: Object,
       value:{}
-    }
+    },
+    isLogin: {
+      type: Boolean,
+      value:true
+    },
   },
   ready() {
     

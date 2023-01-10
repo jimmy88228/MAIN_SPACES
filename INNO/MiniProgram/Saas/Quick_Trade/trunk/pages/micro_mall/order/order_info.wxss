@@ -94,10 +94,15 @@ page{
 .circle-icon{
   width: 32rpx;
   height: 32rpx;
-  background-color: #d8d8d8;
-  border-radius: 50%;
   transform: translateY(0%);
   margin-right: 12rpx;
+}
+.circle-icon.icon-a-package1-fill{
+  transform: translateY(-10%);
+  width: 32rpx;
+  height: 32rpx;
+  font-size: 40rpx;
+  margin-right: 16rpx;
 }
 .oiac-package{
   flex: 1;
@@ -111,6 +116,7 @@ page{
 .oiac-package-title{
   font-size: 24rpx;
   color: #222222;
+  font-weight: bold;
 }
 .oiac-package-right-arrow{
   margin-right: 10rpx;

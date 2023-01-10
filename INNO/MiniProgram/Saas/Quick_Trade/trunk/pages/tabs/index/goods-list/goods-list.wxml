@@ -13,7 +13,7 @@
             <view class="i-goods-title text-flow2">{{item.goods_name}}</view>
             <view class="i-goods-cliff" wx:if="{{item.market_price > item.sale_price}}">
               <view class="iconfont icon-xiajiang cliff-icon"></view>
-              <text>直降￥{{item.market_price - item.sale_price}}</text>
+              <text>直降￥{{item.down_price}}</text>
             </view>
             <view class="i-goods-price-con">
               <view class="i-goods-price">
@@ -31,8 +31,8 @@
             <text class="i-c-d-pre">距结束</text>
             <text class="i-c-d-time">05:12:32</text>
           </view> -->
-            <button class="i-goods-purchase-btn" hover-class="active" catchtap="handlePurchaseTap" data-item="{{item}}">
-              抢购
+            <button class="i-goods-purchase-btn" hover-class="active" catchtap="handlePurchaseTap" disabled="{{activityStatus != 1}}" data-item="{{item}}">
+              {{purchaseButtonText}}
               <!-- <btns bind:clickcallback="">抢购</btns> -->
             </button>
           </view>
@@ -45,13 +45,14 @@
       </view> -->
     </view>
   </view>
-
-  <button class="i-goods-share-btn" hover-class="active" open-type="share" catchtap="noFn">
+  <btns class="i-goods-share-btn" bind:clickcallback="handleShareBtnTap">
     <view class="i-goods-share-icon icon-fenxiang iconfont"></view>
-  </button>
+  </btns>
 </view>
 <view class="index-goods-spec-com">
   <goods-spec-pop id="goods-spec-pop" show-short-cut />
 </view>
+<share-pop id="share-pop" />
+<poster-pop id="poster-pop" />
 <!-- public -->
 <include src="/common/base/component/index.wxml" />

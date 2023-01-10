@@ -34,8 +34,12 @@
         <view class="checkout-row-left">配送方式</view>
         <view class="checkout-row-right">
           <radio-group class="checkout-radio-group" bindchange="handleShippingWayRadioChange">
-            <radio class="checkout-radio" color="#F5475F" checked="{{checkoutData.shippingWay === 1}}" value="{{1}}" />门店自提
-            <radio class="checkout-radio" color="#F5475F" checked="{{checkoutData.shippingWay === 0}}" value="{{0}}" />快递配送
+            <radio class="checkout-radio" color="#F5475F" checked="{{checkoutData.shippingWay === 1}}" value="{{1}}">
+              <span style="margin-left:14rpx;">门店自提</span>
+            </radio>
+            <radio class="checkout-radio" color="#F5475F" checked="{{checkoutData.shippingWay === 0}}" value="{{0}}">
+              <span style="margin-left:14rpx;">快递配送</span>
+            </radio>
           </radio-group>
         </view>
       </view>
@@ -85,7 +89,7 @@
             <view class="delivery-address">{{shippingInfo.storeName}}</view>
             <view class="delivery-client-info">
               <view class="dci-staff">店员: {{shippingInfo.staffName}}</view>
-              <view class="dci-phone">电话: {{shippingInfo.storePhone}}</view>
+              <view class="dci-phone">电话: {{shippingInfo.storePhone == 0 || !shippingInfo.storePhone ? '无' : shippingInfo.storePhone}}</view>
             </view>
           </view>
         </view>
@@ -120,7 +124,7 @@
               </view>
             </view>
             <view class="cgi-middle">
-              <view class="cgi-goods-name">{{item.goodsName}}</view>
+              <view class="cgi-goods-name text-flow2">{{item.goodsName}}</view>
               <view class="cgi-goods-sn">{{item.goodsSn}}</view>
               <view class="cgi-goods-spec-list">{{item.goodsAttr}}</view>
             </view>

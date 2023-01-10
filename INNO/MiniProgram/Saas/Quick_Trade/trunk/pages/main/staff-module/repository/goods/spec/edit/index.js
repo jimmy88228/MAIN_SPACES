@@ -7,6 +7,9 @@ Page(App.BP({
     inpuVal: "",
     specInfo: []
   },
+  onLoad() {
+
+  },
   onShow() {
     this.getSpecCategoryInfo();
   },

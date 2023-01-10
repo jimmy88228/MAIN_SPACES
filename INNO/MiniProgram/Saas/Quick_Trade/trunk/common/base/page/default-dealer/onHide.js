@@ -2,8 +2,7 @@ import SC from "../../../helper/state-controller/index";
 import { getPageQuery } from "./helper";
 
 function theFrontPart() { // onShow的前半部分(全局)
-  console.log("page.onHide");
-  const pageQuery = getPageQuery(this);
+  // const pageQuery = getPageQuery(this);
 }
 
 import LCC from "../../../helper/lifecycle-controller/index"

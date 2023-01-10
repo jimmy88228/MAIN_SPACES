@@ -1,193 +1,315 @@
-const { default: WxApi } = require("../../../../../../common/utils/wxapi/index");
-
-// pages/main/staff-module/repository/goods/spec/index.js
+import WxApi from "../../../../../../common/utils/wxapi/index";
 const App = getApp();
-Page(App.BP({   
-    data: { 
-        specInfo:{ //暂时没接口，先用测试数据  
-        },
-        detail:{},
-        productInfo:{
-            'default':{ 
-                market_price:"",
-                sale_price:"",
-                goods_sn:"",
-                goods_number:"",
-            }
-        },
-        curSel:"default",
-        
+Page(App.BP({
+  data: {
+    specInfoList: [], // 所有的规格列表
+    selectedSpecInfoList: [ // 已选择的规格列表
+      // { 
+      //   name: "性价比",
+      //   specList: [{
+      //       specId: 1,
+      //       specName: "高"
+      //     },
+      //     {
+      //       specId: 2,
+      //       specName: "中"
+      //     },
+      //     {
+      //       specId: 3,
+      //       specName: "低"
+      //     }
+      //   ]
+      // },
+      // {
+      //   name: "颜色",
+      //   specList: [{
+      //       specId: 1,
+      //       specName: "红"
+      //     },
+      //     {
+      //       specId: 2,
+      //       specName: "蓝"
+      //     },
+      //     {
+      //       specId: 3,
+      //       specName: "白"
+      //     }
+      //   ]
+      // }
+    ],
+    selectedSpecInfoRef: { // 已选择的规格字典
+      // 5: { // "specCatId"
+      //   1: "白色" // specId:specName
+      // },
     },
-    onLoad(options){
-        this.options = options;
-        this.setData({options})
-        this.ids = this.options.id && this.options.id.split(',') || [];
-        if(this.options.fromType == 'activity'){
-            this.activityGoodsProductInfo()
-        }else{
-            this.getSpecCategoryInfo();
-        }
-    },
-    checkOptions(data){
-        let productInfo = data||this.data.productInfo||{}; 
-        let {market_price,sale_price,goods_sn,goods_number} = this.options;
-        console.log('market_price,sale_price,goods_sn,goods_number',market_price,sale_price,goods_sn,goods_number,productInfo)
-        for(let key in productInfo){
-            let item = productInfo[key]||{};
-            console.log('进来',key,item)
-            if(market_price || market_price == 0){
-                item.market_price = market_price
-            }
-            if(sale_price || sale_price == 0){
-                item.sale_price = sale_price
-            }
-            if(goods_sn){
-                item.goods_sn = goods_sn
-            }
-            if(goods_number || goods_number == 0){
-                item.goods_number = goods_number;
-            } 
-        }
-        console.log('productInfo',productInfo)
-        this.setData({productInfo});
-    },
-    createDefault(){
-        if(this.options.fromType == 'activity'){
-            let specInfo = { 
-                "default":{
-                    name:"",
-                    list:[{id:'default'}]
-                }
-            }
-            this.setData({specInfo})
-        }
-        this.checkOptions();
-    },
-    getSpecCategoryInfo() {
-      this.showLoading();
-      return getSpecCategoryInfo()
-        .then(data => {
-          this.setData({specInfo: handleSpecInfo(data)})
-        })
-        .finally(() => {
-          this.hideLoading();
-        })
-    },
-    activityGoodsProductInfo(){
-        if(this.ids.length<=0){this.createDefault(); return Promise.reject();};
-        let params = {
-            id:this.ids.map(item=>parseInt(item)),
-            activityId:this.options.activityId
-        }
-        return activityGoodsProductInfo(params).then(res=>{
-            if(res.code==1){
-                let data = res.data||{};
-                let productEntities = data.productEntities||[];
-                let productInfo = {},specInfo={'default':{list:[]}};
-                productEntities.forEach(item=>{
-                    productInfo[item.product_id] = item;
-                });
-                specInfo.default.list = productEntities||[];
-                this.setData({specInfo})
-                console.log('productInfo',productInfo);
-                console.log('specInfo',specInfo);
-                this.checkOptions(productInfo);
-            }
-        })
-    },
-    onSelect(e){
-        let curSel = this.getDataset(e,'index');
-        console.log(e,curSel)
-        this.setData({curSel})
-    },
-    deleteSpec(e){
-        let index = this.getDataset(e,'index');
-        let specInfo = this.data.specInfo||{},curSel = this.data.curSel;
-        if(index==-1){
-            delete specInfo[curSel]
-        }else{
-            specInfo[curSel] && specInfo[curSel].list && specInfo[curSel].list.splice(index,1);
-        }
-        console.log('index',index,specInfo)
-        this.setData({specInfo})
-    },
-    onInput(e){
-        let key = this.getDataset(e,'key');
-        let id = this.getDataset(e,'id');
-        let specCatId = this.getDataset(e,'specCatId');
-        let value = e.detail && e.detail.value; 
-        this.setData({
-            [`productInfo.${id}.${key}`]:value,
-            [`productInfo.${id}.specCatId`]: specCatId
-        })
-    },
-    save(){
-        let fromType = this.options.fromType || "";
-        return fromType === "activity" ? this.activityProductUpdateOrInsert() : this.createOrUpdateGoodsProduct();
-    },
-    activityProductUpdateOrInsert(){
-        let productInfo = this.data.productInfo || {};
-        let productList = Object.values(productInfo); 
-        let params = {
-            goodsId:this.options.goodsId||0,
-            activityId:this.options.activityId||0,
-            productList,
-        }
-        console.log('Object.values',Object.values(productInfo))
-        return activityProductUpdateOrInsert(params).then(res=>{
-            let title = "保存成功";
-            if(res.code==1){}else{
-                title = res.msg||"保存失败";
-            } 
-            App.SMH.showToast({title})
-            return res;
-        }) 
-    },
-    createOrUpdateGoodsProduct() {
-      let goodsId = this.options.goodsId || 0;
-      let productInfo = this.data.productInfo || {};
-      let specInfo = this.data.specInfo || {};
-      let productList = [];
-      for (let specId of Object.keys(productInfo)) {
-        if (specId === "default") continue;
-        console.log("specId", specId, productInfo[specId], productInfo[specId].specCatId, specInfo)
-        productList.push({
-          productId: 0,
-          productSn: productInfo[specId].goods_sn,
-          marketPrice: productInfo[specId].market_price,
-          specList: (specInfo[(productInfo[specId].specCatId)].list || []).map(item => ({
-            specId: item.id,
-            specName: item.name
-          })),
-        })
-      }
-      return App.Http.QT_GoodsApi.createOrUpdateGoodsProduct({
-        data: {
-          goodsId,
-          productList
-        }
+    productList: [],
+    invalid:false,
+  },
+  onLoad(options) {
+    this.options = options;
+    this.batchInputData={};
+    this.setData({fromType:options.fromType||"",insert:options.insert||0})
+    if(this.options.fromType == 'activity'){
+      this.getAcitvityGoodsInfo().catch(e=>{
+        this.setInvalid(e);
       })
-        .then(res => {
-          if (res.code == 1) {
-            App.SMH.showToast({title: "保存成功"});
-            setTimeout(() => {WxApi.navigateBack()}, 500);
-            return res.data
-          }
-          return Promise.reject(res.msg || "保存规格失败")
-        })
-        .catch(err => {
-          App.SMH.showToast({title: err});
-          console.log("createOrUpdateGoodsProduct err", err)
-        })
+    }else{
+      this.getSpecCategoryInfo()
+        .then(() => this.getGoodsProductList());
     }
+    this.onShowed = true;
+  }, 
+  onShow(){
+    if(this.options.fromType != 'activity'){
+      this.onShowed && this.getSpecCategoryInfo();
+    }
+  },
+  getAcitvityGoodsInfo(){
+    let params = {
+      goodsId:this.options.goodsId||0,
+      activityId:this.options.activityId||0,
+      insert:this.options.insert,
+    } 
+    return getAcitvityGoodsInfo(params).then(res=>{
+      if(res.code==1){
+          let data = res.data||{};
+          let productList = data.productList||{}; 
+          this.setData({productList});
+          console.log('productList',productList)
+      }
+    })
+  }, 
+  onInput(e) {
+    let {index, key} = this.getDataset(e);
+    this.setData({
+      [`productList[${index}].${key}`]: e.detail.value
+    })
+  },
+  getSpecCategoryInfo() {
+    this.showLoading();
+    return getSpecCategoryInfo()
+      .then(data => {
+        this.setData({
+          specInfoList: data
+        })
+        return data
+      })
+      .finally(() => {
+        this.hideLoading();
+      })
+  },
+  getGoodsProductList() {
+    let goodsId = this.options.goodsId || 0;
+    if (!goodsId) return Promise.resolve();
+    this.showLoading();
+    return getGoodsProductList({goodsId})
+      .then(data => {
+        let {productList = [], specList = []} = data;
+        let selectedSpecInfoRef = {};
+        specList.forEach(specCat => {
+          let selectedSpecInfo = {};
+          (specCat.specList || []).forEach(spec => {
+            selectedSpecInfo[spec.specId] = spec.specName || "";
+          })
+          selectedSpecInfoRef[specCat.catId] = selectedSpecInfo;
+        })
+        this.setData({
+          productList,
+          selectedSpecInfoList: specList.map(specCat => ({ // 这里是因为接口返回的字段名不一样
+            specCatId: specCat.catId,
+            specCatName: specCat.catName,
+            SpecInfoList: specCat.specList.map(spec => ({
+              specCatId: specCat.catId,
+              specId: spec.specId,
+              specName: spec.specName
+            }))
+          })),
+          selectedSpecInfoRef
+        })
+      })
+      .finally(() => {
+        this.hideLoading();
+      })
+  },
+  onSelect(e) {
+    let {specCatId, isSelected} = this.getDataset(e);
+    let specInfoList = this.data.specInfoList || [];
+    let selectedSpecInfoList = JSON.parse(JSON.stringify(this.data.selectedSpecInfoList || []));
+    if (isSelected) { // 已经选择了，就去掉
+      let selectedSpecIndex = selectedSpecInfoList.findIndex(item => item.specCatId === specCatId);
+      let removeItem = selectedSpecInfoList.splice(selectedSpecIndex, 1)[0] || {};
+      let selectedSpecInfoRef = this.data.selectedSpecInfoRef || {};
+      delete selectedSpecInfoRef[removeItem.specCatId];
+      this.setData({
+        selectedSpecInfoRef,
+        selectedSpecInfoList
+      })
+    } else { // 增加
+      let selectedSpecIndex = specInfoList.findIndex(item => item.specCatId === specCatId);
+      let selectedSpecInfo = specInfoList[selectedSpecIndex] || {};
+      let selectedSpecInfoRef = {};
+      selectedSpecInfo.SpecInfoList.forEach(item => {
+        selectedSpecInfoRef[`${item.specId}`] = item.specName;
+      })
+      this.setData({
+        [`selectedSpecInfoList[${selectedSpecInfoList.length}]`]: JSON.parse(JSON.stringify(selectedSpecInfo)),
+        [`selectedSpecInfoRef.${selectedSpecInfo.specCatId}`]: selectedSpecInfoRef
+      })
+    }
+
+    this.constructProductList();
+  },
+  deleteSpec(e) {
+    let {specCatId, specId} = this.getDataset(e);
+    let {selectedSpecInfoList = [], selectedSpecInfoRef = {}, productList = []} = this.data;
+    productList = JSON.parse(JSON.stringify(productList));
+    let specCatIndex = selectedSpecInfoList.findIndex(item => item.specCatId === specCatId);
+    let specCatItem = selectedSpecInfoList[specCatIndex] || {};
+    let specInfoList = JSON.parse(JSON.stringify(specCatItem.SpecInfoList || []));
+    console.log("deleteSpec", {specCatId, specId})
+    if (specInfoList.length === 1) {
+      this.onSelect({currentTarget: {dataset: {specCatId, isSelected: true}}});
+      return 
+    }
+    let specIndex = specInfoList.findIndex(item => item.specId === specId);
+    for (let i = 0; i < productList.length; i++) {
+      let product = productList[i];
+      let specList = product.specList || [];
+      // let specI = specList.findIndex(spec => (spec.specId === specId && spec.specCatId === specCatId));
+      let specI = specList.findIndex(spec => (spec.specId === specId)); // specId具有唯一性
+      if (specI >= 0) {
+        productList.splice(i, 1);
+        i--;
+      }
+    }
+    specInfoList.splice(specIndex, 1);
+    delete selectedSpecInfoRef[specCatId][specId];
+    this.setData({
+      [`selectedSpecInfoList[${specCatIndex}].SpecInfoList`]: specInfoList,
+      selectedSpecInfoRef,
+      productList
+    })
+  },
+
+  constructProductList() {
+    let selectedSpecInfoList = this.data.selectedSpecInfoList || [];
+    let productList = constructProductListByCartesian(selectedSpecInfoList);
+    this.setData({
+      productList
+    })
+    console.log("productList", productList)
+  },
+
+  createOrUpdateGoodsProduct() {
+    let productList = this.data.productList || [];
+    let goodsId = this.options.goodsId || 0;
+    this.showLoading()
+    return createOrUpdateGoodsProduct({goodsId, productList})
+      .then((res) => {
+        if(res.code==1){
+          let productList = this.data.productList||[]; 
+          App.StorageH.set('curSetProductListInfo', {
+            goodsId:this.options.goodsId||0, 
+            productList
+          }); 
+          App.SMH.showToast({title:"保存成功"});
+          let timer = setTimeout(() => {
+            clearTimeout(timer);
+            timer = null;
+            WxApi.navigateBack();
+          }, 500)
+        }
+        return res;
+      })
+      .finally(() => {
+        this.hideLoading();
+      })
+  }, 
+  activityProductUpdateOrInsert(){
+    let productList = this.data.productList||[];
+    let params = {
+        goodsId:this.options.goodsId||0,
+        activityId:this.options.activityId||0,
+        productList:productList.map(item=>({ //接口传参格式
+          id:item.id||0,
+          product_id:item.productId||item.product_id||0, 
+          market_price:item.marketPrice||0,
+          sale_price:item.salePrice||0,
+          goods_number:item.goodsNumber||0,
+          product_sn:item.productSn||"",
+          specList:item.specList||[]
+        })),
+    }
+    return activityProductUpdateOrInsert(params).then(res=>{
+      if(res.code==1){
+        App.StorageH.set('curSetProductListInfo', {
+          goodsId:this.options.goodsId||0,
+          activityId:this.options.activityId||0,
+          productList
+        });
+        App.SMH.showToast({title:"保存成功"});
+        setTimeout(() => {wx.navigateBack();}, 500)
+      }
+    });
+  },
+  save() {
+    this._checkAllValid().then(()=>{
+      if(this.options.fromType == 'activity'){
+        this.activityProductUpdateOrInsert();
+      }else{
+        this.createOrUpdateGoodsProduct();
+      }
+    })
+    // this.oriInputArr = this.selectAllComponents('.ori-label');
+    // let arr = this.oriInputArr.map(item=>item.checkValid());
+    // Promise.all(arr).then(()=>{
+    //   if(this.options.fromType == 'activity'){
+    //     this.activityProductUpdateOrInsert();
+    //   }else{
+    //     this.createOrUpdateGoodsProduct();
+    //   }
+    // });
+  },
+  setInvalid(e){
+    this.setData({invalid:true});
+    this._showModal({
+      content:e&&e.msg||"数据异常",
+      showCancel:false,
+    }).then(()=>{
+      wx.navigateBack();
+    })
+  },
+  batchSet(){
+    this.batchSetCpt = this.batchSetCpt || this.selectComponent('#batch-set');
+    this.batchSetCpt.showModal();
+  },
+  onBatchConfirm(){ 
+    let productList = this.data.productList || [];
+    productList = productList.map(item => ({
+      ...item,
+      ...this.batchInputData
+    }))
+    this.setData({
+      productList
+    })
+  },
+  onBatchInput(e){
+    let detail = e.detail||{};
+    let {key,value}=detail;
+    if(value || value == '0'){
+      this.batchInputData[key] = value
+    }else if(this.batchInputData[key]){
+      delete this.batchInputData[key];
+    }
+  },
 }))
 
 function getSpecCategoryInfo() {
   return App.Http.QT_GoodsApi.getSpecCategoryInfo({
-    params: {
-      catId: 0
-    }
-  })
+      params: {
+        catId: 0
+      }
+    })
     .then(res => {
       if (res.code == 1) {
         return res.data || []
@@ -196,24 +318,72 @@ function getSpecCategoryInfo() {
     })
 }
 
-function handleSpecInfo(specList) {
-  let specInfo = {};
-  specList.forEach((spec, index) => {
-    specInfo[index === 0 ? "default" : spec.specCatId] = {
-      name: spec.specCatName,
-      list: (spec.SpecInfoList).map(item => ({
-        name: item.specName || "",
-        id: item.specId
-      })),
-      specCatId: spec.specCatId
-    }
+function getGoodsProductList(params) {
+  return App.Http.QT_GoodsApi.getGoodsProductList({
+    params
   })
-  return specInfo
+  .then(res => {
+    if (res.code == 1) {
+      return res.data || {}
+    }
+    return Promise.reject(res.msg || "获取规格信息失败")
+  })
 }
 
-function activityGoodsProductInfo(params){
-    return App.Http.QT_GoodsApi.activityGoodsProductInfo({
+function createOrUpdateGoodsProduct(data) {
+  return App.Http.QT_GoodsApi.createOrUpdateGoodsProduct({
+    data
+  })
+    .then(res => {
+      if (res.code == 1) {
+        App.SMH.showToast({title: "保存成功"});
+        return res
+      }
+      return Promise.reject(res.msg || "保存规格失败")
+    })
+    .catch(err => {
+      console.log("createOrUpdateGoodsProduct err", err);
+      App.SMH.showToast({title: err});
+      return Promise.reject(err)
+    })
+}
+
+function constructProductListByCartesian(arr) {
+  let productSpecList;
+  if (arr.length === 0) return [];
+  else if (arr.length === 1) {
+    productSpecList = arr[0].SpecInfoList.map(item => [item]);
+  } else {
+    productSpecList = [].reduce.call(arr, function (col, set) {
+      console.log("col", col, "set", set)
+        let res = [];
+        (col.SpecInfoList || col).forEach(c => {
+            set.SpecInfoList.forEach(s => {
+                let t = [].concat(Array.isArray(c) ? c : [c]);
+                t.push(s);
+                res.push(t);
+            })
+        });
+        return res;
+    });
+  }
+  console.log("productSpecList", productSpecList)
+  return productSpecList.map(specList => ({
+    marketPrice: '',
+    productId: 0,
+    productSn: '',
+    specList: specList || []
+  }))
+}
+
+function getAcitvityGoodsInfo(params){
+    return App.Http.QT_GoodsApi.getAcitvityGoodsInfo({
         data: params,
+    }).then(res=>{
+      if(res.code!=1){ 
+        return Promise.reject(res)
+      }
+      return res;
     })
 }
 function activityProductUpdateOrInsert(params){

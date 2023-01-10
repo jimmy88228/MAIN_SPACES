@@ -10,13 +10,17 @@ function theFrontPart(appOnShow, appQuery, next) { // onShow的前半部分(全�
     return;
   }
   console.log("App.onShow", appQuery);
+  PH.saveParams({options:appQuery});
+  PH.initStatus();
   WxApi.showLoading();
   LM.loginAsync(false)
-  .finally(() => LM.checkIfStaff(false))
-  .finally(() => LM.checkIfStore(false))
-  .finally(() => storeH.changeVisitStore(appQuery.query||{}))
-  .finally(() => storeH.getVisitStore(false, appQuery.query || {}))
-  .finally(() => {
+  .ignore(() => PH.initParam(appQuery))
+  .then(options => (appQuery = options))
+  .ignore(() => LM.checkIfStaff(false))
+  .ignore(() => LM.checkIfStore(false))
+  .ignore(() => storeH.changeVisitStore(appQuery.query||{}))
+  .ignore(() => storeH.getVisitStore(false, appQuery.query || {}))
+  .ignore(() => {
     appOnShow && appOnShow.call(this);
     this.inLifeCycle = "afterOnShow";
     WxApi.hideLoading();

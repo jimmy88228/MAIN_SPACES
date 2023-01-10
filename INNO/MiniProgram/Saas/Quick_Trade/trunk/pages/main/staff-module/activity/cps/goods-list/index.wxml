@@ -1,25 +1,36 @@
 <!--pages/main/staff-module/activity/cps/goods-list/index.wxml-->
 
-<scroll-view class="goods-list" scroll-y wx:if="{{inited}}" > 
+<ori-scroll-view id="ori-scroll-view" ext-class="goods-list" wx:if="{{inited}}" refresher-enabled="{{false}}"> 
     <view class="tips bold" wx:if="{{list.length<=0}}">
         添加参与活动商品
     </view>
-    <view class="" wx:else>
+    <block wx:else>
         <block wx:for="{{list}}" wx:key="index" wx:for-item="listItem">
-            <view class="item-box">
-                <view class="flex goods-box">
+            <view class="item-box" id="box-{{index}}">
+                <view class="flex goods-box" bindtap="editGoods" data-id="{{listItem.id}}" data-item="{{listItem}}">
                     <image  src="{{listItem.goods_img||''}}" class="img-goods f-s-0"></image>
                     <view class="msg-box flex-1">
                         <view class="content-box" wx:for="{{msgList}}" wx:key="key" wx:for-item="msgItem">
                             <span class="title">{{msgItem.name}}</span>
-                            <span class="content">{{listItem[msgItem.key]}}</span>
+                            <block wx:if="{{msgItem.key == 'sale_price'}}">
+                              <span class="content">{{listItem.min_price}}</span> 
+                              <block wx:if="{{listItem.min_price!=listItem.max_price}}">
+                                <span style="padding: 0 10rpx 0 6rpx;">-</span>
+                                <span class="content">{{listItem.max_price}}</span> 
+                              </block>
+                            </block>
+                            <span class="content" wx:else>{{listItem[msgItem.key]}}</span>
+                            <block wx:if="{{msgItem.key == 'goods_number' && listItem.insert == 0}}">
+                              <span class="title" style="margin-left: 40rpx;">已售数量</span>
+                              <span class="content">{{listItem.sale_number||0}}</span>
+                            </block>
                         </view> 
                     </view>
                 </view>
                 <view class="btn-box flex-b-c">
                     <view class="flex">
                         <view class="op-btn" bindtap="editGoods" data-id="{{listItem.id}}" data-item="{{listItem}}">编辑</view>
-                        <!-- <view class="op-btn">下架</view> -->
+                        <view class="op-btn" bindtap="onDelete" data-index="{{index}}" data-insert="{{listItem.insert}}" data-goods-id="{{listItem.goods_id}}">删除</view>
                     </view>
                     <view class="flex">
                         <view class="op-btn {{index==0?'disabled':''}}" bindtap="sortTap" data-tap="top" data-index="{{index}}">置顶</view> 
@@ -33,9 +44,9 @@
                 </view>
             </view>
         </block>
-    </view>
+    </block>
     <view class="goods-btn-box flex-b-c">
         <view class="export-btn flex-c-c" bindtap="onImport">商品导入</view>
         <view class="add-btn flex-c-c" bindtap="addGoods">新增商品</view>
     </view>
-</scroll-view>
+</ori-scroll-view>

@@ -9,30 +9,72 @@ Component(App.BC({
     }
   },
   data: {
+    activityId: 0, // 活动id
     goodsId: 0, // 商品id,
     goodsImg: "", // 商品图片
-    show: false,
+    show: false, // 是否显示
+    skuList: [], // 规格列表
+    productList: [], // 产品列表
     selectSkuFinished: false, // 是否完成选择sku
     selectedSku: [], //已选择的sku列表
     selectedProductInfo: {}, // 已选中的产品信息
     selectedProductNumber: 1, // 已选产品数量
     shippingWay: 0, // 0快递配送、1门店自提
+    hasInventory: 0, // 所有产品数量总和
   },
   methods: {
-    showModal({skuList = [], productList = [], goodsId = 0, goodsImg = ""}) {
-      this.initSkuCompnent({skuList, productList});
+    showModal({skuList = [], productList = [], goodsId = 0, goodsImg = "", activityId = 0}) {
+      // if (this.data.goodsId === goodsId) { // 同一个商品打开，不用再初始化数据
+      //   this.toggle();
+      // } else { // 不同商品打开，需要初始化数据
+      //   this.initSkuCompnent({skuList, productList}, {isRefresh: true, autoSelect: true});
+      //   this.setData({
+      //     skuList,
+      //     productList,
+      //     activityId,
+      //     goodsId,
+      //     goodsImg,
+      //     selectSkuFinished: false, // 是否完成选择sku
+      //     selectedSku: [], //已选择的sku列表
+      //     selectedProductInfo: {}, // 已选中的产品信息
+      //     selectedProductNumber: 1, // 已选产品数量
+      //     shippingWay: 0, // 0快递配送、1门店自提
+      //     hasInventory: productList.some(item => item.goods_number) , // 所有产品数量
+      //   }, () => {
+      //     this.toggle();
+      //   })
+      // }
+      this.initSkuCompnent({skuList, productList}, {isRefresh: true, autoSelect: true});
       this.setData({
         skuList,
         productList,
+        activityId,
         goodsId,
-        goodsImg
+        goodsImg,
+        selectSkuFinished: false, // 是否完成选择sku
+        selectedSku: [], //已选择的sku列表
+        selectedProductInfo: {}, // 已选中的产品信息
+        selectedProductNumber: 1, // 已选产品数量
+        shippingWay: 0, // 0快递配送、1门店自提
+        hasInventory: productList.some(item => item.goods_number) , // 所有产品数量
       }, () => {
         this.toggle();
       })
     },
-    initSkuCompnent(skuData) {
+    /**
+     * 初始化sku组件
+     * @param {Object} skuData 包含 skuList: 所有规格的列表 productList: 所有产品的列表
+     * @param {Obejct} options 配置项(可选)
+     *  @param {Boolean} isRefresh 是否刷新sku组件
+     *  @param {Boolean} autoSelect 刷新时，是否自动帮忙选中有效的第一个产品 
+     */
+    initSkuCompnent(skuData, options = {isRefresh: false, autoSelect: false}) {
+      let {isRefresh, autoSelect} = options;
       this.sku = this.sku || this.selectComponent("#sku");
-      this.sku.initData(skuData)
+      console.log("initSkuCompnent", skuData, options);
+      if (isRefresh) this.sku.reset();
+      this.sku.initData(skuData);
+      if (isRefresh && autoSelect) this.sku.autoSelectFirstAvailableProduct(skuData);
     },
     handleSkuSelect(e) {
       const {finished = false, productInfo = {}, selectedSku = []} = e.detail;
@@ -41,6 +83,10 @@ Component(App.BC({
     handleProductNumberInput(e) {
       let {selectSkuFinished, selectedProductInfo} = this.data;
       if (!selectSkuFinished) return;
+      if (e.detail.value === "") {
+        this.setData({selectedProductNumber: ""});
+        return;
+      }
       let inputValue = Number(e.detail.value) || 1;
       if (inputValue <= 0) inputValue = 0;
       else if (inputValue > selectedProductInfo.goods_number) inputValue = selectedProductInfo.goods_number;
@@ -63,7 +109,7 @@ Component(App.BC({
       this.setData({shippingWay: Number(shippingWay)})
     },
     handlePurchaseButtonTap() {
-      WxApi.navigateTo({url: `/pages/main/cart/checkout/checkout?activity_product_id=${this.data.selectedProductInfo.activity_product_id}&goods_number=${this.data.selectedProductNumber}&shippingWay=${this.data.shippingWay}`})
+      WxApi.navigateTo({url: `/pages/main/cart/checkout/checkout?activity_product_id=${this.data.selectedProductInfo.activity_product_id}&goods_number=${this.data.selectedProductNumber}&shippingWay=${this.data.shippingWay}`}).then(this.toggle())
     },
     previewImage(e) {
       const src = e.currentTarget.dataset.src || "";
@@ -72,7 +118,7 @@ Component(App.BC({
       });
     },
     handleShortCutTap() {
-      if (this.data.goodsId) WxApi.navigateTo({url: `/pages/main/goods/index?goods_id=${this.data.goodsId}`})
+      if (this.data.goodsId) WxApi.navigateTo({url: `/pages/main/goods/index?goods_id=${this.data.goodsId}&activity_id=${this.data.activityId}`})
     },
     toggle() {
       let show = this.data.show;

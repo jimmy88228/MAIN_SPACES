@@ -3,7 +3,7 @@ Page(App.BP({
   data:{
     userData:{},
     inited:false,
-    isLogin:false
+    isLogin:true
   },
   onShow(){
     this.init();
@@ -29,6 +29,7 @@ Page(App.BP({
   },
   getUserInfo(){
     return App.LM.reSetSimpleInfo().then(res=>{
+      console.log('reSetSimpleInfo',res)
       if(res.code == 1){
         let data = res.data||{};
         this.setUserData(data);
@@ -36,6 +37,7 @@ Page(App.BP({
     })
   },
   getUserOrderCount(){
+    this.showLoading();
     return App.Http.QT_UserApi.getUserOrderCount({
       data: { 
       },
@@ -44,6 +46,8 @@ Page(App.BP({
         let data = res.data||{};
         this.setUserData(data);
       } 
+    }).finally(() => {
+      this.hideLoading();
     })
   },
   checkIdentity(){
@@ -54,6 +58,6 @@ Page(App.BP({
     })
   },
   clickcallback(){
-    this.setData({isLogin:App.LM.isLogin})
+    this.init();
   }
 }))

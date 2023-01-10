@@ -284,7 +284,7 @@ export const QT_UserApiList = {
     m: "post"
   },
   getUserOrderCount: "/api/Order/Get_UserOrderCount",
-  getUserSimpleInfo: "/api/User/Get_UserSimpleInfo?userToken={userToken}&brandCode={brandCode}",
+  getUserSimpleInfo: "/api/User/Get_UserSimpleInfo?shareCode={shareCode}",
 
 }
 
@@ -386,14 +386,11 @@ export const QT_GoodsApiList = {
     u:"/api/Activity/ActivityUpdateOrInsert",
     m:"post"
   },
-  getActivityGoodsInfo:{
-    u:"/api/Activity/GetActivityGoodsInfo",
-    m:"post"
-  },
-  getActivityGoodsInfo: "/api/Goods/GetActivityGoodsInfo",
-  get_Sumary_GoodsDetailData: "/api/Goods/Get_Sumary_GoodsDetailData?goodsId={goodsId}",
-  get_Sumary_GoodsProductInfo: "/api/Goods/Get_Sumary_GoodsProductInfo?goodsId={goodsId}&colorId={colorId}",
-  getGoodsInfo: "/api/Goods/GetGoodsInfo?activityId={activityId}", 
+  goodsProductInfo: "/api/Activity/GoodsProductInfo?goodsId={goodsId}&activityId={activityId}",
+  getActivityGoodsInfo: "/api/Activity/GetActivityGoodsInfo",
+  get_Sumary_GoodsDetailData: "/api/Activity/Get_Sumary_GoodsDetailData?goodsId={goodsId}",
+  get_Sumary_GoodsProductInfo: "/api/Activity/Get_Sumary_GoodsProductInfo?goodsId={goodsId}&colorId={colorId}",
+  getGoodsInfo: "/api/Goods/GetGoodsInfo?searchStr={searchStr}&pageIndex={pageIndex}&pageSize={pageSize}&catId={catId}",
   activityGoodsInfo: "/api/Activity/ActivityGoodsInfo?activityId={activityId}",
   activityGoodsUpdateOrInsert:{
     u:"/api/Activity/ActivityGoodsUpdateOrInsert",
@@ -416,6 +413,7 @@ export const QT_GoodsApiList = {
   deleteGoodsInfo: "/api/Goods/DeleteGoodsInfo?goodsId={goodsId}",
   copyGoods: "/api/Goods/CopyGoods?goodsId={goodsId}",
   getSpecCategoryInfo: "/api/Goods/GetSpecCategoryInfo?catId={catId}", // 获取所有规格列表
+  getGoodsProductList: "/api/Goods/GetGoodsProductList?goodsId={goodsId}",
   createOrUpdateGoodsProduct: {
     u: "/api/Goods/CreateOrUpdateGoodsProduct",
     m: "post"
@@ -438,7 +436,15 @@ export const QT_GoodsApiList = {
     u: "/api/Goods/CreateOrUpdateGoods",
     m: "post"
   },
-  getAcitvityGoodsInfo: "/api/Goods/GetAcitvityGoodsInfo?goodsId={goodsId}&activityId={activityId}",
+  getAcitvityGoodsInfo: "/api/Activity/GetAcitvityGoodsInfo?goodsId={goodsId}&activityId={activityId}",
+  getGoodsCategoryInfo: "/api/Goods/GetGoodsCategoryInfo?pageIndex={pageIndex}&pageSize={pageSize}",
+  createOrUpdateCategoryInfo: {
+    u: "/api/Goods/CreateOrUpdateCategoryInfo",
+    m: "post"
+  },
+  getGoodsCategoryInfoDetail: "/api/Goods/GetGoodsCategoryInfoDetail?catId={catId}&pageIndex={pageIndex}&pageSize={pageSize}",
+  checkProductInfo: "/api/Activity/CheckProductInfo?goodsId={goodsId}&activityId={activityId}&insert={insert}",
+  deleteActivityGoods: "/api/Activity/DeleteActivityGoods?goodsId={goodsId}&activityId={activityId}",
 }
 
 //订单

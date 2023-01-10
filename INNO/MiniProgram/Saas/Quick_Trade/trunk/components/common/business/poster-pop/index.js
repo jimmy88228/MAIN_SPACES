@@ -4,6 +4,8 @@ import {
 } from "../../../../common/support/wx-canvas-2d/index";
 import WxApi from "../../../../common/utils/wxapi/index";
 import getGoodsSeries from "./process/goods";
+import getIndexSeries from "./process/home";
+import { pageColor } from "../../../../common/helper/style-helper/page";
 const App = getApp();
 WxCanvas2d.use(SaveToAlbum)
 Component(App.BC({
@@ -37,7 +39,10 @@ Component(App.BC({
     handleSaveBtnTap() {
       if (this.canvasInstance) {
         this.canvasInstance.save()
-          .then()
+          .then(() => {
+            console.log("handleSaveBtnTap 已保存");
+            App.SMH.showToast({title: "保存成功"})
+          })
       }
     }
   }
@@ -48,20 +53,36 @@ function createAndDrawPoster({type, data}) {
   let getSeries;
   if (type === "goods") {
     getSeries = getGoodsSeries;
+  } else if (type === "index") {
+    getSeries = getIndexSeries;
   }
-  WxApi.showLoading();
+  WxApi.showLoading({title: '加载中'});
   getSeries(data)
     .then(series => {
       return new Promise(rs => {
         canvas.create({
           query: '.poster-canvas', // 必传，canvas元素的查询条件
           rootWidth: 750, // 参考设备宽度 (即开发时UI设计稿的宽度，默认375，可改为750)
-          bgColor: '#fff', // 背景色，默认透明
+          bgColor: pageColor["main-color"], // 背景色，默认透明
           component: this, // 自定义组件内需要传 this
           radius: 0 // 海报图圆角，如果不需要可不填
         })
+        let finishedCount = 0;
+        let timer = setTimeout(() => {
+          clearTimeout(timer);
+          timer = null;
+          rs({});
+        }, 3000)
         canvas.draw({series})
-        canvas.on("afterDraw", rs)
+        canvas.on("afterDraw", res => {
+          console.log("afterDraw res: ", res, finishedCount);
+          finishedCount++;
+          if (finishedCount === series.length) {
+            clearTimeout(timer);
+            timer = null;
+            rs(res);
+          }
+        })
       })
     })
     .then(() => {

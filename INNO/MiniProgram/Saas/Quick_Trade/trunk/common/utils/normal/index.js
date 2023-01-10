@@ -12,8 +12,7 @@ function requestAnimationFrame(cb) {
     .exec(function () {
       cb();
     });
-}
-
+} 
 function uuid(len, radix) {
   len = Math.max(len, 5);
   let chars = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz".split("");
@@ -39,8 +38,7 @@ function uuid(len, radix) {
 function uuid16ByTime(len) {
   var uuid = new Date().getTime().toString(16).toUpperCase();
   return uuid + this.uuid(Math.max(len - uuid.length, 5), 16);
-}
-
+} 
 function debounce(fn, delay) {
   let timer;
   return function () {
@@ -51,8 +49,7 @@ function debounce(fn, delay) {
       fn.apply(_this, args); // _this.fn(args);
     }, delay)
   }
-}
-
+} 
 function throttle(fn, delay) {
   let timer;
   return function () {
@@ -64,8 +61,7 @@ function throttle(fn, delay) {
       timer = null;
     }, delay)
   }
-}
-
+} 
 function throttle_2(fn, wait) { // 立即调用版本
   let flag = true;
   let timer = null;
@@ -78,8 +74,7 @@ function throttle_2(fn, wait) { // 立即调用版本
       }, wait)
     }
   }
-} 
-
+}  
 function compareVersion(v1, v2) {
   console.log('v1, v2',v1, v2)
   v1 = v1.split(".");

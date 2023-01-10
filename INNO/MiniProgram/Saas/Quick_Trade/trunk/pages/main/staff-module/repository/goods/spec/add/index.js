@@ -6,11 +6,14 @@ Page(App.BP({
     specCatName: "",
     specCatId: 0,
     specList: [],
+    selectedSkuRef: {}, // 在编辑商品规格页面跳转过来，会有，是那边已选择的规格对象;为了不让用户修改删除这些规格
   },
   onLoad(options) {
     this.options = options;
+    let selectedSkuRef = App.StorageH.get("selectedSkuRef") || {};
     this.setData({
-      specCatId: options.spec_cat_id || 0
+      specCatId: options.spec_cat_id || 0,
+      selectedSkuRef
     })
   },
   onShow() {
@@ -72,6 +75,10 @@ Page(App.BP({
       });
       return
     }
+    this.addPop = this.addPop || this.selectComponent('#add-pop');
+    console.log('this.addPop',this.addPop)
+    this.addPop.showModal();
+    return
     WxApi.showModal({
         title: "添加具体规格",
         editable: true,
@@ -89,6 +96,10 @@ Page(App.BP({
           this.addSpec(content);
         }
       })
+  },
+  confirm(e){
+    let detail = e.detail;
+    this.addSpec(detail);
   },
   addSpec(specName) { // 添加规格操作
     let {
@@ -112,7 +123,7 @@ Page(App.BP({
         })
       })
   },
-  handleItemLongPress(e) { // 长按规格删除操作
+  handleItemDelete(e) { // 长按规格删除操作
     let specId = this.getDataset(e, "specId");
     console.log("specId", specId)
     WxApi.showModal({

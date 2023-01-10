@@ -1,7 +1,8 @@
 {
   "component": true,
   "usingComponents": {
-    "btns": "/components/common/basic/buttons/index",
-    "goods-spec-pop": "/components/common/business/goods-spec-pop/index"
+    "goods-spec-pop": "/components/common/business/goods-spec-pop/index",
+    "share-pop": "/components/common/business/share-pop/index",
+    "poster-pop": "/components/common/business/poster-pop/index"
   }
 }

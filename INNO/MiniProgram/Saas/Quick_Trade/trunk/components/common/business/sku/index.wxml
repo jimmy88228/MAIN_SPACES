@@ -6,12 +6,12 @@
           <view class="sku-type-header">{{skuType.cat_name}}</view>
           <view class="sku-list">
             <block wx:for="{{skuType.specinfo_list}}" wx:for-item="skuItem" wx:key="index">
+              <!-- data-disabled="{{!availablePrimeRef[(valueInLabel[skuItem.spec_id])]}}" -->
               <view 
                 class="sku-item {{availablePrimeRef[(valueInLabel[skuItem.spec_id])] ? '': 'disabled'}} {{selectedRef[skuItem.spec_id] ? 'selected' : ''}}" 
                 data-spec-item="{{skuItem}}"
                 data-prime="{{valueInLabel[skuItem.spec_id]}}"
                 data-prime-index="{{typeIndex}}"
-                data-disabled="{{!availablePrimeRef[(valueInLabel[skuItem.spec_id])]}}"
                 catchtap="onClickSelType"
               >{{skuItem.name}}</view>
             </block>

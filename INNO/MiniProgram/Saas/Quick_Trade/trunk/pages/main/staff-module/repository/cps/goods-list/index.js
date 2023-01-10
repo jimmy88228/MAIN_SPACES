@@ -19,14 +19,17 @@ Component(App.BC({
     }, 
     data: {
         isSelectAll:false,
-        selectNum:0
+        selectNum:0, 
+        curId:0,
     },
     observers:{
         goodsList:function(nV,oV) {
+            console.log('goodsList ob',nV)
             if(nV && Array.isArray(nV) && nV.length>0){
                 let isSelectAll = true,selectNum=0;
                 nV.forEach(item=>{
-                    isSelectAll && (isSelectAll = item.isSelected);
+                    isSelectAll && (isSelectAll = !!item.isSelected);
+                    console.log('item',isSelectAll,item);
                     item.isSelected && (selectNum += 1);
                 }); 
                 this.setData({isSelectAll,selectNum})
@@ -57,29 +60,40 @@ Component(App.BC({
             this.triggerEvent('save',{goodsList})
         },
         delete(e){
-            let item = this.getDataset(e,'item')||{};
-            this.triggerEvent('onDelete',{item});
+            let item = this.getDataset(e,'item')||{}; 
+            this._showModal({
+              content: '确定要删除该商品?',
+            }).then(()=>{
+              this.triggerEvent('onDelete',{item});
+            })
         },
-        editGoods(e){ 
-          
+        editGoods(e){
           let goodsInfo = this.getDataset(e,'item')||{}; 
           console.log("item", goodsInfo)
           goodsInfo.goodsImgs = goodsInfo.goods_img?[goodsInfo.goods_img]:[];
           let transData = encodeURIComponent(JSON.stringify(goodsInfo));
           App.StorageH.set("ReposityGoodsGallery", {galleryList: goodsInfo.galleryList || [], domainPath: this.properties.domainPath});
-          this.jumpAction(`/pages/main/staff-module/repository/goods/index?goodsInfo=${transData}&activity_id=${this.properties.activity_id}&isEdit=1`);
+          this.jumpAction(`/pages/main/staff-module/repository/goods/index?goodsInfo=${transData}&activity_id=${this.properties.activity_id || ""}&isEdit=1`);
         },
         copy(e) {
           let goodsId = this.getDataset(e, "goodsId");
+          this.showLoading();
           copyGoods(goodsId)
             .then(() => {
+              App.SMH.showToast({title: "复制成功"})
               this.triggerEvent('onRefresh');
             })
             .catch(err => {
               console.log("copy err", err);
               App.SMH.showToast({title: err});
             })
-        }
+            .finally(() => {
+              this.hideLoading();
+            })
+        },
+        scrolltolower(e){
+          this.triggerEvent('scrolltolower');
+        },
     }
 }))
 

@@ -1,9 +1,11 @@
 /* pages/main/staff-module/repository/goods/spec/index.wxss */
 page{
     background-color: #F2F2F2;
+    --save-footer-height: calc(142rpx + env(safe-area-inset-bottom));
 }
 .spec{
-    padding: 25rpx 25rpx calc(25rpx + 154rpx) 25rpx;
+    padding: 30rpx;
+    padding-bottom: var(--save-footer-height);
     box-sizing: border-box;
     font-size: 28rpx;
 }
@@ -22,11 +24,13 @@ page{
 }
 .spec-list-view{
   width: 100%;
-  overflow-x: scroll;
-  flex-wrap: nowrap;
+  flex-wrap: wrap;
+  margin-bottom: -30rpx;
 }
-.spec-list-view view{
+.spec-top-box{
+  width: 33%;
   flex-shrink: 0;
+  margin-bottom: 30rpx;
 }
 .cir-sel{
     width: 36rpx;
@@ -35,6 +39,7 @@ page{
     border-radius: 50%;
     border: 1px solid #B2B2B2;
     margin-right: 15rpx;
+    flex-shrink: 0;
 }
 .cir-sel.active{
     background: #42B0CA;
@@ -49,7 +54,7 @@ page{
     transform: rotate(-45deg);
 }
 .spec-name{
-    margin-right: 38rpx;
+    /* margin-right: 38rpx; */
 }  
 .delete-box{
     width:40rpx;
@@ -73,7 +78,7 @@ page{
     transform: translate(-50%,-50%);
 }
 .box .spec-box{
-    width: 199rpx;
+    width: 198rpx;
     height: 66rpx;
     background: #E7FAFF;
     color: #42B0CA;
@@ -82,6 +87,9 @@ page{
     margin-right: 16rpx;
     position: relative;
     display: inline-flex;
+    padding: 15rpx 56rpx 15rpx 20rpx;
+    box-sizing: border-box;
+    margin-bottom: 10rpx;
 }
 .spec-box:last-of-type{
     margin-right: 0;
@@ -109,23 +117,31 @@ page{
     padding-right: 14rpx;
     width: 33%; 
 } 
+.price-box:nth-child(3n){
+  padding-right: 0;
+}
 .sn-box{
-    padding-right: 14rpx;
+    padding-right: 8rpx;
 }
 .price-title,.sn-title{
     color: #7f7f7f;
     font-size: 26rpx;
-    padding-left: 20rpx;
+    padding-left: 18rpx;
     margin-bottom: 14rpx;
+}
+.tip-sale-number{
+  color: red;
+  font-size: 24rpx;
+}
+.sn-title.activity{
+  margin-bottom: 24rpx;
 }
 .placehold-text{
     color: #B2B2B2;
-}
+} 
 .goods-input{
     background-color: #F9F9F9;
     width: 100%;
-}
-.goods-input{
     padding-left: 20rpx;
     box-sizing: border-box;
     font-size: 26rpx;
@@ -135,13 +151,13 @@ page{
     position: fixed;
     left: 0;
     bottom: 0;
-    width: 750rpx;
-    height: 154rpx;
-    background: #F2F2F2;
-    border-top: 1px solid #E3E3E3;
-    box-sizing: border-box;
-    box-sizing: border-box;
     padding:0 30rpx;
+    padding-bottom: env(safe-area-inset-bottom);
+    width: 690rpx;
+    min-height: 142rpx; 
+    box-sizing: unset;
+    background: #F2F2F2;
+    border-top: 1px solid #E3E3E3; 
     z-index: 5;
 }
 .save-btn{
@@ -155,4 +171,46 @@ page{
 }
 .save-btn.active{
   opacity: 0.7;
+}
+
+.custom-pop-box{
+  position: fixed;
+  left: 50%;
+  top: 40%;
+  transform: translate(-50%,-50%);
+  width: 660rpx;
+  min-height: 360rpx;
+  background-color: #fff;
+  border-radius: 24rpx;
+  overflow: hidden;
+  font-size: 28rpx;
+  padding-bottom: 110rpx;
+  padding-top: 40rpx;
+  box-sizing: border-box;
+}
+.confirm-box{
+  width: 100%;
+  position: absolute;
+  left: 0;
+  bottom: 0;
+}
+.batch-box{
+  width: 100%;
+  margin-bottom: 30rpx;
+}
+.confirm-btn,.cancel-btn{
+  height: 100rpx;
+  color: #fff;
+  background-color: #42B0CA;
+}
+.cancel-btn{
+  background-color: #dfdfdf;
+}
+.batch-input{
+  width: 50%;
+}
+.batch-title{
+  margin-bottom: 0;
+  padding-left: 0;
+  width: 120rpx;
 }

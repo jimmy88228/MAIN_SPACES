@@ -1,95 +1,136 @@
 {
-    "projectname": "%E5%BF%AB%E9%80%9F%E4%BA%A4%E6%98%93",
-    "setting": {
-        "compileHotReLoad": true
-    },
-    "description": "项目私有配置文件。此文件中的内容将覆盖 project.config.json 中的相同字段。项目的改动优先同步到此文件中。详见文档：https://developers.weixin.qq.com/miniprogram/dev/devtools/projectconfig.html",
-    "libVersion": "2.25.4",
-    "condition": {
-        "plugin": {
-            "list": []
+  "projectname": "trunk",
+  "setting": {
+    "compileHotReLoad": true
+  },
+  "description": "项目私有配置文件。此文件中的内容将覆盖 project.config.json 中的相同字段。项目的改动优先同步到此文件中。详见文档：https://developers.weixin.qq.com/miniprogram/dev/devtools/projectconfig.html",
+  "libVersion": "2.25.4",
+  "condition": {
+    "miniprogram": {
+      "list": [
+        {
+          "name": "pages/tabs/index/index",
+          "pathName": "pages/tabs/index/index",
+          "query": "staffCode=0222&storeCode=202301",
+          "launchMode": "default",
+          "scene": 1005
         },
-        "game": {
-            "list": []
+        {
+          "name": "",
+          "pathName": "pages/tabs/user/user",
+          "query": "jimmy=441",
+          "scene": null
         },
-        "gamePlugin": {
-            "list": []
+        {
+          "name": "pages/tabs/user/user",
+          "pathName": "pages/tabs/user/user",
+          "query": "storeCode=NSWD&staffCode=jimmy",
+          "scene": null
         },
-        "miniprogram": {
-            "list": [
-                {
-                    "name": "",
-                    "pathName": "pages/main/index/index",
-                    "query": "aa=22",
-                    "scene": 1005
-                },
-                {
-                    "name": "",
-                    "pathName": "pages/tabs/user/user",
-                    "query": "jimmy=441",
-                    "scene": null
-                },
-                {
-                    "name": "pages/tabs/user/user",
-                    "pathName": "pages/tabs/user/user",
-                    "query": "storeCode=NSWD&staffCode=jimmy",
-                    "scene": null
-                },
-                {
-                    "name": "pages/tabs/user/update_avatar/update_avatar",
-                    "pathName": "pages/tabs/user/update_avatar/update_avatar",
-                    "query": "",
-                    "scene": null
-                },
-                {
-                    "name": "pages/tabs/index/index",
-                    "pathName": "pages/tabs/index/index",
-                    "query": "fromUser=dad44263719078db&staffCode=13160675066&storeCode=NSWD",
-                    "scene": null
-                },
-                {
-                    "name": "pages/tabs/index/index",
-                    "pathName": "pages/tabs/index/index",
-                    "query": "staffCode=jimmy&storeCode=NSWD",
-                    "scene": null
-                },
-                {
-                    "name": "pages/main/staff-module/staff-center/staff-center",
-                    "pathName": "pages/main/staff-module/staff-center/staff-center",
-                    "query": "",
-                    "scene": null
-                },
-                {
-                    "name": "pages/main/staff-module/activity/index",
-                    "pathName": "pages/main/staff-module/activity/index",
-                    "query": "",
-                    "scene": null
-                },
-                {
-                    "name": "pages/main/staff-module/repository/index",
-                    "pathName": "pages/main/staff-module/repository/index",
-                    "query": "",
-                    "scene": null
-                },
-                {
-                    "name": "pages/main/staff-module/repository/goods/spec/add/index",
-                    "pathName": "pages/main/staff-module/repository/goods/spec/add/index",
-                    "query": "",
-                    "scene": null
-                },
-                {
-                    "name": "pages/main/staff-module/activity/index",
-                    "pathName": "pages/main/staff-module/activity/index",
-                    "query": "",
-                    "scene": null
-                },
-                {
-                    "name": "pages/main/staff-module/repository/goods/spec/index",
-                    "pathName": "pages/main/staff-module/repository/goods/spec/index",
-                    "query": "id=1&activityId=11&fromType=activity&market_price=441&sale_price=0.01&product_sn=123123&goods_number=1111",
-                    "scene": null
-                }
-            ]
+        {
+          "name": "pages/tabs/user/update_avatar/update_avatar",
+          "pathName": "pages/tabs/user/update_avatar/update_avatar",
+          "query": "",
+          "scene": null
+        },
+        {
+          "name": "pages/tabs/index/index",
+          "pathName": "pages/tabs/index/index",
+          "query": "fromUser=dad44263719078db&staffCode=13160675066&storeCode=NSWD",
+          "scene": null
+        },
+        {
+          "name": "pages/tabs/index/index",
+          "pathName": "pages/tabs/index/index",
+          "query": "staffCode=jimmy&storeCode=NSWD",
+          "scene": null
+        },
+        {
+          "name": "pages/main/staff-module/staff-center/staff-center",
+          "pathName": "pages/main/staff-module/staff-center/staff-center",
+          "query": "",
+          "scene": null
+        },
+        {
+          "name": "pages/main/staff-module/activity/index",
+          "pathName": "pages/main/staff-module/activity/index",
+          "query": "",
+          "scene": null
+        },
+        {
+          "name": "pages/main/staff-module/repository/index",
+          "pathName": "pages/main/staff-module/repository/index",
+          "query": "",
+          "scene": null
+        },
+        {
+          "name": "pages/main/staff-module/repository/goods/spec/add/index",
+          "pathName": "pages/main/staff-module/repository/goods/spec/add/index",
+          "query": "",
+          "scene": null
+        },
+        {
+          "name": "pages/main/staff-module/activity/index",
+          "pathName": "pages/main/staff-module/activity/index",
+          "query": "",
+          "scene": null
+        },
+        {
+          "name": "pages/main/staff-module/repository/goods/spec/index",
+          "pathName": "pages/main/staff-module/repository/goods/spec/index",
+          "query": "id=1&activityId=11&fromType=activity&market_price=441&sale_price=0.01&product_sn=123123&goods_number=1111",
+          "scene": null
+        },
+        {
+          "name": "",
+          "pathName": "pages/main/staff-module/repository/goods/spec/index",
+          "query": "insert=1&activityId=0&fromType=&sale_price=0&goods_number=0&goodsId=135",
+          "launchMode": "default",
+          "scene": null
+        },
+        {
+          "name": "",
+          "pathName": "pages/main/staff-module/repository/goods/spec/add/index",
+          "query": "spec_cat_id=22",
+          "launchMode": "default",
+          "scene": null
+        },
+        {
+          "name": "",
+          "pathName": "pages/main/staff-module/repository/goods/spec/index",
+          "query": "insert=1&activityId=0&fromType=&sale_price=0&goods_number=0&goodsId=153",
+          "launchMode": "default",
+          "scene": null
+        },
+        {
+          "name": "",
+          "pathName": "pages/main/staff-module/repository/goods/spec/index",
+          "query": "insert=1&activityId=0&fromType=&sale_price=0&goods_number=0&goodsId=157",
+          "launchMode": "default",
+          "scene": null
+        },
+        {
+          "name": "",
+          "pathName": "pages/main/staff-module/repository/goods/spec/index",
+          "query": "insert=1&activityId=98&fromType=activity&sale_price=0&goods_number=0&goodsId=242",
+          "launchMode": "default",
+          "scene": null
+        },
+        {
+          "name": "",
+          "pathName": "pages/main/cart/checkout/checkout",
+          "query": "activity_product_id=1114&goods_number=1&shippingWay=0",
+          "launchMode": "default",
+          "scene": null
+        },
+        {
+          "name": "",
+          "pathName": "pages/main/staff-module/activity/index",
+          "query": "",
+          "launchMode": "default",
+          "scene": null
         }
+      ]
     }
+  }
 }

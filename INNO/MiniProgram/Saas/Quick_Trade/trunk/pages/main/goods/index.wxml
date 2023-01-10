@@ -47,8 +47,12 @@
               <image class="g-i-c-c-d-image" src="/assets/images/common/xianshiqiang.png" />
             </view>
             <view class="g-i-c-c-d-text">
-                <text class="c-d-prefix">距结束 </text>
-                <text class="c-d-time">{{f.NumberToString(countDownTime.hours)}}: {{f.NumberToString(countDownTime.minutes)}}: {{f.NumberToString(countDownTime.seconds)}}</text>
+                <text class="c-d-prefix">
+                  <block wx:if="{{activity_info.status == 0}}">距开始 </block>
+                  <block wx:elif="{{activity_info.status === 1}}">距结束 </block>
+                  <block wx:else>活动已结束</block>
+                </text>
+                <text class="c-d-time" wx:if="{{activity_info.status != 2}}">{{f.NumberToString(countDownTime.hours)}}: {{f.NumberToString(countDownTime.minutes)}}: {{f.NumberToString(countDownTime.seconds)}}</text>
               </view>
           </view>
         </view>
@@ -59,7 +63,7 @@
         <view class="g-i-b-left">
           <view class="g-i-b-goods-name">{{goods_info.goods_name}}</view>
           <view class="g-i-b-goods-sn">
-            <text class="goods-sn-prefix">商品编号 </text>
+            <text class="goods-sn-prefix">商品编码 </text>
             <text class="goods-sn-text">{{goods_info.goods_sn}}</text>
           </view>
         </view>
@@ -111,7 +115,17 @@
       </view>
       <view class="g-i-f-right">
         <view class="gif-main-btn-group">
-          <button class="goods-info-purchase-btn" hover-class="active" catchtap="handlePurchaseBtnTap">立即购买</button>
+          <button class="goods-info-purchase-btn" disabled="{{activity_info.status != 1}}" hover-class="active" catchtap="handlePurchaseBtnTap">
+            <block wx:if="{{activity_info.status == 1}}">
+              立即购买
+            </block>
+            <block wx:elif="{{activity_info.status == 0}}">
+              活动未开始
+            </block>
+            <block wx:elif="{{activity_info.status == 2}}">
+              活动已过期
+            </block>
+          </button>
         </view>
       </view>
     </view>

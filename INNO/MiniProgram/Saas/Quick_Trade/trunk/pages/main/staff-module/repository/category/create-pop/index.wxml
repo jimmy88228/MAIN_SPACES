@@ -2,13 +2,13 @@
   <transition show="{{show}}" class="cate-create-pop-container">
     <view class="cate-create-pop-header">
       <view class="ccph-title">添加分类</view>
-      <view class="icon-close ccph-close"></view>
+      <view class="icon-close ccph-close" catchtap="dismiss"></view>
     </view>
     <view class="cate-create-pop-main">
-      <input class="ccpm-input" type="text" placeholder="请输入商品分类名称" value="{{cateName}}" />
+      <input class="ccpm-input" placeholder-class="ccpm-input-placeholder" bindinput="handleInput" type="text" placeholder="请输入商品分类名称" maxlength="{{20}}" value="{{cateName}}" />
     </view>
     <view class="cate-create-pop-footer">
-      <button class="ccpf-confirm-btn" catchtap="dismiss">确认</button>
+      <button class="ccpf-confirm-btn" catchtap="handlePopItemTap">确认</button>
     </view>
   </transition>
 </window>

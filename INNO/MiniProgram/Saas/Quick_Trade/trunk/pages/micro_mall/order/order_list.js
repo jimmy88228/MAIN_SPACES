@@ -98,6 +98,7 @@ Page(App.BP({
     }, loadOrderList.bind(this))
   },
   handleScrollToLower() {
+    console.log("handleScrollToLower")
     let {orderTabList ,activeTabIndex} = this.data;
     let orderTab = orderTabList[activeTabIndex];
     if (orderTab.nomore) {
@@ -109,9 +110,15 @@ Page(App.BP({
     }, loadOrderList.bind(this))
   },
   handleRefresh() {
+    console.log("handleRefresh")
+    if (this.refreshing) return; // 解决下拉刷新，有时会多次触发这个方法的问题
+    this.refreshing = true;
     this.setData({pullDownRefreshing: true})
     refreshCurrentOrderTab.call(this)
-      .then(() => {this.setData({pullDownRefreshing: false})})
+      .then(() => {
+        setTimeout(() => {this.setData({pullDownRefreshing: false})}, 100)
+      })
+      .finally(() => {this.refreshing = false})
   },
   handleOrderItemTap(e) {
     let orderId = this.getDataset(e, "orderId");
@@ -181,10 +188,11 @@ function refreshCurrentOrderTab() {
   this.searchStr = "";
   return new Promise(rs => {
     this.setData({
+      _searchStr: "",
       [`orderTabList[${activeTabIndex}]params.pageIndex`]: 1,
       [`orderTabList[${activeTabIndex}].nomore`]: false,
     }, () => {
-      loadOrderList.call(this).finally(res => rs(res))
+      loadOrderList.call(this).ignore(res => rs(res))
     })
   })
 }

@@ -5,6 +5,10 @@ Component(App.BC({
     cateName: ""
   },
   methods: {
+    handleInput(e) {
+      let value = e.detail.value || "";
+      this.setData({cateName: value})
+    },
     showModal() {
       this.setData({show: true, cateName: ""});
       return new Promise((rs, rj) => {
@@ -18,9 +22,13 @@ Component(App.BC({
       this.setData({show: false})
     },
     handlePopItemTap(e) {
-      let item = this.getDataset(e, "item");
+      let cateName = this.data.cateName || "";
+      if (!cateName.trim()) {
+        App.SMH.showToast({title: "请输入商品分类名称"});
+        return 
+      }
       this.setData({show: false}, () => {
-        typeof this.resolveF === "function" && this.resolveF(item);
+        typeof this.resolveF === "function" && this.resolveF(this.data.cateName);
         this.resolveF = this.rejectF = null;
       })
     }

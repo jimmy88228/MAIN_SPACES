@@ -128,7 +128,7 @@ page{
   margin-left: 8rpx;
 }
 .gsdtc-radio-group{
-  padding: 12rpx;
+  padding: 12rpx 12rpx 12rpx 0;
   margin-bottom: 24rpx;
 }
 .gsdtc-radio-view{
@@ -141,6 +141,12 @@ page{
 }
 .spec-radio{
   transform: scale(0.65);
+  margin-bottom: 20rpx;
+  display: block;
+  transform-origin:top left;
+}
+.spec-shipping{
+  font-size: 40rpx;
 }
 .g-s-footer{
   flex: 1;

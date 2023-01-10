@@ -11,8 +11,8 @@
         disable-scroll
       />
     </view>
-    <view class="poster-footer" style="visibility: {{posterLoaded ? 'visible' : 'hidden'}}">
-      <button class="poster-save-btn" hover-class="active" catchtap="handleSaveBtnTap">点击保存海报</button>
+    <view class="poster-footer">
+      <button class="poster-save-btn" hover-class="active" catchtap="handleSaveBtnTap" disabled="{{!posterLoaded}}">点击保存海报</button>
     </view>
   </view>
 </window>

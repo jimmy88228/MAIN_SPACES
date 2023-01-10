@@ -3,8 +3,8 @@ import LCC from "../../../helper/lifecycle-controller/index"
 import { getPageQuery } from "./helper";
 
 function theFrontPart() { // onShow的前半部分(全局)
-  console.log("page.onUnload");
-  const pageQuery = getPageQuery(this);
+  // console.log("page.onUnload");
+  // const pageQuery = getPageQuery(this);
 }
 
 export default (pageOptions) => {

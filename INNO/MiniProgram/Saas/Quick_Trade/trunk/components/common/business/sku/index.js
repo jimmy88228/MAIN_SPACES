@@ -11,9 +11,7 @@ Component(App.BC({
     }
   },
   data: {
-    skuList: [ // 规格类型列表
-
-    ],
+    skuList: [], // 规格类型列表
     productList: [],
     selectedItems: [], // 已经选中的规格items
     selectedRef: {}, // 已经选中的规格Ref
@@ -21,49 +19,89 @@ Component(App.BC({
     canChooseProduct: [], // 有效的产品
     valueInLabel: {}, // 质数，规格枚举值
   },
-  lifetimes: {
-    detached() {
-      this.pathFinder && (this.pathFinder = null);
-    }
-  },
-  ready() {
-
-  },
   methods: {
     initData({skuList, productList}) {
       this.setData({
         skuList,
         productList
-      }, initSku.bind(this))
+      });
+      initSku.call(this);
     },
 
-    onClickSelType(e) {
+    reset() { // 重置该组件数据
+      this.pathFinder = null;
+      this.selected = null;
+      this.setData({
+        selectedItems: [], // 已经选中的规格items
+        selectedRef: {}, // 已经选中的规格Ref
+        availablePrimeRef: {}, // 可选规格Prime
+        canChooseProduct: [], // 有效的产品(目前是指有库存的产品)
+        valueInLabel: {}, // 质数，规格枚举值
+      })
+    },
+
+    onClickSelType(e) { // 点击规格
       let dataset = e.currentTarget.dataset || {};
-      if (dataset.disabled) return;
+      if (!this.data.availablePrimeRef[dataset.prime]) return; // 规格是disabled
       let renewData = selectSkuHandle.call(this, dataset);
       this.setData(renewData, () => {
         this.triggerEvent("select", this.getResult())
       });
     },
 
-    getResult() {
+    autoSelectFirstAvailableProduct() { // 自动选择第一个有效的产品
+      return new Promise((rs, rj) => {
+        let canChooseProduct = this.data.canChooseProduct || [];
+        if (!this.pathFinder) rj("组件未初始化，请先调用initData");
+        else if (!canChooseProduct.length) rs(null); // 没有有效的产品可以选
+        let targetProduct,
+          valueInLabel = this.data.valueInLabel || {};
+        for (let product of canChooseProduct) { // 这个循环只是确保一下自动选择的产品是正常的
+          let {goods_number = 0, product_specList = []} = product || {};
+          if (product_specList && product.product_specList.length) { // 以防接口返回了没有规格的产品
+            if (goods_number <= 0) continue; // 没有库存
+            else if (product_specList.some(spec => !valueInLabel[spec.spec_id])) continue; // 存在不能选择的规格 
+            targetProduct = product;
+            break;
+          }
+        };
+        if (!targetProduct) { // 没有正常的产品可以选
+          console.log("没有正常的产品可以选", canChooseProduct);
+          rj(null);
+        }
+        let {product_specList = [], skuPrime = []} = targetProduct;
+        let event = {currentTarget: {dataset: {}}};
+        product_specList.forEach((spec, index) => {
+          let dataset = event.currentTarget.dataset;
+          dataset.specItem = {name: spec.spec_name, spec_id: spec.spec_id};
+          dataset.prime = skuPrime[index];
+          dataset.primeIndex = index;
+          this.onClickSelType(event);
+        });
+        wx.nextTick(() => {rs(targetProduct)})
+      })
+    },
+
+    getResult() { // 获取选择结果
       let {skuList = [], canChooseProduct = [], selectedItems = [], selectedRef} = this.data;
       let result = {finished: false, productInfo: {}, selectedSku: selectedItems};
       if (skuList.length === selectedItems.length) { // 已选择完毕
         result.finished = true;
         canChooseProduct.some(item => {
-          if (item.product_specList.every(spec => selectedRef[spec.spec_id])) {
+          let specList = item.product_specList || [];
+          if ( specList.length && specList.every(spec => selectedRef[spec.spec_id])) {
             result.productInfo = item;
             return true
           }
         })
       }
+      console.log("result", result)
       return result
     }
   }
 }))
 
-function initSku() {
+function initSku() { // 初始化sku数据(不会重置已选择的数据)
   let {skuList, productList} = this.data;
   let skuCount = 0;
   const valueInLabel = {};
@@ -86,7 +124,7 @@ function initSku() {
   // 筛选可选的 SKU
   const canChooseProduct = sku.filter(item => item.goods_number);
   // 初始化规格展示内容
-  this.pathFinder = new PathFinder(way, canChooseProduct.map(item => item.skuPrime));
+  this.pathFinder = this.pathFinder || new PathFinder(way, canChooseProduct.map(item => item.skuPrime));
   // 获取不可选规格内容
   const unDisabled = this.pathFinder.getWay().flat();
   const availablePrimeRef = {};
@@ -128,8 +166,9 @@ function selectSkuHandle({
     const removePrime = valueInLabel[removeType];
     // 移除
     this.pathFinder.remove(removePrime)
-    selected.splice(selected.indexOf(removeType), 1);
-    selectedItems.splice(selected.indexOf(removeType), 1)
+    let removeIndex = selected.indexOf(removeType);
+    selected.splice(removeIndex, 1);
+    selectedItems.splice(removeIndex, 1)
     //移除同行后，添加当前选择规格
     this.pathFinder.add(prime)
     selected.push(specItem.spec_id);
@@ -139,7 +178,6 @@ function selectSkuHandle({
     selected.push(specItem.spec_id);
     selectedItems.push(specItem)
   }
-
   // 更新不可选规格
   const availablePrimeRef = {};
   this.pathFinder.getWay().flat().forEach(item => item && (availablePrimeRef[item] = true));

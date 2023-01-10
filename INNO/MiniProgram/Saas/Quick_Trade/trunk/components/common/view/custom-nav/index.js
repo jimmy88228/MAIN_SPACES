@@ -13,9 +13,10 @@ Component(App.BC({
   },
   pageLifetimes:{
     show(){
-      App.StoreH.getVisitStoreByLogin().ignore(()=>{
-        this.setStoreInfo();
-      });
+      this.setStoreInfo();
+      // App.StoreH.getVisitStoreByLogin().ignore(()=>{
+      //   this.setStoreInfo();
+      // });
     }
   },
   data:{

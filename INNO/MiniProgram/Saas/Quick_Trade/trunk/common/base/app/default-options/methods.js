@@ -11,7 +11,7 @@ import Conf from "../../../../config/index";
 import SMH from "../../../helper/show-message-helper/index";
 import StoreH from "../../../helper/store-helper/index";
 import AS from "../../../helper/authorize-helper/index";
-
+import Utils from "../../../utils/index";
 export default {
   get BP(){return BP}, // BasePage
   get BC(){return BC}, // BaseComponent
@@ -26,4 +26,5 @@ export default {
   get SMH(){return SMH}, // show-message-helper
   get StoreH(){return StoreH}, // StoreH
   get AS(){return AS}, // authorize
+  get Utils(){return Utils}, // utils
 }

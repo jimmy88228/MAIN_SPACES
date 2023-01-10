@@ -26,10 +26,15 @@ Page(App.BP({
         App.SMH.showToast({title: err});
       })
   },
+  onHide() {
+    stopCountDown.call(this);
+  },
   handlePurchaseBtnTap() {
     getSumaryGoodsProductInfo.call(this)
       .then(data => {
-        data.goodsImg = this.data.goods_info.goods_img || "";
+        let goodsInfo = this.data.goods_info || {};
+        data.goodsImg = goodsInfo.goods_img || "";
+        data.goodsId = goodsInfo.goods_id || 0;
         this.goodsSpecPop = this.goodsSpecPop || this.selectComponent("#goods-spec-pop");
         this.goodsSpecPop.showModal(data)
       })
@@ -48,13 +53,22 @@ Page(App.BP({
   },
   handleShareBtnTap() {
     this.sharePop = this.sharePop || this.selectComponent("#share-pop");
-    this.sharePop.showModal()
+    this.sharePop.showModal({needLogin: true})
       .then(selectedItem => {
         if (selectedItem.shareId === 2) { // 生成海报
           let {goods_info, activity_info} = this.data;
           let posterData = {
-            ...goods_info,
-            ...activity_info
+            info:{
+              goodsInfo: {
+                ...goods_info,
+                ...activity_info,
+              },
+              opKind: "QT_GOODS",
+            },
+            scene: {
+              "shareType": "QT_GOODS",
+              ...this.pageQuery
+            }
           }
           this.posterPop = this.posterPop || this.selectComponent("#poster-pop");
           this.posterPop.showModal({type: "goods", data: posterData});
@@ -71,6 +85,9 @@ Page(App.BP({
       goods_id,
       activity_id
     }
+  },
+  refreshPage() {
+    this.onShow();
   },
   navigateF(e) {
     const dataset = e.currentTarget.dataset || {};
@@ -96,8 +113,12 @@ function getGoodsDetail() {
   })
     .then(res => {
       if (res.code == 1) {
-        this.setData(res.data);
-        return res.data || {};
+        let data = res.data || {},
+        activity_info = data.activity_info || {};
+        activity_info.status = doubleCheckActivityStatus(activity_info);
+        data.activity_info = activity_info;
+        this.setData(data);
+        return data || {};
       }
       return Promise.reject(res.msg || "获取商品详情失败")
     })
@@ -106,7 +127,6 @@ function getGoodsDetail() {
 
 function handleGoodsDetail(data) {
   setCountDown.call(this);
-  
 }
 
 function getSumaryGoodsProductInfo() {
@@ -127,14 +147,26 @@ function getSumaryGoodsProductInfo() {
     })
 }
 
+function doubleCheckActivityStatus (activityInfo = {}) { // 前端再判断一次活动状态，以防万一
+  const {start_time, date, end_time} = activityInfo;
+  let status = 0; // 活动未开始
+  if (!start_time && !date && !end_time) status = 2; // 活动已过期
+  else if (date < start_time) status = 0; // 活动未开始
+  else if (date >= end_time) status = 2; // 活动已过期
+  else status = 1; // 活动进行中
+  return status
+}
+
 function setCountDown() {
   let {
     status,
     start_time,
     end_time,
     date: server_time,
+    id
   } = this.data.activity_info;
   start_time = start_time.replace(/-/g, '/'), end_time = end_time.replace(/-/g, '/'), server_time = server_time.replace(/-/g, '/'); // 兼容ios
+  if (status == 2 || !id)return;// 活动已过期，就不用再进行倒计时了
   let targetDate = new Date(status == 1 ? end_time : start_time);
   if (!this.countDown) {
     this.countDown = new CountDown(new Date(server_time) || new Date());
@@ -144,6 +176,7 @@ function setCountDown() {
   if (!this.countDown.isRunning) {
     this.countDown.start(e => {
       if (e.value <= 0) {
+        this.refreshPage();
         stopCountDown.call(this);
       } else {
         let days = parseInt(e.value / (1000 * 60 * 60 * 24));

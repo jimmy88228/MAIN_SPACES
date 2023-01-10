@@ -1,16 +1,22 @@
 <view class="user-header-container">
   <view class="u-h-info">
+  <block wx:if="{{isLogin}}">
     <view class="u-h-info-z">
       <view class="u-h-avatar-con" bindtap="showUpdateAvatarPage">
         <image class="u-h-avatar" src="{{userData.portrait_path||''}}" mode="aspectFit"/>
         <image wx:if="{{userData.portrait_path}}" class="change-avatar-icon" mode="aspectFit" src="https://devimgtest.innourl.com/wechat_applet_image/icon/default//user/refresh.png"></image>
       </view>
       <view class="u-h-username">{{userData.realName||''}}</view>
-      <view class="u-h-grade" wx:if="{{userData.rankName}}">{{userData.rankName||''}}</view>
+      <view class="u-h-grade flex-c-c" wx:if="{{userData.rankName}}">{{userData.rankName||''}}</view>
     </view>
-    <image class="rank-img" mode="widthFix" src="{{userData.rank_image||'https://devimgtest.innourl.com/SAAS_IMAGE/images/INNO/index/gallery/20220811/20220811182214012_5324611.png'}}"></image>
+    <image class="rank-img" mode="widthFix" src="{{userData.rankImage||''}}"></image>
+  </block>
+  <view wx:else class="unLogin-box flex-c-c">
+    <view class="unLogin flex-c-c">
+      未登录
+    </view>
   </view>
-  
+  </view>
 </view>
 <!-- public -->
 <include src="/common/base/component/index.wxml" />

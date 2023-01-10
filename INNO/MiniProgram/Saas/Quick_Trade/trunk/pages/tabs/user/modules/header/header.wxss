@@ -57,9 +57,9 @@
   min-width: 110rpx;
   text-align: center;
   padding: 0 10rpx;
-  height: 32rpx;
-  line-height: 32rpx;
+  height: 40rpx;
   box-sizing: border-box;
+  padding-bottom: 6rpx;
 }
 .rank-img{
   border-radius: 20rpx 20rpx 0 0;
@@ -69,4 +69,16 @@
   right: 0;
   width: 100%;
   z-index: 1;
+}
+.unLogin-box{
+  width: 100%;
+  height: 100%;
+}
+.unLogin{
+  width: 98rpx;
+  height: 98rpx;
+  border-radius: 50%;
+  background-color: #cfcfcf;
+  color: #fff;
+  font-size: 22rpx;
 }

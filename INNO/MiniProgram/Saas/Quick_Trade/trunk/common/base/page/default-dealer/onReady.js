@@ -1,7 +1,7 @@
 import LCC from "../../../helper/lifecycle-controller/index"
 
 function theFrontPart() { // onShow的前半部分(全局)
-  console.log("page.onReady");
+  // console.log("page.onReady");
 }
 
 export default (pageOptions) => {

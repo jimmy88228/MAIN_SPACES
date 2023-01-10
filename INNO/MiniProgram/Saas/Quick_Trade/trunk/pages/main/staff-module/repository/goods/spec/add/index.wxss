@@ -1,6 +1,7 @@
 /* pages/main/staff-module/repository/goods/spec/add/index.wxss */
 .spec-add{
     padding: 25rpx;
+    padding-bottom: 174rpx;
 }
 .box{
     padding: 40rpx;
@@ -18,6 +19,49 @@
   display: flex;
   align-items: center;
   flex-wrap: wrap;
+  margin-bottom: 20rpx;
+}
+.spec-box{
+  width: 31%;
+  min-height: 66rpx;
+  background: #E7FAFF;
+  color: #42B0CA;
+  border-radius: 6rpx;
+  border: 1px solid #FFFFFF;
+  margin-right: 16rpx;
+  position: relative;
+  display: inline-flex;
+  padding: 10rpx 48rpx 10rpx 20rpx !important;
+  margin-bottom: 14rpx;
+}
+.spec-box:nth-child(3n){
+  margin-right: 0;
+}
+.spec-box .delete-box{
+  position: absolute;
+  right: 0;
+  top: 50%;
+  transform: translateY(-50%) rotate(-45deg);
+  padding:14rpx;
+}
+.spec-box .delete,.spec-box .delete::after{
+  background-color: #7f7f7f;
+  /* border: 1px solid #7f7f7f; */
+}
+.delete{
+  width: 24rpx;
+  height: 2rpx;
+  background-color: #000;
+}
+.delete::after{
+  content: "";
+  width: 2rpx;
+  height: 24rpx;
+  background-color: #000;
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%,-50%);
 }
 .spec-item{
   padding: 0 20rpx;
@@ -66,4 +110,4 @@
     border-radius: 20rpx;
     color: #fff;
     font-size: 30rpx;
-} 
+}

@@ -1,25 +1,26 @@
 <!--pages/main/staff-module/repository/cps/goods-list/index.wxml-->
+<include src="/common/base/component/index.wxml" />
 <view class="goods-list flex flex-col">
     <view class="edit-box flex-b-c">
         <view class="add-btn flex-c-c" bindtap="jumpAction" data-url="/pages/main/staff-module/repository/goods/index">+新增商品</view>
         <view class="edit-btn flex-c-c" bindtap="jumpAction" data-url="/pages/main/staff-module/repository/category/index">编辑分类</view>
     </view>
-    <scroll-view scroll-y class="scroll-view flex-1">
+    <scroll-view scroll-y class="scroll-view flex-1" bindscrolltolower="scrolltolower">
         <block wx:for="{{goodsList}}" wx:key="index">
             <view class="list">
-                <view class="msg-box flex">
+                <view class="msg-box flex" bindtap="editGoods" data-item="{{item}}">
                     <image src="{{item.goods_img || ''}}" mode="aspectFit" class="goods-img f-s-0"></image>
                     <view class="content flex-1">
-                        <view class="goods-name bold">{{item.goods_name||''}}</view>
-                        <view class="price bold">{{item.market_price||''}}</view>
-                        <view>
-                            <span class="title">尺码</span>
-                            <span class="value bold">{{item.spec_name||''}}</span>
+                        <view class="goods-name bold text-flow2 m-b-10">{{item.goods_name||''}}</view>
+                        <view class="price bold m-b-10">￥{{item.market_price||''}}</view>
+                        <view class="text-flow" wx:for="{{item.specList}}" wx:key="catId" wx:for-item="specCat" wx:for-index="specCatIndex">
+                            <span class="title">{{specCat.catName || ""}}</span>
+                            <span class="value bold"><block wx:for="{{specCat.specList}}" wx:key="specId">{{index!=0?'/':''}}{{item.specName}}</block></span>
                         </view>
-                        <view>
+                        <!-- <view wx:if="{{isSelect}}">
                             <span class="title">库存</span>
-                            <span class="value bold">{{item.goods_number||''}}</span>
-                        </view>
+                            <span class="value bold">{{item.goods_number||'0'}}</span>
+                        </view> -->
                     </view>
                 </view>
                 <view class="btn-box flex-b-c">

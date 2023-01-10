@@ -4,7 +4,13 @@ const VISIT_APICONF = {
   "2": "/VisitLogApi",
   "3": "",
 }
+const BARCODE_APICONF = {
+  "1": "",
+  "2": "/BarCodeApi",
+  "3": "",
+}
 const visitApi = Conf.visitApiType ? VISIT_APICONF[Conf.visitApiType] : VISIT_APICONF[1];
+const barCodeApi = Conf.barCodeApiType ? BARCODE_APICONF[Conf.barCodeApiType] : BARCODE_APICONF[1];
 
 /**分域名**/
 
@@ -374,4 +380,18 @@ export const DstbApiList = {
   //通过分销员code找店员id
   getStaffIdByStaffCode:"/api/StaffDstb/GetStaffIdByStaffCode?staffCode={staffCode}&brandCode={brandCode}",
   get_StaffDstbInfo:"/api/Staff/Get_StaffDstbInfo"
+}
+
+// 码
+export const BarCodeApiList = {
+  //获取二维码
+  getWxCode: {
+    u: `${barCodeApi}/api/WXBarCode/GetWxCode`,
+    m: "post"
+  },
+  //分销员ScanWXCodeLog
+  scanWXCodeLog: {
+    u: `${barCodeApi}/api/WXBarCode/ScanWXCodeLog`,
+    m: "post"
+  }
 }

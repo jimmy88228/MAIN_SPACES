@@ -9,10 +9,11 @@
   --horizental-padding: 40rpx;
   --tint-text-color: #7f7f7f;
   width: 100vw;
+  background-color: var(--row-background-color);
   padding: 36rpx var(--horizental-padding) 24rpx var(--horizental-padding);
 }
 .preview-main{
-  background-color: var(--row-background-color);
+  /* background-color: var(--row-background-color); */
 }
 .g-i-d-header{
   margin-bottom: 20rpx;
