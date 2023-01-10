@@ -11,10 +11,18 @@ Component(App.BC({
   },  
   methods: { 
     showModal() {
-      this.setData({show: true}); 
+      return new Promise((rs)=>{
+        this.setData({show: true},()=>{
+          return rs();
+        });
+      })
     },
-    dismiss() {
-      this.setData({show: false})
+    dismiss() { 
+      return new Promise((rs)=>{
+        this.setData({show: false},()=>{
+          return rs();
+        });
+      }) 
     }, 
      
   }

@@ -29,7 +29,8 @@
                 </view>
                 <view class="btn-box flex-b-c">
                     <view class="flex">
-                        <view class="op-btn" bindtap="editGoods" data-id="{{listItem.id}}" data-item="{{listItem}}">编辑</view>
+                        <view class="op-btn" bindtap="editGoods" data-item="{{listItem}}">编辑</view>
+                        <view class="op-btn" bindtap="editSku" data-item="{{listItem}}">规格</view>
                         <view class="op-btn" bindtap="onDelete" data-index="{{index}}" data-insert="{{listItem.insert}}" data-goods-id="{{listItem.goods_id}}">删除</view>
                     </view>
                     <view class="flex">
@@ -50,3 +51,4 @@
         <view class="add-btn flex-c-c" bindtap="addGoods">新增商品</view>
     </view>
 </ori-scroll-view>
+<act-product-pop id="act-product-pop"></act-product-pop>

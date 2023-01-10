@@ -60,6 +60,13 @@ Component(App.BC({
             let transData = encodeURIComponent(JSON.stringify(goodsInfo));
             this.jumpAction(`/pages/main/staff-module/repository/goods/index?goodsInfo=${transData}&activity_id=${this.properties.activity_id}&isEdit=1&fromType=activity&goodsId=${goodsInfo.goods_id||0}`);
         },
+        editSku(e){
+          let goodsInfo = this.getDataset(e,'item')||{};
+          let insert = goodsInfo.insert == 0 || (goodsInfo.insert == 1 && (goodsInfo.productList && goodsInfo.productList.length>0)) ? 0 : 1; //0编辑 1新增
+          let options = {insert,activityId:this.properties.activity_id||0,fromType:'activity',goodsId:goodsInfo.goods_id||0,isPop:1,goodsInfo}
+          this.actProductPop = this.actProductPop || this.selectComponent('#act-product-pop');
+          this.actProductPop.showModal(options)
+        },
         onImport(){
           let func = ()=>{
             this.jumpAction(`/pages/main/staff-module/repository/index?fromType=activity&activity_id=${this.properties.activity_id||0}`);
@@ -98,7 +105,7 @@ Component(App.BC({
           let id = `#box-${index}`;
           return this._selectQuery(`#box-0,${id}`,'component','all').then(res=>{
             let arr = res && res[0] || [];
-            let top = (arr[1] && arr[1].top || 0) - (arr[0] && arr[0].top || 0);
+            let top = index == 0 ? 0 : ((arr[1] && arr[1].top || 0) - (arr[0] && arr[0].top || 0));
             this.oriScrollView = this.oriScrollView || this.selectComponent('#ori-scroll-view');
             return this.oriScrollView.setScrollTop(top).then(()=>{
               this.animate(id,ERR_KEY_FRAMES,300,() => {

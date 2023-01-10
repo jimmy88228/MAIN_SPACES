@@ -29,7 +29,6 @@ Component(App.BC({
                 let isSelectAll = true,selectNum=0;
                 nV.forEach(item=>{
                     isSelectAll && (isSelectAll = !!item.isSelected);
-                    console.log('item',isSelectAll,item);
                     item.isSelected && (selectNum += 1);
                 }); 
                 this.setData({isSelectAll,selectNum})
@@ -68,8 +67,7 @@ Component(App.BC({
             })
         },
         editGoods(e){
-          let goodsInfo = this.getDataset(e,'item')||{}; 
-          console.log("item", goodsInfo)
+          let goodsInfo = this.getDataset(e,'item')||{};
           goodsInfo.goodsImgs = goodsInfo.goods_img?[goodsInfo.goods_img]:[];
           let transData = encodeURIComponent(JSON.stringify(goodsInfo));
           App.StorageH.set("ReposityGoodsGallery", {galleryList: goodsInfo.galleryList || [], domainPath: this.properties.domainPath});

@@ -18,7 +18,7 @@
         </view>
     </view>
     <view class="goods-list flex-1">
-        <goods-list id="goods-list" bindcheckSetTime="checkSetTime" bindchange="onChangeList" bindonDelete="onDelete" domainPath="{{domainPath}}" list="{{acGoodsInfo.goods_Infos||[]}}" activity_id="{{acInfo.id||0}}" inited="{{inited}}"></goods-list>
+        <goods-list id="goods-list" catchproductSave="checkSet" bindcheckSetTime="checkSetTime" bindchange="onChangeList" bindonDelete="onDelete" domainPath="{{domainPath}}" list="{{acGoodsInfo.goods_Infos||[]}}" activity_id="{{acInfo.id||0}}" inited="{{inited}}"></goods-list>
     </view>
     <view class="footer flex-e-e">
         <!-- <view class="preview-btn flex-c-c">预览</view> -->

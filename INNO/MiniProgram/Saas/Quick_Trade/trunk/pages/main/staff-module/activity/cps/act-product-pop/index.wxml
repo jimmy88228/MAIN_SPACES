@@ -1,0 +1,6 @@
+<include src="/common/base/component/index.wxml" />
+<custom-pop id="custom-pop">
+    <view class="product-list-box flex-c-c">
+        <act-product-list class="product-list" id="act-product-list" binddismiss="dismiss" bindproductSave="productSave"></act-product-list>
+    </view>
+</custom-pop>

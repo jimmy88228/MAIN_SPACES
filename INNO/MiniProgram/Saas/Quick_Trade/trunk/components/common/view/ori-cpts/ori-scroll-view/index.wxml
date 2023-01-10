@@ -14,7 +14,4 @@
     scroll-top="{{scrollTop}}"
     >
     <slot></slot>
-    <view id="jimmy">
-      jimmyjimmy
-    </view>
 </scroll-view>

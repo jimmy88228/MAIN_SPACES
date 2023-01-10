@@ -1,4 +1,6 @@
 {
     "component": true,
-    "usingComponents": {}
+    "usingComponents": {
+        "act-product-pop":"/pages/main/staff-module/activity/cps/act-product-pop/index"
+    }
 }

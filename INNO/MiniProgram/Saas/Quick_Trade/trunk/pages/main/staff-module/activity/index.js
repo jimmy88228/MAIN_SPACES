@@ -65,7 +65,7 @@ Page(App.BP({
                         acGoodsInfo.goods_Infos.push(goodsInfo);
                         delete goodsInfo.isAdd;
                     }else{
-                        goodsInfo.goods_img = goodsInfo.goodsImgs[0] || "";
+                        goodsInfo.goods_img = goodsInfo.goodsImgs && goodsInfo.goodsImgs[0] || goodsInfo.goods_img || "";
                         acGoodsInfo.goods_Infos[index] = goodsInfo
                     }
                     this.setData({acGoodsInfo})
@@ -204,15 +204,19 @@ Page(App.BP({
                 return item.sale_price>0;
             });
             if(!valid){
-                title = `请先完善该商品sku数据`; 
+                title = `请完善该商品的规格数据`; 
                 // title = `请先完善商品款号为：${goods_Infos[index].goods_sn}的sku信息`; 
             }
         }
         if(title){
-          this.goodsList = this.goodsList || this.selectComponent('#goods-list');
-          this.goodsList.setScrollTop(index).then(()=>{
-              App.SMH.showToast({title});
-          });
+          if(index>-1){
+            this.goodsList = this.goodsList || this.selectComponent('#goods-list');
+            this.goodsList.setScrollTop(index).then(()=>{
+                App.SMH.showToast({title});
+              });
+          }else{
+            App.SMH.showToast({title});
+          }
           throw title
         }
     },

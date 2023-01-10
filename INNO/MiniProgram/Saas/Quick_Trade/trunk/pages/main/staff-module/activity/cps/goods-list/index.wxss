@@ -41,7 +41,7 @@
     background: rgb(249, 249, 249);
 }
 .op-btn{
-    width: 140rpx;
+    width: 110rpx;
     height: 66rpx;
     background: #FFFFFF;
     border-radius: 6rpx;

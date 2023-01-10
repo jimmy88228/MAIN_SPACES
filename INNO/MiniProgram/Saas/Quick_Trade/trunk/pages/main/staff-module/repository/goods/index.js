@@ -214,7 +214,7 @@ Page(App.BP({
           clearTimeout(timer);
           timer = null;
           let insert = goodsInfo.insert == 0 || (goodsInfo.insert == 1 && (goodsInfo.productList && goodsInfo.productList.length>0)) ? 0 : 1; //0编辑 1新增
-          let url = `/pages/main/staff-module/repository/goods/spec/index?insert=${insert}&activityId=${options.activity_id||0}&fromType=${options.fromType||''}&sale_price=${goodsInfo.sale_price||0}&goods_number=${goodsInfo.goods_number||0}&goodsId=${goodsInfo.goods_id||0}`;
+          let url = `/pages/main/staff-module/repository/goods/spec/index?insert=${insert}&activityId=${options.activity_id||0}&fromType=${options.fromType||''}&goodsId=${goodsInfo.goods_id||0}`;
           this.jumpAction(url);
         }, isEdit ? 0 : 500)
       })
