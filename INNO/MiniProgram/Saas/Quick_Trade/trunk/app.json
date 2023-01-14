@@ -69,7 +69,9 @@
         "window": "/components/common/view/window/index",
         "custom-pop":"/components/common/basic/pop/custom-pop/index",
         "ori-input":"/components/common/view/ori-cpts/ori-input/index",
-        "ori-scroll-view":"/components/common/view/ori-cpts/ori-scroll-view/index"
+        "ori-scroll-view":"/components/common/view/ori-cpts/ori-scroll-view/index",
+        "ori-image":"/components/common/view/ori-cpts/ori-image/index",
+        "mode-image":"/components/common/basic/mode-image/index"
     },
     "requiredPrivateInfos": [
       "chooseAddress"

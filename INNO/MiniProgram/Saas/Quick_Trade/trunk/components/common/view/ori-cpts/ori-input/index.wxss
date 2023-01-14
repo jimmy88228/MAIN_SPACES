@@ -1,9 +1,2 @@
-@import "/common/base/component/default-wxss/index.wxss";
-.ori-input{
-  padding-left: 20rpx;
-  box-sizing: border-box;
-  /* background-color: #F9F9F9; */
-}
-.default-placeholder-class{
-  color: #B2B2B2;
-}
+/* @import "/common/base/component/default-wxss/index.wxss";
+@import "/common/base/app/default-wxss/ori-cpts.wxss"; */

@@ -54,16 +54,20 @@ Component(App.BC({
       })
     },
     handleConfirmBtnTap() {
-      let formType = this.data.formType;
-      let formData = this.data.formData;
-      if (this.data.formType === "delivery") {
-        let validateError = this.validate(formType);
-        if (validateError) {
-          App.SMH.showToast({title: validateError});
-          return;
-        }
-      }
-      this.triggerEvent("confirm", formData)
+      // let formType = this.data.formType;
+      // if (this.data.formType === "delivery") {
+      //   let validateError = this.validate(formType);
+      //   if (validateError) {
+      //     App.SMH.showToast({title: validateError});
+      //     return;
+      //   }
+      // }
+      setTimeout(() => {
+        this._checkAllValid().then(()=>{
+          let formData = this.data.formData;
+          this.triggerEvent("confirm", formData)
+        })
+      }, 150);
     }
   }
 }))

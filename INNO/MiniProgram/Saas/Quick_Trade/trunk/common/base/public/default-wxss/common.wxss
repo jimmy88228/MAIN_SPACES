@@ -169,3 +169,55 @@
 .p-r-20 {
   padding-right: 20px;
 }
+
+.C_fff {
+  color: #fff;
+}
+
+.C_7f {
+  color: #7f7f7f;
+}
+
+.text-flow{
+  word-break: break-all;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 1;
+  -webkit-box-orient: vertical;
+  letter-spacing: 0;
+}
+.text-flow2,.text-flow3 {
+  word-break: break-all;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  letter-spacing: 0;
+}
+.text-flow3 {
+  -webkit-line-clamp: 3;
+}
+.common-empty-tip{
+  width: 100%;
+  height: 80%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: #7f7f7f; 
+  box-sizing: border-box;
+}
+.full-height{
+  height: 100%;
+}
+.full-width-center{
+  width: 100%;
+  display: flex;
+  justify-content: center;
+} 
+/* 此处设置editor富文本编辑器 placeholder 样式 */
+.ql-editor.ql-blank:before {
+  color: #666666;
+  font-style: normal;
+}

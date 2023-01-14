@@ -1,9 +1,9 @@
-<view class="container" style="height:{{editorHeight}}px;">
-  <editor id="editor" class="ql-container" placeholder="{{placeholder}}" bindstatuschange="onStatusChange" bindready="onEditorReady">
+<view class="container" style="height:{{editorHeight}};">
+  <editor id="editor" class="ql-container" catchtouchend="true" placeholder-style="font-style:normal" placeholder="{{placeholder}}" bindstatuschange="onStatusChange" bindready="onEditorReady">
   </editor>
 </view>
 
-<view class="toolbar" catchtouchend="format" hidden="{{keyboardHeight > 0 ? false : true}}" style="bottom: {{isIOS ? keyboardHeight : 0}}px">
+<view class="toolbar" catchtouchend="format" hidden="{{keyboardHeight > 0 ? false : true}}" style="bottom: {{isIOS ? (keyboardHeight-scrollTop)<0?(0):(keyboardHeight-scrollTop) : 0}}px">
   <i class="iconfont icon-charutupian" catchtouchend="insertImage"></i>
   <i class="iconfont icon-format-header-2 {{formats.header === 2 ? 'ql-active' : ''}}" data-name="header" data-value="{{2}}"></i>
   <i class="iconfont icon-format-header-3 {{formats.header === 3 ? 'ql-active' : ''}}" data-name="header" data-value="{{3}}"></i>

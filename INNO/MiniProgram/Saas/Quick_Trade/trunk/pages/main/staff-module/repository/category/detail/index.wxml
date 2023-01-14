@@ -7,7 +7,7 @@
       <block wx:for="{{list}}" wx:key="goods_id">
         <view class="cdl-item">
           <view class="msg-box flex">
-            <image src="{{item.goods_img || ''}}" mode="aspectFit" class="goods-img f-s-0"></image>
+            <mode-image src="{{item.goods_img || ''}}" ext-class="goods-img f-s-0" />
             <view class="content flex-1">
               <view class="goods-name bold text-flow2">{{item.goods_name}}</view>
               <view class="price bold">￥{{item.market_price||''}}</view>

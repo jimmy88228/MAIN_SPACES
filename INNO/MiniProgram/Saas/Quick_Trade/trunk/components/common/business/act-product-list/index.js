@@ -43,24 +43,49 @@ Component(App.BC({
         },
         productList: [],
         invalid: false,
+        isShowBatchSet:true,
+        fromType:"init"
     },
     methods: {
         init(options) {
             this.options = options || {};
             this.batchInputData = {};
-            this.setData({
-                fromType: options.fromType || "",
-                insert: options.insert || 0,
-                isPop: options.isPop == 1
-            })
+            this.resetData(options);
             if (this.options.fromType == 'activity') {
-                this.getAcitvityGoodsInfo().catch(e => {
+                this.showLoading();
+                return this.getAcitvityGoodsInfo().catch(e => {
                     this.setInvalid(e);
+                }).finally(()=>{
+                  this.hideLoading();
                 })
             } else {
+              this.showLoading();
                 this.getSpecCategoryInfo()
-                    .then(() => this.getGoodsProductList());
+                  .then(() => {this.getGoodsProductList().finally(()=>{
+                      this.hideLoading();
+                    })
+                  });
             }
+        },
+        resetData(){ 
+          let data = this.options.isPop == 1 ? {
+            invalid:false,
+            productList:[],
+            specInfoList:[],
+            selectedSpecInfoRef:{},
+            selectedSpecInfoList:[]
+          }:{};
+          if(this.options.isPop){
+            this.batchInputData = {};
+            this.batchSetCpt = null;
+            this.setData({isShowBatchSet:false},()=>{this.setData({isShowBatchSet:true})});
+          }
+          this.setData({
+            ...data,
+            fromType: this.options.fromType || "",
+            insert: this.options.insert || 0,
+            isPop: this.options.isPop == 1,
+          });
         },
         getAcitvityGoodsInfo() {
             let params = {
@@ -69,14 +94,13 @@ Component(App.BC({
                 insert: this.options.insert,
             }
             return getAcitvityGoodsInfo(params).then(res => {
-                if (res.code == 1) {
-                    let data = res.data || {};
-                    let productList = data.productList || {};
-                    this.setData({
-                        productList
-                    });
-                    console.log('productList', productList)
-                }
+                let data = res && res.data || {};
+                let productList = data.productList || {};
+                this.setData({
+                    productList
+                });
+                console.log('productList', productList)
+                return res;
             })
         },
         onInput(e) {
@@ -232,19 +256,14 @@ Component(App.BC({
                     productList
                 })
                 .then((res) => {
-                    if (res.code == 1) {
-                        let productList = this.data.productList || [];
-                        App.StorageH.set('curSetProductListInfo', {
-                            goodsId: this.options.goodsId || 0,
-                            productList
-                        });
+                    if (res && res.code == 1) {
                         App.SMH.showToast({
                             title: "保存成功"
                         });
                         let timer = setTimeout(() => {
                             clearTimeout(timer);
                             timer = null;
-                            WxApi.navigateBack();
+                            wx.navigateBack();
                         }, 500)
                     }
                     return res;
@@ -271,7 +290,7 @@ Component(App.BC({
             return activityProductUpdateOrInsert(params).then(res => {
                 if (res.code == 1) {
                     App.SMH.showToast({
-                        title: "保存成功"
+                        title: this.data.isPop ? "保存成功" : "暂存成功"
                     });
                     if(this.data.isPop == 1){
                         let goodsInfo = this.options.goodsInfo||{};
@@ -298,7 +317,7 @@ Component(App.BC({
                     }else{
                         App.StorageH.set('curSetProductListInfo', {
                             goodsId: this.options.goodsId || 0,
-                            activityId: this.options.activityId || 0,
+                            // activityId: this.options.activityId || 0,
                             productList
                         });
                         setTimeout(() => {
@@ -309,6 +328,7 @@ Component(App.BC({
             });
         },
         save() {
+            this._setPageLoading('save');
             this._checkAllValid().then(() => {
                 if (this.options.fromType == 'activity') {
                     this.activityProductUpdateOrInsert();
@@ -316,15 +336,6 @@ Component(App.BC({
                     this.createOrUpdateGoodsProduct();
                 }
             })
-            // this.oriInputArr = this.selectAllComponents('.ori-label');
-            // let arr = this.oriInputArr.map(item=>item.checkValid());
-            // Promise.all(arr).then(()=>{
-            //   if(this.options.fromType == 'activity'){
-            //     this.activityProductUpdateOrInsert();
-            //   }else{
-            //     this.createOrUpdateGoodsProduct();
-            //   }
-            // });
         },
         setInvalid(e) {
             this.setData({
@@ -335,7 +346,7 @@ Component(App.BC({
                 showCancel: false,
             }).then(() => {
                 if(this.data.isPop == 1){
-                    this.triggerEvent('dismiss')
+                    this.triggerEvent('dismiss');
                     return
                 }
                 wx.navigateBack();
@@ -409,14 +420,8 @@ function createOrUpdateGoodsProduct(data) {
                 });
                 return res
             }
-            return Promise.reject(res.msg || "保存规格失败")
-        })
-        .catch(err => {
-            console.log("createOrUpdateGoodsProduct err", err);
-            App.SMH.showToast({
-                title: err
-            });
-            return Promise.reject(err)
+            App.SMH.showToast({title:res&&res.msg||"保存失败"});
+            return Promise.reject(res)
         })
 }
 
@@ -462,5 +467,11 @@ function getAcitvityGoodsInfo(params) {
 function activityProductUpdateOrInsert(params) {
     return App.Http.QT_GoodsApi.activityProductUpdateOrInsert({
         data: params,
+    }).then(res=>{
+      if(res.code != 1){
+        App.SMH.showToast({title:res&&res.msg||"保存失败"});
+        return Promise.reject(res)
+      }
+      return res;
     })
 }

@@ -1,14 +1,26 @@
 <!--pages/main/staff-module/staff-center/staff-center.wxml-->
 <include src="/common/base/page/index.wxml" />
+<view class="staff-center-bg"></view>
 <view class="staff-center">
-    <view class="flex-c-c flex-col">
-        <image class="header" src="{{userInfo.portrait_path||''}}" mode="aspectFit"/>
+    <view class="flex-b-c staff-center-header">
+      <view class="flex-c-c">
+        <ori-image ext-class="header" src="{{userInfo.portrait_path||''}}" mode="aspectFit"/>
         <view class="name">{{baseInfo.staff_name}}</view>
+      </view>
+      <view>
+        <view class="total-sale flex-col">
+          <view class="tip">累计销售</view>
+          <view class="val">¥{{baseInfo.total_sales || 0}}</view>
+        </view>
+      </view>
     </view>
     <view class="summary-box flex-c-c m-t-30">
         <block wx:for="{{summaryList}}" wx:key="key">
             <view class="item flex-1 flex-c-c flex-col">
-                <view class="price">¥{{baseInfo[item.key]||0}}</view>
+                <view class="price m-b-5">
+                  <text class="sub">¥</text>
+                  <text class="val">{{baseInfo[item.key]||0}}</text>
+                </view>
                 <view class="price">{{item.title}}</view>
             </view>
         </block>

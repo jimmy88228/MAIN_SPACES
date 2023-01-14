@@ -1,12 +1,9 @@
-<view class="i-goods-list-container">
-  <view class="i-goods-list">
+<ori-scroll-view scroll-y ext-class="i-goods-list-container full-height" bindscrolltolower="loadNextPage" refresherEnabled="{{false}}">
+  <block wx:if="{{isInit && list.length>0}}">
     <view class="i-goods-item" wx:for="{{list}}" wx:key="index" hover-class="active" bindtap="handleGoodsTap" data-goods-id="{{item.goods_id}}">
       <view class="i-goods-item-main">
         <view class="i-goods-left">
-          <view class="i-g-image-con">
-            <!-- <view class="i-g-l-slogan">品牌</view> -->
-            <image class="i-g-image" src="{{item.goods_img}}" />
-          </view>
+          <mode-image ext-class="i-g-image" src="{{item.goods_img}}" />
         </view>
         <view class="i-goods-right">
           <view class="i-goods-info">
@@ -44,11 +41,23 @@
         <text class="i-g-p-tip">·一件包邮到家</text>
       </view> -->
     </view>
-  </view>
-  <btns class="i-goods-share-btn" bind:clickcallback="handleShareBtnTap">
-    <view class="i-goods-share-icon icon-fenxiang iconfont"></view>
-  </btns>
-</view>
+  </block>
+  <block wx:if="{{isInit && list.length<=0}}">
+    <view class="common-empty-tip" style="color:#efefef;">
+      暂无活动商品
+    </view>
+  </block>
+</ori-scroll-view>
+
+<!-- 可移动分享区域 -->
+<movable-area class="movable-area">
+  <movable-view animation="false" direction="all" x="{{moveViewOps.x}}" y="{{moveViewOps.y}}" class="i-goods-share-btn">
+    <btns bind:clickcallback="handleShareBtnTap">
+      <view class="i-goods-share-icon icon-fenxiang iconfont"></view>
+    </btns>
+  </movable-view>
+</movable-area>
+
 <view class="index-goods-spec-com">
   <goods-spec-pop id="goods-spec-pop" show-short-cut />
 </view>

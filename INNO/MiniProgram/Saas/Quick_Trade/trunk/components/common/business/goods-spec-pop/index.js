@@ -24,7 +24,7 @@ Component(App.BC({
   },
   methods: {
     showModal({skuList = [], productList = [], goodsId = 0, goodsImg = "", activityId = 0}) {
-      // if (this.data.goodsId === goodsId) { // 同一个商品打开，不用再初始化数据
+      // if (this.data.goodsId === goodsId) { // 同一个商品打开，不用再初始化数据 //（需求改成实时刷新库存，先注释）
       //   this.toggle();
       // } else { // 不同商品打开，需要初始化数据
       //   this.initSkuCompnent({skuList, productList}, {isRefresh: true, autoSelect: true});
@@ -71,7 +71,6 @@ Component(App.BC({
     initSkuCompnent(skuData, options = {isRefresh: false, autoSelect: false}) {
       let {isRefresh, autoSelect} = options;
       this.sku = this.sku || this.selectComponent("#sku");
-      console.log("initSkuCompnent", skuData, options);
       if (isRefresh) this.sku.reset();
       this.sku.initData(skuData);
       if (isRefresh && autoSelect) this.sku.autoSelectFirstAvailableProduct(skuData);
@@ -118,11 +117,14 @@ Component(App.BC({
       });
     },
     handleShortCutTap() {
-      if (this.data.goodsId) WxApi.navigateTo({url: `/pages/main/goods/index?goods_id=${this.data.goodsId}&activity_id=${this.data.activityId}`})
+      if (this.data.goodsId) {
+        WxApi.navigateTo({url: `/pages/main/goods/index?goods_id=${this.data.goodsId}&activity_id=${this.data.activityId}`})
+        this.toggle();
+      }
     },
     toggle() {
       let show = this.data.show;
-      this.tabBarToggle(show);
+      // this.tabBarToggle(show);
       WxApi.nextTick(() => {
         this.setData({show: !show})
       })

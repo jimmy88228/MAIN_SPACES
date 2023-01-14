@@ -166,6 +166,8 @@ function deleteSpecItem(specId) {
         return res.data || 0
       }
       return Promise.reject(res.msg || '删除规格失败')
+    }).catch(msg=>{
+      App.SMH.showToast({title:msg})
     })
 }
 

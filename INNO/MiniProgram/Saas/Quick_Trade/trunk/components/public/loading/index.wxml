@@ -1,6 +1,6 @@
 <transition name="fade" show="{{show}}">
   <view class="loading_container">
-    <view class="loading_masker"></view>
+    <!-- <view class="loading_masker"></view> -->
     <view class="loading_icon">
       <view class="loading_icon_i"></view>
     </view>

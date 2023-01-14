@@ -23,7 +23,7 @@ class ParamsManager {
    * @param {Object} options 进入App参数
    * @returns {Object} options 处理后的App参数 
    */
-  initParam(options){ 
+  initParam(options){
     let query = options.query;
     if (query.barCodeId || query.scene){ //为定好的协议参数，通过解析协议获取需要的数据
       console.log(query, "scanWXLOG前参数")

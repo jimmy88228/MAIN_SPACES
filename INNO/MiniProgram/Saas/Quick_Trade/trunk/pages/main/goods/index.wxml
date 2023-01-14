@@ -15,7 +15,7 @@
         <block wx:for="{{goods_gallery}}" wx:key="id">
           <swiper-item class="goods-images-swpier-item" catchtap="handleSwpierItemTap" data-src="{{item.goods_img}}" >
             <view class="g-i-s-i-image-con">
-              <image class="g-i-s-i-image" src="{{item.goods_img}}" lazy-load  mode="aspectFit" />
+              <ori-image ext-class="g-i-s-i-image" src="{{item.goods_img}}" mode="aspectFit" />
             </view>
           </swiper-item>
         </block>
@@ -32,7 +32,7 @@
             </view>
             <view class="g-i-c-trend" hidden="{{goods_info.market_price == goods_info.sale_price}}">
               <view class="iconfont icon-xiajiang g-i-c-trend-icon"></view>
-              <view class="g-i-c-trend-text">直降￥{{goods_info.market_price - goods_info.sale_price}}</view>
+              <view class="g-i-c-trend-text">直降￥{{goods_info.down_price||0}}</view>
             </view>
           </view>
           <!-- 划线价 -->
@@ -43,9 +43,7 @@
         </view>
         <view class="g-i-c-right">
           <view class="g-i-c-count-down-info">
-            <view class="g-i-c-c-d-image-con">
-              <image class="g-i-c-c-d-image" src="/assets/images/common/xianshiqiang.png" />
-            </view>
+            <ori-image class="g-i-c-c-d-image" src="/assets/images/common/xianshiqiang.png" />
             <view class="g-i-c-c-d-text">
                 <text class="c-d-prefix">
                   <block wx:if="{{activity_info.status == 0}}">距开始 </block>
@@ -91,13 +89,13 @@
         </view>
       </view>
     </view> -->
-    <view class="goods-info-detail-con">
+    <view class="goods-info-detail-con" wx:if="{{goods_info.goods_detail}}">
       <view class="g-i-f-detail">
         <view class="g-i-d-header">
           <view class="g-i-d-title">详情</view>
         </view>
         <view class="g-i-d-main">
-          <rich-text wx:if="{{goods_info.goods_detail}}" nodes="{{goods_info.goods_detail}}" />
+          <rich-text nodes="{{goods_info.goods_detail}}" />
         </view>
       </view>
     </view>

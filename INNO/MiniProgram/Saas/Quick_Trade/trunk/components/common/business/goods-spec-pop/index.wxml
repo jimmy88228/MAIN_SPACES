@@ -2,11 +2,15 @@
   <transition show="{{show}}" name="slide-from-bottom" class="goods-spec-container" customStyle="width: 100%;height: 100%">
     <view class="goods-spec-main" catchtap="noFn">
       <view class="g-s-spec-detail">
-        <view class="g-s-spec-image-con">
-          <image class="g-s-spec-image" src="{{goodsImg}}" bindtap="previewImage" data-src="{{goodsImg}}" />
-        </view>
+        <mode-image ext-class="g-s-spec-image" src="{{goodsImg}}" />
         <view class="g-d-spec-info">
-          <view class="g-d-s-i-price"><text class="gdsi-price-rmb">￥</text><text class="gdsi-price-text">{{selectedProductInfo.sale_price}}</text></view>
+          <view class="g-d-s-i-price">
+            <block wx:if="{{selectedProductInfo.sale_price>0}}">
+              <text class="gdsi-price-rmb">￥</text>
+              <text class="gdsi-price-text">{{selectedProductInfo.sale_price}}</text>
+            </block>
+            <text class="gdsi-price-rmb" wx:else>--</text>
+          </view>
           <view class="already-chosen">
             <text class="already-chosen-text">已选<block wx:for="{{selectedSku}}" wx:key="index">"{{item.name}}" </block></text>
           </view>

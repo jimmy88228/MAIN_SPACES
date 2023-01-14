@@ -16,10 +16,9 @@ function theFrontPart(appOnShow, appQuery, next) { // onShow的前半部分(全�
   LM.loginAsync(false)
   .ignore(() => PH.initParam(appQuery))
   .then(options => (appQuery = options))
-  .ignore(() => LM.checkIfStaff(false))
   .ignore(() => LM.checkIfStore(false))
-  .ignore(() => storeH.changeVisitStore(appQuery.query||{}))
-  .ignore(() => storeH.getVisitStore(false, appQuery.query || {}))
+  .ignore(() => storeH.changeVisitStore())
+  .ignore(() => storeH.getVisitStore(false))
   .ignore(() => {
     appOnShow && appOnShow.call(this);
     this.inLifeCycle = "afterOnShow";

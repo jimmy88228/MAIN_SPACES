@@ -5,7 +5,7 @@
       <view class="icon-close ccph-close" catchtap="dismiss"></view>
     </view>
     <view class="cate-create-pop-main">
-      <input class="ccpm-input" placeholder-class="ccpm-input-placeholder" bindinput="handleInput" type="text" placeholder="请输入商品分类名称" maxlength="{{20}}" value="{{cateName}}" />
+      <input class="ccpm-input"  bindfocus="onfocus" bindblur="onblur" placeholder-class="ccpm-input-placeholder" bindinput="handleInput" type="text" placeholder="请输入商品分类名称" maxlength="{{20}}" value="{{cateName}}" />
     </view>
     <view class="cate-create-pop-footer">
       <button class="ccpf-confirm-btn" catchtap="handlePopItemTap">确认</button>

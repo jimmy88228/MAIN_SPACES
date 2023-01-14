@@ -27,7 +27,6 @@
 .goods-img{
   width: 170rpx;
   height: 170rpx;
-  background: #D8D8D8;
 }
 .content{
   padding-top: 2rpx;

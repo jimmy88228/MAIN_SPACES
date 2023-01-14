@@ -1,7 +1,8 @@
 const STORE_KEY = "STORE_INFO"
 import Http from "../../manager/http-manager/index";
 import StorageH from "../storage-handler/index";
-import LM from "../../manager/login-manager/index"
+import LM from "../../manager/login-manager/index";
+import PH from "../../helper/params-handler/index";
 class storeManager {
     static getInstance() {
       if (!storeManager.instance) {
@@ -22,13 +23,16 @@ class storeManager {
             return this.getVisitStore(true);
         })
     }
-    getVisitStore(cache, options){
+    getVisitStore(cache){
         if(cache && this._storeInfo){
             return Promise.resolve(this._storeInfo);
         }
+        let options = PH.paramsJson('options') || {};
+        console.log('getVisitStore',options)
+        let {staffCode=""} = options.query||{};
         return Http.QT_UserApi.getVisitStore({
             params: {
-              staffCode: options.staffCode || ""
+              staffCode
             }
         }).then(res=>{
             if(res.code == 1){
@@ -38,10 +42,11 @@ class storeManager {
         })
     }
 
-    changeVisitStore(params){
-        // params.staffCode = "KL011";
-        let {staffCode,storeCode}=params;
-        if(staffCode||storeCode){
+    changeVisitStore(){
+        let options = PH.paramsJson('options') || {};
+        let {staffCode,storeCode} = options.query||{};
+        console.log('changeVisitStore',options)
+        if(LM.isLogin && (staffCode||storeCode)){
             return Http.QT_UserApi.changeVisitStore({
                 data: {
                     staffCode,
@@ -49,7 +54,7 @@ class storeManager {
                 },
             })
         }
-        return Promise.reject("无分销码或店铺码");
+        return Promise.reject("无分销码或店铺码或未登录");
     }
     
     setStoreInfo(info){

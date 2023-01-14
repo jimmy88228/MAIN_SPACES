@@ -13,27 +13,30 @@ Page(App.BP({
   },
   onShow() {
     getActivityDetail.call(this)
-      .then(() => {
-        setCountDown.call(this)
-      })
-      .then(() => {
+      .then(() => setCountDown.call(this))
+      .then(res => {
         let {id: activityId = 0, status: activityStatus = 0} = this.data.activityInfo || {};
         this.goodsList = this.goodsList || this.selectComponent("#goods-list");
         this.goodsList && this.goodsList.loadData({activityId, activityStatus});
+        return res;
       })
       .catch(err => {
         err && App.SMH.showToast({
           title: err
         });
+        return Promise.reject(err)
+      })
+      .finally(()=>{
+        this.setData({isInit:true});
       })
   },
   onHide() {
     stopCountDown.call(this);
   },
-  handleScrollToLower() {
-    this.goodsList = this.goodsList || this.selectComponent("#goods-list");
-    this.goodsList.loadNextPage();
-  },
+  // handleScrollToLower() {
+  //   this.goodsList = this.goodsList || this.selectComponent("#goods-list");
+  //   this.goodsList.loadNextPage();
+  // },
   refreshPage() {
     this.onShow();
   },

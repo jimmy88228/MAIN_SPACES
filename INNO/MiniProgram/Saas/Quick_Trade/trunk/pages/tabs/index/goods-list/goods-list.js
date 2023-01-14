@@ -11,6 +11,11 @@ Component(App.BC({
     purchaseButtonText: "抢购", // 购买按钮文案 
     list: [],
     nomore: false,
+    isInit: false,
+    moveViewOps:{
+      x:"9999",
+      y:"9999"
+    },
   },
   ready() {
 
@@ -108,7 +113,7 @@ function getActivityGoodsInfo() {
         _list = _list.map(item=>({...item,down_price:App.Utils.StringUtils._toFixed(item.market_price - item.sale_price,2)}))
         let list = pageIndex == 1 ? _list : [...currentList, ..._list];
         let nomore = list.length >= count;
-        this.setData({list, nomore});
+        this.setData({list, nomore,isInit:true});
         return res.data;
       }
       return Promise.reject(res.msg || "获取商品列表失败")

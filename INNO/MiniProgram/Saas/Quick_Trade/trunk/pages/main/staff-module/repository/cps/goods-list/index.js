@@ -4,34 +4,29 @@ Component(App.BC({
         addGlobalClass:true
     },
     properties: {
-        goodsList:{
-            type:Array,
-            value:[]
-        },
-        isSelect:{
-            type:Boolean,
-            value:false
-        },
-        domainPath: {
-          type: String, 
-          value: ""
-        }
+        goodsList:Array,
+        domainPath:String,
+        isInit:Boolean,
+        isSelect:Boolean,
     }, 
     data: {
         isSelectAll:false,
         selectNum:0, 
         curId:0,
+        scrollTop:0,
     },
     observers:{
         goodsList:function(nV,oV) {
-            console.log('goodsList ob',nV)
+            console.log('goodsList ob',nV);
             if(nV && Array.isArray(nV) && nV.length>0){
                 let isSelectAll = true,selectNum=0;
                 nV.forEach(item=>{
                     isSelectAll && (isSelectAll = !!item.isSelected);
                     item.isSelected && (selectNum += 1);
                 }); 
-                this.setData({isSelectAll,selectNum})
+                this.setData({isSelectAll,selectNum,empty:false})
+            }else{
+              this.setData({isSelectAll:false,selectNum:0,empty:true})
             }
         }     
     },
@@ -71,27 +66,36 @@ Component(App.BC({
           goodsInfo.goodsImgs = goodsInfo.goods_img?[goodsInfo.goods_img]:[];
           let transData = encodeURIComponent(JSON.stringify(goodsInfo));
           App.StorageH.set("ReposityGoodsGallery", {galleryList: goodsInfo.galleryList || [], domainPath: this.properties.domainPath});
-          this.jumpAction(`/pages/main/staff-module/repository/goods/index?goodsInfo=${transData}&activity_id=${this.properties.activity_id || ""}&isEdit=1`);
+          this.jumpAction(`/pages/main/staff-module/repository/goods/index?goodsInfo=${transData}&activity_id=${this.properties.activity_id || ""}&isEdit=1&goodsId=${goodsInfo.goods_id||0}`);
         },
         copy(e) {
-          let goodsId = this.getDataset(e, "goodsId");
-          this.showLoading();
-          copyGoods(goodsId)
-            .then(() => {
-              App.SMH.showToast({title: "复制成功"})
-              this.triggerEvent('onRefresh');
-            })
-            .catch(err => {
-              console.log("copy err", err);
-              App.SMH.showToast({title: err});
-            })
-            .finally(() => {
-              this.hideLoading();
-            })
+          let item = this.getDataset(e,'item')||{}; 
+          this.triggerEvent('copy',{item});
+          // let goodsId = this.getDataset(e, "goodsId");
+          // this.showLoading();
+          // copyGoods(goodsId)
+          //   .then(() => {
+          //     App.SMH.showToast({title: "复制成功"})
+          //     this.triggerEvent('onRefresh');
+          //   })
+          //   .catch(err => {
+          //     console.log("copy err", err);
+          //     App.SMH.showToast({title: err});
+          //   })
+          //   .finally(() => {
+          //     this.hideLoading();
+          //   })
         },
         scrolltolower(e){
           this.triggerEvent('scrolltolower');
         },
+        scrollToTop(){
+          this.setData({
+            scrollTop:0
+          },()=>{
+            this.setData({scrollTop:''});
+          })
+        }
     }
 }))
 

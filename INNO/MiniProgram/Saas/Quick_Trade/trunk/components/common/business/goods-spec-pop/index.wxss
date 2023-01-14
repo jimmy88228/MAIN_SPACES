@@ -27,19 +27,13 @@ page{
   display: flex;
   margin-bottom: 40rpx;
 }
-.g-s-spec-image-con{
+.g-s-spec-image{
   width: 194rpx;
   height: 194rpx;
-  margin-right: 28rpx;
-  background: #D8D8D8;
+  margin-right: 28rpx; 
   border: 1px solid #d8d8d8;
-  border-radius: 12rpx;
-}
-.g-s-spec-image{
-  width: 100%;
-  height: 100%;
-  border-radius: 12rpx;
-}
+  flex-shrink: 0;
+} 
 .g-d-spec-info{
   display: flex;
   flex-direction: column;
@@ -63,8 +57,11 @@ page{
   color: #b2b2b2;
   margin-bottom: 2rpx;
 }
+.gdsi-price-rmb{
+  margin-left: -2rpx;
+}
 .g-s-sku-container{
-  margin-bottom: 80rpx;
+  margin-bottom: 30rpx;
 }
 .g-s-sku-main{
   min-height: 60rpx;

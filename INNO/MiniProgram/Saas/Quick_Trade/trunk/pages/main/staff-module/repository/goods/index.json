@@ -1,5 +1,5 @@
 {
-  "navigationBarTitleText": "新增商品",
+  "navigationBarTitleText": "",
   "usingComponents": {
     "cat-pop": "/pages/main/staff-module/repository/goods/cat-pop/index"
   }

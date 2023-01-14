@@ -1,5 +1,8 @@
 const App = getApp();
 Component(App.BC({
+  options: {
+    styleIsolation: 'apply-shared'
+  },
   externalClasses: ['ext-class'],
   properties:{
     scrollType:{

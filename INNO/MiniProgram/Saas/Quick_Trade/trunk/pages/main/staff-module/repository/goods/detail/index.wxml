@@ -1,14 +1,14 @@
 <!--pages/main/staff-module/repository/goods/detail/index.wxml-->
 <include src="/common/base/page/index.wxml" />
 <view class="detail-page {{longpress >= 0?'longpress':''}}">
-  <scroll-view class="detail" scroll-y >
+  <view class="detail">
     <view class="detail-display-container">
-      <custom-editor id="custom-editor" bindkeyBoradDown="onBlur" bindkeyBoradUp="onFocus" bindinsertImage="insertImage" />
+      <custom-editor id="custom-editor" placeholder="维护详情内容" bindkeyBoradDown="onBlur" bindkeyBoradUp="onFocus" bindinsertImage="insertImage" scrollTop="{{scrollTop}}" extraH="{{footerH}}"/>
     </view>
-  </scroll-view>
+  </view>
 
   <transition name="slide-from-bottom" show="{{showFooter}}">
-    <view class="footer flex-e-c">
+    <view class="footer flex-e-c" style="{{footerClass}}">
       <view class="preview-btn flex-c-c" hover-class="active" catchtap="handlePreviewBtnTap">预览</view>
       <view class="save-btn flex-c-c" hover-class="active" catchtap="handleSaveBtnTap">保存</view>
     </view>

@@ -11,7 +11,7 @@
         <block wx:for="{{barList}}" wx:key="state">
           <view
             class="user-row-item"
-            style="width: {{(100 / barList.length) + ''}}%;"
+            style="width: {{(100 /3) + ''}}%;"
             catchtap="jump"
             data-item="{{item}}"
           >

@@ -22,7 +22,7 @@ Component(App.BC({
     if (wx.getUserProfile) this.setData({isCanUrPf: true});
   },
   methods: {
-    handleTap(e, ) {
+    handleTap(e) {
       let tapInterval = this.properties.tapInterval;
       if (tapInterval) {
         this.throttleFunction = this.throttleFunction || utils.throttle_2((event) => {

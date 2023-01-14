@@ -1,6 +1,6 @@
 @import "/common/base/page/default-wxss/index.wxss";
 page{
-  --category-footer-height: calc(120rpx + env(safe-area-inset-bottom));
+  --category-footer-height: calc(152rpx + env(safe-area-inset-bottom));
 }
 .goods-category-edit-page{
   width: 100vw;
@@ -42,7 +42,9 @@ page{
   bottom: 0;
   width: 100%;
   height: var(--category-footer-height);
+  padding-top: 32rpx; 
   padding-bottom: calc(32rpx + env(safe-area-inset-bottom));
+  background-color: #fff;
 }
 .gcef-btn-group{
   width: 100%;

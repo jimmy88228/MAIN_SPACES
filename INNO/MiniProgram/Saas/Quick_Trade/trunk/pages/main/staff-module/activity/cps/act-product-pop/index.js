@@ -5,14 +5,13 @@ Component(App.BC({
         this.customPop = this.customPop || this.selectComponent('#custom-pop');
         this.actProductList = this.actProductList || this.selectComponent('#act-product-list');
         this.customPop.showModal().then(()=>{
-            this.actProductList.init(options)
+            this.actProductList.init(options);
         });
     },
     dismiss(){
         this.customPop.dismiss();
     },
     productSave(){
-        console.log('act-product-pop',)
         this.dismiss();
         // this.triggerEvent('save');
     }

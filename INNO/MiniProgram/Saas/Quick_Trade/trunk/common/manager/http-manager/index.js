@@ -74,7 +74,7 @@ EasyHttp.setRequestHandler(req => {
                 console.log("重新登录成功, 触发重发");
                 return proceed(req); //重发
               }
-              return Promise.reject({ code: 1001, msg: "登录授权已过期，请刷新重试", tag: LOG_TAG });
+              return Promise.reject({ code: 1001, msg: "登录授权已过期，请刷新重试",});
             })
           } else if(data.code == 1002){ //未注册
             
@@ -85,7 +85,7 @@ EasyHttp.setRequestHandler(req => {
                 duration: 3000,
               })
             });
-            return Promise.reject({ ...data, tag: LOG_TAG });
+            return Promise.reject({ ...data });
           }
           return data;
       });

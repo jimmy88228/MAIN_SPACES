@@ -39,10 +39,11 @@ Page(App.BP({
       min: 0,
       sec: 0
     },
-    foldBtnActive: false, // 是否打开折叠的按钮组
+    foldBtnActive: false, // 是否打开折叠的按钮组 
   },
   onLoad(query) {
     this.pageQuery = query;
+    this.setData({staff_type:query.staff_type||0})
     this.orderId = Number(query.order_id) || 0;
     this.first_time_topay = Number(query.first_time_topay) || 0;
   },
@@ -152,7 +153,7 @@ Page(App.BP({
        if (info.confirm) {
          cancelOrder.call(this)
           .then(() => {
-            App.SMH.showToast("取消订单成功");
+            App.SMH.showToast({title:"取消订单成功"});
             getOrderInfo.call(this)
           })
           .catch(err => {
@@ -266,7 +267,7 @@ function checkIfNeedCallPayImmediately() {
 
 function setCountDown() {
   let {menuInfo, orderInfo} = this.data;
-  if ((menuInfo.needPay || menuInfo.canQrcodePay)&& MyDate.parse(orderInfo.autoCancelTime) > MyDate.parse(orderInfo.serverTime)) {
+  if (((this.pageQuery.staff_type == 1 && orderInfo.orderStatus == '待付款') || (menuInfo.needPay || menuInfo.canQrcodePay)) && MyDate.parse(orderInfo.autoCancelTime) > MyDate.parse(orderInfo.serverTime)) {
     this.setData({
       showTimeOut: true
     })
@@ -288,9 +289,7 @@ function startCountDown(startTime, endTime) {
     this.countDown.start(e => {
       if (e.value <= 0) {
         stopCountDown.call(this);
-        WxApi.navigateBack({
-          delta: 1
-        })
+        getOrderInfo.call(this);
       }
       setTime.call(this, e);
     });

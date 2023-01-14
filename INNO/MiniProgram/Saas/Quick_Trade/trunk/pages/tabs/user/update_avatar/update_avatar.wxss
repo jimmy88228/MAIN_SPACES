@@ -43,7 +43,6 @@
   width: 56px;
   height: 56px;
   border-radius: 50%;
-  transition: all 0.2s ease;
   border: 2px solid #ddd;
   color: var(--main-color);
 }

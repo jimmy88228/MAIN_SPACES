@@ -114,9 +114,12 @@ function getGoodsDetail() {
     .then(res => {
       if (res.code == 1) {
         let data = res.data || {},
-        activity_info = data.activity_info || {};
+        activity_info = data.activity_info || {},
+        goods_info = data.goods_info || {};
+        goods_info.down_price = App.Utils.StringUtils._toFixed(goods_info.market_price - goods_info.sale_price,2);
         activity_info.status = doubleCheckActivityStatus(activity_info);
         data.activity_info = activity_info;
+        
         this.setData(data);
         return data || {};
       }

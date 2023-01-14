@@ -39,10 +39,11 @@
 }
 .cosc-input{
   width: 100%;
-  height: 100%;
+  height: 60rpx;
   border: 1px solid #dddddd;
   border-radius: 8rpx;
   padding: 4rpx 8rpx;
+  box-sizing: border-box;
 }
 .change-order-status-footer{
   flex: 1;

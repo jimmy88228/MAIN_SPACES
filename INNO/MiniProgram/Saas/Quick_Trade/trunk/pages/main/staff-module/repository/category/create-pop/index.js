@@ -5,6 +5,12 @@ Component(App.BC({
     cateName: ""
   },
   methods: {
+    onfocus() {
+      this.triggerEvent('onfocus')
+    },
+    onblur() {
+      this.triggerEvent('onblur')
+    },
     handleInput(e) {
       let value = e.detail.value || "";
       this.setData({cateName: value})

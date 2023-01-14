@@ -90,7 +90,6 @@ export default {
     }, time);
   },
   _selectQuery(id,fromType='page',selectType=""){
-    console.log('idid',id,fromType,selectType)
     return new Promise((rs,rj)=>{
       if(!id)return rj();
       const query = fromType=='page'?wx.createSelectorQuery():wx.createSelectorQuery().in(this);
@@ -100,7 +99,7 @@ export default {
         query.selectAll(id).boundingClientRect()
       }
       query.selectViewport().scrollOffset().exec(res => { 
-          console.log('_selectorQuery',res);
+          // console.log('_selectorQuery',res);
           return rs(res); 
         }
       )  

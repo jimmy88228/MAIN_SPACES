@@ -8,6 +8,8 @@
     border-radius: 20rpx;
     overflow: hidden;
     margin-bottom: 24rpx;
+    border:1px solid;
+    border-color: transparent;
 }
 .item-box:last-child{
     margin-bottom: 0;
@@ -15,9 +17,7 @@
 .img-goods{ 
     width: 130rpx;
     height: 130rpx;
-    background: #D8D8D8;
-    border-radius: 8rpx;
-    margin-right: 30rpx ;
+    margin-right: 30rpx;
 }
 .msg-box{
     padding-top: 2rpx;
@@ -29,6 +29,7 @@
 .title{
     color: #7F7F7F;
     margin-right: 20rpx;
+    flex-shrink: 0;
 }
 .goods-box{
     padding: 30rpx;

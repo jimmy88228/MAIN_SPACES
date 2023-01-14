@@ -1,7 +1,12 @@
 import WxApi from "../../../../common/utils/wxapi/index";
+import EB from "../../../../common/support/event-bus/index";
 const App = getApp();
 Component(App.BC({
   properties: {
+    showBack: {
+      type: Boolean,
+      value: true
+    },
     styleType: { // 0: 普通
       type: String,
       value: "0"
@@ -9,15 +14,27 @@ Component(App.BC({
     title: { // 标题
       type: String,
       value: ""
+    },
+    navColor:{
+      type: String,
+      value: "#000"
     }
   },
   pageLifetimes:{
     show(){
       this.setStoreInfo();
-      // App.StoreH.getVisitStoreByLogin().ignore(()=>{
-      //   this.setStoreInfo();
-      // });
-    }
+      if(!App.LM.isLogin && !this._listenId){ 
+          this._listenId = EB.listen('LOGIN_EB',()=>{
+            // console.log('EB CALL LOGIN_EB',this._listenId)
+            App.LM.loginAsync().ignore(()=>{
+              EB.unListen('LOGIN_EB',this._listenId);
+              App.StoreH.changeVisitStore()
+              .ignore(()=>App.StoreH.getVisitStore(false))
+              .ignore(()=>this.setStoreInfo())
+            }) 
+          })
+        }
+      }
   },
   data:{
     storeInfo:{}

@@ -22,6 +22,7 @@ page{
 .order-info-view{
   padding: 0 20rpx;
   margin-bottom: 20rpx;
+  font-size: 24rpx;
 }
 .order-info-view:first-of-type{
   margin-top: 20rpx;
@@ -40,6 +41,9 @@ page{
   align-items: center;
   justify-content: space-between;
   margin-bottom: 40rpx;
+}
+.oisc-order-time{
+  margin-bottom: 16rpx;
 }
 .icon-copy{
   width: 56rpx;
@@ -190,16 +194,10 @@ page{
 .order-info-goods-item{
   display: flex;
 }
-.oigi-img-con{
+
+.oigi-image{
   width: 200rpx;
   height: 200rpx;
-  border-radius: 10rpx;
-  background-color: #f1f1f1;
-}
-.oigi-image{
-  width: 100%;
-  height: 100%;
-  border-radius: 10rpx;
 }
 .oigi-left{
   margin-right: 24rpx;

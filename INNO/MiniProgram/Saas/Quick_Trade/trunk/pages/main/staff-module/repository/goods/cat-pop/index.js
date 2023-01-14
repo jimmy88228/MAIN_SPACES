@@ -42,11 +42,13 @@ Component(App.BC({
       })
     }, 
     pickerSel(){
-      this.setData({curCat:this.data.catValue[0],});
-      this.setData({show: false}, () => {
-        typeof this.resolveF === "function" && this.resolveF(this.data.curCat);
-        this.resolveF = this.rejectF = null;
-      })
+      setTimeout(() => {
+        this.setData({curCat:this.data.catValue[0]});
+        this.setData({show: false}, () => {
+          typeof this.resolveF === "function" && this.resolveF(this.data.curCat);
+          this.resolveF = this.rejectF = null;
+        })
+      }, 600);
     },
     pickerAdd() {
       this.createPop = this.createPop || this.selectComponent("#create-pop");

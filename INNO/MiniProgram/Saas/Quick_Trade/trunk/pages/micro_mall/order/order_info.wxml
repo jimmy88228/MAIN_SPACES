@@ -5,7 +5,7 @@
   <!-- 自定义导航栏 -->
   <custom-nav styleType="2" title="{{orderInfo.orderStatus}}{{valetInfo.isValetOrder == 1 ? '(代客单)': ''}} " />
   <!-- 贴一块上去 -->
-  <view class="extend-nav-view" wx:if="{{(menuInfo.needPay == 1 || menuInfo.canQrcodePay == 1) && orderInfo.serverTime < orderInfo.autoCancelTime}}">
+  <view class="extend-nav-view" wx:if="{{((orderInfo.orderStatus == '待付款' && staff_type == 1) || (menuInfo.needPay == 1 || menuInfo.canQrcodePay == 1)) && orderInfo.serverTime < orderInfo.autoCancelTime}}">
     <view class="order-status-row">还剩{{f.countDownObjToStr(count_down)}}自动取消</view>
   </view>
   <view class="extend-nav-view" wx:elif="{{orderInfo.autoReceiveTime}}">
@@ -33,13 +33,18 @@
           <view class="oisc-order-sn-text">订单号 {{orderInfo.orderSn}}</view>
           <view class="oisc-order-sn-copy icon-copy" hover-class="active" bindtap="handleCopyTap" data-text="{{orderInfo.orderSn}}">复制</view>
         </view>
+        <view>
+          <view class="oisc-order-time">
+            下单时间： {{orderInfo.createTime}}
+          </view>
+        </view>
 
         <view class="order-info-store-info" wx:if="{{storeInfo.storeCode}}">
-          <view class="oisi-store-name">店铺名称: {{storeInfo.storeName}}</view>
+          <view class="oisi-store-name">店铺名称： {{storeInfo.storeName}}</view>
           <view class="oisi-store-address">{{storeInfo.storeAreaName}}/{{storeInfo.storeAddr}}</view>
           <view class="oisi-store-detail">
-            <view class="oisi-staff">店员: {{storeInfo.staffName}}</view>
-            <view class="oisi-store-phone">门店电话: {{!storeInfo.storePhone || storeInfo.storePhone == "" ? '无' : storeInfo.storePhone}}</view>
+            <view class="oisi-staff">店员： {{storeInfo.staffName}}</view>
+            <view class="oisi-store-phone">门店电话： {{!storeInfo.storePhone || storeInfo.storePhone == "" ? '无' : storeInfo.storePhone}}</view>
           </view>
         </view>
       </view>
@@ -99,13 +104,11 @@
         <view class="order-info-goods-container">
           <view class="order-info-goods-list">
             <view class="order-info-goods-item" wx:for="{{goodsList}}" wx:key="goodsId">
-              <view class="oigi-left">
-                <view class="oigi-img-con">
-                  <image class="oigi-image" src="{{item.thumbUrl}}" />
-                </view>
+              <view class="oigi-left"> 
+                <mode-image ext-class="oigi-image" src="{{item.thumbUrl}}" />
               </view>
               <view class="oigi-middle">
-                <view class="oigi-name">{{item.goodsName}}</view>
+                <view class="oigi-name text-flow2">{{item.goodsName}}</view>
                 <view class="oigi-spec">
                   <text>{{item.goodsAttr}}</text>
                 </view>

@@ -2,6 +2,9 @@ const App = getApp();
 import ValidHelper from "./valid-helper.js"
 Component(App.BC({ 
   externalClasses: ['ext-class','ext-placeholder-class'],
+  options: {
+    styleIsolation: 'apply-shared'
+  },
   properties: {
     placeholder:{
         type:String,

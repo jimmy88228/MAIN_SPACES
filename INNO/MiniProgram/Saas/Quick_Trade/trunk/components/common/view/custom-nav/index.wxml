@@ -4,18 +4,16 @@
     <block wx:if="{{styleType == 0}}">
       <view class="normal-nav">
         <view class="c-n-left">
-          <view class="icon-arrow left"></view>
+          <view class="icon-arrow left" wx-if="{{showBack}}"></view>
         </view>
-        <view class="c-n-center">{{title}}</view>
+        <view class="c-n-center" style="color:{{navColor}};">{{title}}</view>
         <view class="c-n-right"></view>
       </view>
     </block>
     <!-- 首页那个导航样式 -->
     <block wx:elif="{{styleType == 1}}">
       <view class="store-like-nav">
-        <view class="store-logo-con">
-          <image class="store-logo-image" src="{{brand_info.logo_path}}micro_mall/login/login_logo.png" />
-        </view>
+        <ori-image ext-class="store-logo-image" src="{{brand_info.logo_path}}micro_mall/login/login_logo.png" />
         <view class="store-info-con">
           <view class="store-name text-flow">{{storeInfo.storeName||''}}</view>
           <view class="store-staff-name" wx:if="{{storeInfo.staffName}}">店员{{storeInfo.staffName||''}}</view>

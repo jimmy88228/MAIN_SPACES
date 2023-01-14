@@ -16,4 +16,5 @@ button.handle_btn{
   justify-content: center;
   align-items: center;
   z-index: 5;
+  padding: 0;
 }

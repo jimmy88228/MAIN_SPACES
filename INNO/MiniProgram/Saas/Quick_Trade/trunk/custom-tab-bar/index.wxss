@@ -3,19 +3,19 @@
 .tab-bar-container{
   --tab-bar-border-radius: 16rpx;
 }
-.tab-bar-container{
+.tab-bar-container-box{
   position: fixed;
+  left: 0;
   bottom: 0;
+  width: 100%;
+  /* background-image: linear-gradient(rgb(254,223,218), rgb(255,246,237)); */
+}
+.tab-bar-container{
   padding-top: var(--tab-bar-padding-top);
   padding-bottom: var(--tab-bar-bottom);
-  left: 50%;
-  transform: translateX(-50%);
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  border-radius: var(--tab-bar-border-radius); 
   background-color: none;
   z-index: 100;
-  border-radius: var(--tab-bar-border-radius);
 }
 .tab-bar {
   width: var(--tab-bar-width);

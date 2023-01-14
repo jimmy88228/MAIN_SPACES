@@ -3,22 +3,3 @@
 @import "/common/base/public/default-wxss/layout.wxss";
 @import "/common/base/public/default-wxss/common.wxss";
 @import "/assets/iconfont/index.wxss";
-
-.text-flow{
-  word-break: break-all;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  display: -webkit-box;
-  -webkit-line-clamp: 1;
-  -webkit-box-orient: vertical;
-  letter-spacing: 0;
-}
-.text-flow2 {
-  word-break: break-all;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  display: -webkit-box;
-  -webkit-line-clamp: 2;
-  -webkit-box-orient: vertical;
-  letter-spacing: 0;
-}

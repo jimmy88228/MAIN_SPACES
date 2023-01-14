@@ -1,0 +1,15 @@
+<view class="ext-class mode-main-box">
+  <view class="ext-child-class mode-box {{mode}}">
+    <ori-image 
+      class=""
+      ext-class="ori-image"
+      lazy-load="{{lazyLoad}}" 
+      src="{{src}}" 
+      mode="{{mode}}" 
+      bindload="load" 
+      binderror="onError"
+      catchtap="onTap"
+      show-menu-by-longpress="{{showMenuByLongpress}}">
+    </ori-image>
+  </view>
+</view>

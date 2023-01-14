@@ -20,8 +20,19 @@ page{
 .title-box{
     color: #7F7F7F;
 }
+.title{
+  flex-shrink: 0; 
+}
 .input-text{
-  padding-right: 30rpx;
+  width: 100%;
+  text-align: right;
+  padding:0 30rpx 0 60rpx;
+}
+.spec-box .input-text{
+  padding-right:0;
+}
+.spec-title{
+  width: 150rpx;
 }
 .name-input{
     font-size: 32rpx;
@@ -75,6 +86,13 @@ page{
 }
 .content:last-of-type{
     margin-bottom: 0;
+}
+.spec-box .content{
+  margin-bottom: 10px;
+}
+.spec-box{
+  border-top: 1px solid #dfdfdf;
+  padding-top: 40rpx;
 }
 .goods-input{
     text-align: right;
@@ -154,4 +172,11 @@ page{
     left: 50%;
     top: 50%;
     transform: translate(-50%,-50%);
+}
+.more-box{
+  background-color: #dfdfdf;
+  color: #fff;
+  padding: 8rpx 10rpx;
+  border-radius: 24rpx;
+  font-size: 20rpx;
 }

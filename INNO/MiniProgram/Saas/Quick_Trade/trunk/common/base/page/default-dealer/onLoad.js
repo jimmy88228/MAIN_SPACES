@@ -1,7 +1,7 @@
 import { setDefaultData, setPageQuery, setTabBar} from "./helper";
 import LCC from "../../../helper/lifecycle-controller/index"
 import PH from "../../../helper/params-handler/index";
-
+import LM from "../../../manager/login-manager/index"
 function theFrontPart(pageQuery) { // onLoad的前半部分(全局)
   // console.log("page.onLoad");
   setDefaultData(this); // 给页面设置全局data

@@ -6,12 +6,14 @@ Page(App.BP({
     avatar: "",
     nickName: "", 
     mobile:"",
+    showAuthMobile: false
   },
   onLoad(){
-    updatePageUserProfile.call(this)
+    App.LM.checkSession();
+    updatePageUserProfile.call(this);
   },
   onUnload(){
-    this.changed && App.LM.reSetSimpleInfo()
+    this.changed && App.LM.reSetSimpleInfo();
   },
   handleUserInput(e){
     let type = e.currentTarget.dataset.type;
@@ -48,9 +50,10 @@ function updatePageUserProfile(){
   let userInfo = App.LM.userInfo || {};
   let {portrait_path: avatar, realName: nickName,mobilePhone:mobile} = userInfo;
   this.setData({
-    avatar,
+    avatar:avatar||"/assets/images/common/user.png",
     nickName,
-    mobile
+    mobile,
+    showAuthMobile: !mobile
   })
 }
 

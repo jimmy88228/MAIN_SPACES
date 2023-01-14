@@ -7,7 +7,7 @@
       <view class="user-row-right" catchtap="jump" data-item="{{checkMoreItem}}">
         <view class="check-more">
           <view class="check-more-text">查看全部</view>
-          <view class="icon-arrow" hover-class="active"></view>
+          <!-- <view class="icon-arrow" hover-class="active"></view> -->
         </view>
       </view>
     </view>

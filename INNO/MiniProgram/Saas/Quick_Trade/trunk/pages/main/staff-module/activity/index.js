@@ -19,7 +19,10 @@ Page(App.BP({
     },
     loadData(){
         return this.getActivityNoCachDetail().then(()=>{
-            return this.activityGoodsInfo();
+            return this.activityGoodsInfo().catch((e)=>{
+              this.setData({inited:true,acGoodsInfo:{}});
+              return Promise.reject(e)
+            });
         });
     }, 
     checkSet(){
@@ -45,12 +48,11 @@ Page(App.BP({
                     }
                 })
                 acGoodsInfo.goods_Infos = this.listConcat(goodsList);
-                this.setData({acGoodsInfo,domainPath});
-                console.log('acGoodsInfo',acGoodsInfo);
+                this.setData({acGoodsInfo,domainPath},()=>this.setScrollTop(0));
                 App.StorageH.remove('curGetGoodsList')
             }
             if(curSetGoodsInfo.activity_id && (curSetGoodsInfo.activity_id == acGoodsInfo.activity_id)){ //编辑、新增商品
-                let goodsInfo = curSetGoodsInfo.goodsInfo||{};
+                let goodsInfo = curSetGoodsInfo.goodsInfo||{},isAdd=false;
                 let index = acGoodsInfo.goods_Infos.findIndex(item=>item.goods_id == goodsInfo.goods_id);
                 if(index>-1 || (goodsInfo.isAdd)){
                   if(goodsInfo.isAdd){
@@ -62,13 +64,15 @@ Page(App.BP({
                         goodsInfo.min_market_price=goodsInfo.market_price;
                         goodsInfo.max_market_price=goodsInfo.market_price;
                         goodsInfo.goods_img = goodsInfo.goodsImgs[0] || "";
-                        acGoodsInfo.goods_Infos.push(goodsInfo);
+                        acGoodsInfo.goods_Infos.unshift(goodsInfo);
+                        isAdd = true;
                         delete goodsInfo.isAdd;
                     }else{
+                        goodsInfo.insert=0; 
                         goodsInfo.goods_img = goodsInfo.goodsImgs && goodsInfo.goodsImgs[0] || goodsInfo.goods_img || "";
                         acGoodsInfo.goods_Infos[index] = goodsInfo
                     }
-                    this.setData({acGoodsInfo})
+                    this.setData({acGoodsInfo},()=>isAdd && this.setScrollTop(0));
                     App.StorageH.remove('curSetGoodsInfo')
                 }
             }
@@ -76,9 +80,10 @@ Page(App.BP({
     },
     listConcat(list){
         let acGoodsInfo = this.data.acGoodsInfo||{};
-        let goodsList = acGoodsInfo.goods_Infos||[];
+        let goodsList = JSON.parse(JSON.stringify(acGoodsInfo.goods_Infos||[]));
         let ids = goodsList.map(item=>item.goods_id);
-        return goodsList.concat(list.filter(item=>!ids.includes(item.goods_id)));
+        goodsList.unshift(...(list.filter(item=>!ids.includes(item.goods_id))));
+        return goodsList;
     },
     getActivityNoCachDetail(){ 
         return getActivityNoCachDetail().then(res=>{
@@ -92,6 +97,8 @@ Page(App.BP({
         })
     },
     activityGoodsInfo(){
+        let activityId = this.data.acInfo.id || 0;
+        if(!activityId)return Promise.reject({code:-1,msg:"活动已失效"});
         return activityGoodsInfo({activityId:this.data.acInfo.id||0}).then(res=>{
             if(res.code==1){ 
                 let acGoodsInfo = res.data||{};  
@@ -104,8 +111,8 @@ Page(App.BP({
                 return res;
             }
             return Promise.reject(res)
-        }).catch(e=>{
-          this.setData({inited:true,acGoodsInfo:{}})
+          }).catch(e=>{
+          return Promise.reject(e)
         })
     },
     activityGoodsUpdateOrInsert(id){
@@ -116,6 +123,7 @@ Page(App.BP({
           goods_gallery = goods_gallery.concat(item.goods_gallery);
           return {...item,sort:index}
         });
+        console.log('activityGoodsUpdateOrInsert ? ',{...acGoodsInfo,insertOrupdate:acGoodsInfo.insertOrupdate,goods_gallery,activity_id:id||0})
         return activityGoodsUpdateOrInsert({...acGoodsInfo,insertOrupdate:acGoodsInfo.insertOrupdate,goods_gallery,activity_id:id||0}).then(res=>{
             if(res.code==1){}
             return res
@@ -135,16 +143,16 @@ Page(App.BP({
         return activityUpdateOrInsert(params)
     },
     checkSetTime(e){
+      this._setPageLoading('checkSetTime');
       let acInfo = this.data.acInfo||{};
       let func = e.detail;
-      console.log('checkSetTime',e,func)
       if(!acInfo.id){
         this.checkValid(true);
         return this.setTime().then(res=>{
           if(res.code==1){
             return this.loadData().then(res=>{
               if(res.code==1){
-                func && typeof(func) == 'function' && func();
+                func && typeof(func) == 'function' && func(); //先保存再跳转
                 return res;
               }
               return Promise.reject(res);
@@ -152,7 +160,8 @@ Page(App.BP({
           } 
           return Promise.reject(res);
         }).catch(e=>{
-          App.SMH.showToast({title:e&&e.msg||"数据异常"});
+          console.log('catch',e)
+          e && e.msg && App.SMH.showToast({title:e.msg});
           return Promise.reject(e);
         })
       }else{
@@ -167,8 +176,10 @@ Page(App.BP({
         this.setData({[`acInfo.${key}`]:dateString})
     },
     save(){
+        this._setPageLoading('save');
         this.checkValid();
         this.setTime().then(res=>{ //返回id
+          console.log('setTime then',res)
           if(res.code==1){
             return this.activityGoodsUpdateOrInsert(res.data).then(res=>{
               if(res.code==1){
@@ -181,7 +192,8 @@ Page(App.BP({
           }
           return Promise.reject(res);
         }).catch(e=>{
-          App.SMH.showToast({title:e.msg||"数据异常"});
+          console.log('catch',e)
+          e && e.msg && App.SMH.showToast({title:e.msg});
         })
     },
     checkValid(onlyTime){ 
@@ -199,26 +211,27 @@ Page(App.BP({
         else if (goods_Infos.length<=0){
             title = '请先添加活动商品'; 
         } else { 
-            let valid = goods_Infos.every((item,i)=>{
+            goods_Infos.every((item,i)=>{
                 index = i;
-                return item.sale_price>0;
-            });
-            if(!valid){
-                title = `请完善该商品的规格数据`; 
-                // title = `请先完善商品款号为：${goods_Infos[index].goods_sn}的sku信息`; 
-            }
+                !(item.sale_price>0 && item.goods_sn) && (title = item.sale_price>0?'请完善该商品的款号':'请完善该商品的秒杀价')
+                return (item.sale_price>0 && item.goods_sn);
+            }); 
         }
         if(title){
           if(index>-1){
-            this.goodsList = this.goodsList || this.selectComponent('#goods-list');
-            this.goodsList.setScrollTop(index).then(()=>{
-                App.SMH.showToast({title});
-              });
+            this.setScrollTop(index,true).then(()=>{
+              App.SMH.showToast({title});
+            });
           }else{
             App.SMH.showToast({title});
           }
           throw title
         }
+    },
+    setScrollTop(index,showErr=false){
+      this.goodsList = this.goodsList || this.selectComponent('#goods-list');
+      this.goodsList.setScrollTop(index,showErr)
+      return Promise.resolve(true)
     },
     onChangeList(e){
         let detail = e.detail||{};
@@ -228,18 +241,15 @@ Page(App.BP({
         })
     },
     onDelete(e){
-      let {index,insert,goodsId} = e.detail||0,acGoodsInfo=this.data.acGoodsInfo; 
-      this.deleteActivityGoods(insert,goodsId).then(res=>{
+      let {index,goodsId} = e.detail||0,acGoodsInfo=this.data.acGoodsInfo; 
+      this.deleteActivityGoods(goodsId).then(res=>{
         acGoodsInfo.goods_Infos.splice(index,1);
         this.setData({
           'acGoodsInfo.goods_Infos':acGoodsInfo.goods_Infos
         })
       })
     },
-    deleteActivityGoods(insert,goodsId){
-      if(insert === 1){
-        return Promise.resolve(true);
-      }
+    deleteActivityGoods(goodsId){
       let params = {
         goodsId,
         activityId:this.data.acInfo.id||0

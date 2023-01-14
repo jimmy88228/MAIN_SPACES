@@ -1,9 +1,11 @@
 <!-- public 必须是第一个元素 -->
 <include src="/common/base/page/index.wxml" />
-<scroll-view class="tab-bar-page-container" scroll-y>
+<view class="page-bg"></view>
+<custom-nav styleType="0" showBack="{{false}}" nav-color="#fff" title="个人中心"/>
+<scroll-view class="tab-bar-page-container scroll-view-box" scroll-y>
   <view class="user-page">
     <!-- 用户头部 -->
-    <user-header userData="{{userData}}" isLogin="{{isLogin}}"/>
+    <user-header userData="{{userData}}" isLogin="{{isLogin}}" />
 
     <!-- 订单 -->
     <order-bar userData="{{userData}}"/>

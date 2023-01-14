@@ -400,10 +400,6 @@ export const QT_GoodsApiList = {
     u:"/api/Activity/ActivityProductUpdateOrInsert",
     m:"post"
   },
-  activityGoodsProductInfo:{
-    u:"/api/Activity/ActivityGoodsProductInfo",
-    m:"post"
-  }, 
   getGoodsProduct: "/api/Goods/GetGoodsProduct",
   updateGoodsDetails: {
     u: "/api/Goods/UpdateGoodsDetails",

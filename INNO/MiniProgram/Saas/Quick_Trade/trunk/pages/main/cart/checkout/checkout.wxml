@@ -119,9 +119,7 @@
         <view class="checkout-goods-list">
           <view class="checkout-goods-item" wx:for="{{cartList}}" wx:key="activityProductId">
             <view class="cgi-left">
-              <view class="cgi-goods-img-con">
-                <image class="cgi-goods-img" src="{{item.goodsImg}}" />
-              </view>
+              <mode-image ext-class="cgi-goods-img" src="{{item.goodsImg}}" />
             </view>
             <view class="cgi-middle">
               <view class="cgi-goods-name text-flow2">{{item.goodsName}}</view>

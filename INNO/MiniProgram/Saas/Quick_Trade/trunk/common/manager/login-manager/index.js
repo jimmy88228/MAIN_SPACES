@@ -4,12 +4,12 @@ import {UserApi} from "../http-manager/index";
 // import LgMg from "../log-manager/index";
 import PH from "../../helper/params-handler/index"
 import Conf from "../../../config/index";
-import SIH from "../../helper/system-info-helper/index"
+// import SIH from "../../helper/system-info-helper/index"
 import StorageH from "../../helper/storage-handler/index";
 import SMH from "../../helper/show-message-helper/index";
 import CDateH from "../../helper/cache-date-handler/index"
 import StoreH from "../../helper/store-helper/index";
-
+import EB from "../../support/event-bus/index";
 const STORAGE_SESSION_ID_KEY = "SESSION_ID";
 const STORAGE_USER_TOKEN_KEY = "USER_TOKEN";
 const STORAGE_USER_INFOS_KEY = "USER_INFOS";
@@ -53,7 +53,7 @@ function userRegister(showLoading, iData = {}) {
     } 
   }).then(e => {
     if (e.code == "1") {
-      this.registerCalledAndSuceess = 2
+      this.registerCalledAndSuceess = 2;
       return e.data;
     }
     return Promise.reject(e);
@@ -191,9 +191,12 @@ function getUserProfile(desc = "", noAuthHandlerF) {
       lang: 'zh_CN'
     }).catch(e => {
       console.log('进来 getUserProfile catch', e)
-      SMH.showToast({
-        title: e.errMsg || e.msg
-      })
+      let msg = e.errMsg || e.msg || "";
+      if(msg.indexOf('fail auth deny') == -1){
+        SMH.showToast({
+          title: msg
+        })
+      }
       return noAuthHandlerF ? noAuthHandlerF() : Promise.resolve();
     }).then(e => {
       if (e && e.userInfo) {
@@ -325,6 +328,17 @@ class LoginManager {
       }
     }) : this.createWxSessionId(showLoading);
   }
+  checkSession(){
+    if (this._csh) {
+      return this._csh;
+    }
+    this._csh = this.getWxSessionIdAsync().finally(()=>{
+      setTimeout(() => {
+        this._csh && delete this._csh;
+      }, 500)
+    });
+    return this._csh
+  }
   //同步登录
   loginAsync(showLoading) {
     // return Promise.resolve({})
@@ -390,7 +404,9 @@ class LoginManager {
             ...userData,
             userInfo: userInfo,
             register: true
-          })
+          });
+          console.log('EB CALL LOGIN_EB')
+          EB.call('LOGIN_EB');
           return userData.userKey;
         })
       });

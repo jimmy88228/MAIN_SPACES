@@ -35,6 +35,8 @@
     padding-left: 18rpx;
     box-sizing: border-box;
 }
+.price{ 
+}
 .title{
     color: #b2b2b2;
     margin-right: 16rpx;

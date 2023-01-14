@@ -1,14 +1,14 @@
 // pages/main/staff-module/activity/cps/goods-list/index.js
 const App = getApp();
 const ERR_KEY_FRAMES = [  
-  { translateX: 0, backgroundColor: 'rgba(0, 0, 0, 0)' },
-  { translateX: -9, backgroundColor: 'rgba(0, 0, 0, 0.04)' },
-  { translateX: 3, backgroundColor: 'rgba(0, 0, 0, 0.08)' },
-  { translateX: -9, backgroundColor: 'rgba(0, 0, 0, 0.1)' },
-  { translateX: 3, backgroundColor: 'rgba(0, 0, 0, 0.08)' }, 
-  { translateX: -3, backgroundColor: 'rgba(0, 0, 0, 0.04)' },
-  { translateX: 3, backgroundColor: 'rgba(0, 0, 0, 0.02)' }, 
-  { translateX: 0, backgroundColor: '' },
+  { translateX: 0,  translateY:0},
+  { translateX: -3, translateY:1},
+  { translateX: 3,  translateY:-1},
+  { translateX: -3, translateY:1},
+  { translateX: 3,  translateY:-1}, 
+  { translateX: -3, translateY:1},
+  { translateX: 3,  translateY:-1}, 
+  { translateX: 0,  translateY:0},
 ]
 Component(App.BC({ 
     options: {
@@ -96,20 +96,20 @@ Component(App.BC({
             this.triggerEvent('change',{list});
         },
         onDelete(e){
-          let {index,insert,goodsId} = this.getDataset(e); 
+          let {index,goodsId} = this.getDataset(e); 
           this._showModal({content:"确定要删除该商品?"}).then(()=>{ 
-            this.triggerEvent('onDelete',{index,insert,goodsId})
+            this.triggerEvent('onDelete',{index,goodsId})
           })
         },
-        setScrollTop(index){
+        setScrollTop(index,showErr=false){
           let id = `#box-${index}`;
           return this._selectQuery(`#box-0,${id}`,'component','all').then(res=>{
             let arr = res && res[0] || [];
             let top = index == 0 ? 0 : ((arr[1] && arr[1].top || 0) - (arr[0] && arr[0].top || 0));
             this.oriScrollView = this.oriScrollView || this.selectComponent('#ori-scroll-view');
             return this.oriScrollView.setScrollTop(top).then(()=>{
-              this.animate(id,ERR_KEY_FRAMES,300,() => {
-                this.clearAnimation(id, { translate: true, rotate: true }); 
+              showErr && this.animate(id,ERR_KEY_FRAMES,300,() => {
+                this.clearAnimation(id, { translate: true}); 
               })
               return true
             });

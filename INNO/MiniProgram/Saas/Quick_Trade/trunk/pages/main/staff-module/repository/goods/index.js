@@ -25,6 +25,7 @@ Page(App.BP({
     selectedCatIndex: 0, // 已选择的商品分类序号
     curCat:0, 
     hasSku:true,
+    fromType:'init'
   },
   onLoad(options) {
     this.options = options;
@@ -34,7 +35,7 @@ Page(App.BP({
     })
     this.setData({
         isEdit,
-        options,
+        fromType:options.fromType||"", //activity,activityAdd,''
     });
     init.call(this);
   },
@@ -45,10 +46,14 @@ Page(App.BP({
     let curSetData = App.StorageH.get('curSetProductListInfo')||{};
     let CurGoodsDetail = App.StorageH.get('CurGoodsDetail')||{};
     let goodsInfo = this.data.goodsInfo||{};
-    console.log('checkSet',curSetData)
-    if(curSetData.goodsId == goodsInfo.goods_id && (!this.options.fromType||(curSetData.activityId == this.options.activity_id))){ //设置过sku数据
-      if(curSetData.productList && curSetData.productList.length>0){
-        goodsInfo.productList = curSetData.productList;
+    if(curSetData.goodsId == goodsInfo.goods_id) { //设置过sku数据
+      this.setData({'goodsInfo.insert':curSetData.productList && curSetData.productList.length>0 ? 0:1});
+      App.StorageH.remove('curSetProductListInfo');
+    }
+    this.getProductList().then(data=>{
+      let {productList} = data;
+      if(productList && productList.length > 0){
+        goodsInfo.productList = productList;
         goodsInfo.goods_number = 0;
         goodsInfo.min_price = 0;
         goodsInfo.max_price = 0;
@@ -65,14 +70,35 @@ Page(App.BP({
           goodsInfo.sale_price = goodsInfo.min_price;
         })
         this.setData({goodsInfo});
-      } 
-      App.StorageH.remove('curSetProductListInfo');
-    }
+      }
+    })
     if(CurGoodsDetail.goodsId == goodsInfo.goods_id && CurGoodsDetail.activityId == this.options.activity_id){
       goodsInfo.goods_detail = CurGoodsDetail.data||"";
       this.setData({'goodsInfo.goods_detail':goodsInfo.goods_detail});
     }
     App.StorageH.remove('CurGoodsDetail');
+    // if(curSetData.goodsId == goodsInfo.goods_id && (!this.options.fromType||(curSetData.activityId == this.options.activity_id))){ //设置过sku数据
+    //   if(curSetData.productList && curSetData.productList.length>0){
+    //     goodsInfo.productList = curSetData.productList;
+    //     goodsInfo.goods_number = 0;
+    //     goodsInfo.min_price = 0;
+    //     goodsInfo.max_price = 0;
+    //     goodsInfo.min_market_price = 0;
+    //     goodsInfo.max_market_price = 0;
+    //     goodsInfo.productList.forEach(item=>{
+    //       goodsInfo.min_price = !goodsInfo.min_price ? item.salePrice : Math.min(goodsInfo.min_price,item.salePrice) //秒杀价取最小
+    //       goodsInfo.min_market_price = !goodsInfo.min_market_price ? item.marketPrice : Math.min(goodsInfo.min_market_price,item.marketPrice)//原价取最小
+    //       goodsInfo.max_price = Math.max(goodsInfo.max_price,item.salePrice);
+    //       goodsInfo.max_market_price = Math.max(goodsInfo.max_market_price,item.marketPrice);
+    //       goodsInfo.goods_number = parseInt(item.goodsNumber) + parseInt(goodsInfo.goods_number); //取和
+          
+    //       goodsInfo.market_price = goodsInfo.min_market_price;
+    //       goodsInfo.sale_price = goodsInfo.min_price;
+    //     })
+    //     this.setData({goodsInfo});
+    //   } 
+    //   App.StorageH.remove('curSetProductListInfo');
+    // }
   },
   onInput(e) {
     let key = this.getDataset(e, 'key');
@@ -117,7 +143,6 @@ Page(App.BP({
     let validateError = "";
     let fromType = this.options.fromType;
     let goodsImg = this.goodsRelativePathList||[];
-    console.log('save',this.data.goodsInfo)
     if(goodsImg.length<=0){
       validateError = "请上传商品图片";
     }else if (fromType === "activity") {
@@ -134,6 +159,7 @@ Page(App.BP({
     return validateError;
   },
   handleSaveBtnTap() {
+    this._setPageLoading('handleSaveBtnTap');
     let fromType = this.options.fromType;
     let isEdit = this.data.isEdit;
     this.save()
@@ -173,8 +199,9 @@ Page(App.BP({
       if (fromType == 'activity' || fromType == 'activityAdd') {
         if(fromType=='activityAdd'){ // 活动管理进入增加商品
           return createOrUpdateGoods.call(this, goodsInfo)
-            .then(goodsId => {
+            .then(goodsId => { 
               goodsInfo.goods_id = goodsId||0;
+              this.options.goodsId = goodsId||0;
               goodsInfo.isAdd = true;
               this.setData({goodsInfo})
               App.SMH.showToast({title: "保存成功"});
@@ -185,13 +212,11 @@ Page(App.BP({
         }  
       } else { // (商品库进入)
         return createOrUpdateGoods.call(this, goodsInfo)
-          .then(goodsId => {
-            goodsInfo.goods_id = goodsId;
+          .then(goodsId => { 
+            goodsInfo.goods_id = goodsId||0;
+            this.options.goodsId = goodsId||0;
+            this.setData({goodsInfo})
             return goodsInfo
-          })
-          .catch(err => {
-            App.SMH.showToast({title: err});
-            return Promise.reject(err);
           })
       }
     })
@@ -206,6 +231,7 @@ Page(App.BP({
     })
   }, 
   jumpSpec() {
+    this._setPageLoading('jumpSpec');
     const isEdit = this.data.isEdit;
     let options = this.options || {};
     (isEdit ? Promise.resolve(this.data.goodsInfo) : this.save())
@@ -213,13 +239,13 @@ Page(App.BP({
         let timer = setTimeout(() => {
           clearTimeout(timer);
           timer = null;
-          let insert = goodsInfo.insert == 0 || (goodsInfo.insert == 1 && (goodsInfo.productList && goodsInfo.productList.length>0)) ? 0 : 1; //0编辑 1新增
-          let url = `/pages/main/staff-module/repository/goods/spec/index?insert=${insert}&activityId=${options.activity_id||0}&fromType=${options.fromType||''}&goodsId=${goodsInfo.goods_id||0}`;
+          let url = `/pages/main/staff-module/repository/goods/spec/index?insert=${goodsInfo.insert||0}&activityId=${options.activity_id||0}&fromType=${options.fromType||''}&goodsId=${goodsInfo.goods_id||0}`;
           this.jumpAction(url);
         }, isEdit ? 0 : 500)
       })
   },
   jumpDetailEdit() {
+    this._setPageLoading('jumpDetailEdit');
     const isEdit = this.data.isEdit;
     (isEdit ? Promise.resolve(this.data.goodsInfo) : this.save())
       .then(goodsInfo => {
@@ -244,25 +270,43 @@ Page(App.BP({
       .catch(() => {
       })
   },
-  checkProductInfo(){
-    if(this.options.fromType != 'activity'){
-      return Promise.resolve();
-    }
-    let params = {
-      goodsId:this.data.goodsInfo.goods_id||0,
-      activityId:this.options.activity_id||0,
-      insert:this.data.goodsInfo.insert,
-    }
-    return checkProductInfo(params).then(res=>{
-      if(res.code == 1){
-        this.setData({hasSku:res.data==1});
-      }
-      return res;
-    })
-  },
   refreshPickerList(){
     getGoodsCategoryInfo.call(this);
   },
+  getProductList(){
+    let apiFunc = null;
+    if(this.options.fromType == 'activity'){
+      apiFunc = ()=>this.getAcitvityGoodsInfo();
+    }else{
+      apiFunc = ()=>this.getGoodsProductList();
+    };
+    this.showLoading();
+    return apiFunc().then(data=>{
+      let {productList,specList} = data;
+      this.setData({productList,specList});
+      return data;
+    }).finally(()=>{
+      this.hideLoading();
+    });
+  },
+  getGoodsProductList() {
+    let goodsId = this.options.goodsId || 0;
+    if (!goodsId) return Promise.reject();
+    return getGoodsProductList({goodsId})
+  },
+  getAcitvityGoodsInfo() {
+    let params = {
+        goodsId: this.options.goodsId || 0,
+        activityId: this.options.activity_id || 0,
+        insert: this.data.goodsInfo && this.data.goodsInfo.insert,
+    }
+    return getAcitvityGoodsInfo(params).then(data => { 
+        return data;
+    })
+  },
+  showMore(){
+    this.setData({showMore:true})
+  }
 }))
 
 function getGoodsCategoryInfo() {
@@ -305,9 +349,9 @@ function init() {
     console.log('goodsInfo',goodsInfo)
   }
   App.StorageH.remove("ReposityGoodsGallery");
-
-  this.checkProductInfo();
-  getGoodsCategoryInfo.call(this);
+  if(options.fromType!='activity'){
+    getGoodsCategoryInfo.call(this);
+  }
 } 
 
 function createOrUpdateGoods({
@@ -337,15 +381,34 @@ function createOrUpdateGoods({
         App.SMH.showToast({title: "保存成功"});
         return res.data
       }
-      return Promise.reject(res.msg || `${goodsId ? '新建' : '编辑'}商品失败`)
+      App.SMH.showToast({title: res.msg || `${goodsId ? '新建' : '编辑'}商品失败`});
+      return Promise.reject(res)
     })
     .finally(() => {
       this.hideLoading();
     })
 }
 
-function checkProductInfo(params) { 
-  return App.Http.QT_GoodsApi.checkProductInfo({
-    params
-  }) 
+function getGoodsProductList(params) {
+  return App.Http.QT_GoodsApi.getGoodsProductList({
+          params
+      })
+      .then(res => {
+          if (res.code == 1) {
+              return res.data || {}
+          }
+          return Promise.reject(res.msg || "获取规格信息失败")
+      })
+}
+
+
+function getAcitvityGoodsInfo(params) {
+  return App.Http.QT_GoodsApi.getAcitvityGoodsInfo({
+      data: params,
+  }).then(res => {
+      if (res.code != 1) {
+          return Promise.reject(res)
+      }
+      return res.data;
+  })
 }

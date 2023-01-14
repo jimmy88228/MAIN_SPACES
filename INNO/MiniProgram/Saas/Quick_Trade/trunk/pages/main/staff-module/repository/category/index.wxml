@@ -2,7 +2,7 @@
 <include src="/common/base/page/index.wxml" />
 
 <view class="goods-category-edit-page">
-  <scroll-view class="goods-category-edit-main" scroll-y bindscrolltolower="handleScrollToLower" >
+  <scroll-view class="goods-category-edit-main"  scroll-y="{{sysScroll}}" bindscrolltolower="handleScrollToLower" >
     <view class="gce-list">
       <block wx:for="{{list}}" wx:key="index">
         <view class="gce-item" hover-class="active" bindtap="jumpAction" data-url="/pages/main/staff-module/repository/category/detail/index?id={{item.id}}">
@@ -27,4 +27,4 @@
   </view>
 </view>
 
-<create-pop id="create-pop" />
+<create-pop id="create-pop" bindonfocus="onfocus" bindonblur="onblur" />

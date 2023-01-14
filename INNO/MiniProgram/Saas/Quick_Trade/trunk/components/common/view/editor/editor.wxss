@@ -2,9 +2,9 @@
 @import "./assets/iconfont.wxss";
 
 .container {
-  position: absolute; 
+  /* position: absolute; 
   top: 0; 
-  left: 0; 
+  left: 0;  */
   width: 100%;
 }
 
@@ -14,9 +14,9 @@
   height: 100%;
   font-size: 16px;
   line-height: 1.5;
-  overflow: auto;
-  padding: 10px 10px 20px 10px;
-  border: 1px solid #ECECEC;
+  overflow: unset;
+  padding: 10px 10px 100px 10px;
+  /* border: 1px solid #ECECEC; */
 }
 
 .ql-active {
@@ -47,5 +47,7 @@
   border: 1px solid #ECECEC;
   border-left: none;
   border-right: none;
+  transition: bottom 0.1s;
+  background-color: #fff;
 }
 

@@ -4,6 +4,7 @@ Page(App.BP({
   data: {
     list: [],
     nomore: false,
+    sysScroll:true,
   },
   onLoad() {
     this.requestParams = {
@@ -12,6 +13,15 @@ Page(App.BP({
     }
     this.refresh();
   }, 
+  onfocus() {
+    console.log("focus")
+    this.setData({sysScroll: false})
+  },
+  onblur () {
+    console.log("blure")
+
+    this.setData({sysScroll: true})
+  },
   handleAddCateBtnTap() {
     this.createPop = this.createPop || this.selectComponent("#create-pop");
     this.createPop.showModal()

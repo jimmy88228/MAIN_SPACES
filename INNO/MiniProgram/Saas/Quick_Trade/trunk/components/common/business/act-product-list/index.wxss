@@ -9,7 +9,11 @@ page{
     font-size: 28rpx;
 }
 .pop.spec{
+    padding-top:60rpx;
     padding-bottom:172rpx;
+}
+.activity.spec{
+  padding-top: 40rpx;
 }
 .pop{ 
     width: 100%;
@@ -99,7 +103,7 @@ page{
     box-sizing: border-box;
     margin-bottom: 10rpx;
 }
-.spec-box:last-of-type{
+.spec-box:nth-child(3n){
     margin-right: 0;
 }
 .spec-box .delete-box{
@@ -162,6 +166,9 @@ page{
     font-size: 26rpx;
     height: 76rpx;
 }
+.pop .goods-input{
+  padding-left: 12rpx;
+}
 .footer{
     position: fixed;
     left: 0;
@@ -180,6 +187,7 @@ page{
     box-sizing: border-box;
     padding:30rpx;
     padding-bottom:30rpx;
+    border-radius: 0 0 40rpx 40rpx;
 }
 .save-btn{
     width: 270rpx;

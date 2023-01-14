@@ -8,7 +8,15 @@ Component(App.BC({
     height: {
       type: Number,
       value: 0
-    }
+    },
+    scrollTop: {
+      type: Number,
+      value: 0
+    },
+    extraH: {
+      type: Number,
+      value: 0
+    },
   },
   data: {
     formats: {},
@@ -35,9 +43,11 @@ Component(App.BC({
     let keyboardHeight = 0
     wx.onKeyboardHeightChange(res => {
       if (keyboardHeight === 0) {
-        this.triggerEvent("keyBoradDown")
+        this.triggerEvent("keyBoradDown");
+        console.log('keyBoradDown',keyboardHeight)
       } else {
         this.triggerEvent("keyBoradUp")
+        console.log('keyBoradUp',res.height,keyboardHeight)
       }
       if (res.height === keyboardHeight) return
       const duration = res.height > 0 ? res.duration * 1000 : 0
@@ -56,8 +66,9 @@ Component(App.BC({
   methods: {
     updatePosition(keyboardHeight) {
       const toolbarHeight = 50
-      const height = this.properties.height || wx.getSystemInfoSync().windowHeight;
-      let editorHeight = keyboardHeight > 0 ? (height - keyboardHeight - toolbarHeight) : height
+      const height = this.properties.height || '100%';
+      // let editorHeight = keyboardHeight > 0 ? (height - keyboardHeight - toolbarHeight) + 'px' : height
+      let editorHeight = height
       this.setData({
         editorHeight,
         keyboardHeight
@@ -151,7 +162,7 @@ Component(App.BC({
         })
       })
     },
-
+    
     // 初始化内容
     setContents({html}) {
       return new Promise((rs, rj) => {

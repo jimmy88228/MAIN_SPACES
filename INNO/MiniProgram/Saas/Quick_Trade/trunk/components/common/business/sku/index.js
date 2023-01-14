@@ -129,7 +129,6 @@ function initSku() { // 初始化sku数据(不会重置已选择的数据)
   const unDisabled = this.pathFinder.getWay().flat();
   const availablePrimeRef = {};
   unDisabled.forEach(item => item && (availablePrimeRef[item] = true));
-
   this.setData({
     canChooseProduct,
     availablePrimeRef,
@@ -142,6 +141,7 @@ function selectSkuHandle({
   prime,
   primeIndex
 }) {
+  // console.log('选择 进来',primeIndex,'质数：',prime,specItem,this.data.valueInLabel)
   // 获取已经选中的规格,质数，规格枚举值,以及原本规格名称
   const {
     selectedItems,
@@ -153,27 +153,31 @@ function selectSkuHandle({
   const index = selected.indexOf(specItem.spec_id);
   // 获取已经有的矩阵值
   const light = this.pathFinder.light;
-  // 如果未选中则提供选中，如果选中移除
+  // console.log('light',primeIndex,JSON.parse(JSON.stringify(light)),light)
   if (index > -1) {
+    // console.log('选中过，直接移除')
     this.pathFinder.remove(prime);
     selected.splice(index, 1);
     selectedItems.splice(index, 1);
   } else if (light[primeIndex].includes(2)) {
-    // 如果同规格中，有选中，则先移除选中，
+    // console.log('同规格中有选中，先移除,再选')
     // 获取需要移除的同行规格
     const removeType = (stateType[primeIndex].specinfo_list)[light[primeIndex].indexOf(2)].spec_id;
     // 获取需要提出的同行规格质数
     const removePrime = valueInLabel[removeType];
     // 移除
-    this.pathFinder.remove(removePrime)
+    this.pathFinder.remove(removePrime);
+    // console.log('remove',removePrime,JSON.parse(JSON.stringify(this.pathFinder)))
     let removeIndex = selected.indexOf(removeType);
     selected.splice(removeIndex, 1);
     selectedItems.splice(removeIndex, 1)
     //移除同行后，添加当前选择规格
     this.pathFinder.add(prime)
+    // console.log('add',prime,JSON.parse(JSON.stringify(this.pathFinder)))
     selected.push(specItem.spec_id);
     selectedItems.push(specItem);
   } else {
+    // console.log('直接add')
     this.pathFinder.add(prime);
     selected.push(specItem.spec_id);
     selectedItems.push(specItem)
@@ -182,8 +186,7 @@ function selectSkuHandle({
   const availablePrimeRef = {};
   this.pathFinder.getWay().flat().forEach(item => item && (availablePrimeRef[item] = true));
   const selectedRef = {};
-  selected.forEach(item => selectedRef[item] = true);
-
+  selected.forEach(item => selectedRef[item] = true); 
   this.selected = selected;
   return {
     selectedRef,

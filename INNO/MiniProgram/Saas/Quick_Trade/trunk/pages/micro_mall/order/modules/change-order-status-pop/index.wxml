@@ -8,14 +8,14 @@
         <view class="cosc-prefix">物流公司</view>
         <view class="cosc-input-container">
           <picker mode="selector" range="{{deliveryCompanyList}}" range-key="shippingName" value="{{selectedDeliveryIndex}}" bindchange="handleDeliveryPickerChange">
-            <input class="cosc-input" disabled placeholder="请选择物流公司" value="{{formData.shippingName}}" />
+            <ori-input errTip="物流公司" class="ori-label" validArray="{{['NOT_EMPTY']}}" ext-class="cosc-input" disabled placeholder="选择物流公司" value="{{formData.shippingName}}" />
           </picker>
         </view>
       </view>
       <view class="cosc-row" wx:if="{{formType === 'delivery'}}">
         <view class="cosc-prefix">快递单号</view>
         <view class="cosc-input-container">
-          <input class="cosc-input" bindinput="handleUserInput" data-key="invoiceNo" placeholder="请输入快递单号" value="{{formData.invoiceNo}}" />
+          <ori-input errTip="快递单号" class="ori-label" validArray="{{['NOT_EMPTY']}}" ext-class="cosc-input" bindinput="handleUserInput" data-key="invoiceNo" placeholder="输入快递单号" value="{{formData.invoiceNo}}" />
         </view>
       </view>
     </view>

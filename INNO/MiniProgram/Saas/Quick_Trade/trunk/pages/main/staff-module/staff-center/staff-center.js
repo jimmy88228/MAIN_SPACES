@@ -1,18 +1,22 @@
 const App = getApp();
 Page(App.BP({ 
     data: {
-        summaryList:[{
-            title:"累计销售",
-            key:"total_sales",
-        },{
-            title:"月销售",
+        summaryList:[
+        //   {
+        //     title:"累计销售",
+        //     key:"total_sales",
+        // },
+        {
+          title:"今日销售",
+          key:"day_sales",
+        },
+        {
+          title:"本周销售",
+          key:"week_sales",
+        },
+        {
+            title:"本月销售",
             key:"month_sales",
-        },{
-            title:"周销售",
-            key:"week_sales",
-        },{
-            title:"日销售",
-            key:"day_sales",
         }],
         baseInfo:{},
     },

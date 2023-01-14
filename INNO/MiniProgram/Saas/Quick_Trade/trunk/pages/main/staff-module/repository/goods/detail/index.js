@@ -3,10 +3,14 @@ import WxApi from "../../../../../../common/utils/wxapi/index";
 import { uploadImage, chooseImage } from "./utils";
 
 const App = getApp();
+const FOOTER_H = 100;
 Page(App.BP({
   data: {
     htmlStr: "",
     showFooter: true,
+    scrollTop:0,
+    footerH:FOOTER_H,
+    footerClass:`--footerClass:${FOOTER_H}px`,
   },
   onLoad(query) { // goods_id
     this.pageQuery = query;
@@ -23,19 +27,22 @@ Page(App.BP({
         })
     }
   },
+  onReady(){
+    const platform = wx.getSystemInfoSync().platform
+    const isIOS = platform === 'ios';
+    this.isIOS = isIOS;
+  },
   onInput(e) {
     let value = e.detail.value || "";
     this.setData({inputVal: value})
   },
   onFocus() {
-    if (!this.data.showFooter) {
-      this.setData({showFooter: true})
-    }
+    console.log('onFocus')
+    this.setData({showFooter: this.isIOS?false:true})
   },
   onBlur() {
-    if (this.data.showFooter) {
-      this.setData({showFooter: false})
-    }
+    console.log('onBlur')
+    this.setData({showFooter: this.isIOS?true:false})
   },
   getEditorContent() {
     this.customEditor = this.customEditor || this.selectComponent("#custom-editor");
@@ -107,6 +114,14 @@ Page(App.BP({
     App.SMH.showToast({title: "保存成功"});
     setTimeout(() => {WxApi.navigateBack()}, 500);
   },
+  onPageScroll(e){
+    let scrollTop = e.scrollTop||0;
+    scrollTop < 0 && (scrollTop = 0);
+    clearTimeout(this.timer); 
+    this.timer = setTimeout(() => {
+      this.setData({scrollTop})
+    }, 500);
+  }
 }))
 
 function getGoodsDetails() {

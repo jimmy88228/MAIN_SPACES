@@ -18,17 +18,20 @@ Page(App.BP({
           pageSize:20,
           searchStr:"",
           catId:0,
+          tempIndex:0,
+          tempSize:0,
         }; 
         this.setData({
             isSelect:options.fromType == 'activity'
         })
     },  
     onShow(){
-      this.onRefresh();
+      this.storageRefresh();
       this.getGoodsCategoryInfo();
     },
     loadData(onRefresh=false){
-      this.showLoading();
+        this.showLoading();
+        this.setData({isInit:false,})
         let {pageIndex,pageSize,searchStr,catId}=this.pageParams;
         return getGoodsInfo({searchStr,pageIndex,pageSize,catId}).then(res=>{
             if(res.code==1){
@@ -38,7 +41,8 @@ Page(App.BP({
                 this.pageParams.pageIndex += 1;
                 this.setData({
                   goodsList:onRefresh?goodsList:[...this.data.goodsList,...goodsList],
-                  domainPath
+                  domainPath,
+                  isInit:true,
                 });
             }
             return res;
@@ -67,6 +71,7 @@ Page(App.BP({
         }
     },
     onDelete(e){
+        this._setPageLoading('onDelete');
         let detail = e.detail||{};
         let {item} = detail;  
         let params = {
@@ -74,7 +79,7 @@ Page(App.BP({
         }
         return deleteGoodsInfo(params).then(res=>{
             if(res.code==1){
-                return this.onRefresh().then(()=>{
+                return this.storageRefresh().then(()=>{
                     App.SMH.showToast({title:"删除成功"});
                 })
             }else{
@@ -82,6 +87,21 @@ Page(App.BP({
                 return res;
             }
         })
+    },
+    copy(e){
+      this._setPageLoading('copy');
+      let detail = e.detail||{};
+      let {item} = detail;  
+      return copyGoods({goodsId:item.goods_id||0}).then(res=>{
+        return this.storageRefresh().then(()=>{
+          App.SMH.showToast({title:"复制成功"});
+          this.scrollToTop();
+        });
+      })
+    },
+    scrollToTop(){
+      this.goodsList = this.goodsList || this.selectComponent('#goods-list');
+      this.goodsList.scrollToTop();
     },
     save(e){
         let detail = e.detail ||{};
@@ -92,7 +112,19 @@ Page(App.BP({
     onRefresh() { // 刷新
       this.pageParams.pageIndex = 1;
       this.hasMore = true;
-      this.loadData(true); 
+      return this.loadData(true); 
+    },
+    storageRefresh(){
+      let reduceIndex = Number(this.pageParams.pageIndex) - 1;
+      reduceIndex <= 0 && (reduceIndex = 1);
+      this.pageParams.tempIndex = reduceIndex;
+      this.pageParams.tempSize = this.pageParams.pageSize;
+      this.pageParams.pageSize = this.pageParams.tempIndex * this.pageParams.tempSize;
+      this.pageParams.pageIndex = 1;
+      return this.loadData(true).finally(()=>{
+        this.pageParams.pageIndex = this.pageParams.tempIndex + 1;
+        this.pageParams.pageSize = this.pageParams.tempSize;
+      });
     },
     onConfirm(e){
       let detail = e.detail||"";
@@ -102,6 +134,8 @@ Page(App.BP({
     scrolltolower(){
       if(this.hasMore){
         this.loadData();
+      }else{
+        App.SMH.showToast({title:"已经到底了"});
       }
     },
     onCatSelect(e){
@@ -130,4 +164,9 @@ function getGoodsCategoryInfo(params) {
       }
       return Promise.reject(res.msg || "获取分类列表失败")
     })
+}
+function copyGoods(params){
+  return App.Http.QT_GoodsApi.copyGoods({
+    params
+  })
 }
