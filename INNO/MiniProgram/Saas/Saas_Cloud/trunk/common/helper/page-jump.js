@@ -541,9 +541,9 @@ function PageJump(params) {
       })
       break;
     case FuncType.goodsBrandUrl.type:
-      //秒杀分组模块
-      actionParams = 'brand_ids=' + obj.id
-      url = '/pages/micro_mall/category/category?func_type=SE&brand_ids=?' + actionParams
+      //品牌模块
+      actionParams = 'related_id=' + obj.id
+      url = `/pages/micro_mall/category/category?func_type=BRANDCODE&${actionParams}`; //目前先写死BRANDCODE
       break;
 
     

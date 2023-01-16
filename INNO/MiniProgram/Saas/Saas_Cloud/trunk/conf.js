@@ -7,9 +7,9 @@ import { PayType } from "./common/manager/log-map";
  * 该版本包含中转页跳转,第三方支付测试
  * 
 */
-const API_TYPE = "1";  //1:测试环境 ，2：正式环境 ，3： 雅鹿,百家好,新saas定制
-const BRANDCODE= "INNOVATION";//"XLH"//TBH//JWTEST//ZZYXCODE//XXRMCODE//XIAICODE//ZZLD//JLY品牌名称
-const ICONNAME= "INNOVATION"; //JWTY//TBH//ZZ品牌icon文件夹//XA
+const API_TYPE = "2";  //1:测试环境 ，2：正式环境 ，3： 雅鹿,百家好,新saas定制
+const BRANDCODE= "SA";//"XLH"//TBH//JWTEST//ZZYXCODE//XXRMCODE//XIAICODE//ZZLD//JLY品牌名称
+const ICONNAME= "SA"; //JWTY//TBH//ZZ品牌icon文件夹//XA
 
 let _config = getSetConfig({
   brandCode: BRANDCODE,//"XLH"//TBH//JWTEST//ZZYXCODE//XXRMCODE//XIAICODE//ZZLD//JLY品牌名称

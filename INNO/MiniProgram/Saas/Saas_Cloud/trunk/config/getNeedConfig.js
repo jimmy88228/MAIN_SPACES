@@ -1,3 +1,466 @@
+const GOSO = {
+  "UseBrandBgColor": 1,
+  "brand_name": "香蜜闺秀",
+  "brand_id": 2,
+  "brand_name_en": "GOSO",
+  "BRAND_CODE": "GOSO",
+  "icon_url": "https://gosoimg.igoso.com.cn/wechat_applet_image/icon/GOSO/",
+  "logo_path": "https://gosoimg.igoso.com.cn/wechat_applet_image/icon/GOSO/",
+  "default_icon_url": "https://gosoimg.igoso.com.cn/wechat_applet_image/icon/default/",
+  "uploadImgUrl": "https://gosoimg.igoso.com.cn/ImgManager/ImgUpload/UploadImage",
+  "uploadMvUrl": "https://gosoimg.igoso.com.cn/ImgManager/MvUpLoad/UploadMv",
+  "videoUrl": "https://gosovideo.igoso.com.cn/",
+  "webViewUrl": "",
+  "webContactUrl": "https://goso.innourl.cn/mobile/customer_service.php",
+  "webMh5Url": "https://kfgd.igoso.com.cn/pages/home/jump",
+  "style": {
+    "font_color": "#F19234",
+    "bg_color": "#F19234",
+    "nav_bg_color": "#fff",
+    "nav_border_color": "#222222",
+    "comment_bg_color": "#fff",
+    "pro_color": "#d61c2d",
+    "bargain_color": {
+      "theme_color": "rgba(225, 27, 27, 1)",
+      "to_color": "#FF4F4B",
+      "from_color": "#E11425"
+    },
+    "pre_color": {
+      "to_color": "#d61c2d",
+      "from_color": "#f03408",
+      "tag_color": "#fe3333"
+    },
+    "pt_color": {
+      "to_color": "#d61c2d",
+      "from_color": "#f03408"
+    },
+    "p_color": {
+      "to_color": "#d61c2d",
+      "from_color": "#f03408"
+    },
+    "sk_color": {
+      "to_color": "#d61c2d",
+      "from_color": "#f03408"
+    },
+    "bc_color": {
+      "font_color": "#DE0016"
+    },
+    "n_sk_color": {
+      "theme_color": "rgba(248, 81, 9, 1)",
+      "to_color": "#F85109",
+      "from_color": "#EA3800"
+    },
+  },
+  //全部显示
+  staffConf: {
+    commission: {
+      isOpen: 1,
+      cashOutTip: 0
+    },
+    service: {
+      rank: 1,
+      isOpen: 1,
+      fans: 1,
+      hotGoods: 1,
+      hotAct: 1,
+      share: 1,
+      newGuide: 1,
+      guestFollows: 1,
+      dataWeb: 1,
+      storesWeb: 1,
+      staffCoupon: 1
+    },
+    orderList: {
+      commAmount: 1,
+      allSale: 1,
+      singleSale: 1
+    },
+    orderDetail: {
+      commAmount: 1
+    }
+  },
+  "tabbar_list":[
+    {
+        "pagePath": "pages/micro_mall/index/index",
+        "text": "首页",
+        "iconPath": "/images/micro_mall/tabBar/Homes.png",
+        "selectedIconPath": "/images/micro_mall/tabBar/getHomes.png"
+      },
+      {
+        "pagePath": "pages/micro_mall/classify/classify_page",
+        "text": "商品分类",
+        "iconPath": "/images/micro_mall/tabBar/Classify.png",
+        "selectedIconPath": "/images/micro_mall/tabBar/getClassify.png"
+      },
+    {
+      "pagePath": "pages/micro_mall/live_custom/live_custom",
+      "text": "直播",
+      "iconPath": "/images/micro_mall/tabBar/liveCustom.png",
+      "selectedIconPath": "/images/micro_mall/tabBar/getLiveCustom.png"
+    },
+      {
+        "pagePath": "pages/micro_mall/shopping/shopping_cart",
+        "text": "购物车",
+        "iconPath": "/images/micro_mall/tabBar/Carts.png",
+        "selectedIconPath": "/images/micro_mall/tabBar/getCarts.png"
+      },
+      {
+        "pagePath": "pages/micro_mall/user/user",
+        "text": "个人中心",
+        "iconPath": "/images/micro_mall/tabBar/Users.png",
+        "selectedIconPath": "/images/micro_mall/tabBar/getUsers.png"
+      }
+  ],
+  "api_domain": { 
+    ACTAPI: "https://gosoactapi.igoso.com.cn/BuyBonus",
+    BARCODEAPI: "",
+    BARGAINAPI: "https://gosomktapi.igoso.com.cn/BargainApi",
+    BUYAPI: "https://gosobuyapi.igoso.com.cn",
+    CL_NEWPAYAPI: "https://gosopayapi.igoso.com.cn/InnoPayApi/",
+    CL_BARCODEAPI: "https://cloudmainapi.igoso.com.cn",
+    CL_BARGAINAPI: "https://cloudskapi.igoso.com.cn/CsBargainApi",
+    CL_BUYAPI: "https://cloudmainapi.igoso.com.cn",
+    CL_COLLAGEAPI: "https://cloudptapi.igoso.com.cn/CsCollageGroupApi",
+    CL_GOODSAPI: "https://cloudmainapi.igoso.com.cn",
+    CL_PAYAPI: "https://cloudmainapi.igoso.com.cn",
+    CL_POINTAPI: "https://cloudlotapi.igoso.com.cn/CsIntegralMallApi",
+    CL_PRESALEAPI: "https://cloudptapi.igoso.com.cn/CsPresaleApi",
+    CL_SECKILLAPI: "https://cloudskapi.igoso.com.cn/CsSeckillApi",
+    CL_SMKTPAYAPI: "https://cloudmainapi.igoso.com.cn",
+    CL_STAFFAPI: "https://cloudmainapi.igoso.com.cn",
+    CL_USERAPI: "https://cloudmainapi.igoso.com.cn",
+    CL_VSLOGAPI: "https://cloudvslogapi.igoso.com.cn",
+    CL_LOTTERYAPI: "https://cloudlotapi.igoso.com.cn/CsLotteryApi",
+    COLLAGEAPI: "https://gosomktapi.igoso.com.cn/CollageGroupApi",
+    CL_REGAPI: "https://cloudmainapi.igoso.com.cn",
+    ELECTRICAPI: "https://gosobuyapi.igoso.com.cn",
+    GOODSAPI: "https://gosogoodsapi.igoso.com.cn",
+    GRASSAPI: "https://gosoactapi.igoso.com.cn/Grass",
+    LIVEAPI: "https://gosoactapi.igoso.com.cn/LiveApi",
+    LOTTERYAPI: "https://gosoactapi.igoso.com.cn/Lottery",
+    MAINAPI: "",
+    MAPAPI: "https://restapi.amap.com",
+    MEMBERCARDAPI: "https://gosouserapi.igoso.com.cn",
+    NEWPAYAPI: "",
+    PAYAPI: "https://gosopayapi.igoso.com.cn",
+    PDAAPI: "",
+    POINTAPI: "https://gosomktapi.igoso.com.cn/PointMktApi",
+    PRESALEAPI: "https://gosomktapi.igoso.com.cn/PresaleApi",
+    REGAPI: "https://gosoregapi.igoso.com.cn",
+    SECKILLAPI: "https://gosomktapi.igoso.com.cn/SeckillApi",
+    SMKTPAYAPI: "https://gosomktapi.igoso.com.cn/SmktPayApi",
+    STAFFAPI: "https://gosouserapi.igoso.com.cn",
+    USERAPI: "https://gosouserapi.igoso.com.cn",
+    VIDEOSHOPAPI: "https://gosogoodsapi.igoso.com.cn",
+    VOTEAPI: "",
+    VSLOGAPI: "https://gosovslogapi.igoso.com.cn",
+  }
+}
+
+const SA = {
+  "UseBrandBgColor": 1,
+  "brand_name": "英朗测试",
+  "brand_name_en": "SA",
+  "BRAND_CODE": "SA",
+  "is_onlyUserCenter": 0,
+  "default_icon_url": "https://innoimage.innourl.cn/wechat_applet_image/icon/default/",
+  "icon_url": "https://innoimage.innourl.cn/wechat_applet_image/icon//",
+  'logo_path': "https://innoimage.innourl.cn/wechat_applet_image/icon//",
+  "uploadMvUrl": "https://devimgtest.innourl.com/ImgManager/MvUpLoad/UploadMv",
+  'uploadImgUrl': "https://innoimage.innourl.cn/ImgManager/ImgUpload/UploadImage",
+  'videoUrl': "https://innovideo.innourl.cn/",
+  'webViewUrl': "https://innoadmin.innourl.cn",
+  "webMh5Url":"https://devweb01.innourl.com/mh5/pages/home/jump",
+  "webContactUrl":"http://devweb01.innourl.com/mobile/customer_service.php",
+  "webSatffContactUrl":"http://devweb01.innourl.com/staff_wap/cs_service.php",
+  "style": {
+    "font_color": "rgba(205,113,143,1)",
+    "bg_color": "rgba(205,113,143,1)",
+    "nav_bg_color": "rgba(253,250,255,1)",
+    "nav_border_color": "rgba(217, 203, 226, 1)",
+    "comment_bg_color": "rgba(255,248,250,1)",
+    "pro_color": "#CB7090",
+    "bargain_color": {
+      "theme_color": "rgba(225, 27, 27, 1)",
+      "to_color": "#FF4F4B",
+      "from_color": "#E11425"
+    },
+    "pre_color": {
+      "to_color": "#CB7090",
+      "from_color": "#EA86B2",
+      "tag_color": "#fe3333"
+    },
+    "pt_color": {
+      "to_color": "#CB7090",
+      "from_color": "#EA86B2"
+    },
+    "p_color": {
+      "to_color": "#CB7090",
+      "from_color": "#EA86B2"
+    },
+    "sk_color": {
+      "to_color": "#CB7090",
+      "from_color": "#EA86B2"
+    },
+    "bc_color": {
+      "font_color": "#DE0016"
+    },
+    "n_sk_color": {
+      "theme_color":"rgba(248, 81, 9, 1)",
+      "to_color": "#F85109",
+      "from_color": "#EA3800"
+    },
+    "v_color": {
+      "theme_color": "rgba(228, 10, 35, 1)",
+    },
+  },
+  "tabbar_list":[
+    {
+        "pagePath": "pages/micro_mall/index/index",
+        "text": "首页",
+        "iconPath": "/images/micro_mall/tabBar/Homes.png",
+        "selectedIconPath": "/images/micro_mall/tabBar/getHomes.png"
+      },
+      {
+        "pagePath": "pages/micro_mall/classify/classify_page",
+        "text": "商品分类",
+        "iconPath": "/images/micro_mall/tabBar/Classify.png",
+        "selectedIconPath": "/images/micro_mall/tabBar/getClassify.png"
+      }, 
+      {
+        "pagePath": "pages/micro_mall/shopping/shopping_cart",
+        "text": "购物车",
+        "iconPath": "/images/micro_mall/tabBar/Carts.png",
+        "selectedIconPath": "/images/micro_mall/tabBar/getCarts.png"
+      },
+      {
+        "pagePath": "pages/micro_mall/user/user",
+        "text": "个人中心",
+        "iconPath": "/images/micro_mall/tabBar/Users.png",
+        "selectedIconPath": "/images/micro_mall/tabBar/getUsers.png"
+      }
+  ],
+  
+  "api_domain": {
+    ACTAPI: "https://innoactapi.innourl.cn/BuyBonus",
+    BARCODEAPI: "https://innovslogapi.innourl.cn",
+    BARGAINAPI: "https://innoptapi.innourl.cn/BargainApi",
+    BUYAPI: "https://innobuyapi.innourl.cn",
+    CL_ACTAPI: "",
+    CL_BARCODEAPI: "https://cloudbarcode.innourl.cn",
+    CL_BARGAINAPI: "https://innocloudseckill.innourl.cn/CsBargainApi",
+    CL_BUYAPI: "https://cloudbuyapi.innourl.cn",
+    CL_COLLAGEAPI: "https://innocloudseckill.innourl.cn/CsCollageGroupApi",
+    CL_ELECTRICAPI: "https://clouduserapi.innourl.cn",
+    CL_GOODSAPI: "https://cloudgoodsapi.innourl.cn",
+    CL_GRASSAPI: "",
+    CL_LIVEAPI: "https://clouduserapi.innourl.cn",
+    CL_LOTTERYAPI: "https://innocloudact.innourl.cn/CsLotteryApi",
+    CL_MAPAPI: "https://clouduserapi.innourl.cn",
+    CL_MEMBERCARDAPI: "https://clouduserapi.innourl.cn",
+    CL_NEWPAYAPI: "https://innopayapi.innourl.cn/InnoPayApi",
+    CL_PAYAPI: "https://innopayapi.innourl.cn",
+    CL_PDAAPI: "https://clouduserapi.innourl.cn",
+    CL_POINTAPI: "https://innocloudprs.innourl.cn/CsIntegralMallApi",
+    CL_PRESALEAPI: "https://innocloudprs.innourl.cn/CsPresaleApi",
+    CL_REGAPI: "https://cloudregapi.innourl.cn",
+    CL_SECKILLAPI: "https://innocloudseckill.innourl.cn/CsSeckillApi",
+    CL_SMKTPAYAPI: "https://clouduserapi.innourl.cn",
+    CL_STAFFAPI: "https://clouduserapi.innourl.cn",
+    CL_USERAPI: "https://clouduserapi.innourl.cn",
+    CL_VIDEOSHOPAPI: "https://clouduserapi.innourl.cn",
+    CL_VOTEAPI: "https://clouduserapi.innourl.cn",
+    CL_VSLOGAPI: "https://cloudvisitlog.innourl.cn/VisitLogApi",
+    COLLAGEAPI: "https://innoptapi.innourl.cn/CollageGroupApi",
+    ELECTRICAPI: "",
+    GOODSAPI: "https://innogoodsapi.innourl.cn",
+    GRASSAPI: "https://innoactapi.innourl.cn/GrassApi",
+    LIVEAPI: "",
+    LOTTERYAPI: "https://innoactapi.innourl.cn/LotteryApi",
+    MAINAPI: "",
+    MAPAPI: "https://restapi.amap.com",
+    MEMBERCARDAPI: "https://innouserapi.innourl.cn",
+    NEWPAYAPI: "https://innopayapi.innourl.cn/InnoPayApi",
+    PAYAPI: "https://innopayapi.innourl.cn",
+    PDAAPI: "https://innobuyapi.innourl.cn",
+    POINTAPI: "https://innoprsapi.innourl.cn/PointMktApi",
+    PRESALEAPI: "https://innoprsapi.innourl.cn/PresaleApi",
+    REGAPI: "https://innoregapi.innourl.cn",
+    SECKILLAPI: "https://innoskapi.innourl.cn/SeckillApi",
+    SMKTPAYAPI: "https://innosmktpay.innourl.cn/SmktPayApi",
+    STAFFAPI: "https://innouserapi.innourl.cn",
+    USERAPI: "https://innouserapi.innourl.cn",
+    VIDEOSHOPAPI: "https://INNOGOODSAPI.innourl.cn",
+    VOTEAPI: "",
+    VSLOGAPI: "https://innovslogapi.innourl.cn",
+  },
+  
+  //全部显示
+  staffConf: {
+    commission: {
+      isOpen: 1,
+      cashOutTip: 0
+    },
+    service: {
+      isOpen: 1,
+      fans: 1,
+      hotGoods: 1,
+      hotAct: 1,
+      share: 1,
+      newGuide: 1,
+      guestFollows: 1,
+      dataWeb:1,
+      storesWeb:1,
+      staffCoupon: 1
+    },
+    orderList: {
+      commAmount: 1,
+      allSale: 1,
+      singleSale: 1
+    },
+    orderDetail: {
+      commAmount: 1
+    }
+  },
+}
+
+const YUNDIAN = {
+  "UseBrandBgColor": 1,
+  "brand_name": "英弩云店",
+  "brand_name_en": "YUNDIAN",
+  "BRAND_CODE": "YUNDIAN",
+  "icon_url": "https://innoimage.innourl.cn/wechat_applet_image/icon/KLTY/",
+  "logo_path": "https://innoimage.innourl.cn/wechat_applet_image/icon/KLTY/",
+  "default_icon_url": "https://innoimage.innourl.cn/wechat_applet_image/icon/default/",
+  "uploadImgUrl": "https://innoimage.innourl.cn/ImgManager/ImgUpload/UploadImage",
+  "uploadMvUrl": "https://innovideo.innourl.cn/ImgManager/MvUpLoad/UploadMv",
+  // "videoUrl": "https://innoimage.innourl.cn/",
+  "videoUrl": "https://innovideo.innourl.cn/",
+  "webViewUrl": "",
+  "webContactUrl": "http://goso.innourl.cn/mobile/customer_service.php",
+  "style": {
+    "font_color": "#F19234",
+    "bg_color": "#F19234",
+    "nav_bg_color": "#fff",
+    "nav_border_color": "#222222",
+    "comment_bg_color": "#fff",
+    "pro_color": "#d61c2d",
+    "bargain_color": {
+      "theme_color": "rgba(225, 27, 27, 1)",
+      "to_color": "#FF4F4B",
+      "from_color": "#E11425"
+    },
+    "pre_color": {
+      "to_color": "#d61c2d",
+      "from_color": "#f03408",
+      "tag_color": "#fe3333"
+    },
+    "pt_color": {
+      "to_color": "#d61c2d",
+      "from_color": "#f03408"
+    },
+    "p_color": {
+      "to_color": "#d61c2d",
+      "from_color": "#f03408"
+    },
+    "sk_color": {
+      "to_color": "#d61c2d",
+      "from_color": "#f03408"
+    },
+    "n_sk_color": {
+      "theme_color": "rgba(248, 81, 9, 1)",
+      "to_color": "#F85109",
+      "from_color": "#EA3800"
+    },
+    "bc_color": {
+      "font_color": "#DE0016"
+    },
+  },
+  //全部显示
+  staffConf: {
+    commission: {
+      isOpen: 1,
+      cashOutTip: 0
+    },
+    service: {
+      isOpen: 1,
+      fans: 1,
+      hotGoods: 1,
+      hotAct: 1,
+      share: 1,
+      newGuide: 1,
+      guestFollows: 1,
+      dataWeb:1,
+      storesWeb:1,
+      staffCoupon: 1
+    },
+    orderList: {
+      commAmount: 1,
+      allSale: 1,
+      singleSale: 1
+    },
+    orderDetail: {
+      commAmount: 1
+    }
+  },
+  "api_domain": {
+    "VSLOGAPI": "https://innovslogapi.innourl.cn",
+    "GOODSAPI": "https://innogoodsapi.innourl.cn",
+    "USERAPI": "https://innouserapi.innourl.cn",
+    "BUYAPI": "https://innobuyapi.innourl.cn",
+    "REGAPI": "https://innoregapi.innourl.cn",
+    "POINTAPI": "https://innoprsapi.innourl.cn/PointMktApi",
+    "COLLAGEAPI": "https://innoptapi.innourl.cn/CollageGroupApi",
+    "PAYAPI": "https://innopayapi.innourl.cn",
+    "PRESALEAPI": "https://innoprsapi.innourl.cn/PresaleApi",
+    "STAFFAPI": "https://innouserapi.innourl.cn",
+    "MAINAPI": "",
+    "MAPAPI": "https://restapi.amap.com",
+    //店铺支付
+    "SMKTPAYAPI": "",
+    "GRASSAPI": "https://innoactapi.innourl.cn",
+    "PAGEAPI": "",
+    "MEMBERCARDAPI": "https://innouserapi.innourl.cn",
+    "LOTTERYAPI": "https://innoactapi.innourl.cn/LotteryApi",
+    "BARGAINAPI": "https://innoptapi.innourl.cn/BargainApi",
+    "LIVEAPI": "https://innoactapi.innourl.cn/LiveApi",
+
+    "CL_VSLOGAPI": "https://cloudvisitlog.innourl.cn/VisitLogApi",
+    "CL_GOODSAPI": "https://cloudgoodsapi.innourl.cn",
+    "CL_USERAPI": "https://clouduserapi.innourl.cn",
+    "CL_BUYAPI": "https://cloudbuyapi.innourl.cn",
+    "Cl_REGAPI": "https://cloudregapi.innourl.cn",
+    "CL_BARCODEAPI": "https://cloudbarcode.innourl.cn",
+    "CL_PAYAPI": "https://innopayapi.innourl.cn",
+  },
+  "tabbar_list": [
+    {
+      "pagePath": "pages/micro_mall/index/index",
+      "text": "首页",
+      "iconPath": "/images/micro_mall/tabBar/Homes.png",
+      "selectedIconPath": "/images/micro_mall/tabBar/getHomes.png"
+    },
+    {
+      "pagePath": "pages/micro_mall/classify/classify_page",
+      "text": "商品分类",
+      "iconPath": "/images/micro_mall/tabBar/Classify.png",
+      "selectedIconPath": "/images/micro_mall/tabBar/getClassify.png"
+    }, 
+    {
+      "pagePath": "pages/micro_mall/shopping/shopping_cart",
+      "text": "购物车",
+      "iconPath": "/images/micro_mall/tabBar/Carts.png",
+      "selectedIconPath": "/images/micro_mall/tabBar/getCarts.png"
+    },
+    {
+      "pagePath": "pages/micro_mall/user/user",
+      "text": "个人中心",
+      "iconPath": "/images/micro_mall/tabBar/Users.png",
+      "selectedIconPath": "/images/micro_mall/tabBar/getUsers.png"
+    }
+  ],
+}
+
 const TESTCONFIG = {
   "UseBrandBgColor": 1,
   "brand_name": "英朗测试",
@@ -157,921 +620,33 @@ const TESTCONFIG = {
     }
   },
 }
-//卡尔丹顿
-const KEDD = {
-  "UseBrandBgColor": 1,
-  "brand_name": "卡尔体验",
-  "brand_name_en": "KL",
-  "BRAND_CODE": "KEDD",
-  "icon_url": "https://KLIMG.innourl.cn/wechat_applet_image/icon/KLTY/",
-  "logo_path": "https://devimgtest.innourl.com/wechat_applet_image/icon/KLTY/",
-  "default_icon_url": "https://KLIMG.innourl.cn/wechat_applet_image/icon/default/",
-  "uploadImgUrl": "https://KLIMG.innourl.cn/ImgManager/ImgUpload/UploadImage",
-  "uploadMvUrl": "https://KLVIDEO.innourl.cn/ImgManager/MvUpLoad/UploadMv",
-  "videoUrl": "https://KLVIDEO.innourl.cn/",
-  "webViewUrl": "",
-  "style": {
-    "font_color": "#222222",
-    "bg_color": "#222222",
-    "nav_bg_color": "#fff",
-    "nav_border_color": "#222222",
-    "comment_bg_color": "#fff",
-    "pro_color": "#d61c2d",
-    "bargain_color": {
-      "theme_color": "rgba(225, 27, 27, 1)",
-      "to_color": "#FF4F4B",
-      "from_color": "#E11425"
-    },
-    "pre_color": {
-      "to_color": "#d61c2d",
-      "from_color": "#f03408",
-      "tag_color": "#fe3333"
-    },
-    "pt_color": {
-      "to_color": "#d61c2d",
-      "from_color": "#f03408"
-    },
-    "p_color": {
-      "to_color": "#d61c2d",
-      "from_color": "#f03408"
-    },
-    "sk_color": {
-      "to_color": "#d61c2d",
-      "from_color": "#f03408"
-    },
-    "bc_color": {
-      "font_color": "#DE0016"
-    },
-  },
-  "api_domain": {
-    "VSLOGAPI": "https://KLVSLOGAPI.innourl.cn",
-    "GOODSAPI": "https://KLGOODSAPI.innourl.cn",
-    "USERAPI": "https://KLUSERAPI.innourl.cn",
-    "BUYAPI": "https://KLBUYAPI.innourl.cn",
-    "REGAPI": "https://KLREGAPI.innourl.cn",
-    "POINTAPI": "https://KLINTGAPI.innourl.cn",
-    "COLLAGEAPI": "https://KLGBAPI.innourl.cn",
-    "PAYAPI": "https://KLPAYAPI.innourl.cn",
-    "PRESALEAPI": "https://KLPRSAPI.innourl.cn",
-    "STAFFAPI": "https://KLUSERAPI.innourl.cn",
-    "MAINAPI": "",
-    "MAPAPI": "https://restapi.amap.com",
-    //店铺支付
-    "SMKTPAYAPI": "",
-    "GRASSAPI": "https://KLACTAPI.innourl.cn",
-    "PAGEAPI": "",
-    "MEMBERCARDAPI": "https://KLACTAPI.innourl.cn",
-    "LOTTERYAPI": "https://klactapi.innourl.cn/Lottery"
-  },
-  //全部显示
-  staffConf: {
-    commission: {
-      isOpen: 1,
-      cashOutTip: 0
-    },
-    service: {
-      isOpen: 1,
-      fans: 1,
-      hotGoods: 1,
-      hotAct: 1,
-      share: 1,
-      newGuide: 1,
-      guestFollows: 1,
-      dataWeb:1,
-      storesWeb:1,
-    },
-    orderList: {
-      commAmount: 1,
-      allSale: 1,
-      singleSale: 1
-    },
-    orderDetail: {
-      commAmount: 1
-    }
-  },
-}
-
-const KEDDTY = {
-  "UseBrandBgColor": 1,
-  "brand_name": "卡尔体验",
-  "brand_name_en": "KL",
-  "BRAND_CODE": "KEDD",
-  "icon_url": "https://KLIMG.innourl.cn/wechat_applet_image/icon/KLTY/",
-  "logo_path": "https://devimgtest.innourl.com/wechat_applet_image/icon/KLTY/",
-  "default_icon_url": "https://KLIMG.innourl.cn/wechat_applet_image/icon/default/",
-  "uploadImgUrl": "https://KLIMG.innourl.cn/ImgManager/ImgUpload/UploadImage",
-  "uploadMvUrl": "https://KLVIDEO.innourl.cn/ImgManager/MvUpLoad/UploadMv",
-  "videoUrl": "https://KLVIDEO.innourl.cn/",
-  "webViewUrl": "",
-  "style": {
-    "font_color": "#222222",
-    "bg_color": "#222222",
-    "nav_bg_color": "#fff",
-    "nav_border_color": "#222222",
-    "comment_bg_color": "#fff",
-    "pro_color": "#d61c2d",
-
-    "bargain_color": {
-      "theme_color": "rgba(225, 27, 27, 1)",
-      "to_color": "#FF4F4B",
-      "from_color": "#E11425"
-    },
-    "pre_color": {
-      "to_color": "#CB7090",
-      "from_color": "#EA86B2",
-      "tag_color": "#fe3333"
-    },
-    "pt_color": {
-      "to_color": "#CB7090",
-      "from_color": "#EA86B2"
-    },
-    "p_color": {
-      "to_color": "#CB7090",
-      "from_color": "#EA86B2"
-    },
-    "sk_color": {
-      "to_color": "#CB7090",
-      "from_color": "#EA86B2"
-    },
-    "bc_color": {
-      "font_color": "#DE0016"
-    },
-    "n_sk_color": {
-      "theme_color":"rgba(248, 81, 9, 1)",
-      "to_color": "#F85109",
-      "from_color": "#EA3800"
-    },
-    "v_color": {
-      "theme_color": "rgba(228, 10, 35, 1)",
-    },
-  },
-  "api_domain": {
-    ACTAPI: "https://klactapi.innourl.cn/BuyBonus",
-    BARCODEAPI: "",
-    BARGAINAPI: "https://klactapi.innourl.cn/BargainApi",
-    BUYAPI: "https://KLBUYAPI.innourl.cn",
-    CL_ACTAPI: "https://klcloudapi.innourl.cn",
-    CL_BARCODEAPI: "https://klcloudapi.innourl.cn",
-    CL_BARGAINAPI: "https://klcloudactapi.innourl.cn/CsBargainApi",
-    CL_BUYAPI: "https://klcloudapi.innourl.cn",
-    CL_COLLAGEAPI: "https://klcloudactapi.innourl.cn/CsCollageGroupApi",
-    CL_ELECTRICAPI: "",
-    CL_GOODSAPI: "https://klcloudapi.innourl.cn",
-    CL_GRASSAPI: "https://klcloudapi.innourl.cn",
-    CL_LIVEAPI: "",
-    CL_LOTTERYAPI: "https://klcloudapi.innourl.cn",
-    CL_MAPAPI: "https://restapi.amap.com",
-    CL_MEMBERCARDAPI: "",
-    CL_NEWPAYAPI: "https://klpayapi.innourl.cn/InnoPayApi",
-    CL_PAYAPI: "https://klcloudapi.innourl.cn",
-    CL_PDAAPI: "",
-    CL_POINTAPI: "https://klcloudactapi.innourl.cn/CsIntegralMallApi",
-    CL_PRESALEAPI: "https://klcloudactapi.innourl.cn/CsPresaleApi",
-    CL_SECKILLAPI: "https://klcloudactapi.innourl.cn/CsSeckillApi",
-    CL_SMKTPAYAPI: "https://klcloudapi.innourl.cn",
-    CL_STAFFAPI: "https://klcloudapi.innourl.cn",
-    CL_USERAPI: "https://klcloudapi.innourl.cn",
-    CL_VIDEOSHOPAPI: "",
-    CL_VOTEAPI: "https://klcloudapi.innourl.cn",
-    CL_VSLOGAPI: "https://klvslogapi.innourl.cn/CsVisitLogApi",
-    COLLAGEAPI: "https://KLGBAPI.innourl.cn",
-    CL_REGAPI: "https://klcloudapi.innourl.cn",
-    ELECTRICAPI: "",
-    GOODSAPI: "https://KLGOODSAPI.innourl.cn",
-    GRASSAPI: "https://klactapi.innourl.cn/Grass",
-    LIVEAPI: "",
-    LOTTERYAPI: "https://klactapi.innourl.cn/Lottery",
-    MAINAPI: "",
-    MAPAPI: "https://restapi.amap.com",
-    MEMBERCARDAPI: "",
-    NEWPAYAPI: "https://klpayapi.innourl.cn/InnoPayApi",
-    PAYAPI: "https://KLPAYAPI.innourl.cn",
-    PDAAPI: "",
-    POINTAPI: "https://KLINTGAPI.innourl.cn",
-    PRESALEAPI: "https://KLPRSAPI.innourl.cn",
-    REGAPI: "https://KLREGAPI.innourl.cn",
-    SECKILLAPI: "",
-    SMKTPAYAPI: "https://klactapi.innourl.cn/SmktPayApi",
-    STAFFAPI: "https://KLUSERAPI.innourl.cn",
-    USERAPI: "https://KLUSERAPI.innourl.cn",
-    VIDEOSHOPAPI: "",
-    VOTEAPI: "https://klactapi.innourl.cn/VoteApi",
-    VSLOGAPI: "https://KLVSLOGAPI.innourl.cn",
-  },
-  
-  "tabbar_list":[
-    {
-        "pagePath": "pages/micro_mall/index/index",
-        "text": "首页",
-        "iconPath": "/images/micro_mall/tabBar/Homes.png",
-        "selectedIconPath": "/images/micro_mall/tabBar/getHomes.png"
-      },
-      {
-        "pagePath": "pages/micro_mall/classify/classify_page",
-        "text": "商品分类",
-        "iconPath": "/images/micro_mall/tabBar/Classify.png",
-        "selectedIconPath": "/images/micro_mall/tabBar/getClassify.png"
-      }, 
-      {
-        "pagePath": "pages/micro_mall/shopping/shopping_cart",
-        "text": "购物车",
-        "iconPath": "/images/micro_mall/tabBar/Carts.png",
-        "selectedIconPath": "/images/micro_mall/tabBar/getCarts.png"
-      },
-      {
-        "pagePath": "pages/micro_mall/user/user",
-        "text": "个人中心",
-        "iconPath": "/images/micro_mall/tabBar/Users.png",
-        "selectedIconPath": "/images/micro_mall/tabBar/getUsers.png"
-      }
-  ],
-  //全部显示
-  staffConf: {
-    commission: {
-      isOpen: 1,
-      cashOutTip: 0
-    },
-    service: {
-      isOpen: 1,
-      fans: 1,
-      hotGoods: 1,
-      hotAct: 1,
-      share: 1,
-      newGuide: 1,
-      guestFollows: 1,
-      dataWeb:1,
-      storesWeb:1,
-    },
-    orderList: {
-      commAmount: 1,
-      allSale: 1,
-      singleSale: 1
-    },
-    orderDetail: {
-      commAmount: 1
-    }
-  },
-}
-
-const GOSO = {
-  "UseBrandBgColor": 1,
-  "brand_name": "香蜜闺秀",
-  "brand_id": 2,
-  "brand_name_en": "GOSO",
-  "BRAND_CODE": "GOSO",
-  "icon_url": "https://gosoimg.igoso.com.cn/wechat_applet_image/icon/GOSO/",
-  "logo_path": "https://gosoimg.igoso.com.cn/wechat_applet_image/icon/GOSO/",
-  "default_icon_url": "https://gosoimg.igoso.com.cn/wechat_applet_image/icon/default/",
-  "uploadImgUrl": "https://gosoimg.igoso.com.cn/ImgManager/ImgUpload/UploadImage",
-  "uploadMvUrl": "https://gosoimg.igoso.com.cn/ImgManager/MvUpLoad/UploadMv",
-  "videoUrl": "https://gosovideo.igoso.com.cn/",
-  "webViewUrl": "",
-  "webContactUrl": "https://goso.innourl.cn/mobile/customer_service.php",
-  "webMh5Url": "https://kfgd.igoso.com.cn/pages/home/jump",
-  "style": {
-    "font_color": "#F19234",
-    "bg_color": "#F19234",
-    "nav_bg_color": "#fff",
-    "nav_border_color": "#222222",
-    "comment_bg_color": "#fff",
-    "pro_color": "#d61c2d",
-    "bargain_color": {
-      "theme_color": "rgba(225, 27, 27, 1)",
-      "to_color": "#FF4F4B",
-      "from_color": "#E11425"
-    },
-    "pre_color": {
-      "to_color": "#d61c2d",
-      "from_color": "#f03408",
-      "tag_color": "#fe3333"
-    },
-    "pt_color": {
-      "to_color": "#d61c2d",
-      "from_color": "#f03408"
-    },
-    "p_color": {
-      "to_color": "#d61c2d",
-      "from_color": "#f03408"
-    },
-    "sk_color": {
-      "to_color": "#d61c2d",
-      "from_color": "#f03408"
-    },
-    "bc_color": {
-      "font_color": "#DE0016"
-    },
-    "n_sk_color": {
-      "theme_color": "rgba(248, 81, 9, 1)",
-      "to_color": "#F85109",
-      "from_color": "#EA3800"
-    },
-  },
-  //全部显示
-  staffConf: {
-    commission: {
-      isOpen: 1,
-      cashOutTip: 0
-    },
-    service: {
-      rank: 1,
-      isOpen: 1,
-      fans: 1,
-      hotGoods: 1,
-      hotAct: 1,
-      share: 1,
-      newGuide: 1,
-      guestFollows: 1,
-      dataWeb: 1,
-      storesWeb: 1,
-      staffCoupon: 1
-    },
-    orderList: {
-      commAmount: 1,
-      allSale: 1,
-      singleSale: 1
-    },
-    orderDetail: {
-      commAmount: 1
-    }
-  },
-  "tabbar_list":[
-    {
-        "pagePath": "pages/micro_mall/index/index",
-        "text": "首页",
-        "iconPath": "/images/micro_mall/tabBar/Homes.png",
-        "selectedIconPath": "/images/micro_mall/tabBar/getHomes.png"
-      },
-      {
-        "pagePath": "pages/micro_mall/classify/classify_page",
-        "text": "商品分类",
-        "iconPath": "/images/micro_mall/tabBar/Classify.png",
-        "selectedIconPath": "/images/micro_mall/tabBar/getClassify.png"
-      },
-    {
-      "pagePath": "pages/micro_mall/live_custom/live_custom",
-      "text": "直播",
-      "iconPath": "/images/micro_mall/tabBar/liveCustom.png",
-      "selectedIconPath": "/images/micro_mall/tabBar/getLiveCustom.png"
-    },
-      {
-        "pagePath": "pages/micro_mall/shopping/shopping_cart",
-        "text": "购物车",
-        "iconPath": "/images/micro_mall/tabBar/Carts.png",
-        "selectedIconPath": "/images/micro_mall/tabBar/getCarts.png"
-      },
-      {
-        "pagePath": "pages/micro_mall/user/user",
-        "text": "个人中心",
-        "iconPath": "/images/micro_mall/tabBar/Users.png",
-        "selectedIconPath": "/images/micro_mall/tabBar/getUsers.png"
-      }
-  ],
-  "api_domain": { 
-    ACTAPI: "https://gosoactapi.igoso.com.cn/BuyBonus",
-    BARCODEAPI: "",
-    BARGAINAPI: "https://gosomktapi.igoso.com.cn/BargainApi",
-    BUYAPI: "https://gosobuyapi.igoso.com.cn",
-    CL_NEWPAYAPI: "https://gosopayapi.igoso.com.cn/InnoPayApi/",
-    CL_BARCODEAPI: "https://cloudmainapi.igoso.com.cn",
-    CL_BARGAINAPI: "https://cloudskapi.igoso.com.cn/CsBargainApi",
-    CL_BUYAPI: "https://cloudmainapi.igoso.com.cn",
-    CL_COLLAGEAPI: "https://cloudptapi.igoso.com.cn/CsCollageGroupApi",
-    CL_GOODSAPI: "https://cloudmainapi.igoso.com.cn",
-    CL_PAYAPI: "https://cloudmainapi.igoso.com.cn",
-    CL_POINTAPI: "https://cloudlotapi.igoso.com.cn/CsIntegralMallApi",
-    CL_PRESALEAPI: "https://cloudptapi.igoso.com.cn/CsPresaleApi",
-    CL_SECKILLAPI: "https://cloudskapi.igoso.com.cn/CsSeckillApi",
-    CL_SMKTPAYAPI: "https://cloudmainapi.igoso.com.cn",
-    CL_STAFFAPI: "https://cloudmainapi.igoso.com.cn",
-    CL_USERAPI: "https://cloudmainapi.igoso.com.cn",
-    CL_VSLOGAPI: "https://cloudvslogapi.igoso.com.cn",
-    CL_LOTTERYAPI: "https://cloudlotapi.igoso.com.cn/CsLotteryApi",
-    COLLAGEAPI: "https://gosomktapi.igoso.com.cn/CollageGroupApi",
-    CL_REGAPI: "https://cloudmainapi.igoso.com.cn",
-    ELECTRICAPI: "https://gosobuyapi.igoso.com.cn",
-    GOODSAPI: "https://gosogoodsapi.igoso.com.cn",
-    GRASSAPI: "https://gosoactapi.igoso.com.cn/Grass",
-    LIVEAPI: "https://gosoactapi.igoso.com.cn/LiveApi",
-    LOTTERYAPI: "https://gosoactapi.igoso.com.cn/Lottery",
-    MAINAPI: "",
-    MAPAPI: "https://restapi.amap.com",
-    MEMBERCARDAPI: "https://gosouserapi.igoso.com.cn",
-    NEWPAYAPI: "",
-    PAYAPI: "https://gosopayapi.igoso.com.cn",
-    PDAAPI: "",
-    POINTAPI: "https://gosomktapi.igoso.com.cn/PointMktApi",
-    PRESALEAPI: "https://gosomktapi.igoso.com.cn/PresaleApi",
-    REGAPI: "https://gosoregapi.igoso.com.cn",
-    SECKILLAPI: "https://gosomktapi.igoso.com.cn/SeckillApi",
-    SMKTPAYAPI: "https://gosomktapi.igoso.com.cn/SmktPayApi",
-    STAFFAPI: "https://gosouserapi.igoso.com.cn",
-    USERAPI: "https://gosouserapi.igoso.com.cn",
-    VIDEOSHOPAPI: "https://gosogoodsapi.igoso.com.cn",
-    VOTEAPI: "",
-    VSLOGAPI: "https://gosovslogapi.igoso.com.cn",
-  }
-}
-const FORMALCONFIG = {
-  "UseBrandBgColor": 1,
-  "brand_name": "管理小程序",
-  "brand_name_en": "ZZYXCODE",
-  "BRAND_CODE": "ZZYXCODE",
-  "icon_url": "https://jwwximage.chinakingking.com/wechat_applet_image/icon/ZZ/",
-  "logo_path": "https://jwwximage.chinakingking.com/wechat_applet_image/icon/ZZ/",
-  "default_icon_url": "https://jwwximage.chinakingking.com/wechat_applet_image/icon/default/",
-  "uploadImgUrl": "https://jwwximage.chinakingking.com/ImgManager/ImgUpload/UploadImage",
-  "uploadMvUrl": "https://jwwximage.chinakingking.com/ImgManager/MvUpLoad/UploadMv",
-  "videoUrl": "https://jwwxvideo.chinakingking.com/",
-  "webViewUrl": "https://jwwxcs.chinakingking.com",
-  "style": {
-    "font_color": "#d50037",//"rgba(205,113,143,1)",
-    "bg_color": "#d50037",//"rgba(205,113,143,1)",
-    "nav_bg_color": "rgba(253,250,255,1)",
-    "nav_border_color": "rgba(217, 203, 226, 1)",
-    "comment_bg_color": "rgba(255,248,250,1)",
-    "bargain_color": {
-        "theme_color": "rgba(225, 27, 27, 1)",
-        "to_color": "#FF4F4B",
-        "from_color": "#E11425"
-    },
-    "bc_color": {
-      "font_color": "#DE0016"
-    },
-  },
-  "staffConf": {
-    "service": {
-      "isOpen": 1,
-      "hotAct": 1,
-      "hotGoods": 1
-    }
-  },
-  "api_domain": {
-    "VSLOGAPI": "https://JWWXVSLOGAPI.chinakingking.com",
-    "GOODSAPI": "https://JWWXGOODSAPI.chinakingking.com",
-    "USERAPI": "https://JWWXUSERAPI.chinakingking.com",
-    "BUYAPI": "https://JWWXBUYAPI.chinakingking.com",
-    "REGAPI": "https://JWWXREGAPI.chinakingking.com",
-    "POINTAPI": "https://JWWXINTGAPI.chinakingking.com",
-    "COLLAGEAPI": "https://JWWXPTAPI.chinakingking.com",
-    "PRESALEAPI": "https://jwwxprsapi.chinakingking.com",
-    "PAYAPI": "https://JWWXPAYAPI.chinakingking.com",
-    "STAFFAPI": "https://JWWXUSERAPI.chinakingking.com",
-    "MAINAPI": "",
-    "MAPAPI": "https://restapi.amap.com",
-    //店铺支付
-    "SMKTPAYAPI": "https://jwwxactapi.chinakingking.com/SmktPayApi",
-    "GRASSAPI": "https://jwwxactapi.chinakingking.com/Grass",
-    "PAGEAPI": "https://developtest.innourl.com",
-    "BARGAINAPI": "https://jwwxactapi.chinakingking.com/BargainApi",
-    "MEMBERCARDAPI": "https://JWWXUSERAPI.chinakingking.com",
-    "ACTAPI": "https://jwwxactapi.chinakingking.com/BuyBonusApi",
-    "LIVEAPI": "https://jwwxactapi.chinakingking.com/LiveApi"
-  },
-  "tabbar_list":[
-    {
-        "pagePath": "pages/micro_mall/index/index",
-        "text": "首页",
-        "iconPath": "/images/micro_mall/tabBar/Homes.png",
-        "selectedIconPath": "/images/micro_mall/tabBar/getHomes.png"
-      },
-      {
-        "pagePath": "pages/micro_mall/classify/classify_page",
-        "text": "商品分类",
-        "iconPath": "/images/micro_mall/tabBar/Classify.png",
-        "selectedIconPath": "/images/micro_mall/tabBar/getClassify.png"
-      },
-    // {
-    //   "pagePath": "pages/micro_mall/video_shopping/v_index/index",
-    //   "text": "视频购物",
-    //   "iconPath": "/images/micro_mall/tabBar/videoShop.png",
-    //   "selectedIconPath": "/images/micro_mall/tabBar/getVideoShop.png"
-    // },
-    {
-      "pagePath": "pages/micro_mall/live_custom/live_custom",
-      "text": "直播",
-      "iconPath": "/images/micro_mall/tabBar/liveCustom.png",
-      "selectedIconPath": "/images/micro_mall/tabBar/getLiveCustom.png"
-    },
-      {
-        "pagePath": "pages/micro_mall/shopping/shopping_cart",
-        "text": "购物车",
-        "iconPath": "/images/micro_mall/tabBar/Carts.png",
-        "selectedIconPath": "/images/micro_mall/tabBar/getCarts.png"
-      },
-      {
-        "pagePath": "pages/micro_mall/user/user",
-        "text": "个人中心",
-        "iconPath": "/images/micro_mall/tabBar/Users.png",
-        "selectedIconPath": "/images/micro_mall/tabBar/getUsers.png"
-      }
-  ]
-}
-const SINGLE_DOG = {
-  "UseBrandBgColor": 1,
-  "brand_name": "香蜜闺秀",
-  "brand_name_en": "KM",
-  "BRAND_CODE": "KM",
-  "icon_url": "https://innoimage.innourl.cn/wechat_applet_image/icon/KLTY/",
-  "logo_path": "https://innoimage.innourl.cn/wechat_applet_image/icon/KLTY/",
-  "default_icon_url": "https://KLIMG.innourl.cn/wechat_applet_image/icon/default/",
-  "uploadImgUrl": "https://KLIMG.innourl.cn/ImgManager/ImgUpload/UploadImage",
-  "uploadMvUrl": "https://KLVIDEO.innourl.cn/ImgManager/MvUpLoad/UploadMv",
-  // "videoUrl": "https://innoimage.innourl.cn/",
-  "videoUrl": "https://innovideo.innourl.cn/",
-  "webViewUrl": "",
-  "webContactUrl": "http://goso.innourl.cn/mobile/customer_service.php",
-  "style": {
-    "font_color": "#F19234",
-    "bg_color": "#F19234",
-    "nav_bg_color": "#fff",
-    "nav_border_color": "#222222",
-    "comment_bg_color": "#fff",
-    "pro_color": "#d61c2d",
-    "bargain_color": {
-      "theme_color": "rgba(225, 27, 27, 1)",
-      "to_color": "#FF4F4B",
-      "from_color": "#E11425"
-    },
-    "pre_color": {
-      "to_color": "#d61c2d",
-      "from_color": "#f03408",
-      "tag_color": "#fe3333"
-    },
-    "pt_color": {
-      "to_color": "#d61c2d",
-      "from_color": "#f03408"
-    },
-    "p_color": {
-      "to_color": "#d61c2d",
-      "from_color": "#f03408"
-    },
-    "sk_color": {
-      "to_color": "#d61c2d",
-      "from_color": "#f03408"
-    },
-    "n_sk_color": {
-      "theme_color": "rgba(248, 81, 9, 1)",
-      "to_color": "#F85109",
-      "from_color": "#EA3800"
-    },
-    "bc_color": {
-      "font_color": "#DE0016"
-    },
-  },
-  //全部显示
-  staffConf: {
-    commission: {
-      isOpen: 1,
-      cashOutTip: 0
-    },
-    service: {
-      isOpen: 1,
-      fans: 1,
-      hotGoods: 1,
-      hotAct: 1,
-      share: 1,
-      newGuide: 1,
-      guestFollows: 1,
-      dataWeb:1,
-      storesWeb:1,
-      staffCoupon: 1
-    },
-    orderList: {
-      commAmount: 1,
-      allSale: 1,
-      singleSale: 1
-    },
-    orderDetail: {
-      commAmount: 1
-    }
-  },
-  "api_domain": {
-    "VSLOGAPI": "https://innovslogapi.innourl.cn",
-    "GOODSAPI": "https://innogoodsapi.innourl.cn",
-    "USERAPI": "https://innouserapi.innourl.cn",
-    "BUYAPI": "https://innobuyapi.innourl.cn",
-    "REGAPI": "https://innoregapi.innourl.cn",
-    "POINTAPI": "https://innoprsapi.innourl.cn/PointMktApi",
-    "COLLAGEAPI": "https://innoptapi.innourl.cn/CollageGroupApi",
-    "PAYAPI": "https://innopayapi.innourl.cn",
-    "PRESALEAPI": "https://innoprsapi.innourl.cn/PresaleApi",
-    "STAFFAPI": "https://innouserapi.innourl.cn",
-    "MAINAPI": "",
-    "MAPAPI": "https://restapi.amap.com",
-    //店铺支付
-    "SMKTPAYAPI": "",
-    "GRASSAPI": "https://innoactapi.innourl.cn",
-    "PAGEAPI": "",
-    "MEMBERCARDAPI": "https://innouserapi.innourl.cn",
-    "LOTTERYAPI": "https://innoactapi.innourl.cn/LotteryApi",
-    "BARGAINAPI": "https://innoptapi.innourl.cn/BargainApi",
-    "LIVEAPI": "https://innoactapi.innourl.cn/LiveApi",
-
-    "CL_VSLOGAPI": "https://cloudvisitlog.innourl.cn/VisitLogApi",
-    "CL_GOODSAPI": "https://cloudgoodsapi.innourl.cn",
-    "CL_USERAPI": "https://clouduserapi.innourl.cn",
-    "CL_BUYAPI": "https://cloudbuyapi.innourl.cn",
-    "Cl_REGAPI": "https://cloudregapi.innourl.cn",
-    "CL_BARCODEAPI": "https://cloudbarcode.innourl.cn",
-    "CL_PAYAPI": "https://cloudbuyapi.innourl.cn",
-  },
-  "tabbar_list": [
-    {
-      "pagePath": "pages/micro_mall/index/index",
-      "text": "首页",
-      "iconPath": "/images/micro_mall/tabBar/Homes.png",
-      "selectedIconPath": "/images/micro_mall/tabBar/getHomes.png"
-    },
-    {
-      "pagePath": "pages/micro_mall/classify/classify_page",
-      "text": "商品分类",
-      "iconPath": "/images/micro_mall/tabBar/Classify.png",
-      "selectedIconPath": "/images/micro_mall/tabBar/getClassify.png"
-    },
-    // {
-    //   "pagePath": "pages/micro_mall/video_shopping/v_index/index",
-    //   "text": "视频购物",
-    //   "iconPath": "/images/micro_mall/tabBar/videoShop.png",
-    //   "selectedIconPath": "/images/micro_mall/tabBar/getVideoShop.png"
-    // },
-    {
-      "pagePath": "pages/micro_mall/live_custom/live_custom",
-      "text": "直播",
-      "iconPath": "/images/micro_mall/tabBar/liveCustom.png",
-      "selectedIconPath": "/images/micro_mall/tabBar/getLiveCustom.png"
-    },
-    {
-      "pagePath": "pages/micro_mall/shopping/shopping_cart",
-      "text": "购物车",
-      "iconPath": "/images/micro_mall/tabBar/Carts.png",
-      "selectedIconPath": "/images/micro_mall/tabBar/getCarts.png"
-    },
-    {
-      "pagePath": "pages/micro_mall/user/user",
-      "text": "个人中心",
-      "iconPath": "/images/micro_mall/tabBar/Users.png",
-      "selectedIconPath": "/images/micro_mall/tabBar/getUsers.png"
-    }
-  ],
-}
-
-const YUNDIAN = {
-  "UseBrandBgColor": 1,
-  "brand_name": "英弩云店",
-  "brand_name_en": "YUNDIAN",
-  "BRAND_CODE": "YUNDIAN",
-  "icon_url": "https://innoimage.innourl.cn/wechat_applet_image/icon/KLTY/",
-  "logo_path": "https://innoimage.innourl.cn/wechat_applet_image/icon/KLTY/",
-  "default_icon_url": "https://innoimage.innourl.cn/wechat_applet_image/icon/default/",
-  "uploadImgUrl": "https://innoimage.innourl.cn/ImgManager/ImgUpload/UploadImage",
-  "uploadMvUrl": "https://innovideo.innourl.cn/ImgManager/MvUpLoad/UploadMv",
-  // "videoUrl": "https://innoimage.innourl.cn/",
-  "videoUrl": "https://innovideo.innourl.cn/",
-  "webViewUrl": "",
-  "webContactUrl": "http://goso.innourl.cn/mobile/customer_service.php",
-  "style": {
-    "font_color": "#F19234",
-    "bg_color": "#F19234",
-    "nav_bg_color": "#fff",
-    "nav_border_color": "#222222",
-    "comment_bg_color": "#fff",
-    "pro_color": "#d61c2d",
-    "bargain_color": {
-      "theme_color": "rgba(225, 27, 27, 1)",
-      "to_color": "#FF4F4B",
-      "from_color": "#E11425"
-    },
-    "pre_color": {
-      "to_color": "#d61c2d",
-      "from_color": "#f03408",
-      "tag_color": "#fe3333"
-    },
-    "pt_color": {
-      "to_color": "#d61c2d",
-      "from_color": "#f03408"
-    },
-    "p_color": {
-      "to_color": "#d61c2d",
-      "from_color": "#f03408"
-    },
-    "sk_color": {
-      "to_color": "#d61c2d",
-      "from_color": "#f03408"
-    },
-    "n_sk_color": {
-      "theme_color": "rgba(248, 81, 9, 1)",
-      "to_color": "#F85109",
-      "from_color": "#EA3800"
-    },
-    "bc_color": {
-      "font_color": "#DE0016"
-    },
-  },
-  //全部显示
-  staffConf: {
-    commission: {
-      isOpen: 1,
-      cashOutTip: 0
-    },
-    service: {
-      isOpen: 1,
-      fans: 1,
-      hotGoods: 1,
-      hotAct: 1,
-      share: 1,
-      newGuide: 1,
-      guestFollows: 1,
-      dataWeb:1,
-      storesWeb:1,
-      staffCoupon: 1
-    },
-    orderList: {
-      commAmount: 1,
-      allSale: 1,
-      singleSale: 1
-    },
-    orderDetail: {
-      commAmount: 1
-    }
-  },
-  "api_domain": {
-    "VSLOGAPI": "https://innovslogapi.innourl.cn",
-    "GOODSAPI": "https://innogoodsapi.innourl.cn",
-    "USERAPI": "https://innouserapi.innourl.cn",
-    "BUYAPI": "https://innobuyapi.innourl.cn",
-    "REGAPI": "https://innoregapi.innourl.cn",
-    "POINTAPI": "https://innoprsapi.innourl.cn/PointMktApi",
-    "COLLAGEAPI": "https://innoptapi.innourl.cn/CollageGroupApi",
-    "PAYAPI": "https://innopayapi.innourl.cn",
-    "PRESALEAPI": "https://innoprsapi.innourl.cn/PresaleApi",
-    "STAFFAPI": "https://innouserapi.innourl.cn",
-    "MAINAPI": "",
-    "MAPAPI": "https://restapi.amap.com",
-    //店铺支付
-    "SMKTPAYAPI": "",
-    "GRASSAPI": "https://innoactapi.innourl.cn",
-    "PAGEAPI": "",
-    "MEMBERCARDAPI": "https://innouserapi.innourl.cn",
-    "LOTTERYAPI": "https://innoactapi.innourl.cn/LotteryApi",
-    "BARGAINAPI": "https://innoptapi.innourl.cn/BargainApi",
-    "LIVEAPI": "https://innoactapi.innourl.cn/LiveApi",
-
-    "CL_VSLOGAPI": "https://cloudvisitlog.innourl.cn/VisitLogApi",
-    "CL_GOODSAPI": "https://cloudgoodsapi.innourl.cn",
-    "CL_USERAPI": "https://clouduserapi.innourl.cn",
-    "CL_BUYAPI": "https://cloudbuyapi.innourl.cn",
-    "Cl_REGAPI": "https://cloudregapi.innourl.cn",
-    "CL_BARCODEAPI": "https://cloudbarcode.innourl.cn",
-    "CL_PAYAPI": "https://innopayapi.innourl.cn",
-  },
-  "tabbar_list": [
-    {
-      "pagePath": "pages/micro_mall/index/index",
-      "text": "首页",
-      "iconPath": "/images/micro_mall/tabBar/Homes.png",
-      "selectedIconPath": "/images/micro_mall/tabBar/getHomes.png"
-    },
-    {
-      "pagePath": "pages/micro_mall/classify/classify_page",
-      "text": "商品分类",
-      "iconPath": "/images/micro_mall/tabBar/Classify.png",
-      "selectedIconPath": "/images/micro_mall/tabBar/getClassify.png"
-    }, 
-    {
-      "pagePath": "pages/micro_mall/shopping/shopping_cart",
-      "text": "购物车",
-      "iconPath": "/images/micro_mall/tabBar/Carts.png",
-      "selectedIconPath": "/images/micro_mall/tabBar/getCarts.png"
-    },
-    {
-      "pagePath": "pages/micro_mall/user/user",
-      "text": "个人中心",
-      "iconPath": "/images/micro_mall/tabBar/Users.png",
-      "selectedIconPath": "/images/micro_mall/tabBar/getUsers.png"
-    }
-  ],
-}
-
-const JINGLANGTS = {
-  "UseBrandBgColor": 1,
-  "brand_name": "jinlang",
-  "brand_name_en": "jinlang",
-  "BRAND_CODE": "JINGLANGTS",
-  "icon_url": "https://JLIMG.highwavesports.com/wechat_applet_image/icon/KLTY/",
-  "logo_path": "https://JLIMG.highwavesports.com/wechat_applet_image/icon/KLTY/",
-  "default_icon_url": "https://JLIMG.highwavesports.com/wechat_applet_image/icon/default/",
-  "uploadImgUrl": "https://KLIMG.innourl.cn/ImgManager/ImgUpload/UploadImage",
-  "uploadMvUrl": "https://KLVIDEO.innourl.cn/ImgManager/MvUpLoad/UploadMv",
-  // "videoUrl": "https://innoimage.innourl.cn/",
-  "videoUrl": "https://innovideo.innourl.cn/",
-  "webViewUrl": "",
-  "webContactUrl": "http://goso.innourl.cn/mobile/customer_service.php",
-  "style": {
-    "font_color": "#F19234",
-    "bg_color": "#F19234",
-    "nav_bg_color": "#fff",
-    "nav_border_color": "#222222",
-    "comment_bg_color": "#fff",
-    "pro_color": "#d61c2d",
-    "bargain_color": {
-      "theme_color": "rgba(225, 27, 27, 1)",
-      "to_color": "#FF4F4B",
-      "from_color": "#E11425"
-    },
-    "pre_color": {
-      "to_color": "#d61c2d",
-      "from_color": "#f03408",
-      "tag_color": "#fe3333"
-    },
-    "pt_color": {
-      "to_color": "#d61c2d",
-      "from_color": "#f03408"
-    },
-    "p_color": {
-      "to_color": "#d61c2d",
-      "from_color": "#f03408"
-    },
-    "sk_color": {
-      "to_color": "#d61c2d",
-      "from_color": "#f03408"
-    },
-    "bc_color": {
-      "font_color": "#DE0016"
-    },
-  },
-
-  "api_domain": {
-    "VSLOGAPI": "https://JLVSLOGAPI.highwavesports.com",
-    "GOODSAPI": "https://JLGOODSAPI.highwavesports.com",
-    "USERAPI": "https://JLUSERAPI.highwavesports.com",
-    "BUYAPI": "https://JLBUYAPI.highwavesports.com",
-    "REGAPI": "https://JLUSERAPI.highwavesports.com",
-    "POINTAPI": "https://JLINTGAPI.highwavesports.com",
-    "COLLAGEAPI": "https://JLGBAPI.highwavesports.com",
-    "PAYAPI": "https://JLPAYAPI.highwavesports.com",
-    "PRESALEAPI": "https://JLPRSAPI.highwavesports.com",
-    "STAFFAPI": "https://JLUSERAPI.highwavesports.com",
-    "MAINAPI": "",
-    "MAPAPI": "https://restapi.amap.com",
-    //店铺支付
-    "SMKTPAYAPI": "",
-    "GRASSAPI": "https://jlactapi.highwavesports.com/Grass",
-    "PAGEAPI": "",
-    "MEMBERCARDAPI": "https://JLUSERAPI.highwavesports.com",
-    "LOTTERYAPI": "https://jlactapi.highwavesports.com/LotteryApi",
-    "BARGAINAPI": "https://jlactapi.highwavesports.com/BargainApi",
-    "BARCODEAPI": "https://jlqrcodeapi.highwavesports.com",
-    "VOTEAPI":"https://jlactapi.highwavesports.com/VoteApi"
-  }
-}
-
 
 function getSetConfig(config = {}){
-  let brandConfig = config
-    if(config.brandCode == "KEDDTY"){
-      brandConfig = {
-        ...config,
-        ...KEDDTY
-      };
-    } else if (config.brandCode == "KEDD"){//卡尔
+  let brandConfig = config  
+  if (config.brandCode == "TESTCONFIG") {
     brandConfig = {
       ...config,
-      ...KEDD
+      ...TESTCONFIG
     };
-  } 
-  else if (config.brandCode == "GOSO" || config.brandCode == "GOSOG" || config.brandCode == "LM"){
+  }  
+  else if (config.brandCode == "GOSO") {
     brandConfig = {
       ...config,
       ...GOSO
     };
-  } 
-  else if (config.brandCode == "SINGLE_DOG" || config.brandCode == "CA" || config.brandCode == "SLZL" || config.brandCode == "YNTY" || config.brandCode == "QD" || config.brandCode == "BYGD" || config.brandCode == "SA" || config.brandCode == "YZTY") {
+  }  
+  else if (config.brandCode == "SA") {
     brandConfig = {
       ...config,
-      ...SINGLE_DOG
+      ...SA
     };
-  } 
-  else if (config.brandCode == "JINGLANGTS" || config.brandCode == "JL") {
-    brandConfig = {
-      ...config,
-      ...JINGLANGTS
-    };
-  } 
+  }  
   else if (config.brandCode == "YUNDIAN") {
     brandConfig = {
       ...config,
       ...YUNDIAN
     };
-  } 
-  else{//金王
-    brandConfig = config.dev ? {
-      ...config,
-      ...TESTCONFIG
-    } : {
-      ...config,
-      ...FORMALCONFIG
-    }
-  }
+  }  
   brandConfig.LOG = config.debug || false;
   if (config.brandCode){
     brandConfig.brand_name_en = config.brandCode;
