@@ -1,21 +1,18 @@
 <!-- 一个选择 -->
 <block wx:if="{{wayToGetAvatar.length == 1}}">
   <block wx:if="{{wayToGetAvatar[0] === 'button.chooseAvatar'}}">
-  jimmy1
     <button class="choose_avatar_btn avatar-btn-class" open-type="chooseAvatar" bindchooseavatar="handleChooseAvatar" bindtap="onceTap">
       <slot />
     </button>
   </block>
 
   <block wx:elif="{{wayToGetAvatar[0] === 'getuserprofile'}}">
-    jimmy2
     <btns class="choose_avatar_btn avatar-btn-class" isLogin="{{false}}" loginType="REFRESH" limitTime="3000" bindclickFront="onceTap" bindclickcallback="afterAuthrized">
       <slot />
     </btns>
   </block>
 
   <block wx:elif="{{wayToGetAvatar[0] === 'byself'}}">
-    jimmy3
     <button class="choose_avatar_btn avatar-btn-class" bindtap="chooseImageBtnTap">
       <slot />
     </button>
@@ -24,7 +21,6 @@
 
 <!-- 多个选择 -->
 <block wx:else>
-  jimmy4
   <!-- 按钮 入口 -->
   <view class="choose_avatar_btn" bindtap="show">
     <slot />

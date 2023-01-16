@@ -18,11 +18,14 @@ Page(app.BP({
     this.pageHome && this.pageHome.initPageHome();
     this.loading = false;
     app.LM.loginAsync(true).finally(()=>{
-      this.checkLoginChange();
-      this.setAdsPop(); 
-      this.signMod = this.selectComponent('#signMod');
-      this.signMod.onLoadFnc();
-      this.signMod.onShowFnc();
+      doubleCheckGetVisitedStore.call(this)
+        .finally(() => {
+          this.checkLoginChange();
+          this.setAdsPop(); 
+          this.signMod = this.selectComponent('#signMod');
+          this.signMod.onLoadFnc();
+          this.signMod.onShowFnc();
+        })
     })
   }, 
   customPageId(e){
@@ -76,3 +79,12 @@ Page(app.BP({
     }
   },
 })) 
+
+function doubleCheckGetVisitedStore() { // 重复检查是否有店铺，暂时解决无店铺的问题
+  let storeInfo = app.StoreH.storeInfo || {};
+  if (!storeInfo.storeId || storeInfo.storeId == "0") {
+    return app.StoreH.getStoreAsync()
+  } else {
+    return Promise.resolve();
+  }
+}

@@ -4,6 +4,7 @@
   "usingComponents": {
     "cs": "/components/cs/custom_service",
     "tips_window": "/pages/micro_mall/shopping/cart_list/tips_window/tips_window",
-    "search":"/components/search/s_view"
+    "search":"/components/search/s_view",
+    "btns": "/components/buttons/btns"
   }
 }

@@ -1,6 +1,6 @@
 <!--components/micro-page/micro-mix/micro-page/micro-page.wxml-->
 <wxs module="dfCss" src="../../help/defaultCss.wxs"></wxs>
-<view wx:if="{{!hidePage}}" style="{{assistHoldStyle?assistHoldStyle+';':'' + dfCss.getDfCss(_data,screenWidth,'page')}}" class="main {{noScroll?'_noScroll':''}}">
+<view wx:if="{{!hidePage}}" style="{{assistHoldStyle?assistHoldStyle+';':'' + dfCss.getDfCss(pageStyleConfig,screenWidth,'page')}}" class="main {{noScroll?'_noScroll':''}}">
   <!-- 顶部广告 -->
   <view class="adsBox">
     <mc-box 
@@ -17,8 +17,8 @@
   <!-- 顶部导航栏 -->
   <view
     id="stickyBox"
-    class="stickyBox stickyBox-{{showType}} stickyBox-isIp-{{isIphoneX}}" 
-    style="{{'top:' + extraH + 'px'}};{{showType == 'top'? 'height:' + initNavH : ''}}" 
+    class="stickyBox stickyBox-{{showType}} stickyBox-isIp-{{isIphoneX}} tab-con" 
+    style="{{'top:' + extraH + 'px'}};{{navInfo.tabBgImage ? 'background-image:url(' + navInfo.tabBgImage + ')': ''}};" 
     wx:if="{{showNav && extraH>=0}}"
     >
     <scroll-view 
@@ -30,24 +30,30 @@
       >
       <view class="page_tab page_tab-{{showType}} flex_global_c">
         <view
-          class="p_tab_item flex1 p_tab_item-{{showType}} {{tabCurr == index ? 'current' : ''}}" 
-          style="--navH:{{initNavH}}"
+          class="p_tab_item flex1 p_tab_item-{{showType}} {{tabCurr == index ? 'current' : ''}} {{navInfo.navType === 'image' ? 'img_tab_item' : ''}}" 
           catchtap="changeSwiper" 
           data-index="{{index}}"  
-          wx:for="{{navList}}" 
+          wx:for="{{navList}}"
           wx:key="index"
           data-page-id="{{item.page_id}}"
           id="tab{{index}}"
           >
-          <view class="p_tab_txt">{{item.tab_name}}</view>
-          <view class="tab_line"></view>
+          <block wx:if="{{navInfo.navType === 'image' && showType == 'top'}}">
+            <view class="img_nav" style="{{navImg[index] ? 'width:' + (navImg[index].w * navImg[index].scale) + 'rpx;' : ''}}{{navImg[index] ? 'height:' + (navImg[index].h * navImg[index].scale) + 'rpx;' : ''}}{{'background-image:url(' + item.nav_image + ')'}}">
+              <image hidden="{{true}}" class="nav_img" src="{{item.nav_image}}" mode="heightFix" data-type="nav" data-nav-index="{{index}}" bindload="loadImage"/>
+            </view>
+          </block>
+          <block wx:else>
+            <view class="p_tab_txt">{{item.tab_name}}</view>
+            <view class="tab_line"></view>
+          </block>
         </view>
       </view>
     </scroll-view>
   </view>
   
   <!-- 导航对应的单页面 -->
-  <view class="content-box content-box-{{showType}}" id="box">
+  <view class="content-box content-box-{{showType}}" id="box" style="{{dfCss.getDfCss(navPageStyleConfig,screenWidth)}}" >
     <view 
       hidden="{{tabCurr != index_num}}" 
       wx:for="{{navList}}" 

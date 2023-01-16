@@ -1,5 +1,6 @@
 <!--order_list.wxml-->
-<view class="orderListPage">
+<block wx:if="{{isLogin}}">
+  <view class="orderListPage">
     <!-- 普通订单 -->
     <view class="ordertTab flex_global flex_c" wx:if="{{orderTab.length>1}}">
         <view wx:for="{{orderTab}}" wx:key="key" class="orderTabTit flex_global flex_c flex_al_c" data-type="{{item.key}}" bindtap="onTabClick" style="{{ clickTabId == item.key  ? 'color:#000;'+'font-weight:bold;' : '' }}">
@@ -189,6 +190,38 @@
         <view>暂无订单</view>
     </view> 
 </view>
+</block>
+
+<block wx:elif="{{isLogin === false}}">
+  <view class="orderListPage">
+    <view class="ordertTab flex_global flex_c">
+        <view class="orderTabTit flex_global flex_c flex_al_c" style="color:#000;font-weight:bold">
+            <text>手机订单</text>
+            <view class='lines' style="background:#000;"></view>
+        </view>
+        <view class="orderTabTit flex_global flex_c flex_al_c">
+            <btns
+              isLogin="{{isLogin}}"
+              tapInterval="{{3000}}"
+            >
+              <text>商城订单</text>
+              <view class='lines'></view>
+            </btns>
+        </view> 
+    </view>
+    <view class="login_operations">
+      <view class="login_tips">您还没有登录哦</view>
+      <btns
+        isLogin="{{isLogin}}"
+        tapInterval="{{3000}}"
+      >
+        <view class="order_login_btn" style='background:{{brand_info.style.bg_color}};'>登录后查看</view>
+      </btns>
+    </view>
+  </view>
+</block>
 <!--客服-->
 <cs id="csId" cardInfo="{{cardInfo}}"></cs>
 <tips_window id="tips_window" type="fail" text="{{failText}}"></tips_window>
+<!-- 其他浮窗的容器 -->
+<outsideContainer id="outsideContainer" componentsCollection="{{outsideComponents}}" />

@@ -136,19 +136,21 @@ function loadData() {
                         bg = "#009944";
                     }
                 } else if (item.status == 1 && item.prizeType !== 3) {
-                    bg = "#009944";
-                    tips = LIST.prizeStatus["-2"];
-                    if (item.prizeType === 1) {
-                        // 积分
-                        path = "/pages/micro_mall/integral/my_integral";
-                    } else if (item.prizeType === 2) {
-                        // 优惠券
-                        path = "/pages/micro_mall/coupon/my_coupon";
-                    } else { }
-                } else {
-                    tips = LIST.prizeStatus[item.status];
-                    bg = "#009944"
-                }
+                  bg = "#009944";
+                  tips = LIST.prizeStatus["-2"];
+                  if (item.prizeType == 1) {
+                      // 积分
+                      path = "/pages/micro_mall/integral/my_integral";
+                  } else if (item.prizeType == 2) {
+                      // 优惠券
+                      path = "/pages/micro_mall/coupon/my_coupon";
+                  } else if(item.prizeType == 5){ 
+                      path = "/pages/micro_mall/red_packet/red_balance/red_balance";
+                  }
+              } else {
+                  tips = LIST.prizeStatus[item.status];
+                  bg = "#009944"
+              }
                 return Object.assign(item, {
                     tips,
                     bg,

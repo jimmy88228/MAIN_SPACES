@@ -153,7 +153,9 @@
                                             <!-- {{ goodsJson[item.recId].shipping_store_id ? goodsJson[item.recId].shipping_store_name : '快递配送'}} -->
                                             <text class="down_a"></text>
                                           </view>
+                                          <!-- 这里hidden为true，在1122GOSO云店促销活动内容展示优先级（A1）有备注 -->
                                           <view 
+                                          hidden="{{true}}"
                                           wx:if="{{item.ruleList.length>=1}}"
                                           class="change_prom_btn m_l" 
                                           data-info="{{goodsJson[item.recId]}}" 

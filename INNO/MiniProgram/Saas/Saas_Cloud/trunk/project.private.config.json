@@ -1,9 +1,5 @@
 {
-    "setting": {
-        "compileHotReLoad": true
-    },
-    "description": "项目私有配置文件。此文件中的内容将覆盖 project.config.json 中的相同字段。项目的改动优先同步到此文件中。详见文档：https://developers.weixin.qq.com/miniprogram/dev/devtools/projectconfig.html",
-    "projectname": "CLOUD_NEW",
+    "setting": {},
     "condition": {
         "plugin": {
             "list": []
@@ -116,12 +112,6 @@
                     "name": "",
                     "pathName": "pages/micro_mall/goods/goods_info",
                     "query": "goods_id=11&issued_id=0&shareType=NORMAL_GOODS&fromUser=5d6ffb3601e782a4&staffCode=13160675066",
-                    "scene": null
-                },
-                {
-                    "name": "pages/micro_mall/user/user",
-                    "pathName": "pages/micro_mall/user/user",
-                    "query": "",
                     "scene": null
                 }
             ]

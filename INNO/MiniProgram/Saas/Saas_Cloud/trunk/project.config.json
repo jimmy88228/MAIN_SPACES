@@ -1,9 +1,8 @@
 {
     "description": "项目配置文件",
-    "appid": "wx0c55158ed6731c70",
+    "appid": "wxf49b8acd8c8f7e4e",
     "packOptions": {
-        "ignore": [],
-        "include": []
+        "ignore": []
     },
     "setting": {
         "urlCheck": true,
@@ -43,13 +42,16 @@
         "useCompilerPlugins": false
     },
     "compileType": "miniprogram",
-    "libVersion": "2.16.0",
+    "libVersion": "2.19.5",
     "projectname": "CLOUD_NEW",
     "cloudfunctionTemplateRoot": "",
-    "editorSetting": {
-        "tabIndent": "insertSpaces",
-        "tabSize": 2
+    "watchOptions": {
+        "ignore": []
     },
+    "debugOptions": {
+        "hidedInDevtools": []
+    },
+    "scripts": {},
     "condition": {
         "plugin": {
             "list": []

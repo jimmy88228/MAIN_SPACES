@@ -216,7 +216,7 @@ page {
     padding: 12rpx 20rpx;
     border-left: 1px solid #d2d2d2;
 }
-
+.login_operations,
 .emptyOrder {
     position: absolute;
     left: 50%;
@@ -230,6 +230,26 @@ page {
     height: 200rpx;
     margin: 0 auto;
     margin-bottom: 20rpx;
+}
+
+.login_tips{
+  font-size: 24rpx;
+  color: #999999;
+  margin-bottom: 16rpx;
+}
+
+.order_login_btn{
+  padding: 16rpx 36rpx;
+  border-radius: 12rpx;
+  color: #ffffff;
+  font-size: 28rpx;
+  font-weight: bold;
+  margin-bottom: 32rpx;
+  transition: opacity 0.2s ease;
+}
+
+.order_login_btn:active{
+  opacity: 0.8;
 }
 
 .status_name {

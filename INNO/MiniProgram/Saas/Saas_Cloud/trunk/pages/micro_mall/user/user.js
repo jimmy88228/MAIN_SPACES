@@ -155,7 +155,6 @@ function getUserInfoEvent(){
       let data = e.data || {};this.setData({
         userData: {...this.data.userData || {},...data}, //为了额外添加的数据不被覆盖
       });
-      console.log('userDatauserData',this.data.userData)
       // this.phone = data.MobileNo || '';
       return Promise.resolve(data);
     }
@@ -308,19 +307,32 @@ function loginHandle(){
 }
 
 function listen() {
+  console.log("个人中心listen", app.LM.isLogin);
   this._checkUserLogin().finally(()=>{
     this.setAdsPop();
-    getMenuList.call(this).finally(()=>{
-      console.log("个人中心登录回调", app.LM.isLogin);
-      if(app.LM.isLogin){
-        afterLoginHandle.call(this);
-      }
-    })
+    doubleCheckGetVisitedStore.call(this)
+      .finally(() => {
+        getMenuList.call(this).finally(()=>{
+          console.log("个人中心登录回调", app.LM.isLogin);
+          if(app.LM.isLogin){
+            afterLoginHandle.call(this);
+          }
+        })
+      })
   })
 }
 function unListen() {
   if(this.isLoadUserData){
     this.isLoadUserData = false;
+  }
+}
+
+function doubleCheckGetVisitedStore() { // 重复检查是否有店铺，暂时解决无店铺的问题
+  let storeInfo = app.StoreH.storeInfo || {};
+  if (!storeInfo.storeId || storeInfo.storeId == "0") {
+    return app.StoreH.getStoreAsync()
+  } else {
+    return Promise.resolve();
   }
 }
 

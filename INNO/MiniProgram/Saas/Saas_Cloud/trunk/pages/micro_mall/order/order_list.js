@@ -16,6 +16,7 @@ const Return_Type = {
 }
 Page(app.BP({
     data: {
+        isLogin: null,
         clickTabId: "mobile_tab",
         orderList: [],
         storeList: [],
@@ -31,6 +32,11 @@ Page(app.BP({
         rightIndex: 2,
         cardInfo:{},
         orderTab:[],
+        outsideComponents: { // 该页面的最外层容器的组件对象-解决层级问题用
+          agreementPop: {confirmIsGetInfoBtn: true},
+          getCouponsPop: {},
+          contactStaffGuide: {}
+        },
     },
     orderPage: 1,
     orderType: 1,
@@ -60,22 +66,10 @@ Page(app.BP({
         }
     },
     onShow: function() {
-        this.onShowFnc('onshow');
+      listen.call(this, 'onshow')
     },
-    onShowFnc(type){
-        setTabShow.call(this).then(res => {
-          let timesTemp = this.data.clickTabId == "store_tab" ? this.storePage:this.orderPage;
-          timesTemp = timesTemp > 1 ? timesTemp - 1 : timesTemp;
-          reset.call(this, type == 'onshow');
-          if (!this.initAlready) {
-            initFn.call(this);
-          }
-          if (this.data.clickTabId == "store_tab") {//店铺订单
-            this.loadStoreOrder(timesTemp,type);
-          } else {
-            this.loadData(timesTemp,type);
-          }
-        })
+    onUnload: function() {
+      unListen.call();
     },
     onReachBottom: function() {
         let clickTabId = this.data.clickTabId; 
@@ -325,9 +319,46 @@ Page(app.BP({
   onTapConfirm(e){
     console.log('onTapConfirm',e)
     this.detail = e.detail|| "";
-    this.onShowFnc('confirm',true);
+    onShowFunc.call(this, 'confirm', true);
   },
 }))
+
+function listen(type){
+  let that = this;
+  if (!app.LM.isLogin){
+      this.setData({isLogin: false});
+      this.loginId = app.EB.listen('LoginStateChange',()=>{
+          that.setData({
+              isLogin:app.LM.isLogin
+          }, onShowFunc.bind(that, type))
+      })
+  }else{
+      that.setData({
+          isLogin: true
+      }, onShowFunc.bind(that, type))
+  }
+}
+
+function unListen(){
+  if (!this.loginId){return;}
+  app.EB.unListen('LoginStateChange',this.loginId);
+}
+
+function onShowFunc(type){
+  setTabShow.call(this).then(res => {
+    let timesTemp = this.data.clickTabId == "store_tab" ? this.storePage:this.orderPage;
+    timesTemp = timesTemp > 1 ? timesTemp - 1 : timesTemp;
+    reset.call(this, type == 'onshow');
+    if (!this.initAlready) {
+      initFn.call(this);
+    }
+    if (this.data.clickTabId == "store_tab") {//店铺订单
+      this.loadStoreOrder(timesTemp,type);
+    } else {
+      this.loadData(timesTemp,type);
+    }
+  })
+}
 
 function loadDataList(times=1,type) { 
     this.setData({

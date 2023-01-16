@@ -58,7 +58,6 @@ Page(app.BP({
   },
   bindPhoneHandle(e){
     let mobile = this.data.mobile;
-    console.log('bindPhoneHandle',e,mobile)
     this.phoneLogin = this.phoneLogin || this.selectComponent("#phoneLogin");
     if(mobile){
       this.phoneLogin.changePhoneNumber(e);

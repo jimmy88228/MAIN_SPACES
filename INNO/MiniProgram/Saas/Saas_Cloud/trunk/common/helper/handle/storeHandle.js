@@ -15,6 +15,7 @@ import {LogMap,CardType,JumpInType,SceneType} from '../../manager/log-map';
 import MyStr from "../../support/utils/string-util.js";
 
 const STORE_PATH = "pages/micro_mall/stores/changeStore/changeStore";
+const ORDER_LIST_PATH = "pages/micro_mall/order/order_list";
 const STORE_KEY = "STORE_STORAGE";
 
 const limitUnHold = [
@@ -261,7 +262,7 @@ function getVisitStore(params, isShowLoad){
         let page = getCurrentPages().splice(-1)[0];
         if(data.needSelect){
           this.setStore(data);
-          if(page.route != STORE_PATH){
+          if(page.route != STORE_PATH && page.route != ORDER_LIST_PATH){ // 微信要小程序订单中心页的path，进来时不能跳去其他页面
             console.log('云店getVisitStore jump');
             this.setNeedSelectJump(true);
             wx.redirectTo({

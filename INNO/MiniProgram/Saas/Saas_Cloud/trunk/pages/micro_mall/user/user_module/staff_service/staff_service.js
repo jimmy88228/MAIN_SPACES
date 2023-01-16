@@ -1,4 +1,5 @@
 import userJump from "../userJumpHandle";
+import Utils from "../../../../../common/support/utils/utils";
 const app = getApp();
 Component(app.BTAB({
   properties: {
@@ -32,8 +33,10 @@ Component(app.BTAB({
   ready(){},
   methods: {
     funcJump(e){
-      let dataset = e.currentTarget.dataset || {};
-      userJump.jump(dataset, this.properties.sysConf);
+      Utils.throttle(() => {
+        let dataset = e.currentTarget.dataset || {};
+        userJump.jump(dataset, this.properties.sysConf);
+      }, 3000)()
     }
   }
 }))

@@ -84,8 +84,27 @@ Component(app.BTAB({
     cardInfo:{},
     showNav:false,
     boxH:"",
-    initNavH:'80rpx',
+    // initNavH:'80rpx',
     screenWidth:app.SIH.screenWidth,
+    navImg: {}
+  },
+
+  observers: {
+    tabCurr(nV){ 
+      let index = nV || 0;
+      let navImg = this.data.navImg;
+      console.log("tabCurr", nV,"----", navImg,navImg[index]);
+      if(navImg[index] && navImg[index].scale == 1){
+        for(let i in navImg){
+          if(i == index){
+            navImg[i].scale = 1.5;
+          } else {
+            navImg[i].scale = 1;
+          }
+        }
+        this.setData({navImg: navImg})
+      }
+    }
   },
 
   _options: {},
@@ -122,6 +141,24 @@ Component(app.BTAB({
     checkLogin(){
       if(this.data.isLogin)return
       return this.checkLoginAsync();
+    },
+    loadImage(e){
+      console.log("导航图", e);
+      let dataset = e.currentTarget.dataset || {}
+      let detail = e.detail || {};
+      let navIndex = dataset.navIndex;
+      if(dataset.type == "nav"){
+        let key = `navImg.${navIndex}`;
+        this.setData({
+          [key]: {
+            w: detail.width,
+            h: detail.height,
+            scale : navIndex == this.data.tabCurr ? 1.5 : 1 
+            // scale : navIndex == 0 ? 1.5 : 1 
+          }
+        })
+        console.log("navImg数据", this.data.navImg);
+      }
     },
     changeSwiper(e) { //点击
       let dataset = e.currentTarget.dataset || {};
@@ -262,10 +299,15 @@ function getCustomTabRequest(ops = {}) {
       }else if(this.data.hidePage){
         noDataSet.call(this,false);
       }
-      let _data = {
+      let pageStyleConfig = {
         backgroundColor:data.backgroundColor,
         backgroundImage:data.backgroundImage,
         backgroundPosition:data.backgroundPosition,
+      }
+      let navPageStyleConfig = {
+        backgroundColor:navInfo.backgroundColor,
+        backgroundImage:navInfo.backgroundImage,
+        backgroundPosition:navInfo.backgroundPosition,
       }
       if (!showNav) { //不是tab页面,取page_id
         page_id = data.page_id || ops.page_id || 0;
@@ -301,7 +343,9 @@ function getCustomTabRequest(ops = {}) {
       this.setData({
         pageInfo: data || {},
         navList,
-        _data,
+        pageStyleConfig,
+        navPageStyleConfig,
+        navInfo,
         showType,
         showNav,
         moduleList,

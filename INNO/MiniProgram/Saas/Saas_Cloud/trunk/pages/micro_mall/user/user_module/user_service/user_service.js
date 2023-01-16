@@ -1,5 +1,6 @@
 import CheckUpdateTimer from "../../../../../common/helper/check-update-timer";
 import userJump from "../userJumpHandle";
+import Utils from "../../../../../common/support/utils/utils";
 const app = getApp();
 Component(app.BTAB({
   properties: {
@@ -41,12 +42,14 @@ Component(app.BTAB({
   },
   methods: {
     funcJump(e){
-      let dataset = e.currentTarget.dataset || {};
-      let userData = this.properties.userData || {};
-      if(dataset.key == "distribution"){
-        dataset.MobileNo = userData.MobileNo || "";
-      }
-      userJump.jump(dataset, this.properties.sysConf);
+      Utils.throttle(() => {
+        let dataset = e.currentTarget.dataset || {};
+        let userData = this.properties.userData || {};
+        if(dataset.key == "distribution"){
+          dataset.MobileNo = userData.MobileNo || "";
+        }
+        userJump.jump(dataset, this.properties.sysConf);
+      }, 3000)()
     }
   }
 }))

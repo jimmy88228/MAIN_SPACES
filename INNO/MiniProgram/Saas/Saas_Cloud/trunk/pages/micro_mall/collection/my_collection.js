@@ -128,7 +128,7 @@ function getFavLogList() {
 function delFavGoodsLog(delCollect = "") {
   let log_id = delCollect.log_id;
   let goods_index = delCollect.goods_index;
-  return app.GoodsApi.delFavGoodsLog({
+  return app.CL_GoodsApi.delFavGoodsLog({
     data: {
       "logId": log_id,
       "goodsId": 0,
