@@ -1,0 +1,22 @@
+.customTab {
+    padding-bottom: 90rpx !important;
+    box-sizing: border-box;
+}
+
+.ipx_p_b {
+    padding-bottom: 34px !important;
+    box-sizing: border-box;
+}
+
+.ipx_p_b.customTab {
+    padding-bottom: 158rpx !important;
+    box-sizing: border-box;
+}
+
+.fix_iphoneX {
+    padding-bottom: 34px !important;
+}
+
+.ipx_b {
+    bottom: 34px !important;
+}

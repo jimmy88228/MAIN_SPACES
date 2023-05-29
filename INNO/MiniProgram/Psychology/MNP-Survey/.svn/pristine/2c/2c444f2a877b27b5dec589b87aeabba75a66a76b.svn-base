@@ -1,0 +1,408 @@
+<template>
+	<view class="content">
+		<global-com></global-com>
+		
+		<view class="u-tabs-box" style="border-bottom: 2rpx solid #ddd;">
+			<u-tabs-swiper
+			activeColor="#007aff" 
+			ref="tabs" 
+			:list="navList" 
+			:current="current" 
+			:is-scroll="false" 
+			:bar-height="6"
+			bg-color="#f8f8f8"
+			swiperWidth="750"
+			@change="onTabChange">
+			</u-tabs-swiper>
+			
+			<!--接待中的红点-->
+			<u-badge type="error" :count="joinedunReadCount" absolute :offset="[1,590]"></u-badge>
+
+			<!--待接入的红点-->
+			<u-badge v-show="canJoinUser" type="error" :count="waitingunReadCount" absolute :offset="[1,410]"></u-badge>
+		</view>
+		
+		<swiper :current="swiperCurrent" class="swiper-box" 
+		:style="{height:scrollHeight + 'px'}"
+		@transition="transition" 
+		@animationfinish="animationfinish">
+			<swiper-item class="swiper-item">
+				<!--接待中用户组件-->
+				<csJoinedList ref="cs-joined-list" :boxHeight="scrollHeight" @on-view-user="openUserInfo"></csJoinedList>
+			</swiper-item>
+			
+			<swiper-item class="swiper-item">	
+				<!--待接入用户组件-->
+				<csWaitingList ref="cs-waiting-list" :boxHeight="scrollHeight" @join-success="onJoinSuccess" @on-view-user="openUserInfo"></csWaitingList>
+			</swiper-item>
+			
+			<swiper-item class="swiper-item">	
+				<!--历史用户组件-->
+				<csHistoryList ref="cs-history-list" :boxHeight="scrollHeight" @join-success="onJoinSuccess" @on-view-user="openUserInfo"></csHistoryList>
+			</swiper-item>
+			
+			<swiper-item class="swiper-item">
+				<!--设置-->
+				<u-cell-group class="u-m-t-15" style="display:block;">
+					<u-cell-item icon="setting" title="状态设置" @click="openStatusSetting"></u-cell-item>
+					<u-cell-item icon="info-circle" title="客服信息" @click="showWorkerInfo"></u-cell-item>
+				</u-cell-group>
+			</swiper-item>
+		</swiper>
+		
+		<!--客服个人信息弹出层-->
+		<csWorkerInfo ref="cs-worker-info"></csWorkerInfo>
+		
+		<!--客服人员的状态设置-->
+		<csStatusSetting ref="cs-status-setting"></csStatusSetting>
+		
+		<!--用户信息查看 弹出层-->
+		<csUserInfo ref="cs-user-info"></csUserInfo>
+		
+		<!--客服websocket 组件-->
+		<kefuWebsocket ref="kefu-websocket" @on-message="onUserMsg"></kefuWebsocket>
+	</view>
+</template>
+
+<script>
+import kefuWebsocket from './kefu-websocket.vue';
+import csStatusSetting from './cs-status-setting.vue';
+import csJoinedList from './cs-joined-list.vue';
+import csWaitingList from './cs-waiting-list.vue';
+import csHistoryList from './cs-history-list.vue';
+import csWorkerInfo from './cs-worker-info.vue';
+import csUserInfo from './cs-user-info.vue';
+import {mapState, mapMutations} from 'vuex';
+
+/**
+ * 客服 - 服务端主框架-总入口
+ */	
+export default {
+	components: {
+		kefuWebsocket,
+		csStatusSetting,
+		csJoinedList,
+		csWaitingList,
+		csHistoryList,
+		csWorkerInfo,
+		csUserInfo,
+	},
+	data() {
+		return {
+			current: 0,
+			swiperCurrent: 0,
+			scrollHeight: 500,
+			historyLoaded: false,
+			canJoinUser: true,
+			option:{},
+			
+			navList: [
+				{state: 1, name: '接待中'},
+				{state: 0, name: '待接入'},
+				{state: -1, name: '历史搜索'},
+				{state: 2, name: '设置'}
+			],
+			
+			// admin info
+			info: null,
+
+			// 当前选中的会话ID
+			currSessionId: 0,
+			
+			// 会话详情
+			sessInfo:{
+				get_user_info: null
+			},
+		}
+	},
+	// #ifndef MP
+	// 非小程序 才出发导航栏的按钮事件
+	onNavigationBarButtonTap(e) {
+		const index = e.index;
+		if(index == 0){
+			// 设置状态的按钮
+			this.openStatusSetting();
+		}
+		else if(index == 1){
+			// 客服信息的按钮
+			this.showWorkerInfo();
+		}
+	},
+	// #endif
+	onReady( option ) {
+		this.init();
+	},
+	onLoad( option ){
+		this.option = option;
+	},
+	methods: {
+		...mapMutations([
+			'setCsSession', 
+			'setKefuCount', 
+			'setWaitingSession', 
+			'setJoinedSession', 
+			'setCsAdminInfo',
+			'setSelectedCsSession', 
+			'setUserHistoryList',
+			'setWaitingunReadCount',
+		]),
+		init(){
+			// 计算屏幕高度
+			this.$nextTick( ()=>{
+				uni.createSelectorQuery()
+				.in(this)
+				.select('.u-tabs-box')
+				.boundingClientRect()
+				.exec(ret => {
+					var system = uni.getSystemInfoSync();
+					this.scrollHeight = system.windowHeight - ret[0].height;
+				});
+				
+				// 触发tab 的变化
+				if( typeof( this.option.tab ) != 'undefined' ){
+					this.swiperCurrent = this.option.tab;
+					console.log(this.swiperCurrent);
+				} 
+			});
+
+			this.initData();
+		},
+		initData(){
+			// 初始化整个客服会话
+			this.$u.post( this.$api.csInitSession, {
+
+			})
+			.then((response) => {
+				var res = response.data;
+				if (res.code) {
+					this.info = res.data;
+					
+					// 是否有权主动接入用户
+					if( this.info.worker != null && this.info.worker.get_group !=null && this.info.worker.get_group.can_join ==0 ){
+						this.canJoinUser = false;
+					}
+					else{
+						this.canJoinUser = true;
+					}
+					
+					// 客服人员的状态作为标题
+					uni.setNavigationBarTitle({
+						title: '状态[ '+this.info.statusList[ this.info.worker.status ].name+' ]',
+					});
+					
+					// 把worker_id 写入到 storage
+					uni.setStorageSync( 'cs_worker_id', this.info.worker.id);
+					
+					// 初始化 websocket
+					this.$refs['kefu-websocket'].initData( this.info );
+					
+					// 把客服admin info信息放入到store
+					this.setCsAdminInfo( this.info );
+
+					// 初始化三大列表
+					this.$refs['cs-joined-list'].initData( this.info );
+					this.$refs['cs-waiting-list'].initData( this.info );
+					this.$refs['cs-history-list'].initData( this.info );
+				}
+			});
+		},
+		// 接收到客服回复的消息（提供给 ws 回调，全部事件）
+		onUserMsg( obj ){
+
+			// 统一处理ws 返回的信息
+			switch( obj.action ){
+				// 收到微信客服消息（用户从微信客服发回的内容）
+				case 'csSession':
+					this.setCsSession( obj.data );
+					this.setKefuCount( 1 );
+					break;
+				
+				// 收到等待计入的用户信息
+				case 'refreshWaitingSession':
+					this.setWaitingSession( obj.data );
+					break;
+					
+				// 心跳，不用理处理
+				case 'heart':
+					break;
+				
+				// ws 连接关闭提示，不用处理
+				case 'close':
+					break;
+			}
+		},
+		// 收到用户发送过来的信息处理(只是消息)
+		getWsMsg( obj ){
+			if( obj.content_type == 'text' ){
+				// 格式化emoji
+				obj.content.text = this.replaceEmoji( obj.content.text );
+			}
+		
+			// 1.直接写入到聊天store数组
+			if( typeof( this.userHistoryList[ obj.session_id ] ) != 'undefined' ){
+				if( typeof(obj.data_type) != 'undefined' && obj.data_type == 'keyword_reply' ){
+					// 接收自动回复的消息
+					setTimeout(()=>{
+						this.userHistoryList[ obj.session_id ].push({
+							id: obj.content_id,
+							originator_type: 'worker',
+							content_type: obj.content_type,
+							created_at_format: obj.created_at_format,
+							content: obj.content,
+							content_search: obj.content_search,
+							get_worker_info: {
+								nick_name: obj.worker.nick_name,
+								avatar_format: obj.worker.avatar_format,
+							}
+						});
+					},1000);
+				}
+				else{
+					this.userHistoryList[ obj.session_id ].push({
+						id: obj.content_id,
+						originator_type: 'user',
+						content_type: obj.content_type,
+						created_at_format: obj.created_at_format,
+						content: obj.content,
+						content_search: obj.content,
+						get_user_info: {
+							wx_nick_name: obj.user.wx_nick_name,
+							wx_avatar: obj.user.wx_avatar,
+						}
+					});
+				}
+			}
+			
+			// 2. 刷新列表接入列表
+			this.setJoinedSession( (new Date()).valueOf() );
+		},
+		//替换表情符号为图片
+		replaceEmoji(str){
+			let replacedStr = str.replace(/\[([^(\]|\[)]*)\]/g,(item, index)=>{
+				for(let i=0;i<this.info.emojiList.length;i++){
+					let row = this.info.emojiList[i];
+					
+					if(row.alt==item){
+						let imgstr = '<img src="'+ this.info.emHost + row.url+'">';
+						return imgstr;
+					}
+				}
+				// 如果匹配不成功，返回原表情意思
+				return item;
+			});
+			// 这里是富文本解析，是可以使用div 的
+			return '<div style="word-wrap:break-word;">'+replacedStr+'</div>';
+		},
+		// 客服接入成功的回调
+		onJoinSuccess( obj ){
+			var sessInfo = obj.sess;
+			this.currSessionId = sessInfo.id;
+			
+			// 把内容参数传递到对话框组件
+			this.setSelectedCsSession( sessInfo );
+			
+			// 切换tab 到已接入列表
+			this.swiperCurrent = 0;
+			
+			// 刷新已接入的用户列表
+			this.$refs['cs-joined-list'].joinedSessionList();
+	
+			// 打开会话
+			uni.navigateTo({
+				url:'/pages/app/customer-service-worker/cs-session?sess_id='+sessInfo.id,
+			});
+		},
+		// 打开客服状态的编辑
+		openStatusSetting(){
+			this.$refs['cs-status-setting'].openModal( this.info );
+		},
+		// tab栏切换
+		onTabChange(index) {
+			this.swiperCurrent = index;
+		},
+		// swiper 动画
+		transition({ detail: { dx } }) {
+			this.$refs.tabs.setDx(dx);
+		},
+		animationfinish({ detail: { current } }) {
+			this.$refs.tabs.setFinishCurrent(current);
+			this.swiperCurrent = current;
+			this.current = current;
+			
+			if( this.current == 2 && this.historyLoaded == false ){
+				// 历史要每次都动态加载
+				this.$refs['cs-history-list'].loadData();
+				this.historyLoaded = true;
+			}
+		},
+		// 打开客服个人信息的弹窗
+		showWorkerInfo(){
+			this.$refs['cs-worker-info'].openPopup( this.info );
+		},
+		// 打开用户详情的 popup
+		openUserInfo( obj ){
+			this.$refs['cs-user-info'].openPopup( obj.sessInfo );
+		},
+	},
+	computed:{
+		...mapState([
+			'csSession', 
+			'csWebsocketStatus',
+			'selectedCsSession',
+			'waitingSession', 
+			'joinedSession', 
+			'userHistoryList', 
+			'joinedunReadCount', 
+			'waitingunReadCount',
+		]),
+	},
+	watch:{
+		// 监听websocket 状态
+		'csWebsocketStatus' ( to ){
+			if( to != 1 ){
+				this.wsErrorStatus = to;
+				this.showError = true;
+			}
+			else{
+				this.showError = false;
+			}
+		},
+		// 选中某个会员会话
+		'selectedCsSession' ( to ){
+			this.sessInfo = to;
+		},
+		// 触发更新等待列表
+		'waitingSession' ( to ){
+			// 刷新等待加入的用户列表
+			this.$refs['cs-waiting-list'].waitingSessionList();
+		},
+		// 触发接待中列表
+		'joinedSession' ( to ){
+			// 刷新等待加入的用户列表
+			this.$refs['cs-joined-list'].joinedSessionList();
+		},
+		// 当接收到用户发送回来的 ws 信息
+		'csSession' ( to ){
+			this.getWsMsg( to );
+			
+			// 刷新接入列表中的内容提示
+			//this.$store.commit('setCsUpdateUserContent', to );
+		},
+	}
+}
+</script>
+	
+<style lang="scss">
+page{
+	height: 100%;
+	background: $page-color-base;
+}
+
+.swiper-box {
+	flex: 1;
+}
+.swiper-item {
+	height: 100%;
+}
+
+</style>

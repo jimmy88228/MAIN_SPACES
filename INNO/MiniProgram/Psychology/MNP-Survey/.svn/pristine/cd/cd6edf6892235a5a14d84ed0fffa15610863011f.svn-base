@@ -1,0 +1,105 @@
+.frame-box{
+  .H5{
+    background-color: #F0F6EE;
+    height: 100vh;
+    overflow: scroll;
+    .box{
+      max-width: 1600rpx; 
+      min-width: 1200rpx; 
+      height: 100%;
+    }
+    .header{
+      background: #fff;
+      border-radius: 12rpx;
+      padding:0 15rpx;
+      box-sizing: border-box;
+      margin-bottom: 30rpx;
+      margin-top: 30rpx;
+    }
+    .login-logo{
+      width: 120rpx;
+      height: 120rpx;
+    }
+    .body{
+      position: relative;
+      background: #fff;
+      overflow-y: scroll;
+      overflow-x: hidden;
+      border-radius: 20rpx;
+      margin-bottom: 30rpx;
+      text-align: justify;
+      word-break: break-all;
+    }
+    .msg{
+      padding-right: 200rpx;
+      box-sizing: border-box;
+    }
+    .item{ 
+      position: relative;
+      padding: 0 20rpx;
+      padding-left: 30rpx;
+      box-sizing: border-box;
+      flex-wrap: wrap; 
+      line-height: 40rpx;
+      &::after{
+        content: "";
+        width: 1px;
+        height: 34rpx;
+        background: #979797;
+        position: absolute;
+        right: 0;
+        top: 50%;
+        transform: translateY(-50%);
+      }  
+      &:last-child { 
+        &::after{
+          display: none; 
+        } 
+      }
+    } 
+    .content {
+      word-break: break-all;
+      font-family: PingFangSC-Medium;
+    }
+    .left-box{
+      position: relative;
+      &::after{
+        content: "";
+        width: 1px;
+        height: 50rpx;
+        background: #bfbfbf;
+        position: absolute;
+        right: 0;
+        top: 50%;
+        transform: translateY(-50%);
+      }
+    }
+    .right-box{
+      .item{ 
+        &::after{
+          display: none;
+        }
+      }
+    }
+    .logout{
+      width: 160rpx;
+      height: 72rpx;
+      background: #FAFAFA;
+      border-radius: 12rpx;
+    }
+    
+    @media screen and (max-width: $small-screen) { 
+      .login-logo {
+        width: 90rpx;
+        height: 90rpx;
+      }
+      .item{
+        justify-content: start;
+      }
+      .box{
+        max-width: 690rpx; 
+        min-width: 400rpx;  
+      }
+    }
+  }
+}

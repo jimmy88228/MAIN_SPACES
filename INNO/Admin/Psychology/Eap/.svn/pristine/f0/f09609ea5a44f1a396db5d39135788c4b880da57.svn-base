@@ -1,0 +1,108 @@
+import EasyHttp from "@y-bao/easy-http";
+import axios from "axios";
+import LM from "./login-manager";
+import Conf from "@/config";
+import Apis, { WebApiList } from "./http-api";
+import store from "@/store/index";
+const Handlers = {
+    get(o) {
+        return axios.get(o.url, {
+            headers: o.header
+        });
+    },
+
+    post(o) {
+        return axios.post(o.url, o.data, {
+            headers: o.header
+        });
+    }
+};
+
+EasyHttp.use({
+    install(host) {
+        host.bindHandler(o => {
+            let act = (o.action || "").toLowerCase();
+            if (Handlers[act]) {
+                return Handlers[act](o);
+            }
+            throw `EasyHttpAxios:not found action '${act}'`;
+        });
+    }
+});
+
+EasyHttp.bindPreHandler(rq => {
+    if (LM.loginToken) {
+        rq.header || (rq.header = {});
+        rq.header.Authorization = LM.loginToken;
+    }
+    if(rq.other && rq.other.isShowLoad){
+        store.commit("setPageLoading", true);
+    }
+    console.log("EasyHttp-Request:", `[${rq.action}] ${rq.url}`, "\nparams:", rq.params, "\ndata:", rq.data);
+}).bindPostHandler(promise => {
+    return promise
+        .then(e => {
+            let rq = e.request;
+            let rp = e.response;
+            console.log("EasyHttp-Response:", `[${rq.action}] ${rq.url}`, "\nresponse:", rp.data);
+            let data = rp.data || {};
+            let other = rq.other || {};
+            // loading
+            if(other.isShowLoad){
+                store.commit("setPageLoading", false);
+            }
+            // toast
+            if(other.isShowMsg){
+                if(data.code){
+                    typeof(data.message) == "string" && $Bus.$Message.success(data.message);
+                } else {
+                    typeof(data.message) == "string" && $Bus.$Message.warning(data.message);
+                }
+            }
+            return data;
+        })
+        .catch(e => {
+            let rq = e.request || {};
+            let other = rq.other || {};
+            if(other.isShowLoad){
+                store.commit("setPageLoading", false);
+            }
+            let rp = (e.response && e.response.response) || {};
+            if(rp.data && rp.data.toString()){
+                $Bus.$Message.info(rp.data.toString());
+            }
+            // token 失效，431 账号不存在  430 权限不足  434 账号强制退出
+            if(rp.status == 401 || rp.status == 431){ 
+                LM.clear();
+                $Bus.$router.push({ name: "Login" }); 
+            } else if(rp.status == 430){
+                $Bus.$Message.info("即将跳转首页");
+                setTimeout(()=>{
+                    $Bus.$router.push({ name: "home" })
+                },1000)
+            } else if(rp.status == 434){
+                LM.clear();
+                $Bus.$router.push({ name: "Login" });
+            }
+            if (e.errType === -1) {
+                console.log("EasyHttp-Response:", `[${rq.action}] ${rq.url}`, "\n内部错误:", e.msg);
+                return Promise.reject(e.msg);
+            } else if (e.respons) {
+                let rp = e.response;
+                console.log("EasyHttp-Response:", `[${rq.action}] ${rq.url}`, "\nresponse:", rp.message);
+                return Promise.reject(rp.message);
+            }
+            return Promise.reject(e);
+        });
+});
+
+// function thenCallback(){
+
+// }
+// function catchCallback(){
+
+// }
+
+export const MainApi = new EasyHttp().setBaseUrl(Conf.API_DOMIN).addRequests(Apis);
+
+export const WebApi = new EasyHttp().setBaseUrl(Conf.WEB_DOMIN).addRequests(WebApiList);

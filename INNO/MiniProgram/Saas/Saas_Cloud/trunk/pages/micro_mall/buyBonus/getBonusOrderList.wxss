@@ -1,0 +1,27 @@
+/* pages/micro_mall/buyBonus/getBonusOrderList.wxss */
+.bonus_order_list{
+
+}
+.bonus_order_item{
+  padding:36rpx 36rpx 41rpx 36rpx;
+}
+.item_l{
+  width:400rpx;
+}
+.item_r{
+
+}
+.item_name{
+  margin-bottom:22rpx;
+}
+.item_tip{
+  margin-bottom:20rpx;
+}
+.item_price{
+  margin-bottom:26rpx;
+}
+.item_time{
+  margin-bottom:20rpx;
+}
+.item_status{
+}

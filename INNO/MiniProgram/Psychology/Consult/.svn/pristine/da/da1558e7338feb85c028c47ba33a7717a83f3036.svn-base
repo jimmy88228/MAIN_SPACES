@@ -1,0 +1,134 @@
+<template>
+  <view class="referrals">
+    <page-nav>
+      <template slot="title">
+        <view>请求转介</view>
+      </template>
+    </page-nav>
+    <view class="form-list">
+      <view class="input-panel flex-s-c">
+        <view class="input-title">转介对象</view>
+        <view class="referrals-name">{{_nameEllipsis(options.memberName)}}</view>
+      </view>
+      <view class="text-area-input">
+        <view class="C_7f font-28 m-b-30">情况描述</view>
+        <textarea v-model="description" placeholder-style="color:#DDDDDD;" maxlength="200"></textarea>
+      </view>
+    </view>
+    <view class="bottom-area flex-c-c">
+      <view class="submit-button flex-c-c font-30" @click="submit">
+        提交
+      </view>
+    </view>
+  </view>
+</template>
+
+<script>
+  // import SMH from "@/common/helper/show-msg-handler.js";
+  const app = getApp();
+  const pageOption = Page.BasePage({
+    data() {
+      return {
+        description:"",
+        isLoading:false
+      }
+    },
+    components: {
+
+    },
+    methods: {
+      submit() {
+        if(this.isLoading)return
+        this.isLoading = true;
+        return this.$Http(this.$Apis.submitReferral,{
+          data:{
+            description:this.description||"",
+            userId:Number(this.options.userId||0)
+          }
+        }).then(res=>{
+          app.SMH.showToast({
+            title:"转介成功"
+          })
+          setTimeout(() => {
+            this.backAction();
+          }, 500);
+        }).finally(()=>{
+          setTimeout(() => {
+            this.isLoading = false;
+          }, 500);
+        })
+      },
+
+    },
+    onLoad(options) {
+      this.options = options;
+    }
+  })
+  export default pageOption
+</script>
+
+<style lang="scss" scoped>
+  .referrals {
+    min-height: 100vh;
+    background-color: #F7F7F7;
+
+    .form-list {
+      // padding: 30rpx 25rpx calc(env(safe-area-inset-bottom) + 165rpx);
+      padding: 30rpx 25rpx 165rpx;
+
+      .input-panel {
+        box-sizing: border-box;
+        padding: 0 30rpx;
+        height: 130rpx;
+        background-color: #FFFFFF;
+        width: 100%;
+        border-radius: 20rpx;
+        margin-bottom: 20rpx;
+        font-size: 28rpx;
+
+        .input-title {
+          width: 110rpx;
+          margin-right: 37rpx;
+          color: #7f7f7f;
+          flex-shrink: 0;
+        }
+
+        .referrals-name {
+          padding: 7rpx 15rpx;
+          background: rgba($color: #008ACB, $alpha: 0.08) ;
+          border-radius: 10rpx;
+          color: #008ACB;
+        }
+      }
+
+      .text-area-input {
+        background-color: #FFFFFF;
+        padding: 40rpx 36rpx;
+        border-radius: 20rpx;
+
+        textarea {
+          width: 100%;
+          height: 500rpx;
+          resize: none;
+          line-height: 37rpx;
+        }
+      }
+    }
+  }
+  .bottom-area {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 140rpx;
+    background: #FFFFFF;
+
+    .submit-button {
+      background: $uni-main-color;
+      color: #FFFFFF;
+      width: 660rpx;
+      height: 100rpx;
+      border-radius: 16rpx;
+    }
+  }
+</style>

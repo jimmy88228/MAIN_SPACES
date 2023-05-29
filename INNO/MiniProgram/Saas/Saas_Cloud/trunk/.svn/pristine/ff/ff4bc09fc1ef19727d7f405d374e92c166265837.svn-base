@@ -1,0 +1,7 @@
+{
+  "navigationBarTitleText": "礼包中心",
+  "usingComponents": {
+    "btns": "/components/buttons/btns",
+    "act-count-down":"/components/act-count-down/act-count-down"
+  }
+}

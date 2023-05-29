@@ -1,0 +1,293 @@
+<template>
+  <div class="material-box flex flex-col" :class="{'left': isShowTabs && isShowClassify}">
+    <div class="tabs" v-if="isShowTabs">
+      <div class="tab-item pointer flex-c-c" :class="{'active':tabKey == item.key}" v-for="item in tabList" :key="item.id" @click="changeTabs(item.key)">
+        {{item.name}}
+      </div>
+    </div>
+    <div class="content-box flex1" :class="{'classify':isShowClassify,'tipsBox':isShowTipsBox}">
+      <Tabs :value="tabKey" @on-click="changeTabs">
+        <TabPane v-for="(item, index) in tabList" :key="item.key" :label="item.name" :name="item.key">
+          <template v-if="item.key == 'video'">
+            <videoView 
+            ref="resource-video" 
+            :chooseData="selectData['video'] || []"
+            :isShowClassify="isShowClassify"
+            :isShowTipsBox="isShowTipsBox"></videoView>
+          </template>
+          <template v-else-if="item.key == 'audio'">
+            <audioView 
+            ref="resource-audio" 
+            :chooseData="selectData['audio'] || []"
+            :isShowClassify="isShowClassify"
+            :isShowTipsBox="isShowTipsBox"></audioView>
+          </template>
+          <template v-else-if="item.key == 'article'">
+            <articleView 
+            ref="resource-article" 
+            :chooseData="selectData['article'] || []"
+            :isShowClassify="isShowClassify"
+            :isShowTipsBox="isShowTipsBox"></articleView>
+          </template>
+          <template v-else-if="item.key == 'psychic'">
+            <psychicView 
+            ref="resource-psychic" 
+            :chooseData="selectData['psychic'] || []"
+            :isShowClassify="isShowClassify"
+            :isShowTipsBox="isShowTipsBox"></psychicView>
+          </template>
+        </TabPane>
+      </Tabs>
+    </div>
+  </div>
+</template>
+
+<script>
+import videoView from "@/components/view-components/material-view/view/video-view.vue";
+import audioView from "@/components/view-components/material-view/view/audio-view.vue";
+import articleView from "@/components/view-components/material-view/view/article-view.vue";
+import psychicView from "@/components/view-components/material-view/view/psychic-view.vue";
+  export default {
+    mixins:[],
+    components: {
+      videoView,
+      audioView,
+      articleView,
+      psychicView
+    },
+    props: {
+      type: { //video,audio,article,psychic
+        type: String,
+        default: ""
+      },
+      isShowTabs:{
+        type: Boolean,
+        default: false
+      },
+      isShowClassify:{
+        type: Boolean,
+        default: false
+      },
+      fromType:{ //distribute,content,material
+        type: String,
+        default: "" 
+      },
+      isMulti: {
+        type: Boolean,
+        default: false
+      },
+      selectedData:{
+        type:Array | Object,
+        default:function(){
+          return []
+        }
+      },
+      selectData: {
+        type:Object,
+        default:function(){
+          return {}
+        }
+      },
+      extraParams:{
+        type:Object,
+        default:function(){
+          return {}
+        }
+      },
+    },
+    data() {
+      return {
+        tabKey: "video",
+        curListId:0,
+        selectAll:false,
+        tabList: [{
+          id:1,
+          key:"video",
+          name:"视频内容",
+        },{
+          id:2,
+          key:"audio",
+          name:"音频内容",
+        },{
+          id:3,
+          key:"article",
+          name:"文章内容",
+        },{
+          id:4,
+          key:"psychic",
+          name:"心理咨询师",
+        }],
+        curSelectedData:[],
+      }
+    },
+    computed:{
+      isShowTipsBox(){
+        return !this.fromType || this.fromType=='distribute' || this.fromType=='material'
+      },
+    },
+    methods: {
+      changeTabs(name){
+        this.tabKey = name;
+        this.loadData(name);
+      },
+      loadData(name){
+        if(!name) name = 'video';
+        let extraParams = this.extraParams || {};
+        console.log("extraParams", extraParams)
+        if(!extraParams.target_id) return;
+        this.$refs["resource-" + name] && this.$refs["resource-" + name][0].getData({
+          distribute: 1,
+          target_id: extraParams.target_id
+        });
+      },
+      selectItem(index,item) {
+        if(item.isDistribute == 1)return;
+        let bool = !!!item._selected;
+        this.$set(this.list[index],'_selected',bool);
+        if(bool){
+          this.curSelectedData.push(item);
+          this.selectAll = this.list.every(item=>item._selected);
+        }else{
+          this.selectAll = false;
+          this.curSelectedData.splice(this.curSelectedData.findIndex(cur_item=>cur_item.id == item.id),1);
+        }
+        console.log('selectItemselectItem',bool,this.curSelectedData,item)
+        this.$set(this.list[index],'_selected',bool);
+      },
+      // onLoadData(page,extraData){
+      //   console.log('extraParams',this.extraParams);
+      //   return this.$MainApi.contentList({
+      //     data:{
+      //       ...extraData,
+      //       ...(this.extraParams||{})
+      //     }
+      //   }).then(res=>{
+      //     if(res.code){
+      //       let data = res.data||{};
+      //       let list = data.list||[];
+      //       let s_num = 0;
+      //       let ids = this.curSelectedData.map(item=>item.id);
+      //       console.log('ids',ids)
+      //       list = list.map(item=>{
+      //         item = Object.assign({},{...item},{
+      //           id:item[`${this.type}Id`]||0,
+      //           title:item[`${this.type}Title`]||"",
+      //           cover:item[`${this.type}CoverPic`]||"",
+      //           summary:item[`${this.type}Description`]||"",
+      //           cover:item[`${this.type}CoverPic`]||"",
+      //           durantion:item[`${this.type}TimeLength`]||0, 
+      //           _selected:ids.includes(item[`${this.type}Id`]),
+      //         })
+      //         item._selected && s_num++;
+      //         console.log('item',item)
+      //         return item
+      //       })
+      //       this.selectAll = s_num == this.list.length;
+      //       this.data = {
+      //         list,
+      //         total:data.totalCount||0
+      //       }
+      //       this.selectAll = s_num == this.list.length;
+      //       console.log('list',this.list)
+      //     }
+      //   })
+      // },
+      // getData(){
+      //   return this.curSelectedData
+      // },
+      // onCheckChange(bool){
+      //   this.curSelectedData = this.list.filter(item=>{
+      //     item._selected = !!bool;
+      //     return !!bool;
+      //   })
+      //   this.selectAll = !!bool;
+      // },
+    },
+    watch:{
+      // type:{
+      //   handler(){
+      //     setTimeout(() => {
+      //       this.loadData();
+      //     }, 500);
+      //   },
+      //   immediate:true
+      // },
+      // selectedData:{
+      //   handler(nV){
+      //     this.curSelectedData = JSON.parse(JSON.stringify(nV));
+      //   },
+      //   immediate:true
+      // }
+    },
+  }
+</script>
+
+<style lang="less" scoped>
+.material-box{
+  position: relative;
+  width: 100%;
+  color: #7f7f7f;
+  font-size: 16px; 
+  &.left{
+    flex-direction: row;
+    .tabs{
+      width:132px;
+      border-right: 1px solid #EFEFEF;
+      height: 100%;
+      display: block;
+      flex-shrink: 0;
+    }
+    .tab-item{
+      text-align: center;
+      padding-right: 0;
+      height: 44px;
+    }
+  }
+  .tabs{
+    width: 100%;
+    height: 60px;
+    display: flex;
+    padding-left: 20px;
+  }
+  .tab-item{
+    padding-right: 40px;
+    height: 100%;
+    &.active{
+      color:#008ACB;
+    }
+  }
+  .content-box{
+    position: relative;
+    // padding-right: 20px;
+    display: flex;
+    flex-direction: column;
+    // &.classify{
+    //   padding-top: 44px;
+    //   &.tipsBox{
+    //     padding-top:114px;
+    //   };
+    // }
+    // &.tipsBox{
+    //   padding-top:70px;
+    // }; 
+  }
+}
+</style>
+<style lang="less">
+  .material-box{
+    .content-box{
+      .ivu-tabs{
+        width:100%;
+        height:100%;
+        display: flex;
+        flex-direction: column;
+        .ivu-tabs-bar{
+          display: none;
+        }
+        .ivu-tabs-content{
+          flex: 1;
+        }
+      }
+    }
+  }
+</style>

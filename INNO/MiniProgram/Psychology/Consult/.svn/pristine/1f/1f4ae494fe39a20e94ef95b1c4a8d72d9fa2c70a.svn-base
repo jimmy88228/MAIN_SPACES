@@ -1,0 +1,64 @@
+ 
+export default { 
+  data() {
+    return {
+      saveLoading: false,
+      fileType:"png",
+      quality:1,
+    }
+  },
+  methods: {
+    save() {
+      if(this.saveLoading)return
+      this.saveLoading = true;
+      uni.saveImageToPhotosAlbum({
+        filePath: this.posterImg||"",
+        success: (e) => {
+          console.log("save success", e);
+          uni.showToast({
+            title:"保存成功"
+          })
+        },
+        fail: (e) => {
+          console.log(e.errMsg);
+          if(e.errMsg.indexOf('cancel')==-1){
+            uni.showToast({
+              title:e&&e.errMsg||"保存失败"
+            })
+          }
+        },
+        complete:(e=>{
+          this.saveLoading = false;
+        })
+      });
+
+      // this.$refs.painter.canvasToTempFilePathSync({
+      //   fileType: this.fileType,
+      //   quality: this.quality,
+      //   success: (res) => {
+      //     console.log("tempFilePath", res.tempFilePath);
+      //     // 非H5 保存到相册
+      //     // H5 提示用户长按图另存
+      //     uni.saveImageToPhotosAlbum({
+      //       filePath: res.tempFilePath,
+      //       success: (e) => {
+      //         console.log("save success", e);
+      //         uni.showToast({
+      //           title:"保存成功"
+      //         })
+      //       },
+      //       fail: (e) => {
+      //         console.log(e.errMsg);
+      //         uni.showToast({
+      //           title:e&&e.errMsg||"保存失败"
+      //         })
+      //       },
+      //       complete:(e=>{
+      //         this.saveLoading = false;
+      //       })
+      //     });
+      //   },
+      // });
+    },
+  },
+}

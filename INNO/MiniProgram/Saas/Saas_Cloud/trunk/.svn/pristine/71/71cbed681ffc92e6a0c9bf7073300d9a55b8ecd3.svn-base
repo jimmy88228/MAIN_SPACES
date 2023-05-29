@@ -1,0 +1,181 @@
+<!-- <form bindsubmit="formAction" report-submit="true"> -->
+<view class="orderInfoPage">
+  <view class="orderInfoTit orderBox  top0" style='background:linear-gradient(-53deg,{{brand_info.style.bg_color}},{{bg_color}})'>
+    <view class="itemR">
+      <view class="orderStatus">{{order_info.orderStatus}}</view>
+      <view class="order_sn"><text class="order_sn_text v_m">订单编号 {{order_info.orderSn}}</text><text class="copy v_m" catchtap="copy">复制</text></view>
+      <view class="createTime between"><text>下单时间 {{order_info.createTime}}</text><text>{{code}}</text></view>
+    </view>
+  </view>
+  <view class="orderGoods orderBox user">
+    <view class='tit'>下单会员</view>
+    <view class='userName'>
+      <text>{{realName}}{{realName&&cardNum?'/':''}}{{cardNum}}</text>
+      <text class="relation_tip" wx:if="{{relationType}}">({{relationType}})</text>
+    </view>
+  </view>
+
+
+  <view class="orderGoods orderBox" wx:for="{{orderDeliveryInfoList}}" wx:for-item="d_item" wx:for-index="d_index" wx:key="d_index">
+    <view class="tit">商品详情</view>
+    <!-- <view class="orderGood" wx:for="{{d_item.deliveryGoodsList}}" wx:for-item='goods_info' wx:key="index">
+      <view class="goods_info_img" catchtap='jump_detail' data-id="{{goods_info.goods_id}}">
+        <view class="goods_info_img_stay {{sys_config.goods_image_size == '4-3' ? 'ratio_3_4' : ''}}">
+          <image src="{{goods_info.img_url}}" mode="aspectFit" />
+        </view>
+      </view>
+      <view class="good_msg">
+        <view class="good_name">{{goods_info.goods_Name}}</view>
+        <view class="good_info">
+          <view class="csName" wx:if="{{goods_info.colorName}}">{{goods_info.colorName}}</view>
+          <view class="csName {{goods_info.sizeName && goods_info.colorName?'csName_mid':''}}">{{goods_info.sizeName && goods_info.colorName?' ':''}}</view>
+          <view class="csName {{goods_info.sizeName && goods_info.colorName?'csName_right':''}}" wx:if="{{goods_info.sizeName}}">{{goods_info.sizeName}}</view>
+        </view>
+        <view class="good_count">x {{goods_info.goods_num}}</view>
+        <view class='money_bottom'>
+          <view class="font_w font_28" style="color:{{brand_info.style.font_color}}">
+            <view class="font_28 rmbPrice">¥</view>
+            <text class="">{{goods_info.goodPrice}}</text>
+            <text class="" wx:if="{{ goods_info.goodsType ==1 }}">{{goods_info.goodPrice}}</text>
+            <text wx:if="{{goods_info.exchange_price != '0.00'}}">{{goods_info.exchange_price}}</text>
+          </view>
+        </view>
+        <view class="comm_amount font_w" wx:if="{{goodsCommDetail[goods_info.goodsId + '_' + goods_info.productId].commAmount}}">收益¥{{goodsCommDetail[goods_info.goodsId + '_' + goods_info.productId].commAmount}}</view>
+      </view>
+    </view> -->
+    <view class="orderGood" wx:for="{{d_item.deliveryGoodsList}}" wx:for-item='goods_info' wx:key="index">
+      <view class="goods_info_img" catchtap='jump_detail' data-id="{{goods_info.goods_id}}">
+        <view class="goods_info_img_stay {{sys_config.goods_image_size == '4-3' ? 'ratio_3_4' : ''}}">
+          <image src="{{goods_info.thumbUrl}}" mode="aspectFit" />
+        </view>
+      </view>
+      <view class="good_msg">
+        <view class="good_name">{{goods_info.goodsName}}</view>
+        <view class="good_info">
+          <view class="csName" wx:if="{{goods_info.goodsAttr}}">{{goods_info.goodsAttr}}</view>
+        </view>
+        <view class="good_count">x {{goods_info.send_number}}</view>
+        <view class='money_bottom'>
+          <view class="font_w font_28" style="color:{{brand_info.style.font_color}}">
+            <view class="font_28 rmbPrice">¥</view>
+            <text class="">{{goods_info.salePrice}}</text>
+            <!-- <text class="" wx:if="{{ goods_info.goodsType ==1 }}">{{goods_info.goodPrice}}</text> -->
+            <!-- <text wx:if="{{goods_info.exchange_price != '0.00'}}">{{goods_info.exchange_price}}</text> -->
+          </view>
+        </view>
+        <view class="comm_amount font_w" wx:if="{{goodsCommDetail[goods_info.goodsId + '_' + goods_info.productId + '_' + (goods_info.order_goods_rec_id || goods_info.orderGoodsRecId || '0')].commAmount}}">收益¥{{goodsCommDetail[goods_info.goodsId + '_' + goods_info.productId + '_' + (goods_info.order_goods_rec_id || goods_info.orderGoodsRecId || '0')].commAmount}}</view>
+      </view>
+    </view>
+    <block wx:if="{{d_item.store_name || d_item.store_code}}">
+      <view class="tit express_tit">发货信息</view>
+      <view class="userName">
+        <view><text class="company" wx:if="{{d_item.store_name}}">发货单位</text> {{d_item.store_name}}</view>
+        <view><text class="company" wx:if="{{d_item.store_code}}">单位代码</text> {{d_item.store_code}}</view>
+      </view>
+    </block>
+    <view class='tit express_tit'>物流信息</view>
+    <view class="">
+      <view class='company'>快递公司</view>
+      <view class="company_name">{{d_item.shipping_name}}</view>
+      <view class='express_no'>
+        <view class="invoice">快递单号</view>
+        <view class="express_wrapper">
+        <view wx:for="{{d_item.invoiceList}}" wx:key="index" wx:for-item="invoice" class="express_inner">
+            <view>{{invoice}}</view>
+            <!-- <button class="express_btn" hover-class='none' data-shipping-no="{{invoice}}" bindtap="goShipping">查询物流</button> -->
+          </view>
+          <!-- <view class="express_inner">
+            <view>{{d_item.invoice_no}}</view>
+            <button class="express_btn" wx:if="{{d_item.invoice_no}}" hover-class='none' data-shipping-no="{{d_item.invoice_no}}" bindtap="goShipping">查询物流</button>
+          </view> -->
+        </view>
+      </view>
+    </view>
+  </view>
+  <view class="orderGoods orderBox" wx:if="{{hasNoDelivery}}">
+    <text class="tit">商品详情</text>
+    <view class="orderGood" wx:for="{{goodsList}}"  wx:for-item='goods_info' wx:key="index" wx:if="{{!goods_info.hasDelivery}}">
+      <view class="goods_info_img" catchtap='jump_detail' data-id="{{goods_info.goodsId}}">
+        <view class="goods_info_img_stay {{sys_config.goods_image_size == '4-3' ? 'ratio_3_4' : ''}}">
+          <image src="{{goods_info.thumbUrl}}" mode="aspectFit" />
+        </view>
+      </view>
+      <view class="good_msg">
+        <view class="good_name">{{goods_info.goodsName}}</view>
+        <view class="good_info">
+          <view class="csName" wx:if="{{goods_info.goodsAttr}}">{{goods_info.goodsAttr}}</view>
+        </view>
+        <view class="good_count">x {{goods_info.goodsNumber}}</view>
+        <view class='money_bottom'>
+          <view class="font_w font_28" style="color:{{brand_info.style.font_color}}">
+            <view class="font_28 rmbPrice">¥</view>
+            <text class="">{{goods_info.salePrice}}</text>
+            <!-- <text class="" wx:if="{{ goods_info.goodsType ==1 }}">{{goods_info.goodPrice}}</text> -->
+            <!-- <text wx:if="{{goods_info.exchange_price != '0.00'}}">{{goods_info.exchange_price}}</text> -->
+          </view>
+        </view>
+        <view class="comm_amount font_w" wx:if="{{goodsCommDetail[goods_info.goodsId + '_' + goods_info.productId + '_' + (goods_info.order_goods_rec_id || goods_info.orderGoodsRecId || '0')].commAmount}}">收益¥{{goodsCommDetail[goods_info.goodsId + '_' + goods_info.productId + '_' + (goods_info.order_goods_rec_id || goods_info.orderGoodsRecId || '0')].commAmount}}</view>
+      </view>
+    </view>
+
+  </view>
+
+  <view class="orderBox">
+    <text class="tit">资费详情</text>
+    <view class="tit_box">
+      <text class="row_tit">商品件数</text>{{order_info.goodsNumber}}件
+    </view>
+    <view class="tit_box">
+      <text class="row_tit">商品总价</text>¥{{order_info.goodsMarketPrice}}
+    </view>
+    <!-- <view class="tit_box" wx:if="{{order_info.bonusMoney > 0 }}">
+        <text class="row_tit">现金券抵扣</text>{{order_info.bonusMoney > 0 ? '- ' : ''}}¥{{order_info.bonusMoney}}</view> -->
+    <view class="tit_box" wx:if="{{order_info.goodsDiscount > 0}}">
+      <text class="row_tit">优惠金额</text>{{order_info.goodsDiscount > 0 ? '- ' : ''}}¥{{order_info.goodsDiscount}}
+    </view>
+    <!-- <view class="tit_box" wx:if="{{order_info.discountManual > 0}}">
+        <text class="row_tit">优惠金额</text>{{order_info.discountManual > 0 ? '- ' : ''}}¥{{order_info.discountManual}}</view> -->
+    <view class="tit_box" wx:if="{{order_info.storedValue != '' && (order_info.storedValue > 0)}}">
+      <text class="row_tit">储值金额</text>- ¥{{order_info.storedValue}}
+    </view>
+    <view class="tit_box" wx:if="{{order_info.surplus != '' && (order_info.surplus > 0)}}">
+      <text class="row_tit">使用余额</text>{{order_info.surplus > 0 ? '- ' : ''}}¥{{order_info.surplus}}
+    </view>
+    <view class="tit_box" wx:if="{{order_info.goodsIntegral > 0}}">
+      <text class="row_tit">商品积分</text>{{order_info.goodsIntegral}}积分
+    </view>
+    <view class="tit_box" wx:if="{{order_info.integralMoney > 0}}">
+      <text class="row_tit">积分抵扣</text>
+      <view>
+        {{order_info.integralMoney > 0 ? '- ' : ''}}¥{{order_info.integralMoney}}
+        <text wx:if="{{order_info.integral > 0 }}">(使用积分{{order_info.integral}})</text>
+      </view>
+    </view>
+    <view class="tit_box" wx:if="{{order_info.bonusMoney > 0}}">
+      <text class="row_tit">优惠券抵扣</text>- ¥{{order_info.bonusMoney}}
+    </view>
+    <view class="tit_box" wx:if="{{order_info.redpackMoney > 0}}">
+      <text class="row_tit">红包抵扣</text>- ¥{{order_info.redpackMoney}}
+    </view>
+    <!-- <view class="tit_box" wx:if="{{order_info.prepaidcard_value>0}}">
+                <text class="row_tit">储值抵扣</text>{{order_info.prepaidcard_value>0?'- ':''}}¥{{order_info.prepaidcard_value}}
+            </view> -->
+    <view class="tit_box">
+      <text class="row_tit">运费</text>
+      <block wx:if="{{order_info.shippingFee > 0 || order_info.shippingFee != '0.00'}}">+ </block>
+      ¥{{order_info.shippingFee}}
+    </view>
+    <view class="tit_box bold">
+      <text class="row_tit">订单总价</text>¥{{order_info.orderAmount}}
+    </view>
+    <view wx:if="{{showCommAmount == '1' && commission}}" class="tit_box bold"
+      style='color:{{brand_info.style.font_color}}'>
+      <text class="row_tit">{{relationType=="店员"?'店员收益':'我的收益'}}</text>¥{{staffPrice}}
+    </view>
+  </view>
+</view>
+<!-- </form> -->
+<!-- <btnFollow id="btnFollow" wx:if='{{btn_follow_must_show}}' btn_follow_must_show='{{btn_follow_must_show}}'></btnFollow> -->
+<!--客服-->
+<!-- <cs></cs>
+<bgHover id="bg" mask-bg="transparent" /> -->

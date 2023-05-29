@@ -1,0 +1,440 @@
+<template>
+  <hold-layout class="zone-set-detail">
+    <Form class="base-form" :label-width="150" :hide-required-mark="true" :model="zoneDetail" ref="formDataRef" :rules="ruleValidate">
+      <FormItem prop="name">
+        <div slot="label">
+          <p class="m-b-5"><span class="notice m-r-5">*</span>专区标题</p>
+        </div>
+        <custom-input size="large" v-model="zoneDetail.name" class="base-320" placeholder="请填写测试标题" :maxlength="30" :showWordLimit="true"></custom-input>
+      </FormItem>
+      <FormItem prop="picData">
+        <div slot="label">
+          <p class="m-b-5">推荐轮播</p>
+          <p class="invalid">最多可添加{{limitImgNum}}个</p>
+        </div>
+        <div class="flex">
+          <img-view :width="144" :height="108" :multiple="true" :disabled="picViewData.length < limitImgNum ? false : true" :imgs="picViewData" @selectImg="selectImg">
+          </img-view>
+          <div class="imgs-list inline-b">
+            <draggable class="draggable-box" :list="zoneDetail.picData" v-bind="dragOptions" :group="{name:'imgItemBox'}" handle=".handle-move">
+              <FormItem :label-width="0" :prop="'picData.' + index + '.path'" class="img-item inline-b m-r-10 m-b-10" v-for="(item, index) in zoneDetail.picData" :key="item.picture" :rules="{required: false, message: '跳转链接不能为空', trigger: 'blur'}">
+                <div class="img-view" v-bgStyle :style="'background-image:url(' + item.picture + ')'">
+                  <div class="img-operate">
+                    <Icon type="md-move" class="handle-move" :size="20" />
+                    <Icon @click="zoneDetail.picData.splice(index, 1)" type="md-close-circle" class="img-close" :size="20" />
+                  </div>
+                </div>
+                <custom-input v-model="item.path" class="img-link" :maxlength="100" :showWordLimit="true"></custom-input>
+              </FormItem>
+            </draggable>
+          </div>
+        </div>
+      </FormItem>
+      <FormItem label="列表展示" prop="testData" class="zone-test-show">
+        <div slot="label">
+          <p class="m-b-5"><span class="notice m-r-5">*</span>列表展示</p>
+        </div>
+        <searchForm :searchForm="searchForm" @add="addZoneTest"></searchForm>
+        <Table ref="myTable" :row-class-name="actionClassName" :columns="columns" :data="testViewData" border>
+          <template slot="tasteTestInfo" slot-scope="{ row }">
+            <div class="zone-info flex-s-c p-t-10 p-b-10">
+              <div class="zone-img flex-s0" v-bgStyle :style="'background-image:url(' + row.coverPic + ')'"></div>
+              <p>{{row.name}}</p>
+            </div>
+          </template>
+          <template slot="state" slot-scope="{ row, index }">
+            <i-switch v-model="zoneDetail.testData[index].state" size="large" :true-value="1" :false-value="0">
+              <span slot="open">上架</span>
+              <span slot="close">下架</span>
+            </i-switch>
+          </template>
+          <template slot="handle" slot-scope="{ row, index }">
+            <div class="operate-area">
+              <p class="operate-line flex-s-c">
+                <span class="inline-b p-l-5 p-r-5" v-if="index == 0">上移</span>
+                <a class="operate" v-else @click="moveItem(row, index)">上移</a> |
+                <a class="operate" @click="removeItem(row)">移除</a>
+              </p>
+              <p class="operate-line">
+                <Poptip trigger="hover" :width="400" placement="left">
+                    <a class="operate">复制链接</a>
+                    <div slot="content" class="flex-s-c">
+                      <div class="w-break m-r-10" style="width:auto;">{{getCopyLink(row)}}</div>
+                      <a class="flex" @click="createLink(row)">复制</a>
+                    </div>
+                </Poptip>
+              </p>
+            </div>
+          </template>
+        </Table>
+      </FormItem>
+    </Form>
+    <div class="detail-operate" slot="footer">
+      <Button @click="_back()">返回</Button>
+      <Button type="primary" @click="confirm">保存</Button>
+    </div>
+    <Spin fix v-if="pageLoading"></Spin>
+  </hold-layout>
+</template>
+
+<script>
+import draggable from "vuedraggable";
+import mixins from "./mixins";
+import searchForm from "./search-form.vue";
+const DETAIL_PATH = "pages/activities/fun-assessment/detail/detail";
+export default {
+  name: "zoneSetDetail",
+  mixins: [mixins],
+  components: { draggable, searchForm },
+  data() {
+    return {
+      zoneDetail: {},
+      ruleValidate: {
+        name: [
+          {
+            required: true,
+            validator: this._checkString,
+            trigger: "blur",
+            message: "请输入专区标题",
+          },
+        ],
+        // picData: [
+        //   {
+        //     required: true,
+        //     validator: this._checkArray,
+        //     trigger: "blur",
+        //     message: "请上传推荐图",
+        //   },
+        // ],
+        testData: [
+          {
+            required: true,
+            validator: this._checkArray,
+            trigger: "blur",
+            message: "请添加展示列表",
+          },
+        ],
+      },
+      searchForm: {
+        searchq: "",
+      },
+      limitImgNum: 5,
+    };
+  },
+  computed: {
+    dragOptions() {
+      return {
+        animation: 200,
+        group: "description",
+        disabled: false,
+        ghostClass: "ghost",
+        chosenClass: "chosen",
+      };
+    },
+    picViewData() {
+      let picData = this.zoneDetail.picData || [];
+      let picViewData = [];
+      for (let i = 0; i < picData.length; i++) {
+        picViewData.push(picData[i].picture);
+      }
+      return picViewData || [];
+    },
+    testViewData() {
+      let testData = this.zoneDetail.testData || [];
+      let testViewData = [];
+      let searchq = this.searchForm.searchq;
+      testData.map((item) => {
+        let name = item.name || "";
+        if (searchq) {
+          if (name.indexOf(searchq) != -1 || searchq.indexOf(name) != -1) {
+            testViewData.push(item);
+          }
+        } else {
+          testViewData.push(item);
+        }
+      });
+      return testViewData || [];
+    },
+  },
+  methods: {
+    loadData() {
+      let pageQuery = this.pageQuery || {};
+      if (!pageQuery.id) {
+        return Promise.reject();
+      }
+      this.pageLoading = true;
+      return this.$MainApi
+        .zoneSetInfo({
+          data: {
+            id: pageQuery.id,
+          },
+        })
+        .then((res) => {
+          if (res.code) {
+            let data = res.data || {};
+            let items = data.items || {};
+            items.picData = items.pic_data;
+            items.testData = items.test_data;
+            this.zoneDetail = items;
+            console.log("zoneDetail", this.zoneDetail);
+          }
+        })
+        .finally(() => {
+          this.pageLoading = false;
+        });
+    },
+    selectImg(data) {
+      let picData = this.zoneDetail.picData || [];
+      let canNum = this.limitImgNum - picData.length;
+      canNum = Math.min(data.length, canNum);
+      if (canNum > 0) {
+        for (let i = 0; i < canNum; i++) {
+          picData.push({
+            id: 0,
+            picture: data[i],
+            path: "",
+          });
+        }
+        this.zoneDetail.picData = picData;
+      }
+    },
+    getCopyLink(row) {
+      return DETAIL_PATH + "?testId=" + row.related_id;
+    },
+    createLink(row) {
+      let url = this.getCopyLink(row);
+      this.$utils.copyText(url);
+    },
+    actionClassName(row, index) {
+      if (row.trType) {
+        return row.trType;
+      } else {
+        return "";
+      }
+    },
+    getElem(dom, name) {
+      if (dom && name) {
+        return dom.getElementsByClassName(name) || {};
+      }
+      return {};
+    },
+    moveItem(row, index) {
+      if (!(index > 0) || !Number(index)) {
+        return;
+      }
+      let tIndex = index - 1;
+      let testViewData = this.testViewData || [];
+      let testData = this.zoneDetail.testData || [];
+      let activeItem = JSON.parse(JSON.stringify(testViewData[index]));
+      let replaceItem = JSON.parse(JSON.stringify(testViewData[tIndex]));
+      // 换算成原始元素, 转换是为了兼容关键词筛选的情况下操作实际的顺序
+      let isTurns = false;
+      for(let i = 0; i < testData.length; i++){
+        if(activeItem.id == testData[i].id){
+          index = i;
+          if(isTurns) break;
+          if(!isTurns) isTurns = true;
+        }
+        if(replaceItem.id == testData[i].id){
+          tIndex = i;
+          if(isTurns) break;
+          if(!isTurns) isTurns = true;
+        }
+      }
+      this.$set(this.zoneDetail.testData[index], "trType", "active-tr");
+      this.$set(this.zoneDetail.testData[tIndex], "trType", "replace-tr");
+      this.$nextTick(() => {
+        let myTable = this.$refs["myTable"].$el;
+        let activeElem = this.getElem(myTable, "active-tr")[0];
+        let replaceElem = this.getElem(myTable, "replace-tr")[0];
+        let activeH = activeElem.offsetHeight;
+        let replaceH = replaceElem.offsetHeight;
+        activeElem.style.transform = "translateY(-" + replaceH + "px)";
+        replaceElem.style.transform = "translateY(" + activeH + "px)";
+        setTimeout(() => {
+            activeElem.style.transform = 'unset';
+            replaceElem.style.transform = 'unset';
+            this.$set(this.zoneDetail.testData, tIndex, activeItem);
+            this.$set(this.zoneDetail.testData, index, replaceItem);
+        }, 400);
+      });
+    },
+    getTestItemIndex(row) {
+      if (row.related_id) {
+        let testData = this.zoneDetail.testData || [];
+        let index = "";
+        for (let i = 0; i < testData.length; i++) {
+          if (testData[i].related_id == row.related_id) {
+            index = i;
+            break;
+          }
+        }
+        return index;
+      }
+    },
+    removeItem(row) {
+      let delIndex = this.getTestItemIndex(row);
+      if (delIndex || delIndex == 0) {
+        this.zoneDetail.testData.splice(delIndex, 1);
+      }
+    },
+    addZoneTest() {
+        let testData = JSON.parse(JSON.stringify(this.zoneDetail.testData || []));
+        for(let i = 0; i < testData.length; i++){
+            testData[i].id = testData[i].related_id;
+            testData[i]._disabled = true;
+        }
+      this.$UIModule({
+        mode: "material-modal",
+        props: {
+          isMulti: true,
+          type: "tasteTest",
+          width: 1080,
+          isShowTabs: true,
+          showTabs: [ "tasteTest" ]
+        },
+        options: {
+          selectedData: {
+            tasteTest: testData,
+          },
+          extraParams: {
+              reqName: "getFunList"
+          }
+        }, //已选数据,接口传参
+        success: (data, extra = {}) => {
+          let _data = data["tasteTest"] || [];
+          let getData = []
+          if (_data instanceof Array) {
+            for (let i = 0; i < _data.length; i++) {
+                if(_data[i]._disabled){ continue; }
+              _data[i].related_id = _data[i].id;
+              _data[i].id = 0;
+              _data[i].state = 1;
+              getData.push(_data[i])
+            }
+            this.zoneDetail.testData = this.zoneDetail.testData.concat(getData);
+          }
+        },
+      });
+    },
+    confirm() {
+      this.$refs["formDataRef"] &&
+        this.$refs["formDataRef"].validate((valid) => {
+          if (valid) {
+            let testData = this.zoneDetail.testData || [];
+            if (testData.length == 0) {
+              this.$Message.warning("请添加列表展示的内容");
+              return;
+            }
+            this.save();
+          } else {
+            this.$Message.warning("请完善专区的信息");
+          }
+        });
+    },
+    save() {
+      let zoneDetail = this.zoneDetail || {};
+      this.pageLoading = true;
+      return this.$MainApi
+        .zoneSetSave({
+          data: {
+            id: zoneDetail.id,
+            name: zoneDetail.name,
+            pic_data: zoneDetail.picData,
+            test_data: zoneDetail.testData,
+          },
+        })
+        .then((res) => {
+          if (res.code) {
+            this.$Message.success(res.message);
+            this.$router.back();
+          } else {
+            this.$Message.warning(res.message);
+          }
+        })
+        .finally(() => {
+          setTimeout(() => {
+            this.pageLoading = false;
+          }, 350);
+        });
+    },
+  },
+  mounted() {
+    this.loadData();
+  },
+};
+</script>
+<style lang="less" scoped>
+.zone-set-detail {
+  .imgs-list {
+    .img-view {
+      width: 144px;
+      height: 108px;
+      margin-bottom: 8px;
+      position: relative;
+      border: 1px solid #dddddd;
+    }
+    .img-operate {
+      position: absolute;
+      top: 0px;
+      right: 0px;
+      transform: translate(10px, -50%);
+      opacity: 0;
+      transition: opacity 0.35s;
+    }
+    .img-close {
+      color: #0083ce;
+      cursor: pointer;
+      border-radius: 100%;
+      background-color: #fff;
+      padding: 1px;
+    }
+    .handle-move {
+      color: #0083ce;
+      border-radius: 100%;
+      background-color: #fff;
+      padding: 1px;
+      cursor: move;
+      box-shadow: 0px 0px 5px #ccc;
+    }
+    .img-view:hover {
+      .img-operate {
+        opacity: 1;
+      }
+    }
+    .img-link {
+      width: 144px;
+    }
+  }
+  .zone-img {
+    width: 83px;
+    height: 55px;
+    background: #d8d8d8;
+    margin-right: 10px;
+  }
+  .detail-operate {
+    padding: 10px;
+    background-color: #fff;
+    z-index: 10;
+    .ivu-btn {
+      width: 96px;
+      height: 32px;
+      margin-right: 10px;
+    }
+  }
+}
+</style>
+<style lang="less" >
+.zone-test-show {
+  .ivu-table-body {
+    position: relative;
+  }
+  .active-tr,
+  .replace-tr {
+    opacity: 0.9;
+    position: relative;
+    transition: all 0.35s;
+    margin: 0px;
+  }
+}
+</style>

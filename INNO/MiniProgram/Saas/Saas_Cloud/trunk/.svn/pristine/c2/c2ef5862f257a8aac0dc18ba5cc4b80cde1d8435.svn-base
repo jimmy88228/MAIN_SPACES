@@ -1,0 +1,14 @@
+{
+  "component": true,
+  "usingComponents": {
+    "text-header":"/components/micro-page/micro-mix/items/text-header/text-header",
+    "advertise":"/components/micro-page/micro-mix/items/advertise/advertise",
+    "ad-nav":"/components/micro-page/micro-mix/items/ad-nav/ad-nav",
+    "mc-rich-text":"/components/micro-page/micro-mix/items/rich-text/rich-text",
+    "mc-video":"/components/micro-page/micro-mix/items/video/video",
+    "cs": "/components/cs/custom_service",
+    "notice":"/components/micro-page/micro-mix/items/notice/notice",
+    "goods-list":"/components/micro-page/micro-mix/items/goods-list/goods-list",
+    "ac-goods-list":"/components/micro-page/micro-mix/items/ac-goods-list/ac-goods-list"
+  }
+}

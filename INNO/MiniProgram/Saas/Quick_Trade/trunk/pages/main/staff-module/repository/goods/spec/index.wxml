@@ -1,0 +1,5 @@
+<!--pages/main/staff-module/repository/goods/spec/index.wxml-->
+<!-- public 必须是第一个元素 -->
+<include src="/common/base/page/index.wxml" />
+<act-product-list id="act-product-list" ></act-product-list>
+<batch-set id="batch-set" bindonBatchConfirm="onBatchConfirm" bindonBatchInput="onBatchInput" fromType="{{fromType}}"></batch-set>

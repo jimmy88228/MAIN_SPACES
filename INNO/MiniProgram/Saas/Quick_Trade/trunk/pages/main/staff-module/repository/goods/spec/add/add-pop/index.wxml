@@ -1,0 +1,17 @@
+<include src="/common/base/component/index.wxml" />
+<custom-pop id="custom-pop">
+  <view class="custom-pop-box flex-c-c flex-col">
+    <view class="add-spec-box f-s-0 flex-c-c flex-col">
+        <view class="add-spec-title">添加具体规格</view>
+        <ori-input errTip="规格名字" validArray="{{['NOT_EMPTY']}}" value="{{value}}" maxlength="20" class="ori-label" ext-class="add-spec-input" ext-ext-placeholder-class="placehold-text" placeholder="请输入规格名字" bindinput="onInput" /> 
+    </view>
+    <view class="confirm-box flex-b-c">
+      <view bindtap="dismiss" class="cancel-btn flex-1 flex-c-c">
+        取消
+      </view>
+      <view bindtap="confirm" class="confirm-btn flex-1 flex-c-c">
+        确定
+      </view>
+    </view>
+  </view>
+</custom-pop>

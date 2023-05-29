@@ -1,0 +1,8 @@
+<!-- 注册协议 -->
+<block wx:if="{{agreementPop}}">
+  <agreementPop id="agreementPop" confirmUseBtns="{{agreementPop && agreementPop.confirmUseBtns}}" confirmIsGetInfoBtn="{{agreementPop && agreementPop.confirmIsGetInfoBtn}}" />
+</block>
+<!-- 注册完成后领券 -->
+<block wx:if="{{getCouponsPop}}">
+  <getCouponsPop id="getCouponsPop" />
+</block>

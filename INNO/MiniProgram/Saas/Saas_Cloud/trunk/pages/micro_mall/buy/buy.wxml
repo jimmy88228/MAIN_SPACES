@@ -1,0 +1,480 @@
+<!--pages/micro_mall/buy/buy.wxml-->
+<scroll-view class="area_view" scroll-y="{{!noScroll}}">
+    <view class="area_list"
+    style="padding-bottom: calc(100rpx{{isIphoneX ? ' + 68rpx': ''}}{{promAssistH ? ' + ' + promAssistH + 'px': ''}});"
+    >
+        <!-- <scroll-view class="area_view" scroll-y="{{!noScroll}}"> -->
+            <form bindsubmit="formAction" report-submit="true">
+                <!--代客模块-->
+                <Valet 
+                id="ValetModule" 
+                bindgetvaletinfo="getvaletinfo"
+                pageOptions="{{options}}"
+                bindcheckValetOrder="checkValetOrder"
+                wx:if="{{!showIdentity}}"></Valet>
+                <!--代客模块--> <!-- bindpageCheckValetOrder -->
+                <view class="area_box express_info_box" wx:if="{{valetOrderInfo.canUseCashPay == 1 && paymentList.length>1}}">
+                    <view class="express_info_item">
+                        <view class="title">支付方式</view>
+                        <view class="table shipping_way_cont">
+                            <block wx:for="{{paymentList}}" wx:key="pay_id">
+                                <view 
+                                    class="table_cell t_l" 
+                                    data-index='{{index}}'
+                                    catchtap="selectPay">
+                                    <view class="radio_select">
+                                        <image src="{{cur_pay_index == index? return_active : return_img}}" class="radio_icon" mode="aspectFit" />
+                                    </view>
+                                    <text class="shipping_way_txt">{{item.pay_name}}</text>
+                                </view>
+                            </block>
+                        </view>
+                    </view>
+                </view>
+
+                <view class="area_box express_info_box">
+                    <view class="express_info_item" data-showType="{{true}}" >
+                        <view class="title">配送方式</view>
+                        <view class="table shipping_way_cont">
+                            <view 
+                            class="table_cell t_l"
+                            wx:if="{{!shippingInfo.isStore}}">
+                                <view class="radio_select">
+                                    <image src="{{return_active}}" class="radio_icon" mode="aspectFit" />
+                                </view>
+                                <text class="shipping_way_txt">快递配送</text>
+                            </view>
+                            <view 
+                            class="table_cell"
+                            wx:else>
+                                <view class="radio_select">
+                                    <image src="{{brand_info.icon_url}}micro_mall/return_active.png" class="radio_icon" mode="aspectFit"  />
+                                </view>
+                                <text class="shipping_way_txt">门店自提</text>
+                            </view>
+                        </view>
+                    </view>
+                    <view catchtap='confirmChangeShipping' class="express_info_item borderNone">
+                        <view class="title">{{shippingInfo.isStore?'自提信息':'收货地址'}}</view>
+                        <!--门店自提-->
+                        <view class="cont" wx:if="{{shippingInfo.isStore}}">
+                            <block wx:if="{{shippingInfo.storeCode}}">
+                                <view style='margin-top:23rpx;'>
+                                    <view class="mb_10 {{shippingInfo.consignee ? 'bold' : 'C_a1'}}">{{shippingInfo.consignee || '收货人'}}</view>
+                                    <view class='mb_10 {{shippingInfo.mobilePhone ? "" : "C_a1"}}'>{{shippingInfo.mobilePhone || '手机号码'}}</view>
+                                </view>
+                                <view style='margin-top:12rpx;width:640rpx;'>
+                                    <text wx:if="{{shippingInfo.storeName}}">门店： 【{{shippingInfo.storeName}}】</text>
+                                </view>
+                            </block>
+                        </view>
+                        <!--快递配送-->
+                        <view class="cont" wx:else>
+                            <block wx:if="{{shippingInfo.addressId}}">
+                                <view style='margin-top:23rpx;'>
+                                    <text style='margin-right:30rpx;' class="{{shippingInfo.consignee ? 'bold' : 'C_a1'}}">{{shippingInfo.consignee || '收货人'}}</text>
+                                    <text class='ml_10 {{shippingInfo.mobilePhone ? "" : "C_a1"}}'>{{shippingInfo.mobilePhone || '手机号码'}}</text>
+                                </view>
+                                <view style='margin-top:12rpx;width:640rpx;'>
+                                    <text wx:if="{{shippingInfo.address}}">{{shippingInfo.provinceName}}{{shippingInfo.cityName}}{{shippingInfo.districtName}}{{shippingInfo.address}}</text>
+                                </view>
+                            </block>
+                            <block wx:else>
+                                <view class="C_7f" style="margin-top:23rpx;">请选择地址</view>
+                            </block>
+                        </view>
+                        <image src="{{rightbutton}}" class="r_arrow" mode="widthFix" />
+                    </view>
+                    <!-- <view wx:if="{{showIdentity}}" class='goIdentity' catchtap='handleIdentity'>
+                        <view class='goIdentityPart'>身份证信息验证</view>
+                        <view class='goIdentityPart' hidden='{{checkAll}}'> 
+                            <view class='tip_title '>去验证</view>
+                            <image src="{{rightbutton}}" class="rightClass " mode="widthFix" />
+                        </view>
+                        <view class='goIdentityPart' hidden='{{!checkAll}}'>
+                            <image src="{{checkPng}}" class="checkClass" mode="widthFix" />
+                            <view class='checkText'>已验证</view>
+                        </view>
+                    </view> -->
+                </view>
+                <view class="area_box">
+                    <view class="title">商品详情</view>
+                    <view class="cont goods_list">
+                        <view class="goods_item" wx:for="{{cartList}}" wx:key="index">
+                            <navigator url="/pages/micro_mall/goods/goods_info?goods_id={{item.goodsId}}" class="goods_img_box">
+                                <view class="goods_img_box_stay {{sys_config.goods_image_size == '4-3' ? 'ratio_3_4' : ''}}">
+                                    <image src="{{item.goodsImg}}" mode="aspectFit" />
+                                </view>
+                            </navigator>
+                            <view class="goods_info">
+                                <view class='goods_info_top'>
+                                    <text class='nationBuy' wx:if="{{item.sale_kind == 1}}" style='background:{{brand_info.style.bg_color}};'>海淘商品</text>
+                                    <text class='nationBuy' wx:if="{{item.isSelfGet == '1'}}" style='background:{{brand_info.style.bg_color}};'>限门店自提</text>
+                                    <text class='nationBuy' wx:if="{{item.isSelfGet == '2'}}" style='background:{{brand_info.style.bg_color}};'>限快递配送</text>
+
+                                    <view class="goods_name font_24 C_000">{{item.goodsName}}</view>
+                                    <view class="goods_sn font_22 C_7f">
+                                        <view>{{item.goodsSn}}</view>
+                                    </view>
+                                    <view class="goods_text font_24">
+                                        <view>{{item.goodsAttr}}</view>
+                                    </view>
+                                    <view class="font_24 goods_number">x {{item.goodsNumber}}</view>
+                                </view>
+                                <view class="goods_msg">
+                                    <view class="font_w font_28" style="color:{{brand_info.style.font_color}};">
+                                        <text class="RMB">¥ </text>
+                                        <text class="shop_price" >{{item.salePrice}}</text>
+                                        <!-- <text class="shop_price" wx:if="{{item.goodsType != 1}}">{{item.exchange_price}}</text>
+                                        <text wx:else>{{item.goods_price}}</text> 
+                                        <text wx:if="{{item.integral > 0}}">+{{item.integral}}积分</text> -->
+                                    </view>
+                                    <view class="font_24 placeholder" style='margin-top:5rpx;font-weight:normal' wx:if="{{item.marketPrice != item.salePrice && item.marketPrice > 0}}">
+                                        <view class="market_price RMB_line" style='display:inline-flex;'>¥ </view>
+                                        <text class="market_price">{{item.marketPrice}}</text>
+                                        <!-- <text class="market_price" wx:if="{{item.old_integral > 0}}">+{{item.old_integral}}积分</text> -->
+                                    </view>
+                                </view>
+                            </view>
+                        </view>
+                    </view>
+                </view>
+                <signTip id="signTip" signOrderActivityReward="{{signOrderActivityReward}}" shippingWay="{{shippingWay}}" wx:if="{{signOrderActivityReward.goodsId}}"></signTip>
+                <!--优惠券-->
+                <view class="area_box coupon_item padding_0" catchtap='jumpToCoupon'>
+                    <view class="coupon_box {{couponData.usableBonusCount >0?'':'none_coupon'}}">
+                        <view class="font_24">优惠券</view>
+                        <view class="{{couponData.usableBonusCount > 0?'coupon_content':''}}">
+                            <block wx:if="{{couponData.usableBonusCount >0}}">
+                                <view class="coupon_data_list"  wx:if="{{couponData.use_coupon && couponData.use_coupon.length > 0}}">
+                                    <view 
+                                    class="use_coupon_tips"
+                                    wx:for="{{couponData.use_coupon}}"
+                                    wx:key="index">
+                                    <text 
+                                    class="use_coupon_tip" 
+                                    style="border-color:{{brand_info.style.font_color}};color:#fff;background:{{brand_info.style.bg_color}}">使用{{item.bonusType == "4" ? item.discountStr + "折" : (item.typeMoney) + "元"}}{{item.type_name || item.typeName}}</text>
+                                    </view>
+                                </view>
+                                <text wx:else class="use_coupon_tip" style="border-color:{{brand_info.style.font_color}};color:#fff;background:{{brand_info.style.bg_color}}">{{couponData.usableBonusCount}}张可用</text>
+                            </block>
+                            <view class='none_coupon_right' wx:else>
+                                <text class="has_no_coupon_tip C_a1 font_24">没有可用优惠券</text>
+                            </view>
+                        </view>
+                    </view>
+                    <image src="{{rightbutton}}" class="r_arrow" mode="widthFix" wx:if="{{couponData.usableBonusCount >0}}" />
+                </view>
+                <!--红包-->
+                <view class="area_box" wx:if="{{redpackInfo.allowUseRedpack}}" catchtap="onTapRed">
+                    <view class="red_box flex_global flex_al_c font_24">
+                        <text>红包</text>
+                        <text
+                            style="{{redpackInfo.isUseRedpack == 1 && redpackInfo.allowUseRedpack > 0 ? 'color:' + brand_info.style.font_color :''}}" 
+                            class="red_select_msg {{redpackInfo.isUseRedpack == 1 && redpackInfo.allowUseRedpack > 0 ? 'bold' : redpackInfo.isUseRedpack == 1 ? 'none C_a1' : 'C_a1'}}">
+                            <block>{{redpackInfo.isUseRedpack == 1 && redpackInfo.allowUseRedpack > 0 ? '- ¥' + redpackInfo.allowUseRedpack : redpackInfo.allowUseRedpack > 0?'可抵扣¥' + redpackInfo.allowUseRedpack : redpackInfo.redpackDiscount > 0 ? '无需使用红包' : '没有可用红包'}}</block>
+                        </text>
+                        <image src="{{rightbutton}}" class="r_arrow" mode="widthFix" wx:if="{{redpackInfo.allowUseRedpack > 0}}" />
+                    </view>
+                </view>
+
+                <!--现金券-->
+                <!-- <view class="area_box" wx:if="{{canUseCashCoupon}}">
+                    <view class="title" style='margin-bottom:22rpx'>现金券</view>
+                    <view class="use_cash_coupon">
+                        <view class="use_cash_coupon_item" wx:key="index" wx:for="{{cashCouponData.useCashCoupon}}">
+                            <view>{{item.couponDisplayName}}</view>
+                            <image data-coupon_id="{{item.couponId}}" src="{{brand_info.icon_url}}micro_mall/address/address_del.png" mode="widthFix" class="coupon_del" bindtap="delUseCashCoupon" />
+                        </view>
+                    </view>
+                    <view class="cont position_r">
+                        <input type="text" class="cash_ticket_input" bindblur='cashTicketInputBlur' value="{{cashCoupon_input}}" />
+                        <button class="cash_coupon_scan" hover-class="none" catchtap="cashCouponScan">
+                        <image class="scan_icon" src="{{brand_info.default_icon_url}}scan.png" mode="aspectFit"/>
+                        </button>
+                        <view class="use_cash_ticket" catchtap="beforeUseCachTicket" style="background:{{brand_info.style.bg_color}};">使用</view>
+                        <view class="err_tip" wx:if="{{cashCouponData.error}}">*{{cashCouponData.error}}</view>
+                    </view>
+                </view> -->
+
+                <!--促销优惠-->
+                <view class="area_box gift_card_box" wx:if="{{promoteList.length > 0}}">
+                    <view class="title">促销优惠</view>
+                    <view class="cont">
+                        <view class="gift_card_item" wx:for="{{promoteList}}" wx:key="index">
+                            <text class="type_name">{{item.ruleName}}</text>
+                            <view class="radio_select" data-index="{{index}}" catchtap="useGiftCard" data-condition_id="{{item.condition_id}}">
+                                <image src="{{return_active}}" class="radio_icon" mode="aspectFit" wx:if="{{isUsePromote}}" />
+                                <image src="{{return_img}}" class="radio_icon" mode="aspectFit" wx:else/>
+                            </view>
+                            <view class="message gifts_item" wx:for="{{item.giftList}}" wx:for-item="g_item" wx:for-index="g_index" wx:key="g_index">
+                            <block wx:if="{{g_item.giftType == 2}}">
+                                <view>送赠品：</view>
+                                <view>
+                                <view class="gift" wx:for="{{g_item.giftGoodsList}}" wx:for-item="gift" wx:key="index">
+                                    <image src="{{gift.thumbUrl}}" class="gift_img" mode="aspectFit" />
+                                    <view>
+                                    <text class="mr_10">{{gift.goodsName}}</text>
+                                    <text class="mr_10">原价:{{gift.marketPrice}}元</text>
+                                    <text class="mr_10">数量:{{gift.goodsNumber}}件</text>
+                                    <text class="gift_status" wx:if="{{gift.giftStatus == 0}}"> [已赠完]</text>
+                                    </view>
+                                </view>
+                                </view>
+                            </block>
+                            <block wx:else>
+                                <text>{{g_item.giftDesc}}</text>
+                            </block>
+                            </view>
+                        </view>
+                    </view>
+                </view>
+                <!--全场促销优惠-->
+                <view class="area_box gift_card_box" wx:if="{{secPromoteList.length > 0}}">
+                    <view class="title">全场促销优惠</view>
+                    <view class="cont">
+                        <view class="gift_card_item" wx:for="{{secPromoteList}}" wx:key="index">
+                            <text class="type_name">{{item.ruleName}}</text>
+                            <view class="radio_select" data-index="{{index}}" catchtap="useSecPromote" data-condition_id="{{item.condition_id}}">
+                                <image src="{{return_active}}" class="radio_icon" mode="aspectFit" wx:if="{{isUseSecPromote == 1}}" />
+                                <image src="{{return_img}}" class="radio_icon" mode="aspectFit" wx:else/>
+                            </view>
+                            <!-- <view class="radio_select" data-index="{{index}}" catchtap="useSecPromote" data-condition_id="{{item.condition_id}}">
+                                <image src="{{return_active}}" class="radio_icon" mode="aspectFit" wx:if="{{isUseSecPromote == 1}}" />
+                                <image src="{{return_img}}" class="radio_icon" mode="aspectFit" wx:else/>
+                            </view> -->
+                            <view class="message gifts_item" wx:for="{{item.giftList}}" wx:for-item="g_item" wx:for-index="g_index" wx:key="g_index">
+                            <block wx:if="{{g_item.giftType == 2}}">
+                                <view>送赠品：</view>
+                                <view>
+                                <view class="gift" wx:for="{{g_item.giftGoodsList}}" wx:for-item="gift" wx:key="index">
+                                    <image src="{{gift.thumbUrl}}" class="gift_img" mode="aspectFit" />
+                                    <view>
+                                    <text class="mr_10">{{gift.goodsName}}</text>
+                                    <text class="mr_10">原价:{{gift.marketPrice}}元</text>
+                                    <text class="mr_10">数量:{{gift.goodsNumber}}件</text>
+                                    <text class="gift_status" wx:if="{{gift.giftStatus == 0}}"> [已赠完]</text>
+                                    </view>
+                                </view>
+                                </view>
+                            </block>
+                            <block wx:else>
+                                {{g_item.giftDesc}}
+                            </block>
+                            </view>
+                        </view>
+                    </view>
+                </view>
+
+
+                <!--积分-->
+                <view class="area_box gift_card_box {{ (valetOrderInfo.isSmsChecked != 1 && valetOrderInfo.needSms == 1 && !use_integral) ? 'gray_block' : ''}}" wx:if="{{integralData.allowUseIntegral > 0}}">
+                    <view class="title">积分使用</view>
+                    <view class="cont" >
+                    <view class="gift_card_item">
+                        <view class="type_name">共{{integralData.totalIntegral}}积分</view>
+                        <view class="message" style="color:{{brand_info.style.font_color}};" wx:if="{{use_integral}}">可用{{integralData.allowUseIntegral}}积分，抵用¥{{integralData.allowUseIntegralMoney}}元</view>
+                        <view class="font_20 message" style="color:{{brand_info.style.font_color}};">订单使用积分后未交易成功，积分将在订单关闭后自动退还。</view>
+                        <view class="radio_select" catchtap="UseIntegral">
+                            <image src="{{return_active}}" class="radio_icon" mode="widthFix" wx:if="{{use_integral}}" />
+                            <image src="{{return_img}}" class="radio_icon" mode="widthFix" wx:else/>
+                        </view>
+                    </view>
+                    </view>
+                    <view class="click_mask" catchtap="checkValetUse" wx:if="{{ (valetOrderInfo.isSmsChecked != 1 && valetOrderInfo.needSms == 1 && !use_integral) }}"></view>
+                </view>
+
+                <!--储值卡-->
+                <!-- <view class="area_box" bindtap="switchSelectPrepaid" wx:if="{{prepaid_card.totalPrepaidcards > 0}}">
+                    <view class="title">储值卡
+                        <text>( {{prepaid_card.totalPrepaidcards}}张可用 )</text>
+                    </view>
+                    <view class="area_val" wx:if="{{prepaid_state.use_prepaid_money > 0}}">已抵扣{{prepaid_state.use_prepaid_money}}元</view>
+                    <view class="cont">
+                        <view class="tip" style="color:{{brand_info.style.font_color}};">可用余额¥{{prepaid_card.can_paid_money}}</view>
+                        <view class="radio_select" catchtap="UseDefaultPrepaid">
+                            <image src="{{return_active}}" class="radio_icon" mode="widthFix" wx:if="{{prepaid_state.use_prepaid}}" />
+                            <image src="{{return_img}}" class="radio_icon" mode="widthFix" wx:else/>
+                        </view>
+                    </view>
+                    <image src="{{rightbutton}}" class="r_arrow" mode="widthFix" />
+                </view> -->
+                <view class="area_box gift_card_box {{(valetOrderInfo.isSmsChecked != 1 && valetOrderInfo.needSms == 1 && !use_prepaid) ? 'gray_block' : ''}}" wx:if="{{prepaidData.allowUseStoredValue > 0}}">
+                    <view class="title">储值使用</view>
+                    <view class="cont" >
+                    <view class="gift_card_item">
+                        <view class="type_name">共{{prepaidData.totalStoredValue}}储值</view>
+                        <view class="message" style="color:{{brand_info.style.font_color}};" wx:if="{{use_prepaid}}">可抵用¥{{prepaidData.allowUseStoredValue}}元</view>
+                        <view class="font_20 message" style="color:{{brand_info.style.font_color}};">订单使用储值后未交易成功，储值将在订单关闭后自动退还。</view>
+                        <view class="radio_select" catchtap="UsePrepaid">
+                            <image src="{{return_active}}" class="radio_icon" mode="widthFix" wx:if="{{use_prepaid}}" />
+                            <image src="{{return_img}}" class="radio_icon" mode="widthFix" wx:else/>
+                        </view>
+                        </view>
+                    </view>
+                    <view class="click_mask" catchtap="checkValetUse" wx:if="{{ (valetOrderInfo.isSmsChecked != 1 && valetOrderInfo.needSms == 1 && !use_prepaid) }}"></view>
+                </view>
+
+                <!--余额使用-->
+                <!-- <view class="area_box gift_card_box" wx:if="{{surplusInfo.allowUseSurplus > 0 }}">
+                    <view class="title">余额使用</view>
+                    <view class="cont">
+                    <view class="gift_card_item">
+                        <view class="type_name">剩余余额：¥{{surplusInfo.totalSurplus}}</view>
+                        <view class="message" style="color:{{brand_info.style.font_color}};">可使用余额¥{{surplusInfo.allowUseSurplus}}</view>
+                        <view class="radio_select" catchtap="UseBalance">
+                            <image src="{{return_active}}" class="radio_icon" mode="widthFix" wx:if="{{use_balance}}" />
+                            <image src="{{brand_info.icon_url}}micro_mall/return.png" class="radio_icon" mode="widthFix" wx:else/>
+                        </view>
+                    </view>
+                    </view>
+                </view> -->
+                <!--充值卡-->
+                <view class="area_box gift_card_box" wx:if="{{sys_config.is_erp_point&&user_recharge > 0}}">
+                    <view class="title">充值卡</view>
+                    <view class="cont">
+                    <view class="gift_card_item">
+                        <view class="type_name" style="color:{{brand_info.style.font_color}};">可用余额 ¥{{user_recharge}}</view>
+                        <view class="radio_select" catchtap="UseRecharge">
+                            <image src="{{return_active}}" class="radio_icon" mode="widthFix" wx:if="{{is_user_recharge}}" />
+                            <image src="{{return_img}}" class="radio_icon" mode="widthFix" wx:else/>
+                        </view>
+                    </view>
+                    </view>
+                </view>
+
+                
+                <view class="area_box postage_info">
+                    <view class="title">资费详情</view>
+                    <view class="cont" style='margin-top:14rpx'>
+
+                        <view class="cont_item">
+                            <text class="tit">商品件数</text>
+                            <text class="val">{{orderInfo.totalGoodsNumber}} 件</text>
+                        </view>
+                        <view class="cont_item">
+                            <text class="tit">商品总价</text>
+                            <text class="val">¥{{orderInfo.totalMarketPrice}}</text>
+                        </view>
+                        <!-- <view class="cont_item" wx:if="{{ orderInfo.totalIntegral > 0 }}">
+                            <text class="tit">商品积分</text>
+                            <text class="val">{{orderInfo.totalIntegral}}积分</text>
+                        </view> -->
+                        <view class="cont_item" wx:if="{{orderInfo.goodsDiscount > 0}}">
+                            <text class="tit">优惠金额</text>
+                            <text class="val">- ¥{{orderInfo.goodsDiscount}}</text>
+                        </view>
+                        <view class="cont_item" wx:if="{{couponData.bonusDiscount > 0}}">
+                            <text class="tit">优惠券抵扣</text>
+                            <text class="val">{{couponData.bonusDiscount > 0 ? '- ' : ''}}¥{{couponData.bonusDiscount}}</text>
+                        </view>
+                        <view class="cont_item" wx:if="{{redpackInfo.redpackDiscount > 0}}">
+                            <text class="tit">红包抵扣</text>
+                            <text class="val">- ¥{{redpackInfo.redpackDiscount}}</text>
+                        </view>
+                        <!-- <view class="cont_item" wx:if="{{cashCouponData.useCashCoupon && cashCouponData.useCashCoupon.length > 0 && orderInfo.usecashCouponsMoney > 0}}">
+                            <text class="tit">现金券抵扣</text>
+                            <text class="val">{{orderInfo.usecashCouponsMoney>0?'- ':''}}¥{{orderInfo.usecashCouponsMoney}}</text>
+                        </view> -->
+                        <view class="cont_item" wx:if="{{integralData.integralDiscount > 0 }}">
+                            <text class="tit">积分抵扣</text>
+                            <text class="val">{{integralData.integralDiscount > 0 ? '- ' : ''}}¥{{integralData.integralDiscount}}</text>
+                            <!-- <text class="val">{{orderInfo.integral_deduct>0?'- ':''}}¥{{integral_deduct}}</text> -->
+                        </view>
+                        <view class="cont_item" wx:if="{{prepaidData.storedValueDiscount > 0 }}">
+                            <text class="tit">储值抵扣</text>
+                            <text class="val">-¥{{prepaidData.storedValueDiscount}}</text>
+                        </view>
+                        <view class="cont_item" wx:if="{{surplusData.surplusDiscount > 0}}">
+                            <text class="tit">使用余额</text>
+                            <text class="val">- ¥{{surplusData.surplusDiscount}}</text>
+                        </view>
+                        <!-- <view class="cont_item" wx:if="{{prepaid_state.use_prepaid}}">
+                            <text class="tit">储值卡</text>
+                            <text class="val">¥{{prepaid_state.use_prepaid_money}}</text>
+                        </view>
+                        <view class="cont_item" wx:if="{{sys_config.is_erp_point}}">
+                            <text class="tit">充值卡</text>
+                            <text class="val">¥{{orderInfo.recharge_card?orderInfo.recharge_card:'0.00'}}</text>
+                        </view> -->
+                        <!-- 运费 -->
+                        <block>
+                            <view class="cont_item" >
+                                <text class="tit">运费</text>
+                                <text class="val">
+                                    <!-- 划线价格 -->
+                                    <text wx:if="{{shippingInfo.originalShippingFee > 0 && shippingInfo.originalShippingFee > shippingInfo.shippingFee}}" class="line-through-text" decode="true">¥{{shippingInfo.originalShippingFee}}</text>
+                                    <!-- 现价 -->
+                                    <text>¥{{shippingInfo.shippingFee}}</text>
+                                </text>
+                            </view>
+                            <!-- 运费全部减免 的原因 -->
+                            <view class="cont_item_tips" wx:if="{{shippingInfo.originalShippingFee > 0 && shippingInfo.shippingFee == 0}}">{{shippingInfo.freeShippingFeeReason}}</view>
+                        </block>
+                        <!-- <view class="cont_item">
+                        <text class="tit">订单金额</text>
+                        <text class="val">¥{{orderInfo.totalprice}}</text>
+                    </view> -->
+
+                    </view>
+                </view>
+                <view class="area_box bg_fff">
+                    <view class=" font_24 C_7f" style='padding-bottom:20rpx;'>备注</view>
+                    <view class="detail_a_cont">
+                        <view class="show_remarks_text C_7f {{show_remarks_val ? '' : 'hide' }}" catchtap="ShowRemarksVal">{{remarks_val ? remarks_val : '请输入备注信息'}}</view>
+                        <textarea placeholder="{{show_remarks_val ? '': '请输入备注信息' }}" placeholder-class="placeholder_class" data-key="order_remark" maxlength="100" fixed="true" focus="{{remarks_focus}}" class="buy_detail_textarea {{show_remarks_val ? 'hide' : '' }}" bindblur="ShowRemarksVal"
+                            bindinput="remarksInput" value='{{remarks_focus?remarks_val:""}}' />
+                    </view>
+                </view>
+                <!-- 凑单助手 -->
+                <view class="promote_assistance {{isIphoneX ? 'fix_iphoneX' : ''}}">
+                  <promoteAssistance id="promoteAssistance" bind:height-change="savePromAssistH" />
+                </view>
+                <view class="order_total_fixed {{isIphoneX ? 'fix_iphoneX' : ''}}">
+                    <view class="order_total">
+                        <text class="total_tit">实付款</text>
+                        <text class="total_val" style="color:{{brand_info.style.font_color}};">¥{{orderInfo.orderAmount ? orderInfo.orderAmount : '0.00'}}</text>
+                    </view>
+                    <view class="order_submit_box font_28">
+                        <button 
+                        hover-class='none' 
+                        form-type="submit" 
+                        class="order_submit" 
+                        style="background:{{brand_info.style.bg_color}};" 
+                        disabled="{{validate_data.code == 0}}"
+                        bindtap="order_createOrder">
+                        <view>
+                        <view>提交订单</view>
+                        <!-- <view class="font_20" wx:if="{{validate_data.code == 0}}">{{validate_data.msg}}</view> -->
+                        </view>
+                        </button>
+                    </view>
+                </view>
+            </form>
+        <!-- </scroll-view> -->
+    </view>
+</scroll-view>
+
+<view class='bg {{filter?"isShow":""}}' catchtouchmove='_noFn'></view>
+<view class='identityWindow {{filter?"isShow":""}}' catchtouchmove='_noFn'>
+    <view class='identity_title'>身份证信息验证
+        <image class='identity_close' catchtap='handleIdentity' mode='aspectFit' src="{{server_close}}"></image>
+    </view>
+    <view class='tips_top' style='color:{{brand_info.style.font_color}}'>根据国家法规要求，海淘商品需要在海关清关时提供有效身份证明，请确保您的清关信息与支付平台的实名信息一致，且与收件人姓名一致。
+    </view>
+    <view class='identity_card'>
+        <text class='identity_label'>身份证姓名</text>
+        <input type='text' class='identity_input' bindinput='getIdentity' value='{{identityName}}' data-type="identityName" placeholder-class='identity_placeholderClass' placeholder='输入对应的身份证姓名'></input>
+    </view>
+    <view class='identity_card identity_card_bottom'>
+        <text class='identity_label'>身份证号码</text>
+        <input type='idcard' class='identity_input' bindinput='getIdentity'  value='{{identityNumber}}'  data-type="identityNumber" placeholder-class='identity_placeholderClass' placeholder='输入对应的身份证号码'></input>
+    </view>
+    <view class='tips_bottom'>*友情提醒：中国海关规定每人每年购买海淘商品限额人民币26000元整，如超出此限额可能会导致您的清关不成功，此限额次年1月1日重置，敬请留意。</view>
+    <button class='identity_button' catchtap='handleIdentitySubmit' style='background:{{brand_info.style.bg_color}};'>提交</button>
+</view>
+
+<dialog id="pageDialog" marsk="{{marskValue}}"></dialog>
+<cs posType="left" ></cs>
+<redPopup id="redPopup" redpack-list="{{redpackInfo.redpackList}}" redpack-sumary="{{redpackInfo}}" binduse="handleUse"></redPopup>
+<choose-coupon id="chooseCoupon" bindchooseCouponCallback="chooseCouponCallback"></choose-coupon>

@@ -1,0 +1,10 @@
+{
+  "navigationBarTitleText": "优惠券",
+  "backgroundTextStyle": "dark",
+  "backgroundColor":"#EFEFEF",
+  "disableScroll": true,
+  "usingComponents": {
+    "list":"/components/list/list",
+    "pageHome": "/components/sceneOperate/pageHome"
+  }
+}

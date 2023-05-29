@@ -1,0 +1,100 @@
+<template>
+  <ori-popup
+    @close="close"
+    @change="change"
+    ref="popup"
+    type="center"
+    background-color="#fff"
+  >
+    <template v-slot:content>
+      <view
+        style="
+          border-radius: 30rpx;
+          overflow: hidden;
+        "
+      >
+        <template v-if="posterMsg.isCustom">
+          <l-painter ref="painter" v-show="showPoster" :board="posterMsg.board"></l-painter>
+        </template>
+        <template v-if="!posterMsg.isCustom">
+          <l-painter
+            v-show="showPoster"
+            css="width:650rpx;height:816rpx;border-radius:30rpx;background:#fff;"
+            :width="'650rpx'"
+            :height="'816rpx'"
+            ref="painter"
+          >
+            <l-painter-image
+              css="margin:auto;width:448rpx;height:448rpx;margin-top:84rpx;"
+              :src="posterMsg.code || ''"
+            ></l-painter-image>
+            <l-painter-view
+              css="text-align:center;padding-top:68rpx;font-weight:bold;font-size:42rpx;"
+            >
+              <l-painter-text :text="posterMsg.title || ''"></l-painter-text>
+            </l-painter-view>
+            <l-painter-view
+              css="text-align:center;padding-top:20rpx;font-size:24rpx;"
+            >
+              <l-painter-text :text="posterMsg.tips || ''"></l-painter-text>
+            </l-painter-view>
+          </l-painter>
+        </template>
+      </view>
+      <div class="btn-save C_fff flex-c-c" @click="save" :class="{'loading':saveLoading}">保存至手机</div>
+    </template>
+  </ori-popup>
+</template>
+
+<script>
+import oriPopup from "@/components/ori-comps/popup/ori-popup";
+import painterMixin from "@/components/lime-painter/mixin.js"; 
+const BaseComp = Page.BaseComp({
+  data() {
+    return {
+      showPoster: false,
+      posterMsg: {}, 
+    };
+  },
+  components: {
+    oriPopup,
+  },
+  mixins:[painterMixin],
+  methods: {
+    showModal(posterMsg) {
+      this.posterMsg = posterMsg || {};
+      this.fileType = this.posterMsg.fileType || this.fileType;
+      this.quality = this.posterMsg.quality || this.quality;
+      this.$refs.popup.show();
+      setTimeout(() => {
+        this.showPoster = true;
+      }, 300);
+    },
+    close(e) {
+    },
+    change(e) {
+      if (!e.show) {
+        this.showPoster = false;
+      }
+    },
+  },
+});
+export default BaseComp
+</script>
+
+<style lang="scss" scoped>
+.btn-save {
+  width: 650rpx;
+  height: 100rpx;
+  background: $uni-main-color;
+  border-radius: 16rpx;
+  position: fixed;
+  bottom: 48rpx;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 36rpx;
+  &.loading{
+    opacity: 0.5;
+  }
+}
+</style>

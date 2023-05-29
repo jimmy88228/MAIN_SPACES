@@ -1,0 +1,94 @@
+<template>
+  <view class="video-detail-page" :style="{'background-color':backgroundShow?'transparent':'#9AB9B2'}">
+    <image class="video-detail-background" v-if="videoDetail.videoBgPic" @error="backgroundError" :src="videoDetail.videoBgPic" mode="widthFix" />
+    <page-nav :isTransparent="true" isClose="true" :full="false"></page-nav>
+    <video class="videoInfo" :src="videoDetail.videoUrl" :autoplay="videoOptions.autoplay" :enable-play-gesture="videoOptions.enablePlayGesture" :object-fit="videoOptions.objectFit"></video>
+    <view class="video-detail-info">
+      <view class="bold font-28 m-b-25" :class="!!videoDetail.videoBgPic ? 'C_fff':'C_333'">{{videoDetail.videoTitle?videoDetail.videoTitle:""}}</view>
+      <view class="font-24" style="line-height: 49rpx;" :class="!!videoDetail.videoBgPic ? 'C_fff':'C_7f'">{{!showAllText?subText:videoDetail.videoDescription}}<text class="C_008acb m-l-10" style="text-decoration:underline;" @click="toggleText" v-if="!showAllText && subText">展开</text></view>
+    </view>
+  </view>
+</template>
+
+<script>
+const app = getApp();
+const pageOption = Page.BasePage({
+  data() {
+    return {
+      options:{},
+      videoDetail:{},
+      videoOptions:{
+        autoplay:true,
+        objectFit:'contain',
+        enablePlayGesture:true
+      },
+      subText:"",
+      backgroundShow:true,
+      showAllText:false
+    };
+  },
+  onLoad(options) {
+    this.options = options;
+  },
+  onReady(){
+    this.init()
+  },
+  methods: {
+    init() {
+      this.$Http(this.$Apis.getVideo, {
+        data: {
+          id: this.options.id || 0,
+        },
+      }).then((res) => {
+        if (res.code == 1) {
+          console.log(res.data.videoDescription.trim())
+          if(res.data.videoDescription.trim().length>50){
+            this.subText = res.data.videoDescription.substr(0,50) + "..."
+          }
+          this.videoDetail = res.data;
+        }
+      }).catch((err) => {
+          setTimeout(() => {
+            this.backAction()
+          }, 1500);
+        });
+    },    // 背景错误
+    backgroundError(){
+      console.log("背景错误了")
+      this.backgroundShow = false
+    },
+    toggleText(){
+      this.showAllText = !this.showAllText
+    }
+  },
+  onUnload() {},
+  onShow() {},
+});
+export default pageOption;
+</script>
+
+<style lang="scss" scoped>
+.video-detail-page {
+  width: 100%;
+  height: 100vh;
+  overflow: hidden;
+  position: relative;
+  .video-detail-background{
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    left: 0;
+    width: 100%;
+    z-index: -1;
+  }
+  .videoInfo {
+    width: 100%;
+    height: 500rpx;
+  }
+  .video-detail-info{
+    width: 100%;
+    box-sizing: border-box;
+    padding: 48rpx 36rpx;
+  }
+}
+</style>

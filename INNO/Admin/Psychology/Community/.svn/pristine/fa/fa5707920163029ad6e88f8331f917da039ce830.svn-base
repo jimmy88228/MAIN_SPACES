@@ -1,0 +1,212 @@
+<template>
+    <div class="carousel-md-view">
+        <template v-if="checkEmpty"> 
+            <div class="carousel-box flex-c-c">
+                <div class="carousel-img-box">
+                    <img :src="BroadcastImg" alt="" class="BroadcastImg">
+                </div>
+                <CustomCarousel class="customCarousel" ref="carousel" @init="init" @beforeChange="beforeChange" @afterChange="afterChange" :settings="settings">
+                </CustomCarousel>
+                    <!-- <CarouselItem class="carouselItem" :class="{active:activeCur == index}" @over="showNext" v-for="(item, index) in curList" :key="index" :textData="item.value||''" :ref="'item_'+index"></CarouselItem> -->
+            </div>
+        </template>
+        <div v-else class="empty">
+            <div class="img-box flex-c-c">
+                <img :src="typeImg" alt="" class="img-logo">
+            </div>
+            <div class="m-t-20">{{typeName}}模块</div>
+        </div>
+    </div>
+</template>
+
+<script>
+import CarouselItem from './item.vue';
+import CustomCarousel from "@/components/view-components/custom-carousel/index.vue"
+import BroadcastImg from "@/assets/images/custom/broadcast.png"
+import confMixin from "@/components/main-components/custom-page/component/module/conf.js"
+export default {
+    name: "broadcastView", 
+    mixins:[confMixin],
+    props: {
+        compInfo: {
+            type: Object,
+            default: () => {return {}},
+        },
+        inTab: {
+            type: Boolean,
+            default: false,
+        },   
+    },
+    data() {
+        return {
+            type:"broadcast",
+            timeoutId:null,
+            arr:[{value:'1'},{value:"阿松大阿松大阿松大阿松大阿松大阿松大阿松大阿松大阿松大阿松大阿松大阿松大阿松大阿松大"},{value:"3"}],
+            current:0,
+            activeCur:0,
+            settings: {
+                "dots": false,
+                "infinite": false,
+                "arrows":false,
+                "slidesToShow": 1,
+                "slidesToScroll": 1,
+                "vertical": true,
+                "verticalSwiping": true,
+                "touchMove":false,
+                "draggable":false,
+                "speed":1200,
+                "cssEase":'linear',
+                "lazyLoad":'false'
+            },
+            BroadcastImg,
+            inited:false,
+        }
+    },
+    components: {
+        CustomCarousel,
+        CarouselItem,
+    },    
+    computed: {
+        groupKey(){
+            return this.keyInfo[this.type] && this.keyInfo[this.type].groupKey || "";
+        },
+        groupItemKey(){
+            return this.keyInfo[this.type] && this.keyInfo[this.type].groupItemKey || "";
+        },
+        typeName(){
+            return this.keyInfo[this.type] && this.keyInfo[this.type].name || "";
+        },
+        typeImg(){
+            console.log('图片',this.keyInfo,this.type,this.keyInfo[this.type] ,this.keyInfo[this.type] && this.keyInfo[this.type].img)
+            return this.keyInfo[this.type] && this.keyInfo[this.type].img || "";
+        },
+        dynamic_setting(){
+            return this.compInfo.dynamic_setting || {};
+        },
+        module_data(){
+            let module_data = this.compInfo.module_data || {};
+            if (!module_data[this.groupKey]) {
+                this.$set(this.compInfo.module_data,this.groupKey, [])
+            }
+            console.log('module_datamodule_data',module_data)
+            return module_data || {};
+        },
+        checkEmpty(){
+            let module_data = this.compInfo.module_data || {};
+            let group = module_data[this.groupKey]||[];
+            return group.length>0 && group[0] && group[0][this.groupItemKey] && group[0][this.groupItemKey].length>0 || false;
+        },
+        curList(){
+            // return this.arr;
+            let module_data = this.compInfo.module_data || {};
+            let group = module_data[this.groupKey]||[];
+            let list = group.length>0 && group[0] && group[0][this.groupItemKey] && group[0][this.groupItemKey] || [];
+            console.log('listlist',list)
+            return list
+        }
+    },
+    watch:{
+        module_data:{
+            handler(nV){
+                console.log('module_datamodule_data watch',nV);
+                this.init(true);
+            },immediate:true,deep:true
+        }
+    },
+    methods: {
+        init(bool) { 
+            console.log('initinit',this.$refs,this.current, this.checkEmpty)
+            console.log('bool',typeof bool == 'boolean' && bool)
+            if(this.checkEmpty){
+                clearTimeout(this.timeoutId);
+                this.timeoutId = setTimeout(() => {
+                    // if(typeof bool == 'boolean' && bool){
+                    //     this.current = 0;
+                    //     this.activeCur = 0;
+                    //     this.$refs.carousel && this.$refs.carousel.goTo(0);
+                    //     // this.settings.lazyLoad = this.settings.lazyLoad?'':'false';
+                    // }else{
+                    //     if(this.current==0){
+                    //         this.$refs.item_0 && this.$refs.item_0.start();
+                    //     }else{ 
+                    //         this.$refs.carousel && this.$refs.carousel.goTo(0);
+                    //     }
+                    // }
+                    
+                    !this.inited && (this.$refs.item_0 && this.$refs.item_0[0] && this.$refs.item_0[0].start());
+                    this.inited = true;
+                }, 1000);
+            }
+        },
+        beforeChange(e) {
+            // console.log('beforeChange',e)
+        },
+        afterChange(e) {
+            console.log('afterChange',e);
+            this.current = e;   
+            setTimeout(() => {
+                this.$refs[`item_${this.current}`].start();
+            }, 500);
+        },
+        showNext() {
+            console.log('showNext this.curList',this.curList)
+            // if(this.curList.length <= 1)return
+            let index = (this.current+1) % this.curList.length;
+            // console.log('goto',index)
+            this.activeCur = index;
+            this.$refs.carousel && this.$refs.carousel.goTo(index);
+        },
+    },
+}
+</script>
+
+<style lang="less" scoped>
+.carousel-md-view{
+    .carousel-box{
+        padding: 0 10px;
+    }
+    .customCarousel{
+        width: 100%;
+        height: 45px;
+    }
+    .carouselItem{
+        // opacity: 0;
+        transition: opacity 0.6s linear;
+        &.active{
+            opacity: 1;
+            transition: opacity 0.6s 0.3s linear;
+        }
+        
+    }
+    .empty {
+        text-align: center;
+        padding: 40px 20px;
+        color: #515a6e;
+    } 
+    
+    .img-box{
+        width: 80px;
+        height: 60px;
+        border-radius: 6px;
+        margin: 0 auto;
+        background: rgba(239, 239, 239, 0.3);
+    }
+    .img-logo{
+        width: 30px;
+        height: 30px;
+    }
+    .carousel-img-box{
+        padding-right: 10px;
+        flex-shrink: 0;
+        position: relative;
+        z-index: 1;
+        background-color: #fff;
+    }
+    .BroadcastImg{
+        width: 16px;
+        height: 16px;
+        display: block;
+    }
+
+}
+</style>

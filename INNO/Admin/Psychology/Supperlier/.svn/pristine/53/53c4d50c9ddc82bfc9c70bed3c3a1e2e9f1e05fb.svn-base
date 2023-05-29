@@ -1,0 +1,220 @@
+<template>
+<div class="psychiatrist-detail-area">
+  <Form :label-width="100" :model="formData" ref="formDataRef" :rules="ruleValidate">
+      <FormItem label="头像" prop="profile_picture">
+        <img-view :width="80" :img="formData.profile_picture" @delImg="formData.profile_picture = ''" @selectImg="(src)=>changeImg(src, 'profile_picture')"></img-view>
+      </FormItem>
+      <FormItem label="姓名" prop="name">
+        <custom-input size="large" class="base-320" v-model="formData.name" :show-word-limit="true" :maxlength="30"></custom-input>
+      </FormItem>
+      <FormItem label="手机号" prop="mobile_phone">
+        <custom-input size="large" class="base-320" v-model="formData.mobile_phone" :show-word-limit="true" :maxlength="30"></custom-input>
+      </FormItem>
+      <FormItem label="资质" prop="qualification">
+        <custom-input size="large" class="base-320" v-model="formData.qualification" :show-word-limit="true" :maxlength="30"></custom-input>
+      </FormItem>
+      <FormItem label="擅长领域" prop="good_at_skilled">
+        <div class="goodsat-list">
+            <CheckboxGroup v-model="formData.good_at_skilled">
+              <Checkbox :label="Number(index)" v-for="(item, index) in specializeData" :key="index">{{item}}</Checkbox>
+            </CheckboxGroup>
+        </div>
+      </FormItem>
+      <FormItem label="个人简介" prop="personal_info">
+        <custom-input class="base-320" type="textarea" :show-word-limit="true" :maxlength="800" v-model="formData.personal_info"></custom-input>
+      </FormItem>
+      <FormItem label="受训背景" prop="training_info">
+        <custom-input class="base-320" type="textarea" :show-word-limit="true" :maxlength="800" v-model="formData.training_info"></custom-input>
+      </FormItem>
+      <FormItem label="工作经历" prop="work_info">
+        <custom-input class="base-320" type="textarea" :show-word-limit="true" :maxlength="800" v-model="formData.work_info"></custom-input>
+      </FormItem>
+      <FormItem label="擅长疗法" prop="good_at_info">
+        <custom-input class="base-320" type="textarea" :show-word-limit="true" :maxlength="800" v-model="formData.good_at_info"></custom-input>
+      </FormItem>
+      <FormItem label="" >
+        <Button style="padding: 0px 30px;" type="primary" @click="confirm">确 认</Button>
+      </FormItem>
+    </Form>
+    <Spin fix v-if="pageLoading"></Spin>
+  </div>
+</template>
+
+<script>
+export default {
+  data(){
+    return {
+      formData: {
+        consultant_id:0,
+        profile_picture: "",
+        name: "",
+        mobile_phone: "",
+        qualification: "",
+        good_at_skilled: [],
+        personal_info: "",
+        training_info: "",
+        work_info: "",
+        good_at_info: ""
+      },
+      ruleValidate: {
+        profile_picture: [
+          {
+            required: true,
+            validator: this._checkString,
+            message: "请上传头像",
+            trigger: "blur",
+          },
+        ],
+        name: [
+          {
+            required: true,
+            validator: this._checkString,
+            message: "请填写姓名",
+            trigger: "blur",
+          },
+        ],
+        mobile_phone: [
+          {
+            required: true,
+            validator: this._checkPhone,
+            trigger: "blur"
+          },
+        ],
+        qualification:[
+          {
+            required: true,
+            validator: this._checkString,
+            message: "请填写资质",
+            trigger: "blur",
+          },
+        ],
+        good_at_skilled: [
+          {
+            required: true,
+            validator: this._checkArray,
+            message: "请勾选擅长领域",
+            trigger: "blur",
+          },
+        ],
+        personal_info:[
+          {
+            required: true,
+            validator: this._checkString,
+            message: "请填写个人简介",
+            trigger: "blur",
+          },
+        ],
+        training_info:[
+          {
+            required: true,
+            validator: this._checkString,
+            message: "请填写受训背景",
+            trigger: "blur",
+          },
+        ],
+        work_info:[
+          {
+            required: true,
+            validator: this._checkString,
+            message: "请填写工作经历",
+            trigger: "blur",
+          },
+        ],
+        good_at_info:[
+          {
+            required: true,
+            validator: this._checkString,
+            message: "请填写擅长疗法",
+            trigger: "blur",
+          },
+        ],
+      },
+      specializeData: []
+    }
+  },
+  methods: {
+    getSpecializeInSkilled(){
+      return this.$MainApi
+        .specializeInSkilled({
+          data: {},
+        })
+        .then((res) => {
+          if (res.code) {
+            let data = res.data || {};
+            this.specializeData = data.items || []
+          }
+        });
+    },
+    loadData(){
+      let pageQuery = this.pageQuery || {};
+      let consultant_id = Number(pageQuery.id) || 0;
+      if(consultant_id){
+        this.formData.consultant_id = consultant_id;
+        this.pageLoading = true;
+        return this.$MainApi
+        .psychologicalInfo({
+          data: {
+            consultant_id: consultant_id
+          },
+        })
+        .then((res) => {
+          if (res.code) {
+            let data = res.data || {};
+            delete data.create_time;
+            delete data.update_time;
+            this.formData = data;
+          }
+        }).finally(()=>{
+          this.pageLoading = false;
+        })
+      }
+    },
+    changeImg(src, key){
+      this.formData[key] = src
+    },
+    confirm(){
+      this.$refs["formDataRef"].validate((valid) => {
+          if (valid) {
+            this.psychologicalReq();
+          } else {
+              this.$Message.error('请完善相关信息');
+          }
+      })
+    },
+    psychologicalReq(){
+      let formData = this.formData || {};
+      let req = Number(formData.consultant_id) ? 'psychologicalUpdate' : 'psychologicalAdd';
+      this.pageLoading = true;
+      return this.$MainApi[req]({
+          data: formData,
+        })
+        .then((res) => {
+          if (res.code) {
+            this.$Message.success(res.message || (Number(formData.consultant_id) ? '编辑成功' : '添加成功'))
+            this.$router.back();
+          } else {
+            this.$Message.warning(res.message || (Number(formData.consultant_id) ? '编辑失败' : '添加失败'))
+          }
+        }).finally(()=>{
+          this.pageLoading = false;
+        })
+    }
+  },
+  mounted(){
+    this.getSpecializeInSkilled();
+    this.loadData();
+  }
+}
+</script>
+
+<style lang="less" scoped>
+.psychiatrist-detail-area{
+  position:relative;
+  .goodsat-list{
+    max-width: 80%;
+    .goodsat-item{
+      display: inline-block;
+    }
+  }
+}
+</style>

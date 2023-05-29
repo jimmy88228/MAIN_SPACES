@@ -1,0 +1,18 @@
+.wxParse-table{
+  display: table;
+  border-collapse: collapse;
+}
+.wxParse-table.align-center{
+  margin-inline-start: auto;
+  margin-inline-end: auto;
+}
+.wxParse-tbody{
+  display: table-row-group;
+  vertical-align: middle;
+}
+.wxParse-tr{
+  display: table-row;
+}
+.wxParse-td{
+  display: table-cell;
+}

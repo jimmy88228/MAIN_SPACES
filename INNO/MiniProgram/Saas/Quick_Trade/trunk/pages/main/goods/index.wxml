@@ -1,0 +1,135 @@
+<!-- public 必须是第一个元素 -->
+<include src="/common/base/page/index.wxml" />
+<wxs src="./index.wxs" module="f" />
+<view class="goods-info-page" wx:if="{{goods_info && goods_info.goods_id}}">
+  <scroll-view class="goods-info-main" scroll-y>
+    <view class="goods-images-con">
+      <swiper 
+        class="goods-images-swiper"
+        current="{{imageSwiperCurrent}}" 
+        bindchange="handleImageSwiperChange"
+        interval="4000"
+        duration="500"
+        circular
+      >
+        <block wx:for="{{goods_gallery}}" wx:key="id">
+          <swiper-item class="goods-images-swpier-item" catchtap="handleSwpierItemTap" data-src="{{item.goods_img}}" >
+            <view class="g-i-s-i-image-con">
+              <ori-image ext-class="g-i-s-i-image" src="{{item.goods_img}}" mode="aspectFit" />
+            </view>
+          </swiper-item>
+        </block>
+      </swiper>
+    </view>
+    <view class="goods-info-contentrate-con">
+      <view class="g-i-c-main">
+        <view class="g-i-c-left">
+          <!-- 现价 -->
+          <view class="g-i-c-price-con">
+            <view class="g-i-c-price">
+              <text class="g-i-c-rmb">￥</text>
+              <text class="g-i-c-price-text">{{goods_info.sale_price}}</text>
+            </view>
+            <view class="g-i-c-trend" hidden="{{goods_info.market_price == goods_info.sale_price}}">
+              <view class="iconfont icon-xiajiang g-i-c-trend-icon"></view>
+              <view class="g-i-c-trend-text">直降￥{{goods_info.down_price||0}}</view>
+            </view>
+          </view>
+          <!-- 划线价 -->
+          <view class="g-i-c-original-price" hidden="{{goods_info.market_price == goods_info.sale_price}}">
+              <text class="g-i-c-rmb">￥</text>
+              <text class="g-i-c-original-price-text">{{goods_info.market_price}}</text>
+          </view>
+        </view>
+        <view class="g-i-c-right">
+          <view class="g-i-c-count-down-info">
+            <ori-image class="g-i-c-c-d-image" src="/assets/images/common/xianshiqiang.png" />
+            <view class="g-i-c-c-d-text">
+                <text class="c-d-prefix">
+                  <block wx:if="{{activity_info.status == 0}}">距开始 </block>
+                  <block wx:elif="{{activity_info.status === 1}}">距结束 </block>
+                  <block wx:else>活动已结束</block>
+                </text>
+                <text class="c-d-time" wx:if="{{activity_info.status != 2}}">{{f.NumberToString(countDownTime.hours)}}: {{f.NumberToString(countDownTime.minutes)}}: {{f.NumberToString(countDownTime.seconds)}}</text>
+              </view>
+          </view>
+        </view>
+      </view>
+    </view>
+    <view class="goods-info-basic-con">
+      <view class="g-i-b-main">
+        <view class="g-i-b-left">
+          <view class="g-i-b-goods-name">{{goods_info.goods_name}}</view>
+          <view class="g-i-b-goods-sn">
+            <text class="goods-sn-prefix">商品编码 </text>
+            <text class="goods-sn-text">{{goods_info.goods_sn}}</text>
+          </view>
+        </view>
+        <view class="g-i-b-right">
+          <view class="g-i-b-btn-group">
+            <view class="g-i-b-btn-item">
+              <button class="g-i-b-btn" bindtap="handleShareBtnTap">
+                <view class="icon-share-con" hover-class="active">
+                  <view class="iconfont icon-fenxiang share-icon"></view>
+                </view>
+                <view class="g-i-b-btn-text">分享</view>
+              </button>
+            </view>
+          </view>
+        </view>
+      </view>
+    </view>
+    <!-- <view class="goods-info-service-con">
+      <view class="g-i-s-main">
+        <view class="g-i-s-list">
+          <view class="g-i-s-item">
+            <view class="g-i-s-item-prefix">物流</view>
+            <view class="g-i-s-item-content">运费xx元 满xx元包邮</view>
+          </view>
+        </view>
+      </view>
+    </view> -->
+    <view class="goods-info-detail-con" wx:if="{{goods_info.goods_detail}}">
+      <view class="g-i-f-detail">
+        <view class="g-i-d-header">
+          <view class="g-i-d-title">详情</view>
+        </view>
+        <view class="g-i-d-main">
+          <rich-text nodes="{{goods_info.goods_detail}}" />
+        </view>
+      </view>
+    </view>
+  </scroll-view>
+
+  <view class="goods-info-footer">
+    <view class="g-i-f-main">
+      <view class="g-i-f-left">
+        <view class="g-i-f-btn-group">
+          <button class="g-i-f-btn" hover-class="active" catchtap="navigateF" data-delta="{{-1}}">
+            <view class="iconfont icon-list g-i-f-list-icon"></view>
+            <view class="g-i-f-btn-text">返回列表</view>
+          </button>
+        </view>
+      </view>
+      <view class="g-i-f-right">
+        <view class="gif-main-btn-group">
+          <button class="goods-info-purchase-btn" disabled="{{activity_info.status != 1}}" hover-class="active" catchtap="handlePurchaseBtnTap">
+            <block wx:if="{{activity_info.status == 1}}">
+              立即购买
+            </block>
+            <block wx:elif="{{activity_info.status == 0}}">
+              活动未开始
+            </block>
+            <block wx:elif="{{activity_info.status == 2}}">
+              活动已过期
+            </block>
+          </button>
+        </view>
+      </view>
+    </view>
+  </view>
+</view>
+
+<goods-spec-pop id="goods-spec-pop" />
+<share-pop id="share-pop" />
+<poster-pop id="poster-pop" />

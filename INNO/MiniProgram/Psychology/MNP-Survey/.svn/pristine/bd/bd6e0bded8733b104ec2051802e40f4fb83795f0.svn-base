@@ -1,0 +1,101 @@
+.H5{ 
+  .answer{
+    height: 100%;
+    .msg-box{
+      width: 680rpx;
+    }
+    .sm-btn{
+      width: 200rpx;
+      height: 88rpx;
+      background: #ffffff;
+      border-radius: 12rpx;
+      border: 1px solid #dbf1d9;
+    }
+    .progress-box{
+      background: rgba($color: #f5fcf4, $alpha: 0.9);
+      padding: 40rpx;
+      border-radius: 20rpx;
+      width: 100%;
+    }
+    .swiper{
+      width: 60%;
+    }
+    .answer-item {
+      min-height: 86rpx;
+      border-radius: 10rpx;
+
+    }
+    @media screen and (max-width: $mid-screen) {
+      .box {
+        padding-top: 40rpx;
+      }
+      .msg-box {
+        flex: 1;
+        padding-right: 60rpx;
+        box-sizing: border-box;
+      }
+      .progress-box{
+        padding: 10px 15px;
+      }
+      .swiper{
+        width: 100%;
+      }
+      .answer-box {
+      }
+      .answer-item {
+        border: none;
+        width: 580rpx;
+        padding: 0 20rpx;
+        min-height: 116rpx;
+        background: #FAFAFA; 
+        border-radius: 10rpx;
+      }
+      .sm-btn {  
+        padding: 0;
+        width: 120rpx; 
+        font-size: 22rpx;
+        height: 58rpx;
+      }
+    }
+  }
+  
+  .popup-content{
+    font-size: 72rpx;
+    box-shadow: unset;
+    background: unset;
+  }
+  .goon-btn {
+    width: 380rpx;
+    height: 120rpx;
+    border-radius: 70rpx;
+  } 
+  @media screen and (max-width: $small-screen) {
+    .popup-content {
+      font-size: 60rpx;
+    }
+  }
+
+}
+.H5{
+  .answer-result{
+    width:100%;
+    .submit-suc {
+      width: 60%;
+    }
+    .btn{
+      margin-top: 20px;
+      width: 160px;
+      height: 55px;
+      border-radius: 10px;
+      // position: absolute;
+      // bottom: 80px;
+      // left: 50%;
+      // transform: translateX(-50%);
+    }
+  }
+  @media screen and (max-width: $small-screen){
+    .answer-result{
+      min-width: auto;
+    }
+  }
+}

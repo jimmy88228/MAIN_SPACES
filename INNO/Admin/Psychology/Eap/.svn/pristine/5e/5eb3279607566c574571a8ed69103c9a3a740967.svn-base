@@ -1,0 +1,138 @@
+<template>
+    <Tabs :value="curTab" @on-click="changeTab" class="report-list-index" :class="'list-len-'+listTabs.length">
+        <TabPane :label="item.model_name" :name="item.name" v-for="(item,index) in listTabs" :key="index">
+            <div v-show="curIndex == index" :class="listTabs.length>1?'mt-style':''">
+                <reportList :ref="item.name"></reportList>
+            </div>
+        </TabPane>
+    </Tabs>
+</template>
+
+<script>
+import mixins from "./mixins.js";
+import reportList from "./list.vue"
+export default {
+    mixins: [ mixins ],
+    components: {
+        reportList,
+    },
+    data() {
+        return {
+            reportItems: [],
+            reportAnalyseList: [],
+            userInfo: {},
+            modelInfo: {},
+            modelTime: "",
+            req: {
+                default: "appraisalScheduleReport",
+                task: "assessmentTaskReport",
+                psychic: "psychologyReport",
+                earlyWarn: "psychologyReport"
+            },
+            ruleTypeKey: {
+                dimension: "分", // 维度统计
+                total: "分", // 总分统计
+                average: "分", // 总均分
+                whole_positive: "项", // 整体阳性项目数
+                whole_negative: "项", // 整体阴性项目数
+                whole_positive_average: "分", // 整体阳性症状均分
+            },
+            listTabs:[],
+            curTab:"",
+            curIndex:0
+        };
+    },
+    computed:{
+        mobilePhone(){
+            let modelInfo = this.modelInfo || {};
+            if(modelInfo.mobile_phone){
+                return modelInfo.mobile_phone.substr(0, 3) + "****" + modelInfo.mobile_phone.substr(7);
+            } else {
+                return "--";
+            }
+        },
+        modelType(){
+            return "RUTTER"
+        }
+    },
+    methods: {
+        // loadData() {
+        //     let recordId = this.pageQuery.recordId || "";
+        //     let userId = Number(this.pageQuery.userId);
+        //     let modelId = Number(this.pageQuery.modelId);
+        //     let type = (this.pageQuery.type || "default") || this.pageQuery.default;
+        //     let req = this.req[type];
+        //     return this.$MainApi[req]({
+        //             data: {
+        //                 model_id: modelId,
+        //                 record_id: recordId + "",
+        //                 user_id: userId,
+        //             },
+        //         })
+        //         .then((res) => {
+        //             if (res.code) {
+        //                 let data = res.data || {};
+        //                 this.reportItems = data.report_items || [];
+        //                 this.userInfo = data.user_info || {};
+        //                 this.reportAnalyseList = data.report_analyse_list || [];
+        //                 this.modelInfo = this.userInfo.get_view_member || {};
+        //                 this.modelTime = this.userInfo.complete_time;
+        //             }
+        //         });
+        // },
+        getList(){
+            let recordId = this.pageQuery.recordId || "";
+             return this.$MainApi.getAssignModelList({
+                    data: { 
+                        record_id: recordId + "", 
+                    },
+                })
+                .then((res) => {
+                    let items = res.data && res.data.items||[];
+                    items.forEach((item,index)=>{
+                        item.name = 'tab'+item.model_id+'_'+item.record_id;
+                        if(index == 0){
+                            this.curTab = item.name;
+                        }
+                    })
+                    this.listTabs = items;
+                    setTimeout(() => {
+                        this.$refs[this.curTab] && this.$refs[this.curTab][0].loadData({modelId:this.listTabs[0].model_id,recordId:this.listTabs[0].record_id});
+                    }, 500);
+                })
+        },
+        changeTab(name){
+            this.curTab = name;
+            let curIndex = 0;
+            let item = this.listTabs.find((item,index)=>{
+                curIndex = index
+                return item.name == name;
+            });
+            this.curIndex = curIndex;
+            console.log('this.curTab',this.curTab,item,this.curIndex)
+            this.$refs[this.curTab] && this.$refs[this.curTab][0].loadData({modelId:item.model_id,recordId:item.record_id});
+        }
+    },
+    mounted() {
+        // this.loadData();
+        this.getList();
+    },
+};
+</script>
+
+<style lang="less">
+.report-list-index{
+    &.list-len-1{
+        .ivu-tabs-bar{
+            display: none;
+        }
+    }
+}
+</style>
+<style lang="less" scoped>
+.report-list-index{
+    .mt-style{
+        margin-top: 40px;
+    }    
+}
+</style>

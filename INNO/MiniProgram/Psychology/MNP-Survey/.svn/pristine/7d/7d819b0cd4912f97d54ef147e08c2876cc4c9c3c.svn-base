@@ -1,0 +1,41 @@
+import brandConfig from "./brand.config.js";
+import setConfig from "./setConfig.js";
+import brandM from "@/common/manager/brand-manager.js";
+let config = {
+	env: 'prod', // 环境，分 dev, prod, test （h5的环境下，只填写dev 就可以，可以根据域名来判断）
+	log: true,
+	clickLimitTime: 2000, // 连续点击 毫秒
+	PAGE_SIZE:20,
+	isWeixinH5() {
+		let ua = window.navigator.userAgent.toLowerCase();
+		if (ua.match(/MicroMessenger/i) == 'micromessenger') {
+			return true;
+		} else {
+			return false;
+		}
+	},
+};
+let installConfig = {};
+// #ifdef H5
+config.platformSrc = "H5"
+let brandMConf;
+installConfig = new Proxy({}, {
+	get:function(target, key){
+			let value = "";
+			if(!brandMConf){
+				config.appCode = brandM.appCode;
+				brandMConf = setConfig(config, brandConfig)
+			}
+			value = brandMConf[key];
+			return value;
+	},
+	set:function(target, key, value){},
+});
+// #endif
+// #ifdef MP
+config.appCode = 'SURVEY_INNO';
+config.platformSrc = "WXAPP";
+installConfig = setConfig(config, brandConfig);
+// #endif
+//
+export default installConfig;

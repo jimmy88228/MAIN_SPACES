@@ -1,0 +1,16 @@
+<!--components/mp-module/mp-scroll-view/mp-scroll-view.wxml-->
+<!-- 属性待补全 -->
+<scroll-view 
+    class="ext-scroll-view" 
+    style="{{boxStyle}}"
+    scroll-x="{{scrollType == 'x'}}" 
+    scroll-y="{{scrollType == 'y'}}" 
+    bindscroll="{{setScroll?scroll:''}}"
+    bindscrolltolower="scrollToLower"
+    bindscrolltoupper="scrolltoupper"
+    bindrefresherrefresh="refresherrefresh"
+    refresher-enabled="{{refresherEnabled}}"
+    refresher-triggered="{{refresherTriggered}}"
+    >
+    <slot></slot>
+</scroll-view>

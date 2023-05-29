@@ -1,0 +1,67 @@
+.upgrade_percentage_list{
+     background-color: #ffffff;
+}
+.share-title{
+     text-align:center;
+     padding-top:30rpx;
+     padding-bottom:10rpx;
+}
+.share-tip{
+     text-align:right;
+     padding:0px 20rpx;
+     padding-bottom: 10rpx;
+}
+.list-view{
+     height:calc(100vh - 120rpx);
+}
+.list-table{
+     position:relative;
+     padding-top: 58rpx;
+}
+.share-th{
+     background-color:#F5F5F5;
+     text-align: center;
+     position: absolute;
+     left:0px;
+     top:0px;
+     width:100%;
+     height:56rpx;
+}
+.table_row{
+     border-bottom: 1px solid #EFEFEF;
+     padding: 20rpx 0px;
+}
+.time-picker{
+     border:1px solid #efefef;
+     border-radius: 6rpx;
+     background-color:#fff;
+     box-sizing: border-box;
+     position: relative;
+     width: 85%;
+     margin:0 auto;
+     line-height:45rpx;
+     padding-right:10rpx;
+}
+.time-picker::after{
+     content: "";
+     width:0px;
+     height:0px;
+     display:block;
+     position: absolute;
+     top:50%;
+     right:10rpx;
+     border:6rpx solid #333;
+     border-top-color: transparent;
+     border-left-color:transparent;
+     transform:translateY(-80%) rotate(45deg);
+}
+.row-l{
+     width:90rpx;
+     text-align:right;
+}
+/* .remark_txt{
+     margin-bottom:20rpx;
+}
+.benefit_amount{
+     margin-bottom:20rpx;
+} */

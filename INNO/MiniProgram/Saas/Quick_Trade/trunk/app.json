@@ -1,0 +1,81 @@
+{
+    "pages": [
+        "pages/tabs/index/index",
+        "pages/tabs/user/user",
+        "pages/main/goods/index",
+        "pages/tabs/user/update_avatar/update_avatar",
+        "pages/main/staff-module/staff-center/staff-center",
+        "pages/main/staff-module/activity/index",
+        "pages/main/staff-module/repository/index",
+        "pages/main/cart/checkout/checkout",
+        "pages/main/staff-module/repository/goods/index",
+        "pages/main/staff-module/repository/goods/spec/index",
+        "pages/main/staff-module/repository/goods/detail/index",
+        "pages/main/staff-module/repository/goods/spec/edit/index",
+        "pages/main/staff-module/repository/goods/spec/add/index",
+        "pages/main/staff-module/repository/category/index",
+        "pages/main/staff-module/repository/category/detail/index"
+    ],
+    "subPackages": [
+      {
+        "root": "pages/micro_mall/order",
+        "pages": [
+          "order_list",
+          "order_info"
+        ]
+      },
+      {
+        "root": "pages/main/address",
+        "pages": [
+          "address-list/index",
+          "address-edit/index",
+          "self-get/index"
+        ]
+      }
+    ],
+    "tabBar": {
+        "custom": true,
+        "borderStyle": "black",
+        "color": "#7F7F7F",
+        "selectedColor": "#F5475F",
+        "backgroundColor": "#fff",
+        "list": [
+            {
+                "pagePath": "pages/tabs/index/index",
+                "text": "首页",
+                "iconPath": "/assets/images/tabBar/hot.png",
+                "selectedIconPath": "/assets/images/tabBar/hot-active.png"
+            },
+            {
+                "pagePath": "pages/tabs/user/user",
+                "text": "个人中心",
+                "iconPath": "/assets/images/tabBar/user.png",
+                "selectedIconPath": "/assets/images/tabBar/user-active.png"
+            }
+        ]
+    },
+    "window": {
+        "backgroundColor":"#F2F2F2",
+        "backgroundTextStyle": "light",
+        "navigationStyle": "default",
+        "navigationBarBackgroundColor": "#fff",
+        "navigationBarTitleText": "秒杀",
+        "navigationBarTextStyle": "black"
+    },
+    "usingComponents": {
+        "public-component": "/common/base/public/component/index",
+        "btns": "/components/common/basic/buttons/index",
+        "transition": "/components/common/basic/transition/index",
+        "window": "/components/common/view/window/index",
+        "custom-pop":"/components/common/basic/pop/custom-pop/index",
+        "ori-input":"/components/common/view/ori-cpts/ori-input/index",
+        "ori-scroll-view":"/components/common/view/ori-cpts/ori-scroll-view/index",
+        "ori-image":"/components/common/view/ori-cpts/ori-image/index",
+        "mode-image":"/components/common/basic/mode-image/index"
+    },
+    "requiredPrivateInfos": [
+      "chooseAddress"
+    ],
+    "style": "v2",
+    "sitemapLocation": "sitemap.json"
+}

@@ -1,0 +1,30 @@
+<!--components/custom/tabBar.wxml-->
+
+<block wx:if="{{tabbar.length && tabbar.length > 1}}">
+  <view class="tabbar_stay {{isIphoneX ? 'fix_iphoneX' : ''}}"></view>
+  <view class="custom_tabbar_area d_flex {{isIphoneX ? 'fix_iphoneX' : ''}}">
+    <view  class="tabbar_item flex1" wx:for="{{tabbar}}" wx:key="index">
+      <btns 
+      class="jump_btn" 
+      isLogin="{{isLogin}}" 
+      isNormal="{{!item.need_login}}"
+      customData="{{item.customData}}" 
+      bindclickcallback="pageJump"
+      >
+        <view class="{{type}}" style="color:{{item.is_this_page ? item.select_color : (item.color || '#b2b2b2')}}">
+          <view class="tabbar_img">
+            <block wx:if="{{item.iconfont}}">
+              <text class="iconfont _iconfont {{item.iconfont}}" style="{{item.iconfontsize ? 'font-size:' + item.iconfontsize : ''}}"></text>
+            </block>
+            <block wx:else>
+              <image src="{{item.selectedIconPath}}"  mode="aspectFit" wx:if="{{item.is_this_page}}"/>
+              <image src="{{item.iconPath}}"  mode="aspectFit" wx:else/>
+            </block>
+          </view>
+          <text class="tabbar_txt ">{{item.text}}</text>
+        </view>
+      </btns>
+
+    </view>
+  </view>
+</block>

@@ -1,0 +1,71 @@
+import authorize from "@/common/helper/authorize-set.js" 
+export default { 
+  data() {
+    return {
+      saveLoading: false,
+      fileType:"png",
+      quality:1,
+    }
+  },
+  methods: {
+    save(isCanSave=true) {
+      if(this.saveLoading||!isCanSave)return
+      this.saveLoading = true; 
+      authorize.checkAuthorize('scope.writePhotosAlbum',()=>{
+        uni.saveImageToPhotosAlbum({
+          filePath: this.posterImg||"",
+          success: (e) => {
+            console.log("save success", e);
+            uni.showToast({
+              title:"保存成功"
+            })
+          },
+          fail: (e) => {
+            console.log(e.errMsg);
+            if(e.errMsg.indexOf('cancel')==-1){
+              uni.showToast({
+                title:e&&e.errMsg||"保存失败"
+              })
+            }
+          },
+          complete:(e=>{
+            this.saveLoading = false;
+          })
+        });
+      },()=>{
+        this.saveLoading = false;
+        uni.showToast({
+          title:"保存失败"
+        })
+      })
+
+      // this.$refs.painter.canvasToTempFilePathSync({
+      //   fileType: this.fileType,
+      //   quality: this.quality,
+      //   success: (res) => {
+      //     console.log("tempFilePath", res.tempFilePath);
+      //     // 非H5 保存到相册
+      //     // H5 提示用户长按图另存
+      //     uni.saveImageToPhotosAlbum({
+      //       filePath: res.tempFilePath,
+      //       success: (e) => {
+      //         console.log("save success", e);
+      //         uni.showToast({
+      //           title:"保存成功"
+      //         })
+      //       },
+      //       fail: (e) => {
+      //         console.log(e.errMsg);
+      //         uni.showToast({
+      //           title:e&&e.errMsg||"保存失败"
+      //         })
+      //       },
+      //       complete:(e=>{
+      //         this.saveLoading = false;
+      //       })
+      //     });
+      //   },
+      // });
+    },
+  },
+}

@@ -1,0 +1,123 @@
+/* pages/micro_mall/lottery/lottery_tip/lottery_tip.wxss */
+.lottery_content{
+    position: absolute;
+    top: 100rpx;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 1;
+}
+.prize_bg{
+    position: relative;
+    width: 569rpx;
+    height: 686rpx;
+    opacity: 0;
+    transform: translate3d(0, -3000px, 0);
+}
+.isShow{
+  animation: bounceInDown .6s cubic-bezier(0.215, 0.61, 0.355, 1) forwards;
+}
+@keyframes bounceInDown {
+  0% {
+    opacity: 0;
+    transform: translate3d(0, -3000px, 0);
+  }
+
+  60% {
+    opacity: 1;
+    transform: translate3d(0, 25px, 0);
+  }
+
+  75% {
+    opacity: 1;
+    transform: translate3d(0, -10px, 0);
+  }
+
+  90% {
+    opacity: 1;
+    transform: translate3d(0, 5px, 0);
+  }
+
+  100% {
+    opacity: 1;
+    transform: translate3d(0, 0, 0);
+  }
+}
+
+.bg{
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 569rpx;
+    height: 686rpx;
+}
+.prize_info{
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content: center;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    margin-top:28rpx;
+    width:260rpx;
+}
+.prize_info_cont{
+  width:200rpx;
+  height:200rpx;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content: center;
+  background-color:#ffefbd;
+  border-radius:10rpx;
+}
+.prize_img{
+    width: 200rpx;
+    height: 200rpx;
+    border-radius: 20rpx;
+}
+.prize_name{
+    margin-top: 10rpx;
+    font-size: 34rpx;
+    color: #b06701;
+    font-weight: 600;
+    text-align: center;
+    word-break: break-all;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    letter-spacing: 0;
+}
+.use_prize{
+    position: relative;
+    width: 270rpx;
+    height: 108rpx;
+    margin: 40rpx auto 0 auto;
+    transform: translate3d(0, -3000px, 0);
+}
+.win_btn{
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 270rpx;
+    height: 108rpx;
+}
+.btn_text{
+    position: absolute;
+    top: 46%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 30rpx;
+    color: #fff;
+}
+.cancel_icon{
+    position: absolute;
+    top: 0;
+    right: 0;
+    z-index: 10;
+
+}

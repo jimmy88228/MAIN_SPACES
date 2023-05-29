@@ -1,0 +1,108 @@
+<template>
+	<view>
+		<view class="u-tabs-box" style="border-bottom: 2rpx solid #ddd;padding:10rpx;background-color: #fff;">
+			<u-search placeholder="输入聊天内容关键词..." v-model="searchq" 
+			@search="loadData" 
+			@custom="loadData"></u-search>
+		</view>
+		<scroll-view class="list-scroll-content" :style="{height: (scrollHeight-30) + 'px'}" scroll-y @scrolltolower="loadData">
+			<u-cell-group v-if="contentList.length > 0">
+				<u-cell-item v-for="(item,index) in contentList" :key="index" :arrow="false" :title-width="750">
+					<view slot="icon">
+						<u-avatar 
+						size="80"
+						style="margin-right:20rpx;"
+						:src="item.get_user_info != null ? item.get_user_info.wx_avatar : item.get_worker_info.avatar_format" 
+						:mode="item.get_worker_info != null ? 'square' : 'round' "></u-avatar>
+					</view>
+					<view slot="title" class="clamp title-box">
+						<rich-text :nodes="item.content_search"></rich-text>
+						<text class="text-sm">{{item.get_user_info != null ? item.get_user_info.wx_nick_name : item.get_worker_info.nick_name }}</text>
+					</view>
+					<view slot="right-icon" class="right-box">
+						<view>
+							<u-button type="success" size="mini" @click.stop="openSession(item)">查看上下文</u-button>
+						</view>
+						<view class="text-sm" style="text-align: center;">{{item.created_at_format}}</view>
+					</view>
+				</u-cell-item>
+			</u-cell-group>
+			
+			<!-- 空白页 -->
+			<u-empty v-if="contentList.length === 0" 
+			text="无搜索结果" 
+			mode="search" 
+			:style="{height: (scrollHeight-30) +'px'}"></u-empty>
+		</scroll-view>
+	</view>
+</template>
+
+<script>
+import {mapState, mapMutations} from 'vuex';
+
+/**
+ * 客服 - 聊天内容搜索
+ */	
+export default {
+	name: "csContentSearch",
+	components:{
+	},
+	props:{
+		scrollHeight:{
+			type:Number,
+			default:500,
+		}
+	},
+	data() {
+		return {
+			contentList:[],
+			searchq:'',
+			
+			// 会话详情
+			sessInfo:{},
+		}
+	},
+	methods:{
+		...mapMutations(['setSelectedCsSession']),
+		// 提供给父组件调用
+		init( sessInfo ){
+			this.sessInfo = sessInfo;
+		},
+		// 加载用户相关订单
+		loadData(){
+			this.$util.showLoading(this);
+			
+			this.$u.post( this.$api.csUserContentSearch, {
+				user_id: this.sessInfo.user_id, 
+				searchq: this.searchq,
+			})
+			.then( (response) => {
+				this.$util.hideLoading();
+				var res = response.data;
+				if( res.code ){
+					this.contentList = res.data;
+				}
+			});
+		},
+		// 打开会话
+		openSession( item ){
+			// 把内容参数传递到对话框组件
+			this.setSelectedCsSession(this.sessInfo);
+		
+			uni.navigateTo({
+				url:'/pages/app/customer-service-worker/cs-session?sess_id='+ this.sessInfo.id + '&content_id='+ item.id,
+			});
+		},
+	},
+}
+</script>
+
+<style lang="scss">
+.title-box{
+	line-height: 1.4;
+	max-width: 420rpx;
+}
+.text-sm{
+	font-size: $font-sm;
+}	
+</style>	

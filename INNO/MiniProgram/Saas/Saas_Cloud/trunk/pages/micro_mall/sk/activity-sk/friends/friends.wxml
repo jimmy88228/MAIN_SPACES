@@ -1,0 +1,17 @@
+<window class="window" ext-class="window-ext">
+  <view class="box" catchtouchmove="_noFn" style="{{boxStyle}}">
+    <view catchtap="hide" class="close_area">
+      <view class="close_icon">
+        <text class="row"></text>
+        <text class="line"></text>
+      </view>
+    </view>
+    <view class="tips">{{sum}}位好友为你助力成功</view>
+    <view class="f_box">
+      <view class="f_item" wx:for="{{friends}}" wx:key="userId">
+        <image class="img_user" mode="aspectFit" src="{{item.picture}}"></image>
+        <view class="name_user">{{item.name}}</view>
+      </view>
+    </view>
+  </view>
+</window>

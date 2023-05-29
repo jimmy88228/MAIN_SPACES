@@ -1,0 +1,22 @@
+page{
+    overflow:auto;
+    -webkit-overflow-scrolling: touch;
+}
+.room{ 
+    background-color:#f7f7f7;
+    height: 100vh;
+    padding: 25rpx 25rpx 0 25rpx;
+    box-sizing: border-box;
+}
+.box{
+    padding: 40rpx 30rpx;
+    box-sizing: border-box;
+    border-radius: 20rpx;
+    margin-top: 20rpx;
+    background-color: #fff;
+} 
+.scroll-view-box{
+    box-sizing: border-box;
+    padding-bottom: 180rpx;
+    overflow: hidden;
+}

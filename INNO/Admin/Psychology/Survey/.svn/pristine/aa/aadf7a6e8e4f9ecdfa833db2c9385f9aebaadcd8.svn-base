@@ -1,0 +1,222 @@
+<template>
+    <hold-layout :isFull="true" class="assessment-task" >
+        <rewrite-area class="flex" >
+            <Button type="primary" @click="editTask()" v-hasAction="'assessment_tasks_add'">创建活动</Button>
+        </rewrite-area>
+        <Table ref="myTable" class="full-table" :columns="columns" :data="list" border :loading="tableLoading" :row-class-name="rowClassName">
+            <template slot="time" slot-scope="{ row }">
+                <p class="time-p">
+                    <span class="t-item">{{row.start_time}}</span>~
+                    <span class="t-item">{{row.end_time}}</span>
+                </p>
+            </template>
+            <template slot="extend" slot-scope="{ row }">
+                <div class="operate-area">
+                    <!-- 'assessment_tasks_school_code' -->
+                    <a class="operate create-code" @click="createCode(row)" v-hasAction="true">生成二维码</a>
+                    <rewrite-tooltip theme="light" v-hasAction="'assessment_tasks_school_link'">
+                        <a class="operate" slot="_tip">生成链接</a>
+                        <div slot="_content" class="flex-s-c">
+                            <div class="text-flow m-r-10" style="width:auto;">{{row.h5Link}}</div>
+                            <a @click="createLink(row)">复制</a>
+                        </div>
+                    </rewrite-tooltip>
+
+                </div>
+            </template>
+            <template slot="handle" slot-scope="{ row, index }">
+                <div class="operate-area">
+                    <div class="operate-line">
+                        <a class="operate" @click="editTask(row.id)" v-hasAction="[row.handle.remove,'assessment_tasks_update']">编辑</a>
+                        <Poptip confirm title="确定删除该任务吗？" placement="left" @on-ok="removeItem(row, index)" v-hasAction="[row.handle.update,'assessment_tasks_remove']">
+                            <a class="operate">删除</a>
+                        </Poptip>
+                    </div>
+                </div>
+                <div class="operate-area">
+                    <a class="operate" @click="relateClass(row)" v-hasAction="['assessment_tasks_class_list']">关联班级</a>
+                </div>
+                <div class="operate-area">
+                    <a class="operate" @click="getTaskSchedule(row)" v-hasAction="['assessment_tasks_schedule']">活动概况</a>
+                    <!-- <a class="operate" @click="getTaskResult(row)" v-hasAction="['assessment_tasks_result']">测评结果</a> -->
+                </div>
+            </template>
+        </Table>
+        <rewrite-page slot="footer" :total="total" :current="page" :page-size="pageSize" :page-size-opts="pageSizeOpts" @on-change="e=>loadData(e)" @on-page-size-change="handlePageSizeChange" show-sizer show-elevator show-total transfer></rewrite-page>
+    </hold-layout>
+</template>
+
+<script>
+import ListMixin from "@/helper/mixin/list-mixin";
+import mixins from "./mixins";
+import Conf from "@/config";
+export default {
+    name: "assessTask",
+    mixins: [ListMixin, mixins],
+    data() {
+        return {
+            h5Admin: Conf.H5_ADMIN,
+        };
+    },
+    methods: {
+        rowClassName(row, index) {
+            if (row.is_self != 1) {
+                return "superItem";
+            }
+        },
+        onLoadData(page, extraData) {
+            return this.$MainApi
+                .assessmentTaskList({
+                    data: {
+                        ...extraData,
+                    },
+                })
+                .then((res) => {
+                    if (res.code) {
+                        let data = res.data || {};
+                        let items = data.items || [];
+                        items.map((item)=>{
+                            item._checked = false;
+                            item.h5Link = this.h5Admin + "/pages/startup/startup?id="+ item.id + "&schoolId=" + item.school_id + "&appCode=" + this._appCode
+                        })
+                        this.data = {
+                            total: data.total,
+                            list: items,
+                        };
+                    }
+                });
+        },
+        createCode(row) {
+            this.$UIModule({
+                mode: "code-view",
+                props: {
+                    codeTip: `<p class="big-tip">${this._structureName}</p><p class="tip">${row.activity_name}</p>`
+                },
+                options: {
+                    path: "pages/activities/evaluating/detail/detail",
+                    listParams: {
+                        structure_id: row.structure_id,
+                        structure_type: row.structure_type
+                    },
+                    params: {
+                        activityId: row.id,
+                        schoolId: row.school_id,
+                    },
+                    codeId: `surveys:${row.school_id}:${row.id}`
+                }
+            });
+        },
+        createCodeReq(row){
+            if (!Number(row.id) || !Number(row.school_id)) return Promise.reject();
+            return this.$MainApi
+                .createSchoolCode({
+                    data: {
+                        id: row.id,
+                        school_id: row.school_id,
+                    },
+                })
+                .then((res) => {
+                    if (res.code) {
+                        let data = res.data || {};
+                        return data;
+                    }
+                });
+        },
+        createLink(row) {
+            this.$utils.copyText(row.h5Link);
+        },
+        editTask(id) {
+            this.$router.push({
+                name: Number(id) ? "editAssessTast" : "addAssessTast",
+                query: {
+                    id: id || 0,
+                    type: "task",
+                },
+            });
+        },
+        getTaskSchedule(row) {
+            this.$router.push({
+                name: "assessTaskOverview",
+                query: {
+                    activityId: row.id || 0,
+                    schoolId: Number(row.school_id) || 0,
+                    type: "task",
+                },
+            });
+        },
+        getTaskResult(row) {
+            this.$router.push({
+                name: "assessTaskResult",
+                query: {
+                    activityId: row.id || 0,
+                    schoolId: Number(row.school_id) || 0,
+                    type: "task",
+                },
+            });
+        },
+        relateClass(row) {
+
+            this.$router.push({
+                name: "assessRelateClass",
+                query: {
+                    id: Number(row.id) || 0,
+                    actName: row.activity_name,
+                    schoolId: Number(row.school_id) || 0,
+                    activityTimeState: row.state,
+                    type: "task"
+                },
+            });
+        },
+        removeItem(id, index) {
+            this.batchRemoveActReq([id]).then(() => {
+                this.delItem(index);
+            });
+        },
+        batchRemoveActReq(ids) {
+            if (ids.length == 0 || !ids[0]) {
+                this.$Message.warning("请勾选删除项！");
+                return Promise.reject();
+            }
+            this.tableLoading = true;
+            return this.$MainApi
+                .assessmentTaskRemove({
+                    data: {
+                        ids: ids,
+                    },
+                })
+                .then((res) => {
+                    if (res.code) {
+                        this.$Message.success(res.message || "删除成功");
+                        return Promise.resolve();
+                    } else {
+                        this.$Message.warning(res.message || "删除失败");
+                        return Promise.reject();
+                    }
+                })
+                .finally(() => {
+                    this.tableLoading = false;
+                });
+        },
+    },
+    mounted() {
+        this.loadData();
+    },
+};
+</script>
+
+<style lang="less">
+.assessment-task {
+    .superItem {
+        td {
+            background-color: #effaff;
+        }
+    }
+    .create-code {
+        border: 0 none;
+        background: none;
+    }
+    .create-code:focus {
+        box-shadow: unset;
+    }
+}
+</style>

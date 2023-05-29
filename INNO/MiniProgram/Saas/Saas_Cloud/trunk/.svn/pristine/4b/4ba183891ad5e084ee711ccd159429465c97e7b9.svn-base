@@ -1,0 +1,25 @@
+<view class='goods_collocation'>
+  <view class='font_24 C_969696 collocation_box' catchtap='jump_list'>
+    <view>搭配套餐</view>
+    <view class='margin_50'>更多</view>
+    <image src='{{rightbutton}}' class='rightbutton' mode="widthFix"></image>
+  </view>
+  <scroll-view class='collocation_scroll' scroll-x="true">
+    <view class='scroll_box'>
+      <!-- <view  class='collocation_list_box'> -->
+      <view wx:for="{{package_list}}" wx:key="packageId" class='collocation_list_box' catchtap='collocationJump' data-id="{{item.packageId}}">
+        <image src='{{item.packageBgImage}}' class='img_collocation_item' mode="aspectFit"></image>
+        <view class='collocation_item'>
+          <view class='collocation_item_text font_28 C_000 bold'>{{item.packageName}}</view>
+          <view>
+            <view wx:if="{{item.discountPrice>0}}" class='font_28 mb_5 bold colloction_price' style='color:{{brand_info.style.font_color}}'>
+              <text>最多可省</text>
+              <text class='bold font_32'>¥{{item.discountPrice}}</text>
+            </view>
+            <view class='font_20 collocation_time'>活动至{{item.toDate}}</view>
+          </view>
+        </view>
+      </view>
+    </view>
+  </scroll-view>
+</view>

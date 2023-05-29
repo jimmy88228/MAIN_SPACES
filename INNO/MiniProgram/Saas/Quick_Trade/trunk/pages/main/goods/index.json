@@ -1,0 +1,8 @@
+{
+  "navigationBarTitleText": "商品详情",
+  "usingComponents": {
+    "goods-spec-pop": "/components/common/business/goods-spec-pop/index",
+    "share-pop": "/components/common/business/share-pop/index",
+    "poster-pop": "/components/common/business/poster-pop/index"
+  }
+}

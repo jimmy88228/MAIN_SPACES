@@ -1,0 +1,119 @@
+/* pages/micro_mall/user/users_upgrade.wxss */
+/* .userUpgrade{
+     padding-bottom: 110rpx;
+} */
+page{
+     background-color:#fff;
+}
+.header-bg{
+     width:100%;
+     height:460rpx;
+     background-size:100% auto;
+     background-repeat:no-repeat;
+     background-position:left top;
+     position:relative;
+     overflow:hidden;
+     background-color:#333;
+}
+.top_btn{
+     position:absolute;
+     top:30rpx;
+     right:35rpx;
+     font-size:0px;
+}
+.c_543A19{
+     color: #543A19;
+}
+
+.user-header-img{
+     color:#000;
+     text-align:center;
+     width:100%;
+     position: absolute;
+     top: 50%;
+     left: 50%;
+     transform:translate(-50%,-50%);
+}
+._user_header_img{
+     background:rgba(255,255,255,0.8);
+     display:inline-block;
+     border-radius: 100%;
+     box-shadow:0px 0px 10rpx #969696;
+     width:163rpx;
+     height:163rpx;
+     padding:7rpx;
+     margin-bottom:32rpx;
+}
+.user_header_img_stay{
+     width:163rpx;
+     height:163rpx;
+     display:block;
+     border-radius: 100%;
+     overflow:hidden;
+     position:relative;
+     
+}
+.user_header_img_stay image{
+     width:100%;
+     position:absolute;
+     top:50%;
+     left:50%;
+     border-radius: 100%;
+     transform:translate(-50%,-50%);
+}
+.top_btn{
+     position:absolute;
+     top:30rpx;
+     right:30rpx;
+}
+.tixian_btn_link{
+     border:1px solid #fff;
+     border-radius: 40rpx;
+     line-height:50rpx;
+     height:50rpx;
+     width:120rpx;
+     padding:0px;
+     box-sizing: border-box;
+     background-color:rgba(0,0,0,0.25);
+}
+.buy-button{
+     /* position: fixed;
+     bottom:0; */
+     width:100%;
+     background-color:#fff;
+     padding: 80rpx 70rpx;
+     box-sizing:border-box;
+     z-index:10;
+}
+.buy-button .but_btn{
+     height:90rpx;
+     background:#000;
+     color:#fff;
+     font-size:26rpx;
+     text-align:center;
+     border-radius: 8rpx;
+}
+.buy-button .invalid_btn{
+     background: none;
+}
+.buy-button .invalid_date{
+     margin-top:20rpx;
+     opacity:.8;
+     text-align:center;
+}
+.share_tip_bg{
+     position:fixed;
+     top:0px;
+     left:0px;
+     width:100%;
+     height:100%;
+     z-index:100;
+     background-color:rgba(0,0,0,0.6);
+}
+.share_tip_bg .share_bg_img{
+     width:90%;
+     display:block;
+     margin-left:auto;
+     margin-right: 4%;
+}
+

@@ -1,0 +1,28 @@
+<!--pages/goods/popup/service.wxml-->
+<window class="window" ext-class="window-ext">
+  <view class="service_popup" style="{{boxStyle}}">
+    <from bindsubmit="formAction" report-submit="true">
+      <view class="service_tit">
+        <text>服务详情</text>
+      </view>
+      <image catchtap="closeList" src='{{server_close}}'  mode='widthFix' class='server_close'></image>
+      <view class="service_cont">
+        <scroll-view class="service_scroll" scroll-y>
+          <view class="service_item" wx:for="{{goodsService}}" wx:key="index">
+            <view class="s_item_icon">
+              <image src="{{item.icon}}" mode="aspectFit"/>
+            </view>
+            <view class="s_item_info">
+              <view class="s_item_name">{{item.name}}</view>
+              <view class="s_item_desc">{{item.service_desc}}</view>
+            </view>
+          </view>
+        </scroll-view>
+      </view>
+      <view class="service_btn_area {{isIphoneX?'ipx_b':''}}">
+        <button class="confirm_btn" style="background-color:{{brand_info.style.font_color}};" catchtap="closeList">完成</button>
+      </view>
+    </from>
+  </view>
+  
+</window>

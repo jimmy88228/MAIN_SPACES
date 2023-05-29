@@ -1,0 +1,150 @@
+<template>
+  <view class="margin-box">
+    <view class="progress-box flex-b-c">
+      <view class="msg-box">
+        <view class="progress-group">
+          <view class="progress">
+            <view v-for="(item,i) in acInfo.modelIds" :key="i" :style="progressItemStyle">
+              <template v-if="item == modelId">
+                <view class="progress-item">
+                  <progress :percent="getPercent(answerCount, answerCount + restQuestions)" active
+                    active-mode="forwards" :duration="10" stroke-width="6" border-radius="8"
+                    :activeColor="brandStyle.themeColor" backgroundColor="rgba(216,216,216,0.3)" />
+                </view>
+              </template>
+              <template v-else>
+                <template v-if="acInfo.modelIds.indexOf(item) > acInfo.modelIds.indexOf(modelId)">
+                  <view class="progress-item">
+                    <progress :percent="0" active active-mode="forwards" duration="0" stroke-width="6" border-radius="8"
+                      :activeColor="'rgb(33,176,20,0.3)'" backgroundColor="rgba(216,216,216,0.3)" />
+                  </view>
+                </template>
+                <template v-if="acInfo.modelIds.indexOf(item) < acInfo.modelIds.indexOf(modelId)">
+                  <view class="progress-item">
+                    <progress :percent="0" active active-mode="forwards" duration="0" stroke-width="6" border-radius="8"
+                      :activeColor="'rgb(33,176,20,0.3)'" backgroundColor="rgb(33,176,20,0.3)" />
+                  </view>
+                </template>
+              </template>
+            </view>
+          </view>
+          <view v-if="acInfo.modelIds && acInfo.modelIds.length == 1"
+            class="progress-title C_7f font-14 f-shrink-0 p-r-20 m-b-10 flex-s-c m-t-10">
+            测评活动进度
+            {{ answerCount }}/{{ answerCount + restQuestions }}
+          </view>
+          <view v-else class="progress-title C_7f font-14 f-shrink-0 p-r-20 m-b-10 flex-s-c m-t-10">测评活动进度
+            {{allProcress}}
+          </view>
+        </view>
+      </view>
+      <view class="flex-s-c">
+        <button class="sm-btn flex-c-c C_7f m-r-10" @click="last">上一题</button>
+        <button class="sm-btn flex-c-c C_7f" @click="back">
+          暂停
+        </button>
+      </view>
+    </view>
+  </view>
+</template>
+
+<script>
+  const pageOption = Page.BasePage({
+    name: "mp-answer-progress",
+    components: {
+
+    },
+    props: {
+      // 当前量表信息
+      acInfo: {
+        type: Object,
+        default: {},
+      },
+      // 当前模块的ID
+      modelId: {
+        type: Number,
+        default: 0
+      },
+      // 回答题数
+      answerCount: {
+        type: Number,
+        default: 0
+      },
+      // 剩余最大可能回答提数
+      restQuestions: {
+        type: Number,
+        default: 0
+      }
+    },
+    data() {
+      return {};
+    },
+    computed: {
+      allProcress() {
+        let acInfo = this.acInfo;
+        let modelIds = acInfo.modelIds || [];
+        let modelId = this.modelId || 0;
+        let procress = modelIds.indexOf(modelId) + 1;
+        return procress + '/' + modelIds.length
+      },
+      progressItemStyle() {
+        let acInfo = this.acInfo;
+        let modelIds = acInfo.modelIds || [];
+        let count = modelIds.length;
+        let width = 100
+        if (count > 1) {
+          width = (100 / count).toFixed(0) - 1
+        }
+        return `width:${width}%`
+      },
+    },
+    onShow() {},
+    onReady() {},
+    methods: {
+      getPercent(cur, len) {
+        console.log(cur, len, "百分比")
+        return Number((cur / len).toFixed(2)) * 100;
+      },
+      last() {
+        this.$emit('last')
+      },
+      back() {
+        this.$emit('back', 'check')
+      }
+    },
+    watch: {
+
+    }
+  });
+  export default pageOption;
+</script>
+
+<style lang="scss" scoped>
+  @import "../../H5.scss";
+
+  .margin-box {
+    padding: 20px;
+    box-sizing: border-box;
+    border-radius: 20rpx;
+  }
+
+  .progress-box {
+    background: rgba($color: #f5fcf4, $alpha: 0.9);
+    padding: 40rpx;
+    border-radius: 20rpx;
+    width: 100%;
+    box-sizing: border-box;
+  }
+
+  .progress-item {
+    border-radius: 8px;
+    overflow: hidden
+  }
+
+  .progress {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+</style>

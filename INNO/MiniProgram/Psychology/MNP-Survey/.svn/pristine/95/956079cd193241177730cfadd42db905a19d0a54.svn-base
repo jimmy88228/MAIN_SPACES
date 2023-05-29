@@ -1,0 +1,423 @@
+<template>
+  <view class="adress-nav">
+    <page-nav>
+      <template slot="title"> 转院渠道 </template>
+    </page-nav>
+    <view v-if="showImg != -1">
+      <view class='fixed_posi'>
+        <view class='search_wrapper flex-s-c'>
+          <view class='input'>
+            <image :src="requireStatic('nearby-address/arc-white.png')" mode="aspectFit" class='icon_search' />
+            <input type='text' @input='synchroInput' :value="keyword" placeholder='请输入城市，街道，服务站名称'
+              placeholder-class="common_place" class='input_content' @confirm="searchStore" />
+          </view>
+          <view class="toSearch flex-c-c" @click="searchStore">搜索</view>
+        </view>
+      </view>
+      <view class='map_wrapper'>
+        <map id="map" class="map" :longitude="currlocation.o_longitude" :latitude="currlocation.o_latitude"
+          :scale="scale" :markers="markers" :show-location="loc_f==0"></map>
+        <view class="store_lists">
+          <view class="store_item" :data-store_sub="index" @click="getAddrMap" :data-item="item"
+            v-for="(item,index) in viewData" :key="index">
+            <view class="flex-b-c bold m-b-32">
+              <view class="store_name font-28 clamp2">{{item.name}}</view>
+              <view class="font-26">{{item.distance}}km</view>
+            </view>
+            <view class="store_info flex-s-c font-22"><image :src="requireStatic('/nearby-address/address.png')" mode="aspectFit" />{{item.address}}</view>
+            <view class="store_info flex-s-c font-22"><image :src="requireStatic('/nearby-address/telephone.png')" mode="aspectFit" />{{item.telephone}}</view>
+            <view class="store_info flex-s-c font-22"><image :src="requireStatic('/nearby-address/time.png')" mode="aspectFit" />{{item.serviceTime}}</view>
+          </view>
+          <view class="has_no_data" v-if="viewData.length == 0">附近暂没心理服务站</view>
+        </view>
+      </view>
+    </view>
+    <view class="empty_state" v-if="showImg != 1">
+      <view class="empty_txt">
+        <button class="author_btn" hover-class="none" @click="authorizeData">请重新授权定位</button>
+      </view>
+    </view>
+  </view>
+</template>
+
+<script>
+  import UniApi from "@/common/support/tools/uni-api-promise.js"
+  import coordtransform from "@/common/support/libs/map/index.js";
+
+  const app = getApp()
+  const pageOption = Page.BaseComp({
+    props: {
+
+    },
+    data() {
+      return {
+        showImg: 1,
+        keyword: "",
+        currlocation: {},
+        loc_f: 0,
+        pageIndex: 0,
+        pageSize: app.Conf.PAGE_SIZE,
+        hasMore: true,
+        isEmpty: false,
+        markers: [],
+        gotLocation: '',
+        viewData: [],
+        scale: 14
+      }
+    },
+    onLoad(options) {
+      this.options = options;
+      this.authorizeData();
+    },
+    onReady() {},
+    methods: {
+      getStoreData(searchName, isInit) {
+        let hasPaging = true;
+        let select_store = this.select_store;
+        let ops = this.options || {};
+        let pageIndex = isInit ? 1 : (this.pageIndex + 1 || 1);
+        let reqParams = {
+          search: searchName || "",
+          lat: -1,
+          lon: -1,
+          pageIndex,
+          pageSize: this.pageSize
+        }
+        return this.getCurrLoation.call(this).then(res => {
+          reqParams.lat = res.latitude;
+          reqParams.lon = res.longitude;
+          console.log('reqParams', reqParams, res)
+          return this.$Http(this.$Apis.getPsyServiceStationList, {
+            data: reqParams
+          }).then(e => {
+            if (e.code == 1) {
+              let data = e.data || {};
+              let store_data = data.list;
+              this.store_data = store_data;
+              this.pageIndex = pageIndex;
+              this.storeListHandle.call(this, store_data, hasPaging, pageIndex);
+              return Promise.resolve(e);
+            }
+            return Promise.reject();
+          })
+        })
+      },
+      searchStore() {
+        var keyword = this.keyword;
+        this.scale = 14;
+        this.pageIndex = 0;
+        this.getStoreData.call(this, keyword);
+      },
+      authorizeData() {
+        let key_word = this.options.key_word || ""
+        let that = this;
+        app.AS.checkAuthorize("scope.userLocation", function () {
+          that.showImg = 1
+          that.getStoreData.call(that, key_word);
+        }, function () {
+          app.SMH.showToast({
+            title: "定位失败"
+          })
+          that.showImg = -1
+        });
+      },
+      realMarker(w, h) {
+        let [scale, tranferWidth, tranferHeight] = [0, 0, 0];
+        let windowWidth = app.SIH.windowWidth;
+        scale = (750 / windowWidth).toFixed(2);
+        tranferWidth = (w / scale).toFixed(2);
+        tranferHeight = (h / scale).toFixed(2);
+        return {
+          width: Math.ceil(tranferWidth),
+          height: Math.ceil(tranferHeight)
+        };
+      },
+      //组装map marker
+      handleMarkers(dataList) {
+        var that = this;
+        return dataList && dataList.map((item, index) => {
+          var bd09togcj02 = coordtransform.bd09togcj02(item.longitude, item.latitude);
+          return {
+            iconPath: "../../../static/nearby-address/guide_point.png",
+            id: index,
+            latitude: bd09togcj02[1],
+            longitude: bd09togcj02[0],
+            width: that.realMarker.call(that, 32, 45).width,
+            height: that.realMarker.call(that, 32, 45).height,
+          }
+        });
+      },
+      // 获取地理位置
+      getCurrLoation(type = "") {
+        let that = this;
+        if (that.gotLocation) return Promise.resolve(that.gotLocation);
+        return UniApi.getLocation({
+          type: 'gcj02',
+        }).then(res => {
+          let latitude = res.latitude;
+          let longitude = res.longitude;
+          let currlocation = {
+            o_latitude: latitude,
+            o_longitude: longitude,
+          }
+          that.gotLocation = {
+            latitude,
+            longitude
+          };
+          console.log(res, "位置信息")
+          that.currlocation = currlocation
+          return Promise.resolve(res);
+        }).catch(e => {
+          console.log('catch', e)
+          let currlocation = that.currlocation || {};
+          let res = {
+            latitude: currlocation.o_latitude || -1,
+            longitude: currlocation.o_longitude || -1,
+          };
+          return Promise.resolve(res);
+        })
+
+      },
+      storeListHandle(store_data, hasPaging = false, pageIndex = 1) {
+        let handleData;
+        let pageSize = this.pageSize;
+        if (hasPaging) {
+          handleData = store_data || [];
+        } else { //从全部数据中抽取
+          let preIndex = (pageIndex - 1) * pageSize,
+            nextIndex = pageIndex * pageSize;
+          console.log(store_data, "data")
+          handleData = (store_data && store_data.slice(preIndex, nextIndex)) || [];
+        }
+        let viewData = this.viewData || [];
+        if (handleData.length == 0) {
+          this.hasMore = false;
+          this.isEmpty = viewData.length == 0
+        }
+        //获取坐标
+        let markers = this.markers || [];
+        let _markers = this.handleMarkers(handleData);
+        markers = pageIndex == 1 ? _markers : markers.concat(_markers);
+        //计算店铺
+        let currlocation = handleData[0] ? {
+          o_latitude: handleData[0].latitude,
+          o_longitude: handleData[0].longitude,
+        } : {};
+
+        this.hasMore = !(handleData.length < pageSize)
+        viewData = pageIndex == 1 ? handleData : viewData.concat(handleData);
+
+        console.log("数据", pageIndex, store_data, viewData, handleData);
+        if (hasPaging) { //存在分页,存起所有数据
+          this.all_store_data = viewData;
+        }
+        this.viewData = viewData;
+        this.currlocation = currlocation;
+        this.markers = markers;
+      },
+      synchroInput({
+        detail
+      }) {
+        var val = detail.value;
+        this.keyword = val
+      },
+      getAddrMap({
+        currentTarget
+      }) {
+        console.log(currentTarget.dataset, "dataset")
+        let item = currentTarget.dataset.item
+        this.jumpAction(`/pages/nearby-address/address-detail/address-detail?id=${item.id}`)
+      }
+    },
+    onReachBottom() {
+      if (this.isEmpty) {
+        return;
+      }
+      if (this.hasMore) {
+        let ops = this.options || {};
+        let keyword = this.keyword;
+        this.getStoreData.call(this, keyword, false);
+      } else {
+        app.SMH.showToast({
+          title: "已经到底了"
+        })
+      }
+    }
+  })
+  export default pageOption
+</script>
+
+<style lang="scss" scoped>
+  /* pages/micro_mall/stores/store_nav.wxss */
+  .adress-nav {
+    background: #F7F7F7;
+    min-height: 100vh;
+  }
+
+  .has_no_data {
+    width: 100%;
+    text-align: center;
+    font-size: 30rpx;
+    padding: 40rpx 0px;
+    color: #ababab;
+    margin-top: 30rpx;
+  }
+
+  .map_wrapper {
+    width: 100%;
+    top: 85rpx;
+    left: 0;
+  }
+
+  .map {
+    width: 100%;
+    height: 750rpx;
+  }
+
+  .select_area {
+    display: flex;
+    align-items: center;
+    min-width: 550rpx;
+  }
+
+
+  .fixed_posi {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 85rpx;
+    background: #fff;
+  }
+
+  .common_place {
+    color: #CECECE;
+    font-size: 24rpx;
+  }
+
+  .search_wrapper {
+    display: flex;
+    width: 98%;
+  }
+
+  .input {
+    width: 100%;
+    height: 66rpx;
+    border-bottom: 1rpx solid #EFEFEF;
+    display: flex;
+    align-items: center;
+  }
+
+  .toSearch {
+    width: 150rpx;
+    height: 66rpx;
+    flex-shrink: 0;
+    border-radius: 6rpx;
+    color: white;
+    font-size: 26rpx;
+    margin-left: 12rpx;
+    border: 1px solid;
+    box-sizing: border-box;
+    background: $uni-main-color;
+  }
+
+  .icon_search {
+    display: inline-block;
+    vertical-align: middle;
+    width: 40rpx;
+    height: 40rpx;
+    flex-shrink: 0;
+    padding-left: 12rpx;
+    margin-bottom: 3rpx;
+    flex: none 1 1 30rpx;
+  }
+
+  .input_content {
+    display: inline-block;
+    vertical-align: middle;
+    padding-left: 34rpx;
+    width: 100%;
+    flex: none 1 1 400rpx;
+    height: 66rpx;
+    line-height: 66rpx;
+    font-size: 24rpx;
+  }
+
+  .store_lists {
+    padding: 20rpx;
+  }
+
+  .store_item {
+    box-sizing: border-box;
+    width: 100%;
+    padding: 38rpx;
+    border-bottom: 1rpx solid rgba(249, 242, 237, 1);
+    background: #FFFFFF;
+    margin-bottom: 22rpx;
+    border-radius: 22rpx;
+  }
+  .store_name{
+    max-width: 400rpx;
+  }
+  .store_info{
+    margin-bottom: 18rpx;
+    image{
+      flex-shrink: 0;
+      width: 20rpx;
+      height: 20rpx;
+      margin-right: 16rpx;
+    }
+  }
+  .store_info:last-child{
+    margin-bottom: 0;
+  }
+  .store_label {
+    padding: 2rpx 6rpx;
+    background-color: #171717;
+    color: #fff;
+    font-size: 22rpx;
+    margin-left: 16rpx;
+    flex-shrink: 0;
+  }
+
+  .stopPanel {
+    width: 100%;
+    position: fixed;
+    left: 0;
+    bottom: 0;
+    height: 500rpx;
+    background: transparent;
+    z-index: 3;
+  }
+
+  .author_btn {
+    display: inline-block;
+    padding: 7rpx 30rpx;
+    border: 1px solid #ccc;
+    border-radius: 10rpx;
+  }
+
+  // 获取位置失败
+  .empty_state,
+  .empty_tip {
+    padding-top: 380rpx;
+    font-size: 26rpx;
+    color: #7f7f7f;
+    text-align: center;
+  }
+
+  .empty_txt {
+    font-size: 28rpx;
+    color: #7f7f7f;
+    text-align: center;
+  }
+
+  .author_btn {
+    display: inline-block;
+    padding: 7rpx 30rpx;
+    border: 1px solid #ccc;
+    border-radius: 10rpx;
+    font-size: 26rpx;
+    background: #FFFFFF;
+  }
+</style>

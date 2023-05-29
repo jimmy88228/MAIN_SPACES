@@ -1,0 +1,9 @@
+<view class="login_view">
+  <image src="{{brand_info.icon_url}}micro_mall/login/login_bg.png" mode="aspectFit" class="login_view_bg"/>
+  <view class="login_view_cont">
+    <image src="{{brand_info.logo_path}}micro_mall/login/login_logo.png" mode="aspectFit" class="login_view_logo"/>
+    <view class="operate_btn">
+      <view class="staff_tip">敬请期待！</view>
+    </view>
+  </view>
+</view>

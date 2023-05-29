@@ -1,0 +1,10 @@
+{
+    "navigationBarTitleText": "商品详情",
+    "usingComponents": {
+      "btns": "/components/buttons/btns",
+        "share": "/pages/micro_mall/goods/popup/share",
+        "shareImg": "/pages/micro_mall/goods/popup/shareImg",
+        "specPop":"/components/pop/specPop",
+        "act-count-down":"/components/act-count-down/act-count-down"
+    }
+}

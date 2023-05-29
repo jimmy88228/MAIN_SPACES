@@ -1,0 +1,84 @@
+<template>
+    <div class="search-box flex-s-c">
+        <div class="sate-box flex-s-c m-r-15">
+            <custom-select @change="e=>change(e,'sateChange','id')" class="custom-select" :curSelect="sateChange" :list="stateList" :scrollViewStyle="'height:' + (stateList.length>3?240:stateList.length*80) + 'rpx;'">
+                <div slot="tip" class="m-l-20 font-20">状态</div>
+            </custom-select>
+        </div> 
+        <div class="source-box flex-s-c">
+            <custom-select @change="e=>change(e,'sourceChange','customerName')" class="custom-select" :curSelect="sourceChange" :list="sourceList" :scrollViewStyle="'height:' + ((sourceList.length==0||sourceList.length>3)?240:sourceList.length*80) + 'rpx;'">
+                <div slot="tip" class="m-l-20 font-20">来源</div>
+            </custom-select>
+        </div>
+    </div>  
+</template>
+
+<script>
+import customSelect from "@/components/custom-cps/custom-select";
+
+const pageOption = Page.BaseComp({
+    data() {
+        return {
+            stateList:[{
+                id:-1,
+                title:"全部",
+            },{
+                id:0,
+                title:"未开始",
+            },{
+                id:1,
+                title:"已开始",
+            },{
+                id:2,
+                title:"已结束",
+            }],  
+            sourceChange:{},
+            sateChange:{},
+            
+        }
+    },
+    props: {
+        sourceList: {
+            type: Array,
+            default: ()=>[]
+        },
+    },
+    components: {
+        customSelect
+    },
+    methods: {
+        change(e,key,value){
+            this[key] = e;
+            this.$emit(key,e[value]);
+        }
+    },
+    mounted() {
+    },
+})
+export default pageOption
+</script>
+
+<style lang="scss" scoped>
+.search-box{  
+    .custom-select{
+        width: 236rpx;
+        height: 60rpx;
+    }
+    .source-box{
+        .custom-select{
+            width: auto;
+            min-width: 236rpx;
+            height: 60rpx;
+        }
+    }
+
+}
+@keyframes toggleAnim {
+    0%{
+        opacity: 0; 
+    }
+    100%{
+        opacity: 1; 
+    }
+}
+</style>

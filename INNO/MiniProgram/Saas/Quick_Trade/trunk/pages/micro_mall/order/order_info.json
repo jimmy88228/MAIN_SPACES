@@ -1,0 +1,9 @@
+{
+  "navigationStyle": "custom",
+  "navigationBarTitleText": "订单详情",
+  "usingComponents": {
+    "custom-nav": "/components/common/view/custom-nav/index",
+    "change-order-status-pop": "./modules/change-order-status-pop/index",
+    "pay-qrcode": "./modules/pay-qrcode/index"
+  }
+}

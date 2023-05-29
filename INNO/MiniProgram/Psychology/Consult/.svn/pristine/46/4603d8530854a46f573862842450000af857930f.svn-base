@@ -1,0 +1,201 @@
+<template>
+	<view>
+		<view class="u-tabs-box" style="border-bottom: 2rpx solid #ddd;padding:10rpx;background-color: #fff;">
+			<u-search placeholder="输入 昵称/手机号/会员卡 搜索" v-model="keyword" 
+			@search="loadData" 
+			@custom="loadData"></u-search>
+		</view>
+		<scroll-view class="list-scroll-content" :style="{height:(boxHeight-30)+'px'}" scroll-y>
+			
+			<u-cell-group v-if="userList.length > 0">
+				<u-cell-item
+				v-for="(item, index) in userList" :key="index" 
+				:arrow="false">
+					<view slot="icon" style="position:relative;height:80rpx;">
+						<u-avatar :src="(item.get_user_info != null ? item.get_user_info.wx_avatar : '')" size="80" mode="square" 
+						style="margin-right:20rpx;"
+						@click.native.stop="openUserInfo(item)"></u-avatar>
+					</view>
+					<view slot="title" class="title-box">{{item.get_user_info !=null ? item.get_user_info.wx_nick_name : ''}}</view>
+					<view slot="label" class="clamp label-box">
+						{{item.get_user_content_once.content_search}}
+					</view>
+					<view slot="right-icon" class="right-box">
+						
+						<template v-if="item.get_session_info.status == 0 && canJoinUser">
+							<u-button type="primary" size="mini" @click.stop="userJoinSession(index, item.id)">接入会话</u-button>
+						</template>
+						<template v-else-if="item.get_session_info.status == 1 && item.get_session_info.worker_id == workerId ">
+							<u-button type="success" size="mini" @click.stop="openSession(item)">进入会话</u-button>
+						</template>
+						<text v-else-if="item.get_session_info.status == 1 && item.get_session_info.worker_id != workerId " style="color:#f90;">他人接入</text>
+						<template v-else-if="item.get_session_info.status == 2 && item.over48hours == false && item.get_session_info.openid_type != 'APP' && canJoinUser" style="color:#f90;">
+							<u-button type="primary" size="mini" @click.stop="workerCreateSession(item)">主动发起</u-button>
+						</template>
+						<text v-else-if="item.get_session_info.status == 2 && item.over48hours == true && item.get_session_info.openid_type != 'APP' " style="color:#ed4014;">已超时</text>
+						<template v-else-if="item.get_session_info.status == 2 && item.get_session_info.openid_type == 'APP' && canJoinUser ">
+							<u-button type="primary" size="mini" @click.stop="workerCreateSession(item)">主动发起</u-button>
+						</template>
+						<view style="line-height:1.5;text-align: center;">{{item.get_user_content_once.created_at_format}}</view>
+						
+					</view>
+				</u-cell-item>
+			</u-cell-group>
+			
+			<!-- 空白页 -->
+			<u-empty v-if="userList.length === 0" 
+			text="暂无历史" 
+			mode="data" 
+			:style="{height: boxHeight +'px'}"></u-empty>
+			
+		</scroll-view>
+	</view>
+</template>
+
+<script>
+import {mapState, mapMutations} from 'vuex';
+
+/**
+ * 历史 - 客户列表
+ */	
+export default {
+	name: "csHistoryList",
+	components: {
+	},
+	props:{
+		boxHeight:{
+			type:Number,
+			default: 800,
+		},
+	},
+	data() {
+		return {
+			userList:[],
+			workerId: 0,
+			keyword: '',
+			canJoinUser: true,
+			
+			// admin info
+			info:{},
+		}
+	},
+	mounted(){
+
+	},
+	methods: {
+		...mapMutations(['setSelectedCsSession']),
+		// 父组件触发初始化
+		initData( info ){
+			this.info = info;
+			this.workerId = this.info.worker.id;
+			
+			// 是否有权主动接入用户
+			if( this.info.worker != null && this.info.worker.get_group !=null && this.info.worker.get_group.can_join ==0 ){
+				this.canJoinUser = false;
+			}
+			else{
+				this.canJoinUser = true;
+			}
+		},
+		loadData(){
+			this.$util.showLoading(this);
+			// ajax 请求获取数据，
+			this.$u.post( this.$api.csHistoryUserList, {
+				searchq: this.keyword,
+				searchqType: 'any',
+			})
+			.then( (response) => {
+				this.$util.hideLoading();
+				var res = response.data;
+				if( res.code ){
+					// 初始化表数据
+					this.userList = res.data.items;
+				}
+			});
+		},
+		// 打开会话
+		openSession( item ){
+			// 把内容参数传递到对话框组件
+			this.setSelectedCsSession(item);
+
+			uni.navigateTo({
+				url:'/pages/app/customer-service-worker/cs-session?sess_id='+ item.id ,
+			});
+			
+			// 清空keyword
+			this.keyword = '';
+		},
+		// 把用户接入到“接收”会话
+		userJoinSession( index, sessionId ){
+			if(this.info.worker.status > 0 ){
+				this.$util.showLoading(this);
+				this.$u.post( this.$api.csJoinSession, {
+					from_worker_id: 0,
+					to_worker_id: this.workerId,
+					session_id: sessionId,
+				})
+				.then( (response) => {
+					this.$util.hideLoading();
+					var res = response.data;
+					if( res.code ){
+						// 直接把接入的用户作为选中的session
+						var sessInfo = this.userList[ index ];
+						sessInfo['worker_id'] = this.workerId;
+						this.$emit('join-success', { sess:sessInfo });
+						
+						// 清空keyword
+						this.keyword = '';
+					}
+					else{
+						this.$u.toast(res.message);
+					}
+				});
+			}
+			else{
+				this.$u.toast('当前客服处于离线状态，不能接入用户');
+			}
+		},
+		// 客服主动创建会话
+		workerCreateSession( sessInfo ){
+			this.$util.showLoading(this);
+			this.$u.post( this.$api.csWorkerCreateSession, {
+				user_id: sessInfo.get_user_info.id,
+			})
+			.then( (response) => {
+				this.$util.hideLoading();
+				var res = response.data;
+				if( res.code ){
+					
+					// 直接把接入的用户作为选中的session
+					sessInfo['worker_id'] = this.workerId;
+					this.$emit('join-success', { sess:sessInfo });
+					
+					// 清空keyword
+					this.keyword = '';
+				}
+			});
+		},
+		// 查看用户信息
+		openUserInfo( item ){
+			this.$emit('on-view-user', {sessInfo: item});
+		}
+	}
+}
+</script>
+	
+<style lang="scss">
+.list-scroll-content {
+	height: 100%;
+}
+
+.uni-swiper-item {
+	height: auto;
+}
+.label-box{
+	font-size: $font-sm;
+	color:#bbb;
+	line-height:1;
+	margin-top:4rpx;
+	max-width: 480rpx;
+}
+</style>

@@ -1,0 +1,60 @@
+<template>
+	<view class="user">
+		<custom-page :userInfo="userInfo" :authUserInfo="authInfo" :hold-nav="true" nav-mode="None" ref="customPageRef"
+			:isShowSupport="true"></custom-page>
+	</view>
+</template>
+
+<script>
+	const app = getApp();
+	const pageOption = Page.BasePage({
+		data() {
+			return {
+				imgUser: '',
+				userInfo: {},
+				authInfo: {},
+			}
+		},
+		// onShareAppMessage(e){},
+		methods: {
+			reFreshInfo() {
+				this._getAuthUserInfo().then(res => {
+					this.authInfo = res;
+				})
+				this._getBsnUserInfo().then(res => {
+					this.userInfo = res;
+					// 获取用户登录配置用来判断是否显示切换用户
+					app.Sysm.getLoginConfig(0).then((lRes) => {
+						this.userInfo = {
+							...res,
+							loginConfig:lRes.data
+						}
+					})
+				})
+
+			},
+			getMinePageDetail() {
+				return this.$Http(this.$Apis.getMinePageDetail, {
+					other: {
+						isShowLoad: true
+					}
+				}).then(res => {
+					if (res.code == 1) {
+						let data = res.data || {};
+						this.$refs["customPageRef"].initData(data);
+					}
+				})
+			}
+		},
+		onShow() {
+			this._checkLogin().then(() => {
+				this.reFreshInfo();
+			})
+			this.getMinePageDetail();
+		},
+	})
+	export default pageOption
+</script>
+
+<style lang="scss" scoped>
+</style>

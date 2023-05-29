@@ -1,0 +1,654 @@
+<template>
+  <view class="my-reserve-page" :class="!isEmpty ? 'bg_f7 ' : 'bg_fff'">
+    <page-nav>
+      <template slot="title">
+        <view>我的预约</view>
+      </template>
+    </page-nav>
+    <view v-if="!isEmpty">
+      <view class="reserve-list">
+        <view v-for="(pageItem, pageIndex) in consultantList" :key="pageIndex">
+          <view class="reserve-item" v-for="(item,index) in pageItem" :key="index">
+            <view class="flex-b-c m-b-40">
+              <view class="clamp" style="width:100%">
+                <view class="font-20 C_8E m-b-15 flex-b-c" style="width:100%">
+                  <view>
+                    发起时间 {{ initDate(item.createTime) }}
+                  </view>
+                  <view class="self-pay-type flex-c-c" v-if="item.payType == 'self'">
+                    自费
+                  </view>
+                </view>
+                <view class="bold C_333 font-30 clamp">预约咨询师 {{ item.consultantName }}</view>
+              </view>
+            </view>
+            <view class="reserve-finally flex">
+              <image class="f-shrink-0" :src="staticAddress+informationIcon" mode="widthFix" />
+              <view>
+                <view class="bold C_333 m-b-15 flex">
+                  <view>{{consultResultType[item.consultResult]}}</view>
+                  <view class="reserve-tips flex-c-c" v-if="item.serviceType == 'offline' && item.consultResult == 1">
+                    请及时前往线下咨询</view>
+                  <template v-else>
+                    <view class="reserve-tips flex-c-c" v-if="item.appointmentType =='UNSTART'">待开始</view>
+                    <view class="reserve-tips flex-c-c" v-else-if="item.appointmentType =='STARTING'">已开始</view>
+                    <view class="reserve-tips flex-c-c reserve-tips-grey" v-else-if="item.appointmentType =='FINISH'">
+                      已结束
+                    </view>
+                    <view class="reserve-tips flex-c-c reserve-tips-grey"
+                      v-else-if="item.appointmentType =='UNCONFIRM'">
+                      待确认</view>
+                  </template>
+                </view>
+                <template v-if="item.consultResult == 2">
+                  <view class="flex font-26 opa-60">
+                    <view class="C_333">{{item.remark}}</view>
+                  </view>
+                </template>
+                <template v-else>
+                  <view class="flex font-26 m-b-15 opa-60">
+                    <view class="C_7f f-shrink-0 m-r-10" style="width:105rpx">预约日期</view>
+                    <view class="C_333">{{replaceMonthStr(item.scheduleDay || '')+' '+(item.consultTime||'')}}</view>
+                  </view>
+                  <view class="flex font-26 opa-60">
+                    <view class="C_7f f-shrink-0 m-r-10" style="width:105rpx">咨询方式</view>
+                    <view class="C_333">{{item.confirmServiceWay || item.serviceWay}}</view>
+                  </view>
+                </template>
+              </view>
+            </view>
+            <view class="button-area flex-e-c m-t-30">
+              <view class="enter-room flex-c-c font-24 m-r-15" @click="showInfo(pageIndex, index)">预约详情</view>
+              <template v-if="item.serviceType == 'video' || item.serviceType == 'voice'">
+                <!-- <view class="enter-room enter-room-able flex-c-c font-24" :data-pg-index="pageIndex" :data-item="item"
+                  @click="enterRoom">进入房间</view> -->
+                <view class="enter-room enter-room-able flex-c-c font-24" v-if="item.join == 1"
+                  :data-pg-index="pageIndex" :data-item="item" @click="enterRoom">进入房间</view>
+                <view class="enter-room enter-room-disabled flex-c-c font-24 "
+                  v-else-if="item.appointmentType == 'UNSTART' && item.join == 0">进入房间</view>
+              </template>
+              <view class="enter-room flex-c-c font-24" v-if="item.consultResult == 0" @click="cancelReserve"
+                :data-pg-index="pageIndex" :data-item="item">取消预约</view>
+            </view>
+          </view>
+        </view>
+      </view>
+    </view>
+    <view class="absolute empty" v-else>
+      <image :src="staticAddress+emptyIcon" class="empty-icon" mode="scaleToFill" />
+      <view class="C_B2 font-32">暂无预约导师哦~</view>
+    </view>
+    <ori-popup @touchmove.stop.prevent="disabledScroll" ref="popup" type="bottom" :is-mask-click="true"
+      :safe-area="false">
+      <template v-slot:content>
+        <view class="new-popup-content flex-col-1">
+          <view class="top-tips flex-b-c m-b-30">
+            <view class="reserve-type-group flex-s-c">
+              <view class="reserve-type font-26 C_333 bold">
+                {{consultResultType[popupItem.consultResult]}}</view>
+              <view class="begin-type" v-if="popupItem.serviceType == 'offline' && popupItem.consultResult == 1">
+                请及时前往线下咨询</view>
+              <template v-else>
+                <view class="begin-type" v-if="popupItem.appointmentType =='STARTING'">已开始</view>
+                <view class="begin-type" v-else-if="popupItem.appointmentType =='UNSTART'">待开始</view>
+                <view class="begin-type begin-type-grey" v-else-if="popupItem.appointmentType =='FINISH'">已结束</view>
+                <view class="begin-type begin-type-grey" v-else-if="popupItem.appointmentType =='UNCONFIRM'">待确认</view>
+              </template>
+              <view class="pay-type" v-if="popupItem.payType == 'self'">自费</view>
+            </view>
+            <view class="close-icon" @click="closePupup"></view>
+          </view>
+          <view class="warning-tips flex-s-c font-24 m-b-30" v-if="popupItem.consultResult == 2">
+            {{popupItem.remark}}
+          </view>
+          <view class="reserve-consultant-detail p-b-20">
+            <view class="font-24 m-b-18">
+              <text class="C_7f m-r-10">预约咨询师</text><text class="C_333">{{popupItem.consultantName}}</text>
+            </view>
+            <view class="font-24 m-b-18">
+              <text class="C_7f m-r-10">预约日期</text><text
+                class="C_333">{{replaceMonthStr(popupItem.scheduleDay || '')+' '+(popupItem.consultTime||'')}}</text>
+            </view>
+          </view>
+          <view class="flex-col-1 p-t-32" style="overflow: hidden;">
+            <scroll-view :scroll-y="true" class="scroll-view-info">
+              <view class="C_7f font-24 m-b-18">问题描述</view>
+              <text class="font-26 C_333 w-break"
+                style="line-height:40rpx">{{popupItem.psychologicalDescription}}</text>
+            </scroll-view>
+          </view>
+          <view class="font-20 C_B2 m-t-10">预约发起时间 {{popupItem.createTime}}</view>
+        </view>
+      </template>
+    </ori-popup>
+  </view>
+</template>
+
+<script>
+  import oriPopup from "@/components/ori-comps/popup/ori-popup";
+  const app = getApp();
+  const pageOption = Page.BasePage({
+    data() {
+      return {
+        isEmpty: false,
+        pageIndex: 0,
+        pageSize: app.Conf.PAGE_SIZE,
+        hasMore: true,
+        informationIcon: "/information.png",
+        emptyIcon: "/list-empty.png",
+        options: {},
+        consultantList: [],
+        clickPage: "",
+        popupItem: [],
+        showPupup: false,
+        payType: {
+          "self": "自费",
+          "company": "报销",
+        },
+        consultResultType: {
+          0: "预约中",
+          1: "预约成功",
+          2: "预约失败",
+          3: "已取消预约"
+        }
+      };
+    },
+    components: {
+      oriPopup,
+    },
+    onShow() {
+      // 记录上次点击的页面数据，局部刷新
+      if (String(this.clickPage)) {
+        this.pageIndex = this.clickPage || 0;
+        this.loadData();
+      }
+    },
+    onReady() {
+      this.init();
+    },
+    methods: {
+      disabledScroll() {
+        return
+      },
+      init() {
+        this.consultantList = [];
+        this.pageIndex = 0;
+        this.clickPage = "";
+        this.hasMore = true;
+        this.isEmpty = false;
+        this.loadData()
+      },
+      // 格式化时间
+      initDate(date) {
+        if (date)
+          return date.slice(0, 16);
+      },
+      loadData() {
+        let pageIndex = this.pageIndex ? this.pageIndex + 1 : 1;
+        return this.$Http(this.$Apis.selectSelfConsultantAppointmentByPage, {
+            data: {
+              pageIndex,
+              pageSize: this.pageSize,
+            },
+          })
+          .then((res) => {
+            if (res.code == 1) {
+              let data = res.data || {};
+              this.pageIndex = pageIndex;
+              let currPage = pageIndex - 1 ? pageIndex - 1 : 0;
+              this.consultantList[currPage] = data.list || [];
+              this.hasMore = this.pageIndex * this.pageSize < data.totalCount;
+              this.setEmpty(this.consultantList);
+              UniApi.stopPullDownRefresh();
+            }
+            return res;
+          })
+          .catch(() => {
+            this.setEmpty(this.consultantList);
+          });
+      },
+      replaceMonthStr(str) {
+        const strAry = str.split('');
+        if (strAry.length == 0) return ''
+        strAry[4] = "年";
+        strAry[7] = "月";
+        strAry[10] = "日";
+        return strAry.join('');
+      },
+      cancelReserve({
+        currentTarget
+      }) {
+        let dataset = currentTarget.dataset;
+        let item = dataset.item;
+        let pgIndex = dataset.pgIndex;
+        console.log(dataset, "dataset")
+        uni.showModal({
+          content: "取消当前预约？",
+          success: (res) => {
+            if (res.confirm) {
+              return this.$Http(this.$Apis.cancelAppoint, {
+                data: {
+                  appointmentId: item.appointmentId
+                }
+              }).then(res => {
+                if (res.code) {
+                  this.pageIndex = pgIndex
+                  this.loadData();
+                }
+              })
+            }
+          }
+        })
+
+      },
+      setEmpty(data) {
+        if (data instanceof Array) {
+          if (data.length == 0 || !data[0] || (data[0] && data[0].length == 0)) {
+            this.isEmpty = true;
+          } else {
+            this.isEmpty = false;
+          }
+        } else {
+          this.isEmpty = false;
+        }
+      },
+      enterRoom({
+        currentTarget
+      }) {
+        let dataset = currentTarget.dataset || {};
+        let pgIndex = dataset.pgIndex || "";
+        let item = dataset.item || {};
+        let roomKey = item.roomKey || "";
+        let mobilePhone = item.mobilePhone || 0;
+        uni.navigateToMiniProgram({
+          appId: 'wx19cd7cb13177d4ad',
+          path: `pages/startup/startup?roomKey=${roomKey}&mobilePhone=${mobilePhone}&userType=client`,
+          // 仅对非正式版有效
+          envVersion: "trial",
+          success(res) {
+            // 打开成功
+            this.clickPage = pgIndex
+          }
+        })
+      },
+      showInfo(pageIndex, itemIndex) {
+        let consultantList = this.consultantList;
+        let pageGroup = consultantList.filter((item, i) => {
+          return i == pageIndex
+        })[0] || {};
+        let selectedItem = pageGroup.filter((item, i) => {
+          return i == itemIndex
+        })[0] || {};
+        this.popupItem = selectedItem;
+        let ref = "popup";
+        this.$refs[ref].show();
+        console.log(pageIndex, itemIndex);
+      },
+      closePupup() {
+        let ref = "popup";
+        this.$refs[ref].dismiss();
+      },
+    },
+    onReachBottom() {
+      console.log("到达底部");
+      if (this.hasMore) {
+        this.loadData();
+      }
+    },
+  });
+  export default pageOption;
+</script>
+
+<style lang="scss" scoped>
+  .my-reserve-page {
+    min-height: 100vh;
+    box-sizing: border-box;
+
+    .reserve-list {
+      padding: 25rpx 25rpx calc(25rpx + env(safe-area-inset-bottom));
+
+      .reserve-item {
+        background: #FFFFFF;
+        border-radius: 12rpx;
+        padding: 30rpx;
+        margin-bottom: 22rpx;
+
+        .self-pay-type {
+          width: 41rpx;
+          height: 23rpx;
+          background: rgba($color: #E9E9E9, $alpha: 0.5);
+          border-radius: 5rpx;
+          border: 1rpx solid rgba($color: #B2B2B2, $alpha: 0.5);
+          color: #7F7F7F;
+          font-size: 16rpx;
+        }
+
+        .status {
+          width: 98rpx;
+          height: 36rpx;
+          background: #F9FFF9;
+          border-radius: 18rpx;
+          border: 2rpx solid #D7F3D7;
+          font-size: 22rpx;
+          font-family: PingFangSC-Regular, PingFang SC;
+          font-weight: 400;
+          color: #1EA511;
+        }
+
+        .status-finish {
+          background: #F8F8F8 !important;
+          border: 1px solid #EFEFEF !important;
+          color: #B2B2B2 !important;
+        }
+
+        .reserve-info-item {
+          margin-bottom: 30rpx;
+
+          &>view:first-child {
+            margin-right: 26rpx;
+            width: 105rpx;
+            flex-shrink: 0;
+            font-size: 26rpx;
+            color: #7F7F7F;
+          }
+        }
+
+        .reserve-finally {
+          padding: 30rpx 40rpx;
+          background-color: rgba($color: #9DD6F0, $alpha: 0.1);
+          border-radius: 6rpx;
+
+          &>image {
+            width: 69rpx;
+            height: 69rpx;
+            border-radius: 6rpx;
+            margin-right: 35rpx;
+          }
+
+          .reserve-tips {
+            margin-left: 7rpx;
+            font-size: 16rpx;
+            line-height: 22rpx;
+            padding: 0 4rpx;
+            background: rgba($color: #E3FFE7, $alpha: 0.5);
+            border-radius: 5rpx;
+            border: 1px solid rgba($color: #35AC47, $alpha: 0.5);
+            color: $uni-main-color;
+          }
+
+          .reserve-tips-grey {
+            background: rgba($color: #E9E9E9, $alpha: 0.5);
+            border-radius: 5rpx;
+            border: 1px solid rgba($color: #B2B2B2, $alpha: 0.5);
+            color: #7F7F7F;
+          }
+        }
+
+        .button-area {
+          .enter-room {
+            width: 160rpx;
+            height: 66rpx;
+            border-radius: 6rpx;
+            background: #FFFFFF;
+            border: 2rpx solid #DDDDD0;
+            color: #7F7F7F;
+          }
+
+          .enter-room-able {
+            background: #21B014;
+            color: #FFFFFF;
+          }
+
+          .enter-room-disabled {
+            background: #F1F1F1;
+            color: #B2B2B2;
+          }
+        }
+      }
+    }
+
+    // .reserve-item {
+    //   margin: 17rpx 0;
+
+    //   .reserve-item-info {
+    //     width: 100%;
+    //     height: 290rpx;
+    //     box-sizing: border-box;
+    //     padding: 32rpx;
+    //     border-radius: 20rpx;
+    //     background: #ffffff;
+    //     position: relative;
+
+    //     &>view:first-child {
+    //       width: 100%;
+    //       font-size: 26rpx;
+    //       font-family: PingFangSC-Regular, PingFang SC;
+    //       font-weight: 400;
+    //       color: #8e8e8e;
+    //       line-height: 50rpx;
+    //       overflow: hidden;
+    //       text-overflow: ellipsis;
+    //     }
+    //   }
+
+    //   .status {
+    //     position: absolute;
+    //     bottom: 32rpx;
+    //     right: 32rpx;
+    //     // width: 100%;
+    //     box-sizing: border-box;
+    //     padding-top: 15rpx;
+    //     display: flex;
+
+    //     &>view {
+    //       border-radius: 33rpx;
+    //       width: 80rpx;
+    //       height: 34rpx;
+    //       display: flex;
+    //       align-items: center;
+    //       justify-content: center;
+    //       font-size: 18rpx;
+    //       border-width: 2rpx;
+    //       border-style: solid;
+    //     }
+    //   }
+    // }
+  }
+
+  .status-padding {
+    border-color: #6bd361;
+    background: #efffee;
+    color: #21b014;
+  }
+
+  .status-success {
+    border-color: #efefef;
+    background: #f8f8f8;
+    color: #b2b2b2;
+  }
+
+  // 暂无数据
+  .empty {
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+
+    .empty-icon {
+      width: 254rpx;
+      height: 254rpx;
+      margin-bottom: 47rpx;
+      margin: 0 auto;
+    }
+  }
+
+  // 弹出框
+  .popup-content {
+    background: #ffffff;
+    border-radius: 20rpx 20rpx 0px 0px;
+    padding-top: 50rpx;
+    padding-left: 55rpx;
+    padding-right: 55rpx;
+    padding-bottom: calc(16rpx + constant(safe-area-inset-bottom));
+    padding-bottom: calc(16rpx + env(safe-area-inset-bottom));
+    position: relative;
+
+    // .close-icon {
+    //   position: absolute;
+    //   top: 30rpx;
+    //   right: 21rpx;
+    //   width: 34rpx;
+    //   height: 34rpx;
+    // }
+    .close-icon {
+      position: absolute;
+      top: 30rpx;
+      right: 21rpx;
+      width: 56rpx;
+      height: 56rpx;
+      line-height: 52rpx;
+      // border: 1px solid #025299;
+      background-color: transparent;
+      // position: relative;
+    }
+
+    .close-icon::before,
+    .close-icon::after {
+      content: "";
+      position: absolute;
+      height: 36rpx;
+      width: 4rpx;
+      top: 10rpx;
+      left: 26rpx;
+      background: #000000;
+    }
+
+    .close-icon::before {
+      transform: rotate(45deg);
+    }
+
+    .close-icon::after {
+      transform: rotate(-45deg);
+    }
+
+    .popup-consultant-name {
+      max-width: 230rpx;
+    }
+
+    .status-popup {
+      display: inline-block;
+      margin-left: 20rpx;
+      padding: 5rpx 13rpx;
+      border-radius: 33rpx;
+      border-width: 2rpx;
+      border-style: solid;
+    }
+
+    .scroll-view-info {
+      height: 550rpx;
+      width: 100%;
+      line-height: 50rpx;
+    }
+  }
+
+  // 新弹出框
+  .new-popup-content {
+    background: #ffffff;
+    border-radius: 20rpx 20rpx 0px 0px;
+    padding-top: 47rpx;
+    padding-left: 55rpx;
+    padding-right: 55rpx;
+    padding-bottom: calc(16rpx + constant(safe-area-inset-bottom));
+    padding-bottom: calc(16rpx + env(safe-area-inset-bottom));
+    height: 900rpx;
+    position: relative;
+
+    .top-tips {
+
+      .reserve-type-group {
+        .reserve-type {
+          margin-right: 12rpx;
+        }
+
+        .begin-type {
+          background: #E3FFE7;
+          border-radius: 5rpx;
+          opacity: 0.5;
+          border: 1rpx solid #35AC47;
+          font-size: 16rpx;
+          color: $uni-main-color;
+          padding: 0 5rpx;
+          margin-right: 9rpx;
+          box-sizing: border-box;
+          line-height: 22rpx;
+        }
+
+        .begin-type-grey {
+          background: rgba($color: #E9E9E9, $alpha: 0.5);
+          border-radius: 5rpx;
+          border: 1px solid rgba($color: #B2B2B2, $alpha: 0.5);
+          color: #7F7F7F;
+        }
+
+        .pay-type {
+          background: #E9E9E9;
+          border-radius: 5rpx;
+          opacity: 0.5;
+          border: 1rpx solid #B2B2B2;
+          font-size: 16rpx;
+          color: #7F7F7F;
+          padding: 0 5rpx;
+          box-sizing: border-box;
+          line-height: 22rpx;
+        }
+      }
+
+      .close-icon {
+        width: 56rpx;
+        height: 56rpx;
+        line-height: 52rpx;
+        // border: 1px solid #025299;
+        background-color: transparent;
+        position: relative;
+      }
+
+      .close-icon::before,
+      .close-icon::after {
+        content: "";
+        position: absolute;
+        height: 36rpx;
+        width: 4rpx;
+        top: 10rpx;
+        left: 26rpx;
+        background: #000000;
+      }
+
+      .close-icon::before {
+        transform: rotate(45deg);
+      }
+
+      .close-icon::after {
+        transform: rotate(-45deg);
+      }
+    }
+
+    .warning-tips {
+      width: 100%;
+      min-height: 70rpx;
+      padding: 0 21rpx;
+      box-sizing: border-box;
+      background: rgba($color: #FFF1C6, $alpha: 0.1);
+      border-radius: 6rpx;
+      color: #E8843D;
+      line-height: 40rpx;
+    }
+
+    .reserve-consultant-detail {
+      border-bottom: 1px solid rgba($color: #979797, $alpha: 0.23);
+    }
+
+    .scroll-view-info {
+      height: 100%;
+    }
+  }
+</style>

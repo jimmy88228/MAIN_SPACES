@@ -1,0 +1,253 @@
+function getSetConfig(config = {}, brandConfig) {
+	let brandCode = config.brandCode;
+	let env = config.env;
+	console.log("[brandCode].env", `${brandCode}`)
+	return {
+		...config,
+		...brandConfig,
+		...((allBrandConfig[brandCode] && allBrandConfig[brandCode][env]) || {})
+	}
+}
+export default getSetConfig;
+const allBrandConfig = {
+	// 英朗
+	SURVEY_INNO: {
+		dev: {
+			appCode: "SURVEY_INNO",
+			appType: "edu",
+			staticConfig: "https://psyimage.innourl.com/v/asset/eap/general/static",
+			"apiDomain": {
+				"USERAPI": "https://eapapi.innourl.com",
+				"REGAPI": "https://eapapi.innourl.com",
+				"WECHATAPI": "https://eapapi.innourl.com",
+				"EDEAPI": "https://eapapi.innourl.com",
+				"EVALUATEAPI": "https://eapapi.innourl.com",
+				"PAGEAPI": "https://eapapi.innourl.com",
+				"RESOURCEAPI": "https://eapapi.innourl.com",
+				"CONSULTANTAPI": "https://eapapi.innourl.com",
+				"COMMONAPI": "https://eapapi.innourl.com",
+				"SUPERVISIONAPI": "https://eapapi.innourl.com",
+				"SUPERVISORAPI": "https://eapapi.innourl.com",
+				"WARNINGAPI": "https://eapapi.innourl.com",
+				"ARCHIVESAPI": "https://eapapi.innourl.com",
+				"COMMISSIONERAPI": "https://eapapi.innourl.com",
+				"GAMEAPI": "https://eapapi.innourl.com",
+				"AUTHAPI": "https://eapapi.innourl.com",
+				"TREEHOLEAPI": "https://eapapi.innourl.com",
+				"PSYSERVICEAPI": "https://eapapi.innourl.com",
+				"FUNTESTAPI": "https://eapapi.innourl.com",
+				"SPECIALSECTIONAPI": "https://eapapi.innourl.com",
+				"LOGAPI": "https://eapapi.innourl.com/log",
+			}
+		},
+		prod: {
+			appCode: "SURVEY_INNO",
+			appType: "eap",
+			staticConfig: "https://psyimage.innourl.com/v/asset/eap/general/static",
+			"apiDomain": {
+				"USERAPI": "https://psyapi.innourl.com",
+				"REGAPI": "https://psyapi.innourl.com",
+				"WECHATAPI": "https://psyapi.innourl.com",
+				"EDEAPI": "https://psyapi.innourl.com",
+				"EVALUATEAPI": "https://psyapi.innourl.com",
+				"PAGEAPI": "https://psyapi.innourl.com",
+				"RESOURCEAPI": "https://psyapi.innourl.com",
+				"CONSULTANTAPI": "https://psyapi.innourl.com",
+				"COMMONAPI": "https://psyapi.innourl.com",
+				"SUPERVISIONAPI": "https://psyapi.innourl.com",
+				"SUPERVISORAPI": "https://psyapi.innourl.com",
+				"WARNINGAPI": "https://psyapi.innourl.com",
+				"ARCHIVESAPI": "https://psyapi.innourl.com",
+				"COMMISSIONERAPI": "https://psyapi.innourl.com",
+				"GAMEAPI": "https://psyapi.innourl.com",
+				"AUTHAPI": "https://psyapi.innourl.com",
+				"TREEHOLEAPI": "https://psyapi.innourl.com",
+				"PSYSERVICEAPI": "https://psyapi.innourl.com",
+				"LOGAPI": "https://psyapi.innourl.com",
+				"FUNTESTAPI": "https://psyapi.innourl.com",
+				"SPECIALSECTIONAPI": "https://psyapi.innourl.com",
+			}
+		}
+
+	},
+	// 中华人民共和国广州海关
+	SURVEY_GZHG: {
+		dev: {
+			appCode: "SURVEY_GZHG",
+			appType: "eap",
+			staticConfig: "https://shximage.innourl.com/v/asset/eap/general/static",
+			"apiDomain": {
+				"USERAPI": "https://shxeapapi.innourl.com",
+				"REGAPI": "https://shxeapapi.innourl.com",
+				"WECHATAPI": "https://shxeapapi.innourl.com",
+				"EDEAPI": "https://shxeapapi.innourl.com",
+				"EVALUATEAPI": "https://shxeapapi.innourl.com",
+				"PAGEAPI": "https://shxeapapi.innourl.com",
+				"RESOURCEAPI": "https://shxeapapi.innourl.com",
+				"CONSULTANTAPI": "https://shxeapapi.innourl.com",
+				"COMMONAPI": "https://shxeapapi.innourl.com",
+				"SUPERVISIONAPI": "https://shxeapapi.innourl.com",
+				"SUPERVISORAPI": "https://shxeapapi.innourl.com",
+				"WARNINGAPI": "https://shxeapapi.innourl.com",
+				"ARCHIVESAPI": "https://shxeapapi.innourl.com",
+				"COMMISSIONERAPI": "https://shxeapapi.innourl.com",
+				"GAMEAPI": "https://shxeapapi.innourl.com",
+				"AUTHAPI": "https://shxeapapi.innourl.com",
+				"TREEHOLEAPI": "https://shxeapapi.innourl.com",
+				"PSYSERVICEAPI": "https://shxeapapi.innourl.com",
+				"LOGAPI": "https://shxeapapi.innourl.com",
+				"FUNTESTAPI": "https://shxeapapi.innourl.com",
+				"SPECIALSECTIONAPI": "https://shxeapapi.innourl.com",
+			}
+		},
+		prod: {
+			appCode: "SURVEY_GZHG",
+			appType: "eap",
+			staticConfig: "https://psyimage.innourl.com/v/asset/eap/general/static",
+			"apiDomain": {
+				"USERAPI": "https://shxeapapi.innourl.com",
+				"REGAPI": "https://shxeapapi.innourl.com",
+				"WECHATAPI": "https://shxeapapi.innourl.com",
+				"EDEAPI": "https://shxeapapi.innourl.com",
+				"EVALUATEAPI": "https://shxeapapi.innourl.com",
+				"PAGEAPI": "https://shxeapapi.innourl.com",
+				"RESOURCEAPI": "https://shxeapapi.innourl.com",
+				"CONSULTANTAPI": "https://shxeapapi.innourl.com",
+				"COMMONAPI": "https://shxeapapi.innourl.com",
+				"SUPERVISIONAPI": "https://shxeapapi.innourl.com",
+				"SUPERVISORAPI": "https://shxeapapi.innourl.com",
+				"WARNINGAPI": "https://shxeapapi.innourl.com",
+				"ARCHIVESAPI": "https://shxeapapi.innourl.com",
+				"COMMISSIONERAPI": "https://shxeapapi.innourl.com",
+				"GAMEAPI": "https://shxeapapi.innourl.com",
+				"AUTHAPI": "https://shxeapapi.innourl.com",
+				"TREEHOLEAPI": "https://shxeapapi.innourl.com",
+				"PSYSERVICEAPI": "https://shxeapapi.innourl.com",
+				"LOGAPI": "https://shxeapapi.innourl.com",
+				"FUNTESTAPI": "https://shxeapapi.innourl.com",
+				"SPECIALSECTIONAPI": "https://shxeapapi.innourl.com",
+			}
+		}
+
+	},
+	// 上馨心理咨询中心
+	SURVEY_SXFW: {
+		dev: {
+			appCode: "SURVEY_SXFW",
+			appType: "eap",
+			staticConfig: "https://shximage.innourl.com/v/asset/eap/general/static",
+			"apiDomain": {
+				"USERAPI": "https://shxeapapi.innourl.com",
+				"REGAPI": "https://shxeapapi.innourl.com",
+				"WECHATAPI": "https://shxeapapi.innourl.com",
+				"EDEAPI": "https://shxeapapi.innourl.com",
+				"EVALUATEAPI": "https://shxeapapi.innourl.com",
+				"PAGEAPI": "https://shxeapapi.innourl.com",
+				"RESOURCEAPI": "https://shxeapapi.innourl.com",
+				"CONSULTANTAPI": "https://shxeapapi.innourl.com",
+				"COMMONAPI": "https://shxeapapi.innourl.com",
+				"SUPERVISIONAPI": "https://shxeapapi.innourl.com",
+				"SUPERVISORAPI": "https://shxeapapi.innourl.com",
+				"WARNINGAPI": "https://shxeapapi.innourl.com",
+				"ARCHIVESAPI": "https://shxeapapi.innourl.com",
+				"COMMISSIONERAPI": "https://shxeapapi.innourl.com",
+				"GAMEAPI": "https://shxeapapi.innourl.com",
+				"AUTHAPI": "https://shxeapapi.innourl.com",
+				"TREEHOLEAPI": "https://shxeapapi.innourl.com",
+				"PSYSERVICEAPI": "https://shxeapapi.innourl.com",
+				"LOGAPI": "https://shxeapapi.innourl.com",
+				"FUNTESTAPI": "https://shxeapapi.innourl.com",
+				"SPECIALSECTIONAPI": "https://shxeapapi.innourl.com",
+			}
+		},
+		prod: {
+			appCode: "SURVEY_SXFW",
+			appType: "eap",
+			staticConfig: "https://shximage.innourl.com/v/asset/eap/general/static",
+			"apiDomain": {
+				"USERAPI": "https://shxeapapi.innourl.com",
+				"REGAPI": "https://shxeapapi.innourl.com",
+				"WECHATAPI": "https://shxeapapi.innourl.com",
+				"EDEAPI": "https://shxeapapi.innourl.com",
+				"EVALUATEAPI": "https://shxeapapi.innourl.com",
+				"PAGEAPI": "https://shxeapapi.innourl.com",
+				"RESOURCEAPI": "https://shxeapapi.innourl.com",
+				"CONSULTANTAPI": "https://shxeapapi.innourl.com",
+				"COMMONAPI": "https://shxeapapi.innourl.com",
+				"SUPERVISIONAPI": "https://shxeapapi.innourl.com",
+				"SUPERVISORAPI": "https://shxeapapi.innourl.com",
+				"WARNINGAPI": "https://shxeapapi.innourl.com",
+				"ARCHIVESAPI": "https://shxeapapi.innourl.com",
+				"COMMISSIONERAPI": "https://shxeapapi.innourl.com",
+				"GAMEAPI": "https://shxeapapi.innourl.com",
+				"AUTHAPI": "https://shxeapapi.innourl.com",
+				"TREEHOLEAPI": "https://shxeapapi.innourl.com",
+				"PSYSERVICEAPI": "https://shxeapapi.innourl.com",
+				"LOGAPI": "https://shxeapapi.innourl.com",
+				"FUNTESTAPI": "https://shxeapapi.innourl.com",
+				"SPECIALSECTIONAPI": "https://shxeapapi.innourl.com",
+			}
+		}
+
+	},
+	// 省航道
+	SURVEY_GDHD: {
+		dev: {
+			appCode: "SURVEY_GDHD",
+			appType: "eap",
+			staticConfig: "https://shximage.innourl.com/v/asset/eap/general/static",
+			"apiDomain": {
+				"USERAPI": "https://shxeapapi.innourl.com",
+				"REGAPI": "https://shxeapapi.innourl.com",
+				"WECHATAPI": "https://shxeapapi.innourl.com",
+				"EDEAPI": "https://shxeapapi.innourl.com",
+				"EVALUATEAPI": "https://shxeapapi.innourl.com",
+				"PAGEAPI": "https://shxeapapi.innourl.com",
+				"RESOURCEAPI": "https://shxeapapi.innourl.com",
+				"CONSULTANTAPI": "https://shxeapapi.innourl.com",
+				"COMMONAPI": "https://shxeapapi.innourl.com",
+				"SUPERVISIONAPI": "https://shxeapapi.innourl.com",
+				"SUPERVISORAPI": "https://shxeapapi.innourl.com",
+				"WARNINGAPI": "https://shxeapapi.innourl.com",
+				"ARCHIVESAPI": "https://shxeapapi.innourl.com",
+				"COMMISSIONERAPI": "https://shxeapapi.innourl.com",
+				"GAMEAPI": "https://shxeapapi.innourl.com",
+				"AUTHAPI": "https://shxeapapi.innourl.com",
+				"TREEHOLEAPI": "https://shxeapapi.innourl.com",
+				"PSYSERVICEAPI": "https://shxeapapi.innourl.com",
+				"LOGAPI": "https://shxeapapi.innourl.com",
+				"FUNTESTAPI": "https://shxeapapi.innourl.com",
+				"SPECIALSECTIONAPI": "https://shxeapapi.innourl.com",
+			}
+		},
+		prod: {
+			appCode: "SURVEY_GDHD",
+			appType: "eap",
+			staticConfig: "https://shximage.innourl.com/v/asset/eap/general/static",
+			"apiDomain": {
+				"USERAPI": "https://shxeapapi.innourl.com",
+				"REGAPI": "https://shxeapapi.innourl.com",
+				"WECHATAPI": "https://shxeapapi.innourl.com",
+				"EDEAPI": "https://shxeapapi.innourl.com",
+				"EVALUATEAPI": "https://shxeapapi.innourl.com",
+				"PAGEAPI": "https://shxeapapi.innourl.com",
+				"RESOURCEAPI": "https://shxeapapi.innourl.com",
+				"CONSULTANTAPI": "https://shxeapapi.innourl.com",
+				"COMMONAPI": "https://shxeapapi.innourl.com",
+				"SUPERVISIONAPI": "https://shxeapapi.innourl.com",
+				"SUPERVISORAPI": "https://shxeapapi.innourl.com",
+				"WARNINGAPI": "https://shxeapapi.innourl.com",
+				"ARCHIVESAPI": "https://shxeapapi.innourl.com",
+				"COMMISSIONERAPI": "https://shxeapapi.innourl.com",
+				"GAMEAPI": "https://shxeapapi.innourl.com",
+				"AUTHAPI": "https://shxeapapi.innourl.com",
+				"TREEHOLEAPI": "https://shxeapapi.innourl.com",
+				"PSYSERVICEAPI": "https://shxeapapi.innourl.com",
+				"LOGAPI": "https://shxeapapi.innourl.com",
+				"FUNTESTAPI": "https://shxeapapi.innourl.com",
+				"SPECIALSECTIONAPI": "https://shxeapapi.innourl.com",
+			}
+		}
+
+	}
+}

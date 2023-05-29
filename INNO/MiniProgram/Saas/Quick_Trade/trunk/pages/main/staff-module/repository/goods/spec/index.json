@@ -1,0 +1,6 @@
+{
+  "navigationBarTitleText": "添加规格",
+  "usingComponents": {
+    "act-product-list":"/components/common/business/act-product-list/index"
+  }
+}

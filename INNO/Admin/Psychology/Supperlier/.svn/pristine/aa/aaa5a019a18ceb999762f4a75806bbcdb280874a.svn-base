@@ -1,0 +1,39 @@
+export default{
+  data(){
+    return {
+      columns: [
+        {
+          title: "EAP专员",
+          key: "name",
+          minWidth: 120
+        },
+        {
+          title: "咨询方向",
+          key: "mobile_phone",
+          minWidth: 130
+        },
+        {
+          title: "督导方式",
+          key: "mobile_phone",
+          minWidth: 130
+        },
+        {
+          title: "来源",
+          slot: "target",
+          minWidth: 200
+        },
+        {
+          title: "预约结果",
+          key: "consult_result_str",
+          minWidth: 150
+        },
+        {
+          title: "操作",
+          slot: "handle",
+          align: "left",
+          width: 160
+        }
+      ]
+    }
+  }
+}

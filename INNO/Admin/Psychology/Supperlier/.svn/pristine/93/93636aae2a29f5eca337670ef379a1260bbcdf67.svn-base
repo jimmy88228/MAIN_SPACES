@@ -1,0 +1,252 @@
+<template>
+  <div class="group-view-area" v-bar>
+    <div class="group-view-list" >
+      <div style="min-height: 200px">
+        <div class="group-view-item" @click="changeGroup(0)" :class="chooseGroupId == 0 ? 'selected' : ''">
+          <div class="view-item text-flow">
+            <div class="text-flow">全部</div>
+          </div>
+        </div>
+        <div class="group-view-item" @click="changeGroup(item.group_id)" :class="chooseGroupId == item.group_id ? 'selected' : ''" v-for="(item, index) in groupList" :key="item.group_id">
+          <div class="view-item text-flow" :title="item.group_name">
+            <div class="view-item-input" @click.stop="_func" v-show="item.editIng">
+              <custom-input :show-word-limit="true" :maxlength="30" :ref="'input-item-' + index" :autofocus="item.editIng" @on-blur="editGroup(item, index)"  v-model="item.new_group_name"/>
+              <div class="view-item-hold" v-if="item.disabled">修改中...</div>
+            </div>
+            <div class="text-flow" v-show="!item.editIng">{{item.group_name}}</div>
+          </div>
+          <div class="edit-item" @click.stop="editItem(index)"><Icon type="md-create" /></div>
+        </div>
+        <!-- <div class="empty-area" v-if="groupList.length == 0">暂无分组</div> -->
+      </div>
+      <div class="add-group-area">
+        <Poptip
+        v-model="addGroupInfo.showPop"
+          title="新增分组">
+            <div slot="content">
+              <custom-input :show-word-limit="true" :maxlength="30" class="base-320" placeholder="请输入分组名称" v-model="addGroupInfo.group_name"/>
+              <div class="text-r">
+                <Button class="m-t-10" @click.stop="addGroupInfo.showPop = false" type="default">取消</Button>&nbsp;
+                <Button class="m-t-10" :loading="addGroupInfo.loading" @click.stop="addGroup" type="primary">确定</Button>
+              </div>
+            </div>
+            <Button  class="add-group">新建分组</Button>
+        </Poptip>
+      </div>
+    </div>
+    <Spin fix v-if="pageLoading"></Spin>
+  </div>
+</template>
+
+<script>
+export default {
+  name: "",
+  props: {
+    type: String,
+  },
+  data() {
+    return {
+      chooseGroupId: 0,
+      groupList: [],
+      addGroupInfo: { group_name: "", loading: false, showPop: false},
+      reqKey: {
+        video: {
+          list: "getVideoGroupList",
+          info: "getVideoGroupInfo",
+          add: "videoGroupAdd",
+          update: "videoGroupUpdate"
+        },
+        audio: {
+          list: "getAudioGroupList",
+          info: "getAudioGroupInfo",
+          add: "audioGroupAdd",
+          update: "audioGroupUpdate"
+        },
+        article: {
+          list: "getArticleGroupList",
+          info: "getArticleGroupInfo",
+          add: "articleGroupAdd",
+          update: "articleGroupUpdate"
+        },
+        course: {
+          list: "courseManagementGroupList",
+          info: "getArticleGroupInfo",
+          add: "courseManagementGroupAdd",
+          update: "courseManagementUpdateGroup"
+        },
+      },
+      searchForm: { searchq: "", is_all: 1 }
+    };
+  },
+  methods: {
+    getData(){
+      if(!this.type) return Promise.reject();
+      let req = this.reqKey[this.type].list;
+      this.pageLoading = true;
+      return this.$MainApi[req]({
+          data: {
+            ...this.searchForm,
+            page: 1,
+            pageSize: 1000
+          },
+        })
+        .then((res) => {
+          if (res.code) {
+            let data = res.data || {};
+            let items = data.items || [];
+            for(let i = 0; i < items.length; i++){
+              items[i].disabled = false;
+              items[i].editIng = false;
+              items[i].new_group_name = items[i].group_name;
+            }
+            this.groupList = data.items || [];
+          }
+        }).finally(()=>{
+          this.pageLoading = false;
+        })
+    },
+    addGroup(){
+      if(!this.addGroupInfo.group_name) return;
+      let req = this.reqKey[this.type].add;
+      this.addGroupInfo.loading = true;
+      return this.$MainApi[req]({
+          data: this.addGroupInfo,
+        })
+        .then((res) => {
+          if (res.code) {
+            this.addGroupInfo.showPop = false;
+            this.addGroupInfo.group_name = "";
+            this.getData();
+           } else {
+            this.$Message.warning(res.message);
+          }
+        }).finally(()=>{
+          this.addGroupInfo.loading = false;
+        })
+    },
+    editItem(index){
+      let item = this.groupList[index] || {};
+      if(!item.editIng){
+        this.$set(this.groupList[index], "editIng", true);
+        this.$nextTick(()=>{
+          this.$refs["input-item-" + index] && this.$refs["input-item-" + index][0].focus();
+        })
+      }
+    },
+    editGroup(item, index){
+      if(item.new_group_name == item.group_name) {
+        this.$set(this.groupList[index], "editIng", false);
+        return
+      };
+      let req = this.reqKey[this.type].update;
+      this.$set(this.groupList[index], "disabled", true);
+      return this.$MainApi[req]({
+        data: {
+          group_id: item.group_id,
+          group_name: item.new_group_name
+        },
+      })
+      .then((res) => {
+        if (res.code) { 
+          this.$set(this.groupList[index], "group_name", item.new_group_name)
+          this.$set(this.groupList[index], "editIng", false);
+          } else {
+          this.$Message.warning(res.message);
+        }
+      }).finally(()=>{
+        this.$set(this.groupList[index], "disabled", false);
+      })
+    },
+    changeGroup(id){
+      if(this.chooseGroupId == id){
+        this.chooseGroupId = 0
+      } else {
+        this.chooseGroupId = id;
+      }
+      this.$emit("change", this.chooseGroupId)
+    }
+  },
+  mounted(){
+    this.getData();
+  }
+};
+</script>
+
+<style lang="less" scoped>
+.group-view-area {
+  position: relative;
+  height:100%;
+  .group-view-list {
+    position:relative;
+    height:100%;
+    .group-view-item {
+      width: 100%;
+      height: 50px;
+      display: flex;
+      align-items: center;
+      padding: 0px 10px;
+      margin-bottom: 10px;
+      background-color: #fff;
+      cursor: pointer;
+      .view-item{
+        flex: 1;
+        .view-item-input{
+          width:100%;
+          position:relative;
+          .view-item-hold{
+            background-color: rgba(255,255,255);
+            border: 1px solid #efefef;
+            position:absolute;
+            top:0px;
+            left:0px;
+            width:100%;
+            height:100%;
+            display: flex;
+            align-items:center;
+            justify-content: center;
+            color:#0883CC;
+          }
+        }
+      }
+      .edit-item{
+        width: 30px;
+        height: 100%;
+        position:relative;
+        cursor: pointer;
+        .ivu-icon{
+          position: absolute;
+          top: 50%;
+          left: 50%;
+          transform: translate(-50%, -50%);
+        }
+      }
+    }
+    .group-view-item.selected {
+      background-color: #f2faff;
+      color: #008acb;
+    }
+  }
+  
+}
+</style>
+<style lang="less">
+.group-view-area{
+  .add-group-area{
+    position:sticky;
+    bottom: 0px;
+    left: 0px;
+    width: 100%;
+  }
+  .ivu-poptip{
+    width:100%;
+    .ivu-poptip-rel{
+      width:100%;
+    }
+  }
+  .add-group {
+    width: 100%;
+    display: block;
+    height: 38px;
+  }
+}
+</style>

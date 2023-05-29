@@ -1,0 +1,57 @@
+<template>
+    <VueSlickCarousel class="VueSlickCarousel" ref="carousel" @init="init" @reInit="reInit" @beforeChange="beforeChange" @afterChange="afterChange" v-bind="settings">
+        <slot></slot>
+    </VueSlickCarousel>
+</template>
+
+<script>
+import VueSlickCarousel from 'vue-slick-carousel';
+import 'vue-slick-carousel/dist/vue-slick-carousel.css';
+import 'vue-slick-carousel/dist/vue-slick-carousel-theme.css';
+export default {
+    props: {
+        settings: {
+            type: Object,
+            default:()=>({}) 
+        },
+    },
+    data() {
+        return {
+            current:0,
+        }
+    },
+    components: {
+        VueSlickCarousel,
+    },   
+    methods: {
+        reInit(){
+            console.log('reInitreInit')
+        },
+        init() {
+            console.log('initinit')
+            this.$emit('init');
+        },
+        beforeChange(e) {
+             this.$emit('beforeChange',e);
+        },
+        afterChange(e) {
+            this.current = e;   
+            this.$emit('afterChange',e);
+        },
+        goTo(index){
+            console.log('goTo',index)
+            this.$refs.carousel.goTo(index);
+        },
+        next(){
+            console.log('next')
+            this.$refs.carousel.next();
+        },
+        getCurrent(){
+            return this.current;
+        },
+    },
+}
+</script>
+
+<style lang="less" scoped>
+</style>

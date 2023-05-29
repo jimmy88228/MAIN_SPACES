@@ -1,0 +1,21 @@
+<!-- <view>
+  <view class="spec_items" wx:for="{{specView}}" wx:for-item="sItem" wx:for-index="sIndex" wx:key="sIndex">
+    <view class="spec_type">{{sItem.name}}</view>
+    <view class="spec_line">
+      <view 
+      class="spec_item {{item.isShow ? '' : 'invalid'}}" 
+      style="{{selectArr[sIndex].id == item.id ? 'border-color:'+brand_info.style.bg_color+';color:'+'#fff' + ';background:' + brand_info.style.bg_color +';' : '#000'}}"
+      catchtap="{{item.isShow ? 'selectSpecEvent' : ''}}"
+      wx:for="{{sItem.item}}" 
+      wx:key="index"
+      data-name="{{item.name}}"
+      data-is-show="{{item.isShow}}"
+      data-id="{{item.id}}"
+      data-s-index="{{sIndex}}"
+      >{{item.name}}</view>
+    </view>
+  </view>
+</view> -->
+
+
+

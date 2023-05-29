@@ -1,0 +1,7 @@
+{
+  "navigationBarTitleText": "添加详情",
+  "usingComponents": {
+    "preview-pop": "./preview-pop/index",
+    "custom-editor": "/components/common/view/editor/editor"
+  }
+}

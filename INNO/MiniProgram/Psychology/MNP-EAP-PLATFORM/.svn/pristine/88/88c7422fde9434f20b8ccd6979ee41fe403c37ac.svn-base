@@ -1,0 +1,100 @@
+<template>
+	<view class="user">
+		<view :style="{height:`${headerTop}px`}" class="header-white-background"></view>
+		<custom-page @changedPlatform="changedPlatform" :platformInfo="platformInfo" :safeArea="TabbarSafeArea" :isCommissioner="authUserInfo.background == 1" :userInfo="authUserInfo" :isTransparent="true" :isShowTitle="false" ref="customPageRef" :isShowSupport="true"></custom-page>
+		<cuTabbar ref="tabbar" selected="2"></cuTabbar>
+	</view>
+</template>
+
+<script>
+import cuTabbar from '@/components/cu-tabbar/cu-tabbar.vue'
+	import SIH from "@/common/helper/sys-infos-handler"
+
+	const app = getApp();
+	const pageOption = Page.BasePage({
+		data() {
+			return {
+				imgUser:'',
+				authUserInfo: {},
+				headerTop:SIH.navPlace,
+				platformInfo:""
+			}
+		},
+		components:{
+			cuTabbar
+		},
+		// onShareAppMessage(e){},
+		methods: {
+			reFreshInfo(){
+				this._getUserInfo().then(res=>{
+					console.log("个人信息",res)
+					res.profilePicture = res.profilePicture || '' 
+					this.authUserInfo = res;
+					this.getPlatformListCount(res)
+				})
+			},
+			reFreshPlatformInfo(){
+				this.platformInfo = app.PLM.platformInfo
+			},
+			changedPlatform(){
+				// this._checkLogin().then(()=>{
+				console.log("更新个人信息")
+				this.reFreshInfo();
+				this.reFreshPlatformInfo();
+				this.tabbarInit();
+			// })
+			this.getMinePageDetail();
+			},
+			getMinePageDetail(){
+				return this.$Http(this.$Apis.getMinePagePlatform,{
+				  other:{
+				    isShowLoad: true
+				  }
+				}).then(res=>{
+				  if(res.code == 1){
+				    let data = res.data || {};
+				    this.$refs["customPageRef"].initData(data);
+				  }
+				})
+			},
+			tabbarInit(){
+				this.$refs.tabbar.init();
+			},
+			getPlatformListCount(authUserInfo){
+				let newAuthUserInfo = authUserInfo;
+				return app.PLM.getPlatformList(newAuthUserInfo.mobilePhone).then((res)=>{
+					this.$store.commit("setPlatformCount",res.customerList.length)
+				})
+			}
+		},
+		onShow(){
+			this.tabbarInit();
+			this._checkLogin().then(()=>{
+				console.log("更新个人信息");
+				this.reFreshInfo();
+				this.reFreshPlatformInfo();
+
+			})
+			this.getMinePageDetail();
+			
+		},
+		onReady(){
+			this.$EventBus.$on('onChooseAvatar',(res)=>{
+				console.log(res,3333)
+				this.authUserInfo.profilePicture = res.res.data
+
+			})
+		}
+	})
+	export default pageOption 
+</script>
+
+<style lang="scss" scoped>
+.header-white-background {
+		position: absolute;
+		left: 0%;
+		top: 0%;
+		background: #ffffff;
+		width: 100%;
+	}
+</style>

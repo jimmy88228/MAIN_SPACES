@@ -1,0 +1,126 @@
+	<template>
+  <div class="background-form p-10">
+    <Divider style="font-weight:bold;">组件背景设置</Divider>
+    <Form ref="formValidate" :model="setting" label-position="top">
+      <FormItem label="是否隐藏模块">
+        <i-switch v-model="setting.is_enable" size="large" :true-value="1" :false-value="0">
+          <span slot="open">显示</span>
+          <span slot="close">隐藏</span>
+        </i-switch>
+      </FormItem>
+      <FormItem label="背景颜色">
+        <ColorPicker v-model="setting.backgroundColor" style="margin-left:150px;" />
+      </FormItem>
+      <FormItem label="背景图片">
+				<img-view uploadType="custom_page" :img="setting.backgroundImage" :isCustomChoose="false" @selectImg="(data)=>{selectImage(data)}" @delImg="removeImage()"></img-view>
+      </FormItem>
+      <FormItem label="背景图片位置">
+        <RadioGroup v-model="setting.backgroundPosition">
+          <Radio label="top">顶部对齐</Radio>
+          <Radio label="center">居中对齐</Radio>
+          <Radio label="bottom">底部对齐</Radio>
+        </RadioGroup>
+      </FormItem>
+      <fieldset class="m-bottom-10" style="padding-left:10px;padding-top:20px;border-color:#d2d2d2;">
+        <legend>模块边距</legend>
+        <div style="padding-left:5px;">
+          <FormItem label="上边距">
+            <Slider v-model="setting.marginTop" :min="0" :max="100" show-input style="margin:0 30px 0 10px;"></Slider>
+          </FormItem>
+          <FormItem label="下边距">
+            <Slider v-model="setting.marginBottom" :min="0" :max="100" show-input style="margin:0 30px 0 10px;"></Slider>
+          </FormItem>
+          <FormItem label="左右边距">
+            <Slider v-model="setting.marginLeftRight" :min="0" :max="100" show-input style="margin:0 30px 0 10px;"></Slider>
+          </FormItem>
+        </div>
+      </fieldset>
+      <fieldset class="m-bottom-10" style="padding-left:10px;padding-top:20px;border-color:#d2d2d2;">
+        <legend>模块填充</legend>
+        <div style="padding-left:5px;">
+          <FormItem label="上边填充">
+            <Slider v-model="setting.paddingTop" :min="0" :max="100" show-input style="margin:0 30px 0 10px;"></Slider>
+          </FormItem>
+          <FormItem label="下边填充">
+            <Slider v-model="setting.paddingBottom" :min="0" :max="100" show-input style="margin:0 30px 0 10px;"></Slider>
+          </FormItem>
+          <FormItem label="左右填充">
+            <Slider v-model="setting.paddingLeftRight" :min="0" :max="100" show-input style="margin:0 30px 0 10px;"></Slider>
+          </FormItem>
+        </div>
+      </fieldset>
+    </Form>
+  </div>
+</template>
+
+<script>
+export default {
+  name: "backgroundForm",
+  components: {},
+  props: {
+    compInfo: {
+      type: Object,
+      default: () => {},
+    },
+  },
+  data() {
+    return {};
+  },
+	computed: {
+    setting() {
+      let compInfo = this.compInfo || {};
+      let setting = compInfo.setting || {};
+      if (!setting.backgroundColor) {
+        this.$set(setting, "backgroundColor", "");
+      }
+      if (!setting.backgroundImage) {
+        this.$set(setting, "backgroundImage", "");
+      }
+      if (!setting.backgroundPosition) {
+        this.$set(setting, "backgroundPosition", "top");
+      }
+      if (!setting.marginTop) {
+        this.$set(setting, "marginTop", 0);
+      }
+      if (!setting.marginBottom) {
+        this.$set(setting, "marginBottom", 0);
+      }
+      if (!setting.marginLeftRight) {
+        this.$set(setting, "marginLeftRight", 0);
+      }
+      if (!setting.paddingLeftRight) {
+        this.$set(setting, "paddingLeftRight", 0);
+      }
+      if (!setting.paddingTop) {
+        this.$set(setting, "paddingTop", 0);
+      }
+      if (!setting.paddingBottom) {
+        this.$set(setting, "paddingBottom", 0);
+      }
+      if (typeof(setting.is_enable) == "undefined") {
+        this.$set(setting, "is_enable", 1);
+      }
+      console.log('初始化 setting',setting)
+      return setting;
+    },
+  },
+  methods: {
+    selectImage(data) {
+      this.$set(this.compInfo.setting, "backgroundImage", data);
+    },
+    removeImage() {
+      this.$Modal.confirm({
+        title: "操作提示",
+        content: "确定清除背景图片吗？",
+        okText: "确定",
+        cancelText: "取消",
+        onOk: () => {
+          this.$set(this.compInfo.setting, "backgroundImage", "");
+        },
+      });
+    },
+  },
+  watch: {},
+  mounted() {},
+};
+</script>

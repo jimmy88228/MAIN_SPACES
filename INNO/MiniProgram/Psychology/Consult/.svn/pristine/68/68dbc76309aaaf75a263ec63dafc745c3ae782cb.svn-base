@@ -1,0 +1,301 @@
+/* 导入后台 ttf */
+/**
+ * 这个文件来自 www.iconfont.cn iview 项目，iconfont.css 文件修改
+ * 在uni-app 的使用很简单， <text class="ionmy ion-my-qrcode"></text> 
+ * 注意： 大于40kB的 ttf 文件都要转成base64,不然app前端无法显示
+ */
+@font-face {
+	font-family: "iconfont";
+	src: url('./static/fonts/iconfont.ttf') format('truetype');
+}
+
+.ionmy {
+  font-family: "iconfont" !important;
+  font-style: normal;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/*二维码*/
+.ion-my-qrcode:before {
+  content: "\e692";
+}
+
+/*微信logo*/
+.ion-my-weixin:before {
+  content: "\e7e5";
+}
+
+/*企业用户*/
+.ion-my-enterprise-user:before {
+  content: "\e61c";
+}
+
+/*个人用户*/
+.ion-my-personal-user:before {
+  content: "\e625";
+}
+
+/*选中的勾*/
+.ion-my-checked:before {
+  content: "\e8b7";
+}
+
+/*底部栏*/
+.ion-my-bottom-bar:before {
+  content: "\e74c";
+}
+
+/*右侧栏*/
+.ion-my-right-bar:before {
+  content: "\e74d";
+}
+
+/*手机导航栏*/
+.ion-my-phone-bottom-bar:before {
+  content: "\e617";
+}
+
+/*门店*/
+.ion-my-store:before {
+  content: "\e619";
+}
+
+/*大转盘*/
+.ion-my-turntable:before {
+  content: "\e616";
+}
+
+/*活动*/
+.ion-my-activity:before {
+  content: "\e609";
+}
+
+/*组件*/
+.ion-my-component:before {
+  content: "\e60c";
+}
+
+/*社区*/
+.ion-my-user-home:before {
+  content: "\e62f";
+}
+
+/*人脸识别*/
+.ion-my-scan-face:before {
+  content: "\e65a";
+}
+
+/*网络错误*/
+.ion-my-network-error:before {
+  content: "\e62c";
+}
+
+/*扶梯*/
+.ion-my-escalator:before {
+  content: "\e66e";
+}
+
+/*电梯*/
+.ion-my-lift:before {
+  content: "\e60a";
+}
+
+/*缩小*/
+.ion-my-reduce:before {
+  content: "\e611";
+}
+
+/*放大*/
+.ion-my-add:before {
+  content: "\e601";
+}
+
+/*餐厅*/
+.ion-my-restaurant:before {
+  content: "\e61a";
+}
+
+/*铅笔记录*/
+.ion-my-cycle-pancle:before {
+  content: "\e632";
+}
+
+/*￥元*/
+.ion-my-cycle-yuan:before {
+  content: "\e633";
+}
+
+/*购物篮*/
+.ion-my-shopping-basket:before {
+  content: "\e621";
+}
+
+/*ATM*/
+.ion-my-atm:before {
+  content: "\e8f7";
+}
+
+/*警报*/
+.ion-my-alarm:before {
+  content: "\e611";
+}
+
+/*出口*/
+.ion-my-exit:before {
+  content: "\e602";
+}
+
+/*娱乐*/
+.ion-my-mic:before {
+  content: "\e7f1";
+}
+
+/*洗手间*/
+.ion-my-wc:before {
+  content: "\e6e4";
+}
+
+/*404*/
+.ion-my-404:before {
+  content: "\e60f";
+}
+
+/*过滤*/
+.ion-my-filter:before {
+  content: "\e75e";
+}
+
+/*加关注*/
+.ion-my-fav:before {
+  content: "\e65e";
+}
+
+/*朋友圈*/
+.ion-my-pengyouquan:before {
+  content: "\e61b";
+}
+
+/*大图列表*/
+.ion-my-datulie:before {
+  content: "\e639";
+}
+
+/*小图列表*/
+.ion-my-xiaotulie:before {
+  content: "\e624";
+}
+
+/*播放*/
+.ion-my-play:before {
+  content: "\e6c8";
+}
+
+/*客服*/
+.ion-my-kefu:before {
+  content: "\e62d";
+}
+
+/*客服(细图标)*/
+.ion-my-kefu2:before {
+  content: "\e610";
+}
+
+/*word文档*/
+.ion-my-word:before {
+  content: "\edd5";
+  color: #2a5699;
+}
+
+/*excel文档*/
+.ion-my-excel:before {
+  content: "\e604";
+  color: #1f7246;
+}
+
+/*PPT文档*/
+.ion-my-ppt:before {
+  content: "\e63a";
+  color: #d04626;
+}
+
+/*PDF文档*/
+.ion-my-pdf:before {
+  content: "\e740";
+  color: #ee0013;
+}
+
+/*zip文件*/
+.ion-my-zip:before {
+  content: "\e634";
+  color: #3cabf1;
+}
+
+/*rar文件*/
+.ion-my-rar:before {
+  content: "\e620";
+  color: #3cabf1;
+}
+
+/*学士帽*/
+
+.ion-my-course:before {
+  
+	content: "\e64d";
+
+}
+
+/*小程序*/
+.ion-my-xiaochengxu:before {
+  content: "\e73f";
+}
+
+/*小程序2*/
+.ion-my-xiaochengxu-full:before {
+  content: "\e63b";
+}
+
+/*分销*/
+.ion-my-fenxiao:before {
+  content: "\e783";
+}
+
+/*鼠标指针*/
+.ion-my-pointer:before {
+  content: "\e781";
+}
+
+/*鼠标指针*/
+.ion-my-pen:before {
+  content: "\e603";
+}
+
+/*橡皮擦*/
+.ion-my-eraser:before {
+  content: "\e605";
+}
+
+/*商品购物袋*/
+.ion-my-goods:before{
+  content: "\e641";
+}
+
+/*富文本*/
+.ion-my-text:before{
+  content: "\e600";
+}
+
+/*卡片选择*/
+.ion-my-cards:before{
+  content: "\e618";
+}
+
+/*多张图片*/
+.ion-my-images:before{
+  content: "\e6d3";
+}
+
+/*页面*/
+.ion-my-pages:before{
+  content: "\e61f";
+}

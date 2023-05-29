@@ -1,0 +1,30 @@
+.H5{
+  .evaluating-detail{
+    .evaluating-index {
+      padding: 120rpx 110rpx;
+    }
+    .content-box{
+      padding-top: 0;
+    }
+    .tips{
+      padding-top: 60rpx;
+    }
+    .tips_read{
+      padding-top: 50rpx;
+    }
+    @media screen and (max-width: $small-screen) { 
+      .tips{
+        padding-top: 40rpx;
+      }
+      .tips_read{
+        padding-top: 40rpx;
+      }
+      .line{
+        margin: 60rpx 0;
+      }
+      .evaluating-index {
+        padding: 65rpx 45rpx 200rpx 45rpx;
+      }
+    }
+  }
+}

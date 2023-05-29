@@ -1,0 +1,22 @@
+<!--pages/goods/popup/service.wxml-->
+<view class="coupon_tip" wx:if="{{showTip}}">
+  <from bindsubmit="formAction" report-submit="true">
+    <view class="tip_cont">
+      <view class="tip_info">
+        <view class="txt_area">
+          <text class="tip_txt">领券</text>
+        </view>
+        <view class="act_area">
+          <text class="act_name" wx:for="{{actInfo}}" wx:key="index">{{item.short_name}}</text>
+        </view>
+      </view>
+      <view class="tip_circle">
+        <text class="circle"></text>
+        <text class="circle"></text>
+        <text class="circle"></text>
+      </view>
+      <button hover-class="none" class="link_btn" catchtap="getCouponList"></button>
+    </view>
+  </from>
+</view>
+<couponList id="couponList" isLogin="{{isLogin}}"></couponList>

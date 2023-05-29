@@ -1,0 +1,4 @@
+<view class="error-area">
+  <view>网络开小差了，请重进小程序</view>
+  <view class="tips_text">(0x0000{{tips}})</view>
+</view>

@@ -1,0 +1,20 @@
+<!-- public 必须是第一个元素 -->
+<include src="/common/base/page/index.wxml" />
+<view class="page-bg"></view>
+<custom-nav styleType="0" showBack="{{false}}" nav-color="#fff" title="个人中心"/>
+<scroll-view class="tab-bar-page-container scroll-view-box" scroll-y>
+  <view class="user-page">
+    <!-- 用户头部 -->
+    <user-header userData="{{userData}}" isLogin="{{isLogin}}" />
+
+    <!-- 订单 -->
+    <order-bar userData="{{userData}}"/>
+
+    <!-- 会员 -->
+    <user-service />
+
+    <!-- 店员 -->
+    <staff-service userData="{{userData}}"/>
+  </view>
+</scroll-view>
+<btns wx:if="{{!isLogin}}" class="login-btn" bindclickcallback="clickcallback"></btns>

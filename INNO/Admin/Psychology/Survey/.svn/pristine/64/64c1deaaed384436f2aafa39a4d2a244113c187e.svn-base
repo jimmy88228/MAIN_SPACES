@@ -1,0 +1,32 @@
+
+user               nginx;
+worker_processes   1;
+
+error_log          /dev/null crit;
+
+events {
+    worker_connections  1024;
+}
+
+http {
+    include             /etc/nginx/mime.types;
+    default_type        application/octet-stream;
+
+    sendfile            on;
+    keepalive_timeout   65;
+    access_log          off;
+
+    gzip                on;
+
+    # 站点
+    server {
+        listen 80;
+
+        root /var/www/app;
+        index index.html;
+
+        location / {
+            try_files $uri $uri/ /index.html?$query_string;
+        }
+    }
+}

@@ -1,0 +1,31 @@
+<window class="window" ext-class="window-ext">
+	<view class="main" style="{{boxStyle}}" catchtap="_noFn" id="{{randomUnit}}">
+    <!-- 头部图 -->
+    <image class="top_img" src="../../../images/micro_mall/assistance/oval.png" mode="widthFix" />
+    <!-- 标题 -->
+    <view class="top_title">{{showData.title}}</view>
+    <scroll-view class="coupon_list" scroll-y>
+      <view class="coupon_item" wx:for="{{list}}" wx:key="index">
+        <view class="coupon_left">
+          <view class="coupon_label">{{item.bonusType == 4?'折扣券':'满减券'}}</view>
+          <view class="coupon_money">
+            <text class="p_num">{{item.bonusType==4?item.discount * 10: '￥' + item.typeMoney}}</text><text class="p_text">{{item.bonusType==4?'折':''}}</text>
+          </view>
+          <view class="coupon_limit" wx:if="{{item.bonusType==4 || item.minGoodsAmount>0}}">
+            <block wx:if="{{item.bonusType==4}}"><text>满￥{{item.minAmount}}~{{item.maxAmount}}</text></block><block wx:else><text>满￥{{item.minGoodsAmount}}</text></block>
+          </view>
+        </view>
+        <view class="coupon_right">
+          <view class="coupon_name">{{item.bonusTypeName?item.bonusTypeName:''}}</view>
+          <view class="coupon_valid_date">{{item.useEndDataStr}}</view>
+          <view class="coupon_btn_group">
+            <button class="coupon_go_to_use" data-jumpConfig="{{item.jumpConfigForCloudShop}}" catchtap="userJump">去使用</button>
+          </view>
+        </view>
+      </view>
+    </scroll-view>
+    <view class="btn_con">
+      <button class="confirm_btn" catchtap="goCoupon">立即查看</button>
+    </view>
+  </view>
+</window>

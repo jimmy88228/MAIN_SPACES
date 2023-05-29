@@ -1,0 +1,222 @@
+<template>
+  <hold-layout :isFull="true">
+    <searchForm :modelId="modelId" :searchForm="searchForm" @search="search"></searchForm>
+    <Table 
+      class="full-table"
+      ref="myTable"
+      :height="600"
+      :columns="columns"
+      :data="list"
+      border
+      :loading="tableLoading"
+    >
+    <template slot="instruction" slot-scope="{ row, index }">
+      {{row.instruction||baseInfo.instruction || '--'}}
+    </template>
+    <template slot="dimensions" slot-scope="{ row, index }">
+      {{row.dimensionsStr || '--'}}
+    </template>
+    </Table>
+  </hold-layout>
+</template>
+<script>
+import ListMixin from "@/helper/mixin/list-mixin";
+import mixins from "./mixins.js";
+import searchForm from "./search-form.vue";
+export default {
+  mixins: [ ListMixin, mixins ],
+  components: { searchForm },
+  props: {
+    baseInfo: {
+      type: Object,
+      default: ()=>{
+        return {}
+      }
+    }
+  },
+  data(){
+    return {
+      searchForm: {
+        dimensions: 0
+      },
+      gaugeProblems: [],
+      modelId: 0,
+      allData: []
+    }
+  },
+  methods: {
+    init(){
+      this.modelId = this.pageQuery.id || 0;
+      this.data = { list: [], total: 0 }
+      this.searchForm.dimensions = 0;
+      this.loadProblemsData(this.modelId);
+    },
+    loadProblemsData(id){
+      if(!Number(id)) return Promise.reject();
+      this.tableLoading = true;
+      return this.$MainApi.scaleSubjectInfo({
+        data: {
+          id: id
+        },
+        other: {
+          isShowLoad: true,
+          isErrorMsg: true
+        }
+      }).then((res)=>{
+        if(res.code){
+          let data = res.data || {};
+          let items = data.items || [];
+          let maxCol = 0;
+          items.map((item)=>{
+            let option_data = item.option_data || [];
+            let dimensionsIds = [], dimensions = [], dimensionsStr = "";
+            maxCol = Math.max(maxCol, option_data.length)
+            option_data.map((option)=>{
+              option.points = [];
+              let factor_data = option.factor_data;
+              factor_data.map((factor)=>{
+                let dimension_data = factor.dimension_data || {};
+                if(factor.dimension_id && dimensionsIds.indexOf(factor.dimension_id) == -1){
+                  dimensionsIds.push(factor.dimension_id);
+                  dimensions.push(dimension_data);
+                  dimensionsStr = dimensionsStr ? dimensionsStr + '、' + (dimension_data.name || '') : (dimension_data.name || '');
+                }
+                factor.points && option.points.push(parseInt(factor.points));
+              })
+            })
+            item.dimensionsIds = dimensionsIds;
+            item.dimensions = dimensions;
+            item.dimensionsStr = dimensionsStr
+            item.isHide = false;
+          })
+          this.allData = JSON.parse(JSON.stringify(items || []))
+          this.data = {
+            list: items,
+            total: items.length
+          }
+          let columns = JSON.parse(JSON.stringify(this.fixedColumns));
+          for(let i = 0; i < maxCol; i++){
+            columns.push({
+              title: "选项",
+              minWidth: 150,
+              maxWidth: 250,
+              render: (h, params)=>{
+                let row = params.row || {};
+                let optionData = row.option_data;
+                let option = optionData[i] || {};
+                let points = option.points || [];
+                let dataStr = points.length ? '(' + points.join(",") + ') ' + (option.option_content || '') : (option.option_content || '')
+                return h('div',{
+                  style: {}
+                }, dataStr || '--')
+              }
+            })
+          }
+          this.columns = columns;
+        }
+      }).finally(()=>{
+        this.tableLoading = false;
+      })
+    },
+    search(){
+      let allData = this.allData;
+      let sDimensions = this.searchForm.dimensions || 0;
+      let list = [];
+      if(sDimensions){
+        allData.map((item)=>{
+          let dimensionsIds = item.dimensionsIds || [];
+          // console.log("dimensionsIds", dimensionsIds);
+          // let hasMix = dimensionsIds.filter((id)=>{
+          //   return sDimensions.includes(id)
+          // })
+          if(dimensionsIds.indexOf(sDimensions) != -1){
+            list.push(item);
+          }
+        })
+        this.data = {
+          list: list,
+          total: list.length
+        };
+      } else {
+        let list = this.data.list || [];
+        if(this.allData.length != list.length){
+          this.data = {
+            list: JSON.parse(JSON.stringify(this.allData)),
+            total: this.allData.length
+          };
+        }
+      }
+    },
+    confirm(){
+
+    }
+  }
+}
+</script>
+<style lang="less" scoped>
+.preview-table{
+    border-radius: 4px;
+    overflow: hidden;
+    border: 1px solid #DDDDD0;
+    border-bottom: 0 none;
+    .p-table-tr{
+      display: flex;
+      width:100%;
+      background-color:#fff;
+      border-bottom: 1px solid #DDDDD0;
+      transition: all .35s;
+      min-height: 50px;
+      cursor: pointer;
+    }
+  }
+  .p-table-header{
+    .p-table-tr{
+      background: #F6F6F6;
+    }
+    .p-table-th{
+      min-width: 0;
+      text-align: left;
+      text-overflow: ellipsis;
+      vertical-align: middle;
+      font-size: 14px;
+      position: relative;
+      padding: 8px;
+      flex: 1;
+      flex-shrink: 0;
+      font-family: PingFangSC-Regular, PingFang SC;
+      font-weight: 400;
+      color: #7F7F7F;
+      display: flex;
+      flex-wrap: nowrap;
+      align-items: center;
+    }
+  }
+  .p-table-body{
+    max-height: 400px;
+    min-height: 200px;
+    display: flex;
+    .p-table-tr:hover{
+      background-color:#EBF7FF;
+    }
+    .p-table-td{
+      min-width: 0;
+      box-sizing: border-box;
+      text-align: left;
+      text-overflow: ellipsis;
+      vertical-align: middle;
+      padding: 8px;
+      flex: 1;
+      flex-shrink: 0;
+      display: flex;
+      flex-wrap: nowrap;
+      align-items: center;
+      border-right:1px solid #DDDDD0;
+      &.handle{
+        padding: 0;
+      }
+    }
+    .p-table-hold{
+      flex: 1;
+    }
+  }
+</style>

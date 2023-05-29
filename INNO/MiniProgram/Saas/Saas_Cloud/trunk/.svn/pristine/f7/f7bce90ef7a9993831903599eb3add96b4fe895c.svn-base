@@ -1,0 +1,12 @@
+function splitPrice(price = '', type = "int"){ // type: int , digit
+  price = price + '';
+  var splitArr = price.split('.') || [];
+  var integerPart = splitArr[0] || '0';
+  var digitPart = splitArr[1] || '';
+  if (type === "int") return integerPart;
+  else if (type === "digit") return digitPart ? '.' + digitPart : ''
+}
+
+module.exports = {
+  splitPrice: splitPrice
+}

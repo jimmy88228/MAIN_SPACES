@@ -1,0 +1,288 @@
+
+.box{
+  width: 100%;
+  box-sizing: border-box;
+  padding: 0 25rpx;
+}
+.footer {
+  display: flex;
+  width: 100%;
+  flex-wrap: wrap;
+}
+
+.f_single {
+  width: 100%;
+  padding: 13rpx 18rpx;
+  background: #fff;
+  /* border: 1px solid rgba(239, 239, 239, 1); */
+  border-radius: 12rpx;
+  overflow: hidden;
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+}
+.f_lots{
+  border-radius: 12rpx;
+  overflow: hidden;
+}
+.img_goods_box {
+  width: 224rpx;
+  height: 224rpx;
+}
+
+.img_goods {
+  width: 100%;
+  height: 100%;
+}
+
+.goods_msg {
+  width: 440rpx;
+  box-sizing: border-box;
+  padding: 10rpx 25rpx;
+  padding-right: 0;
+  position: relative;
+  /* height: 100%; *//* padding-bottom: 80rpx; *//* display: flex;
+  flex-direction: column;
+  justify-content: space-between; */
+}
+
+.g_title {
+  padding-bottom: 84rpx;
+  line-height: 26rpx;
+}
+
+.g_content {
+  display: flex;
+}
+
+.price_box, .g_btn_box {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  justify-content: flex-end;
+}
+
+.g_btn_box._f_r {
+  align-items: flex-end;
+}
+
+.g_btn {
+  width: 168rpx;
+  height: 56rpx;
+  border-radius: 6rpx;
+  color: #fff;
+  font-size: 25rpx;
+  border: 1px solid transparent;
+}
+
+.progress_box {
+  min-width: 168rpx;
+  display: inline-flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-top: 14rpx;
+}
+.progress_box_TWO,.progress_box_THREE{
+  width: 100%;
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  padding-top: 10rpx;
+} 
+.progress_small {
+  width: 82rpx;
+  display: inline-block;
+  vertical-align: middle; 
+}
+.lots_progress_small {
+  width: 113rpx;
+  display: inline-block;
+  vertical-align: middle; 
+  padding-right: 10rpx;
+}
+.lots_progress_lg{
+  width: 180rpx;
+  display: inline-block;
+  vertical-align: middle; 
+  position: relative;
+  height: 18rpx;
+}
+.none{
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%,-50%);
+  color: #fff;
+  font-size: 16rpx;
+  line-height: 16rpx;
+}
+
+
+.progress_text {
+  line-height: 18rpx;
+  vertical-align: middle;
+  /* flex: 3; */
+  /* padding-left: 16rpx; */
+}
+
+.p_market {
+  padding-top: 8rpx;
+}
+
+.goods_box {
+  margin-bottom: 20rpx;
+  /* background: #fff; */
+  position: relative;
+  width: 100%;
+  border-radius: 12rpx;
+  overflow: hidden;
+}
+.sub_btn{
+  width: 100%;
+  height: 100%;
+}
+.btn{
+  z-index: 2;
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  background: transparent;
+}
+
+._i_l {
+  text-decoration: line-through;
+}
+
+._C_b2 {
+  color: #b2b2b2;
+}
+
+/* 一行3个 */
+
+.f_THREE {
+  background: #fff; 
+  width: 224rpx;
+  flex-shrink: 0;
+}
+
+.f_TWO {
+  background: #fff; 
+  width: 336rpx;
+  flex-shrink: 0;
+}
+
+.goods_box.lotsTHREE{
+  margin-right: 14rpx;
+}
+.goods_box.lotsTHREE:nth-child(3n) {
+  margin-right: 0;
+}
+
+.goods_box.lotsTWO{
+  margin-right: 21rpx;
+}
+.goods_box.lotsTWO:nth-child(2n) {
+  margin-right: 0;
+}
+
+.lots_img_box {
+  position: relative;
+  width: 100%;
+  padding-top: 100%;
+  overflow: hidden;
+}
+
+.lots_img_goods {
+  width: 100%;
+  height: 100%;
+  display: block;
+  position: absolute;
+  top: 50%;
+  left: 0px;
+  transform: translateY(-50%);
+}
+
+.lots_goods_msg {
+  width: 100%;
+  padding: 14rpx 0 18rpx 0;
+  /* padding: 14rpx 12rpx 18rpx 12rpx; */
+  box-sizing: border-box;
+}
+
+.lots_title {
+  padding: 0 20rpx;
+  box-sizing: border-box;
+  width: 100%;
+  display: -webkit-box;
+  overflow: hidden;
+  text-overflow: ellipsis; 
+  -webkit-line-clamp: 1;
+  -webkit-box-orient: vertical;
+  text-align: center;
+  line-height: 28rpx;
+  margin: 10rpx 0;
+  font-size: 20rpx;
+  color: #333333;
+}
+
+.lots_btn{
+  color: #F8F8F8;
+  text-align: center;
+  font-size: 24rpx;
+  border-radius:6rpx;
+  margin: 0 auto;
+}
+.lots_price_box .price{
+  font-size: 26rpx;
+  line-height: 26rpx;
+  font-weight: bold;
+}
+.f_TWO .lots_btn_special{
+  width: 180rpx;
+  height: 44rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.f_THREE .lots_btn_special{
+  width: 180rpx;
+  height: 44rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.lotsONE ._disabled{
+  background:rgba(255,255,255,1);
+  border:1px solid rgba(178, 178, 178, 1);
+  color: #B2B2B2;
+}
+.lotsTWO ._disabled,.lotsTHREE ._disabled{
+  background:rgba(239,239,239,0.3);
+  color:#7F7F7F;
+  font-size: 18rpx; 
+}
+ 
+.lots_price_box{ 
+  text-align: center;
+}
+.lots_price{
+  color: #b2b2b2;
+  font-size: 22rpx;
+  line-height: 22rpx;
+  text-decoration: line-through;
+  padding-left: 8rpx;
+  text-align: center;
+}
+.subStyle{ 
+  border: 1px solid transparent;
+}
+.sub_btn{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+}

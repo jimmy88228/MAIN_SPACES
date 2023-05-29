@@ -1,0 +1,63 @@
+{
+  "projectname": "trunk",
+  "setting": {
+    "compileHotReLoad": true
+  },
+  "description": "项目私有配置文件。此文件中的内容将覆盖 project.config.json 中的相同字段。项目的改动优先同步到此文件中。详见文档：https://developers.weixin.qq.com/miniprogram/dev/devtools/projectconfig.html",
+  "libVersion": "2.25.4",
+  "condition": {
+    "miniprogram": {
+      "list": [
+        {
+          "name": "pages/tabs/index/index",
+          "pathName": "pages/tabs/index/index",
+          "query": "staffCode=0222&storeCode=202301",
+          "launchMode": "default",
+          "scene": 1005
+        },
+        {
+          "name": "",
+          "pathName": "pages/main/staff-module/repository/goods/spec/index",
+          "query": "insert=1&activityId=0&fromType=&goodsId=277",
+          "launchMode": "default",
+          "scene": null
+        },
+        {
+          "name": "",
+          "pathName": "pages/tabs/user/user",
+          "query": "",
+          "launchMode": "default",
+          "scene": null
+        },
+        {
+          "name": "",
+          "pathName": "pages/main/staff-module/repository/goods/index",
+          "query": "goodsInfo=%257B%2522goods_name%2522%253A%252220%25E5%2595%2586%25E5%2593%2581%25E6%25B5%258B%25E8%25AF%2595%2522%252C%2522specList%2522%253A%255B%257B%2522catId%2522%253A54%252C%2522catName%2522%253A%2522%25E9%25A2%259C%25E8%2589%25B2%2522%252C%2522specList%2522%253A%255B%257B%2522specId%2522%253A83%252C%2522productId%2522%253A0%252C%2522specName%2522%253A%2522%25E9%25BB%2591%25E8%2589%25B2%2522%257D%252C%257B%2522specId%2522%253A84%252C%2522productId%2522%253A0%252C%2522specName%2522%253A%2522%25E7%2599%25BD%25E8%2589%25B2%2522%257D%252C%257B%2522specId%2522%253A2692%252C%2522productId%2522%253A0%252C%2522specName%2522%253A%2522%25E7%25B4%25AB%25E8%2589%25B2%2522%257D%252C%257B%2522specId%2522%253A2693%252C%2522productId%2522%253A0%252C%2522specName%2522%253A%2522%25E6%25A9%2599%25E8%2589%25B2%2522%257D%252C%257B%2522specId%2522%253A2694%252C%2522productId%2522%253A0%252C%2522specName%2522%253A%2522%25E8%2593%259D%25E8%2589%25B2%2522%257D%252C%257B%2522specId%2522%253A2695%252C%2522productId%2522%253A0%252C%2522specName%2522%253A%2522%25E9%25BB%2584%25E8%2589%25B2%2522%257D%252C%257B%2522specId%2522%253A2696%252C%2522productId%2522%253A0%252C%2522specName%2522%253A%2522%25E7%25BA%25A2%25E8%2589%25B2%2522%257D%255D%257D%252C%257B%2522catId%2522%253A5087%252C%2522catName%2522%253A%2522%25E4%25BD%2593%25E5%259E%258B%2522%252C%2522specList%2522%253A%255B%257B%2522specId%2522%253A2728%252C%2522productId%2522%253A0%252C%2522specName%2522%253A%2522%25E5%25A4%25A7%25E5%259E%258B%2522%257D%252C%257B%2522specId%2522%253A2729%252C%2522productId%2522%253A0%252C%2522specName%2522%253A%2522%25E5%25B0%258F%25E5%259E%258B%2522%257D%255D%257D%255D%252C%2522goods_img%2522%253A%2522https%253A%252F%252Fdevimgtest.innourl.com%252FSAAS_IMAGE%252Fimages%252FINNOVATION%252Fgoods%252Fgallery%252F20230111%252F20230111111554493_2237820.jpeg%2522%252C%2522goods_sn%2522%253A%2522aacat20%2522%252C%2522goods_detail%2522%253A%2522%2522%252C%2522market_price%2522%253A100000%252C%2522goods_number%2522%253A0%252C%2522goods_id%2522%253A277%252C%2522cat_id%2522%253A97%252C%2522product_id%2522%253A0%252C%2522galleryList%2522%253A%255B%257B%2522id%2522%253A1002%252C%2522goods_id%2522%253A277%252C%2522goods_img%2522%253A%2522images%252FINNOVATION%252Fgoods%252Fgallery%252F20230111%252F20230111111554493_2237820.jpeg%2522%252C%2522sort%2522%253A0%252C%2522brand_id%2522%253A174%252C%2522is_delete%2522%253A0%257D%255D%252C%2522goodsImgs%2522%253A%255B%2522https%253A%252F%252Fdevimgtest.innourl.com%252FSAAS_IMAGE%252Fimages%252FINNOVATION%252Fgoods%252Fgallery%252F20230111%252F20230111111554493_2237820.jpeg%2522%255D%257D&activity_id=&isEdit=1",
+          "launchMode": "default",
+          "scene": null
+        },
+        {
+          "name": "",
+          "pathName": "pages/main/staff-module/repository/goods/detail/index",
+          "query": "",
+          "launchMode": "default",
+          "scene": null
+        },
+        {
+          "name": "",
+          "pathName": "pages/main/staff-module/repository/goods/detail/index",
+          "query": "goods_id=384&fromType=&activity_id=0",
+          "launchMode": "default",
+          "scene": null
+        },
+        {
+          "name": "",
+          "pathName": "pages/main/staff-module/repository/goods/detail/index",
+          "query": "goods_id=464&fromType=activity&activity_id=137",
+          "launchMode": "default",
+          "scene": null
+        }
+      ]
+    }
+  }
+}

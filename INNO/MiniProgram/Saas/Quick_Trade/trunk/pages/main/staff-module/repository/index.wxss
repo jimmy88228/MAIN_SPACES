@@ -1,0 +1,14 @@
+/* pages/main/staff-module/repository/index.wxss */
+page{
+    background-color: #F2F2F2;
+    height: 100%;
+}
+.repository{
+    height: 100%;
+}
+.goods-list-box{
+    position: relative;
+    box-sizing: border-box;
+    padding:106rpx 22rpx 0 168rpx;
+    height: 100%;
+}

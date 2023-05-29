@@ -1,0 +1,24 @@
+<!--pages/main/staff-module/repository/goods/spec/add/index.wxml-->
+<!-- public 必须是第一个元素 -->
+<include src="/common/base/page/index.wxml" />
+<view class="spec-add">
+  <view class="box">
+    <ori-input setBlur class="ori-label" maxlength="20" ext-class="spec-input" value="{{specCatName}}" bindinput="onInput" bindblur="onSpecCatSave" ext-placeholder-class="placehold-text" placeholder="请输入规格类型名称" />
+    <view class="spec-list">
+      <block wx:for="{{specList}}" wx:key="index">
+        <view class="spec-box flex-c-c" hover-class="active">
+          <view class="text-flow2">{{item.specName}}</view>
+          <view class="delete-box flex-c-c" catchtap="handleItemDelete" data-spec-cat-id="{{specCate.specCatId}}" data-spec-id="{{item.specId}}" >
+            <view class="delete" data-spec-id="{{item.specId}}"></view>
+          </view>
+        </view> 
+        <!-- <view class="spec-item" hover-class="active" bindlongpress="handleItemDelete" data-spec-id="{{item.specId}}">{{item.specName}}</view> -->
+      </block>
+    </view>
+    <view class="add-btn flex-c-c bold" hover-class="active" bindtap="handleAddSpecBtnTap">+添加规格</view>
+  </view>
+  <view class="footer flex-e-c">
+    <view class="save-btn flex-c-c" bindtap="back">返回</view>
+  </view>
+</view>
+<add-pop id="add-pop" bindconfirm="confirm"></add-pop>

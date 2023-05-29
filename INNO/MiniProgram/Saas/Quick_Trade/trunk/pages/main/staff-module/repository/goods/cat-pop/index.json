@@ -1,0 +1,6 @@
+{
+  "component": true,
+  "usingComponents": {
+    "create-pop": "/pages/main/staff-module/repository/category/create-pop/index"
+  }
+}

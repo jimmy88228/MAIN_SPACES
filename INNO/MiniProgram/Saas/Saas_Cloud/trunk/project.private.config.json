@@ -1,0 +1,120 @@
+{
+    "setting": {},
+    "condition": {
+        "plugin": {
+            "list": []
+        },
+        "game": {
+            "list": []
+        },
+        "gamePlugin": {
+            "list": []
+        },
+        "miniprogram": {
+            "list": [
+                {
+                    "name": "pages/micro_mall/shopping/shopping_cart",
+                    "pathName": "pages/micro_mall/shopping/shopping_cart",
+                    "query": "",
+                    "scene": null
+                },
+                {
+                    "name": "pages/micro_mall/custom_page/custom_page",
+                    "pathName": "pages/micro_mall/custom_page/custom_page",
+                    "query": "page_id=6",
+                    "scene": null
+                },
+                {
+                    "name": "pages/micro_mall/user/user",
+                    "pathName": "pages/micro_mall/user/user",
+                    "query": "",
+                    "scene": null
+                },
+                {
+                    "name": "pages/micro_mall/sign/app/app_sign",
+                    "pathName": "pages/micro_mall/sign/app/app_sign",
+                    "query": "",
+                    "scene": null
+                },
+                {
+                    "name": "pages/micro_mall/index/index",
+                    "pathName": "pages/micro_mall/index/index",
+                    "query": "page_id=1090",
+                    "scene": null
+                },
+                {
+                    "name": "pages/micro_mall/order/order_info",
+                    "pathName": "pages/micro_mall/order/order_info",
+                    "query": "first_time_topay=1&order_id=3",
+                    "scene": null
+                },
+                {
+                    "name": "pages/micro_mall/user/user",
+                    "pathName": "pages/micro_mall/user/user",
+                    "query": "shareType=PAGE_SHARE&fromUser=c587e7310242885f&staffCode=13160675066&storeCode=YDK001",
+                    "scene": 1017
+                },
+                {
+                    "name": "pages/micro_mall/goods/goods_info",
+                    "pathName": "pages/micro_mall/goods/goods_info",
+                    "query": "goods_id=1028&color_id=0",
+                    "scene": null
+                },
+                {
+                    "name": "pages/micro_mall/category/category",
+                    "pathName": "pages/micro_mall/category/category",
+                    "query": "search_input=",
+                    "scene": null
+                },
+                {
+                    "name": "pages/micro_mall/buyBonus/getBonusActivityDetail",
+                    "pathName": "pages/micro_mall/buyBonus/getBonusActivityDetail",
+                    "query": "activityid=45",
+                    "scene": null
+                },
+                {
+                    "name": "pages/micro_mall/sk/activity-sk/activity-sk",
+                    "pathName": "pages/micro_mall/sk/activity-sk/activity-sk",
+                    "query": "",
+                    "scene": null
+                },
+                {
+                    "name": "pages/micro_mall/distribution_center/distribution_center",
+                    "pathName": "pages/micro_mall/distribution_center/distribution_center",
+                    "query": "name=%E5%88%86%E9%94%80%E4%B8%AD%E5%BF%83",
+                    "scene": null
+                },
+                {
+                    "name": "pages/micro_mall/collageGroup/activity_list",
+                    "pathName": "pages/micro_mall/collageGroup/activity_list",
+                    "query": "",
+                    "scene": null
+                },
+                {
+                    "name": "pages/micro_mall/custom_page/custom_page",
+                    "pathName": "pages/micro_mall/custom_page/custom_page",
+                    "query": "page_id=2575&isStaff=false&phone=undefined",
+                    "scene": null
+                },
+                {
+                    "name": "",
+                    "pathName": "pages/micro_mall/lottery/lottery",
+                    "query": "activityId=70",
+                    "scene": null
+                },
+                {
+                    "name": "",
+                    "pathName": "pages/micro_mall/custom_page/custom_page",
+                    "query": "page_id=13&isStaff=false&phone=13160675066",
+                    "scene": null
+                },
+                {
+                    "name": "",
+                    "pathName": "pages/micro_mall/goods/goods_info",
+                    "query": "goods_id=11&issued_id=0&shareType=NORMAL_GOODS&fromUser=5d6ffb3601e782a4&staffCode=13160675066",
+                    "scene": null
+                }
+            ]
+        }
+    }
+}

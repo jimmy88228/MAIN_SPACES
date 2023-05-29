@@ -1,0 +1,54 @@
+<!-- bind_type： 1:商品列表  2:分类类别  3:单张广告  4:轮播  5:优惠券  6:储值(没开放)  7:秒杀  8:拼团  9：新助力秒杀 10:预售 11:积分 12:砍价 13:会员卡 14:搭配商品 -->
+<!-- moduleStyles ： 1:大图  2:一行两图 3:大小图 4:左右滑动 5:一行三小图  6:详情列表  7：一行多个 8：秒杀广告图-->
+<!-- 数据字段： seckillGoodsList:秒杀  collageGroupGoodsList:拼团   itemList:其他  -->
+
+<!-- 自定义模块 -->
+<form bindsubmit="formAction" report-submit="true">
+  <block wx:if="{{pageEnable == 1}}">
+      <view class="module_items {{m_item.bindType==7 || m_item.bindType==8 ? 'act_module_items': '' }}" wx:for="{{pageModelList}}" wx:for-item="m_item" wx:for-index="m_index" wx:key="m_index" hidden="{{hideModule[m_index] || (!autoShow && m_index>=curr_show_mod) || (limitArr[0].limitNum>=0 && m_index>limitArr[0].limitNum)}}">
+      <!-- <view class="module_items {{m_item.bindType==7 || m_item.bindType==8 ? 'act_module_items': '' }}" wx:for="{{pageModelList}}" wx:for-item="m_item" wx:for-index="m_index" wx:key="m_index" hidden="{{hideModule[m_index] || (!autoShow && m_index>=curr_show_mod) || (limitNum>=0 && m_index>limitNum)|| (limitNumGoods>=0 && m_index>limitNumGoods)}}"> -->
+        <!--商品列表  1、2模块 -->
+        <view id="custom{{m_item.moduleId}}" wx:if="{{(m_item.bindType == 1 || m_item.bindType == 2)}}">
+          <goodsList id="goodsListId{{m_index}}" bindgoodsListTap="goodsListTap" LIMIT_GOODSIDS="{{LIMIT_GOODSIDS}}" tagVal="{{tagVal}}" showSalesVolume="{{showSalesVolume}}" tagList="{{tagList}}" img_url="{{img_url}}" goodsTagList="{{goodsTagList}}" page_module_list="{{m_item}}" m_item="{{motion_data[m_index]}}" sysConf="{{sysConf}}"></goodsList> 
+        </view>
+
+        <!--单张广告 3模块 -->
+        <view id="custom{{m_item.moduleId}}" wx:elif="{{m_item.bindType == 3 }}">
+          <advertise isLogin="{{isLogin}}" page_module_list="{{m_item}}" bindgoLinkCall="goLink" m_item="{{motion_data[m_index]}}" m_index="{{m_index}}" img_url="{{img_url}}"></advertise>
+        </view>
+        
+        <!--轮播图  4模块 -->
+        <view  id="custom{{m_item.moduleId}}" wx:elif="{{m_item.bindType == 4}}">
+          <carousel isLogin="{{isLogin}}" page_module_list="{{m_item}}" bindgoLinkCall="goLink" m_item="{{motion_data[m_index]}}" m_index="{{m_index}}" img_url="{{img_url}}"></carousel>
+        </view>
+        
+        <!-- 助力秒杀 9模块 -->
+        <view id="custom{{m_item.moduleId}}" wx:elif="{{(m_item.bindType == 9)}}">
+          <multiActivities id="activityId" bindsingleSwitch="singleSwitch" module-id="{{m_item.moduleId}}" m_item="{{motion_data[m_index]}}" page_module_list="{{m_item}}" detailListObj="{{m_item.detail_list || []}}" actCountDown="{{actCountDown[m_item.moduleId] || null}}" m_index="{{m_index}}"
+            img_url="{{img_url}}" sysConf="{{sysConf}}"></multiActivities>
+        </view>
+
+        <!--会员卡片  13模块 -->
+        <view wx:elif="{{m_item.bindType == 13}}" id="custom{{m_item.moduleId}}">
+          <userCard isLogin="{{isLogin}}" bindgoLinkCall="goLink" m_item="{{motion_data[m_index]}}" m_index="{{m_index}}" img_url="{{img_url}}" module_data="{{m_item}}"></userCard>
+        </view>
+        <!--轮播图  15模块 -->
+        <view  id="custom{{m_item.moduleId}}" wx:elif="{{m_item.bindType == 15}}">
+          <adNav isLogin="{{isLogin}}" bindsingleSwitch="singleSwitch" page_module_list="{{m_item}}" m_item="{{motion_data[m_index]}}" m_index="{{m_index}}" img_url="{{img_url}}"></adNav>
+        </view>
+        <view  id="custom{{m_item.moduleId}}" wx:elif="{{m_item.bindType == 16}}">
+          <notice isLogin="{{isLogin}}" bindsingleSwitch="singleSwitch" page_module_list="{{m_item}}" m_item="{{motion_data[m_index]}}" m_index="{{m_index}}" img_url="{{img_url}}"></notice>
+        </view>
+        <!--秒杀、拼团、预售、积分、砍价  7~12、14--!9 -->
+        <view id="custom{{m_item.moduleId}}" wx:else>
+          <activities id="activityId" bindsingleSwitch="singleSwitch" module-id="{{m_item.moduleId}}" m_item="{{motion_data[m_index]}}" page_module_list="{{m_item}}" detailListObj="{{m_item.detail_list || []}}" actCountDown="{{actCountDown[m_item.moduleId] || null}}" m_index="{{m_index}}"
+            img_url="{{img_url}}" sysConf="{{sysConf}}"></activities>
+        </view> 
+      </view>
+  </block>
+  <block wx:else>
+    <view class="unenable_area">
+      <view class="unenable_txt">敬请期待</view>
+    </view>
+  </block>  
+</form>

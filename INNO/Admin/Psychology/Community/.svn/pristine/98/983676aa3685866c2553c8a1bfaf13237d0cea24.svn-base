@@ -1,0 +1,182 @@
+<template>
+    <div :style="display ? { 'display': display} : ''">
+        <div class="image-box-area" :style="[{'width':imgWidth},{'paddingTop': imgHeight}, {'display': display}]">
+            <div class="image-box" @click="handleSelect" @mouseenter="handleOver" @mouseleave="handleOut">
+                <div class="images" v-viewer>
+                    <img :src="img" class="img" v-show="img" />
+                </div>
+                <Icon type="md-add" class="add-icon" size="40" v-show="(!img ? true : false)"></Icon>
+                <transition name="fade">
+                    <div class="mask" v-show="showAction">
+                        <Icon type="ios-eye-outline" size="24" color="#fff" @click.stop="viewInfo" />
+                        <template v-if="!isView">
+                            <Icon type="ios-create-outline" size="24" color="#fff" @click.stop="handleSelect" alt="编辑图片" />
+                            <Icon type="ios-trash-outline" size="24" color="#fff" @click.stop="handleDel" alt="清空图片" />
+                        </template>
+                    </div>
+                </transition>
+            </div>
+        </div>
+        <div class="small_font" :style="[{'display': display}]">
+            <slot></slot>
+        </div>
+    </div>
+</template>
+
+<script>
+export default {
+    name: "imgView",
+    props: {
+        img: [String],
+        isView: {
+            type: Boolean,
+            default: false,
+        },
+        isCustomChoose: {
+            type: Boolean,
+            default: false,
+        },
+        multiple: {
+            // 多选
+            type: Boolean,
+            default: false,
+        },
+        width: {
+            type: Number | String,
+            default: 80,
+        },
+        height: Number | String,
+        display: {
+            type: String,
+            default: "inline-block",
+        },
+        uploadType: {
+            type: String,
+            default: ""
+        }
+    },
+    data() {
+        return {
+            showAction: false,
+        };
+    },
+    computed: {
+        imgWidth() {
+            let width = this.width || "70px";
+            let result = /^\d+$/.test(width);
+            if (result) {
+                return width + "px";
+            } else {
+                return width;
+            }
+        },
+        imgHeight(){
+            let height = this.height || this.imgWidth;
+            let result = /^\d+$/.test(height);
+            if (result) {
+                return height + "px";
+            } else {
+                return height;
+            }
+        }
+    },
+    methods: {
+        handleSelect() {
+            if (this.isCustomChoose) {
+                this.$emit("selectImg");
+            } else {
+                this.$UIModule({
+                    mode: "upload-view",
+                    props: {
+                        isMulti: this.multiple,
+                        extraParams: {
+                            type: this.uploadType || ""
+                        }
+                    },
+                    options: {
+                        chooseIds: [],
+                    },
+                    success:(data)=>{
+                        this.$emit("selectImg", data);
+                    }
+                });
+            }
+        },
+        handleDel() {
+            this.$emit("delImg");
+        },
+        handleOver() {
+            this.showAction = this.img;
+        },
+        handleOut() {
+            this.showAction = false;
+        },
+        viewInfo() {
+            const viewer = this.$el.querySelector(".images").$viewer;
+            viewer.show();
+        },
+    },
+    mounted() {},
+    watch: {
+        img: {
+            handler(nV) {
+                if (!nV) this.showAction = false;
+            },
+            immediate: true,
+            deep: true,
+        },
+    },
+};
+</script>
+
+<style lang="less" scoped>
+// 添加图片默认占位符
+.image-box-area {
+    position: relative;
+    .image-box {
+        position: absolute;
+        top: 0px;
+        left: 0px;
+        width: 100%;
+        height: 100%;
+        border: 1px solid #eee;
+        border-radius: 5px;
+        text-align: center;
+        cursor: pointer;
+        background: center center no-repeat;
+        background-size: contain;
+        font-size: 0px;
+        .images {
+            font-size: 0px;
+            width: 100%;
+            height: 100%;
+            .img {
+                display: block;
+                width: 100%;
+                height: 100%;
+                border-radius: 5px;
+                object-fit: contain;
+            }
+        }
+        .add-icon {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            line-height: 80px;
+        }
+        .mask {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.4);
+            border-radius: 5px;
+        }
+    }
+}
+</style>

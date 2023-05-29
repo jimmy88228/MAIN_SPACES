@@ -1,0 +1,71 @@
+<template>
+  <frameBox>
+     <template v-slot:body>
+        <view class="answer-result flex-col flex-c-c">
+          <image class="submit-suc" src="/static/submit-suc.png" mode="aspectFit" />
+          <view class="tips">提交成功，感谢你的参与</view>
+          
+          <!-- #ifdef MP -->
+          <button class="btn flex-c-c" @click="reLaunchAction" data-url="/pages/index/index">返回首页</button>
+          <!-- #endif --> 
+
+          <!-- #ifdef H5 -->
+          <button class="btn H5 flex-c-c" @click="logout" data-url="/pages/index/index">退出登录</button>
+          <!-- #endif -->
+        </view>
+     </template> 
+  </frameBox>
+</template>
+
+<script>
+  import frameBox from "@/components/frame-box/index.vue";
+	const app = getApp();
+	const pageOption = Page.BasePage({
+    components: {
+      frameBox,
+    },
+    methods: {
+      logout(){
+        app.LM.logout();
+        app.LM.logout('bsnUserToken');
+        uni.reLaunch({
+          url:`/pages/startup/startup?id=${app.PM.getParams('initId')||0}`
+        })
+      }
+    },
+  })
+  export default pageOption
+</script>
+
+<style lang="scss" scoped>
+.answer-result{
+  height: 80vh;
+  .submit-suc{
+    width: 252rpx;
+    height: 223rpx;
+		margin-left: 50rpx;
+  }
+  .tips{
+    color:$uni-main-color;
+    font-size: 40rpx;
+    opacity: 0.8;
+    padding: 50rpx 0 120rpx 0;
+  }
+  .btn{
+    width: 260rpx;
+    height: 88rpx;
+    border-radius: 58rpx;
+    background-color: #FAFAFA;
+    &.H5{
+      width: 160px;
+      height: 55px;
+      background: #FAFAFA;
+      border-radius: 10px;
+      position: absolute;
+      bottom: 80px;
+      left: 50%;
+      transform: translateX(-50%);
+    }
+  }
+}
+</style>

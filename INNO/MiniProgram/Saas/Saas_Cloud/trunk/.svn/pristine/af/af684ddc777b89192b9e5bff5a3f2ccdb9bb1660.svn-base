@@ -1,0 +1,12 @@
+<template name="loading-around">
+    <view class="loading">
+        <view></view>
+        <view></view>
+        <view></view>
+        <view></view>
+        <view></view>
+        <view></view>
+        <view></view>
+        <view></view>
+    </view>
+</template>

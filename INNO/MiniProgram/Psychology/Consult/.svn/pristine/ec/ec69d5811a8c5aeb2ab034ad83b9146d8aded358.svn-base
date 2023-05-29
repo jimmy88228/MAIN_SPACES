@@ -1,0 +1,36 @@
+<template>
+	<view class="agree-page">
+		 协议
+	</view>
+</template>
+
+<script>
+	export default {
+		data() {
+			return {
+			}
+		},
+		methods: {
+			
+		}
+	}
+</script>
+
+<style lang="scss" scoped>
+.agree-page{
+	padding: 60rpx 50rpx;
+	.agree-tip{
+		font-family: PingFangSC-Medium;
+		font-size: 28rpx;
+		color: #151515;
+		line-height: 37rpx;
+		font-weight: bold;
+	}
+	.agree-row{
+		margin-bottom: 50rpx;
+		font-family: PingFangSC-Regular;
+		font-size: 26rpx;
+		color: #333333;
+	}
+}
+</style>

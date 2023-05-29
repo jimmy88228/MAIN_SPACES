@@ -1,0 +1,488 @@
+<template>
+  <view class="archives flex-s-s flex-col"> 
+    <page-nav>
+      <view slot="custom-content">档案详情</view>
+    </page-nav>
+    <view class="content-box flex-s-s flex-col flex1 relative">
+      <view class="user-info-box relative flex-b-c C_fff" >
+        <image class="img-bg" :src="archivesBg" mode="aspectFit" />
+        <view class="structure-msg-box">
+          <view class="font-34 user-name">{{_nameEllipsis(userInfo.memberName || "")}}</view>
+          <!-- <view class="last-days font-17">距离上次测评到现在{{userInfo.distanceDay||0}}天</view> -->
+          <view class="structure flex-c-c C_fff">
+            <image class="img-structure" :src="structurePng" mode="aspectFit" />
+            <span class="p-l-5" style="padding-right:8rpx;">所在组织</span>
+            <span>{{structureManageInfo.structureName}}</span>
+          </view>
+        </view>
+        <view class="care-box f-shrink-0">
+          <view class="font-40 care-days bold">{{ userInfo.careDay || 0 }}</view>
+          <view class="line"></view>
+          <view class="font-18" style="opacity:0.8;">关爱天数</view>
+        </view>
+      </view>
+      <view class="tabs-box flex-s-c">
+        <view @click="tabClick(index)" v-for="(item,index) in archives_tabs" :key="item.type" class="tabs-item flex-c-c" :class="{'active':index == curTabIndex}">
+          <view class="name">
+            {{ item.name }}
+          </view>
+          <view class="inline-line"></view>
+        </view>
+      </view>
+      <view class="list-box flex1">
+        <swiper-scroll
+          class="list"
+          ref="list"
+          :current="curTabIndex"
+          :tabData="archives_tabs"
+          :isSwiper="true"
+          :listData="archives_tabs[curTabIndex].data"
+          @swiperChange="swiperChangeCallback"
+          @scrolltolower="scrolltolowerCallback"
+          @refresherrefresh="refreshCallback"
+        >
+          <view
+            :slot="'data'+tabIndex"
+            class="list"
+            v-for="(tabItem,tabIndex) in archives_tabs"
+            :key="tabIndex"
+          >
+            <template v-if="!tabItem.empty">
+              <view class="list-item" :class="'list-item-'+tabIndex" v-for="(lItem,lIndex) in archives_tabs[tabIndex].data" :key="'list'+tabIndex+'_'+lIndex">
+                <template v-if="tabIndex == 0 || tabIndex == 1">
+                  <view class="date-box relative">
+                    <view v-if="tabIndex == 1" class="sign-box flex-b-c flex-col">
+                      <view class="sign-top"></view>
+                      <view class="sign-mid"></view>
+                      <view class="sign-bottom"></view>
+                    </view>
+                    <view class="date">{{lItem.interventionTime||''}}</view>
+                  </view>
+                  <view class="tips" :class="{'warning':item.warningLevel > 0}">{{tabIndex == 1 ? lItem.warningLevelName||'' : ''}}</view>
+                  <view class="result p-b-20">{{tabIndex == 0 ? lItem.assessSuggest||'' : lItem.warningRemark||''}}</view>
+                  <view class="record C_7f">
+                    <template v-if="tabIndex == 0">
+                      <view>{{lItem.adminName||''}} {{lItem.interventionName||""}}</view>
+                    </template>
+                    <template v-if="tabIndex == 1">
+                      <view>记录人 {{lItem.adminName||''}}</view>
+                    </template>
+                  </view>
+                </template>
+                <template v-if="tabIndex == 2">
+                  <view class="scale-msg-box">
+                    <view class="scale-title p-b-20 font-22">{{lItem.modelName||""}}</view>
+                    <view class="scale-date C_7f font-18">{{lItem.createTime||""}}</view>
+                  </view>
+                  <view class="scale-line"></view>
+                  <view class="scale-score flex-c-c flex-col">
+                    <view class="score font-40">{{lItem.points||0}}</view>
+                    <view class="C_b2 C_B2 font-16">报告得分</view>
+                  </view>
+                </template>
+                <template v-if="tabIndex == 3">
+                  <view class="info-box">
+                    <view class="font-34">{{_nameEllipsis(lItem.memberName||"")}}</view>
+                    <view class="msg-box">
+                      <view class="title">性别</view>
+                      <view class="msg">{{lItem.gender==1?"男":lItem.gender==2?"女":"未知"}}</view>
+                    </view>
+                    <view class="msg-box">
+                      <view class="title">婚姻状况</view>
+                      <view class="msg">{{lItem.marriage == 1 ? "已婚" : "未婚"}}</view>
+                    </view>
+                    <view class="msg-box">
+                      <view class="title">联系方式</view>
+                      <view class="msg">{{lItem.mobilePhone||""}}</view>
+                    </view>
+                    <view class="msg-box">
+                      <view class="title">风险等级</view>
+                      <view class="msg">{{lItem.warningLevelStr||""}}</view>
+                    </view>
+                  </view>
+                </template>
+              </view>
+            </template>
+            <template v-if="tabItem.empty">
+              <div class="global-empty"></div>
+            </template>
+          </view>
+        </swiper-scroll>
+        <poster ref="poster"></poster>
+      </view>
+      <view class="watermark-box flex-s-s">
+        <view class="watermark" v-for="(item,index) in watermarkArr" :key="index">{{item}}</view>
+      </view>
+    </view>
+    
+  </view>
+</template>
+
+<script>
+const app = getApp();
+import swiperScroll from "@/components/swiper-scroll/swiper-scroll.vue";
+import poster from "@/components/poster/index.vue";
+import archivesBg from "@/static/archives-bg.jpg";
+import structurePng from "@/static/structure.png";
+import StorageH from "@/common/helper/storage-handler.js";
+import structureManage from '@/common/manager/structure-manage.js'
+import utils from '../../../common/support/utils';
+export default {
+  components: {
+    swiperScroll,
+    poster,
+  },
+  data() {
+    return {
+      archivesBg,
+      structurePng,
+      userInfo: {
+        name:"测试",
+        last_days:1,
+        days:2,
+      },
+      archives_tabs: [
+        {
+          type: 1,
+          name: "干预记录",
+          data: [],
+          page: 1,
+          hasMore: true,
+          empty:false,
+        },
+        {
+          type: 2,
+          name: "轨迹变化",
+          data: [],
+          page: 1,
+          hasMore: true,
+          empty:false,
+        },
+        {
+          type: 3,
+          name: "量表记录",
+          data: [],
+          page: 1,
+          hasMore: true,
+          empty:false,
+        },
+        {
+          type: 4,
+          name: "个人信息",
+          data: [{}],
+          page: 1,
+          hasMore: false,
+          empty:false,
+        },
+      ],
+      curTabIndex: 0,
+      watermarkArr:[],
+      structureManageInfo:{},
+    };
+  },
+  onLoad(options){
+    this.options = options||{};
+    this.structureManageInfo = structureManage.structureInfo||{};
+    console.log('this.structureManageInfo',this.structureManageInfo)
+    this.init();
+  },
+  methods: {
+    init(){
+      let storage = StorageH.get('USER_INFOS') || {};
+      let name = storage.realName||"水印";
+      this.watermarkArr = new Array(120).fill(name);
+      this.getPersonalInfo();
+      this.loadData();
+    },
+    loadData(page) {
+      let item = this.archives_tabs[this.curTabIndex] || {};
+      if (item.hasMore) {
+        let url = this.getUrl(item.type);
+        return this.$Http(this.$Apis[url],{
+          data:{
+            userId:Number(this.options.userId||0),
+            pageIndex:item.page,
+            pageSize:app.Conf.PAGE_SIZE,
+          }
+        }).then(res=>{
+          if(res.code){
+            let data = res.data||{};
+            let list = data.list||[];
+            item.page = page||item.page||1;
+            item.empty = item.page == 1 && list.length<=0 || false;
+            item.hasMore = item.page * app.Conf.PAGE_SIZE < data.totalCount || false;
+            item.data = JSON.parse(JSON.stringify(list));
+            item.page += 1; 
+          }
+          return res
+        }).finally(()=>{
+          console.log('this.archives_tabs',this.archives_tabs,item)
+        })
+      }else {
+        return Promise.resolve()
+      }
+    },
+    getUrl(type){
+      let url = "";
+      switch (type) {
+        case 1:
+          url = "selectWarningInterventionRecordByPage"
+          break;
+        case 2:
+          url = "selectWarningPsychologicTrackByPage"
+          break;
+        case 3:
+          url = "selectScaleModelByPage"
+          break;
+        case 4:
+          url = "getPersonalInfo"
+          break; 
+        default:
+          break;
+      }
+      return url
+    },
+    getPersonalInfo(){
+      return this.$Http(this.$Apis.getPersonalInfo,{
+        data:{
+          userId:Number(this.options.userId||0)
+        }
+      }).then(res=>{
+        if(res.code == 1){
+          let data = res.data||{};
+          data.warningLevelStr = utils.arabicTransChinese(data.warningLevel)+"级";
+          this.archives_tabs[3].data = [data];
+          this.userInfo = data;
+
+        }
+        return res;
+      })
+    },
+    tabClick(index){
+      this.curTabIndex = index;
+    },
+    swiperChangeCallback(e){
+      console.log('swiperChangeCallback',e);
+      this.curTabIndex = e.current;
+      let item = this.archives_tabs[this.curTabIndex];
+      if(item.page == 1){
+        this.loadData();
+      }
+    },
+    refreshCallback(e){
+      console.log('refreshCallback')
+      this.curTabIndex = e.current;
+      this.initTabData(this.archives_tabs[this.curTabIndex]);
+      this.loadData().then(res=>{
+        this.$refs.list.refreshEnd();
+      })
+    },
+    scrolltolowerCallback(e){
+      this.curTabIndex = e.current;
+      this.loadData()
+    },
+    initTabData(item){
+      if(this.curTabIndex != 3){
+        item.page = 1;
+        item.hasMore = true;
+      }
+    },
+  },
+};
+</script>
+
+<style lang="scss" scoped>
+.archives{
+  height: 100%;
+  .user-info-box{
+    padding:0 42rpx;
+    width: 100%;
+    min-height: 210rpx;
+    box-sizing: border-box;
+  }
+  .img-bg{
+    width: 100%;
+    height: 210rpx;
+    position: absolute;
+    left: 0;
+    top:0;
+    z-index: -1;
+  }
+  .img-structure{
+    width: 30rpx;
+    height: 30rpx;
+  }
+  .structure{
+    padding: 4rpx 14rpx;
+    border-radius: 20rpx;
+    background-color: #578B91;
+    font-size: 17rpx;
+  }
+  .user-name{
+    padding-left: 16rpx;
+    margin-bottom: 15rpx;
+    min-height: 44rpx;
+  }
+  .last-days{
+    padding: 6rpx 16rpx;
+    border-radius: 20rpx;
+    background-color: #578B91;
+  }
+  .care-box{
+    border-radius: 17rpx;
+    padding: 20rpx 16rpx;
+    min-width: 122rpx;
+    box-sizing: border-box;
+    background-color: rgba(255, 255, 255, 0.2);
+    text-align: center;
+  }
+  .care-days{
+    line-height: unset;
+  }
+  .line{
+    width: 100%;
+    height: 1px;
+    background-color: rgba(255, 255, 255, 0.1);
+    margin: 14rpx 0 16rpx 0;
+  }
+  .tabs-box{
+    width: 100%;
+    height: 106rpx;
+    position: relative;
+    flex-wrap: wrap;
+  }
+  .tabs-item{
+    min-width: 25%;
+    height: 100%;
+    flex-shrink: 0;
+    color: rgba(51,51,51,0.4);
+    position: relative;
+    &.active{
+      color: #000;
+      .inline-line{
+        opacity: 1;
+      }
+    }
+  }
+  .inline-line{
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 56rpx;
+    height: 4rpx;
+    background: #78A5AA;
+    opacity: 0;
+  }
+  .swiper-scroll{
+  }
+  .list{ 
+  }
+  .list-item{
+    padding:25rpx 50rpx 30rpx 50rpx;
+    border-radius: 10rpx;
+    box-shadow: 0px 0px 15rpx 0px rgba(0, 0, 0, 0.07);
+    background: #fff;
+    margin-bottom: 26rpx;
+    &.list-item-2{
+      padding: 50rpx 40rpx;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+    &.list-item-3{
+      padding: 50rpx;
+    }
+    &:last-child{
+      margin-bottom: 0;
+    }
+    .date{
+      margin-bottom: 20rpx;
+    }
+    .tips{
+      padding-bottom: 40rpx;
+      color: #4F902C;
+      &.warning{
+        color: #E78532;
+      }
+    }
+  }
+  .scale-msg-box{
+
+  }
+  .scale-title{
+    
+  }
+  .scale-line{
+    width: 1px ;
+    height: 80rpx;
+    background: transparent;
+    border-left: 1px dashed #7f7f7f;
+    margin: 0 80rpx;
+  }
+  .score{
+    color: #13B1A6;
+    padding-bottom: 5px;
+  } 
+  .sign-box{
+    position: absolute;
+    left: -26rpx;
+    top:50%;
+    transform: translateY(-50%);
+    height: 36rpx;
+  }
+  .sign-top,.sign-bottom{
+    width: 8rpx ;
+    height: 8rpx;
+    background: #D8D8D8;
+    border-radius: 50%;
+  }
+  .sign-mid{
+    width: 1px;
+    height: 84%;
+    position: absolute;
+    z-index: 2;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%,-50%);
+    background: #E69DA0;
+  }
+  .watermark-box{
+    position: fixed;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%,-50%) rotate(-20deg);
+    flex-wrap: wrap;
+    z-index: 2;
+    width: 150%;
+    height: 100%;
+    pointer-events:none;
+  }
+  .watermark{
+    width: 20%;
+    line-height: 120rpx;
+    opacity: 0.1; 
+    text-align: center;
+  }
+  .msg-box{
+    margin-top: 45rpx;
+  }
+  .title{
+    color: #7f7f7f;
+    margin-right: 60rpx;
+    text-align: justify;
+    text-align-last:justify;
+    min-width:125rpx;
+  }
+  .title,.msg{
+    display: inline-block;
+    vertical-align: middle;
+  }
+}
+</style> 
+
+<style lang="scss">
+page {
+  height: 100%;
+}
+</style>

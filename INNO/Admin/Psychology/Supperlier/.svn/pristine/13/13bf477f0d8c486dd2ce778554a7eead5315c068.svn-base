@@ -1,0 +1,127 @@
+<template>
+  <hold-layout :isFull="true">
+    <searchForm :searchForm="searchForm" @search="loadData()" @add="add"></searchForm>
+    <Table
+      ref="myTable"
+      class="full-table"
+      :columns="columns"
+      :data="list"
+      border
+      :loading="tableLoading"
+    >
+      <template slot="handle" slot-scope="{ row }">
+        <div class="operate-area">
+          <a
+            @click="edit(row.id)"
+            class="operate"
+            v-hasAction="'scale_maintenance_update'"
+            >编辑</a
+          >
+        </div>
+      </template>
+    </Table>
+    <rewrite-page
+      slot="footer"
+      :total="total"
+      :current="page"
+      :page-size="pageSize"
+      :page-size-opts="pageSizeOpts"
+      @on-change="(e) => loadData(e)"
+      @on-page-size-change="handlePageSizeChange"
+      show-sizer
+      show-elevator
+      show-total
+      transfer
+    ></rewrite-page>
+    
+    <custom-modal footerHide :width="800" ref="modalId">
+        <div class="form-view-box">
+            <form-view ref="formView" class="box"></form-view>
+            <div class="flex-e-c m-t-10">
+                <Button @click="cancel" class="m-r-20">取消</Button>
+                <Button @click="confirm" type="primary" class="m-r-20">确定</Button>
+            </div> 
+        </div>
+    </custom-modal>
+  </hold-layout>
+</template>
+
+<script>
+import ListMixin from "@/helper/mixin/list-mixin";
+import searchForm from "./search-form";
+import mixins from "./mixins";
+import formView from './edit-gauge/form.vue';
+export default {
+  name: "gaugeIndex",
+  mixins: [ListMixin, mixins],
+  components: { searchForm ,formView},
+  data() {
+    return {
+      searchForm: {
+        searchq: "",
+      },
+    };
+  },
+  methods: {
+    onLoadData(page, extraData) {
+      return this.$MainApi
+        .scaleList({
+          data: {
+            ...this.searchForm,
+            ...extraData,
+          },
+        })
+        .then((res) => {
+          console.log("列表", res);
+          if (res.code) {
+            let data = res.data || {};
+            this.data = {
+              total: data.total,
+              list: data.items,
+            };
+          }
+        });
+    },
+    edit(id) {
+      this.$router.push({
+        name: "gaugeEdit",
+        query: {
+          id: id || 0,
+        },
+      });
+    },
+
+    add(){
+      this.$refs.modalId.show();
+    },
+    save(formData){
+        return this.$MainApi.scaleDimensionAdd({
+            data:{
+                ...formData,
+                // estimated_time:Number(formData.estimated_time||0),
+            }
+        }).then(res=>{
+          if(res.code){
+            this.cancel();
+            this.loadData(); 
+          }
+          res.message && this.$Message.info(res.message);
+        })
+    },
+    confirm(){
+        this.$refs.formView.validate().then((formData)=>{
+            this.save(formData);
+        })
+    },
+    cancel(){
+        this.$refs.modalId.dismiss();
+    },
+  },
+  mounted() {
+    this.loadData();
+  },
+};
+</script>
+
+<style>
+</style>

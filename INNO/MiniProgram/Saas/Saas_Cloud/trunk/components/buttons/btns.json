@@ -1,0 +1,8 @@
+{
+  "component": true,
+  "usingComponents": {
+    "loginPhone":"/components/login/login_by_phone",
+    "agreementPop": "/components/pop/agreementPop",
+    "getCouponsPop": "/components/pop/getCouponsPop/getCouponsPop"
+  }
+}

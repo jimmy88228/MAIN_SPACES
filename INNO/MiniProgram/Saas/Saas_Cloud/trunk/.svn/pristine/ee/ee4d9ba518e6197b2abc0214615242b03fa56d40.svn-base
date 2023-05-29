@@ -1,0 +1,121 @@
+.area_cont_title .all_order_tip {
+  float: right;
+}
+.all_order_tip_text {
+  color: #7f7f7f;
+  font-size: 22rpx;
+  line-height: 50rpx;
+  background-repeat: no-repeat;
+  background-position: center right;
+  background-size: 30rpx;
+  padding-right: 30rpx;
+}
+.order_area {
+  display: flex;
+  width: 100%;
+  text-align: center;
+}
+.order_item {
+  position: relative;
+  flex: 1;
+  vertical-align: top;
+  padding: 20rpx 0px 40rpx 0px;
+}
+.order_item .num_tip {
+  position: absolute;
+  top: 18rpx;
+  left: 50%;
+  transform: translateX(-50%);
+  margin-left: 23rpx;
+  border: 4rpx solid #ff5454;
+  background: #fff;
+  color: #ff5454;
+  min-width: 30rpx;
+  min-height: 30rpx;
+  text-align: center;
+  line-height: 30rpx;
+  border-radius: 100%;
+  font-weight: bold;
+  font-size: 22rpx;
+  z-index: 1;
+}
+.order_icon{
+  width:60rpx;
+  height:60rpx;
+}
+.user_c_more_box{
+  float: right;
+  padding-left:30rpx;
+}
+.assetsMoreBox{
+  position: absolute;
+  top: -176rpx;
+  right: 10rpx;
+  transition: opacity 0.2s linear 0.1s;
+  z-index: -1;
+  opacity: 0;
+  color: #fff;
+}
+.assetsMoreContent{
+  width: 160rpx;
+  height: 160rpx;
+  border-radius: 20rpx;
+  position: relative;
+  z-index: 2;
+  margin-right: 10rpx;
+  overflow: hidden;
+  background-color: rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(10rpx);
+  -webkit-backdrop-filter: blur(10rpx);
+}
+.assetsMoreContent:last-child{
+  margin-right: 0;
+}
+.assetsMoreBg{
+  position: fixed;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background: transparent;
+  z-index: 1; 
+}
+.assetsMoreBox.active{
+  z-index: 3;
+  opacity: 1;
+}
+.user_area._zIndex{
+  z-index: 3;
+}
+.assets_area {
+  display: flex;
+  width: 100%;
+  text-align: center;
+}
+.assets_item {
+  flex: 1;
+  vertical-align: top;
+  padding: 20rpx 0px 20rpx 0px;
+  position:relative;
+}
+.assets_item_stay {
+  position: relative;
+}
+.assets_item_stay .line {
+  width: 1rpx;
+  height: 30rpx;
+  background: #fff;
+  position: absolute;
+  top: 50%;
+  right: 0px;
+  margin-top: -15rpx;
+}
+.assets_area .assets_item:last-of-type .assets_item_stay .line {
+  display: none;
+}
+.assets_val {
+  font-size: 40rpx;
+  margin-bottom: 12rpx;
+  padding: 0px 10rpx;
+  min-height: 46rpx;
+}

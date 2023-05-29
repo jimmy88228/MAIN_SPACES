@@ -1,0 +1,96 @@
+.__rail-is-vertical,.__rail-is-horizontal{
+    z-index: 2 !important;
+}
+.anim-box {
+    position: relative !important;
+    overflow: hidden;
+}
+
+.anim-view{
+    position: absolute !important;
+    left: 0;
+    top: 0;
+    width: 100%;
+}
+.anim-view-area {
+    width:100%;
+    height:100%;
+    overflow: hidden;
+    // position: relative;
+    // position: static !important;
+    .__view{
+        // width:100% !important;
+        height: 100% !important;
+        position: static !important; // 开放屏幕
+        display: inline-block;
+    }
+    .__panel{
+        position: static !important;
+    }
+}
+.anim-view-area-stay{
+    width:100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+.anim-view-area-breadcrumb{
+    flex-shrink: 0;
+}
+.anim-view-area-title{
+    flex-shrink: 0;
+    line-height:70px;
+    font-size: 22px;
+    color: #171717;
+    padding:0px 20px;
+}
+.anim-router-view{
+    width: 100%;
+    flex: 1;
+    height: 0px;
+}
+.anim-router{
+    padding: 10px 20px 10px 10px;
+    // position:absolute;
+    // top:0px;
+    // left:0px;
+    width:100%;
+    min-height:100%;
+}
+.anim-top {
+    z-index: 2;
+}
+.anim-bottom {
+    z-index: 1;
+}
+.anim-300 {
+    animation-duration: 300ms;
+    animation-timing-function: ease-in-out;
+    animation-fill-mode: both;
+}
+.anim-500 {
+    animation-duration: 500ms;
+    animation-timing-function: ease-in-out;
+    animation-fill-mode: both;
+}
+.anim-800 {
+    animation-duration: 800ms;
+    animation-timing-function: ease-in-out;
+    animation-fill-mode: both;
+}
+.anim-1000 {
+    animation-duration: 1000ms;
+    animation-timing-function: ease-in-out;
+    animation-fill-mode: both;
+}
+.anim-1500 {
+    animation-duration: 1500ms;
+    animation-timing-function: ease-in-out;
+    animation-fill-mode: both;
+}
+.anim-2000 {
+    animation-duration: 2000ms;
+    animation-timing-function: ease-in-out;
+    animation-fill-mode: both;
+}

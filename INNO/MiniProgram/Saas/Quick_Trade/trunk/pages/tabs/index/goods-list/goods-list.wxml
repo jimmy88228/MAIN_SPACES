@@ -1,0 +1,67 @@
+<ori-scroll-view scroll-y ext-class="i-goods-list-container full-height" bindscrolltolower="loadNextPage" refresherEnabled="{{false}}">
+  <block wx:if="{{isInit && list.length>0}}">
+    <view class="i-goods-item" wx:for="{{list}}" wx:key="index" hover-class="active" bindtap="handleGoodsTap" data-goods-id="{{item.goods_id}}">
+      <view class="i-goods-item-main">
+        <view class="i-goods-left">
+          <mode-image ext-class="i-g-image" src="{{item.goods_img}}" />
+        </view>
+        <view class="i-goods-right">
+          <view class="i-goods-info">
+            <view class="i-goods-title text-flow2">{{item.goods_name}}</view>
+            <view class="i-goods-cliff" wx:if="{{item.market_price > item.sale_price}}">
+              <view class="iconfont icon-xiajiang cliff-icon"></view>
+              <text>直降￥{{item.down_price}}</text>
+            </view>
+            <view class="i-goods-price-con">
+              <view class="i-goods-price">
+                <text class="i-g-rmb">￥</text>
+                <text class="i-g-price-number">{{item.sale_price}}</text>
+              </view>
+              <view class="i-goods-original-price" wx:if="{{item.market_price != item.sale_price}}">
+                <text class="i-g-o-rmb">￥</text>
+                <text class="i-g-original-price-number">{{item.market_price}}</text>
+              </view>
+            </view>
+          </view>
+          <view class="i-goods-purchase-con">
+            <!-- <view class="i-goods-count-down">
+            <text class="i-c-d-pre">距结束</text>
+            <text class="i-c-d-time">05:12:32</text>
+          </view> -->
+            <button class="i-goods-purchase-btn" hover-class="active" catchtap="handlePurchaseTap" disabled="{{activityStatus != 1}}" data-item="{{item}}">
+              {{purchaseButtonText}}
+              <!-- <btns bind:clickcallback="">抢购</btns> -->
+            </button>
+          </view>
+        </view>
+      </view>
+      <!-- <view class="i-g-purchase-tips">
+        <text class="i-g-p-tip">·支持到店取货</text>
+        <text class="i-g-p-tip">·每人限购1件</text>
+        <text class="i-g-p-tip">·一件包邮到家</text>
+      </view> -->
+    </view>
+  </block>
+  <block wx:if="{{isInit && list.length<=0}}">
+    <view class="common-empty-tip" style="color:#efefef;">
+      暂无活动商品
+    </view>
+  </block>
+</ori-scroll-view>
+
+<!-- 可移动分享区域 -->
+<movable-area class="movable-area">
+  <movable-view animation="false" direction="all" x="{{moveViewOps.x}}" y="{{moveViewOps.y}}" class="i-goods-share-btn">
+    <btns bind:clickcallback="handleShareBtnTap">
+      <view class="i-goods-share-icon icon-fenxiang iconfont"></view>
+    </btns>
+  </movable-view>
+</movable-area>
+
+<view class="index-goods-spec-com">
+  <goods-spec-pop id="goods-spec-pop" show-short-cut />
+</view>
+<share-pop id="share-pop" />
+<poster-pop id="poster-pop" />
+<!-- public -->
+<include src="/common/base/component/index.wxml" />

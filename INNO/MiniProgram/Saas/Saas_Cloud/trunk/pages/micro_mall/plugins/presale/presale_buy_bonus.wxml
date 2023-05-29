@@ -1,0 +1,89 @@
+<view class="buy_coupon_page">
+  <view class="no_use_coupon" bindtap="noUseCoupon">
+    <view class="coupon_radio coupon_radio_header">
+      <image src="{{ls_icon2}}" class="radio_icon" mode="widthFix" wx:if="{{no_use_coupon}}"/>
+      <image src="{{ls_icon1}}" class="radio_icon" mode="widthFix" wx:else />
+    </view>
+    <text class="txt">不选择优惠券</text>
+  </view>
+  <view class="coupon_list">
+    <view 
+    class="coupon_item" 
+    wx:for="{{coupon_list}}" 
+    wx:if="{{bonus.isEnabled == 1}}" 
+    wx:key="index" 
+    wx:for-item="bonus"
+    bindtap="useCoupon" 
+    data-bonus_id="{{bonus.bonus_id}}"
+    >
+      <view class="coupon_radio coupon_radio_son">
+        <image src="{{ls_icon2}}" class="radio_icon" mode="widthFix" wx:if="{{use_coupon.bonus_id == bonus.bonus_id && !no_use_coupon}}"/>
+        <image src="{{ls_icon1}}" class="radio_icon" mode="widthFix" wx:else/>
+      </view>
+      <view class="coupon_cont">
+        <view class="coupon_info">
+          <view class="oh coupon_txt">
+            <block wx:if="{{bonus.is_hide_money_show == '0'}}">
+              <view class="conponValue">
+                {{bonus.bonus_type==4 ? bonus.discountStr : bonus.type_money}}
+              </view>
+              <view class="price">
+                <view class="minUse" wx:if="{{bonus.min_goods_amount > 0 && bonus.bonus_type != 4}}">
+                    满{{bonus.min_goods_amount}}可用
+                  </view>
+                  <view class="minUse" wx:elif="{{bonus.bonus_type == 4}}">
+                    满{{bonus.min_amount}} ~ {{bonus.max_amount}}可用
+                  </view>
+                  <view>
+                    <text class="valueUnit" >{{bonus.bonus_type == 4?'折':'元'}}</text>
+                    <!--通用状态-->
+                    <block>
+                      <text class="bonus_type" wx:if="{{bonus.send_type == 4}}">门店使用</text>
+                      <text class="bonus_type" wx:elif="{{bonus.send_type == 5}}">通用劵</text>
+                      <text class="bonus_type" wx:elif="{{bonus.send_type == 3}}">智慧支付</text>
+                      <text class="bonus_type" wx:else>微商城</text>
+                    </block>
+                  </view>
+              </view>
+            </block>
+          </view>
+          <block wx:if="{{bonus.image_main}}" >
+            <image src="{{bonus.image_main}}" class="coupon_img" mode="widthFix" />
+          </block>
+          <block wx:else>
+            <image class="coupon_img" src="{{storeBonus}}" wx:if="{{bonus.send_type == 4 || bonus.send_type == 5}}" mode="widthFix" />
+            <image class="coupon_img" src="{{onlineBonus}}" wx:else mode="widthFix" />
+          </block>
+        </view>
+
+        <view class="coupon_crumbs">
+          <view class="useLimitTxt {{bonus.showLimit ? '' : 'hide'}}">
+            <view class="limit">
+              <text class="" wx:if="{{bonus.send_type == 5}}">通用券</text>
+              <text class="" wx:elif="{{bonus.send_type == 4}}">限线下门店使用</text>
+              <text class="" wx:elif="{{bonus.send_type == 3}}">限线下店铺使用</text>
+              <text class="" wx:else>限线上微商城使用</text>
+            </view>
+            <text class="limit" decode='decode'>{{bonus.bonus_desc}}</text>
+            <view class="expiration_date">有效期：{{bonus.use_start_date}}~ {{bonus.use_end_date}}</view>
+          </view>
+          <view class="crumbs_indicator {{bonus.showLimit ? 'active' : '' }}" catchtap="onShowUseLimit" data-id="{{index}}" >
+          <text class='drop'>适用范围</text>
+          <block>
+            <!-- <image class="" src="{{brand_info.icon_url}}micro_mall/arrow_hide.png" wx:if="{{bonus.showLimit}}" mode="widthFix"/>
+            <image class="" src="{{brand_info.icon_url}}micro_mall/arrow_show.png" wx:else mode="widthFix"/> -->
+            <image src="{{arrow}}" class="arrow" mode="widthFix" />
+          </block>
+          </view>
+        </view>
+
+      </view>
+    </view>
+
+    <!--优惠券为空-->
+    <view class="has_no_use_coupon" wx:if="{{coupon_list.length == 0 }}">
+      <image src="{{bonus_none}}" mode="widthFix"/>
+      <text>优惠券为空</text>
+    </view>
+  </view>
+</view>

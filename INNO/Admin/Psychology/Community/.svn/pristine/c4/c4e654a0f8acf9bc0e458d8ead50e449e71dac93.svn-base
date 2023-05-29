@@ -1,0 +1,261 @@
+<template>
+    <div>
+        <Modal v-model="isShowCode"  @on-visible-change="onVisibleChange" :width="320" class-name="applet-code-modal">
+            <Spin size="large" fix v-if="spinShow"></Spin>
+            <div class="code-view-cont">
+                <Tabs value="xcxCode">
+                    <TabPane label="小程序码" name="xcxCode">
+                        <div class="img-view" id="img-view">
+                            <div class="code-view">
+                                <img :src="codeUrl" v-if="codeUrl" id="xcxImage" style="width: 100%">
+                            </div>
+                            <div class="code-tip theme-c" ref="codeTipRef" v-if="codeTip" :style="getTipStyle">
+                                <p v-html="codeTip"></p>
+                            </div>
+                        </div>
+                        <Button type="default" :loading="downLoading" long @click="downLoadImg">下载</Button>
+                    </TabPane>
+                    <TabPane label="小程序路径" name="xcxPath" style="position: relative;">
+                        <div class="code-url-view  flex f-just-center f-align-center">
+                            <p id="activity-url" style="width:100%;">{{viewPath}}</p>
+                        </div>
+                        <Button id="copyBtn" class="copy-btn" type="default" long @click="copyText(viewPath)">复制</Button>
+                    </TabPane>
+                </Tabs>
+            </div>
+            <div slot="footer">
+                <Button type="primary" @click="isShowCode = false">确定</Button>
+            </div>
+        </Modal>
+    </div>
+</template>
+<script>
+import html2canvas from "html2canvas";
+import strUtil from "@/helper/utils/string-util";
+export default {
+    props: {
+        title: {
+            type: String,
+            default() {
+                return "选择小程序";
+            },
+        },
+        codeTitle: {
+            type: String,
+            default() {
+                return "小程序二维码";
+            },
+        },
+        codeTip: {
+            type: String,
+            default() {
+                return "";
+            },
+        },
+        getCodeEvent: Function,
+    },
+    data() {
+        return {
+            isShowApplet: false,
+            isShowCode: false,
+            appletList: [],
+            appletInfo: {
+                appid: 0,
+                appname: "",
+            },
+            path: "pages/index/index",
+            params: {},
+            codeId: "",
+            codeUrl: "",
+            spinShow: false,
+            excessivePage: "pages/startup/startup",
+            downLoading: false,
+            getTipStyle: ""
+        };
+    },
+    computed: {
+        viewPath() {
+            let path = this.path || "";
+            let params = this.params || {};
+            let pathParams = "";
+            for (let i in params) {
+                pathParams = pathParams
+                    ? pathParams + "&" + i + "=" + params[i]
+                    : "?" + i + "=" + params[i];
+            }
+            return path + pathParams;
+        },
+    },
+    methods: {
+        showModal({ path, params, codeId }) {
+            if (path) this.path = path;
+            if (params) {
+                params = params || {};
+                params.appCode = params.appCode || this._getApp.app_code
+                this.params = params;
+            }
+            if (codeId) this.codeId = codeId;
+            this.getCodeData();
+        },
+        getCodeData() {
+            this.goShowCode();
+            this.spinShow = true;
+            return this.$MainApi
+                .qrcode({
+                    data: {
+                        codeId: this.codeId,
+                        data: this.params && JSON.stringify(this.params),
+                        excessive_page: this.excessivePage,
+                        target_page: this.path,
+                    },
+                })
+                .then((res) => {
+                    if (res.code) {
+                        let data = res.data;
+                        this.codeUrl = data.pic;
+                    }
+                })
+                .finally(() => {
+                    this.spinShow = false;
+                });
+        },
+        goShowCode() {
+            this.isShowCode = true;
+            this.isShowApplet = false;
+        },
+        goShowApplet() {
+            this.isShowCode = false;
+            this.isShowApplet = true;
+        },
+        downLoadImg() {
+            this.downLoading = true;
+            html2canvas(document.querySelector("#img-view"), {
+                allowTaint: false,
+                backgroundColor: "transparent",
+                useCORS: true,
+            })
+                .then((canvas) => {
+                    // 转成图片，生成图片地址
+                    // document.body.appendChild(canvas);
+                    let imgUrl = canvas.toDataURL("image/png");
+                    let a = document.createElement("a");
+                    a.style.display = "none";
+                    a.download = "心理健康测评二维码";
+                    a.href = imgUrl;
+                    a.click();
+                })
+                .finally(() => {
+                    this.downLoading = false;
+                });
+        },
+        copyText(text) {
+            this.$utils.copyText(text);
+        },
+        onVisibleChange(bool){
+            if(!bool){
+                setTimeout(() => {
+                    this.$emit('destroy');
+                }, 500);
+            }
+        },
+    },
+    watch: {
+        codeTip: {
+            handler(nV) {
+                this.$nextTick(() => {
+                    let getTipStyle = "";
+                    let codeTipRef = this.$refs["codeTipRef"];
+                    let tip = codeTipRef.getElementsByClassName("big-tip")[0];
+                    if (tip) {
+                        let tipTxt = tip.innerHTML;
+                        let txtLen = strUtil.getStrLen(tipTxt);
+                        let maxW = 268;
+                        let computedLen = maxW / (txtLen / 2);
+                        computedLen =
+                            computedLen > 26
+                                ? 26
+                                : computedLen < 12
+                                ? 12
+                                : computedLen;
+                        getTipStyle = `font-size:${computedLen}px;`;
+                        console.log("tip", getTipStyle);
+                        this.getTipStyle = getTipStyle;
+                    }
+                });
+            },
+            immediate: true,
+        },
+    },
+};
+</script>
+<style lang="less">
+.applet-list-modal {
+    .model-header {
+        font-size: 16px;
+    }
+}
+.applet-code-modal {
+    .ivu-modal-close {
+        display: none;
+    }
+    .model-header {
+        cursor: pointer;
+        font-size: 16px;
+    }
+    .ivu-modal-body {
+        // padding-top: 0px;
+    }
+    .code-view-cont {
+        width: 100%;
+        .ivu-tabs-nav {
+            width: 100%;
+            text-align: center;
+            .ivu-tabs-tab {
+                width: 50%;
+                box-sizing: border-box;
+                margin: 0px;
+            }
+        }
+        .img-view {
+            width: 288px;
+            padding: 20px 10px;
+            border-radius: 10px;
+            overflow: hidden;
+            background-color: #fff;
+        }
+        .code-view {
+            text-align: center;
+            width: 200px;
+            min-height: 200px;
+            margin: 25px auto;
+        }
+        .code-url-view {
+            width: 100%;
+            height: 100%;
+            padding-bottom: 35px;
+        }
+        .copy-btn {
+            position: absolute;
+            left: 0px;
+            bottom: 0px;
+        }
+        .code-tip {
+            text-align: center;
+            font-size: 21px;
+            .big-tip {
+                font-family: PingFangSC-Regular, PingFang SC;
+                font-weight: 400;
+                line-height: 30px;
+                margin-bottom: 10px;
+            }
+            .tip {
+                font-family: PingFangSC-Regular, PingFang SC;
+                font-weight: 400;
+                color: #222222;
+                line-height: 16px;
+                font-size: 12px !important;
+            }
+        }
+    }
+}
+</style>

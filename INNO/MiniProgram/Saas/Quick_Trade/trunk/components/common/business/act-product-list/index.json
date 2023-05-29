@@ -1,0 +1,6 @@
+{
+  "component": true,
+  "usingComponents": {
+    "batch-set":"/pages/main/staff-module/repository/goods/spec/batch-set/index"
+  }
+}

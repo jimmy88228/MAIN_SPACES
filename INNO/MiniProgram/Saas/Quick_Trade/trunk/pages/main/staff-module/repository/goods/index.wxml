@@ -1,0 +1,111 @@
+<!--pages/main/staff-module/repository/goods/index.wxml-->
+<!-- public 必须是第一个元素 -->
+<include src="/common/base/page/index.wxml" />
+<view class="goods">
+    <view class="box">
+        <view class="msg-box">
+            <view class="title-box flex-b-c">
+                <view class="">商品设置</view>
+                <view class="set-btn-box flex">
+                    <!-- <span class="set-btn flex-c-c">复制</span>
+                    <span class="set-btn flex-c-c">删除</span> -->
+                </view>
+            </view>
+            <ori-input errTip="商品名称" class="ori-label" validArray="{{['NOT_EMPTY']}}" maxlength="50" ext-class="name-input" ext-placeholder-class="placehold-text" placeholder="输入商品名称与关键字…" bindinput="onInput" data-key="goods_name" value="{{goodsInfo.goods_name}}" />
+            <view class="img-box flex">
+                <view wx:for="{{goodsInfo.goodsImgs}}" wx:key="index" class="img-goods-box">
+                    <mode-image src="{{item}}" ext-class="img-goods" />
+                    <view class="delete-box flex-c-c" bindtap="delImg" data-index="{{index}}">
+                        <view class="delete"></view>
+                    </view>
+                </view>
+                <view class="add-goods flex-c-c" wx:if="{{goodsInfo.goodsImgs.length<9}}" bindtap="onAddImg">
+                    <view class="add-icon"></view>
+                </view>
+            </view>
+            <view class="content-box">
+                <view class="content flex-b-c" wx:if="{{goodsInfo.market_price>0}}">
+                    <view class="title">原价</view>
+                    <view class="flex-c-c">
+                        <view class="input-text">
+                          {{goodsInfo.min_market_price || goodsInfo.market_price || 0}}
+                          <block wx:if="{{goodsInfo.min_market_price != goodsInfo.max_market_price}}">
+                            <span class="p-l-5 p-r-5">-</span>
+                            {{goodsInfo.max_market_price}}
+                          </block>
+                        </view>
+                        <span>元</span>
+                    </view>
+                </view>
+                <view class="content flex-b-c" wx:if="{{fromType=='activity'}}">
+                    <view class="title">秒杀</view>
+                    <view class="flex-c-c">
+                        <view class="input-text">
+                          {{goodsInfo.min_price}}
+                          <block wx:if="{{goodsInfo.min_price != goodsInfo.max_price}}">
+                            <span class="p-l-5 p-r-5">-</span>
+                            {{goodsInfo.max_price}}
+                          </block>
+                        </view>
+                        <span>元</span>
+                    </view>
+                </view>
+                <view class="content flex-b-c">
+                    <view class="title">款号</view>
+                    <view class="flex-c-c">
+                        <ori-input class="ori-label" errTip="款号" maxlength="10" validArray="{{['NOT_EMPTY']}}" ext-class="goods-input sn" placeholder-class="placehold-text" placeholder="请输入款号" bindinput="onInput" data-key="goods_sn" value="{{goodsInfo.goods_sn}}" />
+                    </view>
+                </view> 
+                <view class="content flex-b-c" wx:if="{{fromType=='activity'}}">
+                    <view class="title">库存</view>
+                    <view class="flex-c-c">
+                        <view class="input-text">
+                          {{goodsInfo.goods_number}}
+                        </view>
+                        <span>件</span>
+                    </view>
+                </view>
+                <view class="content flex-b-c" wx:if="{{fromType!='activity'}}">
+                    <view class="title">分类</view>
+                    <view class="flex-c-c">
+                      <view bindtap="pickerShow">
+                        {{catList[curCat] && catList[curCat].catName || ''}}
+                      </view>
+                    </view>
+                </view>
+                <block wx:if="{{productList.length>0 || specList.length>0}}">
+                  <view class="spec-box">
+                    <view class="content flex-b-s C_7f" wx:for="{{specList}}" wx:for-item="specItem" wx:key="catId" wx:if="{{(index<1||showMore)}}">
+                        <view class="title spec-title text-flow">{{specItem.catName}}</view>
+                        <view class="flex-c-c flex-1">
+                            <view class="input-text text-flow2">
+                              <block wx:for="{{specItem.specList}}" wx:key="specId">
+                                <span wx:if="{{index>0}}">/</span><span>{{item.specName}}</span>                            
+                              </block>
+                            </view>
+                        </view>
+                    </view>
+                    <view class="full-width-center" wx:if="{{!showMore && specList.length>1}}" bindtap="showMore">
+                      <view class="more-box flex-c-c m-t-5" hover-class="active">
+                        显示更多规格
+                      </view> 
+                    </view>
+                  </view>
+                </block>
+            </view>
+            <!-- <view class="shipping-box flex-b-c">
+                <view class="">物流方式设置</view>
+                <view class="arrow-right"></view>
+            </view> -->
+        </view> 
+    </view>
+    <view class="add-btn-box flex">
+        <view id="add-label" class="add-btn flex-c-c" bindtap="jumpSpec">添加规格</view>
+        <view class="add-btn flex-c-c" bindtap="jumpDetailEdit">添加详情</view>
+        <!-- <view class="add-btn flex-c-c">添加款号</view> -->
+    </view>
+  <view class="footer flex-e-c" wx:if="{{fromType != 'init'}}">
+        <view class="save-btn flex-c-c" bindtap="handleSaveBtnTap">{{fromType == 'activity'?'暂存':'保存'}}</view>
+    </view>
+</view>
+<cat-pop curCat="{{curCat}}" catList="{{catList}}" id="cat-pop" bindrefreshPickerList="refreshPickerList"></cat-pop>

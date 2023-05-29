@@ -1,0 +1,29 @@
+<include src="/common/base/component/index.wxml" />
+
+<window show="{{show}}" bindmasktap="hideModal">
+  <view class="change-order-status-pop">
+    <view class="change-order-status-title">{{title}}</view>
+    <view class="change-order-status-content">
+      <view class="cosc-row" wx:if="{{formType === 'delivery'}}">
+        <view class="cosc-prefix">物流公司</view>
+        <view class="cosc-input-container">
+          <picker mode="selector" range="{{deliveryCompanyList}}" range-key="shippingName" value="{{selectedDeliveryIndex}}" bindchange="handleDeliveryPickerChange">
+            <ori-input errTip="物流公司" class="ori-label" validArray="{{['NOT_EMPTY']}}" ext-class="cosc-input" disabled placeholder="选择物流公司" value="{{formData.shippingName}}" />
+          </picker>
+        </view>
+      </view>
+      <view class="cosc-row" wx:if="{{formType === 'delivery'}}">
+        <view class="cosc-prefix">快递单号</view>
+        <view class="cosc-input-container">
+          <ori-input errTip="快递单号" class="ori-label" validArray="{{['NOT_EMPTY']}}" ext-class="cosc-input" bindinput="handleUserInput" data-key="invoiceNo" placeholder="输入快递单号" value="{{formData.invoiceNo}}" />
+        </view>
+      </view>
+    </view>
+    <view class="change-order-status-footer">
+      <view class="cosf-btn-group">
+        <button class="cosf-btn" hover-class="active" bindtap="handleCancelBtnTap">取消</button>
+        <button class="cosf-btn primary" hover-class="active" bindtap="handleConfirmBtnTap">确认</button>
+      </view>
+    </view>
+  </view>
+</window>

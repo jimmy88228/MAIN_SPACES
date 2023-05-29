@@ -1,0 +1,35 @@
+<!--pages/micro_mall/send_goods/send_goods_code.wxml-->
+<form bindsubmit="formAction" report-submit="true">
+  <view class="login_view">
+      <image src="{{brand_info.icon_url}}micro_mall/login/login_bg.png" mode="aspectFit" class="login_view_bg" />
+      <image src="{{brand_info.logo_path}}micro_mall/login/login_logo.png" mode="aspectFit" class="login_view_logo" />
+      <view class="operate_btn">
+          <!-- <button 
+                  wx:if="{{isLogin}}"
+                  class="get_number_btn" 
+                  hover-class='none' 
+                  catchtap='clickAuthorizeUserInfo'>登录</button>
+          <button 
+                  wx:else
+                  class="get_number_btn" 
+                  hover-class='none' 
+                  open-type='getUserInfo' 
+                  bindgetuserinfo='clickAuthorizeUserInfo'>登录</button> -->
+          <btns 
+          class="get_number_btn"
+          isLogin="{{isLogin}}"
+          bindclickcallback="clickAuthorizeUserInfo"
+          >
+          登录
+          </btns>
+          <button 
+                  wx:if="{{showCancel}}"
+                  class="cancel_login_btn" 
+                  hover-class='none' 
+                  form-type="submit"
+                  bindtap='cancelLogin'>取 消</button>
+      </view>
+  </view>
+</form>
+<!--手机登录-->
+<!-- <loginPage id="loginPage" bindloginCallback="loginCallback"></loginPage> -->

@@ -1,0 +1,1060 @@
+import LM from "../manager/login-manager.js";
+import {
+  UserApi,
+  CL_UserApi
+} from "../manager/http-manager.js";
+import SMH from "./show-msg-helper.js";
+import Conf from "../../conf.js";
+import LgMg from "../manager/log-manager.js"
+import {
+  ActionRoute,
+  ActionName,
+  LogMap
+} from "../manager/log-map.js"
+import WxGH from "./handle/wxGroupHandle.js";
+import ChannelsLiveH from "./handle/channelsLiveHandle.js";
+import wxSubscribe from "./handle/wxSubscribe.js";
+
+const subConfig = {
+  COUPON: {
+    type: 'RECEIVE_COUPON',
+    label: 'ONE_CLICK'
+  }
+}
+
+export const FuncType = {
+  CA: {
+    type: "CA",
+    action1: "NCATE_GOODS",
+    action2: "NORMAL_CATEGORY"
+  },
+  VC: {
+    type: "VC",
+    action1: "VCATE_GOODS",
+    action2: "VIRTUAL_CATEGORY"
+  },
+  CMPAGE: {
+    type: "CMPAGE",
+    action: "CUSTOM_PAGE"
+  },
+  TOJUMP: {
+    type: "TOJUMP",
+    action: "JUMP"
+  },
+  GOOD: {
+    type: "GOOD",
+    action: "GOODS"
+  },
+  GOODS: {
+    type: "GOODS",
+    action: "GOODS"
+  },
+  COUPON: {
+    type: "COUPON",
+    action: "CLICK_COUPON"
+  },
+  GROUPBUY: {
+    type: "GROUPBUY",
+    action: "MORE_COLLAGE_GOODS"
+  },
+  BRANDCODE: {
+    type: "BRANDCODE",
+    action: "BRAND_GOODS"
+  },
+  BRANDGOODS: {
+    type: "BRANDGOODS",
+    action: "BRAND_GOODS"
+  },
+  COLLAGEGOODS: {
+    type: "COLLAGEGOODS",
+    action: "COLLAGE_GOODS"
+  },
+  PRESELLGOODS: {
+    type: "PRESELLGOODS",
+    action: "PRESELL_GOODS"
+  },
+  APPLETJUMP: {
+    type: "APPLETJUMP",
+    action: "WX_MINIAPP"
+  },
+  appletJump: {
+    type: "appletJump",
+    action: "WX_MINIAPP"
+  },
+  STAFF: {
+    type: "STAFF",
+    action: ""
+  },
+  FILL_IDCARD: {
+    type: "FILL_IDCARD",
+    action: ""
+  },
+  STAFF_CENTER: {
+    type: "STAFF_CENTER",
+    action: ""
+  },
+  // 店铺分销增加
+  STORE_STAFF: {
+    type: "STORE_STAFF",
+    action: ""
+  },
+  STORE_FILL_IDCARD: {
+    type: "STORE_FILL_IDCARD",
+    action: ""
+  },
+  STORE_STAFF_CENTER: {
+    type: "STORE_STAFF_CENTER",
+    action: ""
+  },
+  // ---------
+  Lottery: {
+    type: "Lottery",
+    action: "YXHD"
+  },
+  SK: {
+    type: "SK",
+    action: "SECKILL"
+  },
+  SK_GROUP: {
+    type: "SK_GROUP",
+    action: "SK_GROUP"
+  },
+  LINKURL: {
+    type: "LINKURL",
+    action: "EXTERNAL_LINK"
+  },
+  CS_LINK: {
+    type: "CS_LINK",
+    action: "EXTERNAL_LINK"
+  },
+  VIDEO: {
+    type: "VIDEO",
+    action: "VIDEO"
+  },
+  PACKGOODS: {
+    type: "PACKGOODS",
+    action: "PACKGOODS_GOODS"
+  },
+  CHANNELSLIVE: {
+    type: "CHANNELSLIVE",
+    action: "CHANNELSLIVE"
+  },
+  channelsLive: {
+    type: "channelsLive",
+    action: "CHANNELSLIVE"
+  },
+  7: {
+    type: "7",
+    action1: "SECKILL_GOODS",
+    action2: "MORE_SECKILL_GOODS"
+  },
+  8: {
+    type: "8",
+    action1: "COLLAGE_GOODS",
+    action2: "MORE_COLLAGE_GOODS"
+  },
+  SKGROUP: {
+    type: "SKGROUP",
+    action1: "SK_HELP_GOODS",
+    action2: "SK_HELP_AD"
+  },
+  9: {
+    type: "9",
+    action1: "SECKILL_HELP_GOODS",
+    action2: "MORE_SECKILL_HELP_GOODS"
+  },
+  10: {
+    type: "10",
+    action1: "PRE_SALE_GOODS",
+    action2: "MORE_PRE_SALE_GOODS"
+  },
+  11: {
+    type: "11",
+    action1: "POINT_GOODS",
+    action2: "MORE_POINT_GOODS"
+  },
+  12: {
+    type: "12",
+    action1: "POINT_GOODS",
+    action2: "MORE_POINT_GOODS"
+  },
+  14: {
+    type: "14",
+    action1: "PACKAGE_LIST",
+    action2: "MORE_PACKAGE_LIST"
+  },
+  POINTGOODS: {
+    type: "POINTGOODS",
+    action: "POINT_GOODS"
+  },
+  BargainGoods: {
+    type: "BargainGoods",
+    action: "BARGAIN_GOODS"
+  },
+  GOODSPACKAGE: {
+    type: "GOODSPACKAGE",
+    action: "PACKAGE_GOODS"
+  },
+  // 新微页面
+  qmenu: { //快捷跳转
+    type: "qmenu",
+    action: "JUMP"
+  },
+  goodsUrl: { //指定商品
+    type: "goodsUrl",
+    action: "GOODS"
+  },
+  pageUrl: { //微页面
+    type: "pageUrl",
+    action: "CUSTOM_PAGE"
+  },
+  goodsCatUrl: { //商品分类
+    type: "goodsCatUrl",
+    action1: "NCATE_GOODS",
+    action2: "NORMAL_CATEGORY"
+  },
+  goodsVcatUrl: { //商品虚拟分类
+    type: "goodsVcatUrl",
+    action1: "VCATE_GOODS",
+    action2: "VIRTUAL_CATEGORY"
+  },
+  customUrl: { //自定义url
+    type: "customUrl",
+    action: "EXTERNAL_LINK"
+  },
+  integralSale: { //积分商品模块
+    type: "integralSale",
+    action1: "POINT_GOODS",
+    action2: "MORE_POINT_GOODS",
+  },
+  pinSale: { //拼团商品模块
+    type: "pinSale",
+    action1: "COLLAGE_GOODS",
+    action2: "MORE_COLLAGE_GOODS",
+  },
+  preSale: { //预售商品模块
+    type: "preSale",
+    action1: "PRE_SALE_GOODS",
+    action2: "MORE_PRE_SALE_GOODS",
+  },
+  kanSale: { //砍价商品模块
+    type: "kanSale",
+    action1: "BARGAIN_GOODS",
+    action2: "MORE_BARGAIN_GOODS",
+  },
+  packageSale: { //搭配商品模块
+    type: "packageSale",
+    action1: "PACKAGE_GOODS",
+    action2: "MORE_PACKAGE_GOODS",
+  },
+  secKill: { //助力秒杀商品模块
+    type: "secKill",
+    action1: "SK_HELP_GOODS",
+    action2: "MORE_SK_HELP",
+  },
+  limitTimeSale: { //限时特惠商品模块
+    type: "limitTimeSale",
+    action1: "SECKILL_GOODS",
+    action2: "MORE_SECKILL_GOODS",
+  },
+
+  //跳转部分:
+  secKillGroupUrl: { //秒杀分组
+    type: "secKillGroupUrl",
+    action: "SK_GROUP",
+  },
+  presaleUrl: { //预售商品
+    type: "presaleUrl",
+    action: "PRESELL_GOODS",
+  },
+  pinSaleUrl: { //拼团商品 NEW
+    type: "pinSaleUrl",
+    action: "pinSaleUrl",
+  },
+  integralGoodsUrl: { //积分商品 NEW
+    type: "integralGoodsUrl",
+    action: "integralGoodsUrl",
+  },
+  lotteryUrl: { //抽奖活动
+    type: "lotteryUrl",
+    action: "YXHD",
+  },
+  limitSaleUrl: { //限时特惠
+    type: "limitSaleUrl",
+    action: "SECKILL",
+  },
+  packageGoodsUrl: { //搭配商品
+    type: "packageGoodsUrl",
+    action: "PACKAGE_GOODS",
+  },
+  kanSaleUrl: { //砍价商品
+    type: "kanSaleUrl",
+    action: "BARGAIN_GOODS",
+  },
+  couponUrl: { //一点领券
+    type: "couponUrl",
+    action: "CLICK_COUPON",
+  },
+  goodsBrandUrl: { //品牌
+    type: "goodsBrandUrl",
+    action: "BRAND_GOODS",
+  },
+}; 
+
+function PageJump(params) {
+  console.log('进来',params)
+  params = initObj(params);
+  let obj = params.link || params;
+  console.log("params", params);
+  let url = "", navType = "NAVIGATETO";
+  let page = getCurrentPages().pop();
+  let code = obj.code ? obj.code : obj.func_type ? obj.func_type + "" : obj.module_type ? obj.module_type + "" : "";
+  let fromModule = obj.fromModule || ""; // 来自哪些模块，目前仅优惠券-“立即跳转”会带
+  let actionParams = "",action = "",link_url = "";
+  switch (code) {
+    // 新微页面
+    case FuncType.qmenu.type:
+      if (obj.sn == 'shopHome') {
+        url = '/pages/micro_mall/index/index';
+        navType = 'SWITCHTAB';
+      } else if (obj.sn == 'shopCart') {
+        url = '/pages/micro_mall/shopping/shopping_cart';
+        navType = 'SWITCHTAB';
+      } else if (obj.sn == 'shopCate') {
+        url = '/pages/micro_mall/classify/classify_page';
+        navType = 'SWITCHTAB';
+      } else if (obj.sn == 'userHome') {
+        url = '/pages/micro_mall/user/user';
+        navType = 'SWITCHTAB';
+      } else if (obj.sn == '1') {
+        actionParams = "key_params2=QDY";
+        url = '/pages/micro_mall/sign/app/app_sign'
+      } else if (obj.sn == '3') {
+        actionParams = "key_params2=HYZY";
+        url = '/pages/micro_mall/user/user'
+        navType = "SWITCHTAB";
+      } else if (obj.sn == '4') {
+        actionParams = "key_params2=DPDH";
+        url = '/pages/micro_mall/stores/store_nav'
+      } else if (obj.sn == '6') {
+        // url = '/pages/micro_mall/prepaid/erp/prepaid_card_erp'
+        url = '/pages/micro_mall/prepaid/erp/prepaid_card_erp_recharge?type=recharge'
+      } else if (obj.sn == '8') {
+        url = '/pages/micro_mall/category/category?public_praise=true'
+      } else if (obj.sn == '9') {
+        actionParams = "key_params2=JFDH";
+        url = '/pages/micro_mall/point/point_goods_list/point_goods_list?type=goods'
+      } else if (obj.sn == '11') {
+        actionParams = "key_params2=COLLAGE_ACT_LIST";
+        url = '/pages/micro_mall/collageGroup/activity_list'
+      } else if (obj.sn == '12') {
+        actionParams = "key_params2=PRESALE_ACT_LIST";
+        url = '/pages/micro_mall/plugins/presale/presale_activity_list'
+      } else if (obj.sn == '14') {
+        actionParams = "key_params2=BUY_BONUS_ACT_LIST";
+        url = '/pages/micro_mall/buyBonus/getBonusActivityList'
+      } else if (obj.sn == '15') {
+        actionParams = "key_params2=FX_PAGE&page_id=" + obj.page_id;
+        url = `/pages/micro_mall/custom_page/custom_page?page_id=${obj.page_id}`
+      } else if (obj.sn == '16') {
+        actionParams = "key_params2=QDY";
+        url = '/pages/micro_mall/sign/app/app_sign'
+      } else if (obj.sn == '17') {
+        actionParams = "key_params2=BARGAIN_ACT_LIST";
+        url = '/pages/micro_mall/bargain/index/bargain_index'
+      } else if (obj.sn == '18') {
+        actionParams = "key_params2=CZK1&type=recharge";
+        url = '/pages/micro_mall/prepaid/erp/prepaid_card_erp_recharge?type=recharge'
+      } else if (obj.sn == '19') {
+        actionParams = "key_params2=memberInterests";
+        url = '/pages/micro_mall/articles/agreet/agreet?type=USER_RIGHT'
+      } else if (obj.sn == '20') {
+        actionParams = "key_params2=memberInterests";
+        url = '/pages/micro_mall/articles/agreet/agreet?type=USER_RIGHT'
+      } else if (obj.sn == '21') {
+        actionParams = "key_params2=GRADE_INDEX";
+        url = '/pages/micro_mall/users_upgrade/grade_info/grade_info'
+      }
+      break;
+    case FuncType.goodsUrl.type:
+      url = `/pages/micro_mall/goods/goods_info?goods_id=${obj.id}`
+      actionParams = "goods_id=" + (obj.id);
+      break;
+    case FuncType.goodsCatUrl.type:
+      url = `/pages/micro_mall/category/category?func_type=${FuncType.CA.type}&related_id=${obj.id}`;
+      action = "action2";
+      actionParams = "related_id=" + (obj.id);
+      break;
+    case FuncType.goodsVcatUrl.type:
+      url = `/pages/micro_mall/category/category?func_type=${FuncType.VC.type}&related_id=${obj.id}`;
+      action = "action2";
+      actionParams = "related_id=" + (obj.id);
+      break;
+    case FuncType.customUrl.type:
+      link_url = obj.sn;
+      actionParams = 'link_url=' + encodeURIComponent(link_url)
+      handleCustomChannel(link_url, FuncType.customUrl.action); // 对于自定义链接，可能需要调多一个接口记录一下
+      if (link_url.indexOf("http") != -1) {
+        url = "";
+        navigateToWebView(link_url);
+      } else {
+        navType = "LINK"
+        url = "/" + link_url
+      }
+      break;
+    case FuncType.pageUrl.type:
+      actionParams = "page_id=" + obj.id;
+      url = '/pages/micro_mall/custom_page/custom_page?' + actionParams
+      break;
+    case FuncType.integralSale.type:
+      //积分模块
+      if (obj.type == 'more') {
+        action = "action2"
+        actionParams = 'type=goods';
+        url = '/pages/micro_mall/point/point_goods_list/point_goods_list?' + actionParams
+      } else {
+        action = "action1"
+        actionParams = 'goodsId=' + (obj.goodsItem && obj.goodsItem.goods_id) + '&mkGoodsId=' + (obj.goodsItem && obj.goodsItem.mk_goods_id);
+        url = '/pages/micro_mall/point/point_goods_detail/point_goods_detail?' + actionParams
+      }
+      break;
+    case FuncType.pinSale.type:
+      //拼团模块
+      if (obj.type == 'more') {
+        action = "action2"
+        url = '/pages/micro_mall/collageGroup/activity_list'
+      } else {
+        action = "action1"
+        actionParams = 'activity_id=' + (obj.goodsItem && obj.goodsItem.activity_id) + '&goods_id=' + (obj.goodsItem && obj.goodsItem.goods_id);
+        url = '/pages/micro_mall/collageGroup/activity_goods_detail?' + actionParams
+      }
+      break;
+    case FuncType.preSale.type:
+      //预售模块
+      if (obj.type == 'more') {
+        action = "action2"
+        url = '/pages/micro_mall/plugins/presale/presale_activity_list'
+      } else {
+        action = "action1"
+        actionParams = 'activity_id=' + (obj.goodsItem && obj.goodsItem.activity_id);
+        url = '/pages/micro_mall/plugins/presale/presale_activity_detail?' + actionParams
+      }
+      break;
+    case FuncType.kanSale.type:
+      //砍价模块
+      if (obj.type == 'more') {
+        action = "action2"
+        actionParams = '';
+        url = '/pages/micro_mall/bargain/index/bargain_index' + actionParams
+      } else {
+        action = "action1"
+        actionParams = 'activityId=' + (obj.goodsItem && obj.goodsItem.activity_id);
+        url = '/pages/micro_mall/bargain/goods/goods_detail?' + actionParams
+      }
+      break;
+    case FuncType.packageSale.type:
+      //搭配模块
+      if (obj.type == 'more') {
+        action = "action2"
+        actionParams = '';
+        url = '/pages/micro_mall/goods_collocation/act_list/act_list?' + actionParams
+      } else {
+        action = "action1"
+        actionParams = 'package_id=' + (obj.goodsItem && obj.goodsItem.activity_id);
+        url = '/pages/micro_mall/goods_collocation/goods_collocation?' + actionParams
+      }
+      break;
+    case FuncType.secKill.type:
+      //助力秒杀模块
+      if (obj.type == 'more') {
+        action = "action2"
+        actionParams = 'activityId=' + (obj.goodsItem && obj.goodsItem.activity_id) + '&groupId=' + (obj.groupId);
+        url = '/pages/micro_mall/sk/activity-sk/activity-sk?' + actionParams
+      } else {
+        action = "action1"
+        actionParams = 'activityId=' + (obj.goodsItem && obj.goodsItem.activity_id) + '&goodsId=' + (obj.goodsItem && obj.goodsItem.goodsId) + '&groupId=' + (obj.groupId);
+        url = '/pages/micro_mall/sk/goods-info-sk/goods-info-sk?' + actionParams
+      }
+      break;
+    case FuncType.limitTimeSale.type:
+      //限时特惠模块
+      if (obj.type == 'more') {
+        action = "action2"
+        actionParams = 'issue_id=' + (obj.activity_id);
+        url = '/pages/micro_mall/activity/goods_seckill?' + actionParams
+      } else {
+        action = "action1"
+        actionParams = 'issued_id=' + (obj.goodsItem && obj.goodsItem.activity_id) + '&goods_id=' + (obj.goodsItem && obj.goodsItem.goods_id);
+        url = '/pages/micro_mall/goods/goods_info?' + actionParams
+      }
+      break;
+    //活动跳转
+    case FuncType.secKillGroupUrl.type:
+      //秒杀分组
+      actionParams = 'groupId=' + obj.id
+      url = '/pages/micro_mall/sk/activity-sk/activity-sk?' + actionParams
+      break;
+    case FuncType.presaleUrl.type:
+      //预售活动
+      actionParams = 'activity_id=' + obj.id
+      url = '/pages/micro_mall/plugins/presale/presale_activity_detail?' + actionParams
+      break;
+    case FuncType.pinSaleUrl.type:
+      //拼团活动
+      actionParams = 'activity_id=' + obj.id
+      url = '/pages/micro_mall/collageGroup/activity_goods_detail?' + actionParams
+      break;
+    case FuncType.integralGoodsUrl.type:
+      //积分商城活动
+      actionParams = 'mkGoodsId=' + obj.id
+      url = '/pages/micro_mall/point/point_goods_detail/point_goods_detail?' + actionParams
+      break;
+    case FuncType.lotteryUrl.type:
+      //抽奖活动
+      actionParams = 'activityId=' + obj.id
+      url = '/pages/micro_mall/lottery/lottery?' + actionParams
+      break;
+    case FuncType.limitSaleUrl.type:
+      //限时特惠
+      actionParams = 'issue_id=' + obj.id
+      url = '/pages/micro_mall/activity/goods_seckill?' + actionParams
+      break;
+    case FuncType.packageGoodsUrl.type:
+      //搭配商品
+      actionParams = 'package_id=' + obj.id
+      url = '/pages/micro_mall/goods_collocation/goods_collocation?' + actionParams
+      break;
+    case FuncType.kanSaleUrl.type:
+      //砍价活动
+      actionParams = 'activityId=' + obj.id
+      url = '/pages/micro_mall/bargain/goods/goods_detail?' + actionParams
+      break;
+    case FuncType.couponUrl.type:
+      //一点领券
+      if (!obj.id) return
+      actionParams = 'bonus_type_id=' + obj.id
+      beforeReceiveBonus(obj.id).then(() => {
+        postUserReceiveBonus({
+          related_id: obj.id,
+          page_id: obj.page_id
+        });
+      })
+      break;
+    case FuncType.goodsBrandUrl.type:
+      //秒杀分组模块
+      actionParams = 'brand_ids=' + obj.id
+      url = '/pages/micro_mall/category/category?func_type=SE&brand_ids=?' + actionParams
+      break;
+
+    
+    //旧数据
+    case FuncType.CA.type:
+      if (obj.goods_id) {
+        action = "action1"
+        actionParams = 'related_id=' + obj.related_id + '&goods_id=' + obj.goods_id;
+        url = '/pages/micro_mall/goods/goods_info?goods_id=' + obj.goods_id + '&color_id=' + (obj.color_id || "")
+      } else {
+        action = "action2"
+        actionParams = 'related_id=' + obj.related_id;
+        url = '/pages/micro_mall/category/category?func_type=' + obj.func_type + '&related_id=' + obj.related_id
+      }
+      break;
+    case FuncType.VC.type:
+      if (obj.goods_id) {
+        action = "action1"
+        actionParams = 'related_id=' + obj.related_id + '&goods_id=' + obj.goods_id;
+        url = '/pages/micro_mall/goods/goods_info?goods_id=' + obj.goods_id + '&color_id=' + (obj.color_id || "")
+      } else {
+        action = "action2"
+        actionParams = 'related_id=' + obj.related_id;
+        url = '/pages/micro_mall/category/category?func_type=' + obj.func_type + '&related_id=' + obj.related_id
+      }
+      break;
+    case FuncType["7"].type:
+      //秒杀
+      if (obj.issue_id && obj.goods_id) {
+        action = "action1"
+        actionParams = 'issued_id=' + obj.issue_id + '&goods_id=' + obj.goods_id;
+        url = '/pages/micro_mall/goods/goods_info?' + actionParams
+      } else {
+        action = "action2"
+        actionParams = "issue_id=" + obj.activity_id;
+        url = '/pages/micro_mall/activity/goods_seckill?issue_id=' + obj.activity_id
+      }
+      break;
+    case FuncType["8"].type:
+      //拼团
+      if (obj.activity_id && obj.activity_id != '0') {
+        action = "action1";
+        actionParams = 'activity_id=' + obj.activity_id + '&goods_id=' + obj.goods_id;
+        url = '/pages/micro_mall/collageGroup/activity_goods_detail?' + actionParams;
+      } else {
+        action = "action2";
+        url = '/pages/micro_mall/collageGroup/activity_list'
+      }
+      break;
+    case FuncType["9"].type:
+      //助力秒杀
+      if (obj.goods_id) {
+        action = "action1"
+        actionParams = 'activityId=' + obj.activity_id + '&goodsId=' + obj.goods_id + '&groupId=' + obj.group_id;
+        url = '/pages/micro_mall/sk/goods-info-sk/goods-info-sk?' + actionParams
+      } else {
+        action = "action2"
+        actionParams = 'activityId=' + obj.activity_id + '&groupId=' + obj.group_id;
+        url = '/pages/micro_mall/sk/activity-sk/activity-sk?' + actionParams
+      }
+      break;
+    case FuncType["10"].type:
+      //预售广告模块
+      if (obj.activity_id) {
+        action = "action1"
+        actionParams = 'activity_id=' + obj.activity_id;
+        url = '/pages/micro_mall/plugins/presale/presale_activity_detail?' + actionParams
+      } else {
+        action = "action2"
+        actionParams = "";
+        url = '/pages/micro_mall/plugins/presale/presale_activity_list'
+      }
+      break;
+    case FuncType["11"].type:
+      //积分广告模块
+      if (obj.goods_id) {
+        action = "action1"
+        actionParams = 'goodsId=' + obj.goods_id + '&mkGoodsId=' + obj.mk_goods_id;
+        url = '/pages/micro_mall/point/point_goods_detail/point_goods_detail?' + actionParams
+      } else {
+        action = "action2"
+        actionParams = 'type=goods';
+        url = '/pages/micro_mall/point/point_goods_list/point_goods_list?' + actionParams
+      }
+      break;
+    case FuncType["12"].type:
+      //积分广告模块
+      if (obj.activity_id) {
+        action = "action1"
+        actionParams = 'activityId=' + obj.activity_id;
+        url = '/pages/micro_mall/bargain/goods/goods_detail?' + actionParams
+      } else {
+        action = "action2"
+        actionParams = '';
+        url = '/pages/micro_mall/bargain/index/bargain_index' + actionParams
+      }
+      break;
+    case FuncType["14"].type:
+      //积分广告模块
+      if (obj.activity_id) {
+        action = "action1"
+        actionParams = 'package_id=' + obj.activity_id;
+        url = '/pages/micro_mall/goods_collocation/goods_collocation?' + actionParams
+      } else {
+        action = "action2"
+        actionParams = '';
+        url = '/pages/micro_mall/goods_collocation/act_list/act_list' + actionParams
+      }
+      break;
+    case FuncType.SKGROUP.type:
+      //助力秒杀
+      if (obj.goods_id) {
+        action = "action1"
+        actionParams = 'activityId=' + obj.activity_id + '&goodsId=' + obj.goods_id + '&groupId=' + obj.group_id;
+        url = '/pages/micro_mall/sk/goods-info-sk/goods-info-sk?' + actionParams
+      } else {
+        action = "action2"
+        actionParams = 'activityId=' + obj.activity_id + '&groupId=' + obj.group_id;
+        url = '/pages/micro_mall/sk/activity-sk/activity-sk?' + actionParams
+      }
+      break;
+    case FuncType.CMPAGE.type:
+      actionParams = "page_id=" + obj.related_id;
+      url = '/pages/micro_mall/custom_page/custom_page?' + actionParams
+      break;
+    case FuncType.TOJUMP.type:
+      if (obj.related_id == '1') {
+        actionParams = "key_params2=QDY";
+        url = '/pages/micro_mall/sign/app/app_sign'
+      } else if (obj.related_id == '3') {
+        actionParams = "key_params2=HYZY";
+        url = '/pages/micro_mall/user/user'
+        navType = "SWITCHTAB";
+      } else if (obj.related_id == '4') {
+        actionParams = "key_params2=DPDH";
+        url = '/pages/micro_mall/stores/store_nav'
+      } else if (obj.related_id == '6') {
+        // url = '/pages/micro_mall/prepaid/erp/prepaid_card_erp'
+        url = '/pages/micro_mall/prepaid/erp/prepaid_card_erp_recharge?type=recharge'
+      } else if (obj.related_id == '8') {
+        url = '/pages/micro_mall/category/category?public_praise=true'
+      } else if (obj.related_id == '9') {
+        actionParams = "key_params2=JFDH";
+        url = '/pages/micro_mall/point/point_goods_list/point_goods_list?type=goods'
+      } else if (obj.related_id == '11') {
+        actionParams = "key_params2=COLLAGE_ACT_LIST";
+        url = '/pages/micro_mall/collageGroup/activity_list'
+      } else if (obj.related_id == '12') {
+        actionParams = "key_params2=PRESALE_ACT_LIST";
+        url = '/pages/micro_mall/plugins/presale/presale_activity_list'
+      } else if (obj.related_id == '14') {
+        actionParams = "key_params2=BUY_BONUS_ACT_LIST";
+        url = '/pages/micro_mall/buyBonus/getBonusActivityList'
+      } else if (obj.related_id == '15') {
+        actionParams = "key_params2=FX_PAGE&page_id=" + obj.page_id;
+        url = `/pages/micro_mall/custom_page/custom_page?page_id=${obj.page_id}`
+      } else if (obj.related_id == '16') {
+        actionParams = "key_params2=QDY";
+        url = '/pages/micro_mall/sign/app/app_sign'
+      } else if (obj.related_id == '17') {
+        actionParams = "key_params2=BARGAIN_ACT_LIST";
+        url = '/pages/micro_mall/bargain/index/bargain_index'
+      } else if (obj.related_id == '18') {
+        actionParams = "key_params2=CZK1&type=recharge";
+        url = '/pages/micro_mall/prepaid/erp/prepaid_card_erp_recharge?type=recharge'
+      } else if (obj.related_id == '19') {
+        actionParams = "key_params2=memberInterests";
+        url = '/pages/micro_mall/articles/agreet/agreet?type=USER_RIGHT'
+      } else if (obj.related_id == '20') {
+        actionParams = "key_params2=memberInterests";
+        url = '/pages/micro_mall/articles/agreet/agreet?type=USER_RIGHT'
+      } else if (obj.related_id == '21') {
+        actionParams = "key_params2=GRADE_INDEX";
+        url = '/pages/micro_mall/users_upgrade/grade_info/grade_info'
+      }
+      break;
+    case FuncType.GROUPBUY.type:
+      url = "/pages/micro_mall/collage/activity_list/activity_list?periodId=" + obj.cateId
+      break;
+    case FuncType.GOOD.type:
+      actionParams = "goods_id=" + (obj.related_id || obj.goods_id) + "&color_id=" + (obj.color_id || "");
+      url = '/pages/micro_mall/goods/goods_info?goods_id=' + (obj.related_id || obj.goods_id || 0) + '&color_id=' + (obj.color_id || "")
+      break;
+    case FuncType.GOODS.type:
+      actionParams = "goods_id=" + (obj.related_id || obj.goods_id) + "&color_id=" + (obj.color_id || "");
+      url = '/pages/micro_mall/goods/goods_info?goods_id=' + (obj.related_id || obj.goods_id || 0) + '&color_id=' + (obj.color_id || "")
+      break;
+    case FuncType.VIDEO.type:
+      actionParams = "key_params2=" + obj.type + "&videoId=" + obj.related_id;
+      url = "";
+      break;
+    case FuncType.PACKGOODS.type:
+      actionParams = 'package_id=' + obj.related_id;
+      url = '/pages/micro_mall/goods_collocation/goods_collocation?' + actionParams
+      break;
+    case FuncType.COUPON.type:
+      url = "";
+      if (!obj.related_id) return;
+      actionParams = "bonus_type_id=" + obj.related_id;
+      beforeReceiveBonus(obj.related_id).then(() => {postUserReceiveBonus.call(this, obj);})
+      break;
+    case FuncType.BRANDGOODS.type:
+      if (obj.goods_id) {
+        action = "action1";
+        actionParams = 'brand_ids=' + obj.related_id + '&goods_id=' + obj.goods_id;
+        url = '/pages/micro_mall/goods/goods_info?goods_id=' + obj.goods_id + '&color_id=' + (obj.color_id || "")
+      } else {
+        action = "action2";
+        actionParams = 'brand_ids=' + obj.related_id;
+        url = '/pages/micro_mall/category/category?func_type=SE&brand_ids=' + obj.related_id;
+      }
+      break;
+    case FuncType.BRANDCODE.type:
+      if (obj.goods_id) {
+        action = "action1";
+        actionParams = 'brand_ids=' + obj.related_id + '&goods_id=' + obj.goods_id;
+        url = '/pages/micro_mall/goods/goods_info?goods_id=' + obj.goods_id + '&color_id=' + (obj.color_id || "")
+      } else {
+        action = "action2";
+        actionParams = 'brand_ids=' + obj.related_id;
+        url = '/pages/micro_mall/category/category?func_type=SE&brand_ids=' + obj.related_id;
+      }
+      break;
+    case FuncType.COLLAGEGOODS.type:
+      actionParams = 'activity_id=' + obj.related_id + '&goods_id=' + (obj.goods_id || obj.extent_id || 0);
+      url = '/pages/micro_mall/collageGroup/activity_goods_detail?' + actionParams
+      break;
+    case FuncType.PRESELLGOODS.type:
+      actionParams = 'activity_id=' + obj.related_id + '&goods_id=' + (obj.goods_id || obj.extent_id || 0);
+      url = '/pages/micro_mall/plugins/presale/presale_activity_detail?' + actionParams
+      break;
+    case FuncType.STAFF.type:
+      url = `/pages/micro_mall/distribution_center/apply_for_staff/fill_information/fill_information?order_amount=${obj.order_amount}&dure_agreement=${obj.dure_agreement}&free_num_day=${obj.free_num_day}&page_id=${obj.page_id}&phone=${obj.phone}&userName=${obj.userName}&cName=${obj.cName}`
+      obj.navType && (navType = obj.navType)
+      break;
+    case FuncType.FILL_IDCARD.type:
+      if (obj.fromRoute == 'brokerage') {
+        url = `/pages/micro_mall/distribution_center/distribution_brokerage/brokerage_content/identity_fill/identity_fill?balance=${obj.balance || 0}&fromRoute=${obj.fromRoute}`
+      } else if (obj.fromRoute == 'staff') {
+        url = `/pages/micro_mall/distribution_center/distribution_brokerage/brokerage_content/identity_fill/identity_fill?order_amount=${obj.order_amount}&dure_agreement=${obj.dure_agreement}&free_num_day=${obj.free_num_day}&page_id=${obj.page_id}&phone=${obj.phone}&userName=${obj.userName}&fromRoute=${obj.fromRoute}`
+      } else {
+        url = `/pages/micro_mall/distribution_center/distribution_brokerage/brokerage_content/identity_fill/identity_fill?fromRoute=${obj.fromRoute}`
+      }
+      break;
+    case FuncType.STAFF_CENTER.type:
+      url = `/pages/micro_mall/distribution_center/distribution_center`
+      break;
+    // 店铺分销增加
+    case FuncType.STORE_STAFF.type:
+      url = `/pages/micro_mall/distribution_center/apply_for_staff/fill_information/fill_information?order_amount=${obj.order_amount}&dure_agreement=${obj.dure_agreement}&free_num_day=${obj.free_num_day}&page_id=${obj.page_id}&phone=${obj.phone}&userName=${obj.userName}&cName=${obj.cName}`
+      obj.navType && (navType = obj.navType)
+      break;
+    case FuncType.STORE_FILL_IDCARD.type:
+      if (obj.fromRoute == 'brokerage') {
+        url = `/pages/micro_mall/employee_center/distribution_brokerage/brokerage_content/identity_fill/identity_fill?balance=${obj.balance || 0}&fromRoute=${obj.fromRoute}`
+      } else if (obj.fromRoute == 'store_staff') {
+        url = `/pages/micro_mall/employee_center/distribution_brokerage/brokerage_content/identity_fill/identity_fill?order_amount=${obj.order_amount}&dure_agreement=${obj.dure_agreement}&free_num_day=${obj.free_num_day}&page_id=${obj.page_id}&phone=${obj.phone}&userName=${obj.userName}&fromRoute=${obj.fromRoute}`
+      } else {
+        url = `/pages/micro_mall/employee_center/distribution_brokerage/brokerage_content/identity_fill/identity_fill?fromRoute=${obj.fromRoute}`
+      }
+      break;
+    case FuncType.STORE_STAFF_CENTER.type:
+      url = `/pages/micro_mall/employee_center/distribution_center`
+      break;
+    // ---------------------
+    case FuncType.Lottery.type:
+      actionParams = `activityId=${obj.related_id}`
+      url = `/pages/micro_mall/lottery/lottery?` + actionParams
+      break;
+    case FuncType.appletJump.type:
+      let appId = obj.name || 0;
+      let path = obj.sn;
+      console.log("进入小程序跳转");
+      actionParams = "appId=" + appId + "&pagePath=" + path;
+      toMiniProgram(appId, path);
+      break;
+    case FuncType.channelsLive.type:
+    case FuncType.CHANNELSLIVE.type:
+      ChannelsLiveH.jumpChannelsInfo(obj);
+      break;
+    case FuncType.SK.type:
+      actionParams = 'issue_id=' + obj.related_id
+      url = '/pages/micro_mall/activity/goods_seckill?' + actionParams
+      break;
+    case FuncType.CS_LINK.type:
+    case FuncType.LINKURL.type:
+      link_url = obj.link_url || obj.related_id;
+      actionParams = 'link_url=' + encodeURIComponent(link_url);
+      handleCustomChannel(link_url, FuncType.customUrl.action); // 对于自定义链接，可能需要调多一个接口记录一下
+      if (link_url.indexOf("http") != -1) {
+        url = "";
+        navigateToWebView(link_url);
+      } else {
+        navType = "LINK"
+        url = "/" + link_url
+      }
+      break;
+    case FuncType.SK_GROUP.type:
+      actionParams = 'groupId=' + obj.related_id
+      url = '/pages/micro_mall/sk/activity-sk/activity-sk?' + actionParams
+      break;
+    case FuncType.POINTGOODS.type:
+      actionParams = 'mkGoodsId=' + obj.related_id + '&goodsId=' + obj.goods_id
+      url = '/pages/micro_mall/point/point_goods_detail/point_goods_detail?' + actionParams
+      break;
+    case FuncType.BargainGoods.type:
+      actionParams = 'activityId=' + obj.related_id;
+      url = '/pages/micro_mall/bargain/goods/goods_detail?' + actionParams
+      break;
+    case FuncType.GOODSPACKAGE.type:
+      actionParams = 'package_id=' + obj.related_id;
+      url = '/pages/micro_mall/goods_collocation/goods_collocation?' + actionParams
+      break;
+    default:
+      if (obj.goods_id && obj.goods_id != 0) {
+        url = '/pages/micro_mall/goods/goods_info?goods_id=' + obj.goods_id + '&color_id=' + (obj.color_id || "")
+      }
+      break;
+  }
+  //统一跳转
+  if (url) {
+    if (params.tag && navType != "SWITCHTAB") { //统一加上tag
+      url = url.indexOf("?") == -1 ? url + "?tag=" + obj.tag : url + "&tag=" + params.tag
+    }
+    if (LogMap && page && page.route && LogMap[page.route]){
+      url = url.indexOf("?") == -1 ? url + "?fromPage=" + LogMap[page.route] : url + "&fromPage=" + LogMap[page.route]
+    }
+    if (fromModule){ 
+      url = url.indexOf("?") == -1 ? url + "?fromModule=" + fromModule : url + "&fromModule=" + fromModule
+    }
+    if (navType == "SWITCHTAB") {
+      wx.switchTab({
+        url: url
+      })
+    } else if (navType == "LINK") {
+      wx.switchTab({
+        url: url,
+        fail() {
+          wx.navigateTo({
+            url: url
+          })
+        }
+      })
+    } else if (navType == 'redirect') {
+      wx.redirectTo({
+        url: url
+      })
+    } else {
+      wx.navigateTo({
+        url: url
+      })
+    }
+  }
+  addActionLogHandle.call(this, params, page, action, actionParams, code);
+}
+
+function handleCustomChannel(link_url = "", action = "") {
+  try {
+    let customChannelReg = new RegExp("[\?\&]" + "customChannel" + "=([^\&]*)(\&?)", "i")// 提取customChannel正则
+    let regResult = link_url.match(customChannelReg);
+    let customChannel = regResult ? regResult[1] : regResult;
+    if (customChannel) {
+      LgMg.createLogSessionByNavInside({
+        channelType: action,
+        customChannel
+      })
+    }
+  } catch (error) {
+    console.log("调用handleCustomChannel报错", error)
+  }
+}
+
+function initObj(params) {
+  let obj = params.link || params || {};
+  for (let i in obj) {
+    if (!obj[i] || typeof (obj[i]) == "undefined" || obj[i] == "undefined") {
+      if (i == "func_type") {
+        obj[i] = "GOOD";
+        continue;
+      }
+      let str = i.toLocaleUpperCase();
+      obj[i] = str.indexOf("ID") != -1 ? 0 : "";
+    } else {
+      continue;
+    }
+  }
+  return params;
+}
+
+
+function getJsonByStr(actionParams, key = "&") {
+  if (!actionParams) return {};
+  let result = {};
+  let params = actionParams.split(key);
+  for (let i = 0; i < params.length; i++) {
+    let param = params[i];
+    let itemArr = param.split("=");
+    result[itemArr[0]] = itemArr[1] || ""
+  }
+  return result;
+}
+
+
+function addActionLogHandle(params, page, action, actionParams, type) {
+  // let obj = params.link || params || {};
+  // console.log('typetype',action,type,FuncType[type])
+  let name = params.ActionName||"";
+  let route = page.route;
+  if (route[0] == "/") {
+    route = route.substr(1)
+  }
+  route = page.pageType ? route + '?pageType=' + page.pageType : route;
+  let position = (ActionRoute[route] && ActionRoute[route].position) || ""
+  let key_params = {};
+  if (FuncType[type]) {
+    if (action && FuncType[type][action]) {
+      key_params["key_params1"] = FuncType[type][action];
+    } else {
+      key_params["key_params1"] = FuncType[type].action || "";
+    }
+    // key_params["key_params1"] = FuncType[type][action];
+  } else {
+    key_params["key_params1"] = "";
+  }
+  key_params = {
+    ...key_params,
+    ...getJsonByStr.call(this, actionParams)
+  }
+  try {key_params.link_url && (key_params.link_url = decodeURIComponent(key_params.link_url))} catch (error) {} // 将链接decode
+  console.log('addActionLog',name,params,position, key_params, params.tag)
+  LgMg.addActionLog(name, position, key_params, params.tag);
+}
+
+function navigateToWebView(link){
+  let webviewRoute = "/pages/micro_mall/web/webForSF/SF?link_url=";
+  let getLink = Promise.resolve(link);
+  if (link.indexOf("thirdapi.3dic.cn") != -1){ // 特殊指定的链接处理
+    getLink = CL_UserApi.get_XianKuH5({
+      data: {},
+      other: {
+        isShowLoad: true
+      }
+    })
+      .then(res => {
+        if (res.code == 1 && res.data) {
+          return Promise.resolve(res.data)
+        }
+        return Promise.reject(res)
+      })
+      .catch(err => {
+        console.log("get_XianKu_H5 error: ", err);
+        Promise.resolve(link)
+      })
+  }
+  return getLink.then(link => {
+    wx.navigateTo({url: webviewRoute + encodeURIComponent(link)})
+  })
+}
+
+function beforeReceiveBonus(relatedId){
+  return wxSubscribe.subscribeGlobal({...subConfig['COUPON'], relatedId, extendId1: Math.ceil(Math.random() * 10000)})
+    .catch(err => {
+      if (err === "invokedError") {
+        SMH.showToast({title: '登录成功，请重新点击领取'})
+        return Promise.reject()
+      } else return Promise.resolve()
+    })
+}
+
+function postUserReceiveBonus(obj = {}) {
+  UserApi.postUserReceiveBonus({
+    data: {
+      userToken: LM.userKey,
+      brandCode: Conf.BRAND_CODE,
+      bonus_type_id: obj.related_id,
+      pageId: obj.page_id || 0,
+      wxGroupId: WxGH.groupId || ""
+    },
+    other: {
+      isShowLoad: true
+    }
+  }).then(e => {
+    let msg = "";
+    if (e.code == 1) {
+      msg = "领取成功，可到个人中心查看或直接下单用券";
+    } else {
+      msg = e.msg;
+    }
+    SMH.showToast({
+      title: msg,
+      duration: 3000
+    });
+  });
+}
+
+function toMiniProgram(appId, path, envVersion) {
+  wx.navigateToMiniProgram({
+    appId: appId,
+    path: path,
+    envVersion: envVersion || "release",
+    fail(res) {
+      console.log('fail', res);
+      if (res.errMsg && res.errMsg.indexOf('cancel') == -1) {
+        SMH.showToast({
+          title: '跳转失败'
+        })
+      }
+    }
+  })
+}
+
+
+
+export default PageJump; 

@@ -1,0 +1,160 @@
+<template>
+  <div class="schedule-area flex">
+    <div class="schedule-area-l">
+      <dateView ref="dateViewRef" @setTime="setTime" :scheduleData="scheduleData" :chooseData="chooseData"></dateView>
+    </div>
+    <div class="schedule-area-r">
+      <timeView @setTime="setTime" :chooseData="chooseData" @confirm="confirmSetTime"></timeView>
+    </div>
+    <setTime ref="setTimeRef" @confirm="confirmSetTime"></setTime>
+  </div>
+</template>
+
+<script>
+import dateView from "./components/date-view.vue";
+import timeView from "./components/time-view.vue";
+import setTime from "./components/set-time.vue";
+export default {
+  components: {
+    dateView,
+    timeView,
+    setTime
+  },
+  props: {
+    scheduleData: { // 库里面已经存在的时间点
+      type: Object,
+      default(){
+        return {}
+      }
+    }
+  },
+  data(){
+    return {
+      chooseData: {
+        singleDate: {}, // 存储单个编辑时，选中的数据，selectTime 为选择时间点
+        multipleDate: [] // 存储多个编辑时，选中的数据， selectTime 为选择时间点
+      },
+    }
+  },
+  methods: {
+    setTime(detail){
+      this.$refs["setTimeRef"] && this.$refs["setTimeRef"].showModal(detail);
+    },
+    confirmSetTime(detail){
+      if(detail.isBatch){
+        let multipleDate = this.chooseData.multipleDate || [];
+        let selectData = [];
+        for(let i = 0; i < multipleDate.length; i++){
+          let scheduleDay = multipleDate[i].schedule_day || '';
+          selectData = selectData.concat(this.dataHandle(scheduleDay, detail.selectData, detail.isBatch, multipleDate[i].selectTime))
+        }
+        this.saveBatchWorking(selectData);
+      } else {
+        let singleDate = this.chooseData.singleDate || {};
+        let scheduleDay = singleDate.schedule_day || ''
+        this.saveWorking(scheduleDay, this.dataHandle(scheduleDay, detail.selectData))
+      }
+    },
+    saveWorking(scheduleDay, selectData){
+      if(!(selectData instanceof Array && selectData.length)){ return; }
+      return this.$MainApi.psychologicalWorking({
+        data: {
+          consultant_id: this.pageQuery.id,
+          schedule_day: scheduleDay,
+          selete_data: selectData
+        },
+        other: {
+          isMsg: true
+        }
+      })
+      .then((res) => {
+        if(res.code) {
+          setTimeout(()=>{
+            this.$emit("reLoad");
+          }, 300)
+        }
+      });
+    },
+    saveBatchWorking(selectData){
+      if(!(selectData instanceof Array && selectData.length)){ return; }
+      return this.$MainApi.psychologicalBatchWorking({
+        data: {
+          consultant_id: this.pageQuery.id,
+          selete_data: selectData
+        },
+        other: {
+          isMsg: true
+        }
+      })
+      .then((res) => {
+        if (res.code) {
+          if(this.$refs["dateViewRef"]){
+            this.$refs["dateViewRef"].isBatch = false;
+          }
+          setTimeout(()=>{
+            this.$emit("reLoad");
+          }, 300)
+        }
+      });
+    },
+    dataHandle(day, date, isMultiple = false, databaseTime = []){// databaseTime数据库存储数据
+      if(date instanceof Array && date.length){
+        date = JSON.parse(JSON.stringify(date));
+        let installDate = [];
+        day = day || "";
+        let ids = [];
+        for(let i = 0; i < date.length; i++){
+          let item = {
+            id: date[i].id || 0,
+            begin_time: day + ' ' + date[i].begin_time,
+            end_time: day + ' ' + date[i].end_time,
+            time_group: date[i].time_group
+          }
+          if(isMultiple){
+            delete item.id;
+          }
+          ids.push(item.itemId);
+          installDate.push(item)
+        }
+        // 约满的数据不可取消（批量的时候针对单个处理）
+        databaseTime.map((item)=>{
+          if(item.appointment_id && ids.indexOf(item) == -1){
+            installDate.push({
+              id: item.id || 0,
+              begin_time: day + ' ' + item.begin_time,
+              end_time: day + ' ' + item.end_time,
+              time_group: item.time_group
+            })
+          }
+        })
+        return installDate;
+      }
+      return [];
+    }
+  },
+  watch:{
+    scheduleData:{
+      handler(nV){
+        nV = JSON.parse(JSON.stringify(nV || {}));
+        let singleDate = this.chooseData.singleDate || {}
+        let scheduleDay = singleDate.schedule_day;
+        if(scheduleDay && nV[scheduleDay]){
+          this.chooseData.singleDate.selectTime = nV[scheduleDay];
+        }
+      },
+      immediate: true,
+      deep: true
+    }
+  }
+}
+</script>
+
+<style lang="less" scoped>
+.schedule-area{
+  .schedule-area-l{
+    margin-right: 15px;
+  }
+  .schedule-area-r{
+  }
+}
+</style>

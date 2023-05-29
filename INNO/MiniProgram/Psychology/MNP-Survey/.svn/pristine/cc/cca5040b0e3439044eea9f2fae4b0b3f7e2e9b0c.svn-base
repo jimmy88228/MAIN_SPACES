@@ -1,0 +1,188 @@
+<template>
+  <view class="report-list bg_f7">
+    <view class="report-background"></view>
+    <view class="report-list-area relative p-l-15 p-r-15">
+      <view class="p-l-15 font-38 C_fff p-t-32 p-b-32">测评报告</view>
+      <view class="report-item" v-for="(item,i) in reportList" :key="i" @click="enter">
+        <image :src="reportItemIcon" class="report-item-background" />
+        <view class="report-item-info flex-b-s">
+					<view class="relative">
+						<image class="report-item-image" mode="aspectFill"></image>
+						<image class="report-icon absolute" :src="reportIcon" mode="scaleToFill" />
+					</view>
+          <view class="report-item-info-right">
+            <view class="p-b-18 C_4a">{{ item.message }}</view>
+            <view v-if="item.type == 'getting'">
+              <view class="report-item-type-getting">报告生成中...</view>
+            </view>
+            <view v-else>
+              <view class="flex-s-c C_86">
+                <view>已生成</view>
+                <view class="split"></view>
+                <view>测评时间 {{ item.date }}</view>
+              </view>
+            </view>
+          </view>
+        </view>
+      </view>
+    </view>
+  </view>
+</template>
+ 
+<script>
+import LoadingView from "@/components/css3/loading/loading.vue";
+import utils from "@/common/support/utils.js";
+import UniApi from "../../../common/support/tools/uni-api-promise";
+const app = getApp();
+const pageOption = Page.BasePage({
+  components: {
+    LoadingView,
+  },
+  data() {
+    return {
+      reportItemIcon: require("@/static/report-item.png"),
+      reportIcon: require("@/static/icon-report.png"),
+      reportList: [
+        {
+          img: "",
+          message: "广州海关心理健康测评测评测评测评测评",
+          type: "getting",
+          date: "",
+        },
+        {
+          img: "",
+          message: "广州海关心理健康",
+          type: "success",
+          date: "2022.03.22",
+        },
+        {
+          img: "",
+          message: "广州海关心理健康",
+          type: "success",
+          date: "2022.03.22",
+        },
+        {
+          img: "",
+          message: "广州海关心理健康",
+          type: "success",
+          date: "2022.03.22",
+        },
+        {
+          img: "",
+          message: "广州海关心理健康",
+          type: "success",
+          date: "2022.03.22",
+        },
+        {
+          img: "",
+          message: "广州海关心理健康",
+          type: "success",
+          date: "2022.03.22",
+        },
+        {
+          img: "",
+          message: "广州海关心理健康",
+          type: "success",
+          date: "2022.03.22",
+        },
+      ],
+    };
+  },
+  onLoad(options) {},
+  onShow() {},
+  onReady() {},
+  methods: {
+		enter(){
+			this.jumpAction('pages/report/report-info/report-info')
+		}
+	},
+});
+export default pageOption;
+</script>
+
+<style lang="scss" scoped>
+.report-list {
+  min-height: 100vh;
+  .report-background {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 520rpx;
+    background: linear-gradient(180deg, #0e4d9a 0%, #2084ca 42%, #f7f7f7 100%);
+  }
+  .report-list-area {
+    margin-top: 125rpx;
+    .report-item {
+      position: relative;
+      height: 194rpx;
+      margin-bottom: 32rpx;
+			box-shadow: 0rpx 7rpx 17rpx 0rpx rgba(6, 80, 155, 0.07);
+
+      .report-item-background {
+        position: absolute;
+        width: 724rpx;
+        height: 194rpx;
+        z-index: 99;
+      }
+      &:first-child .report-bg-right {
+        opacity: 0.2;
+      }
+      .report-bg-right {
+        position: absolute;
+        right: 28rpx;
+        top: 18rpx;
+        z-index: 9;
+        width: 308rpx;
+        height: 137rpx;
+        background: #cfe2f3;
+        border-radius: 16rpx;
+      }
+
+      .report-item-info {
+        position: relative;
+        height: 100%;
+        width: 100%;
+        box-sizing: border-box;
+        padding: 36rpx 64rpx 39rpx 34rpx;
+        z-index: 999;
+        .report-item-image {
+          width: 119rpx;
+          height: 119rpx;
+          border-radius: 16rpx;
+          background: #0e4d9a;
+        }
+        .report-item-info-right {
+          padding-top: 28rpx;
+          width: 468rpx;
+          text-align: left;
+          .report-item-type-getting {
+            width: 142rpx;
+            // height: 32rpx;
+						text-align: center;
+						padding: 2rpx 0;
+						box-sizing: border-box;
+            background: #f2fff1;
+						color: #21B014;
+						font-size: 20rpx;
+            border-radius: 3px;
+            border: 1px solid rgba(33, 176, 20, 0.26);
+          }
+        }
+      }
+    }
+  }
+}
+.report-icon{
+	width: 66rpx;
+	height: 66rpx;
+	right: -22rpx;
+	bottom: -11rpx;
+}
+.split {
+  width: 1rpx;
+  height: 17rpx;
+  background: #979797;
+  margin: 0 18rpx;
+}
+</style>

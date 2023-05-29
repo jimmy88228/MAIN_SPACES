@@ -1,0 +1,226 @@
+<template>
+	<view>
+		<u-popup v-model="showPopup" mode="bottom" closeable>
+			<scroll-view class="list-scroll-content" :style="{height: scrollHeight + 'px'}" scroll-y @scrolltolower="loadData">
+				
+				<u-cell-group :title="groupTitle">
+					<u-cell-item
+					v-for="(item, index) in dataList" :key="index" 
+					:arrow="false">
+						
+						<!--文本素材-->
+						<template v-if="dataType == 'texts' ">
+							<view slot="label" class="clamp label-box">{{item.content}}</view>
+							<view slot="right-icon" class="right-box">
+								<u-button type="primary" size="mini" :loading="item.loading" @click.stop="onSelect(item)">选取</u-button>
+							</view>
+						</template>
+						
+						<!--图片素材-->
+						<template v-if="dataType == 'images' ">
+							<view slot="icon" style="position:relative;height:80rpx;">
+								<u-avatar :src="item.thumb_format" size="80" mode="square" style="margin-right:20rpx;"></u-avatar>
+							</view>
+							<view slot="label" class="clamp label-box">{{item.content}}</view>
+							<view slot="right-icon" class="right-box">
+								<u-button type="primary" size="mini" :loading="item.loading" @click.stop="onSelect(item)">选取</u-button>
+							</view>
+						</template>
+						
+						<!--卡片素材-->
+						<template v-if="dataType == 'cards' ">
+							<view slot="icon" style="position:relative;height:80rpx;">
+								<u-avatar :src="item.thumb_format" size="80" mode="square" style="margin-right:20rpx;"></u-avatar>
+							</view>
+							<view slot="label" class="clamp label-box">{{item.content}}</view>
+							<view slot="right-icon" class="right-box">
+								<u-button type="primary" size="mini" :loading="item.loading" @click.stop="onSelect(item)">选取</u-button>
+							</view>
+						</template>
+						
+						<!--商品卡片-->
+						<template v-if="dataType == 'goods' ">
+							<view slot="icon" style="position:relative;height:80rpx;">
+								<u-avatar :src="item.img_url_thumb" size="80" mode="square" style="margin-right:20rpx;"></u-avatar>
+							</view>
+							<view slot="title" class="title-box">{{item.name}}</view>
+							<view slot="label" class="clamp label-box">￥{{item.sale_price}}</view>
+							<view slot="right-icon" class="right-box">
+								<u-button type="primary" size="mini" :loading="item.loading" @click.stop="onSelect(item)">选取</u-button>
+							</view>
+						</template>
+						
+						<!--页面卡片-->
+						<template v-if="dataType == 'pages' ">
+							<view slot="icon" style="position:relative;height:80rpx;">
+								<u-avatar :src="item.get_user_info.wx_avatar" size="80" mode="square" style="margin-right:20rpx;"></u-avatar>
+							</view>
+							<view slot="title" class="title-box">{{item.get_user_info.wx_nick_name}}</view>
+							<view slot="right-icon" class="right-box">
+								<u-button type="primary" size="mini" :loading="item.loading" @click.stop="onSelect(item)">选取</u-button>
+							</view>
+						</template>
+						
+					</u-cell-item>
+				</u-cell-group>
+				
+				<!-- 空白页 -->
+				<u-empty v-if="dataList.length === 0" 
+				text="暂无客户" 
+				mode="data" 
+				:style="{height: scrollHeight +'px'}"></u-empty>
+				
+				<u-loadmore v-show="loadStatus != 'nomore' " :status="loadStatus" font-size="24"></u-loadmore>
+			</scroll-view>
+		</u-popup>	
+	</view>
+</template>
+
+<script>
+export default {
+	name: 'csMaterial',
+	components:{
+
+	},
+	data() {
+		return {
+			showPopup: false,
+			dataList:[],
+			groupTitle: '请选择素材',
+			
+			// 素材类型：例如 texts,images,cards,goods,pages
+			dataType: '',
+			
+			scrollHeight: 500,
+			loadStatus: '',
+		}
+	},
+	mounted(){
+		this.init();
+	},
+	methods:{
+		init(){
+			// 计算屏幕高度
+			var system = uni.getSystemInfoSync();
+			this.scrollHeight = system.windowHeight;
+		},
+		// 提供给父组件调用，type 是素材类型
+		openPopup( type ){
+			this.dataType = type;
+			this.showPopup = true;
+			
+			this.loadData();
+		},
+		// 加载素材列表
+		loadData(){
+			var url = '';
+			var params = {};
+			switch( this.dataType ){
+				case 'texts':
+					url = this.$api.csMaterialList;
+					this.groupTitle = '素材 - 文本';
+					params = {
+						type: 'TEXT',
+					};
+					break;
+					
+				case 'images':
+					url = this.$api.csMaterialList;
+					this.groupTitle = '素材 - 图片';
+					params = {
+						type: 'IMAGE',
+					};
+					break;
+					
+				case 'cards':
+					url = this.$api.csMaterialList;
+					this.groupTitle = '素材 - 卡片';
+					params = {
+						type: 'CARD',
+					};
+					break;
+					
+				case 'goods':
+					url = this.$api.goodsList;
+					this.groupTitle = '商品卡片';
+					params = {
+					};
+					break;
+					
+				case 'pages':
+					url = this.$api.goodsPageList;
+					this.groupTitle = '页面卡片';
+					params = {
+					};
+					break;
+			}
+			
+			this.loadStatus = 'loading';
+			this.$u.post( url, params )
+			.then( (response) => {
+				var res = response.data;
+				this.loadStatus = '';
+				if( res.code ){
+					this.dataList = res.data.items;
+					this.loadStatus = res.data.loadStatus;
+					
+				}
+			});
+		},
+		// 选中素材
+		onSelect( item ){
+			// 关闭pupup
+			this.showPopup = false;
+			
+			var link_url = item.link_url;
+			var img_src = item.img_src_format;
+			var title = item.content;
+			switch(this.dataType){
+				case 'goods':
+					// 这个需要根据系统来定路由
+					link_url = '/pages/app/sourse-shop/product/info?code='+item.code;
+					img_src = item.img_url;
+					title = item.name;
+					if( img_src == '' || img_src == null ){
+						this.$u.toast('商品的图片为空，发送失败！');
+						return ;
+					}
+					break;
+					
+				case 'pages':
+					link_url = '/pages/app/xxx?code='+item.code;
+					img_src = item.img_url;
+					title = item.name;
+					if( img_src == '' || img_src == null ){
+						this.$u.toast('页面的封面图片不能为空，发送失败！');
+						return ;
+					}
+					break;
+			}
+			
+			// 返回内容给父组件
+			this.$emit('on-success', {
+				type: this.dataType,
+				content: item.content,
+				// 图片才有的参数
+				imgUrl: item.img_src_format,
+				
+				// 下面是卡片才有的参数
+				Title: title,
+				PagePath: link_url,
+				LocalUrl: img_src,
+			});
+		}
+	}	
+}
+</script>
+	
+<style lang="scss">
+.label-box{
+	font-size: $font-sm;
+	color:#bbb;
+	line-height:1;
+	margin-top:4rpx;
+	max-width: 530rpx;
+}
+</style>

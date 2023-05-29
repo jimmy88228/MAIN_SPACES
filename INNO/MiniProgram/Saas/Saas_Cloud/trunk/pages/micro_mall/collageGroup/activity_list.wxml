@@ -1,0 +1,67 @@
+<!--pages/micro_mall/collageGroup/activity_list.wxml-->
+<search 
+class="_input_box"
+searchType="goods" 
+placeText="请输入商品关键词" 
+bindinputCallback="getKeywork"
+bindonTapConfirm="handleFilterSearch" />
+
+<view class="activity_wrapper {{isIphoneX?'ipx':''}}" hidden="{{!isReady}}">
+    <block wx:for="{{activitList}}" wx:key="index">
+      <view  class="table bg_fff activity_item"  data-id="{{item.id}}" catchtap="openCollage">
+        <view class="table_cell t_l activity_img_area">
+          <view class="activity_img_area_stay b_1">
+            <image class="activity_img" src="{{item.active_image}}" mode="widthFix"/>
+            <view class='activity-tag' style="{{brandStyle ? 'background-color:'+ brandStyle.pt_color.to_color +';' : ''}}">拼团</view>
+          </view>
+        </view>
+        <view class="table_cell t_l activity_item_info">
+          <view>
+            <view class="activity_name font_26">{{item.activity_name}}</view>
+            <view class="activity_tips">
+              <view class="tips_item" wx:if="{{item.is_show_sale_number == 1}}">
+                <view class="activity_tip font_20" style="border-color:{{brandStyle.pt_color.to_color}};color:{{brandStyle.pt_color.to_color}};">已拼{{item.sale_number_str || 0}}件</view>
+              </view>
+              <view class="tips_item">
+                <view class="activity_tip font_20" style="border-color:{{brandStyle.pt_color.to_color}};color:{{brandStyle.pt_color.to_color}};">{{item.join_mans}}人团</view>
+              </view>
+            </view>
+          </view>
+          <view>
+            <view class="activity_sale_price" style="color:{{brandStyle.pt_color.to_color}};">
+            <text class="font_22 C_000">拼团价 </text>
+            <text class="font_22 mr_5 ml_5 bold">¥</text>
+            <text class="font_26 bold">{{item.min_sale_price}}</text>
+          </view>
+          <view class="C_7f activity_market_price font_20 line_t">
+            ¥{{item.min_market_price}}
+            <block wx:if="{{item.min_market_price != item.max_market_price}}">
+            - {{item.max_market_price}}
+            </block>
+          </view>
+          
+           
+          <view hover-class='none' class="radius_10 join_collage ">
+            <!-- <view>
+              <view class='font_22 to_buy'>立即拼团</view>
+              <view class='font_18 to_end'>
+                  距结束
+                  <text wx:if="{{actCountDown[index].time.day > 0}}">{{actCountDown[index].time.day}} 天 </text>
+                  <text> {{actCountDown[index].time.hour}}</text> :
+                  <text>{{actCountDown[index].time.min}}</text> :
+                  <text>{{actCountDown[index].time.sec}}</text>
+              </view>
+            </view> -->
+            <act-count-down id="actCountDownId{{index}}"></act-count-down>
+            <!-- <button hover-class='none' class="join_collage_login"  data-id="{{item.id}}" catchtap="openCollage" ></button> -->
+            <!-- <button hover-class='none' class="join_collage_login"  data-id="{{item.id}}" open-type='getUserInfo' bindgetuserinfo="getUserInfo"  wx:else></button> -->
+          </view>
+          
+          </view>
+        </view>
+      </view>
+    </block>
+    <view class="no_data_area" wx-if="{{activitList.length == 0}}">还没有拼团活动~</view>
+</view>
+ <!--tabbar-->
+ <tabbar id="custom_tabbar" type="{{jumpType}}"></tabbar>

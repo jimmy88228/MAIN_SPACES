@@ -1,0 +1,10 @@
+<!-- 分组tab -->
+<view class="tab-box" wx:if="{{showTab}}">
+  <block wx:for="{{group}}" wx:key="index">
+    <view class="tab-item" catchtap="onTap" data-type="tab" data-index="{{index}}">
+      <view class="tab-name {{curTab == index?'active':''}}">{{item.name}}</view>
+      <view class="line {{curTab == index?'active':''}}"></view>
+    </view>
+  </block>
+</view>
+<slot></slot>

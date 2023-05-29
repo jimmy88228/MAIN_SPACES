@@ -1,0 +1,5 @@
+<!--pages/component/indexHead/storeHead/storeHead.wxml-->
+<view class="store-head">
+  <image src="{{defaultIcon + 'store/location.png'}}" mode="aspectFit" class="img-location" />
+  <view>{{storeInfo.storeName||""}}</view>
+</view>

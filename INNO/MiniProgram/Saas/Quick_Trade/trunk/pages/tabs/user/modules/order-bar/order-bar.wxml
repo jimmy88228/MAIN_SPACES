@@ -1,0 +1,37 @@
+<view class="order-bar-container">
+  <view class="user-row">
+    <view class="user-row-header">
+      <view class="user-row-left">
+        <view class="user-row-title">{{baseInfo[fromType].title||"我的订单"}}</view>
+      </view>
+      <view class="user-row-right" catchtap="jump" data-item="{{checkMoreItem}}">
+        <view class="check-more">
+          <view class="check-more-text">查看全部</view>
+          <!-- <view class="icon-arrow" hover-class="active"></view> -->
+        </view>
+      </view>
+    </view>
+    <view class="user-row-main">
+      <view class="user-row-list">
+        <block wx:for="{{barList}}" wx:key="state">
+          <view
+            class="user-row-item"
+            style="width: {{(100 / barList.length) + ''}}%;"
+            catchtap="jump"
+            data-item="{{item}}"
+          >
+            <view class="user-row-item-icon">
+              <view class="user-row-item-image" style="background-image: url({{item.img}})"></view>
+              <view class="user-row-item-count" wx:if="{{userData[item.key]>0}}">{{userData[item.key] >= 100 ? "99+" : userData[item.key]||0}}</view>
+            </view>
+            <view class="user-row-item-name">
+              {{item.title}}
+            </view>
+          </view>
+        </block>
+       </view>
+    </view>
+  </view>
+</view>
+<!-- public -->
+<include src="/common/base/component/index.wxml" />

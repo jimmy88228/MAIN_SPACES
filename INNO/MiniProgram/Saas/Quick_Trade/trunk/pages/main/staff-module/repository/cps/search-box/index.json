@@ -1,0 +1,6 @@
+{
+    "component": true,
+    "usingComponents": {
+       "goods-list" :"/pages/main/staff-module/repository/cps/goods-list/index"
+    }
+}

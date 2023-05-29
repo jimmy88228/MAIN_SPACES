@@ -1,0 +1,15 @@
+<wxs module="compute" src="./progress.wxs"></wxs>
+<window class="window" ext-class="window-ext">
+  <view class="compute_pop" style="{{boxStyle}}">
+    <form>
+      <view class="pop_cont">
+        <button class="loader" loading="{{true}}"></button>
+        正在保存
+        (<text class="pop_t">{{current > all ? all : current}}</text>/
+        <text class="pop_t">{{all}}</text>)
+        <text class="percent pop_t">{{compute.getPercent(current,all)}}</text>
+      </view>
+    </form>
+  </view>
+  
+</window>

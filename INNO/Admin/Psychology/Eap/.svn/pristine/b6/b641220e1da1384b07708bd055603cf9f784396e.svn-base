@@ -1,0 +1,675 @@
+const AdminApi = {
+    adminLogin: {
+        u: "/pt_v1/admin/loginInit",
+        a: "post"
+    },
+    adminLoginOut: {
+        u: "/pt_v1/admin/loginOut",
+        a: "post"
+    },
+    editInitpasswd: { // oldpasswd, newpasswd, notarizepasswd
+        u: "/pt_v1/admin/editInitpasswd",
+        a: "post"
+    }
+}
+const inventoryManagementApi = {
+    inventoryList: {
+        u: "/pt_v1/inventoryManagement/list",
+        a: "post"
+    },
+    inventoryView: {
+        u: "/pt_v1/inventoryManagement/view",
+        a: "post"
+    }
+}
+const appraisalActivityApi = {
+    appraisalActList: {
+        u: "/pt_v1/appraisalActivity/list",
+        a: "post"
+    },
+    appraisalActAdd: {
+        u: "/pt_v1/appraisalActivity/add",
+        a: "post"
+    },
+    appraisalActRemove: {
+        u: "/pt_v1/appraisalActivity/remove",
+        a: "post"
+    },
+    appraisalActInfo: {
+        u: "/pt_v1/appraisalActivity/Info",
+        a: "post"
+    },
+    appraisalActUpdate: {
+        u: "/pt_v1/appraisalActivity/update",
+        a: "post"
+    },
+    //关联学校
+    appraisalSchool: {
+        u: "/pt_v1/appraisalActivity/school",
+        a: "post"
+    },
+    batchAddAppraisalSchool: {
+        u: "/pt_v1/appraisalActivity/batchAddSchool",
+        a: "post"
+    },
+    batchCancelAppraisalSchool: {
+        u: "/pt_v1/appraisalActivity/batchCancelSchool",
+        a: "post"
+    },
+    batchTplAppraisalSchool: {
+        u: "/pt_v1/appraisalActivity/batchTplSchool",
+        a: "post"
+    },
+    batchImportAppraisalSchool: {
+        u: "/pt_v1/appraisalActivity/batchImportSchool",
+        a: "post"
+    }, 
+    // 推广组织列表
+    organizationalList: {
+        u: "/pt_v1/appraisalActivity/organizationalList",
+        a: "post"
+    },
+    // 测评进度
+    appraisalSchedule: {
+        u: "/pt_v1/appraisalActivity/schedule",
+        a: "post"
+    },
+    // 测评进度结果
+    appraisalScheduleResult: {
+        u: "/pt_v1/appraisalActivity/result",
+        a: "post"
+    },
+    // 测评报告
+    appraisalScheduleReport: {
+        u: "/pt_v1/appraisalActivity/report",
+        a: "post"
+    },
+    // 测评答案
+    appraisalScheduleAnswer: {
+        u: "/pt_v1/appraisalActivity/answer",
+        a: "post"
+    },
+    // 活动概况
+    appraisalScheduleInfo: {
+        u: "/pt_v1/appraisalActivity/scheduleInfo",
+        a: "post"
+    },
+    // 组织概况
+    appraisalScheduleList: {
+        u: "/pt_v1/appraisalActivity/scheduleList",
+        a: "post"
+    },
+    // 批量生成二维码
+    batchQrCode: {
+        u: "/pt_v1/appraisalActivity/batchQrCode",
+        a: "post"
+    },
+}
+
+const schoolMaintApi = {
+    // 学校管理
+    schoolMaintList: {
+        u: "/pt_v1/schoolMaintenance/list",
+        a: "post"
+    },
+    addSchoolMaint: {
+        u: "/pt_v1/schoolMaintenance/add",
+        a: "post"
+    },
+    schoolMaintInfo: {
+        u: "/pt_v1/schoolMaintenance/Info",
+        a: "post"
+    },
+    updateSchoolMaint: {
+        u: "/pt_v1/schoolMaintenance/update",
+        a: "post"
+    },
+    batchRemoveSchoolMaint: {
+        u: "/pt_v1/schoolMaintenance/batchRemove",
+        a: "post"
+    },
+    //管理员
+    schoolMaintBindAdmin: {
+        u: "/pt_v1/schoolMaintenance/bindAdmin",
+        a: "post"
+    },
+    schoolMaintAdminAdd: {
+        u: "/pt_v1/schoolMaintenance/adminAdd",
+        a: "post"
+    },
+    schoolMaintAdminInfo: {
+        u: "/pt_v1/schoolMaintenance/adminInfo",
+        a: "post"
+    },
+    schoolMaintAdminUpdate: {
+        u: "/pt_v1/schoolMaintenance/adminUpdate",
+        a: "post"
+    },
+    schoolMaintAdminRemove: {
+        u: "/pt_v1/schoolMaintenance/adminRemove",
+        a: "post"
+    },
+    schoolMaintAdminRest: {
+        u: "/pt_v1/schoolMaintenance/adminRest",
+        a: "post"
+    },
+    schoolMaintAdminState: {
+        u: "/pt_v1/schoolMaintenance/adminState",
+        a: "post"
+    },
+}
+
+export const componentsApi = {
+    inventoryComponentList: {
+        u: "/pt_v1/custom/componentData",
+        a: "post"
+    },
+    adminRoleData: {
+        u: "/pt_v1/custom/adminRoleData",
+        a: "post"
+    },
+    adminAreaData: {
+        u: "/pt_v1/custom/adminAreaData",
+        a: "post"
+    },
+    adminSchoolData: {
+        u: "/pt_v1/custom/adminSchoolData",
+        a: "post"
+    },
+    adminCampusData: {
+        u: "/pt_v1/custom/adminCampusData",
+        a: "post"
+    },
+    adminGradeData: {
+        u: "/pt_v1/custom/adminGradeData",
+        a: "post"
+    },
+    addCampus: {
+        u: "/pt_v1/classMaintenance/addCampus",
+        a: "post"
+    },
+    updateCampus: {
+        u: "/pt_v1/classMaintenance/updateCampus",
+        a: "post"
+    },
+    ImageUplode: {
+        u: "/pt_v1/custom/ImageUplode",
+        a: "post"
+    },
+    mqProgress: {
+        u: "/pt_v1/custom/mqProgress",
+        a: "post"
+    },
+    qrcode: {
+        u: "/pt_v1/custom/qrcode",
+        a: "post"
+    },
+    surveyLevel: {
+        u: "/pt_v1/custom/surveyLevel",
+        a: "post"
+    },
+    surveyIntervention: {
+        u: "/pt_v1/custom/surveyIntervention",
+        a: "post"
+    },
+    schoolStudentData: {
+        u: "/pt_v1/custom/schoolStudentData",
+        a: "post"
+    },
+    getStudent: {
+        u: "/pt_v1/custom/getStudent",
+        a: "post"
+    },
+    adminOrganizationData: {
+        u: "/pt_v1/custom/adminOrganizationData",
+        a: "post"
+    },
+    pageStructureData: {
+        u: "/pt_v1/custom/pageStructureData",
+        a: "post"
+    },
+}
+
+export const studentFileApi = {
+    memberList: {
+        u: "/pt_v1/memberFile/list",
+        a: "post"
+    },
+    studentUpdate: {
+        u: "/pt_v1/studentFile/update",
+        a: "post"
+    },
+    studentBatchRemove: {
+        u: "/pt_v1/studentFile/batchRemove",
+        a: "post"
+    },
+    studentBatchTpl: {
+        u: "/pt_v1/studentFile/batchTpl",
+        a: "post"
+    },
+    studentBatchImport: {
+        u: "/pt_v1/studentFile/batchImport",
+        a: "post"
+    },
+    psychologyFiles: {
+        u: "/pt_v1/memberFile/psychologyFiles",
+        a: "post"
+    },
+    psychologyFilesActivity: {
+        u: "/pt_v1/memberFile/psychologyFilesActivity",
+        a: "post"
+    },
+    psychologyFilesPsychic: {
+        u: "/pt_v1/memberFile/psychologyFilesPsychic",
+        a: "post"
+    },
+    psychologyDetails: {
+        u: "/pt_v1/memberFile/psychologyDetails",
+        a: "post"
+    },
+    psychologyDetailsActivity: {
+        u: "/pt_v1/memberFile/psychologyDetailsActivity",
+        a: "post"
+    },
+    psychologyReport: {
+        u: "/pt_v1/memberFile/psychologyReport",
+        a: "post"
+    },
+    psychologyAnswer: {
+        u: "/pt_v1/memberFile/psychologyAnswer",
+        a: "post"
+    },
+
+
+}
+
+export const classMaintApi = {
+    classMaintList: {
+        u: "/pt_v1/classMaintenance/list",
+        a: "post"
+    },
+    addClassMaint: {
+        u: "/pt_v1/classMaintenance/add",
+        a: "post"
+    },
+    updateClassMaint: {
+        u: "/pt_v1/classMaintenance/update",
+        a: "post"
+    },
+    batchRemoveClassMaint: {
+        u: "/pt_v1/classMaintenance/batchRemove",
+        a: "post"
+    },
+    classMaintBatchTpl: {
+        u: "/pt_v1/classMaintenance/batchTpl",
+        a: "post"
+    },
+    classMaintBatchImport: {
+        u: "/pt_v1/classMaintenance/batchImport",
+        a: "post"
+    },
+    classMaintBindAdmin: {
+        u: "/pt_v1/classMaintenance/bindAdmin",
+        a: "post"
+    },
+    classMaintAdminAdd: {
+        u: "/pt_v1/classMaintenance/adminAdd",
+        a: "post"
+    },
+    classMaintAdminInfo: {
+        u: "/pt_v1/classMaintenance/adminInfo",
+        a: "post"
+    },
+    classMaintAdminUpdate: {
+        u: "/pt_v1/classMaintenance/adminUpdate",
+        a: "post"
+    },
+    classMaintAdminRemove: {
+        u: "/pt_v1/classMaintenance/adminRemove",
+        a: "post"
+    },
+    classMaintAdminRest: {
+        u: "/pt_v1/classMaintenance/adminRest",
+        a: "post"
+    },
+    classMaintAdminState: {
+        u: "/pt_v1/classMaintenance/adminState",
+        a: "post"
+    }
+}
+
+export const peopleManagementApi = {
+    peopleList: {
+        u: "/pt_v1/peopleManagement/list",
+        a: "post"
+    },
+    peopleAdd: {
+        u: "/pt_v1/peopleManagement/add",
+        a: "post"
+    },
+    peopleInfo: {
+        u: "/pt_v1/peopleManagement/Info",
+        a: "post"
+    },
+    peopleUpdate: {
+        u: "/pt_v1/peopleManagement/update",
+        a: "post"
+    },
+    peopleRemove: {
+        u: "/pt_v1/peopleManagement/remove",
+        a: "post"
+    },
+    peopleRest: {
+        u: "/pt_v1/peopleManagement/rest",
+        a: "post"
+    },
+    peopleState: {
+        u: "/pt_v1/peopleManagement/state",
+        a: "post"
+    }
+}
+
+export const assessmentTasksApi = {
+    assessmentTaskList: {
+        u: "/pt_v1/assessmentTasks/list",
+        a: "post"
+    },
+    assessmentTaskAdd: {
+        u: "/pt_v1/assessmentTasks/add",
+        a: "post"
+    },
+    assessmentTaskInfo: {
+        u: "/pt_v1/assessmentTasks/Info",
+        a: "post"
+    },
+    assessmentTaskUpdate: {
+        u: "/pt_v1/assessmentTasks/update",
+        a: "post"
+    },
+    assessmentTaskRemove: {
+        u: "/pt_v1/assessmentTasks/remove",
+        a: "post"
+    },
+
+    assessmentTaskSchedule: {
+        u: "/pt_v1/assessmentTasks/schedule",
+        a: "post"
+    },
+    assessmentTaskResult: {
+        u: "/pt_v1/assessmentTasks/result",
+        a: "post"
+    },
+    assessmentTaskReport: {
+        u: "/pt_v1/assessmentTasks/report",
+        a: "post"
+    },
+    assessmentTaskAnswer: {
+        u: "/pt_v1/assessmentTasks/answer",
+        a: "post"
+    },
+
+    createSchoolCode: {
+        u: "/pt_v1/assessmentTasks/schoolCode",
+        a: "post"
+    },
+    createSchoolLink: {
+        u: "/pt_v1/assessmentTasks/schoolLink",
+        a: "post"
+    },
+    relateClassList: {
+        u: "/pt_v1/assessmentTasks/classList",
+        a: "post"
+    },
+    relateClassAdd: {
+        u: "/pt_v1/assessmentTasks/classAdd",
+        a: "post"
+    },
+    relateClassCancel: {
+        u: "/pt_v1/assessmentTasks/classCancel",
+        a: "post"
+    },
+    batchClassCode: {
+        u: "/pt_v1/assessmentTasks/batchClassCode",
+        a: "post"
+    },
+    batchClassLink: {
+        u: "/pt_v1/assessmentTasks/batchClassLink",
+        a: "post"
+    },
+}
+
+export const pagesApi = {
+    pageList: {
+        u: "/pt_v1/pageMaintenance/list",
+        a: "post"
+    },
+    pageAdd: {
+        u: "/pt_v1/pageMaintenance/add",
+        a: "post"
+    },
+    pageInfo: {
+        u: "/pt_v1/pageMaintenance/Info",
+        a: "post"
+    },
+    pageUpdate: {
+        u: "/pt_v1/pageMaintenance/update",
+        a: "post"
+    },
+    pageRemove: {
+        u: "/pt_v1/pageMaintenance/remove",
+        a: "post"
+    },
+    pageSort: {
+        u: "/pt_v1/pageMaintenance/sort",
+        a: "post"
+    },
+    setHomePage: {
+        u: "/pt_v1/pageMaintenance/homePage",
+        a: "post"
+    },
+}
+
+export const userCenterApi = {
+    viewUserCenter: {
+        u: "/pt_v1/personalCenter/view",
+        a: "post"
+    },
+    saveUserCenter: {
+        u: "/pt_v1/personalCenter/save",
+        a: "post"
+    },
+
+}
+
+export const forewarningSurveyApi = {
+    forewarningList: {
+        u: "/pt_v1/forewarningSurvey/view",
+        a: "post"
+    },
+    forewarningExamineList: {
+        u: "/pt_v1/forewarningSurvey/checkList",
+        a: "post"
+    },
+    forewarningSignGrade: {
+        u: "/pt_v1/forewarningSurvey/signGrade",
+        a: "post"
+    },
+    forewarningPeopleList: {
+        u: "/pt_v1/forewarningSurvey/warningPeopleList",
+        a: "post"
+    },
+    forewarningAddPeople: {
+        u: "/pt_v1/forewarningSurvey/addPeople",
+        a: "post"
+    },
+    forewarningInterveneRecord: {
+        u: "/pt_v1/forewarningSurvey/interveneRecord",
+        a: "post"
+    },
+    forewarningAddRecord: {
+        u: "/pt_v1/forewarningSurvey/addRecord",
+        a: "post"
+    }
+}
+
+export const structureApiList = {
+    getStructureListByIDS: {
+        u: "/pt_v1/structure/getStructureListByIDS",
+        a: "post"
+    },
+    getStructureInfo: {
+        u: "/pt_v1/structure/getStructureInfo",
+        a: "post"
+    },
+    structureAdd: {
+        u: "/pt_v1/structure/structureAdd",
+        a: "post"
+    },
+    structureUpdate: {
+        u: "/pt_v1/structure/structureUpdate",
+        a: "post"
+    },
+    structureDelete: {
+        u: "/pt_v1/structure/structureDelete",
+        a: "post"
+    },
+    structureDownloadBatchTpl:{
+        u:"/pt_v1/structure/downloadBatchTpl",
+        a:"post"
+    },
+    structureBatchImport:{
+        u:"/pt_v1/structure/batchImport",
+        a:"post"
+    },
+    structureUpdateName: {
+        u: "/pt_v1/structure/structureUpdateName",
+        a: "post"
+    }
+}
+export const adminUserRoleSettingApi = {
+    getAdminUserList:{
+        u:"/pt_v1/adminUserRoleSetting/getAdminUserList",
+        a:"post"
+    },
+    getAdminUserInfo:{
+        u:"/pt_v1/adminUserRoleSetting/getAdminUserInfo",
+        a:"post"
+    },
+    adminUserAdd:{
+        u:"/pt_v1/adminUserRoleSetting/adminUserAdd",
+        a:"post"
+    },
+    adminUserUpdate:{
+        u:"/pt_v1/adminUserRoleSetting/adminUserUpdate",
+        a:"post"
+    },
+    adminUserDelete:{
+        u:"/pt_v1/adminUserRoleSetting/adminUserDelete",
+        a:"post"
+    },
+    adminUserPasswordReset:{
+        u:"/pt_v1/adminUserRoleSetting/adminUserPasswordReset",
+        a:"post"
+    },
+    setAdminUserState:{
+        u:"/pt_v1/adminUserRoleSetting/setAdminUserState",
+        a:"post"
+    },
+}
+
+export const memberApiList = {
+    getMemberGroupByStructure: {
+        u: "/pt_v1/structureMember/getStructureMemberGroupByStructure",
+        a: "post"
+    },
+    getStructureMemberList: {
+        u: "/pt_v1/structureMember/getStructureMemberList",
+        a: "post"
+    },
+    getStructureMemberInfo: {
+        u: "/pt_v1/structureMember/getStructureMemberInfo",
+        a: "post"
+    },
+    structureMemberAdd: {
+        u: "/pt_v1/structureMember/structureMemberAdd",
+        a: "post"
+    },
+    structureMemberUpdate: {
+        u: "/pt_v1/structureMember/structureMemberUpdate",
+        a: "post"
+    },
+    batchTplStructureMember: {
+        u: "/pt_v1/structureMember/downloadBatchTpl",
+        a: "post"
+    },
+    batchImportStructureMember: {
+        u: "/pt_v1/structureMember/batchImport",
+        a: "post"
+    },
+
+}
+
+export const contentRepositoryApi = {
+    contentList: {
+        u: "/pt_v1/contentRepository/list",
+        a: "post"
+    },
+    contentSourceList: {
+        u: "/pt_v1/contentRepository/sourceList",
+        a: "post"
+    }, 
+}
+
+export const reservationConsultationApi = {
+    reservationList: {
+        u: "/pt_v1/reservationConsultation/list",
+        a: "post"
+    },
+    reservationDetails: {
+        u: "/pt_v1/reservationConsultation/details",
+        a: "post"
+    },  
+    reservationData: {
+        u: "/pt_v1/reservationConsultation/data",
+        a: "post"
+    }
+}
+export const psychologicalConsultantApi = {
+    psychologicalList: {
+        u: "/pt_v1/psychologicalConsultant/list",
+        a: "post"
+    },
+    psychologicalDetails: {
+        u: "/pt_v1/psychologicalConsultant/details",
+        a: "post"
+    }, 
+    psychologicalSourceList: {
+        u: "/pt_v1/psychologicalConsultant/sourceList",
+        a: "post"
+    }, 
+}
+
+
+
+export const WebApiList = {}
+
+export default {
+    ...appraisalActivityApi,
+    ...AdminApi,
+    ...inventoryManagementApi,
+    ...schoolMaintApi,
+    ...studentFileApi,
+    ...componentsApi,
+    ...classMaintApi,
+    ...peopleManagementApi,
+    ...assessmentTasksApi,
+    ...pagesApi,
+    ...userCenterApi,
+    ...forewarningSurveyApi,
+    ...structureApiList,
+    ...memberApiList,
+	...adminUserRoleSettingApi,
+    ...contentRepositoryApi,
+    ...reservationConsultationApi,
+    ...psychologicalConsultantApi
+};

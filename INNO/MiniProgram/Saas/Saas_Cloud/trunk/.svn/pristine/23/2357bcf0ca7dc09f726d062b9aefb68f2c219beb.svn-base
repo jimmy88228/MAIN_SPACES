@@ -1,0 +1,100 @@
+<form bindsubmit="formAction" report-submit="true">
+  <view>
+    <!--根据后台配置显示-->
+    <block>
+      <!--必填-->
+      <view class="info_group" >
+        <block wx:if="{{personal_page.required.length > 0}}">
+          <view class="info_tip">必填项</view>
+          <view class="" wx:for="{{personal_page.required}}" wx:key="index">
+            <view class="info_item" wx:if="{{item === 'name'}}">
+              <text class="info_tit">姓名</text>
+              <input placeholder="姓名" class="info_input" data-key="nickName" bindinput="bindChange" value="{{nickName}}"></input>
+            </view>
+            <view class="info_item" wx:elif="{{item === 'sex'}}">
+              <text class="info_tit">性别</text>
+              <picker class="info_input" data-key="sex" bindchange="bindChange" value="{{sex}}" range="{{sexList}}">
+                <view class="picker {{!sex ? 'tip_color' : ''}}">{{sexList[sex] || '性别'}}</view>
+              </picker>
+            </view>
+            <!-- <view class="info_item" wx:elif="{{item === 'email'}}">
+              <text class="info_tit">邮箱</text>
+              <input placeholder="邮箱" class="info_input" data-key="email" bindinput="bindChange" value="{{email}}"></input>
+            </view> -->
+            <view class="info_item" wx:elif="{{item === 'birthday'}}">
+              <text class="info_tit">生日</text>
+              <block wx:if="{{info.birthday == '1900-01-01' || info.birthday == ''}}">
+                <picker class="info_input" data-key="birthday" mode="date" value="{{birthday}}" start="{{preDateStr}}" end="{{nowDateStr}}" bindchange="bindChange">
+                  <view class="picker {{birthday ? '' : 'C_7f'}}">{{birthday || '请选择生日日期'}}</view>
+                </picker>
+              </block>
+              <block wx:else>
+                <text class="info_input C_7f" bindtap="clickMsg" data-msg="您已修改过生日，不能再修改！">{{birthday}}</text>
+              </block>
+            </view>
+            
+            <!-- <view class="info_item" wx:elif="{{item === 'area'}}">
+              <text class="info_tit">地区</text>
+              <view class="info_input {{address_info.district_str ? '' : 'C_7f'}}" >
+                <text>{{address_info.province_str ? address_info.province_str : '省/管辖'}}</text>
+                <text>{{address_info.city_str ? '-'+address_info.city_str : '市'}}</text>
+                <text>{{address_info.district_str ? '-'+address_info.district_str : '区'}}</text>
+                <button class="info_input_btn" form-type='submit' catchtap="showAreaPicker"></button>
+              </view>
+            </view>
+            <view class="info_item" wx:elif="{{item === 'address'}}">
+              <text class="info_tit">详细地址</text>
+              <input placeholder="详细地址" class="info_input" data-key="address" bindinput="bindChange" value="{{address}}"></input>
+            </view>
+            <block wx:else>
+              <view 
+              class="info_item" 
+              wx:for="{{customUserFieldList}}" 
+              wx:key="col_index"
+              wx:for-item="col_item"
+              wx:for-index="col_index"
+              wx:if="{{col_item.isRequired == 1 && item == col_item.fieldName}}">
+                <text class="info_tit">{{col_item.fieldTitle}}</text>
+                <input placeholder="{{col_item.fieldTitle}}" class="info_input " data-key="{{col_index}}" data-is-column="true" bindinput="bindChange" value="{{col_item.txtData}}"></input>
+              </view>
+            </block> -->
+          </view>
+        </block>
+        <view wx:if="{{personal_page.show_mobile == 1}}"><!--is_bind_mobile-->
+          <view class="info_item">
+            <text class="info_tit">手机号码</text>
+            <view class="info_input">{{mobile}}</view>
+            <button 
+            class="bind_mobile_btn"  
+            style="{{brand_info.style ? 'background-color:' + 'brand_info.style.bg_color'+';' : '' }}" 
+            form-type='submit'
+            open-type='getPhoneNumber' 
+            bindgetphonenumber="bindPhoneHandle">{{user_info.mobilePhone ? '更换手机号' : '绑定微信手机号'}}</button>
+          </view>
+        </view>
+      </view> 
+    </block>
+
+    <!-- <block>
+      <view class="agree_list" wx:if="{{agreementList.length > 0}}">
+        <text class="agree_item agree_tip C_7f">点击详阅</text>
+        <text class="agree_item font_24" style="{{'color:' + brand_info.style.bg_color}}" wx:for="{{agreementList}}" wx:key="index" data-url="/pages/micro_mall/articles/agreet/agreet?articleId={{item.article_id}}" catchtap="jumpAction">《{{item.article_title}}》</text>
+      </view>
+    </block> -->
+    
+    <button disabled="{{lock || showTips || disabled}}" class="confirm_edit_btn {{showTips?'C_fff':''}}" form-type='submit' style="background-color:{{brand_info.style.bg_color}};" bindtap="confirmEdit">注册</button>
+    <!--省市区组件-->
+    <!-- <areaSelect id="areaSelect"></areaSelect> -->
+  </view>
+  <!--手机授权组件-->
+  <phoneLogin id="phoneLogin" bindloginCallback="loginCallback"></phoneLogin>
+</form>
+<tips_box id="tips_box" showTips="{{showTips}}" msg="{{msg}}"></tips_box>
+
+<!-- <view class="bg {{showTips?'_show':'_hide'}}" catchtap="_noFn" catchtouchmove="_noFn"></view>
+<view class="tips_box {{showTips?'_show':'_hide'}}">
+  <view class="content">
+    {{msg}}
+  </view>
+  <button style="background:{{brand_info.style.bg_color}}" class="btn font_24" catchtap="onTap" data-type="complete">返回个人中心</button>
+</view> -->

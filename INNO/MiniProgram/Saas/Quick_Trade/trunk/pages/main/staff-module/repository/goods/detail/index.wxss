@@ -1,0 +1,158 @@
+/* pages/main/staff-module/repository/goods/detail/index.wxss */
+@import "/common/base/app/default-wxss/index.wxss";
+.detail-page {
+  width: 100vw;
+  height: 100vh;
+  padding: 25rpx;
+}
+.detail-display-container{
+  /* 对应商品详情那里 */
+  /* padding: 40rpx 40rpx 36rpx 40rpx;  */
+  height: 100%;
+  box-sizing: border-box;
+  overflow-y: hidden;
+}
+.detail-display-item{
+  position: relative;
+  transition: all 0.1s ease;
+}
+.ddi-index-icon{
+  position: absolute;
+  left: 0;
+  top: 50%;
+  transform: translate(-200%, -50%);
+}
+.detail-page.longpress .longpress-footer{
+  
+}
+.detail-display-item.longpress{
+  position: absolute;
+  border: 1px solid #42B0CA;
+  border-radius: 4rpx;
+  padding: 8rpx;
+  z-index: 100;
+  height: 40px;
+  overflow: hidden;
+  box-sizing: border-box;
+}
+.detail-display-item.longpress::before{
+  content: "内容";
+  display: block;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: #fff;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #42B0CA;
+  font-size: 24rpx;
+  font-weight: bold;
+  box-shadow: 4rpx #42B0CA ;
+}
+.detail-display-item{
+  width: calc(100vw - 50rpx - 80rpx );
+  transition-property: scale, top, left;
+  transition-duration: 0.1s;
+  transition-timing-function: ease;
+}
+.detail {
+  width: 100%;
+  height: 100%;
+  /* height: calc(100% - 160rpx); */
+  /* padding-bottom: 160rpx; */
+  background-color: #fff;
+}
+
+.textarea-box {
+  border-radius: 20rpx;
+  padding: 40rpx;
+  box-sizing: border-box;
+}
+
+.textarea {
+  width: 100%;
+  min-height: 80rpx;
+  font-size: 32rpx;
+  padding-bottom: 48rpx;
+  margin-bottom: 20rpx;
+  position: relative;
+}
+button.text-save-btn{
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  width: 100rpx;
+  height: 48rpx;
+  background-color: #42B0CA;
+  color: #fff;
+  border-radius: 8rpx;
+  transition: opacity 0.1s ease;
+}
+button.text-save-btn.active{
+  opacity: 0.7;
+}
+
+.placehold-text {
+  font-weight: bold;
+  color: #B2B2B2;
+}
+
+.add-btn {
+  font-size: 28rpx;
+  color: #8B8B8B;
+  width: 100%;
+  height: 163rpx;
+  background: #F1F1F1;
+  transition: opacity 0.1s ease;
+}
+
+.add-btn.active {
+  opacity: 0.7;
+}
+
+.footer,
+.longpress-footer {
+  width: 100%;
+  height: var(--footerClass);
+  position: fixed;
+  left: 0;
+  bottom: 0;
+  background-color: #F2F2F2;
+  padding: 0 25rpx;
+  z-index: 1;
+}
+.delete-icon{
+  width: 100%;
+  height: 110rpx;
+  border-radius: 20rpx;
+  background-color: #F56C6C;
+  color: #fff;
+}
+.longpress-footer view,
+.footer view{
+  transition: opacity 0.1s ease;
+}
+.footer view.active{
+  opacity: 0.7;
+}
+
+.preview-btn {
+  width: 213rpx;
+  height: 110rpx;
+  border-radius: 20rpx;
+  background-color: #fff;
+}
+
+.save-btn {
+  width: 270rpx;
+  height: 110rpx;
+  margin-left: 18rpx;
+  background: #42B0CA;
+  border-radius: 20rpx;
+  color: #fff;
+}
+

@@ -1,0 +1,31 @@
+page{
+    background: #efefef;
+    height: 100%;
+}
+.main{
+    width: 750rpx;
+    height: 100%;
+}
+ 
+.main_top{
+    width: 100%;
+    height: 170rpx;
+    padding-left: 43rpx;
+    display: flex;
+    align-items: center;
+    box-sizing:border-box;
+}
+.user{
+    border: 1px solid #fff;
+    width: 83rpx;
+    height: 83rpx;
+    overflow: hidden;
+    border-radius: 50%;
+    margin-right: 20rpx;
+}
+.main_content{ 
+    width: 750rpx;
+}
+.name{
+    color: #fff;
+}

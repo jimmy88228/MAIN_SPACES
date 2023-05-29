@@ -1,0 +1,13 @@
+<!--pages/main/staff-module/repository/cps/search-box/index.wxml-->
+<!-- <view class="search-box">
+</view> -->
+<scroll-view class="category" scroll-y>
+  <view class="cat-item-box flex-c-c {{item.id == curId ? 'active':''}}" wx:for="{{categoryList}}" wx:key="index" bindtap="onCatSelect" data-id="{{item.id || 0}}">
+    <view class="cat-item text-flow2 bold flex-c-c">
+        {{item.catName}}
+    </view>
+  </view>
+</scroll-view>
+<view class="input-box">
+    <input class="search-input" placeholder-class="placehold-text" placeholder="搜索商品名称" bindconfirm="onConfirm" bindinput="onInput" data-key="name" data-name="searchInfo" />
+</view>

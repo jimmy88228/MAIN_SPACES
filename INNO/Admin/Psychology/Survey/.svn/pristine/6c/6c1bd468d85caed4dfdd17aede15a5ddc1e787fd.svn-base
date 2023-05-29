@@ -1,0 +1,147 @@
+<template>
+    <rewrite-drawer class="edit-admin-drawer" v-model="drawerShow" :width="418">
+        <div class="bold" slot="header">{{title}}</div>
+        <editMember ref="editMemberRef" :isRegister="isRegister" :formData="adminInfo" type="edu_class"></editMember>
+        <div slot="footer">
+            <Button @click="drawerShow = false">{{isRegister ? '返回' : '取消'}}</Button>
+            <Button type="primary" @click="confirm" v-if="!isRegister">确定</Button>
+        </div>
+    </rewrite-drawer>
+    <!-- <Drawer class="page-drawer-area edit-admin-drawer" :transfer="false" :inner="false" :closable="false" v-model="drawerShow" :width="530">
+        <div slot="header">
+            <div class="edit-title bold">{{title}}</div>
+        </div>
+        <editMember ref="editMemberRef" :isRegister="isRegister" :formData="adminInfo" type="edu_class"></editMember>
+        <div style="margin-left: 100px;">
+            <Button @click="drawerShow = false">{{isRegister ? '返回' : '取消'}}</Button>
+            <Button type="primary" @click="confirm" v-if="!isRegister">确定</Button>
+        </div>
+        <Spin fix v-if="pageLoading"></Spin>
+    </Drawer> -->
+</template>
+
+<script>
+import editMember from "@/models/system/member/edit-member/index";
+export default {
+    components: { editMember },
+    props: {
+        title: {
+            type: String,
+            default: "",
+        },
+    },
+    data() {
+        return {
+            drawerShow: false,
+            adminInfo: {
+                admin_name: "",
+                admin_phone: "",
+            },
+            classId: 0,
+            role_id: 0,
+            isRegister: false
+        };
+    },
+    methods: {
+        showModal({ adminId, classId, className, isRegister }) {
+            this.drawerShow = true;
+            this.isRegister = !!isRegister;
+            this.$set(this.adminInfo, "admin_id", adminId || 0);
+            this.$set(this.adminInfo, "class_name", className || "");
+            this.classId = classId || 0;
+            this.getRole();
+            this.loadData(adminId);
+        },
+        getRole(){
+            let _adminRoleData = this._adminRoleData || [];
+            for(let i = 0; i < _adminRoleData.length; i++){
+                let roleData = _adminRoleData[i] || {};
+                let get_role = roleData.get_role || {};
+                if(get_role.role_type == "class_teacher"){
+                    this.role_id = get_role.id || 0;
+                    break;
+                }
+            }
+        },
+        loadData(adminId) {
+            if (!Number(adminId)) {
+                this.adminInfo.admin_name = "";
+                this.adminInfo.admin_phone = "";
+                return Promise.reject();
+            }
+            this.pageLoading = true;
+            return this.$MainApi
+                .classMaintAdminInfo({
+                    data: {
+                        admin_id: adminId,
+                    },
+                })
+                .then((res) => {
+                    if (res.code) {
+                        let data = res.data || {};
+                        this.adminInfo = {
+                            ...this.adminInfo,
+                            ...data
+                        };
+                    }
+                })
+                .finally(() => {
+                    this.pageLoading = false;
+                });
+        },
+        confirm() {
+            this.$refs["editMemberRef"].validate().then(() => {
+                this.updateMemberData();
+            });
+        },
+        updateMemberData() {
+            let adminInfo = this.adminInfo || {};
+            !Number(adminInfo.admin_id) && delete adminInfo.admin_id;
+            let req = Number(adminInfo.admin_id)
+                ? "classMaintAdminUpdate"
+                : "classMaintAdminAdd";
+            this.pageLoading = true;
+            return this.$MainApi[req]({
+                data: {
+                    ...adminInfo,
+                    role_id: this.role_id,
+                    class_id: this.classId,
+                },
+            })
+                .then((res) => {
+                    if (res.code) {
+                        this.$Message.success(res.message || "操作成功");
+                        this.drawerShow = false;
+                        this.$emit("confirm");
+                    } else {
+                        this.$Message.warning(res.message || "操作失败");
+                    }
+                })
+                .finally(() => {
+                    this.pageLoading = false;
+                });
+        },
+    },
+};
+</script>
+
+<style lang="less">
+.edit-admin-drawer {
+    .ivu-drawer-mask {
+        padding-top: 0px;
+        top: 0px;
+        z-index: 1003;
+    }
+    .ivu-drawer-wrap {
+        padding-top: 0px;
+        top: 0px;
+        z-index: 1003;
+        .edit-title {
+            width: 100%;
+            line-height: 40px;
+            font-size: 18px;
+            color: #171717;
+        }
+    }
+}
+</style>
