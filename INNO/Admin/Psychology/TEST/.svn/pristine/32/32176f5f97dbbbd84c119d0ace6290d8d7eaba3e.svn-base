@@ -1,0 +1,548 @@
+<template>
+    <div class="psychic-detail">
+        <div class="act-report-area bg-page area-box" v-if="isTotal">
+            <div class="act-report-title">{{modelName}}</div>
+            <div class="act-report-list flex-a-c">
+                <div class="report-item">
+                    <p class="item-point">{{modeRecently.coefficient_points}}</p>
+                    <p class="item-tip w-nowrap">最近一次测评结果</p>
+                    <p class="item-tip w-nowrap">{{modeRecently.complete_time}}</p>
+                </div>
+                <div class="report-item report-range">
+                    <p class="item-point">{{modeRecently.range_name || '--'}}</p>
+                    <p class="item-tip w-nowrap">最近一次测评结果</p>
+                    <p class="item-tip w-nowrap">{{modeRecently.complete_time}}</p>
+                </div>
+                <div class="report-item">
+                    <p class="item-point">{{modeRecently.total_count || 0}}</p>
+                    <p class="item-tip w-nowrap">参与测评次数</p>
+                </div>
+            </div>
+        </div>
+        <div class="report-dimension-area" :class="{ 'more-dimension':  ruleList.length > 7}" v-else>
+            <div class="report-dimension-l">
+                <div class="report-d-title w-nowrap">量表测评状况</div>
+                <div class="text-c report-d-content">
+                    <div>
+                        <p class="item-point">{{modeRecently.total_count || 0}}</p>
+                        <p class="item-tip w-nowrap">参与测评次数</p>
+                    </div>
+                </div>
+            </div>
+            <div class="report-dimension-r">
+                <div class="report-d-r-header">
+                    <div class="report-h-content">
+                        <div class="report-d-title w-nowrap">测评维度得分</div>
+                        <div class="item-tip flex report-h-txt">
+                            <p class="m-r-15 flex report-h-txt-name">
+                                <span class="w-nowrap">量表：</span>
+                                <span class="inline-b">{{modelName}}</span>
+                            </p>
+                            <p class="w-nowrap">时间：{{modeRecently.complete_time}}</p>
+                        </div>
+                    </div>
+                    <div class="report-h-operate" v-if="ruleList.length > 7">
+                        <span class="report-operate-btn" @click="showMoreDimension">显示全部</span>
+                    </div>
+                </div>
+                <div class="report-d-r-content">
+                    <div class="report-d-item" v-for="(item, index) in shortRuleList" :key="index">
+                        <div class="item-point w-nowrap">{{item.coefficient_points}}</div>
+                        <p class="item-tip w-nowrap">维度得分：{{item.rule_name}}</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="bg-page area-box survey-psychic-chart">
+            <div class="chart-title">量表结果心理走势图</div>
+            <div class="chart-area" id="psychic-chart">
+
+            </div>
+            <div class="chart-tip" v-if="!isTotal">（点击维度加入对比）</div>
+        </div>
+
+        <div class="bg-page area-box">
+            <div style="padding: 20px 0px;font-size:18px;">量表测评记录</div>
+            <Table ref="myTable" :columns="columns" :data="list" border :loading="tableLoading">
+                <template slot="model_name" slot-scope="{ row, index }">
+                    {{modelName}}
+                </template>
+                <template slot="coefficient_points" slot-scope="{ row, index }">
+                    {{row.coefficient_points || '--'}}
+                </template>
+                <template slot="survey_result" slot-scope="{ row, index }">
+                    {{(!row.survey_result || row.survey_result == '-')  ? '--' : row.survey_result}}
+                </template>
+                <template slot="handle" slot-scope="{ row, index }">
+                    <div class="operate-area" :class="{'invalid': row.state != 3}">
+                        <a class="operate" v-hasAction="[row.state > 1]" @click="checkReport(row)">查看报告</a>
+                        <a class="operate" v-hasAction="[row.state > 1]" @click="checkAnswer(row)">查看答案</a>
+                    </div>
+                </template>
+            </Table>
+            <rewrite-page :total="total" :current="page" :page-size="pageSize" :page-size-opts="pageSizeOpts" @on-change="e=>loadData(e)" @on-page-size-change="handlePageSizeChange" show-sizer show-elevator show-total transfer></rewrite-page>
+        </div>
+        <moreReportDimension ref="moreReportDimensionRef"></moreReportDimension>
+    </div>
+</template>
+
+<script>
+import ListMixin from "@/helper/mixin/list-mixin";
+import mixins from "./mixins";
+// import echarts from "echarts";
+import * as echarts from 'echarts'; // 5.0以上版本
+import moreReportDimension from "./components/more-report-dimension.vue";
+export default {
+    name: "psychic-detail",
+    mixins: [ListMixin, mixins],
+    components: {
+        moreReportDimension
+    },
+    data() {
+        return {
+            modelName: "",
+            actReport: [],
+            modeRecently: {},
+            studentTrend: [],
+            psychicChart: null,
+            isTotal: true, // 是否总分
+            ruleList: [],
+            shortRuleList: [] // 只展示最多8个数据
+        };
+    },
+    methods: {
+        getPsychicDetail() {
+            let modelId = Number(this.pageQuery.modelId) || 0;
+            let userId = this.pageQuery.userId;
+            this.$store.commit("setPageLoading", true);
+            this.$MainApi
+                .psychologyDetails({
+                    data: {
+                        model_id: modelId,
+                        user_id: userId,
+                        pageSize: 20,
+                        page: 1,
+                    },
+		    other: {
+                        isErrorMsg: true
+                    }
+                })
+                .then((res) => {
+                    if (res.code) {
+                        let data = res.data || {};
+                        this.modeRecently = data.student_mode_recently[0] || {};
+                        this.studentTrend = data.student_trend || [];
+                        this.modelName = data.model_name;
+                        this.isTotal = !data.not_total;
+                        this.ruleList = data.ruleList || [];
+                        this.shortRuleList = data.ruleList.slice(0, 8) || [];
+                        this.initChartData(this.studentTrend);
+                        // this.initChart(this.studentTrend);
+                    }
+                })
+                .finally(() => {
+                    this.$store.commit("setPageLoading", false);
+                });
+        },
+        onLoadData(page, extraData) {
+            let modelId = Number(this.pageQuery.modelId) || 0;
+            let userId = this.pageQuery.userId;
+            return this.$MainApi
+                .psychologyDetailsActivity({
+                    data: {
+                        model_id: modelId,
+                        user_id: userId,
+                        ...extraData
+                    },
+		    other: {
+                        isErrorMsg: true
+                    }
+                })
+                .then((res) => {
+                    if (res.code) {
+                        let data = res.data || {};
+                        this.data = {
+                            total: data.total,
+                            list: data.items,
+                        };
+                    }
+                })
+        },
+        initChartData(data){
+            let xName = [], series = [],legendData = [];
+            if(this.isTotal){ // 总分
+                let viewData = [];
+                for(let i = 0; i < data.length; i++){
+                    xName.unshift(data[i].complete_time || "--");
+                    viewData.unshift(data[i].coefficient_points || "--");
+                }
+                series = [{
+                    name: "量表心理走势",
+                    type: "line",
+                    itemStyle: {
+                        color: "#14B0AB",
+                        borderWidth: 10,
+                    },
+                    lineStyle: {
+                        color: "#14B0AB",
+                    },
+                    data: viewData
+                }]
+            } else { // 
+                // x轴时间段
+                for(let i = 0; i < data.length; i++){
+                    let items = data[i] || [];
+                    if(!items[0]){ continue; }
+                    for(let j = 0; j < items.length; j++){
+                        if(items[j].complete_time){
+                            xName.push(items[j].complete_time);
+                        }
+                    }
+                    if(xName.length){
+                        break;
+                    }
+                }
+                // 根据时间排序
+                // xName.sort((a,b)=>{ return new Date(a).getTime() - new Date(b).getTime() });
+                // 根据x轴时间段插数据
+                let randomColor = ['#5571C3', '#ACD898','#D0BFA6','#F9C761','#E9EA7B','#EC6468','#76C0DD','#54AA82','#FA8258','#9960B2','#E87BCA', '#229329', '#0F1D2B', '#226FAF', '#B9B766'];
+                for(let i = 0; i < data.length; i++){
+                    let items = data[i] || [];
+                    if(!items[0]){ continue; }
+                    let viewData = [];
+                    for(let j = 0; j < items.length; j++){
+                        // let nameIndex =  xName.indexOf(items[j].complete_time);
+                        // viewData[nameIndex] = items[j].coefficient_points
+                        viewData.push(items[j].coefficient_points || '--');
+                    }
+                    let name = items[0].rule_name;
+                    series.push({
+                        name: name,
+                        type: "line",
+                        itemStyle: {
+                            color: randomColor[i],
+                            borderWidth: 10,
+                        },
+                        lineStyle: {
+                            color: randomColor[i],
+                        },
+                        data: viewData
+                    })
+                    legendData.push(name)
+                }
+            }
+            this.initChart(xName, series, legendData);
+        },
+        initChart(xName, series, legendData) {
+            if (!this.psychicChart) {
+                this.psychicChart =
+                    this.psychicChart ||
+                    echarts.init(document.getElementById("psychic-chart"));
+            }
+            let option = {
+                tooltip: {
+                    trigger: "item",
+                },
+                grid: {
+                    top: "5%",
+                    left: "0%",
+                    right: "0%",
+                    bottom: "5%",
+                    containLabel: true,
+                },
+                xAxis: {
+                    data: xName,
+                    axisLine: {
+                        show: false,
+                        lineStyle: {
+                            color: "#ACACAC" 
+                        }
+                    },
+                    axisLabel: {
+                        color: "#ACACAC",
+                    },
+                    z: 10,
+                },
+                yAxis: [
+                    {
+                        show: true,
+                        type: "value",
+                        name: "量表心理走势",
+                        axisLine: {
+                            show: false,
+                            lineStyle: {
+                                color: "#ACACAC" 
+                            }
+                        },
+                        axisLabel: {
+                            show: true,
+                            lineStyle: {
+                                color: "#ACACAC" 
+                            }
+                        },
+                        splitLine: {
+                            show: true,
+                            lineStyle: {
+                                color: "#ddd",
+                                width: 1,
+                                type: "dotted",
+                            },
+                        },
+                    },
+                ],
+                series: series,
+            };
+            if(legendData.length){
+                option.legend = {
+                    data: legendData,
+                    // icon: 'path://M 50 10 A 40 40 0 1 0 50 90 A 40 40 0 1 0 50 10 Z M 50 30 A 20 20 0 1 1 50 70 A 20 20 0 1 1 50 30 Z',
+                    bottom: '1%',
+                    textStyle: {
+                        fontSize: 13,
+                        padding: [10, 0, 3, 0]
+                    }
+                }
+                option.grid.bottom = '15%'
+            }
+            this.psychicChart.setOption(option);
+            window.onresize = this.psychicChart.resize
+        },
+        checkFinish(row,text){
+            //记录状态(0:未填写;1:填写中;2:填写完未计分;3:已计算完得分)
+            if(row.state == 3){
+                return true
+            } else {
+                this.$Message.warning( text + "生成中...");
+                return false;
+            }
+        },
+        checkReport(row) {
+            if(!this.checkFinish(row, '报告')){
+                return;
+            }
+            this.$router.push({
+                name: this.pageQuery.type == "earlyWarn" ? "earlyWarnPsychicFilesReport" : "psychicFilesReport",
+                query: {
+                    modelId: Number(this.pageQuery.modelId),
+                    recordId: row.record_id + "",
+                    type: this.pageQuery.type || 'psychic',
+                    modelTime: this.modeRecently.complete_time,
+                    userId: this.pageQuery.userId + ""
+                }
+            })
+        },
+        checkAnswer(row) {
+            if(!this.checkFinish(row, '答案')){
+                return;
+            }
+            this.$router.push({
+                name: this.pageQuery.type == 'earlyWarn' ? "earlyWarnPsychicFilesAnswer" : "psychicFilesAnswer",
+                query: {
+                    modelName: this.modelName,
+                    modelId: Number(this.pageQuery.modelId) || 0,
+                    recordId: row.record_id + "",
+                    type: this.pageQuery.type || 'psychic',
+                }
+            })
+        },
+        showMoreDimension(){
+            this.$refs["moreReportDimensionRef"] && this.$refs["moreReportDimensionRef"].showModal({ruleList: this.ruleList});
+        }
+    },
+    mounted() {
+        this.getPsychicDetail();
+        this.loadData();
+    },
+};
+</script>
+
+<style lang="less" scoped>
+.psychic-detail {
+    .act-report-area {
+    }
+    .act-report-title {
+        font-family: PingFangSC-Medium;
+        font-size: 18px;
+        color: #333333;
+    }
+    .act-report-list {
+        margin-top: 30px;
+        margin-bottom: 15px;
+        align-items: flex-start;
+    }
+    .report-item {
+        text-align: center;
+        flex-shrink: 0;
+    }
+    .report-range{
+        flex: 1;
+    }
+    .item-point {
+        font-family: PingFangSC-Medium;
+        font-size: 36px;
+        color: #13b1a6;
+        letter-spacing: 1px;
+        line-height: 56px;
+        min-height: 56px;
+        margin: 3px 0px 6px 0px;
+        padding: 0px 10%;
+        // font-weight: 600;
+    }
+    .item-tip {
+        margin-bottom: 3px;
+        font-size: 14px;
+        font-family: PingFangSC-Regular, PingFang SC;
+        font-weight: 400;
+        color: #B2B2B2;
+        line-height: 25px;
+    }
+    .report-dimension-area{
+        display: flex;
+        width: 100%;
+        margin-bottom: 15px;
+    }
+    .report-dimension-l{
+        background: #FFFFFF;
+        border-radius: 10px;
+        margin-right: 15px;
+        padding: 25px 30px;
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+    }
+    .report-d-content{
+        flex: 1;
+        margin-bottom: 20px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+    .report-dimension-r{
+        background: #FFFFFF;
+        border-radius: 10px;
+        padding: 25px 10px 25px 30px;
+        min-width: 50%;
+        display: flex;
+        flex-direction: column;
+    }
+    
+    .report-d-title{
+        font-size: 18px;
+        font-family: PingFangSC-Medium, PingFang SC;
+        font-weight: 500;
+        color: #333333;
+        line-height: 25px;
+        margin-bottom: 30px;
+    }
+    .report-dimension-r .report-d-title{
+        margin-bottom: 0px;
+    }
+    .report-dimension-r .item-point{
+        padding: 0px;
+    }
+    .report-d-r-content{
+        width:100%;
+        flex: 1;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+        flex-wrap: wrap;
+    }
+    .report-d-item{
+        // width: 40%;
+        padding: 0px 20px;
+        margin-top: 10px;
+        margin-bottom: 20px;
+        text-align: center;
+    }
+    .report-d-r-header{
+        display: flex;
+    }
+    .report-h-content{
+        width: 100%;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 30px;
+    }
+    .report-operate-btn{
+        display: inline-block;
+        width: 86px;
+        height: 30px;
+        line-height: 30px;
+        background: #F7F7F7;
+        border-radius: 50px;
+        font-size: 14px;
+        font-family: PingFangSC-Regular, PingFang SC;
+        font-weight: 400;
+        color: #7F7F7F;
+        text-align: center;
+        cursor: pointer;
+    }
+    .report-h-txt{
+        margin-left: 20px;
+    }
+    .report-h-txt-name{
+        max-width: 600px;
+    }
+    // 多维度模式样式
+    .more-dimension{
+        
+        .report-dimension-r{
+            flex-direction: unset;
+        }
+        .report-d-r-header{
+            flex-direction: column;
+            padding-right: 10px;
+        }
+        .report-h-content{
+            display: block;
+            flex: 1;
+        }
+        .report-h-txt{
+            flex: 1;
+            display: block;
+            margin-left: 0px;
+        }
+        .report-h-txt-name{
+            max-width: 300px;
+        }
+        .report-d-item{
+            min-width: 25%;
+        }
+        .report-dimension-r .report-d-title{
+            margin-bottom: 15px;
+        }
+    }
+
+    .survey-psychic-chart {
+        .chart-title {
+            margin-bottom: 30px;
+            font-family: PingFangSC-Regular;
+            font-size: 18px;
+            color: #333;
+        }
+        .chart-area {
+            width: 100%;
+            height: 300px;
+        }
+        .chart-tip{
+            font-size: 12px;
+            font-family: PingFangSC-Regular, PingFang SC;
+            font-weight: 400;
+            color: #B2B2B2;
+            line-height: 18px;
+            text-align: center;
+            margin-top: 3px;
+            margin-bottom: -5px;
+        }
+    }
+    .area-box {
+        border-radius: 10px;
+        overflow: hidden;
+        margin-bottom: 20px;
+        padding: 30px;
+    }
+}
+</style>

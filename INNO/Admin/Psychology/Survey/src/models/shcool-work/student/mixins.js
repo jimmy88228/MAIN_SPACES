@@ -2,11 +2,11 @@ export default{
   data(){
     return {
       columns: [
-        {
-          type: 'selection',
-          width: 60,
-          align: 'center'
-        },
+        // {
+        //   type: 'selection',
+        //   width: 60,
+        //   align: 'center'
+        // },
         {
           title: "姓名",
           key: "student_name",
@@ -20,28 +20,25 @@ export default{
         {
           title: "性别",
           key: "student_sex_str",
-          minWidth: 100
-        },
-        {
-          title: "学年",
-          key: "school_year",
-          minWidth: 100,
-        },
-        {
-          title: "年级",
-          key: "class_grade",
-          minWidth: 120,
-        },
-        {
-          title: "班别",
-          key: "class_class",
-          minWidth: 120,
+          align: 'center',
+          width: 70
         },
         {
           title: "校区",
           key: "campus",
+          minWidth: 120,
+        },
+        {
+          title: "所在年级",
+          slot:"class_grade",
           minWidth: 150,
         },
+        {
+          title: "所在班级",
+          key: "class_class",
+          minWidth: 120,
+        },
+        
         {
           title: "操作",
           slot: "handle",

@@ -1,13 +1,13 @@
 <template>
     <hold-layout :isFull="true" class="curriculum-task-list">
         <searchForm @search="loadData" @removeIds="batchRemoveItem()" :searchForm="searchForm" @create="editCurriculum()"></searchForm>
-        <Table ref="myTable" class="full-table" :columns="columns" :data="list" border :loading="tableLoading">
+        <rewrite-table ref="myTable" class="full-table" :columns="columns" :data="list" :loading="tableLoading">
             <template slot="name" slot-scope="{ row }">
                 <div class="curriculum-info flex-s-c">
                    <div class="curriculum-img-area">
                        <img class="curriculum-img" :src="row.logo"/>
                    </div>
-                   <div class="curriculum-name text-flow">{{row.activity_name}}</div>
+                   <div class="curriculum-name text-flow2">{{row.activity_name}}</div>
                 </div>
             </template>
             <template slot="relate_class" slot-scope="{index, row }">
@@ -15,9 +15,6 @@
                     <p>共关联{{row.get_ead_count}}个班级</p>
                 </div>
                 <div v-else> -- </div>
-                <!-- <p class="operate-line" v-if="row.handle && row.handle.class">
-                    <a class="operate text-underline" @click="relateClass(index, row)">[关联班级]</a>
-                </p> -->
             </template>
             <template slot="limit_time" slot-scope="{ row }">
                 <div >
@@ -26,11 +23,18 @@
                         <span>-</span>
                         <p>{{row.end_time}}</p>
                     </template>
-                    <template v-else>不限制</template>
+                    <template v-else>无限期</template>
                 </div>
             </template>
+            <template slot="structure" slot-scope="{ row }">
+                {{(row.get_structure && row.get_structure.structure_name) || '--'}}
+            </template>
+            <template slot="structure_type_str" slot-scope="{ row }">
+                {{row.structure_type_str || '--'}}
+            </template>
             <template slot="page_link" slot-scope="{ row }">
-                <a class="operate" @click="createCode(row)" v-if="_structureType == 'edu_school'">生成二维码</a>
+                <a class="operate" @click="showOrgn(row)">课程二维码</a>
+                <!-- <a class="operate" @click="createCode(row)" v-if="_structureLimit(['edu_school', 'edu_class'])">生成二维码</a>
                 &nbsp;
                 <rewrite-tooltip theme="light" >
                     <a class="operate" slot="_tip">生成链接</a>
@@ -38,7 +42,7 @@
                         <div class="w-break m-r-10" style="width:auto;">{{row.pageLink}}</div>
                         <a @click="createLink(row)">复制</a>
                     </div>
-                </rewrite-tooltip>
+                </rewrite-tooltip> -->
             </template>
             <template slot="state" slot-scope="{ row }">
                 <Tooltip placement="top" :disabled="row.handle && row.handle.edit" content="无编辑权限">
@@ -57,7 +61,7 @@
                     </p>
                 </div>
             </template>
-        </Table>
+        </rewrite-table>
         <rewrite-page slot="footer" :total="total" :current="page" :page-size="pageSize" :page-size-opts="pageSizeOpts" @on-change="e=>loadData(e)" @on-page-size-change="handlePageSizeChange" show-sizer show-elevator show-total transfer></rewrite-page>
     </hold-layout>
 </template>
@@ -81,9 +85,9 @@ export default {
     computed: {},
     methods: {
         init(){
-            if(this._structureType == 'edu_area' || this._structureType == 'edu_street'){
+            if(!this._structureLimit(["edu_school", "edu_class"])){
                this.columns = this.columns.filter((item)=>{
-                    return item.slot != 'relate_class'  //&& item.slot != 'page_link'
+                    return item.slot != 'relate_class'
                 }) 
             }
         },
@@ -104,8 +108,8 @@ export default {
                   for (let i = 0; i < items.length; i++) {
                     items[i].stateLoading = false;
                     items[i].pageLink = "/" + this.pageLink + "?courseActivityId=" + items[i].id;
-                    if(this._structureType == 'edu_school'){
-                        items[i].pageLink += "&schoolId=" + this._structureId
+                    if(this._structureLimit(['edu_school', 'edu_class'])){
+                        items[i].pageLink += "&schoolId=" + this._getReqStructureId
                     }
                 }
                   this.data = {
@@ -115,38 +119,79 @@ export default {
               }
           });
         },
-        createCode(row){
-            this.$UIModule({
-                mode: "code-view",
-                props: {
-                    codeTip: `<p class="big-tip">${row.activity_name || ""}</p>`
-                },
-                options: {
-                    path: this.pageLink,
-                    listParams: {
-                        structure_id: row.structure_id,
-                        structure_type: row.structure_type
-                    },
-                    params: {
-                        courseActivityId: row.id,
-                        showTeacher: true,
-                        schoolId: this._structureType == 'edu_school' ? this._structureId : 0
-                    },
-                    codeId: `courseActivity:${row.id}`
+        getOffiaccountInfo(structureId){
+            return this.$MainApi.getOffiaccountInfo({
+                data: {
+                    structure_id: structureId
                 }
-            });
+            }).then((res)=>{
+                if(res.code){
+                    let data = res.data || {};
+                    return data.info || {}
+                }
+                return Promise.reject();
+            })
         },
-        createLink(row) {
-            this.$utils.copyText(row.pageLink);
+        showOrgn(row) {
+            let get_structure = row.get_structure || {};
+            let offiaccountInfo = {};
+            this.getOffiaccountInfo(get_structure.id).then((info)=>{
+                offiaccountInfo = info;
+            }).finally(()=>{
+                this.$UIModule({
+                    mode: "organize-code-view",
+                    options: {
+                        offiaccountInfo: offiaccountInfo,
+                        info: row,
+                        type:"studyTask"
+                    }
+                });
+            })
         },
+        // createCode(row){
+        //     this.$UIModule({
+        //         mode: "code-view",
+        //         props: {
+        //             codeTip: `<p class="big-tip">${row.activity_name || ""}</p>`
+        //         },
+        //         options: {
+        //             path: this.pageLink,
+        //             listParams: {
+        //                 structure_id: row.structure_id,
+        //                 structure_type: row.structure_type
+        //             },
+        //             params: {
+        //                 courseActivityId: row.id,
+        //                 showTeacher: true,
+        //                 schoolId: this._structureLimit(['edu_school', 'edu_class']) ? this._getReqStructureId : 0
+        //             },
+        //             codeId: `courseActivity:${row.id}`
+        //         }
+        //     });
+        // },
+        // createLink(row) {
+        //     this.$utils.copyText(row.pageLink);
+        // },
         getSituation(row) {
-            this.$router.push({
-                name: "curriculumTaskSituation",
-                query: {
-                    taskId: row.id || 0,
-                    courseId: row.course_id
-                },
-            });
+            if(this._structureLimit(['edu_customer', 'edu_area', 'edu_street'])){
+                this.$router.push({
+                    name: "curriculumTaskSituationSchool",
+                    query: {
+                        taskId: row.id || 0,
+                        courseId: row.course_id,
+                    },
+                });
+            } else {
+                this.$router.push({
+                    name: "curriculumTaskSituation",
+                    query: {
+                        taskId: row.id || 0,
+                        courseId: row.course_id,
+                        schoolId: this._getReqStructureId
+                    },
+                });
+            }
+            
         },
         getRelateClass(activityid){
             console.log("activityid", activityid)
@@ -269,70 +314,40 @@ export default {
                     }
                 });
         },
-        removeItem(id, index) {
-            this.batchRemoveActReq(id).then(() => {
-                this.delItem(index);
-            });
-        },
-        batchRemoveActReq(ids) {
-            if (!(Number(ids) > 0)) {
-                this.$Message.warning("请勾选删除项！");
-                return Promise.reject();
-            }
-            this.tableLoading = true;
-            return this.$MainApi
-                .peopleRemove({
-                    data: {
-                        admin_id: ids,
-                    },
-                })
-                .then((res) => {
-                    if (res.code) {
-                        this.$Message.success(res.message || "删除成功");
-                        return Promise.resolve();
-                    } else {
-                        this.$Message.warning(res.message || "删除失败");
-                        return Promise.reject();
-                    }
-                })
-                .finally(() => {
-                    this.tableLoading = false;
-                });
-        },
-        removeItem(id, index){
-          this.batchRemoveActReq([id]).then(()=>{
-            this.delItem(index);
-          })
-        },
-        batchRemoveItem(){
-          this.batchRemoveActReq(this.ids).then(()=>{
-            this.delItems(this.ids);
-          })
-        },
-        batchRemoveActReq(ids) {
-            if (ids.length == 0 || !ids[0]) {
-                this.$Message.warning("请勾选删除项！");
-                return Promise.reject(); 
-            }
-            this.tableLoading = true;
-            return this.$MainApi.appraisalActRemove({
-                data: {
-                    ids: ids,
-                },
-            })
-            .then((res) => {
-                if (res.code) {
-                    this.$Message.success(res.message || "删除成功");
-                    return Promise.resolve();
-                } else {
-                    this.$Message.warning(res.message || "删除失败");
-                    return Promise.reject();
-                }
-            })
-            .finally(() => {
-                this.tableLoading = false;
-            });
-        },
+        // removeItem(id, index){
+        //   this.batchRemoveActReq([id]).then(()=>{
+        //     this.delItem(index);
+        //   })
+        // },
+        // batchRemoveItem(){
+        //   this.batchRemoveActReq(this.ids).then(()=>{
+        //     this.delItems(this.ids);
+        //   })
+        // },
+        // batchRemoveActReq(ids) {
+        //     if (ids.length == 0 || !ids[0]) {
+        //         this.$Message.warning("请勾选删除项！");
+        //         return Promise.reject(); 
+        //     }
+        //     this.tableLoading = true;
+        //     return this.$MainApi.appraisalActRemove({
+        //         data: {
+        //             ids: ids,
+        //         },
+        //     })
+        //     .then((res) => {
+        //         if (res.code) {
+        //             this.$Message.success(res.message || "删除成功");
+        //             return Promise.resolve();
+        //         } else {
+        //             this.$Message.warning(res.message || "删除失败");
+        //             return Promise.reject();
+        //         }
+        //     })
+        //     .finally(() => {
+        //         this.tableLoading = false;
+        //     });
+        // },
     },
     mounted() {
         this.init();

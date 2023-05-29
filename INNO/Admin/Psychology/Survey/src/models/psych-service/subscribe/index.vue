@@ -1,7 +1,7 @@
 <template>
   <hold-layout :isFull="true" class="subscribe-page-layout">
     <searchForm :searchForm="searchForm" @search="loadData()"></searchForm>
-    <Table class="no-remove full-table" ref="myTable" :columns="columns" :data="list" border :loading="tableLoading" @on-selection-change="selectDataEvent">
+    <rewrite-table class="no-remove full-table" ref="myTable" :columns="columns" :data="list" :loading="tableLoading" @on-selection-change="selectDataEvent">
       <template slot="request" slot-scope="{ row }">
         <div class="request">
           <p class="request-name m-b-5">{{row.petitioner || '--'}}</p>
@@ -46,7 +46,7 @@
         </div>
       </template>
 
-    </Table>
+    </rewrite-table>
     <rewrite-page slot="footer" :total="total" :current="page" :page-size="pageSize" :page-size-opts="pageSizeOpts" @on-change="e=>loadData(e)" @on-page-size-change="handlePageSizeChange" show-sizer show-elevator show-total transfer></rewrite-page>
     <checkSubscribe ref="checkSubscribeRef" title="预约信息" @handle="setHandle"></checkSubscribe>
     <!---->

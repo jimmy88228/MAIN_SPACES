@@ -17,7 +17,7 @@
                       </div>
                       <div class="report-item-r text-c" @click="getActOverview(item)">
                         <Icon class="item-r-arrow" color="#1E1E60" :size="26" type="md-arrow-round-forward" />
-                        <p class="m-t-10">活动概况</p>
+                        <p class="m-t-10 w-nowrap">活动概况</p>
                       </div>
                     </div>
                     <div class="p-t-10 p-b-10 m-t-10" v-if="hasMore">
@@ -55,7 +55,7 @@
 <script>
 import * as echarts from 'echarts'; // 5.0版本以上
 // import echarts from "echarts";
-import dataSort from "./data-sort.js";
+import { GradeOrder } from "./data-sort.js";
 export default {
   props: {
     searchForm: {
@@ -156,7 +156,7 @@ export default {
       // 根据中文排序年级
       try {
         xName.sort((a, b)=>{
-          return dataSort.gradeOrder.indexOf(a) - dataSort.gradeOrder.indexOf(b); // 比较中文排序
+          return GradeOrder.indexOf(a) - GradeOrder.indexOf(b); // 比较中文排序
         })
       } catch (error) {}
       // 通过年级的排序，对应插入数据
@@ -199,6 +199,8 @@ export default {
       this.initChart(chartData, maxY, xName);
     },
     initChart(data, maxY, xName) {
+      // 先清空
+      this.averageChart && this.averageChart.clear();
       maxY = maxY || 50;
       maxY = this.formatInt(maxY, true);
       if (!this.averageChart) {

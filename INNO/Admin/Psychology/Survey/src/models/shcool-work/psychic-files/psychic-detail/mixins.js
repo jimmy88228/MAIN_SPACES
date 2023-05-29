@@ -30,12 +30,12 @@ export default{
         {
           title: "总分",
           minWidth: 100,
-          key: "coefficient_points"
+          slot: "coefficient_points"
         },
         {
           title: "测评结果",
           minWidth: 150,
-          key: "survey_result"
+          slot: "survey_result"
         },
         {
           title: "操作",

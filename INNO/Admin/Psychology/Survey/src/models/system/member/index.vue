@@ -1,22 +1,22 @@
 <template>
     <hold-layout :isFull="true">
         <searchForm :searchForm="searchForm" @search="loadData" @addAdmin="addMemberEvent"></searchForm>
-        <Table ref="myTable" class="full-table" :columns="columns" :data="list" border :loading="tableLoading">
+        <rewrite-table ref="myTable" class="full-table" :columns="columns" :data="list" :loading="tableLoading">
             <template slot="state" slot-scope="{ row }">
                 <i-switch v-model="row.admin_state" size="large" :loading="row.stateLoading" :true-value="1" :false-value="0" :before-change="()=>{return beforeChangeState(index, row)}" v-hasAction="'people_management_state'">
                     <span slot="open">正常</span>
-                    <span slot="close">关闭</span>
+                     <span slot="close">关闭</span>
                 </i-switch>
             </template>
             <template slot="structure" slot-scope="{ row }">
-                {{row.structure_type == 'edu_class' ? (row.getpname && row.getpname.p_name) : row.structure_name}}
+                {{row.structure_type == 'edu_class' ? (row.getpname && row.getpname.p_name) : row.p_structure_name ? row.p_structure_name + ' / ' + row.structure_name : row.structure_name}}
             </template>
             <template slot="get_class" slot-scope="{ row }">
                 {{row.get_class && (row.get_class.grade + row.get_class.class)}}
             </template>
             <template slot="handle" slot-scope="{ row }">
                 <div class="operate-area">
-                    <a class="operate" @click="editMemberEvent(row)" v-hasAction="'people_management_edit'">编辑</a>
+                    <a class="operate" @click="editMemberEvent(row)" v-hasAction="[row.handle && row.handle.edit]">编辑</a>
                     <a class="operate" @click="resetPWD(row)">重置密码</a>
                     <Poptip confirm title="确定删除改人员吗？" placement="left" @on-ok="removeItem(row.admin_id, index)" v-hasAction="'people_management_remove'">
                         <a class="operate">删除</a>
@@ -24,7 +24,7 @@
 
                 </div>
             </template>
-        </Table>
+        </rewrite-table>
         <rewrite-page slot="footer" :total="total" :current="page" :page-size="pageSize" :page-size-opts="pageSizeOpts" @on-change="e=>loadData(e)" @on-page-size-change="handlePageSizeChange" show-sizer show-elevator show-total transfer></rewrite-page>
         <addMember ref="addMemberRef" @confirm="handleUpdate"></addMember>
         <editMember ref="editMemberRef" :title="editTitle" @confirm="handleUpdate"></editMember>
@@ -56,6 +56,7 @@ export default {
                 campus_id: 0,
                 class_id: 0,
                 searchq: "",
+                role_type: "",
                 state: -1,
             },
             editTitle: "",
@@ -64,25 +65,28 @@ export default {
     methods: {
         init(){
             let _columns = []
-            if(this._structureType == "edu_area" || this._structureType == "edu_street"){
-                this.columns.map((item)=>{
-                    if(item.slot != "get_class"){
-                        _columns.push(item);
-                    }
-                })
-                this.columns = _columns || [];
-            } else if(this._structureType == "edu_school"){
-                this.columns.map((item)=>{
-                    if(item.slot != "get_class" && item.slot != "structure"){
-                        _columns.push(item);
-                    }
-                })
-                this.columns = _columns || [];
-            }
+            let hasClass = this._structureType == "edu_class";
+            let hasStructure = !this._structureLimit(['edu_school', 'edu_class']);
+            this.columns.map((item)=>{
+                let isAdd = false;
+                if(item.slot == "get_class" && hasClass){
+                    isAdd = true;
+                } else if(item.slot == "structure" && hasStructure){
+                    isAdd = true;
+                } else if(item.slot != "get_class" && item.slot != "structure"){
+                    isAdd = true;
+                }
+                if(isAdd){
+                    _columns.push(item)
+                }
+            })
+            this.columns = _columns || [];
         },
         onLoadData(page, extraData) {
             let searchForm = JSON.parse(JSON.stringify(this.searchForm));
-            if(this._structureType != "edu_area" && this._structureType != "edu_street") delete searchForm.school_id;
+            if(!this._structureLimit(['edu_area', 'edu_street'])){
+                delete searchForm.school_id;
+            } 
             return this.$MainApi
                 .peopleList({
                     data: {
@@ -106,7 +110,7 @@ export default {
         },
         addMemberEvent() {
             this.editTitle = "新增管理人员";
-            if(this._structureType == 'edu_school'){
+            if(this._structureLimit(['edu_school', 'edu_class'])){
                 this.$refs["addMemberRef"] &&
                 this.$refs["addMemberRef"].showModal();
             } else {

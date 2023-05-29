@@ -1,7 +1,7 @@
 <template>
     <hold-layout :isFull="true">
         <searchForm :searchForm="searchForm" @search="loadData" @create="createStreet" @removeIds="batchRemoveItem()"></searchForm>
-        <Table ref="myTable" class="full-table" :columns="columns" :data="list" border :loading="tableLoading" @on-selection-change="selectDataEvent">
+        <rewrite-table ref="myTable" class="full-table" :columns="columns" :data="list" :loading="tableLoading" @on-selection-change="selectDataEvent">
             <template slot="contact_way" slot-scope="{ row }">
                 <div class="p-5">
                     <p>{{row.contact}}</p>
@@ -24,10 +24,22 @@
                     <a class="operate" @click="bindAdmin(row, index)" v-hasAction="'street_maintenance_bindadmin'">绑定管理员</a>
                 </div>
             </template>
-        </Table>
+        </rewrite-table>
         <rewrite-page slot="footer" :total="total" :current="page" :page-size="pageSize" :page-size-opts="pageSizeOpts" @on-change="e=>loadData(e)" @on-page-size-change="handlePageSizeChange" show-sizer show-elevator show-total transfer></rewrite-page>
         <editStreet ref="editStreetRef" :title="editStreetTitle" @confirm="handleUpdate"></editStreet>
         <bindAdmin ref="bindAdminRef"></bindAdmin>
+        <batchImport ref="batchImportRef" 
+        :beforeUploadCheck="beforeUploadCheck" 
+        @success="batchImportStreetSuccess"
+        :upLoadPayLoad="importParams"
+        >
+            <div class="flex-s-c" slot="title" v-if="_structureType == 'edu_customer'">
+                <div class="w-nowrap">选择上级：</div>
+                <div>
+                    <span v-if="importParams.structure_id" class="m-r-10">{{importParams.structure_name}}</span><a @click="chooseStructure">{{importParams.structure_id ? '更换上级' : '选择上级'}}</a>
+                </div>
+            </div>
+        </batchImport>
     </hold-layout>
 </template>
 
@@ -37,21 +49,29 @@ import searchForm from "./search-form.vue";
 import mixins from "./mixins";
 import editStreet from "./edit-street/index";
 import bindAdmin from "./edit-street/bind-admin/index";
+import batchImport from "@/components/UI-components/module/batch-import/index.vue";
 export default {
     name: "classMaint",
     components: {
         editStreet,
         searchForm,
         bindAdmin,
+        batchImport
     },
     mixins: [ListMixin, mixins],
     data() {
         return {
             searchForm: {
                 searchq: "",
+                structure_id: this._structureType == 'edu_area' ? this._structureId : 0,
+                structure_type: ""
             },
             editStreetTitle: "",
             selectData: [],
+            importParams: {
+                structure_id: 0,
+                structure_name: ""
+            }
         };
     },
     computed: {
@@ -92,20 +112,38 @@ export default {
         },
         createStreet(detail) {
             if (detail.isBatch) {
-                this.$UIModule({
-                    mode: "batch-import",
-                    options: {
-                        canCreate: { upload: true, download: true },
-                        uploadUrl: "batchImportStreetMaint",
-                        downloadUrl: "batchTplStreetMaint",
-                    },
-                    success: () => {
-                        this.loadData();
-                    },
-                });
+                this.$refs["batchImportRef"] && this.$refs["batchImportRef"].showModal({
+                    canCreate: { upload: true, download: true },
+                    uploadUrl: "batchImportStreetMaint",
+                    downloadUrl: "batchTplStreetMaint",
+                })
             } else {
                 this.editStreet();
             }
+        },
+        chooseStructure(){
+            this.$UIModule({
+                mode: "superior-view",
+                props: {
+                    chooseType: ['area']
+                },
+                options: {},
+                success: (data) => {
+                    data = data || [];
+                    this.$set(this.importParams, 'structure_id', data[0].id);
+                    this.$set(this.importParams, 'structure_name', data[0].title);
+                },
+            });
+        },
+        beforeUploadCheck(){
+            if(!this.importParams.structure_id && this._structureType == 'edu_customer'){
+                this.$Message.warning("请选择上级组织");
+                return false;
+            }
+            return true;
+        },
+        batchImportStreetSuccess(){
+            this.loadData();
         },
         editStreet(id) {
             this.editStreetTitle = id ? "编辑街道" : "创建街道";
@@ -165,6 +203,7 @@ export default {
                     this.tableLoading = false;
                 });
         },
+        
     },
     mounted() {
         this.loadData();

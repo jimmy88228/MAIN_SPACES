@@ -4,7 +4,7 @@
             <rewrite-search v-model="searchForm.searchq" @search="loadData" placeholder="请输入关键词"></rewrite-search>
             <Button @click="editPage()" icon="md-add" v-hasAction="'page_maintenance_add'">新建页面</Button>
         </rewrite-area>
-        <Table ref="myTable" class="full-table" :columns="columns" :data="list" border :loading="tableLoading">
+        <rewrite-table ref="myTable" class="full-table" :columns="columns" :data="list" :loading="tableLoading">
             <template slot="title" slot-scope="{ row, index }">
                 <p>{{row.layout_name}}</p>
                 <Tag color="blue" v-if="row.is_home == 1">主页</Tag>
@@ -54,7 +54,7 @@
                     </p>
                 </div>
             </template>
-        </Table>
+        </rewrite-table>
         <rewrite-page slot="footer" :total="total" :current="page" :page-size="pageSize" :page-size-opts="pageSizeOpts" @on-change="e=>loadData(e)" @on-page-size-change="handlePageSizeChange" show-sizer show-elevator show-total transfer></rewrite-page>
     </hold-layout>
 </template>

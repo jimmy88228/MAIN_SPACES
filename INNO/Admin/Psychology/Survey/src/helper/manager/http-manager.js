@@ -5,6 +5,7 @@ import Conf from "@/config";
 import Apis from "./http-api";
 import qs from 'qs';
 import store from "@/store/index";
+import utils from "../utils/index.js";
 
 const httpManager = {};
 
@@ -24,9 +25,9 @@ httpManager.ajax.interceptors.request.use((config) => {
     if(config.other && config.other.isShowLoad){
         store.commit("setPageLoading", true);
     }
-    if(config.method != 'get'){
-        config.data = qs.stringify(config.data)
-    }
+    // if(config.method != 'get'){
+    //     config.data = qs.stringify(config.data)
+    // }
     return config
 })
 
@@ -36,26 +37,12 @@ httpManager.ajax.interceptors.response.use((response) => {
     let config = response.config || {};
     let other = config.other || {};
     // loading
-    if(other.isShowLoad){
-        if(other.hideLoadTime){
-            setTimeout(()=>{
-                store.commit("setPageLoading", false);
-            }, other.hideLoadTime)
-        } else {
-            store.commit("setPageLoading", false);
-        }
-    }
+    switchLoad(other, false);
     // toast
-    if(other.isMsg){
-        if(data.code){
-            typeof(data.message) == "string" && $Bus.$Message.success(data.message);
-        } else {
-            typeof(data.message) == "string" && $Bus.$Message.warning(data.message);
-        }
-    } else if(other.isSuccessMsg && data.code){
-        typeof(data.message) == "string" && $Bus.$Message.success(data.message);
-    } else if(other.isErrorMsg && !data.code){ 
-        typeof(data.message) == "string" && $Bus.$Message.warning(data.message);
+    if(response.status != 200){
+        utils.debounce(showMsg(other, data), 500);
+    } else {
+        showMsg(other, data);
     }
     if(response.status == 200){
         return data;
@@ -68,15 +55,7 @@ httpManager.ajax.interceptors.response.use((response) => {
         let config = error.response.config || {};
         let other = config.other || {};
         // loading
-        if(other.isShowLoad){
-            if(other.hideLoadTime){
-                setTimeout(()=>{
-                    store.commit("setPageLoading", false);
-                }, other.hideLoadTime)
-            } else {
-                store.commit("setPageLoading", false);
-            }
-        }
+        switchLoad(other, false);
         if(data && data.toString()){
             $Bus.$Message.info(data.toString());
         }
@@ -108,10 +87,12 @@ if(Apis){
         let api = Apis[i];
         let url = typeof(api) == 'string' ? api : api["u"];
         let method = Apis[i].m || "get";
+        let baseURL = Apis[i].b || Conf.API_DOMIN;
         _MainApi[i] = function(reqData){
             method = reqData.method || method;
             return httpManager.ajax(
                 {
+                    baseURL: baseURL,
                     method: method,
                     url: url,
                     data: reqData.data || {},
@@ -121,112 +102,29 @@ if(Apis){
         } 
     }
 }
+// 
+function showMsg(other = {}, data = {}){
+    if(other.isMsg){
+        if(data.code){
+            typeof(data.message) == "string" && $Bus.$Message.success(data.message);
+        } else {
+            typeof(data.message) == "string" && $Bus.$Message.warning(data.message);
+        }
+    } else if(other.isSuccessMsg && data.code){
+        typeof(data.message) == "string" && $Bus.$Message.success(data.message);
+    } else if(other.isErrorMsg && !data.code){ 
+        typeof(data.message) == "string" && $Bus.$Message.warning(data.message);
+    }
+}
+function switchLoad(other, state){
+    if(other.isShowLoad){
+        if(other.hideLoadTime){
+            setTimeout(()=>{
+                store.commit("setPageLoading", false);
+            }, other.hideLoadTime)
+        } else {
+            store.commit("setPageLoading", state);
+        }
+    }
+}
 export const MainApi = _MainApi
-
-
-// const Handlers = {
-//     get(o) {
-//         return axios.get(o.url, {
-//             headers: o.header
-//         });
-//     },
-
-//     post(o) {
-//         return axios.post(o.url, o.data, {
-//             headers: o.header
-//         });
-//     }
-// };
-
-// EasyHttp.use({
-//     install(host) {
-//         host.bindHandler(o => {
-//             let act = (o.action || "").toLowerCase();
-//             if (Handlers[act]) {
-//                 return Handlers[act](o);
-//             }
-//             throw `EasyHttpAxios:not found action '${act}'`;
-//         });
-//     }
-// });
-
-// EasyHttp.bindPreHandler(rq => {
-//     if (LM.loginToken) {
-//         rq.header || (rq.header = {});
-//         rq.header.Authorization = LM.loginToken;
-//     }
-//     if(rq.other && rq.other.isShowLoad){
-//         store.commit("setPageLoading", true);
-//     }
-//     console.log("EasyHttp-Request:", `[${rq.action}] ${rq.url}`, "\nparams:", rq.params, "\ndata:", rq.data);
-// }).bindPostHandler(promise => {
-//     return promise
-//         .then(e => {
-//             let rq = e.request;
-//             let rp = e.response;
-//             console.log("EasyHttp-Response:", `[${rq.action}] ${rq.url}`, "\nresponse:", rp.data);
-//             let data = rp.data || {};
-//             let other = rq.other || {};
-//             // loading
-//             if(other.isShowLoad){
-//                 if(other.hideLoadTime){
-//                     setTimeout(()=>{
-//                         store.commit("setPageLoading", false);
-//                     }, other.hideLoadTime)
-//                 } else {
-//                     store.commit("setPageLoading", false);
-//                 }
-//             }
-//             // toast
-//             if(other.isShowMsg){
-//                 if(data.code){
-//                     typeof(data.message) == "string" && $Bus.$Message.success(data.message);
-//                 } else {
-//                     typeof(data.message) == "string" && $Bus.$Message.warning(data.message);
-//                 }
-//             }
-//             return data;
-//         })
-//         .catch(e => {
-//             let rq = e.request || {};
-//             let other = rq.other || {};
-//             // loading
-//             if(other.isShowLoad){
-//                 if(other.hideLoadTime){
-//                     setTimeout(()=>{
-//                         store.commit("setPageLoading", false);
-//                     }, other.hideLoadTime)
-//                 } else {
-//                     store.commit("setPageLoading", false);
-//                 }
-//             }
-//             let rp = (e.response && e.response.response) || {};
-//             if(rp.data && rp.data.toString()){
-//                 $Bus.$Message.info(rp.data.toString());
-//             }
-//             // token 失效，431 账号不存在  430 权限不足  434 账号强制退出
-//             if(rp.status == 401 || rp.status == 431){ 
-//                 LM.clear();
-//                 $Bus.$router.push({ name: "Login" }); 
-//             } else if(rp.status == 430){
-//                 $Bus.$Message.info("即将跳转首页");
-//                 setTimeout(()=>{
-//                     $Bus.$router.push({ name: "home" })
-//                 },1000)
-//             } else if(rp.status == 434){
-//                 LM.clear();
-//                 $Bus.$router.push({ name: "Login" });
-//             }
-//             if (e.errType === -1) {
-//                 console.log("EasyHttp-Response:", `[${rq.action}] ${rq.url}`, "\n内部错误:", e.msg);
-//                 return Promise.reject(e.msg);
-//             } else if (e.respons) {
-//                 let rp = e.response;
-//                 console.log("EasyHttp-Response:", `[${rq.action}] ${rq.url}`, "\nresponse:", rp.message);
-//                 return Promise.reject(rp.message);
-//             }
-//             return Promise.reject(e);
-//         });
-// });
-
-// // export const MainApi = new EasyHttp().setBaseUrl(Conf.API_DOMIN).addRequests(Apis);

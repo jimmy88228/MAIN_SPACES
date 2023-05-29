@@ -21,6 +21,7 @@
                   class="flex-s-c checkBox" 
                   style="width:100%;">
                     <span class="text-flow p-l-10">{{item.title}}</span>
+                    <span class="is-graduate" v-if="item.class_state == 2">已毕业</span>
                   </Checkbox>
                 </div>
               </div>
@@ -137,6 +138,9 @@ export default {
         return true;
       }
       if(this.limitMain && item.type == 'school'){
+        return true;
+      }
+      if(item.class_state == 2 && !item.checked){
         return true;
       }
       if(selectIndex != -1){
@@ -298,5 +302,14 @@ export default {
       height: 30px;
     }
   }
+}
+.is-graduate{
+  color: #AEAEAE;
+  background-color: #FBFBFB;
+  display: inline-block;
+  padding: 1px 5px;
+  border-radius: 3px;
+  margin-left: 5px;
+  line-height: 20px;
 }
 </style>

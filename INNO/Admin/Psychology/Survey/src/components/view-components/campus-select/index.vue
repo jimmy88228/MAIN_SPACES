@@ -1,9 +1,10 @@
 <template>
-    <Dropdown class="campus-dropDown" trigger="click" :transfer="transfer" @on-visible-change="visibleChange" @on-click="selectDrop">
-        <div class="campus-dropDown-input">
+    <Dropdown :class="['campus-dropDown',disabled && 'disabled']" trigger="click"  :transfer="transfer" @on-visible-change="visibleChange" @on-click="selectDrop">
+        <div class="campus-dropDown-input" v-if="!disabled">
             <Input ref="dropInputRef" :placeholder="placeholder" :value="valueName" @on-change="screentData" @on-blur="screentBlur"></Input>
             <Icon class="dropdown-icon" :class="{'rotated': isVisible}" type="ios-arrow-down"></Icon>
         </div>
+        <div style="padding-top:1px" v-else>{{valueName}}</div>
         <DropdownMenu slot="list" class="campus-dropDownMenu">
             <div class="dropDown-scroll" v-bar :style="viewStyle">
                 <div>
@@ -21,8 +22,8 @@
                             </template>
                             <template v-else>
                                 <div class="item-line">
-                                    <div class="item-input-view w-normal">{{item.campus_name}}</div>
-                                    <Icon class="item-icon f-shrink0" type="md-create" @click.stop="editItem(index)" />
+                                    <div class="item-input-view w-break">{{item.campus_name}}</div>
+                                    <Icon v-if="!hideEdit" class="item-icon f-shrink0" type="md-create" @click.stop="editItem(index)" />
                                 </div>
                             </template>
                         </div>
@@ -32,7 +33,7 @@
                     </div>
                 </div>
             </div>
-            <DropdownItem divided name="add">
+            <DropdownItem divided name="add" v-if="!hideEdit">
                 <div class="add-area" @click.stop="">
                     <div class="add-input-area">
                         <custom-input regType="validate" type="textarea" v-model="addData.campusName" class="add-input" :class="{'hide':!isAdd}" placeholder=""></custom-input>
@@ -80,7 +81,15 @@ export default {
             type: Boolean,
             default: false
         },
-        placeholder: String
+        placeholder: String,
+        hideEdit:{
+            type:Boolean,
+            default:false
+        },
+        disabled:{
+            type:Boolean,
+            default:false
+        }
     },
     computed:{
         valueName(){

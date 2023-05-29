@@ -279,6 +279,7 @@ export default {
                     multiple:true,
                     title:"量表",
                     type:"inventory",
+                    limitCount: 5
                 },
                 options: this.actDetail.selectData,
                 success:(data)=>{

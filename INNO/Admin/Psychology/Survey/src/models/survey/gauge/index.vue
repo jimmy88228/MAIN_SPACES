@@ -1,14 +1,14 @@
 <template>
   <hold-layout :isFull="true">
     <searchForm :searchForm="searchForm" @search="loadData()"></searchForm>
-    <Table ref="myTable" class="full-table" :columns="columns" :data="list" border :loading="tableLoading">
+    <rewrite-table ref="myTable" class="full-table" :columns="columns" :data="list" :loading="tableLoading">
       <template slot="handle" slot-scope="{ row }">
           <div class="operate-area">
             --
             <!-- <a class="operate" v-hasAction="'inventory_management_view'">查看</a> -->
           </div>
       </template>
-    </Table>
+    </rewrite-table>
     <rewrite-page
     slot="footer"
     :total="total"

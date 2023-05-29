@@ -1,0 +1,109 @@
+<template>
+  <hold-layout :isFull="true">
+    <searchForm :searchForm="searchForm" @search="loadData"></searchForm>
+    <rewrite-table ref="myTable" class="full-table" :columns="columns" :data="list" :loading="tableLoading" >
+      <template slot="zoneInfo" slot-scope="{ row }">
+        <div class="zone-info flex-s-c p-t-10 p-b-10">
+          <!-- <div class="zone-img"></div> -->
+          <p>{{row.name}}</p>
+        </div>
+      </template>
+      <template slot="handle" slot-scope="{ row, index }">
+        <div class="operate-area">
+          <p class="operate-line m-b-10">
+            <a class="operate" @click="editZone(row)" >编辑</a>
+          </p>
+          <p class="operate-line">
+            <Poptip trigger="hover" :width="360" placement="left">
+                <a class="operate">页面链接</a>
+                <div slot="content" class="flex-s-c">
+                  <div class="w-break m-r-10" style="width:auto;">{{getCopyLink(row)}}</div>
+                  <a class="flex" @click="createLink(row)">复制</a>
+                </div>
+            </Poptip>
+          </p>
+        </div>
+      </template>
+    </rewrite-table>
+    <rewrite-page slot="footer" :total="total" :current="page" :page-size="pageSize" :page-size-opts="pageSizeOpts" @on-change="e=>loadData(e)" @on-page-size-change="handlePageSizeChange" show-sizer show-elevator show-total transfer></rewrite-page>
+  </hold-layout>
+</template>
+
+<script>
+import ListMixin from "@/helper/mixin/list-mixin";
+import mixins from "./mixins";
+import searchForm from "./search-form.vue";
+const ZONE_PAGE = '/pages/activities/fun-assessment/list/fun-list';
+export default {
+  name: "zoneSetIndex",
+  mixins: [ListMixin, mixins],
+  components: { searchForm },
+  data() {
+    return {
+      searchForm: {
+        searchq: "",
+      },
+    };
+  },
+  computed: {},
+  methods: {
+    onLoadData(page, extraData) {
+      return this.$MainApi
+        .zoneSetList({
+          data: {
+            ...this.searchForm,
+            ...extraData,
+          },
+          other: {
+            isErrorMsg: true
+          }
+        })
+        .then((res) => {
+          if (res.code) {
+            let data = res.data || {};
+            let items = data.items || [];
+            this.data = {
+              total: data.total,
+              list: items,
+            };
+          }
+        });
+    },
+    getCopyLink(row){
+        return ZONE_PAGE;
+    },
+    createLink(row) {
+        let url = this.getCopyLink(row);
+        this.$utils.copyText(url);
+    },
+    editZone(row) {
+      this.$router.push({
+        name: "zoneSetDetail",
+        query: {
+          id: row.id || 0,
+          customer_id: row.customer_id || 0
+        },
+      });
+    },
+  },
+  mounted() {
+    this.loadData();
+  },
+};
+</script>
+
+<style lang="less" scoped>
+.zone-info {
+  font-size: 14px;
+  font-family: PingFangSC-Regular, PingFang SC;
+  font-weight: 400;
+  color: #000000;
+  line-height: 20px;
+    .zone-img {
+    width: 83px;
+    height: 55px;
+    background: #d8d8d8;
+    margin-right: 15px;
+  }
+}
+</style>

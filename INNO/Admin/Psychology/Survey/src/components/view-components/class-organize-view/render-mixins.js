@@ -1,5 +1,6 @@
 import subIcon from "@/assets/images/sub.png";
 const selectColor = "#0083CE"; 
+const disabledColor = "#CACACC";
 export default{
   data(){
       return {
@@ -17,7 +18,7 @@ export default{
                         display: "flex",
                         alignItems: "center",
                         paddingLeft: (this.isShowAllBtn && data.id == "0") ? "20px" : (this.showCheckbox ? "40px" : "20px"),
-                        color: data.selected ? selectColor : ""
+                        color: data.class_state == 2 ? disabledColor : (data.selected ? selectColor : "")
                     },
                 },
                 [
@@ -143,9 +144,9 @@ export default{
               width:"90%",
               marginLeft:"3px",
               paddingLeft: this.showCheckbox ? "35px" : "15px",
-              display: "flex",
+              display: "flex", //(data.class_state == 2 && !data.checked) ? "none" : "flex",
               alignItems: "center",
-              color: data.selected ? selectColor : ""
+              color: data.class_state == 2 ? disabledColor : (data.selected ? selectColor : "")
             },
           }, [
             h("div", {
@@ -159,7 +160,7 @@ export default{
                 h("Checkbox", {
                     props: {
                         value: data.checked,
-                        disabled: data.disabled || (this.isRelation && data.pChecked) || (this.limitMain && data.type == "school")
+                        disabled: data.disabled || (this.isRelation && data.pChecked) || (this.limitMain && data.type == "school") || (data.class_state == 2 && !data.checked) // 已毕业不可勾选
                     },
                     on: {
                         "on-change":(state)=>{
@@ -190,8 +191,20 @@ export default{
                   { 
                     attrs: { class: "text-flow" },
                     style: { fontSize: "14px",flex: 1 } },
-                    data.title
-                    // data.title + "(" + data.getson_count + ")"
+                    [
+                        h("span", data.title),
+                        data.class_state == 2 ? h("span", { 
+                            style: {
+                               color: "#AEAEAE",
+                               backgroundColor: "#FBFBFB",
+                               display: "inline-block",
+                               padding: "1px 5px",
+                               borderRadius: "3px",
+                               marginLeft: "5px",
+                               lineHeight: "20px"
+                            },
+                           }, "已毕业") : ''
+                    ]
               ),
           ])
         }

@@ -8,18 +8,23 @@ export default{
           align: 'center'
         },
         {
-          title: "班级",
-          key: "structure_name",
-          minWidth: 100
-        },
-        {
           title: "校区",
           slot: "campus",
           minWidth: 100
         },
         {
-          title: "班主任",
-          slot: "admin",
+          title: "学段",
+          slot: "gradeType",
+          minWidth: 100
+        },
+        {
+          title: "年级",
+          slot: "grade",
+          minWidth: 130
+        },
+        {
+          title: "班别",
+          slot: "class",
           minWidth: 100
         },
         {
@@ -28,9 +33,15 @@ export default{
           minWidth: 100
         },
         {
+          title: "班主任",
+          slot: "admin",
+          minWidth: 140
+        },
+        
+        {
           title: "状态",
           key: "state_str",
-          width: 150,
+          width: 120,
         },
         {
           title: "推广",

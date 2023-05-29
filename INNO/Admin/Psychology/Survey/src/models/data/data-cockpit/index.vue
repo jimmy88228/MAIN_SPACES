@@ -1,18 +1,23 @@
 <template>
-  <div class="cockpit-area data-cockpit-area">
+  <div class="cockpit-area data-cockpit-area" :class="{'fullscreen-data-cockpit' : isFullScreen}" id="dataCockpitArea">
+    <Button class="screen-action" @click="switchFullScreen">
+      <img v-if="isFullScreen" src="@/assets/images/data/set-unfull-screen-icon.png" />
+      <img v-else src="@/assets/images/data/set-full-screen-icon.png" />
+      {{isFullScreen ? '退出全屏' : '全屏查看'}}
+    </Button>
     <div class="inline-b cockpit-area-header">
       <div class="flex-s-c w-nowrap">
         数据概况
         <p class="m-l-15" style="color:#5A5672;">统计时间 {{searchForm.to_date}}</p>
       </div>
-      <div class="cockpit-structure w-nowrap">{{_structureName}}</div>
+      <div class="cockpit-structure w-nowrap">{{_getReqStructureName}}</div>
       <div class="inline-b">
         <data-select 
         class="cockpit-select"
         type="campus" 
         placeholder="请选择校区"
         v-model="searchForm.campus_id"
-        :params="{school_id: _structureId}"
+        :params="{school_id: _getReqStructureId}"
         @change="loadData()"
         :initCallback="getCampusData"
         valueKey="campus_id"
@@ -29,7 +34,7 @@
         ref="dataMainBgRef"
         :searchForm="searchForm" 
         :organizeData="organizeData"
-        
+        @search="loadData()"
         ></dataMainBg>
       </div>
       <div class="data-main-l f-shrink-0 area-top flex">
@@ -62,7 +67,7 @@
         ></dataRight>
       </div>
     </div>
-    <div>
+    <div class="data-bottom-area">
       <dataBottom :genderInfo="genderInfo"></dataBottom>
     </div>
     <Spin fix v-if="loading" class="cockpit-area-spin"></Spin>
@@ -107,7 +112,9 @@ export default {
       },
       genderInfo: {},
       modelData: [],
-      campusData: []
+      campusData: [],
+      isFullScreen: false,
+      resizeObserver: null
     }
   },
   methods: {
@@ -115,13 +122,10 @@ export default {
       this.searchForm.to_date = dataUtil.format(new Date(new Date().getTime() - (1000 * 60 * 60 * 24)), 'yyyy-MM-dd HH:mm')
     },
     loadData(){
-      // if(!this.loading){
-      //   this.loading = true;
-      // }
       return this.$MainApi.dataDriveCompartment({
           data: {
               ...this.searchForm,
-              school_id: this._structureId,
+              school_id: this._getReqStructureId,
           },
           other: {
               isErrorMsg: true
@@ -140,15 +144,12 @@ export default {
               this.$refs["dataMainBgRef"] && this.$refs["dataMainBgRef"].initData(this.organizeData);
           }
       }).finally(()=>{
-        // if(this.loading){
-        //   this.loading = false;
-        // }
       })
     },
     getModelData(){
       return this.$MainApi.getGroupReportModelList({
           data: {
-              school_id: this._structureId,
+              school_id: this._getReqStructureId,
           },
           other: {
               isErrorMsg: true
@@ -170,6 +171,36 @@ export default {
     },
     getOverview(detail){
       this.$refs["overviewModalRef"] && this.$refs["overviewModalRef"].showModal(detail)
+    },
+    judegIsFullScreen(isActive) {
+      if(!isActive && this.resizeObserver){
+        this.resizeObserver.disconnect();
+        return;
+      }
+      this.resizeObserver = new ResizeObserver((entries) => {
+        let target = entries[0].target;
+        if(target.id == 'dataCockpitArea'){
+          console.log("screen.height", screen.height);
+          console.log("target.clientHeight", target.clientHeight);
+          if(this.isFullScreen != (screen.height == target.clientHeight)){
+            this.isFullScreen = (screen.height == target.clientHeight)
+          }
+        }
+      })
+      this.resizeObserver.observe(this._getDom('dataCockpitArea'));
+    },
+    switchFullScreen(){
+      if(this.isFullScreen){
+        this._exitFullScreen('dataCockpitArea', ()=>{
+          this.isFullScreen = false;
+          this.$refs["dataMainBgRef"] && this.$refs["dataMainBgRef"].resize(this.organizeData);
+        })
+      } else {
+        this._fullScreen('dataCockpitArea', ()=>{
+          this.isFullScreen = true;
+          this.$refs["dataMainBgRef"] && this.$refs["dataMainBgRef"].resize(this.organizeData);
+        })
+      }
     }
   },
   mounted(){
@@ -181,6 +212,10 @@ export default {
         this.loading = false;
       })
     })
+    this.judegIsFullScreen(true);
+  },
+  beforeDestroy(){
+    this.judegIsFullScreen(false);
   }
 }
 </script>
@@ -369,7 +404,7 @@ export default {
 .cockpit-area{
   width: 100%;
   min-height: 100%;
-  background-color:#06002A;
+  // background-color:#06002A;
   position: relative;
   .cockpit-area-header{
     position: absolute;
@@ -424,5 +459,38 @@ export default {
     background-color: #06002A;
     opacity: 0.7;
   }
+}
+.screen-action{
+  height: 36px;
+  position: absolute;
+  top:30px;
+  right: 30px;
+  background: rgba(0,86,114,0.34);
+  border-radius: 46px;
+  border: 1px solid #005874;
+  padding: 0px 10px;
+  z-index: 3;
+  color: #fff;
+  /deep/span{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  img{
+    width: 22px;
+    height: 22px;
+    margin-right: 10px;
+  }
+}
+.fullscreen-data-cockpit{
+  width:100%;
+  height: 100%;
+  overflow-y: auto;
+  background-color:#060029;
+}
+.data-bottom-area{
+  // position: sticky;
+  // bottom: 0px;
+  // text-align: center;
 }
 </style>

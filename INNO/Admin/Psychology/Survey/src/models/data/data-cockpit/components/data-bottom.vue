@@ -65,7 +65,7 @@ export default {
           if(totalUser){
             nV.maleUserRatio = this.getPercent(nV.total_male_users, totalUser) + '%';
             nV.femaleUserRatio = this.getPercent(nV.total_female_users, totalUser) + '%';
-            nV.unKnowUserRatio = (100 - parseFloat(nV.maleUserRatio) - parseFloat(nV.femaleUserRatio)).toFixed(1) + '%'
+            nV.unKnowUserRatio = Math.abs(100 - parseFloat(nV.maleUserRatio) - parseFloat(nV.femaleUserRatio)).toFixed(1) + '%'
           } else {
             nV.unKnowUserRatio = nV.maleUserRatio = nV.femaleUserRatio = '0%';
           }
@@ -86,7 +86,6 @@ export default {
             nV.unKnowWarnRatio = nV.maleWarnRatio = nV.femaleWarnRatio = '0%';
           }
           this.genderInfoView = nV;
-          console.log('nV', nV)
           this.initChart(nV);
         })
       },
@@ -214,6 +213,8 @@ export default {
           this.riskChart =
               this.riskChart ||
               echarts.init(document.getElementById("risk-chart"));
+      } else {
+        this.riskChart.clear();
       }
       let option = {
         tooltip: {
@@ -320,6 +321,7 @@ export default {
     padding-right: 10px;
     border-radius: 200px;
     color:#fff;
+    min-width: 900px;
     .gender-data-tip{
       padding-left: 30px;
       margin-bottom: -10px;

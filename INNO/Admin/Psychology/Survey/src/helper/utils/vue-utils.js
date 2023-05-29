@@ -35,28 +35,31 @@ Vue.directive('hasAction', {
 
 function hasActionHandle(el, value) {
     let actionCodeMap = PageHelper.actionCodeMap;
-    if (value instanceof Array) {
-        for (let i = 0; i < value.length; i++) {
-            let item = value[i];
-            if (!item) {
-                el.style.display = 'none';
-                break;
-            } else if (typeof (item) == 'string') {
-                if (!actionCodeMap[item] || actionCodeMap[item] && actionCodeMap[item].isAction != 1) {
+    new Vue().$nextTick(()=>{
+        if (value instanceof Array) {
+            for (let i = 0; i < value.length; i++) {
+                let item = value[i];
+                if (!item) {
                     el.style.display = 'none';
                     break;
+                } else if (typeof (item) == 'string') {
+                    if (!actionCodeMap[item] || actionCodeMap[item] && actionCodeMap[item].isAction != 1) {
+                        el.style.display = 'none';
+                        break;
+                    }
+                } else {
+                    el.style.display = 'inline-block';
                 }
+            }
+        } else if (typeof (value) == 'string') {
+            if (!actionCodeMap[value] || actionCodeMap[value] && actionCodeMap[value].isAction != 1) {
+                el.style.display = 'none';
             } else {
                 el.style.display = 'inline-block';
             }
         }
-    } else if (typeof (value) == 'string') {
-        if (!actionCodeMap[value] || actionCodeMap[value] && actionCodeMap[value].isAction != 1) {
-            el.style.display = 'none';
-        } else {
-            el.style.display = 'inline-block';
-        }
-    }
+    })
+    
 }
 
 // 背景图样式调整

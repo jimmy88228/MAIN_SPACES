@@ -1,10 +1,10 @@
 <template>
     <hold-layout :isFull="true">
         <searchForm :searchForm="searchForm" @search="loadData" @batchImport="batchImport" @add="addTeacher" @batchRemove="batchRemove"></searchForm>
-        <Table ref="myTable" class="full-table" :columns="columns" :data="list" border :loading="tableLoading" @on-selection-change="selectDataEvent">
+        <rewrite-table ref="myTable" class="full-table" :columns="columns" :data="list" :loading="tableLoading" @on-selection-change="selectDataEvent">
             <template slot="handle" slot-scope="{ row, index }">
                 <div class="operate-area">
-                    <a class="operate" @click="editTeacherEvent(row)" v-hasAction="'student_file_update'">编辑</a>
+                    <a class="operate" @click="editTeacherEvent(row)" v-hasAction="'teacher_management_update'">编辑</a>
                     <!-- <a class="operate" @click="getPsychicFile(row)" v-hasAction="'student_file_psychology_files'">心理档案</a> -->
                     <!-- <a class="operate" @click="removeItem(row.user_id, index)" v-hasAction="'student_file_batch_remove'">删除</a> -->
                 </div>
@@ -15,7 +15,7 @@
                     <span slot="close">关闭</span>
                 </i-switch>
             </template>
-        </Table>
+        </rewrite-table>
         <rewrite-page slot="footer" :total="total" :current="page" :page-size="pageSize" :page-size-opts="pageSizeOpts" @on-change="e=>loadData(e)" @on-page-size-change="handlePageSizeChange" show-sizer show-elevator show-total transfer></rewrite-page>
         <editTeacher ref="editTeacherRef" :title="editTitle" @confirm="handleUpdate"></editTeacher>
     </hold-layout>
@@ -100,6 +100,7 @@ export default {
                   canCreate: { upload: true, download: true },
                   uploadUrl: "teacherManagementBatchImport",
                   downloadUrl: "teacherManagementBatchTpl",
+                  
               },
               success: () => {
                   this.loadData();

@@ -11,9 +11,21 @@
         :batchCodeIng="batchCodeIng"
         :relatIng="relatIng"
         ></searchForm>
-        <Table ref="myTable" class="full-table" :columns="columns" :data="list" border :loading="tableLoading" @on-selection-change="selectDataEvent">
+        <rewrite-table ref="myTable" class="full-table" :columns="columns" :data="list" :loading="tableLoading" @on-selection-change="selectDataEvent">
             <template slot="campus" slot-scope="{ row }">
                 {{(row.get_class && row.get_class.campus) || "--"}}
+            </template>
+            <template slot="gradeType" slot-scope="{ row }">
+                {{(row.get_class && row.get_class.grade_type_str) || "--"}}
+            </template>
+            <template slot="grade" slot-scope="{ row }">
+                <template v-if="row.get_class">
+                    {{row.get_class.grade + '(' + row.get_class.school_year + ')'}}
+                </template>
+                <template v-else>--</template>
+            </template>
+            <template slot="class" slot-scope="{ row }">
+                {{(row.get_class && row.get_class.class) || "--"}}
             </template>
             <template slot="admin" slot-scope="{ row }">
                 <p>
@@ -35,7 +47,7 @@
                     </a>
                 </div>
             </template>
-        </Table>
+        </rewrite-table>
         <rewrite-page :selectedNum="selectData.length" ref='rewritePage' isShowAllSel slot="footer" @on-sel-all="onSelAll" :total="total" :current="page" :page-size="pageSize" :page-size-opts="pageSizeOpts" @on-change="e=>loadData(e)" @on-page-size-change="handlePageSizeChange" show-sizer show-elevator show-total transfer></rewrite-page>
         <!--异步处理导出excel组件-->
         <mpNotice :ref="'notice' + item" v-for="item in jobIdCol" :key="item"></mpNotice>
@@ -292,15 +304,15 @@ export default {
                                 classId: row.id
                             },
                         },
-                        {
-                            title: "学号+密码登录链接",
-                            path: this.h5Admin + "/pages/startup/startup",
-                            params: {
-                                id: this.searchForm.activityid,
-                                schoolId: this.searchForm.school_id,
-                                classId: row.id
-                            },
-                        },
+                        // {
+                        //     title: "学号+密码登录链接",
+                        //     path: this.h5Admin + "/pages/startup/startup",
+                        //     params: {
+                        //         id: this.searchForm.activityid,
+                        //         schoolId: this.searchForm.school_id,
+                        //         classId: row.id
+                        //     },
+                        // },
                     ]
                 }
             });

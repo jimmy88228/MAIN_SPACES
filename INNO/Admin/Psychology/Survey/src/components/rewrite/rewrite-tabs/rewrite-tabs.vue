@@ -1,15 +1,19 @@
 <template>
-  <hold-layout :isFull="true">
-    <Tabs class="layout-tabs" :value="thisCurrTab" @on-click="changeTabs">
-        <TabPane :label="item.label" :name="item.name" v-for="(item, index) in data" :disabled="item.disabled" :key="item.name">
+  <div class="rewrite-tabs">
+    <Tabs class="layout-tabs" :class="[customClass]" :value="thisCurrTab" @on-click="changeTabs" :name="tabName||'tab'">
+        <TabPane :label="item.label" :name="item.name" v-for="(item) in data" :disabled="item.disabled" :key="item.name" :tab="tabName||'tab'">
           <vue-scroll class="tabs-cont">
-            <div class="tabs-cont-stay">
+            <div class="tabs-cont-stay" :style="[boxStyle]">
               <slot :name="item.name"></slot>
             </div>
           </vue-scroll>
         </TabPane>
+        <div slot="extra">
+          <slot name="extra"></slot>
+        </div>
     </Tabs>
-  </hold-layout>
+  </div>
+  
 </template>
 
 <script>
@@ -17,7 +21,12 @@ export default {
   name: "rewrite-tabs",
   props: {
     data: Array,
-    currTab: String
+    currTab: String,
+    boxStyle: String,
+    isHideLayout:Boolean,
+    tabName: String,
+    customClass: String,
+    beforeChange: Function // 包含两个参数，新tab name, 旧tab name
   },
   data(){
     return {
@@ -27,19 +36,34 @@ export default {
   methods:{
     changeTabs(name){
       if(name && name != this.thisCurrTab){
-        this.thisCurrTab = name;
-        this.$router.replace({
-          name: this.$route.name,
-          query: {
-                ...this.pageQuery,
-                ...this.pageParams,
-                currTab: name,
-            },
-        })
-        this.$nextTick(()=>{
-          this.$emit("changeTab", name);
-        })
+        if(typeof(this.beforeChange) == "function"){
+          // 
+          let before = this.beforeChange(name, this.thisCurrTab);
+          if (before && before.then) {
+            before.then(()=>{
+              this.changeHandle(name)
+            })
+          } else if(before) {
+            this.changeHandle(name)
+          }
+        } else {
+          this.changeHandle(name)
+        }
       }
+    },
+    changeHandle(name){
+      this.thisCurrTab = name;
+      this.$router.replace({
+        name: this.$route.name,
+        query: {
+              ...this.pageQuery,
+              ...this.pageParams,
+              currTab: name,
+          },
+      })
+      this.$nextTick(()=>{
+        this.$emit("changeTab", name);
+      })
     }
   },
   mounted(){
@@ -52,7 +76,7 @@ export default {
       handler:function(nV){
         if(nV instanceof Array){
           if(!this.pageQuery.currTab){
-            this.changeTabs(nV[0].name)
+            nV[0] && this.changeTabs(nV[0].name)
           }
         }
       },
@@ -64,7 +88,6 @@ export default {
         if(nV){
           this.changeTabs(nV);
         }
-        
       },
       deep: true,
       immediate: true
@@ -74,6 +97,9 @@ export default {
 </script>
 
 <style lang="less">
+.rewrite-tabs{
+  height: 100%;
+}
 .layout-tabs{
   width:100%;
   height:100%;
@@ -87,6 +113,31 @@ export default {
     left:0px;
     width: 100%;
   }
+  &.gauge{
+    &.layout-tabs {
+      padding-top: 50px;
+    }
+    .ivu-tabs-bar{
+      border: none;
+      border-bottom: 1px solid #f4f4f4;
+      min-height: 50px;
+      display: flex;
+      align-items: center;
+      // 配合tab float:right布局在flex下无法生效
+      flex-direction: row-reverse;
+      justify-content: space-between;
+      background: #fff;
+    }
+    .ivu-tabs-nav-right{
+      margin-right:10px;
+    }
+    .ivu-tabs-ink-bar{
+      display: none;
+    }
+    .tabs-cont-stay{
+      padding: 0;
+    }
+  }
   .ivu-tabs-content{
     flex: 1;
     height:100%;
@@ -98,9 +149,12 @@ export default {
   .tabs-cont{
     width:100%;
     height:100%;
+    background: #fff;
   }
   .tabs-cont-stay{
     padding: 20px 10px;
+    box-sizing: border-box;
+    height: 100%;
   }
 }
 </style>

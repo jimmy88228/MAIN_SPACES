@@ -9,6 +9,12 @@
                     <Option :value="item.key" v-for="item in stateKey" :key="item.key">{{item.name}}</Option>
                 </Select>
             </FormItem>
+            <FormItem label="选择区" v-if="_structureLimit(['edu_customer'])">
+                <data-select ref="areaSelectRef" v-model="searchForm.area_id" style="max-width:150px;" type="adminArea" valueKey="area_id" nameKey="area_name" @changeData="changeAreaData"></data-select>
+            </FormItem>
+            <!-- <FormItem label="选择街道" v-if="_structureLimit(['edu_customer', 'edu_area'])">
+                <data-select ref="streetSelectRef" :params="{ area_id: searchForm.area_id }" v-model="searchForm.street_id" style="max-width:150px;" type="street" valueKey="street_id" nameKey="street_name" @changeData="changeStreetData"></data-select>
+            </FormItem> -->
         </Form>
         <div class="flex-s-c f-shrink-0">
             <!-- <Button type="default" @click="batchImport()" v-hasAction="'appraisal_activity_batch_import_school'">批量导入</Button>&nbsp; -->
@@ -54,6 +60,15 @@ export default {
         relatIng: Boolean
     },
     methods: {
+        changeAreaData(){
+            this.$nextTick(()=>{
+                this.$refs["streetSelectRef"] && this.$refs["streetSelectRef"].getData();
+                this.search();
+            })
+        },
+        changeStreetData(){
+            this.search();
+        },
         search() {
             this.$emit("search");
         },

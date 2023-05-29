@@ -34,6 +34,7 @@
     </div>
 </template>
 <script>
+import CryptoJS from "crypto-js";
 export default {
     components: {  },
     props: {
@@ -74,10 +75,11 @@ export default {
             for (let i in params) {
                 pathParams = pathParams
                     ? pathParams + "&" + i + "=" + params[i]
-                    : "?" + i + "=" + params[i];
+                    : i + "=" + params[i];
             }
-            path = path + pathParams;
-            path += path.indexOf("?") != -1 ? '&' + appCodeStr : '?' + appCodeStr
+            pathParams = pathParams ? pathParams + '&' + appCodeStr : appCodeStr;
+            let AESpathParams = CryptoJS.AES.encrypt(JSON.stringify(pathParams), 'paramsKey').toString();
+            path = path + "?paramsKey=" + encodeURIComponent(AESpathParams);
             return path;
         },
         showModal({ linkData = [], listParams = {} } ) {

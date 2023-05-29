@@ -8,7 +8,7 @@
             <div class="item-img-area">
               <img :src="item.logo" class="item-img"/>
             </div>
-            <div class="item-name">{{item.name}}</div>
+            <div class="item-name">{{item.name || item.customer_name}}</div>
           </div>
           <div class="item-r"><Icon type="ios-arrow-forward" /></div>
         </div>
@@ -22,6 +22,7 @@
 export default {
   name: "choose-customer-modal",
   props: {
+    isCustomReq: Boolean
   },
   data(){
     return {
@@ -42,6 +43,20 @@ export default {
         this.$Message.warning("无效ID");
         return;
       }
+      if(this.isCustomReq){
+        this.pageLoading = true;
+        this.dismiss();
+        this.$nextTick(()=>{
+          this.$emit("callback", {
+            chooseCustomer: id
+          });
+          this.pageLoading = false;
+        })
+      } else {
+        this.chooseCustomerReq(id);
+      }
+    },
+    chooseCustomerReq(id){
       this.pageLoading = true;
       return this.$MainApi
         .selectCustomerLogin({

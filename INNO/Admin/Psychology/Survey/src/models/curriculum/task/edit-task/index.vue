@@ -12,7 +12,7 @@
         </FormItem>
         <FormItem label="任务期限">
           <div class="radio-box flex-s-c">
-              <div v-for="item in limitType" :key="item.key" class="radio flex-c-c pointer" :class="[taskDetail.limit_time == item.key?'active':'']" @click="radioClick(item.key, 'limit_time')">
+              <div v-for="item in limitType" :key="item.key" class="radio flex-c-c pointer" :class="[taskDetail.limit_time == item.key ? 'active' : '']" @click="radioClick(item.key, 'limit_time')">
                   <div class="radio-cir"></div>
                   <div class="radio-name">{{item.name}}</div>
               </div>
@@ -21,27 +21,34 @@
         <FormItem label="限期时间" prop="dateTime" v-if="taskDetail.limit_time == 1">
             <date-time size="large" placeholder="请选择限期时间"  style="width:320px;" @change="changeTime" type="datetimerange" v-model="taskDetail.dateTime" ></date-time>
         </FormItem>
-        <FormItem label="谁可以参与" prop="join_type">
+        <FormItem label="是否需要关注公众号" v-if="offiaccountInfo">
+            <rewrite-choose :data="followTabsData" v-model="taskDetail.subscribe_offiaccount"></rewrite-choose>
+        </FormItem>
+        <FormItem label="参与限制" prop="join_type">
+            <rewrite-choose :disabled="isLimitJoinType" :data="joinLimitTabsDataView" v-model="taskDetail.join_type"></rewrite-choose>
+            <Input v-model="taskDetail.join_type" v-show="false" />
+        </FormItem>
+        <!-- <FormItem label="谁可以参与" prop="join_type">
             <div class="radio-box flex-s-c">
                 <div v-for="item in joinViewData" :key="item.key" class="radio flex-c-c pointer" :class="[taskDetail.join_type == item.key?'active':'',!isCanEdit('join_type') && taskDetail.join_type != item.key?'bg_f3':'']" @click="radioClick(item.key,'join_type', item)">
                     <div class="radio-cir"></div>
                     <div class="radio-name">{{item.name}}</div>
                 </div>
             </div>
-        </FormItem>
-        <FormItem :label="joinName" v-show="taskDetail.join_type == 'structure' || taskDetail.join_type == 'member'">
+        </FormItem> -->
+        <FormItem :label="joinName" v-if="taskDetail.join_type == 'special_school' || taskDetail.join_type == 'special_class'" prop="join_ids">
             <organizeInput
-                :tagData="tagData"
+                :tagData="joinDatas"
                 nameKey="name"
-                :disabled-del="true"
+                :disabled-del="false"
                 @handleSelect="handleSelect"
                 @handleDeleteTag="handleDeleteTag">
             </organizeInput>
+            <Select v-model="taskDetail.join_ids" v-show="false"></Select>
         </FormItem>
-        <FormItem label="指定角色" v-show="taskDetail.join_type == 'role'">
-            <Select class="base-320" size="large" :multiple="true" v-model="selectIds.role">
-                <Option :disabled="item._disabled" v-for="item in roleList" :key="item.key" :value="item.key">{{item.name}}</Option>
-            </Select>
+        <FormItem label="学习对象" prop="join_role">
+            <rewrite-choose :disabled="!!taskDetail.id" :data="roleList" v-model="taskDetail.join_role"></rewrite-choose>
+            <Input v-model="taskDetail.join_role" v-show="false"/>
         </FormItem>
         <FormItem>
             <Button size="large" type="primary" @click="save" :loading="pageLoading">&nbsp;&nbsp;保 存&nbsp;&nbsp;</Button>
@@ -64,23 +71,54 @@ export default {
                 start_time: "",
                 end_time: "",
                 course_id: 0,
-                join_type: '',
+                subscribe_offiaccount: 0, // //公众号 0 不需要 1 需要
+                join_type: '', // all_school, special_school, all_class, special_class
                 member_type: '',
                 join_ids: [],
+                join_role: '', // parent,student
                 dateTime: []
             },
+            isLimitJoinType: false,
             courseInfo: {},
-            joinName: "",
+            offiaccountInfo: null,
+            followTabsData: [
+                {
+                    key: 1,
+                    name: "需要"
+                },
+                {
+                    key: 0,
+                    name: "不需要"
+                }
+            ],
+            joinLimitTabsData: [
+                {
+                    key: "all_school",
+                    name: "所有学校"
+                },
+                {
+                    key: "special_school",
+                    name: "指定学校"
+                },
+                {
+                    key: "all_class",
+                    name: "所有班级"
+                },
+                {
+                    key: "special_class",
+                    name: "指定班级"
+                }
+            ],
             limitType: [{key: 0,name: "不限制"},{key: 1,name: "限制"}],
-            joinData:[{name:'指定组织',key:'structure', tip: "关联组织"},{name:'指定人',key:'member'}, {name:'指定角色',key:'role'}],
-            roleList: [{name:'学生',key:'student'},{name:'家长',key:'parent'},{name:'老师',key:'teacher'}],
+            roleList: [{name:'学生',key:'student'},{name:'家长',key:'parent'}],
             selectIds: {
                 school: [],
                 class: [],
-                teacher: [],
-                student: [],
-                role: []
+                // teacher: [],
+                // student: [],
+                // role: []
             },
+            joinIds: [],
             ruleValidate: {
                 activity_name: [
                     {
@@ -111,7 +149,23 @@ export default {
                     {
                         required: true,
                         validator: this._checkString,
-                        message: "选择参与类型",
+                        message: "选择参与限制类型",
+                        trigger: "blur",
+                    },
+                ],
+                join_ids: [
+                    {
+                        required: true,
+                        validator: this._checkArray,
+                        message: "选择关联组织",
+                        trigger: "blur",
+                    },
+                ],
+                join_role: [
+                    {
+                        required: true,
+                        validator: this._checkString,
+                        message: "选择学校对象",
                         trigger: "blur",
                     },
                 ]
@@ -119,50 +173,72 @@ export default {
         };
     },
     computed: {
-        joinViewData(){
-            let joinData = this.joinData || [];
-            let joinViewData = [];
-            let join_type = this.taskDetail.join_type || "";
-            for(let i = 0; i < joinData.length; i++){
-                if(this._structureType == 'edu_area' || this._structureType == 'edu_street'){
-                    if(joinData[i].key != 'member'){
-                        joinViewData.push(joinData[i]);
-                    }
-                } else {
-                    joinViewData.push(joinData[i]);
+        joinLimitTabsDataView(){
+            let viewData = [];
+            let screenKey = this._structureLimit(['edu_customer', 'edu_area', 'edu_street']) ? 'school' : 'class';
+            this.joinLimitTabsData.map((item)=>{
+                if(item.key.includes(screenKey)){
+                    viewData.push(item);
                 }
-                if(join_type == joinData[i].key){
-                    this.joinName = joinData[i].tip || joinData[i].name;
-                }
-            }
-            return joinViewData || [];
+            })
+            return viewData;
         },
-        tagData(){
-            let join_type = this.taskDetail.join_type || "";
-            let selectIds = this.selectIds || {};
-            let result = [];
-            if(join_type){
-                if(join_type == 'structure'){
-                    if(this._structureType == 'edu_area' || this._structureType == 'edu_street'){
-                        result = selectIds["school"] || [];
-                    } else {
-                        result = selectIds["class"] || [];
-                    }
-                } else if(join_type == 'member'){
-                    let data = [...(selectIds["teacher"] || []), ...(selectIds["student"] || [])]
-                    result = data || [];
-                }
+        joinName(){
+            let join_type = this.taskDetail.join_type;
+            if(join_type.includes("school")){
+                return "关联学校"
+            } else if(join_type.includes("class")){
+                return "关联班级"
             }
-            return result;
-        }
+        },
+        joinDatas(){
+            let taskDetail = this.taskDetail || {};
+            let data = [], joinIds = [];
+            if(taskDetail.join_type){
+               switch(taskDetail.join_type){
+                case "all_school":
+                case "special_school":
+                    data = this.selectIds['school'];
+                    break;
+                case "all_class":
+                case "special_class":
+                    data = this.selectIds['class'];
+                    break;
+               }
+            }
+            if(data instanceof Array){
+                data.map((item)=>{
+                    if(item.id){
+                        joinIds.push(item.id);
+                    }
+                })
+            }
+            this.taskDetail.join_ids = joinIds;
+            this.joinIds = joinIds;
+            return data;
+        },
     },
     methods: {
+        getOffiaccountInfo(){
+            let structure_id = this.taskDetail.structure_id || 0;
+            return this.$MainApi.getOffiaccountInfo({
+                data:{
+                    structure_id: structure_id
+                }
+            }).then((res)=>{
+                let data = res.data || {};
+                this.offiaccountInfo = data.info || null;
+                if(!data.info){
+                    this.taskDetail.subscribe_offiaccount = 0;
+                }
+            })
+        },
         loadData() {
             let taskId = Number(this.pageQuery.taskId) || 0;
             if (!taskId) {
-                return;
+                return Promise.reject();
             }
-            this.$MainApi.studyTaskInfo({
+            return this.$MainApi.studyTaskInfo({
                     data: {
                         id: taskId,
                     },
@@ -181,99 +257,40 @@ export default {
                         items.dateTime = [items.start_time, items.end_time];
                         this.taskDetail = items;
                         this.courseInfo = course_data;
-                        this.initJoinData(items.join_type, items.join_data, items.join_ids);
+                        this.initJoinData(items);
                     }
                 });
         },
-        initJoinData(joinType, joinData, joinIds){
-            if(joinType == 'structure'){
-                if(joinData.length){ // 数据增加不可取消
-                    joinData.map((item)=>{
-                        item._disabled = true;
-                    })
-                }
-                this.selectIds[(this._structureType == 'edu_area' || this._structureType == 'edu_street') ? 'school' : 'class'] = joinData || []
-            } else if(joinType == 'role'){
-                if(joinIds.length){
-                    this.roleList.map((item)=>{
-                        if(joinIds.indexOf(item.key) != -1){
-                            this.$set(item, '_disabled', true)
-                        }
-                    })
-                }
-                console.log("roleList", this.roleList)
-                this.selectIds['role'] = joinIds
-            } else {
-                if(joinData.student){
-                    let student = joinData.student || [];
-                    student.map((item)=>{
-                        item.type = 'student';
-                        item._disabled = true;
-                    })
-                }
-                if(joinData.teacher){
-                    let teacher = joinData.teacher || [];
-                    teacher.map((item)=>{
-                        item.type = 'teacher';
-                        item._disabled = true;
-                    })
-                }
-                this.selectIds = joinData;
+        initJoinData(items){
+            let joinType = items.join_type || '';
+            let joinData = items.join_data || [];
+            if(joinData instanceof Array){
+                joinData.map((item)=>{
+                    item._disabled = true;
+                })
             }
-        },
-        getJoinIds(){
-            let taskDetail = this.taskDetail || {};
-            let join_type = taskDetail.join_type;
-            let data = [],teacher = [], student = [];
-            let join_ids = [], hasData = false;
-            switch(join_type){
-                case "structure":
-                    data = this.selectIds[(this._structureType == 'edu_area' || this._structureType == 'edu_street') ? 'school' : 'class']
-                    data.map((item)=>{
-                        if(item.id){
-                            join_ids.push(item.id)
-                        }
-                    })
-                    hasData = data.length > 0
+            switch(joinType){
+                case 'special_school':
+                    this.selectIds['school'] = joinData || [];
                     break;
-                case "member":
-                    teacher = this.selectIds['teacher'] || [];
-                    student = this.selectIds['student'] || [];
-                    join_ids = { teacher: [], student: [] }
-                    teacher.map((item)=>{
-                        if(item.id){
-                            join_ids.teacher.push(item.id)
-                        }
-                    })
-                    student.map((item)=>{
-                        if(item.id){
-                            join_ids.student.push(item.id)
-                        }
-                    })
-                    hasData = teacher.length > 0 || student.length > 0
-                    break;
-                case "role":
-                    join_ids = this.selectIds['role'] || [];
-                    hasData = join_ids.length > 0
+                case 'special_class':
+                    this.selectIds['class'] = joinData || [];
                     break;
             }
-            return hasData ? join_ids : false;
+            if(joinType.includes("all") && items.id){
+                this.isLimitJoinType = true;
+            }
         },
         save() {
             this.$refs["taskDetailForm"].validate((valid) => {
+                console.log("valid", this.taskDetail);
                 if (valid) {
-                    let join_ids = this.getJoinIds();                    
-                    if(!join_ids) {
-                        this.$Message.warning("请选择可参与人员");
-                        return;
-                    }
                     let req = Number(this.pageQuery.taskId) ? 'studyTaskUpdate' : 'studyTaskAdd';
                     this.pageLoading = true;
                     this.$MainApi[req]({
                         data: {
                             ...this.taskDetail,
-                            logo: this.taskDetail.logo || this.courseInfo.cover,
-                            join_ids: join_ids
+                            logo: this.taskDetail.logo || this.courseInfo.cover
                         },
                         other: { isShowLoad: true },
                     }).then((res) => {
@@ -325,15 +342,17 @@ export default {
         },
         handleSelect(){
             let join_type = this.taskDetail.join_type || "";
+            // all_school, special_school, all_class, special_class
             switch(join_type){
-                case "structure": // 区管理员选择学校组织，学校管理员选择班级组织
+                case "all_school":
+                case "special_school":
                     this.$selectModule({
-                        mode: (this._structureType == 'edu_area' || this._structureType == 'edu_street') ? "school-select" : "class-select",
+                        mode: "school-select",
                         props: {
                             type: "checkbox",
-                            data: (this._structureType == 'edu_area' || this._structureType == 'edu_street') ? this.selectIds["school"] : this.selectIds["class"],
+                            data: this.joinDatas
                         },
-                        ok:(data)=>{
+                        ok: (data)=>{
                             if(data.length){
                                 let ids = [];
                                 for(let i = 0; i < data.length; i++){
@@ -341,33 +360,29 @@ export default {
                                        ids.push(data[i].id) 
                                     }
                                 }
-                                this.selectIds[(this._structureType == 'edu_area' || this._structureType == 'edu_street') ? 'school' : 'class'] = data;
+                                this.selectIds['school'] = data;
                             }
                         }
                     })
                     break;
-                case "member":
-                    this.$UIModule({
-                        mode: "member-view",
+                case "all_class":
+                case "special_class":
+                    this.$selectModule({
+                        mode: "class-select",
                         props: {
-                            isHideTabs: false,
-                            multiple: true
+                            type: "checkbox",
+                            data: this.joinDatas
                         },
-                        options: {
-                            selectData: [...(this.selectIds['teacher'] || []),...(this.selectIds['student'] || [])],
-                        },
-                        success:(data)=>{
-                            let student = [], teacher = [];
-                            for(let i = 0; i < data.length; i++){
-                                let item = data[i] || {};
-                                if(item.type == 'student'){
-                                    student.push(item);
-                                } else if(item.type == 'teacher'){
-                                    teacher.push(item)
+                        ok: (data)=>{
+                            if(data.length){
+                                let ids = [];
+                                for(let i = 0; i < data.length; i++){
+                                    if(data[i].id){
+                                       ids.push(data[i].id) 
+                                    }
                                 }
+                                this.selectIds['class'] = data;
                             }
-                            this.selectIds["student"] = student;
-                            this.selectIds["teacher"] = teacher;
                         }
                     })
                     break;
@@ -376,23 +391,14 @@ export default {
         },
         handleDeleteTag(data){
             let join_type = this.taskDetail.join_type || "";
-            let teacher = [], student = [];
             switch(join_type){
-                case "structure":
-                    this.selectIds[(this._structureType == 'edu_area' || this._structureType == 'edu_street') ? 'school' : 'class'] = data || [];
+                case "all_school":
+                case "special_school":
+                    this.selectIds['school'] = data;
                     break;
-                case "member":
-                    if(data instanceof Array){
-                        data.map((item)=>{
-                            if(item.type == 'teacher'){
-                                teacher.push(item)
-                            } else if(item.type == 'student'){
-                                student.push(item)
-                            }
-                        })
-                    }
-                    this.selectIds["teacher"] = teacher || [];
-                    this.selectIds["student"] = student || [];
+                case "all_class":
+                case "special_class":
+                    this.selectIds['class'] = data;
                     break;
             }
         },
@@ -415,17 +421,13 @@ export default {
         radioClick(value, key, item){
             if(this.isCanEdit(key)){
                 this.$set(this.taskDetail, key, value);
-                // switch(key){
-                //     case "join_type":
-                //         this.joinName = item.name || "";
-                //         break;
-                // }
             }
-            
         },
     },
     mounted() {
-        this.loadData();
+        this.loadData().finally(()=>{
+            this.getOffiaccountInfo();
+        })
     },
 };
 </script>

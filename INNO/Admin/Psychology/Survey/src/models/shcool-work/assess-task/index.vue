@@ -1,10 +1,7 @@
 <template>
     <hold-layout :isFull="true" class="assessment-task">
-        <rewrite-area class="flex-b-c">
-            <div></div>
-            <Button icon="md-add" @click="editTask()" v-hasAction="'assessment_tasks_add'">创建活动</Button>
-        </rewrite-area>
-        <Table ref="myTable" class="full-table" :columns="columns" :data="list" border :loading="tableLoading" :row-class-name="rowClassName">
+        <searchFrom :searchForm="searchForm" @search="loadData()" @editTask="editTask()"></searchFrom>
+        <rewrite-table ref="myTable" class="full-table" :columns="columns" :data="list" :loading="tableLoading" :row-class-name="rowClassName">
             <template slot="time" slot-scope="{ row }">
                 <template v-if="row.limit_time==0">
                     不限制
@@ -41,7 +38,7 @@
                     <!-- <a class="operate" @click="getTaskResult(row)" v-hasAction="['assessment_tasks_result']">测评结果</a> -->
                 </div>
             </template>
-        </Table>
+        </rewrite-table>
         <rewrite-page slot="footer" :total="total" :current="page" :page-size="pageSize" :page-size-opts="pageSizeOpts" @on-change="e=>loadData(e)" @on-page-size-change="handlePageSizeChange" show-sizer show-elevator show-total transfer></rewrite-page>
     </hold-layout>
 </template>
@@ -49,13 +46,23 @@
 <script>
 import ListMixin from "@/helper/mixin/list-mixin";
 import mixins from "./mixins";
+import searchFrom from "./search-form.vue";
 import Conf from "@/config";
 export default {
+    components: { searchFrom },
     name: "assessTask",
     mixins: [ListMixin, mixins],
     data() {
         return {
             h5Admin: Conf.H5_ADMIN,
+            searchForm: {
+                searchq: "",
+                state: -1,
+                limitTime: -1,
+                time: "",
+                startTime: "",
+                endTime: ""
+            }
         };
     },
     methods: {
@@ -69,6 +76,7 @@ export default {
                 .assessmentTaskList({
                     data: {
                         ...extraData,
+                        ...this.searchForm
                     },
                 })
                 .then((res) => {
@@ -141,14 +149,14 @@ export default {
                                 schoolId: row.school_id,
                             },
                         },
-                        {
-                            title: "学号+密码登录链接",
-                            path: this.h5Admin + "/pages/startup/startup",
-                            params: {
-                                id: row.id,
-                                schoolId: row.school_id,
-                            },
-                        },
+                        // {
+                        //     title: "学号+密码登录链接",
+                        //     path: this.h5Admin + "/pages/startup/startup",
+                        //     params: {
+                        //         id: row.id,
+                        //         schoolId: row.school_id,
+                        //     },
+                        // },
                     ],
                 },
             });

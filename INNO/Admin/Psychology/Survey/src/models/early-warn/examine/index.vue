@@ -1,9 +1,19 @@
 <template>
     <hold-layout :isFull="true">
         <div class="activity-name" v-if="activityInfo.activityName">{{activityInfo.activityName}}</div>
-        <searchForm class="m-b-10" :stateList="stateList" :searchForm="searchForm" @search="loadData"  @exportHandle="exportHandle"></searchForm>
-        <count-info style="width: 100%;" type="detail" :isRefresh="checkPage == 1" :currState="currState" :base-info="activityInfo.baseInfo"></count-info>
-        <Table ref="myTable" class="full-table showBorder flex-table" :columns="columns" :data="list" border :loading="tableLoading">
+        <rewrite-screen 
+        :base="screenData.base"
+        :extra="screenData.extra"
+        :more="screenData.more"
+        :searchForm="searchForm" 
+        @search="loadData()">
+            <gauge-range slot="base" class="m-t-10 m-b-10" :searchForm="searchForm" @on-change="loadData()"></gauge-range>
+        </rewrite-screen>
+        <!-- <searchForm class="m-b-10" :stateList="stateList" :searchForm="searchForm" @search="loadData"  @exportHandle="exportHandle"></searchForm>-->
+        <count-info style="width: 100%;" type="detail" :isRefresh="checkPage == 1" :currState="currState" :base-info="activityInfo.baseInfo"></count-info> 
+        <!-- flex-table -->
+        <rewrite-table ref="myTable" class="full-table showBorder " :columns="columns" :data="list" :loading="tableLoading" :span-method="setSpan" border>
+        <!-- <Table ref="myTable" class="full-table showBorder " :columns="columns" :data="list" border :loading="tableLoading" :span-method="setSpan"> -->
             <template slot="student" slot-scope="{ row, index }">
                 <div class="range-item">
                     {{row.get_record && row.get_record.student_name || '--'}}
@@ -25,76 +35,80 @@
                 </div>
             </template>
             <template slot="school_year" slot-scope="{ row, index }">
-                <div class="range-item">
+                <div class="range-item w-nowrap">
                     {{row.get_record && row.get_record.school_year || '--'}}
                 </div>
             </template>
             <template slot="class" slot-scope="{ row, index }">
-                <div class="range-item">
+                <div class="w-nowrap">
                     {{row.get_record && row.get_record.class_grade || ''}}{{row.get_record && row.get_record.class_name || '--'}}
+                </div>
+                <div class="w-nowrap">
+                    <p class="state-tip" v-if="parseInt(pageQuery.activityId) && row.get_record && (row.get_record.student_state == 2 || row.get_record.student_state == 3)">{{row.get_record.student_state == 2 ? '已毕业' : '已转校'}}</p>
                 </div>
             </template>
             <template slot="create_time" slot-scope="{ row, index }">
                 <div class="range-box">
-                    <div class="range-item" v-for="(item,item_i) in row.range" :key="item_i">
-                        {{item.create_time||""}}
+                    <div class="range-item" >
+                        {{row.create_time||""}}
                     </div>
                 </div>
             </template>
             <template slot="model" slot-scope="{ row, index }">
                 <div class="range-box">
-                    <div class="range-item wideLineHeight" v-for="(item,item_i) in row.range" :key="item_i">
-                        <div class="text-flow2" style="line-height:normal;">{{item.model_name||""}}</div>
+                    <div class="range-item wideLineHeight" >
+                        <div class="text-flow2" style="line-height:normal;">{{row.model_name||"--"}}</div>
                     </div>
                 </div>
             </template>
             <template slot="points_str" slot-scope="{ row, index }">
-                <div class="range-box">
-                    <div class="range-item wideLineHeight" v-for="(item,item_i) in row.range" :key="item_i">
-                        {{item.points_str||""}}
+                <div class="range-box ">
+                    <div class="range-item" >
+                        {{(row.mainRuleCount > 0) ? (row.points_str || "--") : "--"}}
                     </div>
                 </div>
             </template>
             <template slot="state_str" slot-scope="{ row, index }">
                 <div class="range-box">
-                    <div style="line-height: 30px;" class="range-item" v-for="(item,item_i) in row.range" :key="item_i">
+                    <div style="line-height: 30px;" class="range-item" >
                         <div>
-                            {{item.state_str}}
+                            {{row.state_str}}
                         </div>
-                        <div v-if="item.show_state_str">{{item.show_state_str}}</div>
+                        <div v-if="row.show_state_str">{{row.show_state_str}}</div>
                     </div>
                 </div>
             </template>
             <template slot="getrank" slot-scope="{ row, index }"> 
                 <div class="range-box">
-                    <div class="range-item" v-for="(item,item_i) in row.range" :key="item_i">
-                        {{item.show_level_name||""}}
+                    <div class="range-item" >
+                        {{row.show_level_name||""}}
                     </div>
                 </div>
             </template>
             <template slot="coefficient_points" slot-scope="{ row, index }">
                 <div class="range-box">
-                    <div class="range-item wideLineHeight" v-for="(item,item_i) in row.range" :key="item_i">
-                        {{item.coefficient_points||""}}
+                    <div class="range-item wideLineHeight" >
+                        {{(row.mainRuleCount > 0) ? (row.coefficient_points || '--') : '--'}}
                     </div>
                 </div>
             </template>
             <template slot="handle" slot-scope="{ row, index }">
                 <div class="range-box">
-                    <div style="line-height: 30px;" class="range-item" v-for="(item,item_i) in row.range" :key="item_i">
+                    <div style="line-height: 30px;" class="range-item" >
                         <div class="operate-area">
-                            <a class="operate" @click="getPsychicFile(item)" v-hasAction="'forewarning_survey_check_view_file'">查看档案</a>
+                            <a class="operate" @click="getPsychicFile(row)" v-hasAction="'forewarning_survey_check_view_file'">查看档案</a>
                         </div>
                         <div class="operate-area">
-                            <a class="operate" @click="examine(item)" v-hasAction="[item.state == 0, 'forewarning_survey_sign_grade']">审核标记</a>
+                            <a class="operate" @click="examine(row)" v-hasAction="[row.state == 0, 'forewarning_survey_sign_grade']">审核标记</a>
                         </div>
                         <div class="operate-area">
-                            <a class="operate" @click="checkAnswer(item)" v-hasAction="true">查看答案</a>
+                            <a class="operate" @click="checkAnswer(row)" v-hasAction="true">查看答案</a>
                         </div>
                     </div>
                 </div> 
             </template>
-        </Table>
+        <!-- </Table> -->
+        </rewrite-table>
         <rewrite-page slot="footer" :total="total" :current="page" :page-size="pageSize" :page-size-opts="pageSizeOpts" @on-change="e=>loadData(e)" @on-page-size-change="handlePageSizeChange" show-sizer show-elevator show-total transfer></rewrite-page>
         <editExamine ref="editExamineRef" @confirm="handleUpdate"></editExamine>
         <mpNotice :ref="'notice' + item" v-for="item in jobIdCol" :key="item"></mpNotice>
@@ -103,36 +117,19 @@
 
 <script>
 import ListMixin from "@/helper/mixin/list-mixin";
-import searchForm from "./search-form.vue";
+// import searchForm from "./search-form.vue";
 import mixins from "./mixins";
 import editExamine from "./edit-examine/index.vue";
 import mpNotice from "@/components/main-components/mq-notice/mq-notice";
 import CountInfo from "../count-info.vue";
+import gaugeRange from "./cps/gauge-range.vue";
 export default {
     name: "studentIndex",
     mixins: [ListMixin, mixins],
-    components: { searchForm, editExamine,mpNotice,CountInfo },
+    components: { editExamine, gaugeRange, mpNotice, CountInfo },
     data() {
         return {
-        jobIdCol:[],
-	    stateList: [
-                {
-                    id: -1,
-                    name: "全部",
-                },
-                {
-                    id: 0,
-                    name: "未审核",
-                },
-                {
-                    id: 1,
-                    name: "审核通过",
-                },
-                {
-                    id: 2,
-                    name: "复核已通过",
-                },
-            ],
+            jobIdCol:[],
             searchForm: {
                 searchq: "",
                 model_id:'',
@@ -152,6 +149,7 @@ export default {
                 baseInfo:{}
             },
             checkPage:1,
+            keySpan: {}
         };
     },
     computed:{
@@ -183,7 +181,8 @@ export default {
                     data: {
                         ...this.searchForm,
                         ...extraData,
-                        activityid: this.pageQuery.activityId
+                        activityid: parseInt(this.pageQuery.activityId),
+                        show_state: parseInt(this.pageQuery.activityId) ? 1 : 0
                     },
                     other: {
                         isErrorMsg: true
@@ -200,23 +199,52 @@ export default {
                             user_count:data.user_count||0,
                         }
                         let items = data.items || [];
-                        let obj = {},list=[];
-                        items = items.forEach(item=>{
+                        this.keySpan = {};
+                        items.map((item)=>{
                             item.show_level_name = this.getLevelName(item);
                             item.show_state_str = this.getStateStr(item);
                             let label = ''+(item.record_id)+(item.user_id);
-                            obj[label] || (obj[label] = {...item,range:[]})
-                            obj[label].range.push(item);
+                            if(!this.keySpan[label]){
+                                this.keySpan[label] = []
+                            }
+                            this.keySpan[label].push(item)
                         })
-                        for(let item in obj){
-                            list.push(obj[item]);
-                        }
+                        // let obj = {},list=[];
+                        // items = items.forEach(item=>{
+                        //     item.show_level_name = this.getLevelName(item);
+                        //     item.show_state_str = this.getStateStr(item);
+                        //     let label = ''+(item.record_id)+(item.user_id);
+                        //     obj[label] || (obj[label] = {...item,range:[]})
+                        //     obj[label].range.push(item);
+                        // })
+                        // for(let item in obj){
+                        //     list.push(obj[item]);
+                        // }
+                        // console.log("list", list)
                         this.data = {
                             total: data.total,
-                            list: list,
+                            list: items,
                         };
                     }
                 });
+        },
+        setSpan({ row, column, rowIndex, columnIndex }){
+            let label = ''+(row.record_id)+(row.user_id);
+            if(column.isRow){
+                return [1, 1]
+            } else {
+                let keySpan = this.keySpan || {};
+                let labelSpan = keySpan[label];
+                if(labelSpan && labelSpan.length){
+                    if((row.model_id || row.model_id == 0) && row.model_id == labelSpan[0].model_id){
+                        return [labelSpan.length, 1];
+                    } else {
+                        return [0, 0]
+                    }
+                } else {
+                    return [1, 1]
+                }
+            }
         },
         getPsychicFile(row) {
             this.$UIModule({
@@ -250,7 +278,8 @@ export default {
             return this.$MainApi.forewarningCheckExport({
                 data: {
                     ...this.searchForm,
-                    activityid:this.pageQuery.activityId||0,
+                    activityid: parseInt(this.pageQuery.activityId) || 0,
+                    show_state: parseInt(this.pageQuery.activityId) ? 1 : 0
                 },
                 other: {
                     isErrorMsg: true
@@ -330,5 +359,17 @@ export default {
     &.wideLineHeight{
         line-height: 60px;
     }
+}
+.state-tip{
+    display: inline-block;
+    padding: 2px 20px;
+    background: #EFFCE7;
+    border-radius: 3px;
+    margin-top: 5px;
+    font-size: 12px;
+    font-family: PingFangSC-Regular, PingFang SC;
+    font-weight: 400;
+    color: #14A93C;
+    line-height: 17px;
 }
 </style>

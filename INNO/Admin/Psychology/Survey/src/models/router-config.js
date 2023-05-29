@@ -3,6 +3,7 @@ const routeMenusKey = {
     appraisalActivity: "appraisalActivity",
     studentFile: "studentFile",
     assessmentTasks: "assessmentTasks",
+    areaMaintenance: "areaMaintenance",
     streetMaintenance: "streetMaintenance",
     classMaintenance: "classMaintenance",
     schoolMaintenance: "schoolMaintenance",
@@ -21,8 +22,10 @@ const routeMenusKey = {
     transferCourtyard: "transferCourtyard",
     studyTask: "studyTask",
     teacherManagement: "teacherManagement",
+    studentManagement: "studentManagement",
     basicSetting: "basicSetting",
-    operationLog: "operationLog"
+    operationLog: "operationLog",
+    zoneSet: "zoneSet",
 }
 /**
  * meta code ==>该页面的acitonCode（只为菜单跳转, 并非必须）
@@ -150,13 +153,23 @@ const surveyActivityRoutes = [
 //
 const studentFileRoutes = [
     {
-        name: "studentFile",
-        path: "/studentFile",
+        name: "studentManage",
+        path: "/studentManage",
         component: () => import(/*webpackChunkName: "student-file"*/"@/models/shcool-work/student/index"),
         meta: {
             code: "",
+            menu: routeMenusKey['studentManagement'],
+            title: "学生管理"
+        }
+    },
+    {
+        name: "studentFile",
+        path: "/studentFile",
+        component: () => import(/*webpackChunkName: "student-file"*/"@/models/shcool-work/student-files/index"),
+        meta: {
+            code: "",
             menu: routeMenusKey['studentFile'],
-            title: "学生档案"
+            title: "心理档案列表"
         }
     },
     {
@@ -342,6 +355,15 @@ const schoolMaintRoutes = [
             menu: routeMenusKey['schoolMaintenance'],
             title: "学校编辑"
         } 
+    },
+    {
+        name: "schoolClassMaint",
+        path: "/schoolClassMaint",
+        component: () => import(/*webpackChunkName: "school-class-maint"*/"@/models/shcool-work/class/index"),
+        meta: {
+            menu: routeMenusKey['schoolMaintenance'],
+            title: "班级管理"
+        }  
     }
 ]
 
@@ -364,6 +386,18 @@ const streetMaintRoutes = [
             title: "街道编辑"
         } 
     }
+]
+
+const areaMaintRoutes = [
+    {
+        name: "areaMaint",
+        path: "/areaMaint",
+        component: () => import(/*webpackChunkName: "street-maint"*/"@/models/organize/area/index"),
+        meta: {
+            menu: routeMenusKey['areaMaintenance'],
+            title: "区维护"
+        } 
+    },
 ]
 
 const earlyWarnRoutes = [
@@ -511,6 +545,7 @@ const recordsCenterRoutes = [
         meta: {
             hideTitle: true, 
             hideBreadcrumb: true,
+            bgColor: "#06002A",
             menu: routeMenusKey['dataDriveCompartment'],
             title: "数据驾驶舱"
         } 
@@ -620,7 +655,7 @@ const transferChannelRoutes = [
         component: () => import(/*webpackChunkName: "transfer-channel-index"*/"@/models/transfer-channel/index"),
         meta: {
             menu: routeMenusKey['transferCourtyard'],
-            title: "转院列表"
+            title: "门诊导航"
         } 
     },
     {
@@ -651,6 +686,15 @@ const curriculumRoutes = [
         meta: {
             menu: routeMenusKey['studyTask'],
             title: "课程任务"
+        } 
+    },
+    {
+        name: "curriculumTaskSituationSchool",
+        path: "/curriculumTaskSituationSchool",
+        component: () => import(/*webpackChunkName: "curriculum-task-situation-school"*/"@/models/curriculum/task/situation/school-list/index"),
+        meta: {
+            menu: routeMenusKey['studyTask'],
+            title: "课程概况学校列表"
         } 
     },
     {
@@ -706,6 +750,61 @@ const baseConfigRoutes = [
     },
 ]
 
+const zoneSetRoutes = [
+    {
+        name: "zoneSetList",
+        path: "/zoneSetList",
+        component: () => import(/*webpackChunkName: "zone-set-list"*/"@/models/zone-set/index"),
+        meta: {
+            menu: routeMenusKey['zoneSet'],
+            title: "专区设置"
+        } 
+    },
+    {
+        name: "zoneSetDetail",
+        path: "/zoneSetDetail",
+        component: () => import(/*webpackChunkName: "zone-set-detail"*/"@/models/zone-set/detail"),
+        meta: {
+            menu: routeMenusKey['zoneSet'],
+            title: "趣味测试专区"
+        } 
+    },
+]
+
+const askTicketsRoutes = [
+    {
+        name: "askTicketsList",
+        path: "/askTicketsList",
+        component: () => import(/*webpackChunkName: "ask-tickets-list"*/"@/models/ask-tickets/index"),
+        meta: {
+            menu: routeMenusKey['zoneSet'],
+            title: "调查问券"
+        } 
+    },
+    {
+        name: "askTicketsDetail",
+        path: "/askTicketsDetail",
+        component: () => import(/*webpackChunkName: "ask-tickets-detail"*/"@/models/ask-tickets/edit-ask-tickets"),
+        meta: {
+            hideTitle: true,
+            hideBreadcrumb: true,
+            menu: routeMenusKey['zoneSet'],
+            title: "调查问券"
+        } 
+    },
+    {
+        name: "askTicketsResult",
+        path: "/askTicketsResult",
+        component: () => import(/*webpackChunkName: "ask-tickets-result"*/"@/models/ask-tickets/tickets-result/index"),
+        meta: {
+            hideTitle: true,
+            hideBreadcrumb: true,
+            menu: routeMenusKey['zoneSet'],
+            title: "问券结果"
+        } 
+    },
+]
+
 const operateLogsRoutes = [
     {
         name: "operateLogList",
@@ -726,6 +825,7 @@ const routes = [
     ...gaugeRoutes,
     ...surveyActivityRoutes,
     ...studentFileRoutes,
+    ...areaMaintRoutes,
     ...assessTastRoutes,
     ...classMaintRoutes,
     ...schoolMaintRoutes,
@@ -742,7 +842,9 @@ const routes = [
     ...curriculumRoutes,
     ...teacherRoutes,
     ...baseConfigRoutes,
-    ...operateLogsRoutes
+    ...operateLogsRoutes,
+    ...zoneSetRoutes,
+    ...askTicketsRoutes
 ]
 
 function setMenuRoutes(){

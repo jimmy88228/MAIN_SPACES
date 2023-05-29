@@ -1,7 +1,7 @@
 <template>
     <hold-layout :isFull="true">
         <searchForm :searchForm="searchForm" @search="loadData" @addCaring="addCaring"></searchForm>
-        <Table ref="myTable" class="full-table" :columns="columns" :data="list" border :loading="tableLoading">
+        <rewrite-table ref="myTable" class="full-table" :columns="columns" :data="list" :loading="tableLoading">
             <template slot="student_name" slot-scope="{ row, index }">
                 {{row.get_student && row.get_student.student_name || "--"}}
             </template>
@@ -29,7 +29,7 @@
                     <a class="operate" @click="checkMeddle(row)" v-hasAction="'forewarning_survey_intervene_record'">干预记录</a>
                 </div>
             </template>
-        </Table>
+        </rewrite-table>
         <rewrite-page slot="footer" :total="total" :current="page" :page-size="pageSize" :page-size-opts="pageSizeOpts" @on-change="e=>loadData(e)" @on-page-size-change="handlePageSizeChange" show-sizer show-elevator show-total transfer></rewrite-page>
         <editCaring ref="editCaringRef" @confirm="handleUpdate"></editCaring>
     </hold-layout>

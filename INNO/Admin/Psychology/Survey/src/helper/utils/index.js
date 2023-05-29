@@ -47,6 +47,24 @@ export default {
             window.sessionStorage.removeItem(key);
         }
     },
+    local: {
+        get: function (key) {
+            let data = window.localStorage.getItem(key);
+            if (data == null) {
+                return null;
+            } else if (data == "undefined") {
+                return null;
+            } else {
+                return JSON.parse(data);
+            }
+        },
+        set: function (key, value) {
+            window.localStorage.setItem(key, JSON.stringify(value));
+        },
+        remove: function (key) {
+            window.localStorage.removeItem(key);
+        }
+    },
     copyText: (function () {
         if (!navigator.clipboard) {
             return function (text) {
@@ -81,6 +99,30 @@ export default {
         // 作为返回值返回
         return [h,m,s]
     },
+    // 获取地址栏或者特定路径参数
+    getUrlQuery(name, url){
+        url = url || window.location.href || "";
+        if(!url) { return "" }
+        let params = JSON.parse(`{"${decodeURI(url.split("?")[1]).replace(/"/g, '\\"').replace(/&/g, '","').replace(/=/g, '":"')}"}`);
+        if(name){
+            return params[name] || "";
+        }
+        return params;
+    },
+    // 检测对象是否为空
+    isEmpty: obj => Reflect.ownKeys(obj).length === 0 && obj.constructor === Object,
+    // 防抖
+    debounce(fn, delay){
+        let flag = false;
+        return function(){
+            if(flag) true;
+            flag = true;
+            setTimeout(()=>{
+                fn();
+                flag = false;
+            },delay)
+        }
+    }
 };
 // 复制
 function fallbackCopyTextToClipboard(text) {

@@ -43,11 +43,12 @@ export default {
         };
     },
     methods: {
-        showModal({ adminId, classId, className, isRegister }) {
+        showModal({ adminId, classId, className, schoolYear, isRegister }) {
             this.drawerShow = true;
             this.isRegister = !!isRegister;
             this.$set(this.adminInfo, "admin_id", adminId || 0);
             this.$set(this.adminInfo, "class_name", className || "");
+            this.$set(this.adminInfo, "school_year", schoolYear || "");
             this.classId = classId || 0;
             this.getRole();
             this.loadData(adminId);

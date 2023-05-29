@@ -10,7 +10,7 @@
                         <Option v-for="item in stateList" :key="item.id" :value="item.id">{{item.name}}</Option>
                     </Select>
                 </FormItem>
-                <linkageSelect class="m-t-10 m-b-10" :isShowSchoolYear="true" :searchForm="searchForm" @on-change="search"></linkageSelect>
+                <linkageSelect class="m-t-10 m-b-10" :isShowSchoolYear="true" :searchForm="searchForm" @on-change="search" :hideSelect="['area', 'street', 'grade-type']"></linkageSelect>
                 <gauge-range class="m-t-10 m-b-10" :searchForm="searchForm" @on-change="search"></gauge-range>
             </div>
             <div>

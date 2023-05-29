@@ -81,12 +81,14 @@ export default {
             isShowCode: false,
             appletList: [],
             appletInfo: {
+                appletId: 0,
                 appid: 0,
                 appname: "",
             },
             path: "pages/index/index",
             params: {},
             codeId: "",
+            codeType: "",
             codeUrl: "",
             spinShow: false,
             excessivePage: "pages/startup/startup",
@@ -108,10 +110,11 @@ export default {
         },
     },
     methods: {
-        showModal({ path, params, codeId, listParams = {} }) {
+        showModal({ path, params, codeId, listParams = {}, codeType }) {
             if (path) this.path = path;
             if (params) this.params = params;
             if (codeId) this.codeId = codeId;
+            if (codeType) this.codeType = codeType;
             this.listParams = listParams || {}
             this.getAppletData();
         },
@@ -123,6 +126,9 @@ export default {
                     if(res.code){
                         let data = res.data || {};
                         let items = data.items || [];
+                        items.map((item)=>{
+                            item.get_app = item.get_app || {};
+                        })
                         this.appletList = items;
                         if(items.length > 0){
                             if(items.length == 1){
@@ -141,6 +147,7 @@ export default {
         },
         changeApplet(value){
             if(!value){
+                this.appletInfo.appletId = 0;
                 this.appletInfo.appid = 0;
                 this.appletInfo.appname = '';
                 return;
@@ -150,8 +157,9 @@ export default {
                 let item = appletList[i] || {};
                 if(item.id == value){
                     if(this.appletInfo.appid != value){
-                       this.appletInfo.appid = value; 
+                       this.appletInfo.appid = value;
                     }
+                    this.appletInfo.appletId = item.get_app.app_id;
                     this.appletInfo.appname = item.app_name;
                     break;
                 }
@@ -159,7 +167,7 @@ export default {
         },
         getCodeData() {
             let appletInfo = this.appletInfo || {};
-            if(!appletInfo.appid){
+            if(!appletInfo.appid || !appletInfo.appletId){
                 this.$Message.warning("请选择小程序");
                 return;
             }
@@ -178,6 +186,7 @@ export default {
                         data: this.params && JSON.stringify(this.params),
                         excessive_page: this.excessivePage,
                         target_page: this.path,
+                        content_type: this.codeType
                     },
                 })
                 .then((res) => {

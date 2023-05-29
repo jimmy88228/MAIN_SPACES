@@ -4,6 +4,9 @@
     <div slot="header">导出数据</div>
     <div class="export-survey-cont">
       <Form :label-width="100">
+        <FormItem label="选择学校" prop="schoolId" v-if="!schoolId && !_structureLimit(['edu_school', 'edu_class'])">
+          <data-select size="large" class="base-320" type="activity-school" :params="{ activityid: pageQuery.activityId }" v-model="exportInfo.schoolId"></data-select>
+        </FormItem>
         <FormItem label="导出类型">
           <rewrite-choose :data="exportTypes" v-model="exportInfo.exportType" @on-change="changeExportType"></rewrite-choose>
         </FormItem>
@@ -46,7 +49,7 @@
           </FormItem>
           <FormItem label="选择维度" v-show="exportInfo.selectOption == 2 && dimensionData.length>0">
             <div class="base-320">
-              <data-select size="large" :params="{ model_id:  exportInfo.selectModel}" :isAuto="false" type="dimension" ref="dimensionSelectRef" v-model="exportInfo.dimensionalityData" @getData="getDimensionData" :multiple="true"></data-select>
+              <data-select size="large" :params="{ model_id:  exportInfo.selectModel}" :isAuto="false" :isHoldData="false" type="dimension" ref="dimensionSelectRef" :isShowDefault="false" v-model="exportInfo.dimensionalityData" @getData="getDimensionData" :multiple="true"></data-select>
             </div>
           </FormItem>
         </div>
@@ -82,6 +85,7 @@ export default {
     return {
       jobIdCol: [],
       exportInfo: {
+        schoolId: 0,
         exportType: 1, // 1.活动数据 2.报警名单 3.参与情况
         selectModel: [], // 选择量表
         selectOption: 1, // 在exportType为1的情况下1.按文字 2.按分数；为2情况下1.按总分 2.按维度;为3的情况下1.未参与 2.未完成 3.已完成
@@ -155,7 +159,10 @@ export default {
             break;
       }
       this.exportInfo.dimensionalityData = [];
-      initFirst && this.$refs["dimensionSelectRef"] && this.$refs["dimensionSelectRef"].getData();
+      this.$nextTick(()=>{
+        initFirst && this.$refs["dimensionSelectRef"] && this.$refs["dimensionSelectRef"].getData();
+      })
+      
     },
     getDimension(){
       this.$nextTick(()=>{
@@ -186,6 +193,9 @@ export default {
           }
           break;
       }
+      if(!warn && !this.schoolId && !exportInfo.schoolId){
+        warn = "无效学校Id";
+      }
       console.log("warn", warn)
       if(warn){
         this.$Message.warning(warn);
@@ -193,7 +203,7 @@ export default {
       }
       let reqData = {
         activityid: this.activityId,
-        school_id: this.schoolId,
+        school_id: this.schoolId || exportInfo.schoolId,
         export_type: exportInfo.exportType,
         select_model: selectModel instanceof Array ? selectModel : [selectModel],
         select_option: selectOption instanceof Array ? selectOption : (selectOption ? [selectOption] : []),

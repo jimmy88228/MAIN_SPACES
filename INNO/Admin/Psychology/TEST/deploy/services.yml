@@ -1,0 +1,25 @@
+version: "3.9"
+services:
+  survey.fadmin:
+    # 拉取远程镜像
+    image: nginx:1.21.6-alpine
+    container_name: survey.fadmin
+    # 自动重启
+    restart: always
+    # 目录映射
+    volumes:
+      - /etc/timezone:/etc/timezone:ro
+      - /etc/localtime:/etc/localtime:ro
+      - ./context/nginx.conf:/etc/nginx/nginx.conf:ro
+      - ${DEPLOY_PATH}:/var/www/app:ro
+    # 子网IP配置
+    networks:
+      base_net:
+        aliases:
+          - survey.fadmin
+
+# 子网分配
+networks:
+  # 共享基础子网
+  base_net:
+    external: true

@@ -9,16 +9,19 @@
         @batchImport="batchImport"
         :relatIng="relatIng"
         ></searchForm>
-        <Table ref="myTable" class="full-table" :columns="columns" :data="list" border :loading="tableLoading" @on-selection-change="selectDataEvent">
+        <rewrite-table ref="myTable" class="full-table" :columns="columns" :data="list" :loading="tableLoading" @on-selection-change="selectDataEvent">
             <template slot="state" slot-scope="{ row }">
                 <p :class="{'c_success': row.state == 1}">{{row.state_str}}</p>
+            </template>
+            <template slot="get_self" slot-scope="{ row }">
+                <p >{{(row.get_self && row.get_self.structure_name) || "--"}}</p>
             </template>
             <template slot="handle" slot-scope="{ row, index }">
                 <div class="operate-area">
                     <a class="operate" v-hasAction="['appraisal_activity_school']" :class="{'invalid': row.state == 1}" @click="setRelate(row, index)">{{ row.state ? '取消关联' : '关联' }}</a>
                 </div>
             </template>
-        </Table>
+        </rewrite-table>
         <rewrite-page ref='rewritePage' :selectedNum="selectData.length" isShowAllSel @on-sel-all="onSelAll" slot="footer" :total="total" :current="page" :page-size="pageSize" :page-size-opts="pageSizeOpts" @on-change="e=>loadData(e)" @on-page-size-change="handlePageSizeChange" show-sizer show-elevator show-total transfer></rewrite-page>
     </hold-layout>
 </template>
@@ -37,6 +40,8 @@ export default {
                 activityid: 0,
                 searchq: "",
                 state: "",
+                area_id: 0,
+                street_id: 0
             },
             selectData: [],
             relatIng: false

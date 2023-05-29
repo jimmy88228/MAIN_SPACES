@@ -1,7 +1,7 @@
 <template>
     <div class="data-select-area">
         <Select ref='mySelect' :style="cusotmStyle" :value="selectValue" :disabled="disabled" filterable @on-change="selectChange" class="basic_select" :class="{ 'full-select': isFullW}" :size="size" :multiple="multiple" :transfer="transfer" :clearable="clearable" @on-clear="selectClear">
-            <span class="w-nowrap" slot="prefix" >
+            <span class="w-nowrap" slot="prefix" v-if="!multiple">
                <slot name="prefix"></slot>
             </span>
             <slot name="default-option"></slot>
@@ -73,6 +73,7 @@ export default {
         },
         disabled: Boolean,
         isShowDefault: Boolean,
+        defaultValue: String | Number,
         initCallback: Function,
         prefix: Boolean,
         customData: Array,
@@ -88,7 +89,7 @@ export default {
     },
     computed:{
         emptyValue(){
-            return this.multiple ? [] : this.valueType == 'int' ? 0 : ''
+            return this.multiple ? [] : (typeof(this.defaultValue) != 'undefined' ? this.defaultValue : (this.valueType == 'int' ? 0 : ''))
         }
     },
     methods: {
@@ -126,6 +127,12 @@ export default {
                             params = this.params || {};
                         }
                         break;
+                    case "activity-school":
+                        req = "appraisalScheduleReportSchool";
+                        if (parseInt(this.params.activityid) > 0) {
+                            params = this.params || {};
+                        }
+                        break;
                     case "campus":
                         req = "adminCampusData";
                         if (parseInt(this.params.school_id) > 0) {
@@ -137,6 +144,22 @@ export default {
                     case "grade":
                         req = "adminGradeData";
                         if (parseInt(this.params.campus_id) > 0) {
+                            params = this.params;
+                        } else {
+                            isEmpty = true;
+                        }
+                        break;
+                    case "class":
+                        req = "adminGSyClassData";
+                        if (parseInt(this.params.campus_id) > 0 && this.params.grade.trim() && parseInt(this.params.school_year) > 0) {
+                            params = this.params;
+                        } else {
+                            isEmpty = true;
+                        }
+                        break;
+                    case "grade-type":
+                        req = "getSchoolGradeType";
+                        if (parseInt(this.params.school_id) > 0) {
                             params = this.params;
                         } else {
                             isEmpty = true;
@@ -246,7 +269,7 @@ export default {
         handleData(items, type) {
             let _items = [];
             if (type == "init") {
-                if (!(items instanceof Array) && items instanceof Object) {
+                if ((!(items instanceof Array)) && items instanceof Object) {
                     for (let i in items) {
                         let item = {};
                         item[this.valueKey] = i;
@@ -258,8 +281,10 @@ export default {
                 }
                 //
                 for (let i = 0; i < _items.length; i++) {
-                    _items[i][this.valueKey] =
-                        parseInt(_items[i][this.valueKey]) || 0;
+                    if(this.valueType == 'int'){
+                        _items[i][this.valueKey] = parseInt(_items[i][this.valueKey]) || 0;
+                    }
+                    
                 }
             } else {
                 _items = items;
@@ -360,7 +385,7 @@ function hasKey(json) {
     return isHasKey;
 }
 </script>
-<style lang="less">
+<style lang="less" scoped>
 .data-select-area {
     .full-select {
         width: 100%;

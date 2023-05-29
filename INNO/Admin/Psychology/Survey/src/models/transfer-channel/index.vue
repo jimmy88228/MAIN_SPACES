@@ -1,7 +1,7 @@
 <template>
     <hold-layout :isFull="true">
         <searchForm @search="loadData" @create="editOrgan()" @removeIds="batchRemoveItem()" :searchForm="searchForm"></searchForm>
-        <Table ref="myTable" class="full-table" :columns="columns" :data="list" border :loading="tableLoading" @on-selection-change="selectAct">
+        <rewrite-table ref="myTable" class="full-table" :columns="columns" :data="list" :loading="tableLoading" @on-selection-change="selectAct">
             <template slot="time" slot-scope="{ row }">
                 <div class="time-p flex-s-c">
                     <p class="t-item">{{row.start_time}}</p>~<p class="t-item">{{row.end_time}}</p>
@@ -18,7 +18,7 @@
                     </p>
                 </div>
             </template>
-        </Table>
+        </rewrite-table>
         <rewrite-page slot="footer" :total="total" :current="page" :page-size="pageSize" :page-size-opts="pageSizeOpts" @on-change="e=>loadData(e)" @on-page-size-change="handlePageSizeChange" show-sizer show-elevator show-total transfer></rewrite-page>
     </hold-layout>
 </template>

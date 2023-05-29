@@ -5,7 +5,7 @@
         <FormItem :label-width="0">
           <rewrite-search v-model="searchForm.searchq" @search="search" placeholder="请输入姓名或者学号搜索"></rewrite-search>
         </FormItem>
-        <linkageSelect :searchForm="searchForm" @on-change="search"></linkageSelect>
+        <linkageSelect :searchForm="searchForm" @on-change="search" :hideSelect="['area', 'street', 'grade-type']"></linkageSelect>
         <FormItem label="状态" >
           <Select style="width:107px;" v-model="searchForm.state" @on-change="search">
             <Option :value="item.key" v-for="item in stateList" :key="item.key">{{item.name}}</Option>

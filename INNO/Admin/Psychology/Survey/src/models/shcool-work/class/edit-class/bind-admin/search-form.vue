@@ -14,7 +14,7 @@
         </FormItem>
       </div>
       <div class="flex">
-        <Button @click="addAdmin" v-hasAction="'class_maintenance_adminadd'">添加人员</Button>&nbsp;
+        <Button @click="addAdmin" v-hasAction="pageQuery.schoolId ? true : 'class_maintenance_adminadd'">添加人员</Button>&nbsp;
         <!-- <Button @click="batchAdd" v-hasAction="'class_maintenance_adminadd'">批量新增</Button> -->
       </div>
     </Form>

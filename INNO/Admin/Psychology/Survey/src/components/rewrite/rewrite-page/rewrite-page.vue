@@ -94,7 +94,7 @@
 <style scoped lang="less">
 .rewrite-page{
     position: relative;
-    padding: 15px 0px;
+    padding: 10px 0px;
     text-align: center;
     background-color: #fff;
     border-top: 1px solid #F2F2F2;

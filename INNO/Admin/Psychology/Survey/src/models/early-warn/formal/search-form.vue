@@ -3,7 +3,9 @@
         <Form :label-width="80" class="no-tip flex-b-c" inline>
             <div>
                 <FormItem label="预警等级">
-                  <data-select type="warn-level" class="base-select" valueKey="id" nameKey="level_name" v-model="searchForm.level_state" @change="search">
+                  <data-select type="warn-level" class="base-select" valueKey="id" nameKey="level_name" v-model="searchForm.level_state" 
+                  :defaultValue="-1"
+                  @change="search">
                       <Option slot="default-option" :value="-1">全部</Option>
                   </data-select>
                 </FormItem>
@@ -16,10 +18,9 @@
 </template>
 
 <script>
-import linkageSelect from "@/models/components/linkage-select";
 export default {
     name: "formalListSearchForm",
-    components: { linkageSelect },
+    components: { },
     data() {
         return {};
     },

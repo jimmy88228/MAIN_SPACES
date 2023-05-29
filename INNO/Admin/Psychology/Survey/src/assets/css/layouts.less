@@ -1,4 +1,12 @@
-
+.gray{
+    -webkit-filter: grayscale(100%);
+  -moz-filter: grayscale(100%);
+  -ms-filter: grayscale(100%);
+  -o-filter: grayscale(100%);
+  filter: grayscale(100%);
+  filter: gray;
+  filter: progid:DXImageTransform.Microsoft.BasicImage(grayscale=1);
+}
 .cev-max-width {
     max-width: 1280px;
     margin: 0 auto;
@@ -55,12 +63,18 @@
     justify-content: center;
     align-items: flex-end;
 }
+.flex-s-e{
+    display: flex;
+    justify-content: flex-start;
+    align-items: flex-end;
+}
 
 .flex-b-c {
     display: flex;
     justify-content: space-between;
     align-items: center;
 }
+
 
 .flex-e-c {
     display: flex;
@@ -338,6 +352,9 @@
 .pointer {
     cursor: pointer;
 }
+.move {
+    cursor: move;
+}
 
 .text-l {
     text-align: left;
@@ -429,6 +446,22 @@
     max-width: 320px;
     .ivu-input {
         max-width: 320px;
+    }
+}
+.base-200{
+    width: 100%;
+    max-width: 200px;
+    .ivu-input {
+        width: 100%;
+        max-width: 200px;
+    }
+}
+.base-100{
+    width: 100%;
+    max-width: 100px;
+    .ivu-input {
+        width: 100%;
+        max-width: 100px;
     }
 }
 .base-260{
@@ -730,7 +763,9 @@
     word-wrap: break-word;
     word-break: normal;
 }
-
+// .{
+//     white-space: pre-wrap;
+// }
 .w-break {
     word-break: break-all;
     word-wrap: break-word;
@@ -826,6 +861,7 @@
     position: absolute;
     bottom: 13px;
     right: 9px;
+    cursor: pointer;
 }
 
 .arrow-radius::after,.text-arrow-radius::after {
@@ -844,6 +880,7 @@
     border-radius: 11px;
     color: #909090;
     font-size: 13px;
+    cursor: pointer;
 }
 .text-arrow-radius::after{
     margin-left: 5px;
@@ -882,6 +919,9 @@
     top: 50%;
     transform: translateY(-50%);
 }
+.disabled{
+    pointer-events:none
+}
 .C_7f {
     color: #7f7f7f
 }
@@ -891,8 +931,3 @@
 .C_red {
     color: #ff0000
 }
-
-
-// 供应商平台样式，暂时引入，后续删掉
-// @import "./platform/variables-iview.less";
-// @import "./platform/layouts.less";

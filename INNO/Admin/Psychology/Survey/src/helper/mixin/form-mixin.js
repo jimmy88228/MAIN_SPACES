@@ -26,6 +26,18 @@ export default {
         callback();
       }
     },
+    _checkPhoneFormat(rule, value, callback){
+      // 仅检测输入手机格式，不验证是否为空
+      const {
+        field
+      } = rule;
+      console.log("_checkPhoneFormat", value)
+      if(value && !/^1[123456789]\d{9}$/.test(value)){
+        callback(new Error('手机号格式不正确'))
+      } else {
+        callback();
+      }
+    },
     _checkString(rule, value, callback){
       const {
         field

@@ -12,7 +12,7 @@
             <span class="tip-title">来源</span>
             <span class="text-flow">{{item.supplierName}}</span>
           </div>
-          <div class="m-t-5 flex-s-c flex-wrap">
+          <div class="m-t-5 flex-s-c flex-wrap" v-if="item.structure_names && item.structure_names.length">
             <span class="tip-title belong">所属</span>
             <Tag color="blue" v-for="(item,index) in item.structure_names" :key="index">{{item}}</Tag>
           </div>
@@ -65,8 +65,7 @@ export default {
   },
   computed:{
     isLongStyleType(){
-      console.log('isLongStyleType',this.type)
-      return this.type == 'audio';
+      return this.type == 'audio' || this.type == 'tasteTest';
     }
   },
   data() {
@@ -78,7 +77,6 @@ export default {
   },
   methods: {
     selectItem() {
-      console.log('selectItem emit',this.index,this.item);
       this.$emit('selectItem',this.index,this.item)
     }
   },

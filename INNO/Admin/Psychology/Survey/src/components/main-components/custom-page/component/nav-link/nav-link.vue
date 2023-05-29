@@ -152,7 +152,7 @@ export default {
                 width:1080,
                 fromType:"customPages",
                 isShowTabs:true,
-                showTabs: ['video', 'audio', 'article']
+                showTab: ['video', 'audio', 'article']
             },
             options: {selectedData:this.selectedData,extraParams}, //已选数据,接口传参
             success: (data,extra={}) => {

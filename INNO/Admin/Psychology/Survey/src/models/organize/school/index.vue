@@ -1,15 +1,30 @@
 <template>
     <hold-layout :isFull="true">
+        <!-- <rewrite-screen :base="screenData.base" :extra="screenData.extra">
+
+        </rewrite-screen> -->
         <searchForm :searchForm="searchForm" @search="loadData" @create="createSchool" @removeIds="batchRemoveItem()"></searchForm>
-        <Table ref="myTable" class="full-table" :columns="columns" :data="list" border :loading="tableLoading" @on-selection-change="selectDataEvent">
+        <rewrite-table ref="myTable" class="full-table" :columns="columns" :data="list" :loading="tableLoading" @on-selection-change="selectDataEvent">
+        <!-- <Table ref="myTable" class="full-table" :columns="columns" :data="list" border :loading="tableLoading" @on-selection-change="selectDataEvent"> -->
+            <template slot="edu_type_data" slot-scope="{ row, index }">
+                {{getDataStr(row.edu_type_data)}}
+            </template>
+            <template slot="campous_data" slot-scope="{ row, index }">
+                {{getDataStr(row.campous)}}
+            </template>
             <template slot="school_code" slot-scope="{ row, index }">
                 {{(row.get_type && row.get_type.school_code) || '--'}}
             </template>
-            <template slot="contact_way" slot-scope="{ row }">
-                <div class="p-5">
-                    <p>{{row.contact}}</p>
-                    <p class="p-b-5"></p>
-                    <p>{{row.contact_way}}</p>
+            <template slot="contact" slot-scope="{ row }">
+                <div v-for="(item, index) in row.get_contact" :key="index">
+                    <Tooltip>
+                        <div class="contact-item" v-if="item.name">{{item.name}}</div>
+                        <div slot="content">
+                            <div>{{item.name}}</div>
+                            <div>{{item.mobile_phone}}</div>
+                            <div v-if="item.remark">{{item.remark}}</div>
+                        </div>
+                    </Tooltip>
                 </div>
             </template>
             <template slot="admin" slot-scope="{ row }">
@@ -21,15 +36,18 @@
             <template slot="handle" slot-scope="{ row, index }">
                 <div class="operate-area">
                     <a class="operate" @click="editSchool(row.id)" v-hasAction="'school_maintenance_update'">编辑</a>
-                    <a class="operate" @click="removeItem(row.id, index)" v-hasAction="'school_maintenance_batch_remove'">删除</a>
                 </div>
                 <div class="operate-area">
-                    <a class="operate" @click="bindAdmin(row, index)" v-hasAction="'school_maintenance_bindadmin'">绑定管理员</a>
+                    <a class="operate" @click="getGradeManage(row.id)">年级管理</a>
+                </div>
+                <div class="operate-area">
+                    <a class="operate" @click="getClassManage(row)">班级管理</a>
                 </div>
             </template>
-        </Table>
+        <!-- </Table> -->
+        </rewrite-table>
         <rewrite-page slot="footer" :total="total" :current="page" :page-size="pageSize" :page-size-opts="pageSizeOpts" @on-change="e=>loadData(e)" @on-page-size-change="handlePageSizeChange" show-sizer show-elevator show-total transfer></rewrite-page>
-        <editSchool ref="editSchoolRef" :title="editSchoolTitle" @confirm="handleUpdate"></editSchool>
+        <editSchool ref="editSchoolRef" :title="editTitle" @confirm="handleUpdate"></editSchool>
         <bindAdmin ref="bindAdminRef"></bindAdmin>
     </hold-layout>
 </template>
@@ -52,8 +70,13 @@ export default {
         return {
             searchForm: {
                 searchq: "",
+                area_id: 0,
+                name: 0,
+                structure_id: 0,
+                structure_name: "",
+                structure_type: ""
             },
-            editSchoolTitle: "",
+            editTitle: "",
             selectData: [],
         };
     },
@@ -72,11 +95,21 @@ export default {
         },
     },
     methods: {
+        getDataStr(data){
+            let str = "";
+            for(let i = 0; i < data.length; i++){
+                if(data[i]){
+                    str = str ? str + "；" + data[i] : data[i]
+                }
+            }
+            return str;
+        },
         onLoadData(page, extraData) {
             return this.$MainApi
                 .schoolMaintList({
                     data: {
                         ...this.searchForm,
+                        structure_id: this.searchForm.street_id || this.searchForm.area_id || 0,
                         ...extraData,
                     },
                 })
@@ -111,8 +144,14 @@ export default {
             }
         },
         editSchool(id) {
-            this.editSchoolTitle = id ? "编辑学校" : "创建学校";
-            this.$refs["editSchoolRef"].showDrawer({ id: id });
+            this.editTitle = id ? "编辑学校" : "创建学校";
+            this.$refs["editSchoolRef"].showDrawer({ 
+                id: id,
+                editType: "school",
+                structure_id: this.searchForm.street_id || this.searchForm.area_id || 0,
+                structure_name: this.searchForm.street_name || this.searchForm.area_name || '',
+                structure_type: this.searchForm.structure_type || ''
+            });
         },
         bindAdmin(row, index) {
             let schoolId = row.id || 0;
@@ -132,6 +171,22 @@ export default {
                         this.$set(this.data.list[index], "get_admin", adminList);
                     },
                 });
+        },
+        getGradeManage(id){
+            this.editTitle = "年级架构";
+            this.$refs["editSchoolRef"].showDrawer({ 
+                id: id,
+                editType: "grade"
+            });
+        },
+        getClassManage(row){
+            this.$router.push({
+                name: "schoolClassMaint",
+                query: {
+                    schoolId: row.id,
+                    schoolName: row.structure_name,
+                }
+            })
         },
         removeItem(id, index) {
             this.batchRemoveActReq([id]).then(() => {
@@ -168,12 +223,38 @@ export default {
                     this.tableLoading = false;
                 });
         },
+        activeWs(){
+            const ws = new WebSocket("ws://10.1.1.66:8089");
+            ws.onopen = function () {
+                ws.send("发送数据");
+                setTimeout(() => {
+                    ws.send("发送数据2");
+                }, 3000)
+            };
+            ws.onmessage = function (evt) {
+                console.log(evt)
+            };
+            ws.onclose = function () {
+            };
+        }
     },
     mounted() {
         this.loadData();
+        this.activeWs();
     },
 };
 </script>
 
-<style>
+<style lang="less" scoped>
+.contact-item{
+    margin: 0px 5px 5px 0px;
+    display: inline-block;
+    padding: 3px 10px;
+    background: #F8F8F8;
+    border-radius: 3px;
+    border: 1px solid #F1F1F1;
+    min-width: 52px;
+    text-align: center;
+    cursor: pointer;
+}
 </style>

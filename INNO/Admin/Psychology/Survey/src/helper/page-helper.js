@@ -68,8 +68,9 @@ const PageHelper = new Vue({
         actionCodeMap: getCacheMenus.call(this).actionCodeMap,
         routesMenuMap: routesConfig.routesMenuMap,
         menuCurrent: {},
-        breadcrumbList: Utils.cache.get("breadcrumbList") || [],
+        breadcrumbList: Utils.local.get("breadcrumbList") || [],
         openedPagesTags: readOpenedPages(),
+        limitContent: ["pageMaintenance", "personalCenter", "zoneSet","transferCourtyard", "basicSetting", "manualMental"]
     },
     computed: {
         isHasContent(){
@@ -104,8 +105,8 @@ const PageHelper = new Vue({
                             let mainAction = action.substring(0, allI);
                             for (let key in tempCode) {
                                 let parent = codeData[key].parent;
-                                if(((key != 'studyTask' && parent.indexOf('pageManagement') != -1) || key == 'psychologicalService') && !this.isHasContent){
-                                    // 屏蔽心理服务管理，页面管理除(学习任务外)
+                                if(!this.isHasContent && this.limitContent.indexOf(key) != -1){
+                                    // 屏蔽limitContent中不含内容菜单
                                     continue;
                                 }
                                 if (key == mainAction || parent.indexOf(mainAction) != -1) {
@@ -115,8 +116,8 @@ const PageHelper = new Vue({
                             }
                         } else {
                             let parent = codeData[action].parent;
-                            if(((action != 'studyTask' && parent.indexOf('pageManagement') != -1) || action == 'psychologicalService') && !this.isHasContent){
-                                // 屏蔽心理服务管理，页面管理除(学习任务外)
+                            if(!this.isHasContent && this.limitContent.indexOf(action) != -1){
+                                // 屏蔽limitContent中不含内容菜单
                                 continue;
                             }
                             if (!codeData[action]) {
@@ -133,6 +134,7 @@ const PageHelper = new Vue({
             Utils.cache.set("actionCodeMap", this.actionCodeMap);
         },
         checkLogin(to, from, next) {
+            let toMenu = to.meta.menu;
             let fromQuery = JSON.parse(JSON.stringify(from.query)) || {};
             let toQuery = JSON.parse(JSON.stringify(to.query)) || {};
             let accessToken = fromQuery.accessToken || toQuery.accessToken || "";
@@ -147,19 +149,29 @@ const PageHelper = new Vue({
             else if (to.name === "Login") {
                 LM.setAccessToken("");
                 if(LM.isLogin){
-                    next({
-                        path: "/",
-                        query: {
-                            $isReplace: true
-                        }
-                    });
-                    return true;
+                    if(!LM.isNeedResetPwd){
+                        next({
+                            path: "/",
+                            query: {
+                                $isReplace: true
+                            }
+                        });
+                        return true;
+                    }
                 }
             } else if (to.name !== "Login") {
-                if (!LM.isLogin) {
+                let toName = ""
+                if(!LM.isLogin || (LM.isLogin && LM.isNeedResetPwd)){
                     LM.setAccessToken("");
+                    toName = "Login";
+                    this.setMenus();
+                } else if(toMenu && (!this.actionCodeMap[toMenu] || this.actionCodeMap[toMenu].isAction != 1) && to.name != 'home'){
+                    this.$Message.warning("暂无访问权限!");
+                    toName = "home";
+                }
+                if(toName){
                     next({
-                        name: "Login",
+                        name: toName,
                         query: {
                             $isReplace: true
                         },
@@ -176,7 +188,6 @@ const PageHelper = new Vue({
                             }
                         }
                     });
-                    this.setMenus();
                     return true;
                 }
             }
@@ -187,8 +198,6 @@ const PageHelper = new Vue({
             this.addOpenedPageTag(route);
         },
         setCurrent(route, from) {
-            console.log("setCurrent", route)
-            console.log("from", from)
             if (route.name) {
                 let actionCodeMap = this.actionCodeMap || {};
                 let meta = route.meta || {};
@@ -199,7 +208,11 @@ const PageHelper = new Vue({
                     ...route,
                     parent: parent
                 };
-
+                let home = {
+                    name: "home",
+                    title: "HOME",
+                    to: "home",
+                };
                 // 增加菜单路由面包屑
                 let currentBread = {
                     name: route.name,
@@ -209,10 +222,22 @@ const PageHelper = new Vue({
                     params: route.params
                 }
                 let breadcrumbList =  this.breadcrumbList || [];
-                let breadcrumbNames = breadcrumbList.map((item)=>{
-                    if(item.name) { return item.name } else { return "" }
-                })
-                if (from && from.meta && from.meta.menu == actTionMenu || (!from)) { // 同一个菜单下
+                breadcrumbList[0] = home
+                if(route.name != 'home'){
+                    if(actTionMenu){
+                        let menuRoute = routerConfig.routesMenuMap[actTionMenu]; // 菜单路由
+                        breadcrumbList[1] = {
+                            name: menuRoute.name,
+                            title: menuRoute.title,
+                            to: menuRoute.name
+                        }
+                    }
+                    if(from && from.meta && from.meta.menu != actTionMenu){ // 切换了菜单， 清空历史路由
+                        breadcrumbList = breadcrumbList.splice(0, 2);
+                    }
+                    let breadcrumbNames = breadcrumbList.map((item)=>{
+                        if(item.name) { return item.name } else { return "" }
+                    })
                     let hasRouteIndex = -1, breadcrumbLen = breadcrumbList.length || 0;
                     hasRouteIndex = breadcrumbNames.indexOf(route.name);
                     if(hasRouteIndex >= 0){ // 存在相同，剔除到相同位置
@@ -221,27 +246,10 @@ const PageHelper = new Vue({
                         breadcrumbList.push(currentBread);
                     }
                 } else {
-                    breadcrumbList = [{
-                        name: "home",
-                        title: "HOME",
-                        to: "homw",
-                    }]
-                    if(route.name != 'home'){
-                        if(actTionMenu){
-                            let menuRoute = routerConfig.routesMenuMap[actTionMenu]; // 菜单路由
-                            if(menuRoute.name != route.name){
-                                breadcrumbList.push({
-                                    name: menuRoute.name,
-                                    title: menuRoute.title,
-                                    to: menuRoute.name
-                                })
-                            }
-                        }
-                        breadcrumbList.push(currentBread);
-                    }
-                    this.breadcrumbList = breadcrumbList;
+                    breadcrumbList = [home];
                 }
-                Utils.cache.set("breadcrumbList", this.breadcrumbList);
+                this.breadcrumbList = breadcrumbList;
+                Utils.local.set("breadcrumbList", this.breadcrumbList);
             }
         },
         addOpenedPageTag(route) {

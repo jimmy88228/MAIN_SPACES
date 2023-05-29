@@ -8,36 +8,41 @@ export default{
           minWidth: 250,
         },
         {
-          title: "任务期限",
+          title: "学习日期",
           slot: "limit_time",
-          align: "center",
           minWidth: 200,
         },
         {
-          title: "学习人数",
+          title: "任务发起组织",
+          slot: "structure",
+          minWidth: 120,
+        },
+        {
+          title: "参与人数",
           key: "user_count",
+          align: 'center',
           minWidth: 100,
         },
         {
           title: "创建者",
-          key: "structure_type_str",
-          minWidth: 100,
+          slot: "structure_type_str",
+          minWidth: 120,
         },
         {
           title: "参与限制",
           key: "join_type_str",
-          minWidth: 100,
-        },
-        {
-          title: "关联班级",
-          slot: "relate_class",
-          align: "center",
           minWidth: 120,
         },
+        // {
+        //   title: "关联班级",
+        //   slot: "relate_class",
+        //   align: "center",
+        //   minWidth: 120,
+        // },
         {
-          title: "推广链接",
+          title: "推广",
           slot: "page_link",
-          minWidth: 200,
+          minWidth: 120,
         },
         {
           title: "活动状态",
@@ -46,7 +51,7 @@ export default{
         },
         {
           title: "操作",
-          width: 200,
+          width: 150,
           align: "right",
           slot: "handle"
         }

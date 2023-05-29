@@ -7,12 +7,14 @@
         <div class="model-cont">
             <div class="cont-table">
                 <div class="m-item" v-for="(item, index) in modelList" :key="index" @click="checkPoint(item)">
-                    <div class="m-item-tip">{{item.model_name}}</div>
+                    <div class="m-item-tip w-nowrap">{{item.model_name}}</div>
                     <div class="m-item-cont">
                         <div>
                             <template v-if="item.complete_time">
                                 <p>{{item.points}}</p>
-                                <span>{{item.complete_time}}测评得分</span>
+                                <span>
+                                    {{item.t_is_main > 0 ? item.complete_time + '测评得分' : '维度得分：' + item.rule_name}}
+                                </span>
                             </template>
                             <template v-else>
                                 <div class="no-assess">未测评</div>
@@ -81,7 +83,7 @@ export default {
         .m-item {
             background-color: #fff;
             padding: 15px;
-            width: 200px;
+            min-width: 200px;
             min-height: 100%;
             border-radius: 10px;
             position: relative;

@@ -1,7 +1,7 @@
 <template>
     <hold-layout class="resource-page-layout" :isFull="true">
       <searchForm :searchForm="searchForm" @search="loadData()" @add="addPsychiatrist()"></searchForm>
-      <Table ref="myTable" class="full-table" :columns="columns" :data="list" border :loading="tableLoading" @on-selection-change="selectDataEvent">
+      <rewrite-table ref="myTable" class="full-table" :columns="columns" :data="list" :loading="tableLoading" @on-selection-change="selectDataEvent">
         <template slot="psychiatrist" slot-scope="{ row }">
           <div class="detail-item">
             <div class="detail-img">
@@ -30,7 +30,7 @@
             <!-- <a class="operate" v-hasAction="true">删除</a> -->
           </div>
         </template>
-      </Table>
+      </rewrite-table>
       <rewrite-page slot="footer" :total="total" :current="page" :page-size="pageSize" :page-size-opts="pageSizeOpts" @on-change="e=>loadData(e)" @on-page-size-change="handlePageSizeChange" show-sizer show-elevator show-total transfer></rewrite-page>
     </hold-layout>
 </template>

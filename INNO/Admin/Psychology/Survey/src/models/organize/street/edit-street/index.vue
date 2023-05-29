@@ -5,8 +5,17 @@
             <div class="edit-cont-area">
                 <Form :label-width="100" :model="streetInfo" ref="formDataRef" :rules="ruleValidate">
                     <div class="item-header">街道信息</div>
+                    <FormItem label="区名称" prop="structure_id" v-if="_structureLimit(['edu_customer'])">
+                        <template v-if="streetInfo.id">
+                            <div>{{streetInfo.structure_name}}</div>
+                        </template>
+                        <template v-else>
+                            <data-select ref="areaSelectRef" v-model="streetInfo.structure_id" class="base-select" type="adminArea" valueKey="area_id" nameKey="area_name" @changeData="changeAreaData"></data-select>
+                        </template>
+                        
+                    </FormItem>
                     <FormItem label="街道名称" prop="street_name">
-                        <Input class="base-input" v-model="streetInfo.street_name"></Input>
+                        <custom-input class="base-input" v-model="streetInfo.street_name"></custom-input>
                     </FormItem>
                     <FormItem label="街道管理员" v-if="streetInfo.id">
                         <div class="admin-area flex-s-c base-input">
@@ -20,10 +29,10 @@
                     </FormItem>
                     <div class="item-header">联系方式</div>
                     <FormItem label="联系人" prop="contact">
-                        <Input class="base-input" v-model="streetInfo.contact"></Input>
+                        <custom-input class="base-input" v-model="streetInfo.contact"></custom-input>
                     </FormItem>
                     <FormItem label="联系电话" prop="contact_way">
-                        <Input class="base-input" v-model="streetInfo.contact_way"></Input>
+                        <custom-input type="number" :maxlength="11" class="base-input" v-model="streetInfo.contact_way"></custom-input>
                     </FormItem>
                 </Form>
                 <Spin fix v-if="pageLoading"></Spin>
@@ -33,43 +42,6 @@
                 <Button @click="confirmUpdate">取消</Button>
             </div>
         </rewrite-drawer>
-        <!-- <Drawer class="page-drawer-area" :lock-scroll="true" :closable="false" v-model="drawerShow" :transfer="false" :inner="true" :width="530">
-            <div class="class-edit-area" :style="'padding-top:' +  _pageScrollTop + 'px;'">
-                <div class="edit-title bold">{{title}}</div>
-                <div class="edit-cont" v-bar>
-                    <div class="edit-cont-area">
-                        <Form :label-width="100" :model="streetInfo" ref="formDataRef" :rules="ruleValidate">
-                            <div class="item-header">街道信息</div>
-                            <FormItem label="街道名称" prop="street_name">
-                                <Input class="base-input" v-model="streetInfo.street_name"></Input>
-                            </FormItem>
-                            <FormItem label="街道管理员" v-if="streetInfo.id">
-                                <div class="admin-area flex-s-c base-input">
-                                    <div class="admin-list f-wrap">
-                                        <div class="admin-item" v-for="(item, index) in adminList" :key="index">
-                                            {{item.name}}
-                                        </div>
-                                    </div>
-                                    <a class="add-admin" @click="bindAdmin(streetInfo.id)">更改</a>
-                                </div>
-                            </FormItem>
-                            <div class="item-header">联系方式</div>
-                            <FormItem label="联系人" prop="contact">
-                                <Input class="base-input" v-model="streetInfo.contact"></Input>
-                            </FormItem>
-                            <FormItem label="联系电话" prop="contact_way">
-                                <Input class="base-input" v-model="streetInfo.contact_way"></Input>
-                            </FormItem>
-                        </Form>
-                        <div class="edit-foot">
-                            <Button class="m-r-10" type="primary" @click="checkUpdate">保存</Button>
-                            <Button @click="confirmUpdate">取消</Button>
-                        </div>
-                        <Spin fix v-if="pageLoading"></Spin>
-                    </div>
-                </div>
-            </div>
-        </Drawer> -->
         <bindAdmin ref="bindAdminRef"></bindAdmin>
     </div>
 </template>
@@ -88,8 +60,10 @@ export default {
     data() {
         return {
             drawerShow: false,
-            structureId: 0,
             streetInfo: {
+                structure_id: 0,
+                structure_type: "",
+                structure_name: "",
                 id: 0,
                 street_name: "",
                 contact: "",
@@ -126,10 +100,20 @@ export default {
     methods: {
         showDrawer({ id }) {
             this.$refs["formDataRef"] && this.$refs["formDataRef"].resetFields();
-            this.structureId = id || 0;
             this.drawerShow = true;
-            this.streetInfo = {};
+            this.streetInfo = {
+                structure_id: this._structureType == "edu_area" ? this._structureId : 0,
+                structure_name: "",
+                structure_type: this._structureType == "edu_area" ? this._structureType : '',
+                id: 0,
+                street_name: "",
+                contact: "",
+                contact_way: "",
+            };
             this.onLoadData(id);
+        },
+        changeAreaData(data){
+            this.streetInfo.structure_type = data.structure_type;
         },
         onLoadData(id) {
             if (!id) return Promise.reject();
@@ -144,12 +128,16 @@ export default {
                     if (res.code) {
                         let data = res.data || {};
                         let get_type = data.get_type || {};
+                        let get_self = data.get_self || {};
                         let streetInfo = {
                             id: data.id,
                             street_name: data.structure_name,
                             street_type: get_type.street_type,
                             contact: data.contact,
                             contact_way: data.contact_way,
+                            structure_id: get_self.id,
+                            structure_name: get_self.structure_name,
+                            structure_type: get_self.structure_type,
                         };
                         let adminList = [];
                         if (data.get_admin instanceof Array) {

@@ -8,7 +8,7 @@
                             <div class="user-header">{{studentInfo.student_name && studentInfo.student_name.slice(-2)}}</div>
                             <p class="user-name w-break">{{studentInfo.student_name}}</p>
                         </div>
-                        <div class="info-area">
+                        <div class="info-area" style="padding-bottom: 0px;">
                             <p class="info-row">
                                 <span class="row-tip">注册学校</span>
                                 <span class="row-cont">{{studentInfo.school_name}}</span>
@@ -20,21 +20,24 @@
                             <div class="info-row">
                                 <span class="row-tip">其他信息</span>
                                 <div class="flex-b-c row-cont-box">
-                                    <span class="row-cont flex-s-c" style="display:flex;">
-                                        <span class="row-cont-sex" :class="{'is-female' : studentInfo.student_sex == 2}">{{studentInfo.student_sex_str}}</span>
-                                        <span class="row-cont-class">{{studentInfo.class_name}}</span>
+                                    <span class="row-cont flex-s-c" style="display:flex;flex-wrap: wrap;">
+                                        <span class="row-cont-sex m-5" :class="{'is-female' : studentInfo.student_sex == 2}">{{studentInfo.student_sex_str}}</span>
+                                        <span class="row-cont-class m-5">{{studentInfo.class_name}}<template v-if="studentInfo.school_year"> ({{studentInfo.school_year}})</template>
+                                        </span>
+                                        <span class="row-cont-class m-5" v-if="studentInfo.student_state == 2 || studentInfo.student_state == 3">{{studentStateC[studentInfo.student_state] || ''}}</span>
+                                        
                                     </span>
-                                    <div class="more-box flex-c-c pointer" @click="moreInfo">
-                                        <span>更多</span>
-                                        <div class="more-icon flex-c-c"></div>
-                                    </div>
                                 </div>
+                            </div>
+                            <div class="more-box flex-e-c pointer p-t-10 more-point" @click="moreInfo">
+                                <span>更多</span>
+                                <div class="more-icon flex-c-c"></div>
                             </div>
                         </div>
                     </div>
                     <div class="trans-box trans-box-behind" :class="{active:moreActive}">
                         <div class="detail-box">
-                            <div class="more-box flex-s-c pointer" @click="moreInfo">
+                            <div class="more-box flex-s-c pointer back-point" @click="moreInfo">
                                 <div class="more-icon flex-c-c"></div>
                                 <span>返回</span>
                             </div>
@@ -80,6 +83,21 @@
                 </div>
             </div>
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
             <div class="m-item meddle-m-item text-flow" style="width:50%;">
                 <div class="m-cont meddle-area " @click.stop="getMeddle">
                     <span class="arrow-radius"></span>
@@ -117,9 +135,11 @@
                         <div class="m-item-tip">{{pItem.model_name}}</div>
                         <div class="m-item-cont">
                             <div>
-                                <template v-if="pItem.complete_time">
+                                <template v-if="pItem.record_id">
                                     <p>{{pItem.points}}</p>
-                                    <span>{{pItem.complete_time}}测评得分</span>
+                                    <span>
+                                        {{pItem.t_is_main > 0 ? pItem.complete_time + '测评得分' : '维度得分：' + pItem.rule_name}}
+                                    </span>
                                 </template>
                                 <template v-else>
                                     <div class="no-assess">未测评</div>
@@ -140,6 +160,7 @@
 
 <script>
 import moreModel from "./more-model.vue";
+import { studentStateC } from "@/config/demand/demand-config.js";
     export default {
         components: {
             moreModel,
@@ -147,7 +168,7 @@ import moreModel from "./more-model.vue";
         data() {
             return {
                 studentInfo:{},
-                modePoints:{},
+                modePoints:[],
                 userId:0,
                 meddleRecord: [],
                 moreActive:false,
@@ -167,6 +188,9 @@ import moreModel from "./more-model.vue";
                 let modePoints = this.modePoints || [];
                 return modePoints.length > 4 || false;
             },
+            studentStateC(){
+                return studentStateC;
+            }
         },
         
         methods: {
@@ -437,10 +461,10 @@ import moreModel from "./more-model.vue";
             .s-m-item {
                 width: 100%;
                 margin: 6px 0px;
-                height: 38px;
+                min-height: 38px;
                 background-color: #f4f4f4;
                 border-radius: 6px;
-                padding: 0px 10px;
+                padding: 5px 10px;
                 .points {
                     font-family: PingFangSC-Medium;
                     font-size: 16px;
@@ -590,7 +614,7 @@ import moreModel from "./more-model.vue";
     width: 22px;
     height: 22px;
     border-radius: 50%;
-    margin-left: 8px;
+    // margin-left: 8px;
     &::after{
         content:"";
         width: 5px;
@@ -600,7 +624,12 @@ import moreModel from "./more-model.vue";
         transform: rotate(-45deg);
     }
 }
-.trans-pre-box{ 
+.more-point{
+    margin-right: -10px;
+}
+
+.trans-pre-box{
+    min-width: 250px;
     &.animActive{
         transform-style:preserve-3d;
         perspective: 1000px;
@@ -611,6 +640,8 @@ import moreModel from "./more-model.vue";
     transform: rotateY(0); 
     overflow: hidden;
     transition: transform 1s; 
+    display: flex;
+    padding: 0px !important;
     &.active{
         transform: rotateY(180deg); 
     }
@@ -637,9 +668,11 @@ import moreModel from "./more-model.vue";
 }
 .trans-box-front.active{
     z-index: 2;
+    position: relative;
 }
 .trans-box-behind.active{
     z-index: 2;
+    position: relative;
 }
 .detail-box{
     padding: 15px;
@@ -671,6 +704,9 @@ import moreModel from "./more-model.vue";
                 color:#7F7F7F;
             }
         }
+        .msg-content{
+            white-space: pre-wrap;
+        }
     } 
     .more-box{
         margin-bottom: 30px;
@@ -678,7 +714,10 @@ import moreModel from "./more-model.vue";
     .more-icon{
         transform: rotate(180deg);
         margin-left: 0;
-        margin-right: 8px;
+        // margin-right: 8px;
+    }
+    .back-point{
+        margin-left: -10px;
     }
 } 
 </style>

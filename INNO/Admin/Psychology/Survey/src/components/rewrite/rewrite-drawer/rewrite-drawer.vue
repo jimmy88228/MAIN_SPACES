@@ -1,7 +1,7 @@
 <template>
     <div class="rewrite-drawer">
         <Drawer class="page-drawer-area" :value="value" :lock-scroll="lockScroll" :closable="closable" :transfer="transfer" :inner="inner" :width="width" @on-close="visibleChange(false)" @on-visible-change="visibleChange">
-            <div class="rewrite-drawer-cont">
+            <div class="rewrite-drawer-cont" v-if="state">
                 <div class="header">
                     <slot name="header"></slot>
                 </div>
@@ -39,10 +39,13 @@ export default {
         },
     },
     data() {
-        return {};
+        return {
+            state:false
+        };
     },
     methods: {
         visibleChange(state) {
+            this.state = state;
             this.$emit("on-change", state);
         },
     },

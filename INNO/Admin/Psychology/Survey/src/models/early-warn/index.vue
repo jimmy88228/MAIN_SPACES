@@ -6,9 +6,6 @@
                 <div class="survey-item" v-for="(item, index) in levelList" :key="index">
                     <div class="item-area" @click="getPoint('formal', item.id)">
                         <div class="area-content">
-                            <!-- <img v-if="item.id == 1" src="@/assets/images/warn/light.png" class="item-icon" />
-                            <img v-else-if="item.id == 2" src="@/assets/images/warn/medium.png" class="item-icon" />
-                            <img v-else-if="item.id == 3" src="@/assets/images/warn/serious.png" class="item-icon" /> -->
                             <div class="color-circle flex-c-e" :style="'background:'+[warnText[item.id].color]+';'">
                                 <div class="color-text">{{warnText[item.id].text}}</div>
                             </div>
@@ -54,6 +51,7 @@ export default {
                 .forewarningList({
                     data: {},
                     other: {
+                        isShowLoad: true,
                         isErrorMsg: true
                     }
                 })
@@ -66,7 +64,6 @@ export default {
                 });
         },
         getPoint(key, param) {
-            console.log('getPoint',key);
             let name = "",query = {};
             if(key == 'formal'){ 
                 name = "earlyWarnFormal"

@@ -9,13 +9,18 @@
                     <Option v-for="item in stateList" :value="item.key" :key="item.key">{{item.name}}</Option>
                 </Select>
             </FormItem>
+            <FormItem label="年级" :label-width="50">
+                <linkageSelect :hideSelect="['area','street','school','campus','grade-type', 'class']" :isShowSchoolYear="true" :searchForm="searchForm" @on-change="search"></linkageSelect>
+            </FormItem>
         </Form>
     </rewrite-area>
 </template>
 
 <script>
+import linkageSelect from "@/models/components/linkage-select";
 export default {
     name: "actIndexSearchForm",
+    components: { linkageSelect },
     data() {
         return {
             stateList: [

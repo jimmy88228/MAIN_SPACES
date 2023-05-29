@@ -1,0 +1,86 @@
+<template>
+	<div class='goods-select'>
+		<modalTemplate ref="modalTemplate" :loadParentData="onLoadData" :tableColumn="columns" :propData="$props" :modalWidth="1000">
+			<template slot="search">
+				<!-- <rewrite-area>
+					<Form ref="searchForm" :model="searchForm" :label-width="90" inline class="no-tip flex-b-c">
+						<FormItem :label-width="0">
+							<rewrite-search v-model="searchForm.searchq" @search="searchPage" placeholder="请输入关键词"></rewrite-search>
+						</FormItem>
+					</Form>
+				</rewrite-area> -->
+			</template>
+		</modalTemplate>
+
+	</div>
+</template>
+<script>
+	import modalTemplate from '../../template/modal-template.vue';
+	import eventMiXin from '../../event-mixin.js';
+	import Mixin from './mixin';
+	export default{
+		mixins: [eventMiXin, Mixin],
+		components: {
+			modalTemplate,
+		},
+		props: {
+			title: {
+				type: String,
+				default: "选择班级"
+			}
+		},
+		data(){
+			return {
+				searchForm: {
+					searchq: "",
+				},
+				isClear: true,
+			}
+		},
+		computed: {
+		},
+		methods: {
+			beforeShowModal(props){
+				return new Promise((rs, rj)=>{
+					rs();
+				})
+			},
+			onLoadData(page, extraData){
+				let searchForm = this.searchForm || {};
+				return this.$MainApi.classMaintList({
+					data: {
+						...searchForm,
+						...extraData
+					},
+					other: {
+						isErrorMsg: true
+					}
+				}).then((res)=>{
+					if(res.code){
+						let data = res.data || {};
+						let items = data.items || [];
+						items.map((item)=>{
+							item.id = item.class_id
+							item.name = item.class_name
+						})
+						let result = {
+							list: items,
+							total: data.total
+						}
+						return Promise.resolve(result)
+					} else {
+						return Promise.reject();
+					}
+				})
+			},
+			searchPage(){
+				this.$refs["modalTemplate"].searchPage();
+			},
+			addAdmin(){
+				
+			}
+		},
+		mounted(){}
+	}
+</script>
+<style lang="less"></style>

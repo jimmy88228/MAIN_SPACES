@@ -1,0 +1,198 @@
+<template>
+    <div id="sider" >
+        <div class="sider-stay" :class="{'sider-hover': isEnterSider}">
+            <div class="sider-area">
+                <div id="sider-menu-box" v-bar="{preventParentScroll: true}">
+                    <Menu ref="leftMenuRef" theme="light" width="200px" :open-names="menuParent" :active-name="menuName" @on-select="onMenuSelect" @on-open-change="enterSider">
+                        <menuItemloop v-for="item in menus" :key="item.actionCode" :data="item"></menuItemloop>
+                    </Menu>
+                </div>
+            </div>
+            <div class="sider-operate">
+                <p class="on-off-icon" style="margin-left:auto;" @click="switchSlider">
+                    <a class="on-off"><i></i></a>
+                </p>
+            </div>
+        </div>
+    </div>
+</template>
+
+<script>
+import PageHelper from "@/helper/page-helper";
+import Promise from "bluebird";
+import menuItemloop from "./menu-item-loop.vue";
+export default {
+    name: "SiderMenu",
+    components: { menuItemloop },
+    computed: {
+        menuCurrent: {
+            get(){
+                return PageHelper.menuCurrent || {};
+            }
+        },
+        menuName() {
+            let meta = this.menuCurrent.meta || {}
+            return meta.menu || "";
+        },
+        menuParent() {
+            return this.menuCurrent.parent;
+        },
+        menus() {
+            return PageHelper.menus;
+        },
+    },
+    props: {
+        beforeSelect: {
+            type: Function
+        }
+    },
+    data() {
+        return {
+            isEnterSider: true,
+        };
+    },
+    methods: {
+        onMenuSelect(name) {
+            this.$Modal.remove();
+            if (!this.beforeSelect || !this.beforeSelect(name)) {
+                console.log("菜单选择", name)
+                if(name){
+                    let routeName = (PageHelper.routesMenuMap[name] && PageHelper.routesMenuMap[name].name) || "";
+                    routeName && this.$router.push({ name: routeName });
+                }
+            }
+        },
+        switchSlider(){
+            this.isEnterSider ? this.leaveSider() : this.enterSider();
+        },
+        enterSider() {
+            this.$Modal.remove();
+            if (this.lsp && this.lsp.isPending()) {
+                this.lsp.cancel();
+            }
+            this.isEnterSider = true;
+            this.$utils.cache.set("isEnterSider", this.isEnterSider);
+        },
+        leaveSider() {
+            this.$Modal.remove();
+            if (this.lsp && this.lsp.isPending()) {
+                this.lsp.cancel();
+            }
+            this.lsp = Promise.delay(200).then(() => {
+                this.isEnterSider = false;
+                this.$utils.cache.set("isEnterSider", this.isEnterSider);
+                // 默认收回菜单效果
+                this.$set(this.menuCurrent, "parent", []);
+                this.$nextTick(()=>{
+                    this.$refs["leftMenuRef"].updateOpened();
+                })
+            });
+        }
+    },
+    watch:{
+        menuCurrent:{
+            handler(nV, oV){
+                this.$nextTick(()=>{
+                    this.$refs["leftMenuRef"].updateActiveName();
+                    if(!oV || !oV.parent){
+                        this.$refs["leftMenuRef"].updateOpened();
+                    }
+                })
+            },
+            immediate: true
+        }
+    }
+};
+</script>
+<style lang="less" scoped>
+    @import "~@/assets/css/variables.less";
+    .on-off-icon{
+        width: 44px;
+        height:44px;
+        position: relative;
+    }
+    .on-off{
+        position:absolute;
+        top:50%;
+        left:50%;
+        transform: translate(-50%, -50%);
+        display: block;
+    }
+    .on-off::before, .on-off::after{
+        display: block;
+        content: "";
+        width: 12px;
+        height: 2px;
+        background-color: #858F9B;
+    }
+    .on-off i{
+        display: flex;
+        align-items: center;
+    }
+    .on-off i::before{
+        display: inline-block;
+        content: "";
+        border: 2px solid #858F9B;
+        border-top-color: transparent;
+        border-right-color: transparent;
+        transform: rotate(45deg);
+    }
+    .on-off i::after{
+        display: inline-block;
+        content: "";
+        width: 6.7px;
+        height: 2px;
+        margin: 3px 0px;
+        // margin-left: -1px;
+        background-color: #858F9B;
+    }
+    .sider-stay {
+        height: 100%;
+        min-height: 0;
+        display: flex;
+        flex-direction: column;
+        width: 45px !important;
+        min-width: 0px !important;
+        max-width: 200px !important;
+        transition: all 0.2s;
+        background: @bg-cp-color;
+        z-index: 10000;
+    }
+    .sider-area{
+        flex: 1;
+        overflow: hidden;
+    }
+    .sider-operate{
+        margin-bottom: 20px;
+    }
+    #sider-menu-box {
+        width: 200px;
+        height: 100%;
+    }
+
+    #sider-menu-box .ivu-menu {
+        width: 100%;
+    }
+
+    #sider-menu-box .ivu-menu .icon {
+        text-align: center;
+        width: 50px;
+        height: 50px;
+        font-size: 18px;
+        margin-right: 0px;
+        display: inline-block;
+    }
+
+    #sider .ivu-menu .ivu-menu-submenu .ivu-menu-item {
+        padding-left: 0px !important;
+        transition: background, color, padding-left 0.4s, 0.4s, 0.4s;
+    }
+
+    .sider-stay.sider-hover {
+        width: 200px !important;
+    }
+
+    #sider.sider-hover .ivu-menu .ivu-menu-submenu .ivu-menu-item {
+        padding-left: 16px !important;
+    }
+</style>

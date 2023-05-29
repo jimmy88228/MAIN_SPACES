@@ -3,6 +3,7 @@
         :class-name="closeMode + '-custom-modal-box' + ' custom-modal-box'"
         class="modal-box"
         v-model="modalBool"
+        :transfer="transfer"
         :title="title"
         :okText="okText"
         :cancelText="cancelText"
@@ -72,7 +73,13 @@ export default {
         'loading': Boolean, 
         'isSlotHeader': Boolean, 
         'isSlotFooter': Boolean, 
-        'footerHide': Boolean
+        'footerHide': Boolean,
+        'transfer': {
+            type: Boolean,
+            default:()=>{
+                return true;
+            }
+        }
     },
     methods: {
         show(){

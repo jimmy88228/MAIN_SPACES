@@ -42,9 +42,7 @@
           </FormItem>
           </div>
           <FormItem label="选择角色" prop="role_id">
-            <Select size="large" v-model="adminInfo.role_id" class="base-320" @on-change="changeRole">
-                <Option v-for="item in rolesList" :key="item.role_id" :value="item.role_id">{{(item.get_role && item.get_role.role_name) || '暂无名称'}}</Option>
-            </Select>
+            <roleSelect  v-model="adminInfo.role_id" valueKey="role_id" nameKey="role_name" @change="changeRole" :initCallback="initRoleData" size="large"></roleSelect>
           </FormItem>
           <FormItem label="关联班级" prop="relevance_id">
             <Button size="large" :type="adminInfo.relevance_id && adminInfo.relevance_id.length ? 'primary' : 'default'" @click="chooseRelevance">{{adminInfo.relevance_id && adminInfo.relevance_id.length > 0 ? '更换关联班级' : '选择关联班级'}}</Button>
@@ -58,14 +56,15 @@
         <Button type="primary" @click="checkUpdateInfo">保存</Button>
       </div>
     </custom-modal>
-    <classOrganizeViewModal ref="classOrganizeModalRef" :isRelation="true" :isLImitMain="adminInfo.role_type == 'class_teacher' ? true : false" @success="chooseRelevanceCallback"></classOrganizeViewModal>
+    <classOrganizeViewModal ref="classOrganizeModalRef" :multiple="true" :isRelation="true" :isLImitMain="adminInfo.role_type == 'class_teacher' ? true : false" @success="chooseRelevanceCallback"></classOrganizeViewModal>
   </div>
 </template>
 
 <script>
-import classOrganizeViewModal from "@/components/view-components/class-organize-view-modal/index.vue"
+import classOrganizeViewModal from "@/components/view-components/class-organize-view-modal/index.vue";
+import roleSelect from "@/components/view-components/role-select/index.vue";
 export default {
-  components: { classOrganizeViewModal },
+  components: { classOrganizeViewModal, roleSelect },
   data(){
     return {
       searchq: "", // 18902293985
@@ -119,46 +118,8 @@ export default {
               },
           ],
       },
+      rolesList: []
     }
-  },
-  computed: {
-      rolesList() {
-          let rolesList = [];
-          let _structureType = this._structureType || "";
-          if (_structureType) {
-              switch (_structureType) {
-                  case "edu_area":
-                      rolesList = this._adminRoleData.filter((item) => {
-                          if(item.role_id) item.role_id = item.role_id + "";
-                          return item.structure_type == "edu_school" || item.structure_type == "edu_street";
-                      });
-                      break;
-                  case "edu_street":
-                      rolesList = this._adminRoleData.filter((item) => {
-                          if(item.role_id) item.role_id = item.role_id + "";
-                          return item.structure_type == "edu_school";
-                      });
-                      break;
-                  case "edu_school":
-                      rolesList = this._adminRoleData.filter((item) => {
-                          if(item.role_id) item.role_id = item.role_id + "";
-                          return item.structure_type == "edu_class";
-                      });
-                      break;
-                  case "edu_class": // 暂无
-                      break;
-              }
-          }
-          // 仅有一个角色时，且是新增时，默认自动勾选
-          if (rolesList.length == 1 && Number(this.adminInfo.admin_id) == 0) {
-              this.$set(
-                  this.adminInfo,
-                  "role_id",
-                  rolesList[0].role_id
-              );
-          }
-          return rolesList;
-      },
   },
   methods: {
     showModal(){
@@ -177,13 +138,16 @@ export default {
           admin_phone: "",
           teacher_id: 0
       }
+      this.relevance_ids = [];
       this.$nextTick(()=>{
         this.$refs["formDataRef"] && this.$refs["formDataRef"].resetFields();
       })
-      // this.search();
     },
     dismiss(){
       this.$refs["modal"].dismiss();
+    },
+    initRoleData(data){
+        this.rolesList = data || [];
     },
     search(){
       if(!/^1[123456789]\d{9}$/.test(this.searchq)){
@@ -195,7 +159,7 @@ export default {
       return this.$MainApi
         .getEduTeacher({
             data: {
-                school_id: this._structureId,
+                school_id: this._getReqStructureId,
                 searchq: this.searchq,
                 page: 1,
                 pageSize: 1000
@@ -237,14 +201,13 @@ export default {
     setRoleType(role_id){
         let rolesList = this.rolesList;
         if(!Number(role_id)){
-            this.$set(this.adminInfo, "role_type", "")
-            this.$set(this.adminInfo, "structure_type", "")
+            this.$set(this.adminInfo, "role_type", "");
+            this.$set(this.adminInfo, "structure_type", "");
         } else {
             for(let i = 0; i < rolesList.length; i++){
                 if(rolesList[i].role_id == role_id){
-                    let get_role = rolesList[i].get_role || {};
                     this.$set(this.adminInfo, "structure_type", rolesList[i].structure_type || "")
-                    this.$set(this.adminInfo, "role_type", get_role.role_type || "")
+                    this.$set(this.adminInfo, "role_type", rolesList[i].type || "")
                     break;
                 }
             }
@@ -256,8 +219,9 @@ export default {
                 extra: {
                     expandHold: true,
                     reqParams: {
-                        school_id: this._structureId,
-                        school_name: this._structureName 
+                        school_id: this._getReqStructureId,
+                        school_name: this._getReqStructureName,
+                        state: 2 // 0: 正常数据，1 毕业数据， 2全部数据（包含毕业）
                     }
                 }
             });
@@ -297,7 +261,8 @@ export default {
             return this.$MainApi["peopleAdd"]({
                 data: {
                   ...adminInfo,
-                  admin_phone: adminInfo.admin_phone + ""
+                  admin_phone: adminInfo.admin_phone + "",
+                  role_id: adminInfo.role_id + ""
                 },
             }).then((res) => {
                     if (res.code) {

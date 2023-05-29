@@ -59,6 +59,7 @@
               :selectedData="selectedData"
               :extraParams="extraParams" 
               :showTab="showTab"
+              :isReqList="isReqList"
               :classifyId="classifyId"></materialView>
           </transition-group>
         </div>
@@ -129,6 +130,10 @@ import materialView from '@/components/view-components/material-view/index.vue';
         type:Number,
         default:0
       },
+      isReqList: {
+        type: Boolean,
+        default: true
+      }
     },
     data() {
       return {
@@ -173,7 +178,8 @@ import materialView from '@/components/view-components/material-view/index.vue';
           video: [],
           audio: [],
           article: [],
-          course: []
+          course: [],
+          tasteTest: []
         },
       }
     },

@@ -13,10 +13,6 @@
             <span class="type-num">{{chooseData.length}}</span>
             <a @click="onCheckChange(false)" v-if="chooseData.length>0">取消选择</a>
           </div>
-          <!-- 暂时不需要搜索功能
-          <div class="search-box">
-            <rewrite-search v-model="searchVal" @search="search" placeholder="请输入关键词"></rewrite-search>
-          </div> -->
         </div>
         <div class="flex-e-c" v-if="isShowSourceBox">
           <div class="source-tip">来源</div>
@@ -54,6 +50,10 @@ import utils from "@/helper/utils/index.js";
         curSourceId:-1,
         allData:[],
         totalCount:0,
+        reqName: {
+          tasteTest: "getFunList",
+          default: "contentList"
+        }
         // searchVal:"", 
       }
     },
@@ -91,6 +91,10 @@ import utils from "@/helper/utils/index.js";
         default:function () {
           return {}
         }
+      },
+      isReqList: {
+        type: Boolean,
+        default: true
       }
     }, 
     computed:{
@@ -98,8 +102,11 @@ import utils from "@/helper/utils/index.js";
         return !this.fromType || this.fromType=='distribute' || this.fromType=='material' || this.fromType=='customPages'
       },
       isShowSourceBox(){
-        return this.fromType=='contentRepository';
+        return this.fromType == 'contentRepository';
       },
+      getReqName(){
+        return this.isReqList ? this.reqName.default : (this.reqName[this.curItem.type] || this.reqName.default)
+      }
     },
     methods: {
       selectItem(index,item) {
@@ -115,6 +122,7 @@ import utils from "@/helper/utils/index.js";
             }
           }
           this.chooseData.push({
+            ...item,
             id:item.id,
             title:item.title,
             cover:item.cover,
@@ -193,10 +201,10 @@ import utils from "@/helper/utils/index.js";
         return this.init().then(()=>{
           this.inited = true;
           this.spinShow = true;
-          return this.$MainApi.contentList({
+          return this.$MainApi[this.getReqName]({
             data:{
               source_id:this.curSourceId||0,
-              type:this.curItem.id || 0,
+              type: this.curItem.id || 0,
               ...extraData,
               ...(this.extraParams||{}),
             },
@@ -217,11 +225,11 @@ import utils from "@/helper/utils/index.js";
                   {...item},
                   {
                     id: id,
-                    title:item[`${this.curItem.type}Title`] || item['courseName'] ||"",
+                    title:item[`${this.curItem.type}Title`] || item['courseName'] || item['name'] || "",
                     cover:item[`${this.curItem.type}CoverPic`] || item['coverPic'] || "",
                     summary:item[`${this.curItem.type}Description`]||"",
                     duration:item[`${this.curItem.type}TimeLength`]||0,
-                    duration_str:this.getDurationStr(item[`${this.curItem.type}TimeLength`]||0),
+                    duration_str: this.curItem.type != 'tasteTest' ? this.getDurationStr(item[`${this.curItem.type}TimeLength`]||0) : '',
                     _selected:ids.includes(id),
                   })
                   item._selected && s_num++;
@@ -274,7 +282,7 @@ import utils from "@/helper/utils/index.js";
         this.selectAll = !!bool;
       },
       sourceOnChange(){
-        this.loadData(1);
+        this.loadData();
       }
     }
   }
@@ -338,7 +346,8 @@ import utils from "@/helper/utils/index.js";
   }
   .content-box{
     position: relative;
-    margin-left: 30px;
+    padding-left: 30px;
+    width: 100%;
     // padding-right: 20px;
     height: 100%;
     &.classify{

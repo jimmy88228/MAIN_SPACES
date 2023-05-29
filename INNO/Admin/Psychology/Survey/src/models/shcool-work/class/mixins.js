@@ -8,9 +8,19 @@ export default{
           align: 'center'
         },
         {
-          title: "年级",
-          key: "grade",
+          title: "校区",
+          key: "campus",
           minWidth: 100
+        },
+        {
+          title: "学段",
+          key: "grade_type_str",
+          minWidth: 100
+        },
+        {
+          title: "年级",
+          slot: "grade",
+          minWidth: 150
         },
         {
           title: "班别",
@@ -18,8 +28,8 @@ export default{
           minWidth: 120
         },
         {
-          title: "校区",
-          key: "campus",
+          title: "班级人员",
+          key: "get_student_count",
           minWidth: 100
         },
         {

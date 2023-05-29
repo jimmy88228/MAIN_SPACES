@@ -5,10 +5,17 @@
         {{item.name}}
       </div>
     </div>
-    <tab-item :ref="'tabItem'+'_'+index" :chooseData="selectedData[item.type]" v-for="(item,index) in showTabList" :key="item.id" 
-      v-show="index == curTabIndex" :curItem="showTabList[index]" :extraParams="extraParams" :fromType="fromType" :isMulti="isMulti"></tab-item>
-    <!-- <tab-item :ref="'tabItem'+'_'+index" :chooseData="chooseData[showTabList[index].type]" v-for="(item,index) in showTabList" :key="item.id" 
-      v-show="index == curTabIndex" :curItem="showTabList[index]" :extraParams="extraParams" :fromType="fromType"></tab-item> -->
+    <tab-item 
+    :isReqList="isReqList" 
+    :ref="'tabItem'+'_'+index" 
+    :chooseData="selectedData[item.type]" 
+    v-for="(item,index) in showTabList" 
+    :key="item.id" 
+    v-show="index == curTabIndex" 
+    :curItem="showTabList[index]" 
+    :extraParams="extraParams" 
+    :fromType="fromType" 
+    :isMulti="isMulti"></tab-item>
   </div>
 </template>
 
@@ -65,6 +72,10 @@ import tabItem from './tab-item.vue';
           return {}
         }
       },
+      isReqList: {
+        type: Boolean,
+        default: true
+      }
     },
     data() {
       return {
@@ -95,6 +106,12 @@ import tabItem from './tab-item.vue';
             type:"course",
             name:"课程内容",
             nickName:"课程",
+          },
+          {
+            id:5,
+            type:"tasteTest",
+            name: "趣味测试",
+            nickName:"趣味测试",
           },
         ],
       }

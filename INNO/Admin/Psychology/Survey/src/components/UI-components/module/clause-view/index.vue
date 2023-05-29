@@ -1,5 +1,5 @@
 <template>
-  <custom-modal ref="modal" class="page-drawer-area" :footerHide="true" :width="503" :closable="true">
+  <custom-modal ref="modal" class="page-drawer-area hold-modal-zindex" :footerHide="true" :width="503" :closable="true">
     <div class="class-edit-area">
       <div class="edit-title bold">{{title}}</div>
       <div class="edit-cont">

@@ -58,7 +58,15 @@ export default {
                 {
                     key: 2,
                     name: "已拒绝"
-                }
+                },
+                {
+                    key: 3,
+                    name: "已取消"
+                },
+                // {
+                //     key: 10,
+                //     name: "已过期"
+                // }
             ]
         };
     },

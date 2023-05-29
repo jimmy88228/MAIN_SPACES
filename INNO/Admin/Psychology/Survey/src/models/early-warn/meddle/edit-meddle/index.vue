@@ -138,7 +138,7 @@ export default {
             this.drawerShow = true;
             this.$refs["meddleInfoForm"] && this.$refs["meddleInfoForm"].resetFields();
             this.meddleInfo.user_id = userId || 0;
-            this.meddleInfo.school_id = this._structureId || 0;
+            this.meddleInfo.school_id = this._getReqStructureId || 0;
             this.meddleInfo.intervention_id = 0;
             this.meddleInfo.level_id = 0;
             this.meddleInfo.examine_remark = "";

@@ -1,13 +1,10 @@
 <template>
   <div class="overview-detail-area">
     <div class="overview-detail" :class="{'data-cockipit-theme': isDataCockpit}">
-      <div class="overview-operates text-r p-b-10" v-if="_structureType == 'edu_school' && !isDataCockpit">
-        <Button @click="exportData" type="primary" >导出数据</Button>
-      </div>
-      <div class="overview-operates text-r p-b-10" v-if="_structureType == 'edu_school' && !isDataCockpit">
+      <div class="overview-operates text-r p-b-10" v-if="!isDataCockpit">
         <div class="flex-s-c">
           <Button @click="exportGroup" type="primary" class="m-r-20" v-if="activityInfo.handle && activityInfo.handle.report_export">生成团报</Button>
-          <Button @click="exportData" type="primary" >导出数据</Button>
+          <Button @click="exportData" type="primary" v-if="activityInfo.handle && activityInfo.handle.activity_export">导出数据</Button>
         </div>
       </div>
       <div class="activity-overview-top">
@@ -18,7 +15,7 @@
           <div class="model-name fs-14">
             <div class="f-shrink-0">使用量表：</div>
             <div class="model-name-list">
-              <div class="model-name-item m-r-5" v-for="(item,index) in modelNameArr" :key="index">{{item.name}}</div>
+              <div class="model-name-item m-r-5 m-b-5" v-for="(item,index) in modelNameArr" :key="index">{{item.name}}</div>
             </div>
           </div>
           <div class="activity-time fs-14">
@@ -74,8 +71,10 @@
             <template slot-scope="{ row, index }" slot="structure_name">
               <div class="operate-area">
                 <p class="operate-line">
-                  <Tooltip :content="row.structure_name + ((row.get_edu_class && row.get_edu_class.campus) ? '[' + row.get_edu_class.campus + ']' : '')"  placement="right-start">
-                    {{ row.structure_name }} <span v-if="row.get_edu_class && row.get_edu_class.campus">[{{row.get_edu_class.campus}}]</span>
+                  <Tooltip :content="row.structure_name + ((row.get_edu_class && row.get_edu_class.campus) ? '[' + row.get_edu_class.campus + ']' : '' ) + ((row.get_edu_class && row.get_edu_class.school_year) ? '(' + row.get_edu_class.school_year + ')' : '' )"  placement="right-start">
+                    {{ row.structure_name }} 
+                    <span v-if="row.get_edu_class && row.get_edu_class.campus">[{{row.get_edu_class.campus}}]</span>
+                    <span v-if="row.get_edu_class && row.get_edu_class.school_year">({{row.get_edu_class.school_year}})</span>
                   </Tooltip>
                 </p>
               </div>
@@ -136,7 +135,7 @@
         </div>
       </div>
     </div>
-    <exportSurvey ref="exportSurveyRef" :activityId="pageQuery.activityId" :schoolId="pageQuery.schoolId" :modelData="modelNameArr"></exportSurvey>
+    <exportSurvey v-if="activityInfo.handle && activityInfo.handle.activity_export" ref="exportSurveyRef" :activityId="pageQuery.activityId" :schoolId="pageQuery.schoolId" :modelData="modelNameArr"></exportSurvey>
     <mpNotice :ref="'notice' + item" v-for="item in jobIdCol" :key="item"></mpNotice>
   </div>
 </template>
@@ -302,24 +301,23 @@ export default {
     exportData(){
       this.$refs["exportSurveyRef"] && this.$refs["exportSurveyRef"].showModal();
     },
-    exportGroup(){ 
+    exportGroup(){
       this.$UIModule({
           mode:"list-modal",
           props:{
               multiple:true,
               title:"团报",
-              type:"groupReport", 
+              type:"overViewSchoolGrade", 
               min:2,
               params:{
                 activityid: this.activityId,
               }
           },
-          options: this.selectData||[],
-          success:(data)=>{
-              console.log('selectData',data)
+          options: [],
+          success:(data, extra = {})=>{
               this.selectData = data;
               if(this.selectData.length>0){
-                this.scheduleReportExport().then(res=>{ 
+                this.scheduleReportExport(extra.chooseSchool).then(res=>{ 
                   let data = res.data;
                   if (data) {
                     this.jobIdCol.push(data);
@@ -333,13 +331,14 @@ export default {
           }
       });
     },
-    scheduleReportExport(){
+    scheduleReportExport(schoolData = {}){
       if(this.exportLoading)return
       this.exportLoading = true;
       return this.$MainApi.scheduleReportExport({
         data: {
           activityid:this.activityId,
-          grade_arr:this.selectData.map(item=>item.name)
+          grade_arr:this.selectData.map(item=>item.name),
+          school_id: schoolData.id
         },
         other: {
           isErrorMsg: true
@@ -416,8 +415,8 @@ export default {
       display: inline-block;
       color: #fff;
       background: #134578;
-      border-radius: 14px;
-      padding: 0px 5px;
+      border-radius: 100px;
+      padding: 0px 10px;
     }
     .activity-time {
       font-family: PingFangSC-Regular, PingFang SC;

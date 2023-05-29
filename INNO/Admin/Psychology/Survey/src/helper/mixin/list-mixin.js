@@ -1,6 +1,5 @@
 import Conf from "@/config";
-import DateUtil from "@/helper/utils/date-util";
-import StringUtil from "@/helper/utils/string-util";
+import utils from "@/helper/utils/index.js";
 export default {
     data() {
         return {
@@ -35,13 +34,17 @@ export default {
             this.dateRange = null;
             this.onClearOptions && this.onClearOptions();
         },
-        loadData(index = Conf.PAGE_START) {
+        loadData(index) {
             this.tableLoading = true;
+            if(!index){
+                index = parseInt(utils.getUrlQuery("page")) || Conf.PAGE_START;
+            }
             return this.onLoadData && this.onLoadData(index, this.createListParams(index))
             .then((res)=>{
                 this.page = index || Conf.PAGE_START;
                 this.tableLoading = false;
                 this.resetBar();
+                // this.setRouteQuery(this.page);
                 if(typeof(this._clearListSelect) == 'function'){
                     this._clearListSelect();
                 }
@@ -129,6 +132,18 @@ export default {
                     tableBody[i].scroll(0,0)
                 }
             }
+        },
+        setRouteQuery(index){
+            let params = utils.getUrlQuery() || {};
+            let href = window.location.href || "";
+            let hrefHost = href.split("?")[0] || "";
+            let paramsStr = "", url = "";
+            params.page = index;
+            for(let i in params){
+                paramsStr = paramsStr ?  paramsStr + '&' + i + '=' + params[i] : i + '=' + params[i]
+            }
+            url = paramsStr ? hrefHost + '?' + paramsStr : hrefHost
+            window.history.replaceState(null, '', url)
         }
     }
 };

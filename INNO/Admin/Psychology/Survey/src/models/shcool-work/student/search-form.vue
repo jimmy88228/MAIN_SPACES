@@ -5,13 +5,17 @@
                 <FormItem :label-width="0">
                   <rewrite-search v-model="searchForm.searchq" @search="search" placeholder="请输入姓名或学号进行搜索"></rewrite-search>
                 </FormItem>
-                <linkageSelect :isShowSchoolYear="true" :searchForm="searchForm" @on-change="search"></linkageSelect>
             </div>
             <div class="flex">
-                <Button icon="md-add" @click="add()" v-hasAction="'student_file_add'">添加学生</Button>&nbsp;
-                <Button @click="batchImport()" v-hasAction="'student_file_batch_import'">批量导入</Button>&nbsp;
-                <!-- <Button @click="batchChange()" v-hasAction="''">修改选中</Button>&nbsp; -->
-                <Button @click="batchRemove()" v-hasAction="'student_file_batch_remove'">删除选中</Button>
+                <Button icon="md-add" @click="add()" v-hasAction="'student_management_add'">添加学生</Button>&nbsp;
+                <Poptip :transfer="false" placement="bottom" class="operate-poptip" :width="125" v-hasAction="'student_management_batch_import'">
+                    <Button >批量导出/导入</Button>
+                    <div class="operate-links" slot="content">
+                        <a class="operate-link" @click="batchImport">文件导入</a>
+                        <a class="operate-link" @click="exportList" style="border-top: 1px solid #efefef;">导出名单</a>
+                    </div>
+                </Poptip>
+                
             </div>
         </Form>
     </rewrite-area>
@@ -40,6 +44,9 @@ export default {
         batchImport() {
             this.$emit("batchImport");
         },
+        exportList(){
+            this.$emit("exportList");
+        },
         add(){
             this.$emit("add")
         },
@@ -49,4 +56,32 @@ export default {
     },
 };
 </script>
-<style lang="less" scoped></style>
+<style lang="less" scoped>
+.operate-poptip{
+    position:relative;
+    z-index: 5 !important;
+    /deep/.ivu-poptip-body{
+        padding: 0px;
+    }
+    /deep/.ivu-poptip-popper{
+        min-width:125px;
+    }
+}
+.operate-links{
+}
+.operate-link{
+    display: block;
+    width: 125px;
+    height: 40px;
+    line-height: 40px;
+    font-size: 14px;
+    font-family: PingFangSC-Regular, PingFang SC;
+    font-weight: 400;
+    color: #333333;
+    text-align: center;
+}
+.operate-link:hover{
+    color:#333;
+    background-color:#EAF1F6;
+}
+</style>

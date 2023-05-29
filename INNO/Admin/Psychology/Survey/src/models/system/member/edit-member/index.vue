@@ -10,7 +10,7 @@
                 <div>{{currentRole.role_id ? currentRole.get_role && currentRole.get_role.role_name : '--'}}</div>
             </FormItem>
             <FormItem label="关联班级" prop="class_name" v-if="type == 'edu_class'">
-                {{formData.class_name || "--"}}
+                {{formData.class_name || "--"}}<template v-if="formData.school_year">({{formData.school_year}})</template>
             </FormItem>
             <FormItem prop="admin_phone">
                 <span slot="label" :class="{'required-after': !isRegister}">手机号</span>

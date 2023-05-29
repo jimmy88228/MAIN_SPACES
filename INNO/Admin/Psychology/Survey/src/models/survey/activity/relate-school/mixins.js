@@ -9,11 +9,18 @@ export default{
         },
         {
           title: "学校名称",
+          minWidth: 200,
           key: "structure_name"
+        },
+        {
+          title: "上级组织",
+          minWidth: 200,
+          slot: "get_self"
         },
         {
           title: "状态",
           slot: "state",
+          minWidth: 140,
           align: "center"
         },
         {

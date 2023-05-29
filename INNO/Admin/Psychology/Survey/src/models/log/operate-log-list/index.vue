@@ -1,13 +1,13 @@
 <template>
     <hold-layout class="resource-page-layout" :isFull="true">
       <searchForm :searchForm="searchForm" @search="loadData()" ></searchForm>
-      <Table ref="myTable" class="full-table" :columns="columns" :data="list" border :loading="tableLoading" >
+      <rewrite-table ref="myTable" class="full-table" :columns="columns" :data="list" :loading="tableLoading" >
         <template slot="admin_user" slot-scope="{ row }">
           <div class="admin-user">
             {{(row.get_admin_user && row.get_admin_user.user_name) || '--'}}
           </div>
         </template>
-      </Table>
+      </rewrite-table>
       <rewrite-page slot="footer" :total="total" :current="page" :page-size="pageSize" :page-size-opts="pageSizeOpts" @on-change="e=>loadData(e)" @on-page-size-change="handlePageSizeChange" show-sizer show-elevator show-total transfer></rewrite-page>
     </hold-layout>
 </template>

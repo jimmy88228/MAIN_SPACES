@@ -31,9 +31,6 @@
                               <Option :value="0">请选择</Option>
                               </data-select>
                             </template>
-                            <!-- <template v-else> -->
-                              <!-- <span :title="_structureName" class="text-flow ">{{_structureName}}</span> -->
-                            <!-- </template> -->
                           </div>
                         </div>
                         <div class="tree-area" v-bar v-show="_currentTab == 'student'">
@@ -197,8 +194,8 @@ export default {
         showModal({ selectData }) {
             this.isShowModal = true;
             this.topLevel = {
-                title: this._structureName,
-                id: this._structureId,
+                title: this._getReqStructureName,
+                id: this._getReqStructureId,
             };
             this.selectUser = this.initSelectData(selectData || []);
             this.init();
@@ -215,11 +212,12 @@ export default {
           return data || [];
         },
         init() {
-            if (this._structureType == "edu_school") {
+            if (this._structureLimit(["edu_school", "edu_class"])) {
                 let item = {
-                    school_id: this._structureId,
-                    school_name: this._structureName,
+                    school_id: this._getReqStructureId,
+                    school_name: this._getReqStructureName,
                 };
+                console.log("item", item)
                 this.schoolData = [item];
                 this.currentSchool = item;
                 this.keyWord = "";
@@ -237,21 +235,21 @@ export default {
                 }
             }
         },
-        getSchoolData() {
-            return this.$MainApi
-                .adminSchoolData({
-                    data: {
-                        area_id: this._structureId,
-                    },
-                })
-                .then((res) => {
-                    if (res.code) {
-                        let data = res.data || {};
-                        let items = data.items || [];
-                        this.schoolData = items;
-                    }
-                });
-        },
+        // getSchoolData() {
+        //     return this.$MainApi
+        //         .adminSchoolData({
+        //             data: {
+        //                 area_id: this._structureId,
+        //             },
+        //         })
+        //         .then((res) => {
+        //             if (res.code) {
+        //                 let data = res.data || {};
+        //                 let items = data.items || [];
+        //                 this.schoolData = items;
+        //             }
+        //         });
+        // },
         selectClassOrganize(detail){
           let row = detail.row || {};
             this.currentClassOrganize = row;
@@ -488,6 +486,9 @@ export default {
         .student-table-cont{
           flex: 1;
           overflow: hidden;
+        }
+        .search-result-box{
+          width:100%;
         }
         .check-all{
           padding: 5px;

@@ -17,7 +17,7 @@
                         </Input>
                     </div>
                 </rewrite-area>
-                <Table ref="table" class="table" :columns="columns" :data="list" @on-sort-change="handleSortChange" border>
+                <rewrite-table ref="table" class="table" :columns="columns" :data="list" @on-sort-change="handleSortChange">
                     <template slot="img" slot-scope="p">
                         <img class="item-table-img-r" :src="p.row.avatar">
                     </template>
@@ -29,7 +29,7 @@
                     <template slot="action" slot-scope="p">
                         <Button class="item-table-action" type="primary" size="small" @click="gotoDetails(p.index)">查看</Button>
                     </template>
-                </Table>
+                </rewrite-table>
                 <rewrite-page
                     v-if="showPage"
                     :total="total"

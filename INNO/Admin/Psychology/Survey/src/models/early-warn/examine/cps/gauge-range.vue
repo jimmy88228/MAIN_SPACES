@@ -1,5 +1,5 @@
 <template>
-  <div class="gauge-range">
+  <div class="gauge-range flex">
     <FormItem label="量表" :label-width="50">
       <data-select
         v-model="searchForm.model_id"

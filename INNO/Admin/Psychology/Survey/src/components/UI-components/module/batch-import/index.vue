@@ -4,7 +4,35 @@
     .file-name {
         margin-top: 10px;
     }
+    .download-wrapper-group{
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        .download-wrapper-group-item{
+            text-align: center;
+            flex: 1;
+            border-right: 1px solid rgba(#979797, 0.1);
+            box-sizing: border-box;
+            .download-item-icon{
+                // width: 35px;
+                height: 35px;
+                margin-bottom: 15px;
+            }
 
+            .download-item-title{
+                margin-bottom: 12px;
+                font-size: 14px;
+                font-family: PingFangSC-Regular, PingFang SC;
+                font-weight: 400;
+                color: #333333;
+                line-height: 20px;
+            }
+        }
+        .download-wrapper-group-item:last-child{
+            border: none;
+        }
+
+    }
     .download-wrapper {
         display: flex;
         align-items: center;
@@ -32,7 +60,7 @@
 </style>
 <template>
     <div>
-        <Modal class-name="upload-wrapper" v-model="modalShow" :title="modalTitle" :footer-hide="true" :mask-closable="false">
+        <Modal class-name="upload-wrapper " class="hold-modal-zindex" v-model="modalShow" :title="modalTitle" :footer-hide="true" :mask-closable="false">
             <slot name="title"></slot>
             <Upload v-if="canCreate.upload" type="drag" ref="upload" name="file" :headers="headers" :data="upLoadPayLoad" :show-upload-list="false" :action="posterUploadUrl" :before-upload="posterBeforeUpload" :on-success="posterUploadSuccess" :on-error="posterUploadError"
             :format="format"
@@ -48,14 +76,23 @@
             <div style="text-align: center;">
                 <Button type="primary" v-if="file != null" class="upload-btn" :loading="uploadLoading" @click="upload">确定上传</Button>
             </div>
-            <Divider />
-            <div class="download-wrapper" v-if="canCreate.download">
-                <span>如需模板，请下载~</span>
-                <Button type="text" class="download-btn" :loading="downloadLoading" @click="download">
-                    <a style="text-decoration:underline">下载模板</a>
-                </Button>
-            </div>
-            <Divider />
+            <Divider v-if="canCreate.download" />
+            <template  v-if="canCreate.download">
+                <div class="download-wrapper-group" v-if="downloadData.length > 0">
+                    <div class="download-wrapper-group-item" :key="i" v-for="(item,i) in downloadData">
+                        <img class="download-item-icon" :src="item.icon">
+                        <div class="download-item-title">{{item.title}}</div>
+                        <Button :loading="item.downloadLoading" @click="download(item.downloadUrl,i)">下载模板</Button>
+                    </div>
+                </div>
+                <div class="download-wrapper" v-else>
+                    <span>如需模板，请下载~</span>
+                    <Button type="text" class="download-btn" :loading="downloadLoading" @click="download()">
+                        <a style="text-decoration:underline">下载模板</a>
+                    </Button>
+                </div>
+            </template>
+            <Divider v-if="canCreate.goodsInputImport" />
             <div class="upload-input" v-if="canCreate.goodsInputImport">
                 <p class="m-bottom-5">如需手动输入,请按照要求输入{{inputKey}}</p>
                 <Input type="textarea" v-model="uploadInputTxt" class="upload-textarea" :placeholder="'输入'+ inputKey + ',多' + inputKey + '逗号隔开'" />
@@ -100,7 +137,8 @@ export default {
             default() {
                 return ['xlsx'];
             },
-        }
+        },
+        beforeUploadCheck: Function
     },
     data() {
         return {
@@ -114,6 +152,16 @@ export default {
             uploadUrl: "",
             downloadUrl: "",
             uploadInputTxt: "",
+            downloadData:[
+                //*  template
+                // {
+                //     icon:"",
+                //     title:"",
+                //     downloadUrl:"",
+                //     extraData:{},
+                // }
+                //** template End//
+            ]
         };
     },
     computed: {
@@ -127,14 +175,23 @@ export default {
     },
     methods: {
         // 打开模态框
-        showModal({ canCreate, uploadUrl, downloadUrl }) {
+        showModal({ canCreate, uploadUrl, downloadUrl ,downloadData = [] }) {
             this.uploadUrl = uploadUrl;
             this.posterUploadUrl = Conf.API_DOMIN + Apis[this.uploadUrl].u;
             this.downloadUrl = downloadUrl;
             this.canCreate = canCreate;
+            this.downloadData = this.formatDownloadData(downloadData);
             this.file = null;
             this.modalShow = true;
             this.uploadInputTxt = null;
+        },
+        formatDownloadData(downloadData){
+            if(downloadData.length > 0){
+                downloadData.forEach(item=>{
+                    item.downloadLoading = false
+                })
+            }
+            return downloadData
         },
         formatError(file, fileList){
             const formatStr = this.format.join("/");
@@ -177,14 +234,37 @@ export default {
             }
         },
         upload() {
-            this.uploadLoading = true;
-            this.$refs.upload.post(this.file);
+            if(typeof(this.beforeUploadCheck) == 'function'){
+                let result = this.beforeUploadCheck();
+                if(result instanceof Promise){
+                    result.then(()=>{
+                        this.uploadLoading = true;
+                        this.$refs.upload.post(this.file);
+                    })
+                } else if(result){
+                    this.uploadLoading = true;
+                    this.$refs.upload.post(this.file);
+                }
+            } else {
+                this.uploadLoading = true;
+                this.$refs.upload.post(this.file);
+            }
         },
-        download() {
-            if (!this.downloadUrl) return Promise.reject();
-            this.downloadLoading = true;
-            this.$MainApi[this.downloadUrl]({
-                data: this.downloadPayLoad,
+        download(customUrl = "",index) {
+            if (!this.downloadUrl && !customUrl) return Promise.reject();
+            let extraData = {};
+            if(customUrl){
+                this.downloadData[index].downloadLoading = true;
+                extraData = this.downloadData[index].extraData || {}
+            }else{
+                this.downloadLoading = true;
+            }
+            let downloadUrl = customUrl || this.downloadUrl
+            this.$MainApi[downloadUrl]({
+                data: {
+                    ...this.downloadPayLoad,
+                    ...extraData
+                }
             })
                 .then((res) => {
                     if (res.code) {
@@ -200,7 +280,11 @@ export default {
                     }
                 })
                 .finally(() => {
-                    this.downloadLoading = false;
+                    if(customUrl){
+                        this.downloadData[index].downloadLoading = false
+                    }else{
+                        this.downloadLoading = false;
+                    }
                 });
         },
         uploadInput() {
@@ -208,7 +292,6 @@ export default {
             this.$emit("success", this.uploadInputTxt);
         },
         importSuccess(){
-            console.log("upload success")
             this.$emit("success");
         }
     },

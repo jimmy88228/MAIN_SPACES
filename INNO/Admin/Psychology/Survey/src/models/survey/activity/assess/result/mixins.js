@@ -27,20 +27,21 @@ export default{
           key: "campus",
           minWidth: 120,
         },
-        {
-          title: "学年",
-          key: "school_year",
-          minWidth: 100,
-        },
-        {
-          title: "年级",
-          key: "class_grade",
-          width: 120,
-        },
+        // {
+        //   title: "学年",
+        //   key: "school_year",
+        //   minWidth: 100,
+        // },
+        // {
+        //   title: "年级",
+        //   key: "class_grade",
+        //   width: 120,
+        // },
         {
           title: "班级",
-          key: "class_name",
-          width: 120,
+          slot: "class_name",
+          align: "left",
+          minWidth: 160,
         },
         {
           title: "测评进度",

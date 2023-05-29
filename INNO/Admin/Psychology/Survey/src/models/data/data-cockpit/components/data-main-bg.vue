@@ -73,7 +73,8 @@ export default {
         // }
       },
       chartLoading: false,
-      prevCampusId: null
+      prevCampusId: null,
+      resizeTimer: null
     }
   },
   methods: {
@@ -81,24 +82,38 @@ export default {
       data = JSON.parse(JSON.stringify(data || []));
       if(data instanceof Array && this.prevCampusId != this.searchForm.campus_id){
           this.$nextTick(()=>{
-            let { datas, links } = this.dataHandle(data);
-            this.initChart(datas, links);
-            window.onresize = ()=> {
-              this.organizeChart.resize();
-            };
-            this.prevCampusId = this.searchForm.campus_id;
+            setTimeout(()=>{
+              let { datas, links } = this.dataHandle(data);
+              this.initChart(datas, links);
+              window.onresize = ()=>{
+                this.resize(data);
+              }
+              this.prevCampusId = this.searchForm.campus_id;
+            }, 200)
           })
         }
+    },
+    resize(data){
+      if(this.resizeTimer){
+        clearTimeout(this.resizeTimer);
+        this.resizeTimer = null;
+      }
+      this.$nextTick(()=>{
+        this.resizeTimer = setTimeout(()=>{
+          let { datas, links } = this.dataHandle(data);
+          this.initChart(datas, links);
+        }, 250)
+      })
     },
     dataHandle(data){
       let organizeChart = document.getElementById("organize-chart");
       let x = organizeChart.offsetWidth / 2
-      let y = organizeChart.offsetHeight / 2
+      let y = (organizeChart.offsetHeight / 2)
       let position = {x, y};
       let schoolData = {
         category: 0,
         name: this._structureName,
-        id: this._structureId + '',
+        id: this._getReqStructureId + '',
         x: x,
         y: y,
         value: 100,
@@ -142,8 +157,6 @@ export default {
           ...campusData._link
         ]
       }
-      // console.log("datas", datas);
-      // console.log("links", links);
       return {
         datas, links
       }
@@ -176,6 +189,7 @@ export default {
         if(dataIndex == -1){
           dataJson.push(_id);
           _data.push({
+            key: key,
             category: category,
             id: _id,
             name: _name,
@@ -183,6 +197,7 @@ export default {
             ..._levelConf
           })
           _link.push({
+            key: key,
             category: category,
             id: _id,
             name: _name,
@@ -217,6 +232,8 @@ export default {
           this.organizeChart =
               this.organizeChart ||
               echarts.init(document.getElementById("organize-chart"));
+      } else {
+        this.organizeChart.clear();
       }
       this.chartLoading = true;
       let option = {
@@ -240,6 +257,7 @@ export default {
             labelLayout: {
               hideOverlap: true
             },
+            selectedMode: false,
             data: data.map((item)=>{
               if(item.id == 'bg'){
                 item.emphasis = {
@@ -314,6 +332,8 @@ export default {
                 }
                 }
               }
+              // 
+
               return item;
             }),
             links: links.map((item)=>{
@@ -336,7 +356,7 @@ export default {
               return item;
             }),
             // categories: ['bg', 0, 1, 2, 3],
-            center: ['50%', '60%'],
+            center: ['50%', '50%'],
             roam: 'move',
             force: {
               repulsion : this.searchForm.campus_id ? 200 : 500,
@@ -412,14 +432,28 @@ export default {
           },
         ]
       };
+      this.organizeChart.off("click");
       this.organizeChart.setOption(option, {notMerge: true});
       this.$nextTick(()=>{
         setTimeout(()=>{
           this.chartLoading = false;
           this.organizeChart.setOption(option);
+          this.organizeChart.on('click', (params)=>{
+              this.echartClick(params);
+          });
         }, 500)
       })
       
+    },
+    echartClick(params){
+      params = params || {};
+      let data = params.data || {};
+      switch(data.key){
+        case "campus":
+          this.searchForm.campus_id = data.id;
+          this.$emit("search");
+          break
+      }
     }
   },
   mounted(){},

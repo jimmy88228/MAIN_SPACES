@@ -101,7 +101,6 @@ export default {
     },
     selectOrganize(item, state){
       this.selectData = state ? item : {};
-      console.log("selectData", this.selectData)
     },
     confirmSelect(){
       let selectData = this.selectData || {};
@@ -129,8 +128,6 @@ export default {
                 chooseorganize: selectData.id
               });
             })
-          } else {
-            this.$Message.warning(res.message || "选择无效");
           }
         })
         .finally(() => {

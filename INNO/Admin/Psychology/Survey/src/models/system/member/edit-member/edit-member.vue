@@ -11,13 +11,18 @@
                 </FormItem>
                 <FormItem prop="role_id">
                     <span slot="label" class="required-after">授权角色</span>
-                    <Select v-model="adminInfo.role_id" class="base-320" @on-change="changeRole">
-                        <Option v-for="item in rolesList" :key="item.role_id" :value="item.role_id">{{(item.get_role && item.get_role.role_name) || '暂无名称'}}</Option>
-                    </Select>
+                    <template v-if="adminInfo.admin_id && !_structureLimit(['edu_school'])">
+                        {{adminInfo.role_name}}
+                    </template>
+                    <roleSelect v-show="!adminInfo.admin_id || _structureLimit(['edu_school'])" v-model="adminInfo.role_id" valueKey="role_id" nameKey="role_name" @change="changeRole" :initCallback="initRoleData"></roleSelect>
+                </FormItem>
+                <FormItem v-if="adminInfo.structure_type == 'edu_area' || (adminInfo.structure_type == 'edu_street' && _structureType == 'edu_customer')" prop="area_relevance_id">
+                    <span slot="label" class="required-after">关联区</span>
+                    <data-select v-model="adminInfo.area_relevance_id" @change="changeArea" class="base-320" type="adminArea" ref="areaSelectRef" valueKey="area_id" nameKey="area_name"></data-select>
                 </FormItem>
                 <FormItem v-if="adminInfo.structure_type == 'edu_street'" prop="street_relevance_id">
                     <span slot="label" class="required-after">关联街道</span>
-                    <data-select v-model="adminInfo.street_relevance_id" @change="changeStreet" :params="{ area_id: _structureId}" class="base-320" type="street" ref="streetSelectRef" valueKey="street_id" nameKey="street_name"></data-select>
+                    <data-select v-model="adminInfo.street_relevance_id" @change="changeStreet" :params="{ area_id: (_structureType == 'edu_customer' ? adminInfo.area_relevance_id : _structureId)}" class="base-320" type="street" ref="streetSelectRef" valueKey="street_id" nameKey="street_name"></data-select>
                 </FormItem>
                 <FormItem v-else-if="adminInfo.structure_type == 'edu_school'" prop="school_relevance_id">
                     <span slot="label" class="required-after">关联学校</span>
@@ -42,65 +47,18 @@
             <Button @click="drawerShow = false">取消</Button>
         </div>
     </rewrite-drawer>
-    <classOrganizeViewModal ref="classOrganizeModalRef" :isRelation="true" :isLImitMain="adminInfo.role_type == 'class_teacher' ? true : false" @success="chooseRelevanceCallback"></classOrganizeViewModal>
+    <classOrganizeViewModal ref="classOrganizeModalRef" :multiple="true" :isRelation="true" :isLImitMain="adminInfo.role_type == 'class_teacher' ? true : false" @success="chooseRelevanceCallback"></classOrganizeViewModal>
 </div>
-    <!-- <Drawer class="page-drawer-area" :transfer="false" :inner="true" :closable="false" v-model="drawerShow" :width="530">
-        <div class="class-edit-area" :style="'padding-top:' +  _pageScrollTop + 'px;'">
-            <div class="edit-title bold">{{title}}</div>
-            <div class="edit-cont" v-bar>
-                <div class="edit-cont-area">
-                    <Form :label-width="100" :model="adminInfo" ref="formDataRef" :rules="ruleValidate" :hide-required-mark="true">
-                        <FormItem prop="admin_name">
-                            <span slot="label" :class="{'required-after': isRegister != 1}">人员名称</span>
-                            <div v-if="isRegister == 1">{{adminInfo.admin_name}}</div>
-                            <custom-input v-else regType="name" class="base-320" v-model="adminInfo.admin_name"></custom-input>
-                        </FormItem>
-                        <FormItem prop="role_id">
-                            <span slot="label" class="required-after">授权角色</span>
-                            <Select v-model="adminInfo.role_id" class="base-320" @on-change="changeRole">
-                                <Option v-for="item in rolesList" :key="item.role_id" :value="item.role_id">{{(item.get_role && item.get_role.role_name) || '暂无名称'}}</Option>
-                            </Select>
-                        </FormItem>
-                        <FormItem v-if="adminInfo.structure_type == 'edu_street'" prop="street_relevance_id">
-                            <span slot="label" class="required-after">关联街道</span>
-                            <data-select v-model="adminInfo.street_relevance_id" @change="changeStreet" :params="{ area_id: _structureId}" class="base-320" type="street" ref="streetSelectRef" valueKey="street_id" nameKey="street_name"></data-select>
-                        </FormItem>
-                        <FormItem v-else-if="adminInfo.structure_type == 'edu_school'" prop="school_relevance_id">
-                            <span slot="label" class="required-after">关联学校</span>
-                            <data-select v-model="adminInfo.school_relevance_id" :params="{ area_id: _structureId }" class="base-320" type="school" ref="schoolSelectRef" valueKey="school_id" nameKey="school_name"></data-select>
-                        </FormItem>
-                        <template v-else-if="adminInfo.structure_type == 'edu_class'">
-                            <FormItem prop="relevance_id">
-                                <span slot="label" class="required-after">关联班级</span>
-                                <Button :type="adminInfo.relevance_id && adminInfo.relevance_id.length ? 'primary' : 'default'" @click="chooseRelevance">
-                                    {{adminInfo.relevance_id && adminInfo.relevance_id.length > 0 ? '更换关联班级' : '选择关联班级'}}</Button>
-                            </FormItem>
-                        </template>
-                        <FormItem prop="admin_phone">
-                            <span slot="label" :class="{'required-after': isRegister != 1}">手机号</span>
-                            <div v-if="isRegister == 1">{{adminInfo.admin_phone}}</div>
-                            <custom-input v-else type="number" isInt :maxlength="11" class="base-320" v-model="adminInfo.admin_phone"></custom-input>
-                        </FormItem>
-                    </Form>
-                    <div class="edit-foot">
-                        <Button type="primary" @click="checkUpdateInfo">保存</Button>
-                        <Button @click="drawerShow = false">取消</Button>
-                    </div>
-                    <Spin fix v-if="pageLoading"></Spin>
-                </div>
-            </div>
-        </div>
-        <classOrganizeViewModal ref="classOrganizeModalRef" :isRelation="true" :isLImitMain="adminInfo.role_type == 'class_teacher' ? true : false" @success="chooseRelevanceCallback"></classOrganizeViewModal>
-    </Drawer> -->
 </template>
 
 <script>
-import classOrganizeViewModal from "@/components/view-components/class-organize-view-modal/index.vue"
+import classOrganizeViewModal from "@/components/view-components/class-organize-view-modal/index.vue";
+import roleSelect from "@/components/view-components/role-select/index.vue";
 export default {
     props: {
         title: String,
     },
-    components: { classOrganizeViewModal },
+    components: { classOrganizeViewModal, roleSelect },
     data() {
         return {
             drawerShow: false,
@@ -109,9 +67,11 @@ export default {
                 admin_name: "",
                 role_id: 0,
                 role_type: "",
+                role_name: "",
                 structure_type: "",
                 school_relevance_id: 0,
                 street_relevance_id: 0,
+                area_relevance_id: 0,
                 relevance_id: [],
                 admin_phone: "",
             },
@@ -132,7 +92,7 @@ export default {
                         required: true,
                         validator: this._checkString,
                         message: "请填写授权角色",
-                        trigger: "blur",
+                        trigger: "change",
                     },
                 ],
                 admin_phone: [
@@ -142,12 +102,20 @@ export default {
                         trigger: "blur",
                     },
                 ],
+                area_relevance_id: [
+                    {
+                        required: true,
+                        validator: this._checkThanInt,
+                        message: "请选择关联区",
+                        trigger: "change",
+                    },
+                ],
                 school_relevance_id: [
                     {
                         required: true,
                         validator: this._checkThanInt,
                         message: "请选择关联学校",
-                        trigger: "blur",
+                        trigger: "change",
                     },
                 ],
                 street_relevance_id: [
@@ -155,7 +123,7 @@ export default {
                         required: true,
                         validator: this._checkThanInt,
                         message: "请选择关联街道",
-                        trigger: "blur",
+                        trigger: "change",
                     },
                 ],
                 relevance_id: [
@@ -163,51 +131,14 @@ export default {
                         required: true,
                         validator: this._checkArray,
                         message: "请选择对应的值",
-                        trigger: "blur",
+                        trigger: "change",
                     },
                 ],
             },
+            rolesList: []
         };
     },
     computed: {
-        rolesList() {
-            let rolesList = [];
-            let _structureType = this._structureType || "";
-            if (_structureType) {
-                switch (_structureType) {
-                    case "edu_area":
-                        rolesList = this._adminRoleData.filter((item) => {
-                            if(item.role_id) item.role_id = item.role_id + "";
-                            return item.structure_type == "edu_school" || item.structure_type == "edu_street";
-                        });
-                        break;
-                    case "edu_street":
-                        rolesList = this._adminRoleData.filter((item) => {
-                            if(item.role_id) item.role_id = item.role_id + "";
-                            return item.structure_type == "edu_school";
-                        });
-                        break;
-                    case "edu_school":
-                        rolesList = this._adminRoleData.filter((item) => {
-                            if(item.role_id) item.role_id = item.role_id + "";
-                            return item.structure_type == "edu_class";
-                        });
-                        break;
-                    case "edu_class": // 暂无
-                        break;
-                }
-            }
-            console.log("rolesList", rolesList);
-            // 仅有一个角色时，且是新增时，默认自动勾选
-            if (rolesList.length == 1 && Number(this.adminInfo.admin_id) == 0) {
-                this.$set(
-                    this.adminInfo,
-                    "role_id",
-                    rolesList[0].role_id
-                );
-            }
-            return rolesList;
-        },
     },
     methods: {
         showDrawer({ adminInfo = {} }) {
@@ -218,9 +149,11 @@ export default {
                 admin_name: "",
                 role_id: 0,
                 role_type: "",
+                role_name: "",
                 structure_type: "",
                 school_relevance_id: 0,
                 street_relevance_id: 0,
+                area_relevance_id: 0,
                 relevance_id: [],
                 admin_phone: "",
             }
@@ -243,15 +176,18 @@ export default {
                     let data = res.data || {};
                     let get_a_role = data.get_a_role || {};
                     let get_data = data.get_data || [];
+                    let get_self = get_data[0].get_self || {};
                     let _adminInfo = {
                         admin_id: data.admin_id || 0,
                         admin_name: data.admin_name || "",
                         role_type: "",
+                        role_name: (get_a_role.get_role && get_a_role.get_role.role_name) || "",
                         structure_type: "",
-                        role_id: get_a_role.role_id ? get_a_role.role_id + "" : '0',
+                        role_id: get_a_role.role_id ? get_a_role.role_id : 0,
                         admin_phone: data.admin_phone,
                         school_relevance_id: get_data[0].id || 0,
                         street_relevance_id: get_data[0].id || 0,
+                        area_relevance_id: get_self.id || get_data[0].id || 0,
                         is_register: adminInfo.is_register
                     }
                     if(get_data.length > 0){
@@ -277,9 +213,16 @@ export default {
             this.relevance_ids = [];
             this.$set(this.adminInfo, "street_relevance_id", 0);
             this.$set(this.adminInfo, "school_relevance_id", 0);
+            this.$set(this.adminInfo, "area_relevance_id", 0);
         },
         changeStreet(data){
             this.$set(this.adminInfo, "relevance_id", [data]);
+        },
+        changeArea(data){
+           this.$set(this.adminInfo, "relevance_id", [data]);
+           this.$nextTick(()=>{
+            this.$refs["streetSelectRef"] && this.$refs["streetSelectRef"].getData();
+           })
         },
         chooseRelevance(){
             this.$refs["classOrganizeModalRef"] && this.$refs["classOrganizeModalRef"].showModal({
@@ -287,8 +230,9 @@ export default {
                 extra: {
                     expandHold: true,
                     reqParams: {
-                        school_id: this._structureId,
-                        school_name: this._structureName 
+                        school_id: this._getReqStructureId,
+                        school_name: this._getReqStructureName,
+                        state: 2 // 0: 正常数据，1 毕业数据， 2全部数据（包含毕业）
                     }
                 }
             });
@@ -336,6 +280,7 @@ export default {
             return this.$MainApi[req]({
                 data: {
                     ...adminInfo,
+                    role_id: adminInfo.role_id ? adminInfo.role_id + '' : '',
                     admin_phone: adminInfo.admin_phone ? adminInfo.admin_phone + "" : "",
                     relevance_id: relevance_id instanceof Array ? relevance_id : [relevance_id],
                 },
@@ -353,17 +298,21 @@ export default {
                     this.pageLoading = false;
                 });
         },
+        initRoleData(data){
+            this.rolesList = data || [];
+        },
         setRoleType(role_id){
             let rolesList = this.rolesList;
             if(!Number(role_id)){
-                this.$set(this.adminInfo, "role_type", "")
-                this.$set(this.adminInfo, "structure_type", "")
+                this.$set(this.adminInfo, "role_type", "");
+                this.$set(this.adminInfo, "structure_type", "");
+                this.$set(this.adminInfo, "role_name", "");
             } else {
                 for(let i = 0; i < rolesList.length; i++){
                     if(rolesList[i].role_id == role_id){
-                        let get_role = rolesList[i].get_role || {};
                         this.$set(this.adminInfo, "structure_type", rolesList[i].structure_type || "")
-                        this.$set(this.adminInfo, "role_type", get_role.role_type || "")
+                        this.$set(this.adminInfo, "role_type", rolesList[i].type || "")
+                        this.$set(this.adminInfo, "role_name", rolesList[i].role_name || "");
                         break;
                     }
                 }

@@ -6,7 +6,7 @@
         <Button>批量创建</Button>
       </div>
     </rewrite-area>
-    <Table ref="myTable" class="full-table" :columns="columns" :data="list" border>
+    <rewrite-table ref="myTable" class="full-table" :columns="columns" :data="list">
       <template slot="handle" slot-scope="{ row }">
           <div class="operate-area">
             <a class="operate" @click="editClass(row.id)">编辑</a>
@@ -14,7 +14,7 @@
           </div>
       </template>
       
-    </Table>
+    </rewrite-table>
     <rewrite-page
       slot="footer"
       :total="total"

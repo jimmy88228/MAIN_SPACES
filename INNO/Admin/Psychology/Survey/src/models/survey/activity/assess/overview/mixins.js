@@ -6,9 +6,9 @@ export default{
           title: "学校",
           slot: "structure_name",
           align: "left",
-          minWidth: 150,
+          minWidth: 180,
           renderHeader:(h, params)=>{
-            return h('div', this._structureType == 'edu_school' ? '班级' : '学校')
+            return h('div', this._structureLimit(['edu_school', 'edu_class']) ? '班级' : '学校')
           }
         },
         {

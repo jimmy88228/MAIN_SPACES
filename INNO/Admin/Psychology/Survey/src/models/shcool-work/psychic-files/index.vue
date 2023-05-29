@@ -1,6 +1,6 @@
 <template>
     <div class="psychic-files">
-        <div class="text-r p-10 download-file"><Button type="primary" @click="downloadFile" :loading="downloadIng" icon="md-cloud-download">下载档案</Button></div>
+        <div class="text-r p-10 download-file"><Button type="primary" @click="exportFile" :loading="downloadIng" icon="md-cloud-download">下载档案</Button></div>
         <msgSummary ref="msgSummaryRef" @studentDataCallback="loadDataCallback" ></msgSummary>
         <div class="activity-record">
             <Tabs value="actRecord" :animated="false">
@@ -13,6 +13,8 @@
             </Tabs>
         </div>
         <downloadTemplate ref="downloadTemplateRef" :downloadData="downloadData"></downloadTemplate>
+        <!--导出-->
+        <mpNotice :ref="'notice' + item" v-for="item in jobIdCol" :key="item"></mpNotice>
     </div>
 </template>
 
@@ -22,13 +24,15 @@ import actTable from "./act-table/index";
 import psychicTable from "./psychic-table/index";
 import msgSummary from "./cps/msg-summary.vue";
 import downloadTemplate from "./download/psychic-file-template.vue";
+import mpNotice from "@/components/main-components/mq-notice/mq-notice";
 export default {
-    components: { actTable, psychicTable ,msgSummary, downloadTemplate},
+    components: { actTable, psychicTable ,msgSummary, downloadTemplate, mpNotice},
     data() {
         return {
             userId: 0,
             downloadData: {},
-            downloadIng: false
+            downloadIng: false,
+            jobIdCol: [],
         };
     }, 
     methods: {
@@ -71,6 +75,27 @@ export default {
             for(let i in detail){
                 this.downloadData[i] = detail[i];
             } 
+        },
+        exportFile(){
+            this.downloadIng = true;
+            return this.$MainApi.psychologyFilesExport({
+                data: {
+                    user_id: Number(this.pageQuery.userId) || 0
+                },
+                other: {
+                    isErrorMsg: true
+                }
+            }).then(res=>{
+                let data = res.data;
+                if (data) {
+                    this.jobIdCol.push(data);
+                    this.$nextTick(() => {
+                        this.$refs[`notice${data}`][0].showNotice(data);
+                    });
+                }
+            }).finally(()=>{
+                this.downloadIng = false;
+            })
         }
     },
     mounted() {
@@ -82,7 +107,6 @@ export default {
 <style lang="less" scoped>
 .psychic-files {
     padding-right: 10px;
-    position: relative;
     .download-file{
         position: absolute;
         top: 0px;

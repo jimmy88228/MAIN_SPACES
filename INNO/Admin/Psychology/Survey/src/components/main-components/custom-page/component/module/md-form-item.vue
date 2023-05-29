@@ -13,10 +13,10 @@
                     </div>
                     <template v-if="type == 'broadcast'">
                         <custom-input :rows="6" :maxlength="300" showWordLimit class="base-textarea" v-model="item.value" type="textarea" placeholder="输入标题"></custom-input>
+                        <div class="m-t-10 link-box flex-b-c" >
+                            <navLink boxStyle="width:100%;" size="default"  :itemInfo="item" :pageInfo="pageInfo" ></navLink>
+                        </div>
                     </template>
-                    <div class="m-t-10 link-box flex-b-c" >
-                        <navLink boxStyle="width:100%;" size="default"  :itemInfo="item" :pageInfo="pageInfo"></navLink>
-                    </div>
                 </div>
                 <template v-if="type != 'broadcast'">
                     <div class="item-box">

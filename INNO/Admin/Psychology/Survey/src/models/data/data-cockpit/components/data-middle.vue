@@ -1,6 +1,6 @@
 <template>
   <div class="campus-select-view">
-      <div class="school-select-item campus-select-item w-nowrap " :class="{'curr-item': !searchForm.campus_id}" @click="changeCampus(0, 0)">{{_structureName}}</div>
+      <div class="school-select-item campus-select-item w-nowrap " :class="{'curr-item': !searchForm.campus_id}" @click="changeCampus(0, 0)">{{_getReqStructureName}}</div>
       <div class="campus-select-item w-nowrap" :class="{'curr-item': searchForm.campus_id == item.campus_id}" v-for="(item, index) in campusData" :key="item.campus_id" @click="changeCampus(item.campus_id, index + 1)">{{item.campus_name}}</div>
       <div class="campus-select-line">
         <div class="campus-select-curr" :style="currStyle"></div>

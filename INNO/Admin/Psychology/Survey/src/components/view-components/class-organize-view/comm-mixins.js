@@ -43,7 +43,7 @@ export default {
                     let id = data[i].id;
                     let sIndex = this.ids.indexOf(Number(id));
                     let cur_item = this.c_checkData[sIndex] || {};
-                    let title = data[i].name || "";
+                    let title = data[i].type == 'class' ? (data[i].name + (data[i].school_year ? '(' + data[i].school_year + ')' : '')) : data[i].name || '';
                     data[i].title = title;
                     data[i].id = id;
                     data[i].checked = sIndex != -1 || (this.isRelation && pChecked)? true : false;
@@ -52,8 +52,8 @@ export default {
                     data[i].selected = false;
                     data[i]._parentName = _parentName;
                     data[i]._parentIds = _parentIds;
-                    data[i].disabled = cur_item.disabled || false //初始化的时候不可删除项设置disabled
-                    data[i].disableDel = cur_item.disableDel || false;
+                    data[i].disabled = !!cur_item.disabled || !!data[i].disabled || (data[i].class_state == 2 && !data[i].checked) ||false //初始化的时候不可删除项设置disabled
+                    data[i].disableDel = !!cur_item.disableDel || false;
                     
                     data[i].getson_count = data[i].getson_count || 0
                     data[i].icon = this.isModal ? (id == 0 ? "" : organizeBg) : (id == 0 ? topIcon : organizeDef);
@@ -62,7 +62,7 @@ export default {
                     if (data[i].checked) {
                         _selectData.push(data[i]);
                     } else{
-                        if(_isSelectAll) _isSelectAll = false;
+                        if(_isSelectAll && data[i].class_state != 2) _isSelectAll = false;
                     }
                     let children = data[i].children;
                     if (children && children.length > 0) {
@@ -124,6 +124,8 @@ export default {
                 for (let i = 0; i < data.length; i++) {
                     let item = data[i] || {};
                     let title = item.title || "";
+                    item.disabled = item.disabled || (item.class_state == 2 && !item.checked) || false
+                    console.log("item", JSON.parse(JSON.stringify(item)));
                     switch (key) {
                         case "search": // 搜索
                             if (
@@ -139,7 +141,7 @@ export default {
                             break;
                         case "initSelect": // 初始化选择时
                             if (this.ids.indexOf(Number(item.id)) != -1) {
-                                item.checked = true;
+                                !item.disabled && (item.checked = true);
                             } else {
                                 item.checked = false;
                             }
@@ -153,12 +155,12 @@ export default {
                             break;
                         case "checked":
                             if (item.id == (curr && curr.id) || item._parentIds.indexOf(curr && curr.id) != -1) {
-                                item[key] = curr[key]; //curr[key] : 点击元素的当前勾选状态
+                                item[key] = item.disabled ? false : curr[key]; //curr[key] : 点击元素的当前勾选状态
                                 let idIndex = this.ids.indexOf(Number(item.id));
                                 if (item.id == (curr && curr.id)) { //定位到点击的元素
                                     item.expand = true;
                                     if (curr[key]){
-                                        if (idIndex == -1) {
+                                        if (idIndex == -1 && !item.disabled) {
                                             this.c_checkData.push(item) 
                                         }
                                     } else {
@@ -170,7 +172,8 @@ export default {
                                     let pidIndex = this.ids.indexOf(curr && Number(curr.id));
                                     item.pChecked = curr[key];
                                     if (curr[key]) { // (勾选) 操作元素的下级，检测是否在选择集合中存在，不存在则添加，否：不处理
-                                        if (idIndex == -1) {
+                                        if (idIndex == -1 && !item.disabled) {
+                                            
                                             this.c_checkData.splice(pidIndex + 1 + addCount, 0, item);
                                             addCount++;
                                         };
@@ -187,6 +190,7 @@ export default {
                         default:
                             ;
                     }
+                    item.disabled = item.disabled || (item.class_state == 2 && !item.checked) || false
                     if (item.children && item.children.length > 0) {
                         addCount = this._handleTreeData(item.children, key, curr, addCount).addCount;
                     }

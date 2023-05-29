@@ -3,6 +3,7 @@
     <custom-modal 
     ref="modal" 
     class="overview-modal" 
+    :transfer="false"
     :footerHide="true" 
     width="96%"
     :closable="true"
@@ -30,7 +31,7 @@ export default {
           actOverViewRef.pageQuery.activityId = detail.id;
           actOverViewRef.pageQuery.type = "task";
           actOverViewRef.pageQuery.theme = "dataCockpit";
-          actOverViewRef.pageQuery.schoolId = this._structureId;
+          actOverViewRef.pageQuery.schoolId = this._getReqStructureId;
           actOverViewRef.init();
       }
       this.$refs.modal.show();

@@ -75,7 +75,7 @@
 </template>
 
 <script>
-import dataSort from "./data-sort.js";
+import { GradeOrder } from "./data-sort.js";
 export default {
   props: {
     totalUserInfo: {
@@ -157,12 +157,11 @@ export default {
             this.totalCount.totalHealth += healthCount;
             this.totalCount.totalUser += userCount;
           }
-          console.log("gradeData", JSON.parse(JSON.stringify(gradeData)));
           // 
           try {
             gradeData.sort((a, b)=>{
               // 比较中文排序
-              return dataSort.gradeOrder.indexOf(a.gradeName) - dataSort.gradeOrder.indexOf(b.gradeName); 
+              return GradeOrder.indexOf(a.gradeName) - GradeOrder.indexOf(b.gradeName); 
             })
           } catch (error) {}
           // 避免出现

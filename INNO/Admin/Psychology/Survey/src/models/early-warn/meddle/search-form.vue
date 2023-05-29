@@ -14,10 +14,9 @@
 </template>
 
 <script>
-import linkageSelect from "@/models/components/linkage-select";
 export default {
     name: "studentIndexSearchForm",
-    components: { linkageSelect },
+    components: { },
     data() {
         return {};
     },

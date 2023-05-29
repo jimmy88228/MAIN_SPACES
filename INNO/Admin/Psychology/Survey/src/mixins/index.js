@@ -3,6 +3,7 @@ import VueUtils from "@/helper/utils/vue-utils.js";
 import PreviewImgManager from "@/components/preview-img-manager.js";
 import LM from "@/helper/manager/login-manager";
 import formMixin from "@/helper/mixin/form-mixin";
+import PageHelper from "@/helper/page-helper.js";
 Vue.mixin({
     mixins: [formMixin],
     data() {
@@ -20,6 +21,15 @@ Vue.mixin({
         };
     },
     computed: {
+        _adminUserInfos(){
+            return LM.userInfos || {}
+        },
+        _isNeedResetPwd(){
+            return LM.isNeedResetPwd || false
+        },
+        _mainId(){
+            return (LM.userInfos && LM.userInfos.mainId) || 0
+        },
         _mainData(){
             return (LM.userInfos && LM.userInfos.mainData) || {}
         },
@@ -29,7 +39,27 @@ Vue.mixin({
         _appCode(){
             return (LM.userInfos && LM.userInfos.appCode) || "";
         },
+        _getReqStructureId(){
+            // 登录的组织ID,由于班级，心理老师需要用到上级组织ID
+            if(this._structureType == 'edu_class'){
+                return this._loginAdmin.structure_pid;
+            } else {
+                return this._structureId;
+            }
+        },
+        _getReqStructureName(){
+            // 登录的组织ID,由于班级，心理老师需要用到上级组织name
+            if(this._structureType == 'edu_class'){
+                return this._loginAdmin.structure_pname;
+            } else {
+                return this._structureName;
+            }
+        },
+        _roleType(){
+            return this._loginAdmin.role_type || "";   
+        },
         _structureType() {
+            // edu_customer,edu_area,edu_street,edu_school,edu_class(psyc_teacher, class_teacher)
             return this._loginAdmin.structure_type || "";
         },
         _structureName() {
@@ -54,29 +84,24 @@ Vue.mixin({
             return query;
         },
         pageParams(){
-
-
-
-
-            
             let params = (this.$route && this.$route.params) || {};
             return params;
         },
         _setBodyScroll(isScroll){
             document.body.style.overflow = isScroll ? 'unset' : 'hidden'
+        },
+        // PageHelper
+        _actionCodeMap(){
+            return PageHelper.actionCodeMap
         }
     },
     methods: {
         _structureLimit(muster, type) {
             type = type || this._structureType || ''
-            if(type == "edu_area"){
-                return muster.includes(type) && muster.length == 1
-            }
             if (type) return muster.includes(type);
             return true;
         },
         _copyText(elem) {
-            console.log("elem", elem);
             if(!elem) return;
             function otherEle(element) {
                 if (document.selection) {
@@ -141,7 +166,7 @@ Vue.mixin({
             return result;
         },
         _getDom(id) {
-            const dom = document.getElementsById(id);
+            const dom = document.getElementById(id);
             return dom;
         },
         _getRef(name=""){
@@ -149,6 +174,43 @@ Vue.mixin({
             ref && Array.isArray(ref) && (ref = ref[0]);
             return ref || {}
         },
+        //全屏
+        _fullScreen(id, callback) {
+            let el = this._getDom(id);
+            let rfs = el.requestFullScreen || el.webkitRequestFullScreen || el.mozRequestFullScreen || el.msRequestFullScreen,
+                wscript;
+            if (typeof rfs != "undefined" && rfs) {
+                rfs.call(el);
+                typeof(callback) == 'function' && callback();
+                return;
+            }
+            if (typeof window.ActiveXObject != "undefined") {
+                wscript = new ActiveXObject("WScript.Shell");
+                if (wscript) {
+                    wscript.SendKeys("{F11}");
+                    typeof(callback) == 'function' && callback();
+                }
+            }
+        },
+        //退出全屏
+        _exitFullScreen(id, callback) {
+            let el = document;
+            let cfs = el.cancelFullScreen || el.webkitCancelFullScreen || el.mozCancelFullScreen || el.exitFullScreen,
+                wscript;
+            if (typeof cfs != "undefined" && cfs) {
+                cfs.call(el);
+                typeof(callback) == 'function' && callback();
+                return;
+            }
+            if (typeof window.ActiveXObject != "undefined") {
+                wscript = new ActiveXObject("WScript.Shell");
+                if (wscript != null) {
+                    wscript.SendKeys("{F11}");
+                    typeof(callback) == 'function' && callback();
+                }
+            }
+        },
+        _func(){}
     },
     mounted() {}
 });

@@ -1,7 +1,7 @@
 <template>
     <hold-layout :isFull="true">
-        <searchForm @search="loadData" @create="editAct()" @removeIds="batchRemoveItem()" :searchForm="searchForm"></searchForm>
-        <Table ref="myTable" class="full-table" :columns="columns" :data="list" border :loading="tableLoading" @on-selection-change="selectAct">
+        <searchForm @search="loadData(1)" @create="editAct()" @removeIds="batchRemoveItem()" :searchForm="searchForm"></searchForm>
+        <rewrite-table ref="myTable" class="full-table" :columns="columns" :data="list" :loading="tableLoading" @on-selection-change="selectAct">
             <template slot="time" slot-scope="{ row }">
                 <template v-if="row.limit_time==0">
                     不限制
@@ -16,7 +16,7 @@
                 <Tag type="dot" :color="stateKey[row.state].type">{{row.state_str}}</Tag>
             </template>
             <template slot="page_link" slot-scope="{ row }">
-                <a class="operate" @click="createCode(row)" v-if="_structureType == 'edu_school'">生成二维码</a>
+                <a class="operate" @click="createCode(row)" v-if="_structureLimit(['edu_school', 'edu_class'])">生成二维码</a>
                 &nbsp;
                 <rewrite-tooltip theme="light" >
                     <a class="operate" slot="_tip">生成链接</a>
@@ -45,7 +45,7 @@
                     </p>
                 </div>
             </template>
-        </Table>
+        </rewrite-table>
         <rewrite-page slot="footer" :total="total" :current="page" :page-size="pageSize" :page-size-opts="pageSizeOpts" @on-change="e=>loadData(e)" @on-page-size-change="handlePageSizeChange" show-sizer show-elevator show-total transfer></rewrite-page>
     </hold-layout>
 </template>
@@ -66,7 +66,7 @@ export default {
                 endTime: "",
                 state: -1,
                 time: [],
-                structure_id: this._structureId,
+                structure_id: this._getReqStructureId,
                 limitTime: -1
             },
             selectData: [],
@@ -117,7 +117,7 @@ export default {
                   startTime: this.searchForm.time[0] || "",
                   endTime: this.searchForm.time[1] || "",
                   state: parseInt(this.searchForm.state),
-                  structure_id: this._structureId,
+                  structure_id: this._getReqStructureId,
                   ...extraData,
               },
               other: {
@@ -234,6 +234,9 @@ export default {
     mounted() {
         this.loadData();
     },
+    // activated(){
+    //     this.loadData();
+    // }
 };
 </script>
 

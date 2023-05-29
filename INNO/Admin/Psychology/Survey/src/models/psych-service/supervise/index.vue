@@ -1,7 +1,7 @@
 <template>
   <hold-layout :isFull="true" class="supervise-page-layout">
     <searchForm :searchForm="searchForm" :subscribeState="subscribeState" @search="loadData()"></searchForm>
-    <Table class="no-remove full-table" ref="myTable" :columns="columns" :data="list" border :loading="tableLoading" @on-selection-change="selectDataEvent">
+    <rewrite-table class="no-remove full-table" ref="myTable" :columns="columns" :data="list" :loading="tableLoading" @on-selection-change="selectDataEvent">
       <template slot="target" slot-scope="{ row }">
         <div class="target">
           <p class=" text-flow" :class="row.customerName && row.customerName != row.source ? 'target-name' : ''">{{row.source}}</p>
@@ -33,7 +33,7 @@
         </div>
       </template>
 
-    </Table>
+    </rewrite-table>
     <rewrite-page slot="footer" :total="total" :current="page" :page-size="pageSize" :page-size-opts="pageSizeOpts" @on-change="e=>loadData(e)" @on-page-size-change="handlePageSizeChange" show-sizer show-elevator show-total transfer></rewrite-page>
     <checkSupervise ref="checkSuperviseRef" title="预约信息" @handle="setHandle"></checkSupervise>
     <!---->

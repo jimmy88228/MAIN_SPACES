@@ -20,7 +20,7 @@
         </div>
         <div class="main-footer">
             <Button @click="back" v-if="!hideBack">取消</Button>&nbsp;&nbsp;
-            <Button type="primary" @click="save" v-hasAction="'personal_center_save'">保存</Button>
+            <Button type="primary" @click="save">保存</Button>
         </div>
     </div>
 </template>
@@ -207,8 +207,7 @@ function initJson(data) {
     .main-footer {
         width:695px;
         text-align:center;
-        padding-left: 280px;
-        padding-top:10px;
+        padding:10px 0px 10px 280px;
     }
 }
 </style>

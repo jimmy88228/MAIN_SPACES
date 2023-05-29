@@ -28,15 +28,15 @@ export default{
           minWidth: 120
         },
         {
-          title: "所属组织",
+          title: "关联组织",
           slot: "structure",
-          minWidth: 120,
+          minWidth: 150,
         },
-        {
-          title: "所属班级",
-          slot: "get_class",
-          width: 120
-        },
+        // {
+        //   title: "所属班级",
+        //   slot: "get_class",
+        //   width: 120
+        // },
         {
           title: "状态",
           width: 100,

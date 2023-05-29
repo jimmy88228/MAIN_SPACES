@@ -8,28 +8,22 @@ export default{
           minWidth: 100,
         },
         {
-          title: "绑定组织",
+          title: "参与日期",
+          key: "join_time",
+          minWidth: 250,
+        },
+        {
+          title: "所在年级",
           slot: "organize",
           minWidth: 250,
         },
         {
-          title: "学习进度",
-          slot: "study_progress",
-          minWidth: 100,
-        },
-        
-        {
-          title: "测验进度",
+          title: "完成进度",
           slot: "test_progress",
           minWidth: 100,
         },
         {
-          title: "测验均分",
-          slot: "avg_exam",
-          minWidth: 100,
-        },
-        {
-          title: "课程状态",
+          title: "完成状态",
           key: "state_str",
           minWidth: 100,
         }

@@ -113,7 +113,7 @@ export default {
             this.careInfo.user_id = "";
             this.careInfo.level_id = "";
             this.careInfo.examine_remark = "";
-            this.careInfo.school_id = this._structureId;
+            this.careInfo.school_id = this._getReqStructureId;
             this.memberInfo = {};
         },
         chooseMember() {

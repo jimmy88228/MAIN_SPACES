@@ -12,7 +12,7 @@
           <span class="tag-name">
             {{nameKey && item[nameKey] || item.name || ""}}
           </span>
-          <div @click="handleClose(item.id)" class="close pointer" v-if="!disabledDel">
+          <div @click="handleClose(item.id)" class="close pointer" v-if="!disabledDel && !item._disabled">
             <div class="row"></div>
             <div class="col"></div>
           </div>

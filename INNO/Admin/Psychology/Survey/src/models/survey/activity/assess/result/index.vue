@@ -2,12 +2,16 @@
   <hold-layout :isFull="true" :style="activityInfo.activityName ? 'margin-top: -15px' : ''">
     <div class="activity-name">{{activityInfo.activityName}}</div>
     <searchForm :searchForm="searchForm" @search="loadData()" @exportHandle="exportHandle"></searchForm>
-    <Table ref="myTable" class="full-table" :columns="columns" :data="list" border :loading="tableLoading"  @on-sort-change="sortChange">
+    <rewrite-table ref="myTable" class="full-table" :columns="columns" :data="list" :loading="tableLoading"  @on-sort-change="sortChange">
       <template slot="create_time" slot-scope="{ row }" >
           <p class="p-t-5 p-b-5">{{row.record_create_time || "--"}}</p>
       </template>
       <template slot="complete_time" slot-scope="{ row }">
           <p class="p-t-5 p-b-5">{{row.record_complete_time || '--'}}</p>
+      </template>
+      <template slot="class_name" slot-scope="{ row }">
+          <p class="p-t-5 p-b-5">{{row.old_class_name}}</p>
+          <p class="p-t-5 p-b-5 new-class w-nowrap" v-if="row.student_state_str">{{row.student_state_str}}</p>
       </template>
       <template slot="handle" slot-scope="{ row }">
           <div class="operate-area text-r">
@@ -16,7 +20,7 @@
             <a class="operate " :class="{'invalid': row.warning_number > 0}" @click="resetResult(row)" v-if="row.handle.reset || (!row.handle.reset && row.warning_number > 0 && row.record_id)">重测</a>
           </div>
       </template>
-    </Table>
+    </rewrite-table>
     <rewrite-page
     slot="footer"
     :total="total"
@@ -235,5 +239,13 @@ export default {
   color: #7F7F7F;
   line-height: 22px;
   margin-bottom: 15px;
+}
+.new-class{
+  display: inline-block;
+  margin: 5px auto;
+  color:#74C444;
+  background-color:#E5F9E5;
+  border-radius:4px;
+  padding: 3px 10px;
 }
 </style>

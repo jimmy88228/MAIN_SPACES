@@ -4,27 +4,28 @@
             <searchForm :searchForm="searchForm" @search="loadData" @addAdmin="addAdmin" @batchAdd="batchAdd"></searchForm>
             <Table ref="myTable" :columns="columns" height="500" :data="list" border :loading="tableLoading">
                 <template slot="school" slot-scope="{ row, index }">
-                    {{_structureName}}
+                    {{(row.schoolName) || '--'}}
                 </template>
                 <template slot="class" slot-scope="{ row, index }">
-                    <span v-for="(_item, _index) in row.get_sa" :key="_index">
-                        {{_item.get_name && _item.get_name.structure_name}}
-                        <template v-if="row.get_sa.length > (_index + 1)">,</template>
+                    <span v-for="(_item, _index) in row.get_sa1" :key="_index">
+                        {{_item.get_edu_class && _item.get_edu_class.class_name}}
+                        <template>({{_item.get_edu_class && _item.get_edu_class.school_year}})</template>
+                        <template v-if="row.get_sa1.length > (_index + 1)">,</template>
                     </span>
                 </template>
                 <template slot="state" slot-scope="{ row, index }">
-                    <i-switch v-model="row.admin_state" :before-change="()=>{return beforeChangeState(index, row)}" :true-value="1" :false-value="0" size="large" :loading="row.stateLoading" v-hasAction="'class_maintenance_adminstate'">
+                    <i-switch v-model="row.admin_state" :before-change="()=>{return beforeChangeState(index, row)}" :true-value="1" :false-value="0" size="large" :loading="row.stateLoading" v-hasAction="pageQuery.schoolId ? true : 'class_maintenance_adminstate'">
                         <span slot="open">正常</span>
                         <span slot="close">关闭</span>
                     </i-switch>
                 </template>
                 <template slot="handle" slot-scope="{ row, index }">
                     <div class="operate-area">
-                        <a class="operate" @click="editAdmin(row)" v-hasAction="'class_maintenance_adminupdate'">编辑</a>
-                        <Poptip confirm title="确定删除该管理员？" placement="left" @on-ok="removeItem(row.admin_id, index)" v-hasAction="'class_maintenance_adminremove'">
+                        <a class="operate" @click="editAdmin(row)" v-hasAction="pageQuery.schoolId ? true :  'class_maintenance_adminupdate'">编辑</a>
+                        <!-- <Poptip confirm title="确定删除该管理员？" placement="left" @on-ok="removeItem(row.admin_id, index)" v-hasAction="pageQuery.schoolId ? true : 'class_maintenance_adminremove'">
                             <a class="operate">删除</a>
-                        </Poptip>
-                        <a class="operate" @click="resetPAW(row.admin_id)" v-hasAction="'class_maintenance_adminrest'">重置密码</a>
+                        </Poptip> -->
+                        <a class="operate" @click="resetPAW(row.admin_id)" v-hasAction="pageQuery.schoolId ? true :  'class_maintenance_adminrest'">重置密码</a>
                     </div>
                 </template>
             </Table>
@@ -55,6 +56,7 @@ export default {
             searchForm: {
                 class_id: 0,
                 class_name: "",
+                school_year: '',
                 searchq: "",
                 state: -1,
             },
@@ -63,10 +65,11 @@ export default {
         };
     },
     methods: {
-        showModal({ classId, className, confirm }) {
+        showModal({ classId, className, schoolYear, confirm }) {
             this.modalShow = true;
             this.searchForm.class_id = Number(classId) || 0;
             this.searchForm.class_name = className || 0;
+            this.searchForm.school_year = schoolYear || 0;
             this.confirmCallback = confirm;
             this.loadData();
             console.log("searchForm", this.searchForm);
@@ -85,6 +88,8 @@ export default {
                         let items = data.items || [];
                         for (let i = 0; i < items.length; i++) {
                             items[i].stateLoading = false;
+                            let get_sa1 = items[i].get_sa1 || [];
+                            items[i].schoolName = (get_sa1[0].get_edu_class && get_sa1[0].get_edu_class.school_name) || "";
                         }
                         this.data = {
                             total: data.total,
@@ -126,18 +131,21 @@ export default {
             this.editTitle = "添加人员";
             let classId = this.searchForm.class_id;
             let className = this.searchForm.class_name;
+            let schoolYear = this.searchForm.school_year;
             this.$refs["editAdminRef"] &&
-                this.$refs["editAdminRef"].showModal({ classId, className });
+                this.$refs["editAdminRef"].showModal({ classId, className, schoolYear });
         },
         editAdmin(row) {
             this.editTitle = "编辑人员";
             let classId = this.searchForm.class_id;
             let className = this.searchForm.class_name;
+            let schoolYear = this.searchForm.school_year;
             this.$refs["editAdminRef"] &&
                 this.$refs["editAdminRef"].showModal({
                     adminId: row.admin_id,
                     classId,
                     className,
+                    schoolYear,
                     isRegister: row.is_register
                 });
         },

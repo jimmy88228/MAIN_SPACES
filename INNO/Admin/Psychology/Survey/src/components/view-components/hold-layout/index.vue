@@ -35,27 +35,24 @@ export default {
 
 <style lang="less" scoped>
 .hold-layout{
-  // width:100%;
+  width:100%;
   min-height: calc(100%);
   display: flex;
   flex-direction: column;
-  align-items: flex-start;
-  // position:relative;
   &.full-height-layout{
     height: 100%;
-    // display: flex;
-    // flex-direction: column;
-    // min-height: calc(100%);
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    min-height: calc(100%);
   }
   .hold-layout-content{
-    width:100%;
     flex: 1;
-    // overflow: hidden;
+    overflow: hidden;
   }
   .full-height{
     display: flex;
     flex-direction: column;
-    align-items: flex-start;
     // height:100%;
     // min-height: calc(100%);
   }
