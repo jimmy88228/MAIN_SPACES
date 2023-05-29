@@ -20,6 +20,9 @@
       <template slot="consult_result_str" slot-scope="{ row }">
         {{row.consultResultStr}}
       </template>
+      <template slot="appointTime" slot-scope="{ row }">
+        {{row.appointTime || '--'}}
+      </template>
       
       <template slot="handle" slot-scope="{ row }">
         <div class="operate-area">

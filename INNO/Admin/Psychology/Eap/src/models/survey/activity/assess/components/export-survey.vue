@@ -155,7 +155,9 @@ export default {
             break;
       }
       this.exportInfo.dimensionalityData = [];
-      initFirst && this.$refs["dimensionSelectRef"] && this.$refs["dimensionSelectRef"].getData();
+      this.$nextTick(()=>{
+        initFirst && this.$refs["dimensionSelectRef"] && this.$refs["dimensionSelectRef"].getData();
+      })
     },
     getDimension(){
       this.$nextTick(()=>{

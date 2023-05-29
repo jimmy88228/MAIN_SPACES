@@ -1,7 +1,7 @@
 <template>
     <div class="rewrite-choose" :style="customStyle">
         <div class="radio-box flex-s-c">
-            <div v-for="(item, index) in data" :key="index" class="radio flex-c-c pointer" :class="[chooseValue == item.key || (multiple && chooseValue.indexOf(item.key) != -1) ? 'active' : '', item.disabled ? 'bg_f3' : '']" @click="chooseClick(item.key)">
+            <div v-for="(item, index) in data" :key="index" class="radio flex-c-c pointer" :class="[chooseValue == item.key || (multiple && chooseValue.indexOf(item.key) != -1) ? 'active' : '', item.disabled ? 'bg_f3' : '']" @click="chooseClick(item)">
                 <div class="radio-cir"></div>
                 <div class="radio-name">{{item.name}}</div>
             </div>
@@ -38,7 +38,11 @@
             }
         },
         methods:{
-            chooseClick(key){
+            chooseClick(item = {}){
+                if(item.disabled){
+                    return;
+                }
+                let key = item.key
                 if(this.multiple){
                     let index = this.chooseValue.indexOf(key);
                     if(index == -1){
@@ -112,6 +116,13 @@
                     background-color: #fff;
                 }
             }   
+        }
+    }
+    .bg_f3{
+        background: #f3f3f3;
+        div{
+            opacity: 0.5;
+            color: #7f7f7f;
         }
     }
 }

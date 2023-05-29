@@ -23,6 +23,9 @@ const routeMenusKey = {
     registeredUser: "registeredUser",
     transferCourtyard: "transferCourtyard",
     zoneSet: "zoneSet",
+    lecturesManagement: "lecturesManagement",
+    specialLecture: "specialLecture",
+    studyTask: "studyTask"
 }
 /**
  * meta code ==>该页面的acitonCode（只为菜单跳转, 并非必须）
@@ -421,6 +424,36 @@ const memberManageRoutes = [
     },
 
 ]
+
+const lecturesManageRoute = [
+    {
+        name: "lectures-index",
+        path: "/lectures-index",
+        component: () => import(/*webpackChunkName: "lectures-index"*/"@/models/survey/lectures/index"),
+        meta: {
+            menu: routeMenusKey['specialLecture'],
+            title: "专项讲座"
+        } 
+    },
+    {
+        name: "add-lectures",
+        path: "/add-lectures",
+        component: () => import(/*webpackChunkName: "add-lectures"*/"@/models/survey/lectures/edit-lectures/index"),
+        meta: {
+            menu: routeMenusKey['specialLecture'],
+            title: "新增讲座"
+        } 
+    },
+    {
+        name: "edit-lectures",
+        path: "/edit-lectures",
+        component: () => import(/*webpackChunkName: "edit-lectures"*/"@/models/survey/lectures/edit-lectures/index"),
+        meta: {
+            menu: routeMenusKey['specialLecture'],
+            title: "编辑讲座"
+        } 
+    }
+]
  
 const organizeManageRoute = [
     {
@@ -516,6 +549,45 @@ const transferChannelRoutes = [
     }
 ]
 
+const curriculumRoutes = [
+    {
+        name: "curriculumTask",
+        path: "/curriculumTask",
+        component: () => import(/*webpackChunkName: "curriculum-task"*/"@/models/curriculum/task/index"),
+        meta: {
+            menu: routeMenusKey['studyTask'],
+            title: "课程任务"
+        } 
+    },
+    {
+        name: "curriculumTaskSituation",
+        path: "/curriculumTaskSituation",
+        component: () => import(/*webpackChunkName: "curriculum-task-situation"*/"@/models/curriculum/task/situation/index"),
+        meta: {
+            menu: routeMenusKey['studyTask'],
+            title: "课程概况"
+        } 
+    },
+    {
+        name: "addCurriculumTask",
+        path: "/addCurriculumTask",
+        component: () => import(/*webpackChunkName: "add-curriculum-task"*/"@/models/curriculum/task/edit-task/index"),
+        meta: {
+            menu: routeMenusKey['studyTask'],
+            title: "创建学习任务"
+        } 
+    },
+    {
+        name: "editCurriculumTask",
+        path: "/editCurriculumTask",
+        component: () => import(/*webpackChunkName: "edit-curriculum-task"*/"@/models/curriculum/task/edit-task/index"),
+        meta: {
+            menu: routeMenusKey['studyTask'],
+            title: "编辑学习任务"
+        } 
+    }
+]
+
 const zoneSetRoutes = [
     {
         name: "zoneSetList",
@@ -538,6 +610,7 @@ const zoneSetRoutes = [
 ]
 
 
+
 const routes = [
     ...homeRoutes,
     ...gaugeRoutes,
@@ -553,7 +626,9 @@ const routes = [
     ...reservationConsultationRoutes,
     ...psychologicalConsultantRoutes,
     ...transferChannelRoutes,
-    ...zoneSetRoutes
+    ...zoneSetRoutes,
+    ...lecturesManageRoute,
+    ...curriculumRoutes
     // ...contentManageRoutes
 ]
 

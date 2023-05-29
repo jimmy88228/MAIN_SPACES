@@ -3,7 +3,7 @@
     <div class="customer-modal-title">选择主体进入</div>
     <div class="customer-list-area" v-bar>
       <div class="customer-list">
-        <div class="flex-b-c list-item" v-for="(item, index) in customerData" :key="item.id" @click="chooseCustomer(item.id)">
+        <div class="flex-b-c list-item" v-for="(item, index) in customerData" :key="item.id" @click="chooseCustomer(item)">
           <div class="item-l flex-s-c">
             <div class="item-img-area">
               <img :src="item.logo" class="item-img"/>
@@ -37,8 +37,8 @@ export default {
       this.customerData = customerData || [];
       this.$refs.modal.show();
     },
-    chooseCustomer(id){
-      if(!Number(id)) {
+    chooseCustomer(item = {}){
+      if(!Number(item.id)) {
         this.$Message.warning("无效ID");
         return;
       }
@@ -46,7 +46,8 @@ export default {
       return this.$MainApi
         .selectCustomerLogin({
           data: {
-            id: id,
+            id: item.id,
+            login_key:item.login_key
           },
         })
         .then((res) => {
@@ -55,7 +56,7 @@ export default {
             this.$nextTick(()=>{
               this.$emit("callback", {
                 ...res,
-                chooseCustomer: id
+                chooseCustomer: item.id
               });
             })
           } else {

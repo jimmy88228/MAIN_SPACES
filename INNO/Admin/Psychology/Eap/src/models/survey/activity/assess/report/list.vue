@@ -29,7 +29,7 @@
                             {{row.coefficient_points}}
                         </template>
                         <template slot="range_name" slot-scope="{ row }">
-                            <p class="bold" :class="row.is_warn ? 'warn-notice' : ''">{{row.range_name}}</p>
+                            <p class="bold" :class="row.is_red ? 'warn-notice' : ''">{{row.range_name}}</p>
                         </template>
                         
                     </Table>
@@ -43,7 +43,7 @@
                             <span>{{item.rule_name}}({{item.coefficient_points || "-"}}{{ruleTypeKey[item.rule_type]}})</span>
                         </div>
                         <div class="item-content result-content" style="display: block;">
-                            <p class="tip" :class="item.is_warn == 1 ? 'warn-notice' : ''">{{item.short_desc}}</p>
+                            <p class="tip" :class="item.is_red == 1 ? 'warn-notice' : ''">{{item.short_desc}}</p>
                             <div class="desc bold">
                                 <p class="row m-b-20">{{item.description}}</p>
                             </div>

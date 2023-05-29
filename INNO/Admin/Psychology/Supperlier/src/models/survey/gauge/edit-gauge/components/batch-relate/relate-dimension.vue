@@ -12,7 +12,7 @@
       <span class="inline-b"><span class="choose-btn flex-c-c" @click="chooseProblemEvent">点击选择题目</span></span>
       <div class="relate-tip">关联维度</div>
       <div class="inline-b base-input"> 
-        <dimensionSelect v-model="dimensions" :modelId="modelId" :multiple="true" placeholder="选择维度" @change="getDimensionData"></dimensionSelect>
+        <dimensionSelect type="gauge" size="large" v-model="dimensions" :id="modelId" :multiple="true" placeholder="选择维度" @change="getDimensionData"></dimensionSelect>
       </div>
     </div>
     <div slot="footer">
@@ -26,7 +26,8 @@
 </template>
 
 <script>
-import dimensionSelect from "../../components/dimension-select/index";
+// import dimensionSelect from "../../components/dimension-select/index";
+import dimensionSelect from "@/components/view-components/editable-select/index.vue";
 import chooseProblem from "../choose-problem/index.vue";
 export default {
   components: {

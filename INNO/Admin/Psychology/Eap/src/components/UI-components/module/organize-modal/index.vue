@@ -1,10 +1,11 @@
 <template>
-  <Modal v-model="isShowModal"  :title="title" :width="700" class-name="organize-view-modal">
+  <Modal v-model="isShowModal" class="hold-modal-zindex" :title="title" :width="900" class-name="organize-view-modal">
     <div class="organize-area">
       <div class="o-area-l">
         <p class="area-title">选择组织：</p>
         <div class="area-cont">
-          <organizeView 
+
+          <!-- <organizeView 
           ref="organizeRef" 
           :type="organizeType" 
           :multiple="multiple" 
@@ -14,40 +15,81 @@
           :isModal="true"
           :selectData="selectData"
           :isLImitMain="isLImitMain"
+          :isHideMainCheck="isHideMainCheck"
           :isShowAllBtn="isShowAllBtn"
+          :isShowLevel="isShowLevel"
           :isOnlyCanSel="isOnlyCanSel"
           :onlyCanSelArr="onlyCanSelArr"
           >
-          </organizeView>
+          </organizeView> -->
+          <component 
+          :is="isShowLevel ? 'organizeLevelView' : 'organizeView'" 
+          ref="organizeRef" 
+          :type="organizeType" 
+          :multiple="multiple" 
+          :isShowAdd="isShowAdd"
+          :isRelation="isRelation"
+          @on-change="selectChange"
+          :isModal="true"
+          :selectData="selectData"
+          :isLImitMain="isLImitMain"
+          :isHideMainCheck="isHideMainCheck"
+          :isShowAllBtn="isShowAllBtn"
+          :isShowLevel="isShowLevel"
+          :isOnlyCanSel="isOnlyCanSel"
+          :onlyCanSelArr="onlyCanSelArr"
+          />
         </div>
       </div>
       <div style="width:10px;height:100%;"></div>
       <div class="o-area-r">
         <p class="area-title">已选组织：</p>
         <div class="area-cont" v-bar>
-          <div class="p-r-10">
-            <div class="select-item flex-b-c" v-for="(item, index) in selectData" :key="item.id" v-show="(isRelation && !item.pChecked) || !isRelation">
-              <p class="text-flow text-r text-rtl" :title="item._parentName && item._parentName.join('/') + '/' + item.title">
-                {{item.reverseTitle}}<span v-for="(nItem, nindex) in item.reversePName" :key="nindex">&nbsp;/&nbsp;{{nItem}}</span>
-              </p>
-              <Icon v-if="!item.disabled" type="md-close" class="close-icon" @click="removeSelect(index)" />
+          <div class="p-r-10" >
+            <div v-if="isShowLevel">
+              <div class="p-l-20" v-for="(lItem, lIndex) in selectLevelData" :key="lItem.level" >
+                <div class="m-b-10 m-t-10 C_7f">{{lItem.levelName}}</div>
+                <div class="p-l-20">
+                  <div class="select-item flex-b-c" v-for="(item, index) in lItem.data" :key="item.id">
+                    <p class="text-flow text-r text-rtl" :title="item._parentName && item._parentName.join('/') + '/' + item.title">
+                      {{item.reverseTitle}}
+                    </p>
+                    <Icon v-if="!item.disabled" type="md-close" class="close-icon" @click="removeSelect(item.index)" />
+                  </div>
+                </div>
+              </div>
             </div>
+            <div v-else>
+              <div class="select-item flex-b-c" v-for="(item, index) in selectData" :key="item.id" v-show="(isRelation && !item.pChecked) || !isRelation">
+                <p class="text-flow text-r text-rtl" :title="item._parentName && item._parentName.join('/') + '/' + item.title">
+                  {{item.reverseTitle}}<span v-for="(nItem, nindex) in item.reversePName" :key="nindex">&nbsp;/&nbsp;{{nItem}}</span>
+                </p>
+                <Icon v-if="!item.disabled" type="md-close" class="close-icon" @click="removeSelect(index)" />
+              </div>
+            </div>
+
           </div>
         </div>
       </div>
     </div>
-    <div slot="footer">
-      <Button type="default" @click="isShowModal = false">取消</Button>
-      <Button type="primary" @click="confirm">确定</Button>
+    <div slot="footer" class="flex-b-c" style="width: 100%;">
+      <div>
+        <!-- <p class="notice">{{footerTip}}</p> -->
+      </div>
+      <div>
+        <Button type="default" @click="isShowModal = false">取消</Button>
+        <Button type="primary" @click="confirm">确定</Button>
+      </div>
     </div>
   </Modal>
 </template>
 
 <script>
-import organizeView from "@/components/view-components/organize-view/index"
+import organizeView from "@/components/view-components/organize-view/index";
+import organizeLevelView from "@/components/view-components/organize-level-view/index";
 export default {
   name: "organizeModal",
-  components: { organizeView },
+  components: { organizeView, organizeLevelView },
   props: {
     title: {
       type: String,
@@ -70,19 +112,44 @@ export default {
       default: true
     },
     organizeType: String | Number, // 请求数据：1.代表获取全部组织架构，2.获取管理员有权限的组织架构
-    isLImitMain: { // 手动限制选择主体
+    isLImitMain: { // 手动限制选择主体是否可选
       type: Boolean | String,
       default: ""
     },
+    isHideMainCheck: Boolean, // 隐藏主体可选checkbox
     isShowAllBtn: Boolean,
     isOnlyCanSel:Boolean,
     onlyCanSelArr:Array,
+    isShowLevel: Boolean,
+    footerTip: String
   },
   data() {
     return {
       isShowModal: false,
       selectData: [],
     };
+  },
+  computed: {
+    selectLevelData(){
+      let selectData = this.selectData || [];
+      let levelData = {}
+      for(let i = 0; i < selectData.length; i++){
+        let level = selectData[i].level;
+        let item = { ...selectData[i] };
+        item.index = i;
+        if(!levelData[level]){
+          levelData[level] = {
+            level: level,
+            levelName: item.levelName ? item.levelName + "级组织" : "",
+            data: []
+          }
+        }
+        delete item.children;
+        levelData[level].data.push(item);
+      }
+      console.log("levelData", levelData);
+      return levelData;
+    }
   },
   methods: {
     showModal(selectData) {
@@ -93,7 +160,10 @@ export default {
       this.selectData = data;
     },
     removeSelect(index){
-      this.$refs["organizeRef"] && this.$refs["organizeRef"].removeSelect(index)
+      // 内部删除，关联父级删除，子项也跟随删除
+      this.$nextTick(()=>{
+        this.$refs["organizeRef"] && this.$refs["organizeRef"].removeSelect(index)
+      })
     },
     getData(){
       let selectData = this.selectData || [];
@@ -104,11 +174,24 @@ export default {
       } else {
         return selectData
       }
-      
     },
     confirm() {
+      let data = this.getData();
+      if(this.isShowLevel){
+        let selectLevelData = this.selectLevelData;
+        if(!data.length){
+          this.$Message.warning("请选择对比组织");
+          return;
+        }
+        for(let i in selectLevelData){
+          if(!selectLevelData[i].data || selectLevelData[i].data.length < 2){
+            this.$Message.warning("每个层级组织不能少于2个");
+            return;
+          }
+        }
+      }
       this.isShowModal = false;
-      this.$emit("success", this.getData());
+      this.$emit("success", data);
     },
   }
 };

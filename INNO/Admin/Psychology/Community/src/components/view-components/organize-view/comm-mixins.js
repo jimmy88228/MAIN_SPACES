@@ -43,15 +43,19 @@ export default {
                     let sIndex = this.ids.indexOf(Number(id));
                     let cur_item = this.c_checkData[sIndex] || {};
                     let title = data[i].structure_name || data[i].title || "";
+                    let isExpand = false;
+                    if((typeof(this.expandLevel) == 'string' && this.expandLevel == 'All') || (typeof(this.expandLevel) == 'number' && this.expandLevel && this.expandLevel > _parentIds.length)){
+                        isExpand = true;
+                    }
                     data[i].title = title;
                     data[i].id = id;
-                    data[i].checked = sIndex != -1 || (this.isRelation && pChecked)? true : false;
-                    data[i].expand = (data[i].checked || extra.expandHold) ? true : false;
+                    data[i].checked = sIndex != -1 || (this.isRelation && pChecked && this.multiple)? true : false;
+                    data[i].expand = isExpand ? true : ((data[i].checked || extra.expandHold) ? true : false);
                     data[i].pChecked = pChecked;
                     data[i].selected = false;
                     data[i]._parentName = _parentName;
                     data[i]._parentIds = _parentIds;
-                    data[i].disabled = cur_item.disabled || false //初始化的时候不可删除项设置disabled
+                    data[i].disabled = cur_item.disabled || this._checkDisabled(cur_item,_parentIds,id); //初始化的时候不可删除项设置disabled
                     data[i].disableDel = cur_item.disableDel || false;
                     // 倒叙
                     try {
@@ -87,6 +91,17 @@ export default {
                 _treeData
             };
         },
+        _checkDisabled(cur_item,_parentIds,id){
+            let disabled = false;
+            if(!this.isOnlyCanSel){
+                disabled = !!cur_item.disabled;
+            }else{
+                disabled = _parentIds.length>0 && (this.onlyCanSelArr.every(item=>{
+                    return String(item)!=id && !!!_parentIds.includes(String(item));
+                })) || false
+            }
+            return disabled
+        },
         _searchTreeHandle(value) {
             value = value || "";
             let c_organizeList = this.c_organizeList;
@@ -119,6 +134,7 @@ export default {
                 for (let i = 0; i < data.length; i++) {
                     let item = data[i] || {};
                     let title = item.title || "";
+                    
                     switch (key) {
                         case "search": // 搜索
                             if (
@@ -140,6 +156,9 @@ export default {
                             }
                             break;
                         case "selected":
+                            if(item.disabled){
+                                break;
+                            }
                             if(item.id == (curr && curr.id)){
                                 item.selected = true;
                             } else {
@@ -147,6 +166,27 @@ export default {
                             }
                             break;
                         case "checked":
+                            if(item.disabled){
+                                break;
+                            }
+                            if(!this.multiple){
+                                let idIndex = this.ids.indexOf(Number(item.id));
+                                if(item.id == (curr && curr.id)){
+                                    if (idIndex == -1 && (!curr.limitMain || curr.limitMain && curr.id != '0')) {
+                                        this.c_checkData.push(item);
+                                        item.checked = true;
+                                    } else if(idIndex != -1){
+                                        this.c_checkData.splice(idIndex, 1);
+                                        item.checked = false;
+                                    }
+                                } else {
+                                    if(idIndex != -1){
+                                        this.c_checkData.splice(idIndex, 1);
+                                        item.checked = false;
+                                    }
+                                }
+                                break;
+                            }
                             if (item.id == (curr && curr.id) || item._parentIds.indexOf(curr && curr.id) != -1) {
                                 item[key] = curr[key]; //curr[key] : 点击元素的当前勾选状态
                                 let idIndex = this.ids.indexOf(Number(item.id));
@@ -176,7 +216,6 @@ export default {
                                             if (idIndex != -1) this.c_checkData.splice(idIndex, 1);
                                         }
                                     }
-                                    // console.log('c_checkData',item.id,curr.id,curr[key]?'操作元素的下级':'删除选择合集中的元素',item.id == (curr && curr.id) , item._parentIds.indexOf(curr && curr.id) != -1, idIndex , JSON.parse(JSON.stringify(this.c_checkData)))
                                 }
                             }
                             break;

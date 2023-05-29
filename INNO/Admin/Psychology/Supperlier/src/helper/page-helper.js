@@ -69,7 +69,7 @@ const PageHelper = new Vue({
         actionCodeMap: getCacheMenus.call(this).actionCodeMap,
         routesMenuMap: routesConfig.routesMenuMap,
         menuCurrent: {},
-        breadcrumbList: Utils.cache.get("breadcrumbList") || [],
+        breadcrumbList: Utils.local.get("breadcrumbList") || [],
         openedPagesTags: readOpenedPages(),
     },
     computed: {
@@ -132,6 +132,7 @@ const PageHelper = new Vue({
             Utils.cache.set("actionCodeMap", this.actionCodeMap);
         },
         checkLogin(to, from, next) {
+            let toMenu = to.meta.menu;
             if (to.name === "Login" && LM.isLogin) {
                 next({
                     path: "/",
@@ -141,9 +142,17 @@ const PageHelper = new Vue({
                 });
                 return true;
             } else if (to.name !== "Login") {
-                if (!LM.isLogin) {
+                let toName = ""
+                if(!LM.isLogin || (LM.isLogin && LM.isNeedResetPwd)){
+                    toName = "Login";
+                    this.setMenus();
+                } else if(toMenu && (!this.actionCodeMap[toMenu] || this.actionCodeMap[toMenu].isAction != 1) && to.name != 'home'){
+                    this.$Message.warning("暂无访问权限!");
+                    toName = "home";
+                }
+                if(toName){
                     next({
-                        name: "Login",
+                        name: toName,
                         query: {
                             $isReplace: true
                         },
@@ -160,10 +169,10 @@ const PageHelper = new Vue({
                             }
                         }
                     });
-                    this.setMenus();
                     return true;
                 }
             }
+            next();
         },
         setNewPage(route, from) {
             this.setCurrent(route, from);
@@ -180,7 +189,11 @@ const PageHelper = new Vue({
                     ...route,
                     parent: parent
                 };
-
+                let home = {
+                    name: "home",
+                    title: "HOME",
+                    to: "home",
+                };
                 // 增加菜单路由面包屑
                 let currentBread = {
                     name: route.name,
@@ -190,10 +203,22 @@ const PageHelper = new Vue({
                     params: route.params
                 }
                 let breadcrumbList =  this.breadcrumbList || [];
-                let breadcrumbNames = breadcrumbList.map((item)=>{
-                    if(item.name) { return item.name } else { return "" }
-                })
-                if (from && from.meta && from.meta.menu == actTionMenu || (!from)) { // 同一个菜单下
+                breadcrumbList[0] = home
+                if(route.name != 'home'){
+                    if(actTionMenu){
+                        let menuRoute = routerConfig.routesMenuMap[actTionMenu]; // 菜单路由
+                        breadcrumbList[1] = {
+                            name: menuRoute.name,
+                            title: menuRoute.title,
+                            to: menuRoute.name
+                        }
+                    }
+                    if(from && from.meta && from.meta.menu != actTionMenu){ // 切换了菜单， 清空历史路由
+                        breadcrumbList = breadcrumbList.splice(0, 2);
+                    }
+                    let breadcrumbNames = breadcrumbList.map((item)=>{
+                        if(item.name) { return item.name } else { return "" }
+                    })
                     let hasRouteIndex = -1, breadcrumbLen = breadcrumbList.length || 0;
                     hasRouteIndex = breadcrumbNames.indexOf(route.name);
                     if(hasRouteIndex >= 0){ // 存在相同，剔除到相同位置
@@ -202,27 +227,10 @@ const PageHelper = new Vue({
                         breadcrumbList.push(currentBread);
                     }
                 } else {
-                    breadcrumbList = [{
-                        name: "home",
-                        title: "HOME",
-                        to: "homw",
-                    }]
-                    if(route.name != 'home'){
-                        if(actTionMenu){
-                            let menuRoute = routerConfig.routesMenuMap[actTionMenu]; // 菜单路由
-                            if(menuRoute.name != route.name){
-                                breadcrumbList.push({
-                                    name: menuRoute.name,
-                                    title: menuRoute.title,
-                                    to: menuRoute.name
-                                })
-                            }
-                        }
-                        breadcrumbList.push(currentBread);
-                    }
-                    this.breadcrumbList = breadcrumbList;
+                    breadcrumbList = [home];
                 }
-                Utils.cache.set("breadcrumbList", this.breadcrumbList);
+                this.breadcrumbList = breadcrumbList;
+                Utils.local.set("breadcrumbList", this.breadcrumbList);
             }
         },
         addOpenedPageTag(route) {

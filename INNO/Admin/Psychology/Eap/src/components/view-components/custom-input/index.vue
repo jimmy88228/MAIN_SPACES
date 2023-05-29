@@ -1,34 +1,40 @@
 <template>
-	<div class="custom-input-box inline-b" :style='boxStyle'>
-		<Input 
-		ref="myInput" 
-		:value="inputValue" 
-		:type='type' 
-		:number='number'
-		:placeholder='placeholder'
-		:clearable='clearable'
-		:disabled='disabled'
-		:readonly='readonly'
-		:maxlength='dfMaxlength'
-		:show-word-limit='showWordLimit'
-		:icon='icon'
-		:size='size'
-		:rows='rows'
-		:class="[showWordLimit?'showWordLimitClass':'',clearable?'clearableClass':'',customClass]"
-		:style="customStyle"
-		:search="search"
-		@on-change='inputChange'
-		@on-focus='inputFocus'
-		@on-click='inputClick'
-		@on-blur='inputBlur'
-		@on-search='inputSearch'
-		@on-clear='inputClear'
-		></Input>
-	</div>
+	<!-- 
+		这里的type 由于用了iview的input, 
+		即使设置了type为number, 还是number为true的情况下，仍可输入数字以外的值，
+		而且为number的情况下，输入多个小数点会导致value被重置为空;
+		这里用了iview的input ,同时js重写了number逻辑， 知悉！！！
+		:type='(type == "number") ? "text" : type' 
+	-->
+	<Input 
+	class="custom-input-box"
+	ref="myInput" 
+	:value="inputValue" 
+	:type='(type == "number") ? "text" : type' 
+	:placeholder='placeholder'
+	:clearable='clearable'
+	:disabled='disabled'
+	:readonly='readonly'
+	:maxlength='dfMaxlength'
+	:show-word-limit='showWordLimit && type!="number"'
+	:icon='icon'
+	:size='size'
+	:rows='rows'
+	:class="[showWordLimit && type!='number'?'showWordLimitClass':'',clearable?'clearableClass':'',customClass]"
+	:style="customStyle"
+	:search="search"
+	@on-change='inputChange'
+	@on-enter='inputEnter'
+	@on-focus='inputFocus'
+	@on-click='inputClick'
+	@on-blur='inputBlur'
+	@on-search='inputSearch'
+	@on-clear='inputClear'
+	></Input>
 </template>
 <script>
+	import StrUtil from "@/helper/utils/string-util.js";
 	const UnLimitType = /^(textarea)+$|^(url)+$/g;
-	import StringU from "@/helper/utils/string-util.js"
 	export default{
 		name: 'customInput',
 		model: {
@@ -66,13 +72,9 @@
 				type: Number | String,
 				default: ''
 			},
-			'showWordLimit': {
-				type: Boolean,
-				default: false
-			},
 			showWordLimit: {
 				type: Boolean,
-				default: false
+				default: true
 			},
 			icon: {
 				type: String,
@@ -114,7 +116,7 @@
 				}
 			},
 			'customStyle':{
-				type: String,
+				type: String | Function,
 				default(){
 					return ''
 				}
@@ -129,6 +131,11 @@
 				type: Boolean,
 				default: false
 			},
+			'toFixed': {
+				type: Number,
+				default: 2
+			},
+			'regType':String
 		},
 		data(){
 			return {
@@ -137,15 +144,20 @@
 		},
 		computed:{
 			dfMaxlength(){
-				if(this.type && !UnLimitType.test(this.type) && !this.maxlength){ //默认限制100长度
-					return 100;
-				} else {
-					return this.maxlength || '';
+				if(this.maxlength){
+					return this.maxlength
 				}
+				if(this.type){
+					if(UnLimitType.test(this.type)){
+						return 150;
+					} else if(this.type == 'number' || this.number){
+						return 8
+					}
+				}
+				return 30;
 			}
 		},
 		methods:{
-			
 			inputChange(e){
 				if(typeof(this.beforeChange) == 'function'){
 					if(this.$util.isPromise(this.beforeChange)){
@@ -168,37 +180,43 @@
 			changeCallback(e){
 				let target = e.target || {};
 				let data = target.value || '';
+				if(String(data) === String(this.inputValue)) return; 
+				switch (this.regType) {
+					case 'validate':
+						data = StrUtil.trimValidate(data," *·*");
+						break;
+					case 'studentId':
+						data = StrUtil.trimGlobal(data,"[\\W]*_*");
+						break;
+					case 'name':
+						data = StrUtil.trimValidate(data);
+						break;
+					default:
+						break;
+				}
+				data = StrUtil.trim(data);
 				if(this.type == 'number' || this.number){
-					let min = parseInt(this.min);
-					let max = parseInt(this.max);
+					data = this.getNumberValue(data);
+					let min = parseFloat(this.min);
+					let max = parseFloat(this.max);
 					if((min || min == 0) && (max || max == 0) && min > max){
 						min = max;
 					}
-					
-					if((min || min == 0) && data){
+					if((min || min == 0) && (data || data == 0)){
 						data = min > data ? min : data;
 					}
 					if((max || max == 0) && (data || data == 0)){
 						data = data > max ? max : data;
 					}
-					let maxlength = Math.min(8, this.dfMaxlength); //number类型默认限制8位长度
+					let maxlength = this.dfMaxlength; //number类型默认限制8位长度
 					if(maxlength && String(parseFloat(data||0)).length>maxlength){ //最大长度 (number类型的时候maxlength属性不生效，需要通过逻辑限制)
 						data = Number( String(data||0).slice(0,maxlength) ); 
 					}
 					if(this.isInt){ //整数类型过滤
-						data = parseInt(data||min||0);
-					}
-					if(typeof(data) == 'string' && data.substring(data.length - 2) != '.0'){ // 输入值为不完整小数值时
-						if(data.indexOf('.') != -1){ // 包含小数点只读取前两位小数
-							data = Number(Number(data).toFixed(2));
-						} else {
-							data = Number(data);
-						}
-						
+						data = parseInt(data || min || 0);
 					}
 				}
 				this.$nextTick(()=>{
-					data = typeof(data) == 'string' ? StringU.trim(data) : data;
 					this.setOriginInput(data);
 					this.inputValue = data;
 					this.$emit('on-change', data);
@@ -212,14 +230,17 @@
 					this.$emit('on-change', value);
 				})
 			},
+			inputEnter(){
+				this.$emit('on-enter', { value: this.inputValue });
+			},
 			inputFocus(){
-				this.$emit('on-focus');
+				this.$emit('on-focus', { value: this.inputValue });
 			},
 			inputClick(){
 				this.$emit('on-click')
 			},
 			inputBlur(){
-				this.$emit('on-blur')
+				this.$emit('on-blur', { value: this.inputValue })
 			},
 			inputSearch(data){
 				this.$emit('on-search', data)
@@ -231,36 +252,51 @@
 				this.$refs['myInput'].focus();
 			},
 			setOriginInput(value){
-				if(this.$refs['myInput'] && this.$refs['myInput'].$refs['input']){
-					this.$refs['myInput'].$refs['input'].value = value;
-					this.$refs['myInput'].$refs['input']._value = value;
-					if(typeof value === 'number'){
-						this.$refs['myInput'].$refs['input'].valueAsNumber = value;
-					}
-					this.$refs['myInput'].$data.currentValue = value;
+				let myInputElem = this.$refs['myInput'].$el;
+				let inputElem = myInputElem.getElementsByClassName('ivu-input')[0];
+				if(inputElem){
+					inputElem.value = value;
 				}
+			},
+			getNumberValue(data){
+				if(typeof(data) == 'string'){
+					// 处理为纯数字data
+					let dataArr = data.match(/[0-9]+([.]{1}[0-9]{0}){0,1}/g);
+					data = dataArr instanceof Array ? dataArr.join("") : '';
+					let firstPoint = data.indexOf('.');
+					if(firstPoint != -1){
+						// 存在多个.
+						let pointArr = data.split(".");
+						if(pointArr.length > 2){
+							data = pointArr.splice(0, 1) + '.' + pointArr.join("");
+						}
+						if(this.toFixed && data[data.length - 1] != '.' && this.toFixed < 3){
+
+							// data = Number(parseInt(parseFloat(data) * Math.pow(10,this.toFixed))/Math.pow(10,this.toFixed));
+							data = Number((data +'').substring(0, firstPoint)) + Number((data + '').substr(firstPoint, this.toFixed + 1));
+						}
+					}
+				}
+				return data;
 			}
 		},
-		mounted(){},
+		mounted(){
+		},
 		watch:{
 			value:{
 				handler(nV) {
 					let value = (nV || nV == 0) ? nV : '';
-					this.inputValue = StringU.trim(value);
+					if(this.type == 'number' || this.number){
+						value = this.getNumberValue(value);
+					}
+					this.inputValue = value;
 				},
 				immediate: true
 			},
 			min: {
 				handler(nV){
 					if(this.type == 'number' || this.number){
-						nV = parseInt(nV);
-						// 初始化强制刷新合理值
-						// if((nV || nV == 0) && (this.inputValue || this.inputValue === 0)){ 
-							// this.inputValue = nV > this.inputValue ? nV : this.inputValue;
-							// this.$nextTick(()=>{
-							// 	this.setOriginInput(this.inputValue);
-							// })
-						// }
+						nV = parseFloat(nV);
 					}
 				},
 				immediate: true
@@ -268,14 +304,7 @@
 			max: {
 				handler(nV){
 					if(this.type == 'number' || this.number){
-						nV = parseInt(nV);
-						// 初始化强制刷新合理值
-						// if((nV || nV == 0) && (this.inputValue || this.inputValue === 0)){
-						// 	this.inputValue = this.inputValue > nV  ? nV : this.inputValue;
-						// 	this.$nextTick(()=>{
-						// 		this.setOriginInput(this.inputValue);
-						// 	})
-						// }
+						nV = parseFloat(nV);
 					}
 				},
 				immediate: true
@@ -285,17 +314,17 @@
 </script>
 <style lang="less" scoped>
 .custom-input-box{ 
-	min-width: 120px;
+	// min-width: 120px;
 }
 </style>
 <style lang="less">
 .custom-input-box{
-	.showWordLimitClass{
+	&.showWordLimitClass{
 		.ivu-input{
-			padding-right: 46px;
+			padding-right: 53px;
 		}
 	}
-	.clearableClass{
+	&.clearableClass{
 		.ivu-input{
 			padding-right: 25px;
 		}

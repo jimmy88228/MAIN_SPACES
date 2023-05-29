@@ -11,7 +11,7 @@
               <img-view class="m-t-5" ref="coverPicImgRef" boxStyle="background:#F7F7F7;border:none;" :width="105" :img="formData.cover_pic" @delImg="formData.cover_pic = ''" @selectImg="(src)=>{ selectImg(src, 'cover_pic') }"></img-view>
             </FormItem>
             <FormItem label="课程名称" class="large" prop="title">
-              <custom-input class="base-width" size="large" v-model="formData.course_name" :show-word-limit="true" :maxlength="30"></custom-input>
+              <custom-input class="base-width" size="large" v-model="formData.course_name" :show-word-limit="true" :maxlength="60"></custom-input>
             </FormItem>
             <FormItem label="课程分组" class="large" prop="group_id">
               <div class="base-width">
@@ -91,7 +91,7 @@
                   <div class="flex-s-c W100" v-if="!item.edit && item.chapter_name">
                     <span @click.stop="handleChapter('chapter_'+index,item)" class="pointer text-overflow chapter_name">{{item.chapter_name}}</span>
                   </div>
-                  <custom-input :maxlength="50" :ref="'chapter_'+index" placeholder="输入内容" class="chapter_input" v-if="!item.chapter_name || item.edit" v-model="item.chapter_name" @on-enter="item.edit = false" @on-focus="item.edit=true" @on-blur="item.edit=false" autofocus></custom-input>
+                  <custom-input :maxlength="60" :ref="'chapter_'+index" placeholder="输入内容" class="chapter_input" v-if="!item.chapter_name || item.edit" v-model="item.chapter_name" @on-enter="item.edit = false" @on-focus="item.edit=true" @on-blur="item.edit=false" autofocus></custom-input>
                 </div>
                 <div @click.stop="addNode('chapter_data',index)" class="tip transform-Y-50">+ 增加小节</div>
               </div>
@@ -126,7 +126,7 @@
                             <div class="flex-s-c W100" v-if="!s_item.edit && s_item.subsection_name">
                               <span @click.stop="handleChapter('chapter_'+index+'_'+s_index,s_item)" class="pointer text-overflow chapter_name">{{s_item.subsection_name}}</span>
                             </div>
-                            <custom-input :maxlength="50" :ref="'chapter_'+index+'_'+s_index" placeholder="输入内容" v-if="!s_item.subsection_name || s_item.edit" class="chapter_input" v-model="s_item.subsection_name" @on-enter="s_item.edit=false" @on-focus="s_item.edit=true" @on-blur="s_item.edit=false" autofocus></custom-input>
+                            <custom-input :maxlength="60" :ref="'chapter_'+index+'_'+s_index" placeholder="输入内容" v-if="!s_item.subsection_name || s_item.edit" class="chapter_input" v-model="s_item.subsection_name" @on-enter="s_item.edit=false" @on-focus="s_item.edit=true" @on-blur="s_item.edit=false" autofocus></custom-input>
                           </div>
                         </div>
                       </div>

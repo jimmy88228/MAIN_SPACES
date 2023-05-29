@@ -16,7 +16,7 @@ export default{
                         width: "100%",
                         display: "flex",
                         alignItems: "center",
-                        paddingLeft: (this.isShowAllBtn && data.id == "0") ? "20px" : (this.showCheckbox ? "40px" : "20px"),
+                        paddingLeft: ((this.isShowAllBtn || this.isHideMainCheck) && data.id == "0") ? "20px" : (this.showCheckbox ? "40px" : "20px"),
                         color: data.selected ? selectColor : ""
                     },
                 },
@@ -29,6 +29,9 @@ export default{
                         on: {"click": ()=>{ event.stopPropagation();}}
                     },[
                         h("Checkbox", {
+                            style: {
+                                display: (this.isHideMainCheck && data.id == "0") ? 'none' : 'inline-block'
+                            },
                             props: {
                                 value: data.checked,
                                 disabled: data.disabled || (this.isRelation && data.pChecked) || (this.limitMain && data.id == "0" && !data.checked)
@@ -45,7 +48,10 @@ export default{
                         }),
                     ]),
                     h("div", {
-                        attrs: { class: "text-flow",title: data.title },
+                        attrs: { 
+                            class: data.disabled ? "gray text-flow" : "text-flow",
+                            title: data.title 
+                        },
                         style: {
                           flex:1,
                           display: "flex",
@@ -61,27 +67,28 @@ export default{
                                   display: "flex",
                                   alignItems: "center",
                                   flex: 1,
+                                  
                               },
                           },
                           [
-                            data.disabled?
-                                h(
-                                    "Checkbox",
-                                    { 
-                                        props: {
-                                            value: false,
-                                            disabled: true
-                                        },
-                                        style: { 
-                                            width: "26px",
-                                            height: "26px", 
-                                            marginRight: "8px",
-                                            position: "relative",
-                                            left: 'unset',
-                                            top: 'unset', 
-                                        } 
-                                    },  
-                                ):
+                            // data.disabled?
+                            //     h(
+                            //         "Checkbox",
+                            //         { 
+                            //             props: {
+                            //                 value: false,
+                            //                 disabled: true
+                            //             },
+                            //             style: { 
+                            //                 width: "26px",
+                            //                 height: "26px", 
+                            //                 marginRight: "8px",
+                            //                 position: "relative",
+                            //                 left: 'unset',
+                            //                 top: 'unset', 
+                            //             } 
+                            //         },  
+                            //     ):
                               h("img", {
                                   attrs: { src: data.selected ? data.selectIcon : data.icon },
                                   style: this.isModal ? {
@@ -156,11 +163,14 @@ export default{
             );
         } : (h, { root, node, data }) => { // 子项
           return h("div",{
-            attrs: { class: "text-flow", title: data.title  },
+            attrs: { 
+                class: "text-flow",
+                title: data.title  
+            },
             style: {
-              width:"90%",
-              marginLeft:"3px",
-              paddingLeft: this.showCheckbox ? "35px" : "15px",
+              width:"100%",
+            //   marginLeft:"3px",
+              paddingLeft: this.showCheckbox ? "40px" : "15px",
               display: "flex",
               alignItems: "center",
               color: data.selected ? selectColor : ""
@@ -188,26 +198,29 @@ export default{
                 }),
             ]),
             
-            data.disabled?
-            h(
-                "Checkbox",
-                { 
-                    props: {
-                        value: false,
-                        disabled: true
-                    },
-                    style: { 
-                        width: "26px",
-                        height: "26px", 
-                        marginRight: "8px",
-                        position: "relative",
-                        left: 'unset',
-                        top: 'unset',
-                    } 
-                },  
-            ):
+            // data.disabled?
+            // h(
+            //     "Checkbox",
+            //     { 
+            //         props: {
+            //             value: false,
+            //             disabled: true
+            //         },
+            //         style: { 
+            //             width: "26px",
+            //             height: "26px", 
+            //             marginRight: "8px",
+            //             position: "relative",
+            //             left: 'unset',
+            //             top: 'unset',
+            //         } 
+            //     },  
+            // ):
               h("img", {
-                  attrs: { src: data.selected ? data.selectIcon : data.icon },
+                  attrs: { 
+                    src: data.selected ? data.selectIcon : data.icon,
+                    class: data.disabled ? "gray text-flow" : "text-flow"
+                },
                   style: this.isModal ? {
                       marginRight: "8px",
                       width: "26px",
@@ -225,7 +238,9 @@ export default{
               h(
                   "span",
                   { 
-                    attrs: { class: "text-flow" },
+                    attrs: { 
+                        class: data.disabled ? "gray text-flow" : "text-flow",
+                    },
                     style: { fontSize: "14px",flex: 1 } },
                     data.title
                     // data.title + "(" + data.getson_count + ")"

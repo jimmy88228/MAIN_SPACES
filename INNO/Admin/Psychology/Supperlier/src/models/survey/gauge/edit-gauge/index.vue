@@ -1,5 +1,5 @@
 <template>
-  <hold-layout :isFull="true" class="edit-gauge" layoutCustomStyle="padding: 0;" :isShowFormSave="(((baseInfo.publish_state>=0 && baseInfo.publish_state != 1) || curTab == 'report') && curTab != 'problemsPreview')" @_cancel="cancel" @_save="save()">
+  <hold-layout :isFull="true" class="edit-gauge" layoutCustomStyle="padding: 0;" :isShowFormSave="(((baseInfo.publish_state>=0 && baseInfo.publish_state != 1) || curTab == 'report') && (['problemsPreview', 'tScore'].indexOf(curTab) == -1))" @_cancel="cancel" @_save="save()">
     <rewrite-tabs class="tabs-box" customClass="gauge" :data="tabList" @changeTab="changeTab" :currTab="curTab">
       <template v-slot:basic>
         <form-view ref="basic" class="box" :baseInfo="baseInfo"></form-view>
@@ -10,12 +10,18 @@
       <template v-slot:result>
         <resultSetting ref="result" class="box" :baseInfo="baseInfo"></resultSetting>
       </template>
+      <template v-slot:tScore>
+        <tScore ref="tScore" class="box" :baseInfo="baseInfo"></tScore>
+      </template>
       <template v-slot:problems>
         <problemsDetail ref="problems" :baseInfo="baseInfo"></problemsDetail>
       </template>
       <template v-slot:problemsPreview>
         <problemsPreview ref="problemsPreview" :baseInfo="baseInfo"></problemsPreview>
       </template>
+      <!-- <div slot="extra">
+        <Button @click="batchImportTscore" icon="md-cloud-upload">导入T分数</Button>
+      </div> -->
     </rewrite-tabs>
   </hold-layout>
 </template>
@@ -26,6 +32,7 @@ import formView from "./form.vue"
 import problemsDetail from "./problems-detail/index.vue";
 import resultSetting from "./result-setting.vue";
 import problemsPreview from "./problems-preview/index.vue";
+import tScore from "./t-score/index.vue";
 export default {
   mixins: [],
   components: {
@@ -33,7 +40,8 @@ export default {
     problemsDetail,
     report,
     resultSetting,
-    problemsPreview
+    problemsPreview,
+    tScore
   },
   data() {
     return { 
@@ -42,6 +50,11 @@ export default {
       tabList:[],
       tipShow:false,
       baseInfo:{},
+      tScoreTab: {
+          name: "tScore",
+          label:"T分数条件",
+          tabName:"editGauge",
+        }
     };
   },
   methods: {
@@ -72,26 +85,27 @@ export default {
       //     }
       //   })
       // },
-      loadGaugeInfo(){
-        let pageQuery = this.pageQuery || {};
-        if(!pageQuery.id) return Promise.reject();
-        return this.$MainApi.scaleInfo({
-              data: {
-                  id: pageQuery.id
-              }, 
-              other: {
-              isErrorMsg: true
-            }
-          })
-          .then((res) => {
-              if (res.code) {
-                  let data = res.data || {};
-                  this.gaugeInfo = data.items;
-              }else{
-                  return Promise.reject(res);
-              }
-          })
-      },
+      // loadGaugeInfo(){
+      //   let pageQuery = this.pageQuery || {};
+      //   if(!pageQuery.id) return Promise.reject();
+      //   return this.$MainApi.scaleInfo({
+      //         data: {
+      //             id: pageQuery.id
+      //         }, 
+      //         other: {
+      //         isErrorMsg: true
+      //       }
+      //     })
+      //     .then((res) => {
+      //         if (res.code) {
+      //             let data = res.data || {};
+      //             let items = data.items || {};
+      //             this.gaugeInfo = items;
+      //         }else{
+      //             return Promise.reject(res);
+      //         }
+      //     })
+      // },
       changeTab(name) {
         this.curTab = name;
         this.$refs[this.curTab] && this.$refs[this.curTab].init && this.$refs[this.curTab].init();
@@ -134,7 +148,9 @@ export default {
           tabName:"editGauge",
         }]
         this.curTab = this.pageQuery.currTab || this.tabList[0].name;
-        this.getScaleInfo();
+        this.$nextTick(()=>{
+          this.getScaleInfo();
+        })
       },
       getScaleInfo(){
         if(!this.pageQuery.id) return Promise.reject();
@@ -146,12 +162,49 @@ export default {
         .then((res) => {
             if (res.code) {
                 let data = res.data || {};
-                this.baseInfo = data.items || {};
+                let items = data.items || {};
+                this.baseInfo = items;
+                if(items.get_rule_count > 0 && this.pageQuery.type == 'resultEdit'){
+                  let hasTscore = false;
+                    for(let i = 0; i < this.tabList.length; i++){
+                      if(this.tabList[i].name == 'tScore'){
+                        hasTscore = true;
+                        break;
+                      }
+                    }
+                    if(!hasTscore){
+                      this.tabList.push(this.tScoreTab);
+                    }
+                    this.$nextTick(()=>{
+                      if(this.curTab == 'tScore'){
+                        this.changeTab(this.curTab);
+                      }
+                    })
+                    
+                  }
             }else{
                 return Promise.reject(res);
             }
         })
       },
+      // batchImportTscore(){
+      //   this.$UIModule({
+      //     mode: "batch-import",
+      //     props: {
+      //       upLoadPayLoad: {
+      //         id: this.pageQuery.id || 0
+      //       }
+      //     },
+      //     options: {
+      //         canCreate: { upload: true, download: true },
+      //         uploadUrl: "batchImportTscore",
+      //         downloadUrl: "batchImportTscoreTpl",
+      //     },
+      //     success: () => {
+      //         this.getScaleInfo();
+      //     },
+      // });
+      // }
       // saveAllLoop(index){
       //   let tabList = this.tabList;
       //   let item = tabList[index];

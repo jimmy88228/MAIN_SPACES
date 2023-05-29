@@ -8,6 +8,9 @@
             </div>
           </vue-scroll>
         </TabPane>
+        <div slot="extra">
+          <slot name="extra"></slot>
+        </div>
     </Tabs>
   </div>
   
@@ -120,7 +123,13 @@ export default {
       min-height: 50px;
       display: flex;
       align-items: center;
+      // 配合tab float:right布局在flex下无法生效
+      flex-direction: row-reverse;
+      justify-content: space-between;
       background: #fff;
+    }
+    .ivu-tabs-nav-right{
+      margin-right:10px;
     }
     .ivu-tabs-ink-bar{
       display: none;
@@ -140,6 +149,7 @@ export default {
   .tabs-cont{
     width:100%;
     height:100%;
+    background: #fff;
   }
   .tabs-cont-stay{
     padding: 20px 10px;

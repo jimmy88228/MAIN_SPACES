@@ -1,3 +1,4 @@
+import utils from "@/helper/utils/index.js";
 export default {
   methods: {
     checkValidTime(rule, value, callback) {
@@ -34,6 +35,16 @@ export default {
         callback();
       } else {
         callback(field.message || '值不能为空');
+      }
+    },
+    _checkObject(rule, value, callback){
+      const {
+        field
+      } = rule;
+      if(utils.isEmptyObject(value)){
+        callback(field.message || '值不能为空');
+      } else {
+        callback();
       }
     },
     _checkArray(rule, value, callback){

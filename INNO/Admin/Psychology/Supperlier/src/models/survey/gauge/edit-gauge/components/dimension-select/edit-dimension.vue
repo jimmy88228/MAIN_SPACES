@@ -30,7 +30,8 @@
 </template>
 
 <script>
-import dimensionH from "../../helper/dimension.js";
+// import dimensionH from "../../helper/dimension.js";
+import dimensionH from "@/components/view-components/editable-select/list-data.js";
 export default {
   props: {
     modelId: {
@@ -94,7 +95,7 @@ export default {
         }).then(res=>{
             if(res.code){
               this.dismiss();
-              dimensionH.loadData(this.modelId);
+              dimensionH.loadData(this.modelId, 'gauge');
             }
             res.message && this.$Message.warning(res.message);
             return Promise.reject(res);

@@ -2,7 +2,7 @@
     <div>
         <Modal  v-model="isShowCode" class="hold-modal-zindex"  @on-visible-change="onVisibleChange" :width="320" class-name="applet-code-modal">
             <Spin size="large" fix v-if="spinShow"></Spin>
-            <div class="code-view-cont">
+            <div class="code-view-cont" :class="{'hide-tab' : hideTab}">
                 <Tabs value="xcxCode">
                     <TabPane label="小程序码" name="xcxCode">
                         <div class="img-view" id="img-view">
@@ -10,7 +10,7 @@
                                 <img :src="codeUrl" v-if="codeUrl" id="xcxImage" style="width: 100%">
                             </div>
                             <div class="code-tip theme-c" ref="codeTipRef" v-if="codeTip" :style="getTipStyle">
-                                <p v-html="codeTip"></p>
+                                <p v-html="codeTip" class="w-break"></p>
                             </div>
                         </div>
                         <Button type="default" :loading="downLoading" long @click="downLoadImg">下载</Button>
@@ -32,6 +32,7 @@
 <script>
 import html2canvas from "html2canvas";
 import strUtil from "@/helper/utils/string-util";
+import CryptoJS from "crypto-js";
 export default {
     props: {
         title: {
@@ -52,6 +53,7 @@ export default {
                 return "";
             },
         },
+        hideTab: Boolean,
         getCodeEvent: Function,
     },
     data() {
@@ -81,9 +83,11 @@ export default {
             for (let i in params) {
                 pathParams = pathParams
                     ? pathParams + "&" + i + "=" + params[i]
-                    : "?" + i + "=" + params[i];
+                    : i + "=" + params[i];
             }
-            return path + pathParams;
+            let AESpathParams = CryptoJS.AES.encrypt(JSON.stringify(pathParams), 'paramsKey').toString();
+            path = path + "?paramsKey=" + encodeURIComponent(AESpathParams);
+            return path;
         },
     },
     methods: {
@@ -181,7 +185,6 @@ export default {
                                 ? 12
                                 : computedLen;
                         getTipStyle = `font-size:${computedLen}px;`;
-                        console.log("tip", getTipStyle);
                         this.getTipStyle = getTipStyle;
                     }
                 });
@@ -191,26 +194,18 @@ export default {
     },
 };
 </script>
-<style lang="less">
-.applet-list-modal {
-    .model-header {
-        font-size: 16px;
-    }
-}
+<style lang="less" scoped>
 .applet-code-modal {
-    .ivu-modal-close {
-        display: none;
-    }
-    .model-header {
+    /deep/.model-header {
         cursor: pointer;
         font-size: 16px;
     }
-    .ivu-modal-body {
+    /deep/.ivu-modal-body {
         // padding-top: 0px;
     }
     .code-view-cont {
         width: 100%;
-        .ivu-tabs-nav {
+        /deep/.ivu-tabs-nav {
             width: 100%;
             text-align: center;
             .ivu-tabs-tab {
@@ -262,6 +257,18 @@ export default {
         .view-path{
             word-break: break-all;
         }
+    }
+    .hide-tab{
+        /deep/.ivu-tabs-bar{
+            display: none;
+        }
+    }
+}
+</style>
+<style lang="less">
+.applet-code-modal {
+    .ivu-modal-close {
+        display: none;
     }
 }
 </style>

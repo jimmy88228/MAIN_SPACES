@@ -2,11 +2,11 @@
   <div class="user-header-area">
     <div class="flex-s-c user-header-cont">
       <div class="user-header"></div>
-      <div class="user-name bold">XXX的家长</div>
-      <p class="user-change">
+      <div class="user-name bold">XXX</div>
+      <!-- <p class="user-change">
         <Icon type="md-swap" />&nbsp;
         <span class="w-nowrap">切换绑定</span>
-      </p>
+      </p> -->
     </div>
   </div>
 </template>

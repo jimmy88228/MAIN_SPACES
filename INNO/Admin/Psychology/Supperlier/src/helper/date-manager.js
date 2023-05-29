@@ -39,9 +39,7 @@ class dateHandle {
 		let min = 0;
 		let disabledMins = [];
 		// if(!currDate) return this.setDisabledMin(nowDate, type);
-		if((currTime - nowTime) < this.nowDay){ 
-			console.log("currDate.getDate()", currDate.getDate(),"nowDate.getDate()", nowDate.getDate())
-			console.log("currDate.getHours()", currDate.getHours(),"nowDate.getHours()", nowDate.getHours())
+		if((currTime - nowTime) < this.nowDay){
 			if(currDate.getDate() == nowDate.getDate() && currDate.getHours() == nowDate.getHours()){ // 同一天
 				disabledMins = this.setDisabledMin(nowDate, type)
 			} else {

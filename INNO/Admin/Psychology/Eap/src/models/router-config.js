@@ -23,7 +23,7 @@ const routeMenusKey = {
     transferCourtyard: "transferCourtyard",
     zoneSet: "zoneSet",
     studyTask: "studyTask",
-    
+    questionnaire: "questionnaire"
 }
 /**
  * meta code ==>该页面的acitonCode（只为菜单跳转, 并非必须）
@@ -523,6 +523,40 @@ const zoneSetRoutes = [
     },
 ]
 
+const askTicketsRoutes = [
+    {
+        name: "askTicketsList",
+        path: "/askTicketsList",
+        component: () => import(/*webpackChunkName: "ask-tickets-list"*/"@/models/ask-tickets/index"),
+        meta: {
+            menu: routeMenusKey['questionnaire'],
+            title: "调查问券"
+        } 
+    },
+    {
+        name: "askTicketsDetail",
+        path: "/askTicketsDetail",
+        component: () => import(/*webpackChunkName: "ask-tickets-detail"*/"@/models/ask-tickets/edit-ask-tickets"),
+        meta: {
+            hideTitle: true,
+            hideBreadcrumb: true,
+            menu: routeMenusKey['questionnaire'],
+            title: "调查问券"
+        } 
+    },
+    {
+        name: "askTicketsResult",
+        path: "/askTicketsResult",
+        component: () => import(/*webpackChunkName: "ask-tickets-result"*/"@/models/ask-tickets/tickets-result/index"),
+        meta: {
+            hideTitle: true,
+            hideBreadcrumb: true,
+            menu: routeMenusKey['questionnaire'],
+            title: "问券结果"
+        } 
+    },
+]
+
 
 const routes = [
     ...homeRoutes,
@@ -540,7 +574,8 @@ const routes = [
     ...psychologicalConsultantRoutes,
     ...transferChannelRoutes,
     ...curriculumRoutes,
-    ...zoneSetRoutes
+    ...zoneSetRoutes,
+    ...askTicketsRoutes,
     // ...contentManageRoutes
 ]
 
@@ -562,7 +597,6 @@ function setMenuRoutes(){
             }
         }
     }
-    console.log("routesMenuMap", routesMenuMap)
     return routesMenuMap;
     
 }

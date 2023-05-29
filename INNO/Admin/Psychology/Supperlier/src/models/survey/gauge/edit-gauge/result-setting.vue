@@ -24,7 +24,7 @@
                     <div class="flex-c-c">
                         <template v-if="currentTab == 'dimension'">
                             <div class="m-r-10">维度筛选</div>
-                            <dimensionSelect :defaultEmpty="false" @change="dimensionChange" :modelId="pageQuery.id" :canEdit="false" v-model="curDimensions" style="width: 166px;" placeholder="选择维度"></dimensionSelect>
+                            <dimensionSelect type="gauge" :defaultEmpty="false" @change="dimensionChange" :id="pageQuery.id" :canEdit="false" v-model="curDimensions" style="width: 166px;" placeholder="选择维度"></dimensionSelect>
                         </template>
                     </div>
                     <div class="btn-add pointer flex-c-c" @click="edit()">+新增{{currentTab=='total'?'结果':'维度'}}</div>
@@ -32,182 +32,59 @@
              </div>
              <div class="table-content"> 
                 <template v-for="(item,index) in tabs">
-                    <settingTable v-if="currentTab == item.type" :isLoading="isLoading" @edit="edit" :key="index" :list="getList(item.type)" :type="item.type" :disabled="baseInfo.publish_state == 1"></settingTable>
+                    <settingTable 
+                    :statisticsType="statisticsType"
+                    v-if="currentTab == item.type" 
+                    :isLoading="isLoading" 
+                    @edit="edit" 
+                    :key="index" 
+                    :list="getList(item.type)" 
+                    :type="item.type" 
+                    :disabled="baseInfo.publish_state == 1"></settingTable>
                 </template>
              </div>
         </div> 
-
-        <custom-modal footerHide :width="560" ref="modalId" :title="(curSel.id ? '编辑':'新增')+(currentTab=='total'?'结果':'维度')">
-            <div class="form-view-box">
-                <Form
-                    class="box"
-                    :label-width="80"
-                    ref="formId"
-                    :model="formData"
-                    :rules="ruleValidate"
-                >
-                    <div class="modalTitle">{{currentTab=='total'?'总分结果': ((curSel.id ? '编辑':'新增') + '结果')}}</div> 
-                    <FormItem label="维度" prop="addDimension" v-if="currentTab=='dimension'">
-                        <dimensionSelect @change="dimensionAdd" :defaultEmpty="false" :modelId="pageQuery.id" :canEdit="false" v-model="formData.addDimension" style="width: 166px;" placeholder="选择维度"></dimensionSelect>
-                    </FormItem> 
-                    <!-- <FormItem label="分值" prop="total">
-                        <div class="flex-s-c">
-                            <custom-input
-                                style="width: 66px"
-                                v-model="formData.min_value"
-                                type="number"
-                                placeholder="" 
-                            ></custom-input>
-                            <div class="m-l-10 m-r-10">至</div>
-                            <custom-input
-                                style="width: 66px"
-                                v-model="formData.max_value"
-                                type="number"
-                                placeholder="" 
-                            ></custom-input>
-                        </div>
-                    </FormItem>  -->
-                    <FormItem label="分值">
-                        <div class="flex-s-c">
-                            <FormItem :label-width="0" prop="min_value">
-                                <div class="flex-s-c">
-                                    <custom-input
-                                        style="width: 66px"
-                                        v-model="formData.min_value"
-                                        type="number"
-                                        placeholder="" 
-                                    ></custom-input>
-                                </div>
-                            </FormItem> 
-                            <div class="font-18 p-l-5">
-                                ≤
-                            </div>
-                            <div class="p-l-5 p-r-5">
-                                得分
-                            </div>
-                            <div class="font-18 p-r-5">
-                                &lt;
-                            </div>
-                            <FormItem :label-width="0" prop="max_value">
-                                <div class="flex-s-c">
-                                    <custom-input
-                                        style="width: 66px"
-                                        v-model="formData.max_value"
-                                        type="number"
-                                        placeholder="" 
-                                    ></custom-input>
-                                </div>
-                            </FormItem> 
-                            <div class="errorDistrict" v-if="showErrorDistrict">{{showErrorDistrict}}</div>
-                        </div>
-                    </FormItem>
-                    <FormItem label="结论" prop="short_desc">
-                        <custom-input
-                            style="width: 280px"
-                            v-model="formData.short_desc"
-                            type="text"
-                            placeholder=""
-                            :maxlength="30"
-                        ></custom-input>
-                    </FormItem> 
-                    <FormItem label="结果描述" prop="description">
-                        <custom-input
-                            style="width: 280px"
-                            v-model="formData.description" 
-                            type="textarea"
-                            placeholder=""
-                            :maxlength="150"
-                            :rows="3"
-                        ></custom-input>
-                    </FormItem> 
-                </Form>
-                <div class="flex-c-c m-t-10">
-                    <Button @click="cancel" class="m-r-20">取消</Button>
-                    <Button @click="confirm" type="primary" class="m-r-20">保存设置</Button>
-                </div> 
-            </div>
-        </custom-modal>
+        <editResultSetting ref="editResultSettingRef" 
+        :statisticsType="statisticsType" 
+        :currentTab="currentTab" 
+        :initDimensionList="initDimensionList"
+        :viewData="getList(currentTab)"
+        @confirm="confirmEditSetting"
+        ></editResultSetting>
     </div>
 </template>
 
 <script>
 import settingTable from "./setting-table/index.vue";
-import dimensionSelect from "./components/dimension-select/index.vue"
+// import dimensionSelect from "./components/dimension-select/index.vue";
+import dimensionSelect from "@/components/view-components/editable-select/index.vue";
+
+import editResultSetting from "./edit-result-setting/index.vue";
 const ERROR_MSG = "与现有的区间重叠，请调整范围";
 export default {
     data() {
-        return { 
-            formData:{
-                id:0,
-                addDimension:0,
-                total:0,
-                min_value:0,
-                max_value:0,
-                short_desc :'',
-                description:'',
-            },
-            ruleValidate:{  
-                addDimension: [
-                    {
-                        required: true,
-                        validator: (rule, value, callback)=>{
-                            if(Number(value) > 0){  
-                                this.$refs.formId.validateField('min_value');
-                                this.$refs.formId.validateField('max_value');
-                                callback();
-                            } else {
-                                callback(new Error('请选择维度'));
-                            }
-                        },
-                        trigger: "change",
-                    },
-                ],
-                short_desc: [
-                    {
-                        required: true,
-                        validator: this._checkString,
-                        message: "结论不能为空",
-                        trigger: "blur",
-                    },
-                ],
-                description: [
-                    {
-                        required: true,
-                        validator: this._checkString,
-                        message: "描述不能为空",
-                        trigger: "blur",
-                    },
-                ],
-                min_value: [
-                    {
-                        required: true,
-                        validator: (rule, value, callback)=>{
-                            let check = this.checkDistrict('min');
-                            if(check && check.bool){
-                                this.bothCheck();
-                                value || value===0 ? callback() : callback("");
-                            }else{
-                                callback("");
-                            }
-                        },
-                        trigger: "blur",
-                    },
-                ],
-                max_value: [
-                    {
-                        required: true,
-                        validator: (rule, value, callback)=>{
-                            let check = this.checkDistrict('max')
-                            if(check && check.bool){
-                                this.bothCheck();
-                                value || value===0 ? callback() : callback("");
-                            }else{
-                                callback("");
-                            }
-                        },
-                        trigger: "blur",
-                    },
-                ],
+        return {
+            statisticsType: { // 统计规则（总分求和=total；维度求和=dimension；总分求均=average；维度求均=dimension_average；T分数=t_score）
+                total: {
+                    name: "求和",
+                    txt: "总分求和"
+                },
+                dimension: {
+                    name: "求和",
+                    txt: "维度求和"
+                },
+                average: {
+                    name: "求均",
+                    txt: "总分求均"
+                },
+                dimension_average: {
+                    name: "求均",
+                    txt: "总分求均"
+                },
+                t_score: {
+                    name: "T分数",
+                    txt: "T分数"
+                },
             },
             isLoading:false,
             curSel:{},
@@ -233,7 +110,8 @@ export default {
     },
     components: {
         settingTable,
-        dimensionSelect
+        dimensionSelect,
+        editResultSetting
     },
     methods: {
         edit(item={},type="edit"){
@@ -242,34 +120,34 @@ export default {
                 this.$Message.info("已发布状态不能编辑");
                 return
             }
-            this.curSel = item||{};
-            console.log('edit',item,type)
-            if(type == 'delete'){
-                this.delStatRuleRange(item);
-                return
-            }else if(this.curSel.id){
-                this.formData.min_value = this.curSel.min_value||0;
-                this.formData.max_value = this.curSel.max_value||0;
-                this.formData.short_desc = this.curSel.short_desc||"";
-                this.formData.description = this.curSel.description||"";
-                this.formData.is_warn = this.curSel.is_warn||0;
-                this.formData.addDimension = this.curSel.addDimension||0;
-            }else{
-                this.initFormData();
+            switch(type){
+                case "delete":
+                   this.delStatRuleRange(item);
+                    break;
+                case "edit":
+                    this.$refs["editResultSettingRef"] && this.$refs["editResultSettingRef"].showModal(item);
+                    break;
+                case "isRed":
+                    this.confirmEditSetting(item);
+                    break
+                case "isWarn":
+                    this.confirmEditSetting(item, true);
+                    break;
+                case "isShow":
+                    this.setStatRule(item).then(()=>{
+                        this.init();
+                        this._reqMessage({
+                            message: "编辑成功"
+                        });
+                    })
+                    break;
             }
-            type == 'edit' && this.$nextTick(()=>{
-                let temp = JSON.parse(JSON.stringify(this.formData));
-                this.showErrorDistrict = "";
-                this.$refs.formId.resetFields();
-                this.formData = temp;
-                this.$refs.modalId.show();
-            })
-            type == 'warning' && this.confirm(type)
         },
         initFormData(){
             this.formData.min_value = 0;
             this.formData.max_value = 0;
             this.formData.short_desc = "";
+            this.formData.range_name = "";
             this.formData.description = "";
             this.formData.is_warn = 0;
             this.formData.addDimension = 0;
@@ -288,18 +166,22 @@ export default {
                 if(res.code){
                     this.inited = true;
                     let data = res.data||{};
-                    let points_rule_info = data.points_rule_info;
-                    let totalList = points_rule_info && points_rule_info.range_list || [];
-                    let dimensionList = data.dimension_rule_list || []; 
-                    totalList = totalList.map(item=>({
-                        rule_info:item.rule_info||{},
-                        range:[item]
-                    }));
-                    dimensionList = dimensionList.map(item=>({
-                        rule_info:item.rule_info||{},
-                        range:item.range_list||[]
-                    }));
-                    dimensionList = dimensionList.filter(item=>{return item.range.length>0});
+                    let pointsRuleList = data.points_rule_info;
+                    let dimensionRuleList = data.dimension_rule_list || [];
+                    let dimensionList = [], totalList = [];
+                    for(let i = 0; i < dimensionRuleList.length; i++){
+                        let range_list = dimensionRuleList[i].range_list || [];
+                        if(range_list.length){
+                            dimensionList.push(dimensionRuleList[i])
+                        }
+                    }
+                    for(let i = 0; i < pointsRuleList.length; i++){
+                        let range_list = pointsRuleList[i].range_list || [];
+                        if(range_list.length){
+                            totalList.push(pointsRuleList[i])
+                        }
+                    }
+
                     this.totalList = totalList;
                     this.initDimensionList = JSON.parse(JSON.stringify(dimensionList));
                     if(this.curDimensions){
@@ -339,29 +221,78 @@ export default {
         tabClick(type){
             this.currentTab = type;
         },
-        saveRule(type){
-            return this.setStatRule().then(rule_id=>{
-                return this.setStatRuleRange(rule_id,type).then(res=>{
-                    if(res.code){
-                        return res;
-                    }
-                    return Promise.reject(res)
-                });
-            })
-        },
-        setStatRule(){
-            // if(this.curSel.rule_id>0)return Promise.resolve(this.curSel.rule_id);
+        // saveRule(type){
+        //     console.log("formData", this.formData)
+        //     return this.setStatRule({
+        //         rule_name: this.curSel.rule_name || "",
+        //         description: this.formData.description || '',
+        //         dimension_id: this.formData.addDimension || 0,
+        //         is_warn: this.formData.warningArea,
+        //         rule_id: this.formData.rule_id || 0
+        //     }).then(rule_id=>{
+        //         return this.setStatRuleRange(rule_id,type).then(res=>{
+        //             if(res.code){
+        //                 return res;
+        //             }
+        //             return Promise.reject(res)
+        //         });
+        //     })
+        // },
+        // 编辑rule项
+        setStatRule(reqData = {}, operate = {}){
             let tab = this.currentTab;
+            let list = this.getList(this.currentTab) || [];
+            let is_warn = 0;
+            operate = operate || {};
+            let range_list = [];
+            if(reqData.rule_id){
+                for(let i = 0; i < list.length; i++){
+                    let rule_info = list[i].rule_info;
+                    if(rule_info.id == reqData.rule_id){
+                        range_list = list[i].range_list
+                    }
+                }
+                if(operate.isDel && (!range_list.length || (range_list.length == 1 && range_list[0].id == reqData.id))){
+                    // 删除时，判断为该rule最后一个元素时，不执行规则更新
+                    return Promise.resolve(0);
+                }
+            } else {
+                // 新增时判断
+                for(let i = 0; i < list.length; i++){
+                    let rule_info = list[i].rule_info;
+                    // 按总分时判断rule_type 按维度时判断rule_type + dimension_id
+                    if((tab == 'total' && reqData.rule_type == rule_info.rule_type) || (tab != 'total' && (reqData.rule_type == rule_info.rule_type) && (reqData.addDimension == rule_info.dimension_id))){
+                        range_list = list[i].range_list;
+                        reqData.is_show = rule_info.is_show;
+                        break;
+                    }
+                }
+            }
+            // 
+            for(let i = 0; i < range_list.length; i++){
+                let item = range_list[i] || {};
+                // 取回编辑的range做对比
+                if((reqData.id == item.id && reqData.is_warn) || (reqData.id != item.id && range_list[i].is_warn)){
+                    is_warn = 1;
+                    break;
+                }
+            }
             return this.$MainApi.setStatRule({
                 data: {
-                    rule_type:tab=='total'?'total':'dimension',
-                    rule_name:tab=='total'? '总分' : this.curSel.rule_name || "",
-                    description:this.formData.description||'',
-                    model_id:this.pageQuery.id||0,
-                    dimension_id:tab=='total'?0:(this.formData.addDimension||0),
-                    is_main:tab=='total'?1:0,
-                    is_warn:tab=='total'?1:0,
-                }, 
+                    rule_type: reqData.rule_type,
+                    rule_name: tab == 'total' ? (reqData.rule_name || "总分") : (reqData.rule_name || ""),
+                    description: reqData.ruleDescription || '',
+                    model_id: this.pageQuery.id || 0,
+                    dimension_id: tab == 'total' ? 0 : (reqData.addDimension || 0),
+                    is_main: tab == 'total' ? 1 : 0,
+                    is_warn: is_warn || 0,
+                    is_show: reqData.is_show || 0,
+                    id: reqData.rule_id || 0
+                },
+                other: {
+                    isErrorMsg: true
+                }
+                
             }).then(res=>{
                 if(res.code){
                     let data = res.data||0;
@@ -370,59 +301,92 @@ export default {
                 return Promise.reject(res);
             })
         },
-        setStatRuleRange(rule_id,type){ 
+        // 编辑range项
+        setStatRuleRange(reqData){
             return this.$MainApi.setStatRuleRange({
                 data: {
-                    id:this.curSel.id||0,
-                    rule_id:rule_id||this.curSel.rule_id||0, 
-                    range_name:this.formData.short_desc||"",
-                    short_desc:this.formData.short_desc||"",
-                    description:this.formData.description||"", 
-                    min_value:this.formData.min_value||0,
-                    max_value:this.formData.max_value||0,
-                    is_warn:type == 'warning' ? this.formData.is_warn == 1 ? 0 : 1 : this.formData.is_warn||0,
-                }, 
+                    id: reqData.id || 0,
+                    rule_id: reqData.rule_id || 0, 
+                    range_name: reqData.range_name || "",
+                    short_desc: reqData.short_desc || "",
+                    description: reqData.description || "", 
+                    min_value: reqData.min_value || 0,
+                    max_value: reqData.max_value || 0,
+                    is_red: reqData.is_red || 0,
+                    is_warn: reqData.is_warn || 0,
+                },
+                other: {
+                    isErrorMsg: true
+                }
             })
         },
         delStatRuleRange(item){
+            item = JSON.parse(JSON.stringify(item || {}));
             this.modalTipPop({content:"是否要删除该条数据？"}).then(()=>{
-                this.setLoading();
-                return this.$MainApi.delStatRuleRange({
-                    data: {
-                        rule_range_id:item.id||0
+                this.delStatRuleRangeReq(item).then((res)=>{
+                    if(res.code){
+                        item.is_warn = 0;
+                        this.setStatRule(item, {isDel: true}).then(()=>{
+                            this.init();
+                        })
                     }
-                }).then(res=>{
-                    this.init();
-                    this._reqMessage(res);
-                }).finally(()=>{
-                    this.setLoading(false);
                 })
             })
         },
-        cancel(){
-            this.$refs.modalId.dismiss();
-        },
-        confirm(type){
-            console.log('进来',type)
-            return this.validate().then(()=>{
-                console.log('进来2',type)
-                this.setLoading();
-                return this.saveRule(type).then(res=>{
-                    this.init();
-                    this._reqMessage(res);
-                    this.$refs.modalId.dismiss();
-                    this.setLoading(false);
-                    return res;
-                }).catch(e=>{
-                    return Promise.reject(e);
-                }) 
-            }).catch(e=>{
+        delStatRuleRangeReq(item){
+            this.setLoading();
+            return this.$MainApi.delStatRuleRange({
+                data: {
+                    rule_range_id:item.id || 0
+                }
+            }).then(res=>{
+                this._reqMessage(res);
+                return res;
+            }).finally(()=>{
                 this.setLoading(false);
-                console.log('confirm catch',e)
-                this.$Message.error(e && e.message || "数据异常,保存失败");
-                type == 'warning' && this.$refs.modalId.show();
-                return Promise.reject(e);
             })
+        },
+        // confirm(type){
+        //     return this.validate().then(()=>{
+        //         this.setLoading();
+        //         return this.saveRule(type).then(res=>{
+        //             this.init();
+        //             this._reqMessage(res);
+        //             this.$refs.modalId.dismiss();
+        //             this.setLoading(false);
+        //             return res;
+        //         }).catch(e=>{
+        //             return Promise.reject(e);
+        //         }) 
+        //     }).catch(e=>{
+        //         this.setLoading(false);
+        //         this.$Message.error(e && e.message || "数据异常,保存失败");
+        //         type == 'isRed' && this.$refs.modalId.show();
+        //         return Promise.reject(e);
+        //     })
+        // },
+        confirmEditSetting(formData, isAdd){
+            console.log("formData", formData);
+            if(formData.id && !isAdd){ // 编辑
+                this.setStatRuleRange(formData).then((res)=>{
+                    if(res.code){
+                        this.init();
+                        this._reqMessage(res);
+                        this.$refs["editResultSettingRef"] && this.$refs["editResultSettingRef"].cancel()
+                    } 
+                })
+            } else { // 新增
+                return this.setStatRule(formData).then((rule_id)=>{
+                    formData.rule_id = rule_id;
+                    this.setStatRuleRange(formData).then((res)=>{
+                        if(res.code){
+                            this.init();
+                            this._reqMessage(res);
+                            this.$refs["editResultSettingRef"] && this.$refs["editResultSettingRef"].cancel();
+                        }
+                    })
+                })
+            }
         },
         setLoading(bool=true){
             if(!bool){
@@ -433,120 +397,10 @@ export default {
                 this.isLoading = bool;
             }
         },
-        validate(){
-            return new Promise((rs,rj)=>{
-                try{
-                    this.$refs.formId.validate((valid) => {
-                        if (valid) {
-                            return this.bothCheck().then(()=>{
-                                return rs();
-                            }).catch(()=>{
-                                return rj();
-                            })
-                        }else{ 
-                            return rj();
-                        }
-                    })
-
-                }catch(e){
-                    console.log('catch',e)
-                }
-            })
-        },
-        bothCheck(){
-            return new Promise((rs,rj)=>{
-                let check = this.checkDistrict('both');
-                if(check && !check.bool){
-                    // this.showErrorDistrict = ERROR_MSG;
-                    return rj(check);
-                }else{
-                    this.showErrorDistrict = "";
-                    return rs(check);
-                }
-            })
-        },
-        checkDistrict(type){ 
-            let check = {bool:true,min:-1,max:-1};
-            let list = this.getList(this.currentTab)||[];
-            let curId = this.curSel.id||0,minVal=Number(this.formData.min_value),maxVal=Number(this.formData.max_value),RangError = "最大值需要大于最小值";
-            let rangeCheck=(minVal>=maxVal || this.checkEmpty(this.formData.min_value,this.formData.max_value));
-            type == 'min' && (this.minInited = true);
-            type == 'max' && (this.maxInited = true);
-            if(this.dimensionGet().length<=0 && (minVal>=maxVal)){
-                type == 'min' && this.maxInited && (this.showErrorDistrict = RangError );
-                type == 'max' && this.minInited && (this.showErrorDistrict = RangError );
-                type == 'both' && (this.minInited && this.maxInited) && (this.showErrorDistrict = RangError);
-                this.showErrorDistrict && (check.bool = false);
-                return check
-            }
-            for(let i = 0,len=list.length;i<len;i++){
-                let l_item = list[i]||{};
-                let range = l_item.range || [];
-                if(this.currentTab == 'dimension' && this.formData.addDimension && l_item.rule_info){ //维度遍历过滤
-                    if(l_item.rule_info.dimension_id != this.formData.addDimension){
-                        continue;
-                    }
-                }
-                for(let j = 0,jLen=range.length;j<jLen;j++){
-                    let r_item = range[j]||{};
-                    console.log('item',type,minVal,maxVal,r_item.min_value,r_item.max_value,',');
-                    if((!curId || (curId>0 && curId!=r_item.id))){
-                        let referArr = [Number(r_item.min_value),Number(r_item.max_value)-0.01];
-                        switch (type) {
-                            case 'both': //最小最大值交集校验
-                                if((minVal>=maxVal) || this.isIntersect([minVal,maxVal-0.01],referArr)){
-                                    check.bool = false;
-                                    check.min = r_item.min_value;
-                                    check.max = r_item.max_value;
-                                    (this.minInited && this.maxInited) && (this.showErrorDistrict = rangeCheck ? RangError : ERROR_MSG);
-                                }
-                                break; 
-                            case 'min': //最小值交集校验
-                                if(this.isIntersect([minVal],referArr)){
-                                    check.bool = false;
-                                    check.min = r_item.min_value;
-                                    check.max = r_item.max_value;
-                                    this.maxInited && (this.showErrorDistrict = rangeCheck ? RangError : ERROR_MSG );
-                                };
-                                break;
-                            case 'max': //最大值交集校验
-                                if(this.isIntersect([maxVal-0.01],referArr)){
-                                    check.bool = false;
-                                    check.min = r_item.min_value;
-                                    check.max = r_item.max_value;
-                                    this.minInited && (this.showErrorDistrict = rangeCheck ? RangError : ERROR_MSG );
-                                }
-                                break;
-                            default:
-                                break;
-                        }
-                        if(!check.bool){
-                            break
-                        } 
-                    }
-                };
-                if(!check.bool){
-                    break;
-                }
-            }
-            return check;
-        },
-        checkEmpty(a,b){
-            return (a==='' || b==='')
-        },
-        isIntersect(arr1,arr2){
-            let start = [Math.min(...arr1),Math.min(...arr2)];
-            let end = [Math.max(...arr1),Math.max(...arr2)];
-            return Math.max(...start) <= Math.min(...end);
-        },
+        
+        
         dimensionChange(e){
             this.dimensionList = e==0 ? this.initDimensionList : this.initDimensionList.filter(item=>item.rule_info && item.rule_info.dimension_id == this.curDimensions)
-        },
-        dimensionGet(){
-            return this.initDimensionList.filter(item=>item.rule_info && ((item.rule_info.dimension_id == (this.formData.addDimension)) || this.formData.addDimension==0));
-        },
-        dimensionAdd(e,item){
-            this.curSel.rule_name = item.dimension_name||"";
         },
     },
 };
@@ -651,17 +505,6 @@ export default {
         opacity: 0.7;
     }
 }
-.errorDistrict{
-    position: absolute;
-    left: 0;
-    top: 100%;
-    color: #ed4014;
-}
-.modalTitle{ 
-    font-size: 14px; 
-    font-weight: 600;
-    color: #000000;
-    margin-bottom: 16px;
-    padding-left: 12px;
-}
+
+
 </style>

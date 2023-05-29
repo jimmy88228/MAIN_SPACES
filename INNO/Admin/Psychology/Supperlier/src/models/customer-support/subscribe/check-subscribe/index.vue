@@ -27,10 +27,10 @@
           </Form>
           <div class="deal-detail" v-if="subscribeInfo.consult_result == 1">
             <div class="detail-tip">处理详情</div>
-            <!-- <div class="detail-row">
+            <div class="detail-row" v-if="!subscribeInfo.getSchedule || !subscribeInfo.getSchedule.scheduleTime">
               <div class="row-l">预约日期</div>
               <div class="row-r">{{subscribeInfo.consult_date}}</div>
-            </div> -->
+            </div>
             <div class="detail-row">
               <div class="row-l">咨询方式</div>
               <div class="row-r">{{Confirm_service_name}}</div>
@@ -47,8 +47,8 @@
           <div class="edit-foot">
             <template v-if="subscribeInfo.consult_result == 0">
               <!--转介不可拒绝-->
-              <Button type="primary" v-if="(subscribeInfo.type != 'commissioner' && subscribeInfo.pay_type != 'self') && !subscribeInfo.is_end_time" :loading="handleLoading" @click="setHandle('refuse')">拒绝</Button>
-              <Button type="primary" v-if="!subscribeInfo.is_end_time" :loading="handleLoading" @click="setHandle('handle')">设为已处理</Button>
+              <Button type="primary" v-if="(subscribeInfo.type != 'commissioner' && subscribeInfo.pay_type != 'self') && (subscribeInfo.handle && subscribeInfo.handle.refuse)" :loading="handleLoading" @click="setHandle('refuse')">拒绝</Button>
+              <Button type="primary" v-if="subscribeInfo.handle && subscribeInfo.handle.dispose" :loading="handleLoading" @click="setHandle('handle')">设为已处理</Button>
             </template>
             <Button @click="drawerShow = false">返回</Button>
           </div>
@@ -106,20 +106,20 @@ export default {
         .then((res) => {
           if (res.code) {
             let data = res.data || {};
-            let getSchedule = data.get_consultant_schedule;
-            if(getSchedule){
+            let getSchedule = {};
+            if(data.schedule_day){
               // 增加剔除最后秒数
-              if(getSchedule.begin_time){
-                let beginTimeArr = getSchedule.begin_time.split(":");
+              if(data.begin_time){
+                let beginTimeArr = data.begin_time.split(":");
                 beginTimeArr.length > 2 && beginTimeArr.splice(-1, 1);
                 getSchedule.beginTime = beginTimeArr.join(":")
               }
-              if(getSchedule.end_time){
-                let endTimeArr = getSchedule.end_time.split(":");
+              if(data.end_time){
+                let endTimeArr = data.end_time.split(":");
                 endTimeArr.length > 2 && endTimeArr.splice(-1, 1);
                 getSchedule.endTime = endTimeArr.join(":")
               }
-              getSchedule.scheduleTime = getSchedule.schedule_day + ' '+getSchedule.beginTime + '-' + getSchedule.endTime
+              getSchedule.scheduleTime = data.schedule_day + ' '+getSchedule.beginTime + '-' + getSchedule.endTime
               data.getSchedule = getSchedule
             }
             this.subscribeInfo = data;

@@ -6,12 +6,12 @@
   <div class="group-view-cont" v-bar>
     <div class="group-view-list" >
       <div style="min-height: 200px">
-        <div class="group-view-item" @click="changeGroup({group_id: 0, group_name: '全部'})" :class="chooseGroupId == 0 ? 'selected' : ''">
+        <div class="group-view-item" v-if="!multiple" @click="changeGroup({group_id: 0, group_name: '全部'})" :class="ids.indexOf(0) != -1 ? 'selected' : ''">
           <div class="view-item text-flow">
             <div class="text-flow">全部</div>
           </div>
         </div>
-        <div class="group-view-item" @click="changeGroup(item)" :class="chooseGroupId == item.group_id ? 'selected' : ''" v-for="(item, index) in groupListView" :key="item.group_id" v-show="!item.isHide">
+        <div class="group-view-item"  @click="changeGroup(item)" :class="{'selected' : ids.includes(item.group_id), 'disabled': disabledIds.includes(item.group_id)}" v-for="(item, index) in groupListView" :key="item.group_id" v-show="!item.isHide">
           <div class="view-item text-flow" :title="item.group_name">
             <div class="view-item-input" @click.stop="_func" v-show="item.editIng">
               <custom-input :show-word-limit="true" :maxlength="30" :ref="'input-item-' + index" :autofocus="item.editIng" @on-blur="editGroup(item, index)"  v-model="item.new_group_name"/>
@@ -47,6 +47,12 @@
 export default {
   name: "",
   props: {
+    selectData: {
+      type: Array,
+      default: ()=>{
+        return []
+      }
+    },
     type: String,
     showSearch: {
       type: Boolean,
@@ -55,11 +61,22 @@ export default {
     canEdit: {
       type: Boolean,
       default: true
-    }
+    },
+    multiple: {
+      type: Boolean,
+      default: false
+    },
   },
   data() {
     return {
-      chooseGroupId: 0,
+      defaultChooseData: [{
+        group_id: 0,
+        group_name: "全部"
+      }],
+      chooseGroupData: [{
+        group_id: 0,
+        group_name: "全部"
+      }],
       groupList: [],
       addGroupInfo: { group_name: "", loading: false, showPop: false},
       reqKey: {
@@ -70,7 +87,7 @@ export default {
         },
       },
       searchq: "",
-      // searchForm: { searchq: "" }
+      disabledIds: []
     };
   },
   computed:{
@@ -92,6 +109,22 @@ export default {
         viewData.push(groupList[i])
       }
       return viewData || [];
+    },
+    ids(){
+      let ids = [], disabledIds = [];
+      ids = this.chooseGroupData.map((item)=>{
+        let id = item.group_id;
+        if(typeof(id) == 'undefined'){
+          id = item.id || 0
+        }
+        if(item.disabled){
+          disabledIds.push(id)
+        }
+        return id;
+      })
+      this.disabledIds = disabledIds;
+      console.log("id", ids)
+      return ids;
     }
   },
   methods: {
@@ -179,18 +212,45 @@ export default {
     },
     changeGroup(item){
       let chooseGroup = {};
-      if(this.chooseGroupId == item.group_id){
-        this.chooseGroupId = 0;
-        chooseGroup = { group_id: 0, group_name: "全部" }
-      } else {
-        this.chooseGroupId = item.group_id;
-        chooseGroup = item
+      if(this.disabledIds.includes(item.group_id)){
+        return;
       }
-      this.$emit("change", chooseGroup)
+      if(item.group_id == 0){
+        chooseGroup = { group_id: 0, group_name: "全部" }
+        this.chooseGroupData = [chooseGroup];
+      } else {
+        if(this.multiple){
+          let deleteAllIndex = this.ids.indexOf(0);
+          if(deleteAllIndex != -1){ // 清除全部选项
+            this.chooseGroupData.splice(deleteAllIndex, 1);
+          }
+          let gIndex = this.ids.indexOf(item.group_id);
+          if(gIndex != -1){
+            this.chooseGroupData.splice(gIndex, 1);
+            chooseGroup = {}
+          } else {
+            this.chooseGroupData.push(item);
+            chooseGroup = item;
+          }
+        } else {
+          chooseGroup = item;
+          this.chooseGroupData = [item]
+        }
+      }
+      this.$emit("change", chooseGroup, this.chooseGroupData)
     },
   },
   mounted(){
     this.getData();
+  },
+  watch: {
+    selectData: {
+      handler(nV){
+        this.chooseGroupData = JSON.parse(JSON.stringify(nV[0] ? nV : this.defaultChooseData));
+      },
+      deep: true,
+      immediate: true
+    }
   }
 };
 </script>
@@ -252,6 +312,9 @@ export default {
     .group-view-item.selected {
       background-color: #f2faff;
       color: #008acb;
+    }
+    .group-view-item.disabled{
+      color: #bbbbbb;
     }
   }
   

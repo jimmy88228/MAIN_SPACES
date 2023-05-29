@@ -5,7 +5,7 @@
     class-name="member-view-modal"
     footer-hide
   >
-    <div class="organize-layout relative">
+    <div class="organize-layout relative" :class="{'input-state': inputVal}">
       <div class="content-box layout-l">
         <div class="title-box flex-b-c">
           <div>选择人员</div>
@@ -27,6 +27,10 @@
             :showCheckbox="false"
             :expandNode="expandNode"
             :selectNode="selectNode"
+            :expandLevel="expandLevel"
+            :onlyCanSelArr="assign_ids"
+            :isLImitMain="isLImitMain"
+            :isOnlyCanSel="isOnlyCanSel"
             @on-select-change="organizeChange"
           ></organizeView>
           <div class="orgn-members-box" v-bar>
@@ -42,13 +46,13 @@
               >
                 <template slot="selectArea" slot-scope="{ row }">
                   <div>
-                    <Checkbox :value="ids.indexOf(row.id) != -1" @on-change="(state)=>checkMember(state, row)">{{row.member_name}}</Checkbox>
+                    <Checkbox :disabled="disabledIds.includes(row.id)" :value="ids.includes(row.id)" @on-change="(state)=>checkMember(state, row)">{{row.member_name}}</Checkbox>
                   </div>
                 </template>
               </Table>
               <div v-if="inputVal" class="search-result-box">
                 <div v-for="(item,index) in search_list" :key="index" class="check-box-box">
-                  <Checkbox :value="ids.indexOf(item.id) != -1" @on-change="(state)=>checkMember(state, item)">{{item.member_name}}</Checkbox>
+                  <Checkbox :disabled="disabledIds.includes(item.id)" :value="ids.includes(item.id)" @on-change="(state)=>checkMember(state, item)">{{item.member_name}}</Checkbox>
                 </div>
               </div>
             </hold-layout>
@@ -71,6 +75,7 @@
             >
               <div>{{ item.member_name||item.name||"" }}</div>
               <Icon
+                v-if="!item.disabled"
                 type="md-close"
                 class="close-icon pointer"
                 @click="delMember(index)"
@@ -124,7 +129,17 @@ export default {
     isRegister: { //0是所有, 1是已注册, 没有2
       type: Number | String,
       default: 0
-    }
+    },
+    isLImitMain: { // 手动限制选择主体
+      type: Boolean | String,
+      default: ""
+    },
+    assign_ids:Array,
+    isOnlyCanSel:Boolean,
+    expandLevel: { //默认开启层级
+      type: Number | String,
+      default: 1
+    },
   },
   components: {
     organizeView,
@@ -141,14 +156,14 @@ export default {
       },
       editTitle: "",
       selectData: [],
+      disabledIds: [],
       isSelectAll: false
     };
   },
   computed: {
     ids() {
       let selectData = this.selectData || [];
-      let ids = [];
-      console.log("selectData", selectData)
+      let ids = [], disabledIds = [];
       if (selectData instanceof Array) {
         for (let i = 0; i < selectData.length; i++) {
           let item = selectData[i];
@@ -156,6 +171,9 @@ export default {
             ids.push(item.id);
           } else {
             ids.push(item);
+          }
+          if(item.disabled){
+            disabledIds.push(item.id);
           }
         }
         // 全选
@@ -168,6 +186,7 @@ export default {
         })
         if(this.isSelectAll != isAll) this.isSelectAll = isAll;
       }
+      this.disabledIds = disabledIds;
       return ids;
     },
     search_list(){
@@ -178,7 +197,6 @@ export default {
           return true;
         }
       })
-      console.log("search_list", search_list);
       return search_list;
     }
   },
@@ -195,7 +213,7 @@ export default {
     },
     init() {
       this.$refs["organizeRef"] &&
-        this.$refs["organizeRef"].getData([], { expandHold: true });
+        this.$refs["organizeRef"].getData([], { expandHold: false });
     },
     onLoadData(page, extraData,extra={}) {
       return this.$MainApi
@@ -203,6 +221,7 @@ export default {
           data: {
             ...this.searchForm,
             ...extraData,
+            assign_ids: this.assign_ids||[]
           },
           other: {
             isErrorMsg: true
@@ -347,5 +366,8 @@ export default {
     position: absolute;
     width: 100%;
   }
+}
+.organize-layout.input-state{
+  padding-bottom: 50px; 
 }
 </style>

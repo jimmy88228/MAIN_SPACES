@@ -1,6 +1,6 @@
 <template>
   <hold-layout :isFull="true">
-    <Tabs class="layout-tabs" :value="thisCurrTab" @on-click="changeTabs">
+    <Tabs class="layout-tabs" :class="{ 'hide-tab': data.length == 1 }" :value="thisCurrTab" @on-click="changeTabs">
         <TabPane :label="item.label" :name="item.name" v-for="(item, index) in data" :disabled="item.disabled" :key="item.name">
           <vue-scroll class="tabs-cont">
             <div class="tabs-cont-stay">
@@ -73,7 +73,7 @@ export default {
 }
 </script>
 
-<style lang="less">
+<style lang="less" scoped>
 .layout-tabs{
   width:100%;
   height:100%;
@@ -81,26 +81,32 @@ export default {
   flex-direction: column;
   padding-top: 36px;
   position: relative;
-  .ivu-tabs-bar{
+  /deep/.ivu-tabs-bar{
     position: absolute;
     top:0px;
     left:0px;
     width: 100%;
   }
-  .ivu-tabs-content{
+  /deep/.ivu-tabs-content{
     flex: 1;
     height:100%;
     
   }
-  .ivu-tabs-tabpane{
+  /deep/.ivu-tabs-tabpane{
     height:100%;
   }
-  .tabs-cont{
+  /deep/.tabs-cont{
     width:100%;
     height:100%;
   }
-  .tabs-cont-stay{
+  /deep/.tabs-cont-stay{
     padding: 20px 10px;
+  }
+}
+.hide-tab{
+  padding-top: 0px;
+  /deep/.ivu-tabs-bar{
+    display: none;
   }
 }
 </style>

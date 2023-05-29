@@ -1,5 +1,6 @@
 import rewritePage from "./rewrite/rewrite-page/rewrite-page";
 import rewriteArea from "./rewrite/rewrite-area/rewrite-area";
+import rewriteScreen from "./rewrite/rewrite-screen/rewrite-screen";
 import rewriteSearch from "./rewrite/rewrite-search/rewrite-search";
 import rewriteTooltip from "./rewrite/rewrite-tooltip/rewrite-tooltip";
 import rewriteTabs from "./rewrite/rewrite-tabs/rewrite-tabs";
@@ -17,6 +18,7 @@ function installComponent(Vue){
         Vue.component(imgView.name, imgView);
         Vue.component(rewritePage.name, rewritePage);
         Vue.component(rewriteArea.name, rewriteArea);
+        Vue.component(rewriteScreen.name, rewriteScreen);
         Vue.component(rewriteSearch.name, rewriteSearch);
         Vue.component(rewriteTabs.name, rewriteTabs);
         Vue.component(rewriteChoose.name, rewriteChoose);

@@ -1,7 +1,7 @@
 <template>
     <div class="menu-item-area">
         <template v-if="data.children && data.children.length > 0 && !data.isPath">
-            <Submenu :name="data.actionCode" v-if="actionCodeMap[data.actionCode].isAction">
+            <Submenu :name="data.actionCode" v-if="actionCodeMap[data.actionCode] && actionCodeMap[data.actionCode].isAction">
                 <template slot="title">
                     <span class="menu-item-icon" :style="getMenuIconStyle(data.actionCode)"></span>
                     {{ data.title }}
@@ -12,7 +12,7 @@
             </Submenu>
         </template>
         <template v-else>
-            <MenuItem :name="data.actionCode" v-if="actionCodeMap[data.actionCode].isAction">
+            <MenuItem :name="data.actionCode" v-if="actionCodeMap[data.actionCode] && actionCodeMap[data.actionCode].isAction">
             <span class="menu-item-point"></span>
             {{data.title}}
             </MenuItem>
@@ -23,8 +23,6 @@
 <script>
 import menuItemLoop from "./menu-item-loop.vue";
 import PageHelper from "@/helper/page-helper";
-// import imgIcon from "@/assets/images/menu/psychologyAppraisal.png";
-// console.log("imgIcon", imgIcon);
 export default {
     name: "menuItemLoop",
     components: {

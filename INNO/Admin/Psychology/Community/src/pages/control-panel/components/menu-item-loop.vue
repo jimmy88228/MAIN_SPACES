@@ -1,7 +1,7 @@
 <template>
     <div class="menu-item-area">
         <template v-if="data.children && data.children.length > 0 && !data.isPath">
-            <Submenu :name="data.actionCode" v-if="actionCodeMap[data.actionCode].isAction">
+            <Submenu :name="data.actionCode" v-if="actionCodeMap[data.actionCode] && actionCodeMap[data.actionCode].isAction">
                 <template slot="title">
                     <span class="menu-item-icon" :style="getMenuIconStyle(data.actionCode)"></span>
                     {{ data.title }}
@@ -11,8 +11,17 @@
                 </template>
             </Submenu>
         </template>
+        <template v-else-if="data.parent.length == 0">
+            <MenuItem class="parent-path flex-s-c" :name="data.actionCode" v-if="actionCodeMap[data.actionCode] && actionCodeMap[data.actionCode].isAction">
+            <span class="menu-item-icon" 
+            style="display:inline-block;width: 25px;height: 25px;margin-right: 8px;background-repeat: no-repeat;
+            background-position: center center;
+            background-size: 80% auto;" :style="getMenuIconStyle(data.actionCode)"></span>
+            {{data.title}}
+            </MenuItem>
+        </template>
         <template v-else>
-            <MenuItem :name="data.actionCode" v-if="actionCodeMap[data.actionCode].isAction">
+            <MenuItem :name="data.actionCode" v-if="actionCodeMap[data.actionCode] && actionCodeMap[data.actionCode].isAction">
             <span class="menu-item-point"></span>
             {{data.title}}
             </MenuItem>
@@ -65,4 +74,11 @@ export default {
 };
 </script>
 
-<style lang="less" scoped></style>
+<style lang="less" scoped>
+.menu-item-area{
+    .parent-path{
+        padding-left: 12px;
+        font-weight: bold;
+    }
+}
+</style>

@@ -8,13 +8,14 @@
         </Select>
       </Form-item>
       <Form-item label="关联维度">
-        <dimensionSelect style="width: 200px;" :canEdit="false" :showData="hasDimensions" :multiple="true" @change="search()" :disabled="searchForm.state != 1" :modelId="modelId" v-model="searchForm.dimensions" placeholder="选择维度"></dimensionSelect>
+        <dimensionSelect style="width: 200px;" :canEdit="false" :showData="hasDimensions" :multiple="true" @change="search()" :disabled="searchForm.state != 1" :id="modelId" v-model="searchForm.dimensions" size="large" placeholder="选择维度"></dimensionSelect>
       </Form-item>
     </Form>
 </template>
 
 <script>
-import dimensionSelect from "../../components/dimension-select/index";
+// import dimensionSelect from "../../components/dimension-select/index";
+import dimensionSelect from "@/components/view-components/editable-select/index.vue";
 export default {
     name: "chooseProblemSearchForm",
     components: { dimensionSelect },

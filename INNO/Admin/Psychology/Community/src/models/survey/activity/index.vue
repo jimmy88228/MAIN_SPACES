@@ -38,7 +38,7 @@
                 <div class="operate-area">
                     <p class="operate-line">
                         <a class="operate" @click="editAct(row.id)" v-hasAction="[row.handle.edit,'appraisal_activity_update']">编辑</a>
-                        <a class="operate" @click="checkProgress(row.id)" v-hasAction="'appraisal_activity_schedule'">活动概括</a>
+                        <a class="operate" @click="checkProgress(row.id)" v-hasAction="'appraisal_activity_schedule'">活动概况</a>
                     </p>
                     <p class="operate-line">
                         <a class="operate" @click="removeItem(row.id, index)" v-hasAction="'appraisal_activity_remove'">删除</a>

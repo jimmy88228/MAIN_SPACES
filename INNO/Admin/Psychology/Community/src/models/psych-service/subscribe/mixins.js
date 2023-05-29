@@ -13,13 +13,18 @@ export default{
           minWidth: 130
         },
         {
+          title: "申请日期",
+          key: "createTime",
+          minWidth: 200
+        },
+        {
           title: "资费方式",
           slot: "pay_type",
           minWidth: 130
         },
         {
-          title: "创建日期",
-          key: "createTime",
+          title: "预约时段",
+          slot: "appointTime",
           minWidth: 200
         },
         {

@@ -74,13 +74,13 @@ import tabItem from './tab-item.vue';
             nickName:"文章",
             reqName: "contentList",
           },
-          // {
-          //   id:4,
-          //   type:"course",
-          //   name:"课程内容",
-          //   nickName:"课程",
-          //   reqName: "contentList",
-          // },
+          {
+            id:4,
+            type:"course",
+            name:"课程内容",
+            nickName:"课程",
+            reqName: "contentList",
+          },
           {
             id:5,
             type:"tasteTest",

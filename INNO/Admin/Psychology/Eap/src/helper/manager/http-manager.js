@@ -24,9 +24,9 @@ httpManager.ajax.interceptors.request.use((config) => {
     if(config.other && config.other.isShowLoad){
         store.commit("setPageLoading", true);
     }
-    if(config.method != 'get'){
-        config.data = qs.stringify(config.data)
-    }
+    // if(config.method != 'get'){
+    //     config.data = qs.stringify(config.data)
+    // }
     return config
 })
 

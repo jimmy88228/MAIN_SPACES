@@ -2,6 +2,7 @@
   <div>
     <div class="overview-detail">
       <div class="overview-operates text-r p-b-10" >
+        <Button @click="createTeamReport" v-if="activityInfo.handle && activityInfo.handle.report_export" class="m-r-10" type="primary" :loading="exportLoading">生成团报</Button>
         <Button @click="exportData" type="primary" >导出数据</Button>
       </div>
       <div class="activity-overview-top">
@@ -131,6 +132,8 @@
       </div>
     </div>
     <exportSurvey ref="exportSurveyRef" :activityId="pageQuery.activityId"  :modelData="modelNameArr"></exportSurvey>
+    <!--异步处理导出excel组件-->
+    <mpNotice :ref="'notice' + item" v-for="item in jobIdCol" :key="item"></mpNotice>
   </div>
 </template>
 
@@ -138,10 +141,11 @@
 import ListMixin from "@/helper/mixin/list-mixin";
 import mixins from "./mixins";
 import exportSurvey from "../components/export-survey.vue";
+import mpNotice from "@/components/main-components/mq-notice/mq-notice";
 export default {
   name: "assessOverview",
   mixins: [mixins, ListMixin],
-  components: { exportSurvey },
+  components: { exportSurvey, mpNotice },
   data() {
     return {
       joinMemberIcon: require("@/assets/images/join_member.png"),
@@ -149,6 +153,8 @@ export default {
       activityId: 0,
       activityInfo: {},
       pageLoad: true,
+      jobIdCol: [],
+      exportLoading: false,
     };
   },
   computed: {
@@ -252,6 +258,72 @@ export default {
     },
     exportData(){
       this.$refs["exportSurveyRef"] && this.$refs["exportSurveyRef"].showModal();
+    },
+    createTeamReport(){
+      this.$UIModule({
+          mode: "organize-modal",
+          props: {
+            isShowAllBtn: false,
+            isLImitMain: true,
+            multiple: true,
+            title: "选择对比组织",
+            isShowLevel: true,
+            footerTip: "团报只针对同级组织进行对比",
+            isHideMainCheck: true
+          },
+          options: [],
+          success:(data)=>{
+              if(data instanceof Array){
+                  console.log("data", data)
+                  let structureArr = [], structureJson = {}
+                  data.map((item)=>{
+                    let level = item.level;
+                    let id = parseInt(item.id);
+                    if(!structureJson[level] && structureJson[level] !== 0){
+                      structureJson[level] = structureArr.length;
+                      structureArr.push({
+                        level: level,
+                        structureIds: [parseInt(id)]
+                      })
+                    } else {
+                      try {
+                        let index = structureJson[level];
+                        structureArr[index].structureIds.push(parseInt(id))
+                      } catch (error) {}
+                    }
+                  })
+                  this.createTeamReportReq(structureArr);
+              }
+          }
+      });
+    },
+    createTeamReportReq(structureArr = []){
+      console.log("structureArr", structureArr);
+      this.exportLoading = true
+      return this.$MainApi
+        .appraisalActivityScheduleReportExport({
+          data: {
+            activityid: this.activityId,
+            structure_arr: structureArr,
+          },
+          other: {
+            isErrorMsg: true
+          }
+        })
+        .then((res) => {
+          if (res.code) {
+            // 组织列表
+            let data = res.data || {};
+            this.jobIdCol.push(data);
+            this.$nextTick(() => {
+                this.$refs[`notice${data}`][0].showNotice(data);
+            });
+          }
+        }).finally(()=>{
+          setTimeout(()=>{
+            this.exportLoading = false;
+          }, 500)
+        })
     }
   },
 };

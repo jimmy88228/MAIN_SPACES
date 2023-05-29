@@ -91,7 +91,10 @@ export default {
       type: Boolean | String,
       default: ""
     },
-    isShowAllBtn: Boolean
+    isShowAllBtn: Boolean,
+    isOnlyCanSel:Boolean,
+    onlyCanSelArr:Array,
+    expandLevel: String | Number
   },
   data() {
     return {
@@ -131,13 +134,12 @@ export default {
     setSearchCheckboxDisable(item){
       let selectIndex = this.ids.indexOf(Number(item.id));
       let c_checkData = this.c_checkData || [];
+      let checkItem = {};
       if(selectIndex != -1){
-        let checkItem = c_checkData[selectIndex] || {};
-        if(item.disabled || (this.isRelation && checkItem.pChecked) || (this.limitMain && item.id == '0' && !item.checked)){
-          return true;
-        } else {
-          return false;
-        }
+        checkItem = c_checkData[selectIndex] || {};
+      }
+      if(item.disabled || (this.isRelation && checkItem.pChecked && this.multiple) || (this.limitMain && item.id == '0' && !item.checked)){
+        return true;
       } else {
         return false;
       }

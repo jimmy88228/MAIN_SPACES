@@ -47,6 +47,24 @@ export default {
             window.sessionStorage.removeItem(key);
         }
     },
+    local: {
+        get: function (key) {
+            let data = window.localStorage.getItem(key);
+            if (data == null) {
+                return null;
+            } else if (data == "undefined") {
+                return null;
+            } else {
+                return JSON.parse(data);
+            }
+        },
+        set: function (key, value) {
+            window.localStorage.setItem(key, JSON.stringify(value));
+        },
+        remove: function (key) {
+            window.localStorage.removeItem(key);
+        }
+    },
     copyText: (function () {
         if (!navigator.clipboard) {
             return function (text) {
@@ -69,7 +87,21 @@ export default {
                 })
             }
         }
-    })()
+    })(),
+    getUrlQuery(name){
+        let href = window.location.href || "";
+        let queryStr = href.split("?")[1] || '';
+        let queryArr = queryStr.split("&") || [];
+        let params = {};
+        queryArr.map((item)=>{
+            let itemArr = item.split("=") || [];
+            params[itemArr[0]] = itemArr[1]
+        })
+        if(name){
+            return params[name] || "";
+        }
+        return params;
+    }
 };
 // 复制
 function fallbackCopyTextToClipboard(text) {

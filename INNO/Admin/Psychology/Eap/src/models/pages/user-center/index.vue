@@ -55,6 +55,14 @@ export default {
               dynamic_setting: {},
               module_data: {
                 serviceList: [
+                  {
+                    code: "COURSE-TASK",
+                    icon: "https://psyimage.innourl.com/v/admintmp/admin/community/general/static/user/MY-COURSE.png",
+                    is_enable: 1,
+                    name: "学习任务",
+                    tip: "提示",
+                    type_name: "学习任务"
+                  },
 		              {
                     code: "SURVEY-ACTIVITY",
                     icon: "https://psyimage.innourl.com/v/admintmp/admin/eap/general/static/user/SURVEY-ACTIVITY.png",

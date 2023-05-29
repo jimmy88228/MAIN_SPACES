@@ -1,5 +1,6 @@
 <template>
   <hold-layout :isFull="true" class="supervise-page-layout">
+    <rewrite-screen :baseData="[{ type: 'search', name: '搜索',  key: 'searchq' }]"></rewrite-screen>
     <searchForm :searchForm="searchForm" @search="loadData()"></searchForm>
     <Table class="no-remove full-table" ref="myTable" :columns="columns" :data="list" border :loading="tableLoading" @on-selection-change="selectDataEvent">
 

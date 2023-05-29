@@ -9,6 +9,9 @@
                 <TabPane label="心理轨迹" name="psychicTravel">
                     <psychicTable :userId="userId"></psychicTable>
                 </TabPane>
+                <TabPane label="随访记录" name="followVisit">
+                    <followVisit :userId="userId"></followVisit>
+                </TabPane>
             </Tabs>
         </div>
     </div>
@@ -17,9 +20,10 @@
 <script>
 import actTable from "./act-table/index";
 import psychicTable from "./psychic-table/index";
+import followVisit from "./follow-visit/index";
 import msgSummary from "./cps/msg-summary.vue"
 export default {
-    components: {  actTable, psychicTable,msgSummary },
+    components: {  actTable, psychicTable, followVisit, msgSummary },
     data() {
         return { 
             userId: 0, 

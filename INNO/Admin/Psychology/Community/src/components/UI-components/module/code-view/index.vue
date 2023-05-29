@@ -91,7 +91,7 @@ export default {
             if (path) this.path = path;
             if (params) {
                 params = params || {};
-                params.appCode = params.appCode || this._getApp.app_code
+                // params.appCode = params.appCode || this._getApp.app_code
                 this.params = params;
             }
             if (codeId) this.codeId = codeId;

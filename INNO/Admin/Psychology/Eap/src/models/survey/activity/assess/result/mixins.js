@@ -26,15 +26,17 @@ export default{
         {
           title: "开始时间",
           slot: "create_time",
-          key: "create_time",
+          key: "record_create_time",
           minWidth: 200,
+          sortMethod: this.sortChange,
           sortable: true
         },
         {
           title: "完成时间",
           slot: "complete_time",
-          key: "complete_time",
+          key: "record_complete_time",
           minWidth: 200,
+          sortMethod: this.sortChange,
           sortable: true
         },
         {

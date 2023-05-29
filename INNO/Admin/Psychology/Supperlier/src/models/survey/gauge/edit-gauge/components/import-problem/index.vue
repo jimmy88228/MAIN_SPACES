@@ -37,6 +37,7 @@
 </template>
 
 <script>
+import strUtil from "@/helper/utils/string-util.js";
 export default {
   props: {
     isLimit: Boolean,
@@ -88,17 +89,20 @@ export default {
           let option_data = []
           for(let j = 0; j < options.length; j++){
             let option_content = options[j] || "";
-            option_data.push({
-              id: 0,
-              option_content: option_content.substring(0, this.optionLimitNum),
-              _option_content: option_content,
-              // option_picture: "",
-              value: '',
-              sort: 0,
-              factor_data: [],
-              next_question_sort: 0,
-              // is_positive: 0
-            })
+            option_content = strUtil.trim(option_content);
+            if(option_content){
+              option_data.push({
+                id: 0,
+                option_content: option_content.substring(0, this.optionLimitNum),
+                _option_content: option_content,
+                // option_picture: "",
+                value: '',
+                sort: 0,
+                factor_data: [],
+                next_question_sort: 0,
+                // is_positive: 0
+              })
+            }
             if(!limitOptionTip && this.optionLimitNum && option_content.length > this.optionLimitNum){
               limitOptionTip = '选项名称超出最大长度';
             }

@@ -6,12 +6,13 @@
         <div class="edit-cont-area">
           <div class="flex-b-c edit-cont-title" :class="{ 'is-handle': subscribeInfo.consultResult == 1 }">
             <div>{{subscribeInfo.createTime}}</div>
-            <div>{{consultResult[subscribeInfo.consultResult]}}</div>
+            <div>{{subscribeInfo.consultResultStr}}</div>
           </div>
           <Form :label-width="100" :model="subscribeInfo" ref="formDataRef">
             <FormItem label="姓名">{{subscribeInfo.name}}</FormItem>
             <FormItem label="联系电话">{{subscribeInfo.mobilePhone}}</FormItem>
             <FormItem label="咨询方式">{{subscribeInfo.serviceWay || '--'}}</FormItem>
+            <FormItem label="预约时间" v-if="subscribeInfo.appointTime">{{subscribeInfo.appointTime || '--'}}</FormItem>
             <template v-if="subscribeInfo.type != 'commissioner'">
               <FormItem label="资费方式">{{subscribeInfo.payType == 'self' ? '自费' : '报销'}}</FormItem>
             </template>
@@ -23,7 +24,7 @@
           </Form>
           <div class="deal-detail" v-if="subscribeInfo.consultResult == 1">
             <div class="detail-tip">处理详情</div>
-            <div class="detail-row">
+            <div class="detail-row" v-if="!subscribeInfo.appointTime">
               <div class="row-l">预约日期</div>
               <div class="row-r">{{subscribeInfo.consultDate}}</div>
             </div>
@@ -63,12 +64,6 @@ export default {
       subscribeInfo: {
         consult_result: 1,
       },
-      consultResult:{
-        '-1':"全部",
-        '0':"未处理",
-        '1':"已处理",
-        '2':"已拒绝",
-      }
     };
   },
   methods: {

@@ -111,6 +111,17 @@ export default {
         callback(new Error(field.message || '请输入正确的值'));
       }
     },
+    _checkIdCard(rule, value, callback){ // 身份证
+      const {
+        field
+      } = rule;
+      let reg = /(^\d{15}$)|(^\d{18}$)|(^\d{17}(\d|X|x)$)/;
+      if(!reg.test(value)){
+        callback(new Error(field.message || '请输入正确的身份证'))
+      } else {
+        callback();
+      }
+    },
     _resetField(formRef, props, formModel){ // 检测重置 formRef， props为数组，需要重置的prop, formModel:form数据对象
       if(this.$refs[formRef]){
         if(props instanceof Array && props.length > 0){

@@ -119,10 +119,14 @@ export default {
           }
       });
     },
-    sortChange(detail){
-      this.searchForm.field = detail.key || "";
-      this.searchForm.fieldBy = detail.order || "desc";
-      this.loadData();
+    sortChange(a, b, type){
+      let detail = a || {}
+      if(detail.key){
+        this.searchForm.field = detail.order == "normal" ? "" : (detail.key || "");
+        this.searchForm.fieldBy = detail.order == "normal" ? "desc" : (detail.order || "desc");
+        this.searchForm.fieldBy = this.searchForm.fieldBy.toUpperCase();
+        this.loadData();
+      }
     },
     report(row){
       this.$UIModule({

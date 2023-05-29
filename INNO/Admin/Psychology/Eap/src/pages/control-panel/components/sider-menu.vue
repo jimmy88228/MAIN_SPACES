@@ -38,7 +38,6 @@ export default {
             return this.menuCurrent.parent;
         },
         menus() {
-            console.log("menus", PageHelper.menus)
             return PageHelper.menus;
         },
     },

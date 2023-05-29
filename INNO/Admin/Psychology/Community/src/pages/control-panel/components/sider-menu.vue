@@ -21,6 +21,7 @@
 import PageHelper from "@/helper/page-helper";
 import Promise from "bluebird";
 import menuItemloop from "./menu-item-loop.vue";
+import thirdPartyH from "@/helper/handler/third-party-handler.js";
 export default {
     name: "SiderMenu",
     components: { menuItemloop },
@@ -56,8 +57,16 @@ export default {
         onMenuSelect(name) {
             this.$Modal.remove();
             if (!this.beforeSelect || !this.beforeSelect(name)) {
-                console.log("菜单选择", name)
                 if(name){
+                    if(name == 'dataMessage'){
+                        thirdPartyH.getBackstageToken().then((data)=>{
+                           if(data.wap_url && data.accessToken){
+                            data.wap_url = data.wap_url + "/#/"
+                                window.open(`${data.wap_url}?accessToken=${data.accessToken}`);
+                           } 
+                        })
+                        return;
+                    }
                     let routeName = (PageHelper.routesMenuMap[name] && PageHelper.routesMenuMap[name].name) || "";
                     routeName && this.$router.push({ name: routeName });
                 }

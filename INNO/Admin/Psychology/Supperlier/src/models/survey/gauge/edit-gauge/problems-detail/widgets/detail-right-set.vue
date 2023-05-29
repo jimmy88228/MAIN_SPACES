@@ -36,14 +36,14 @@
                   <FormItem 
                   class="options-form-item"
                   :prop="'option_data.' + index + '.option_content'"
-                  :rules="{required: true, validator: _checkString, message: '选项名称不能为空', trigger: 'change'}"
+                  :rules="{required: true, validator: _checkString, message: '选项名称不能为空', trigger: 'blur'}"
                   >
                     <custom-input class="item-input" v-model="item.option_content" placeholder="选项名称" :maxlength="optionLimitNum" :showWordLimit="true"></custom-input>
                   </FormItem>
                   <FormItem 
                   class="options-form-item"
                   :prop="'option_data.' + index + '.value'"
-                  :rules="{required: true, validator: _checkInt,  message: '选项分值不能为空', trigger: 'change'}"
+                  :rules="{required: true, validator: _checkInt,  message: '选项分值不能为空', trigger: 'blur'}"
                   >
                     <custom-input class="item-input" type="number" :toFixed="1" :disabled="problemsInfo.status == 1" :min="0" :max="9999" v-model="item.value" placeholder="分值" ></custom-input>
                   </FormItem>
@@ -195,39 +195,8 @@ export default {
           idsData.push(item)
         })
         this.itemInfo.dimensionsData = idsData
-        // for(let i = 0; i < this.itemInfo.option_data.length; i++){
-        //   this.itemInfo.option_data[i].factor_data = idsData;
-        // }
       }
     },
-    // chooseDimension(selectData, opIndex){
-    //   if(selectData instanceof Array){
-    //     selectData.map((item)=>{
-    //       if(!item.id){
-    //         item.id = item.dimension_id == '0' ? item.dimension_id + '' : item.dimension_id
-    //       }
-    //       if(!item.name){
-    //         item.name = (item.dimension_data && item.dimension_data.name) || item.dimension_name || '无维度';
-    //       }
-    //     })
-    //   }
-    //   this.$UIModule({
-    //     mode: "dimension-modal",
-    //     options: {
-    //       id: this.pageQuery.id,
-    //       selectData: selectData
-    //     },
-    //     success:(data)=>{
-    //       if(data instanceof Array){
-    //         data.map((item)=>{
-    //           item.dimension_id = item.id
-    //         })
-    //         console.log("data", data)
-    //         this.$set(this.itemInfo.option_data[opIndex], 'factor_data', data)
-    //       }
-    //     }
-    //   })
-    // },
     scrollIntoView(index){
       this.$nextTick(()=>{
         if(this.$refs["problemsRightSetScroll"]){

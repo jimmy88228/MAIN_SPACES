@@ -1,3 +1,12 @@
+.gray{
+    -webkit-filter: grayscale(100%);
+  -moz-filter: grayscale(100%);
+  -ms-filter: grayscale(100%);
+  -o-filter: grayscale(100%);
+  filter: grayscale(100%);
+  filter: gray;
+  filter: progid:DXImageTransform.Microsoft.BasicImage(grayscale=1);
+}
 .cev-max-width {
     max-width: 1280px;
     margin: 0 auto;
@@ -338,6 +347,9 @@
 .pointer {
     cursor: pointer;
 }
+.move {
+    cursor: move;
+}
 
 .text-l {
     text-align: left;
@@ -429,6 +441,14 @@
     max-width: 320px;
     .ivu-input {
         max-width: 320px;
+    }
+}
+.base-200{
+    width: 100%;
+    max-width: 200px;
+    .ivu-input {
+        width: 100%;
+        max-width: 200px;
     }
 }
 .base-260{
@@ -750,7 +770,12 @@
 .b-r-10 {
     border-radius: 10px;
 }
-
+.text-underline{
+    text-decoration: underline;
+}
+.text-underline:hover{
+    text-decoration: underline;
+}
 /**/
 .operate-area {
     margin: 5px 0px;
@@ -793,6 +818,16 @@
     color: #C20912;
 }
 
+.required-after:before{
+    content: '*';
+    display: inline-block;
+    margin-right: 4px;
+    line-height: 1;
+    font-family: SimSun;
+    font-size: 14px;
+    color: #ed4014;
+}
+
 .desc-notice{
     font-size: 12px;
     font-family: PingFangSC-Regular, PingFang SC;
@@ -813,6 +848,7 @@
     position: absolute;
     bottom: 13px;
     right: 9px;
+    cursor: pointer;
 }
 
 .arrow-radius::after,.text-arrow-radius::after {
@@ -831,6 +867,7 @@
     border-radius: 11px;
     color: #909090;
     font-size: 13px;
+    cursor: pointer;
 }
 .text-arrow-radius::after{
     margin-left: 5px;
@@ -875,9 +912,6 @@
 .C_B2 {
     color: #b2b2b2
 }
-
-
-// 供应商平台样式，暂时引入，后续删掉
-@import "./platform/variables-iview.less";
-@import "./platform/over-iview.less";
-@import "./platform/layouts.less";
+.C_red {
+    color: #ff0000
+}

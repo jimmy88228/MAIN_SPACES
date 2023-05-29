@@ -1,7 +1,5 @@
 import Conf from "@/config";
-import DateUtil from "@/helper/utils/date-util";
-import StringUtil from "@/helper/utils/string-util";
-import { data } from "autoprefixer";
+import utils from "@/helper/utils/index.js";
 const MaxLimit = 5;
 export default {
     data() {
@@ -37,14 +35,17 @@ export default {
             this.dateRange = null;
             this.onClearOptions && this.onClearOptions();
         },
-        loadData(index = Conf.PAGE_START,pageSize,extra={}) {
+        loadData(index,pageSize,extra={}) {
             if(!extra.hideLoading)this.tableLoading = true;
+            if(!index){
+                index = parseInt(utils.getUrlQuery("page")) || Conf.PAGE_START;
+            }
             return this.onLoadData && this.onLoadData(index, this.createListParams(index,pageSize))
             .then((res)=>{
                 this.page = index || Conf.PAGE_START;
-                console.log(this.page,"当前页码")
                 this.tableLoading = false;
                 this.resetBar();
+                // this.setRouteQuery(this.page);
                 return Promise.resolve(res);
             }).catch((err)=>{
                 this.tableLoading = false;
@@ -101,7 +102,6 @@ export default {
             // return this.loadData(index,pageSize,{hideLoading:true},{async:true})
         },
         handleUpdate() {
-            console.log("page", this.page);
             this.loadData(this.page);
         },
         handleAdded() {
@@ -149,7 +149,6 @@ export default {
             this.data.total = total ? total : 0;
         },
         createListParams(index,pageSize) {
-            console.log('createListParams',index,pageSize)
             let data = {
                 page: index,
                 pageSize: pageSize || this.pageSize
@@ -163,6 +162,18 @@ export default {
                     tableBody[i].scroll(0,0)
                 }
             }
+        },
+        setRouteQuery(index){
+            let params = utils.getUrlQuery() || {};
+            let href = window.location.href || "";
+            let hrefHost = href.split("?")[0] || "";
+            let paramsStr = "", url = "";
+            params.page = index;
+            for(let i in params){
+                paramsStr = paramsStr ?  paramsStr + '&' + i + '=' + params[i] : i + '=' + params[i]
+            }
+            url = paramsStr ? hrefHost + '?' + paramsStr : hrefHost
+            window.history.replaceState(null, '', url)
         }
     }
 };

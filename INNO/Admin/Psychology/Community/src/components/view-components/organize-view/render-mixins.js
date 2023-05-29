@@ -31,7 +31,7 @@ export default{
                         h("Checkbox", {
                             props: {
                                 value: data.checked,
-                                disabled: data.disabled || (this.isRelation && data.pChecked) || (this.limitMain && data.id == "0" && !data.checked)
+                                disabled: data.disabled || (this.isRelation && data.pChecked && this.multiple) || (this.limitMain && data.id == "0" && !data.checked)
                             },
                             attrs: {
                                 title: (this.limitMain && data.id == "0" && !data.checked) ? '没有该组织权限' : ''
@@ -45,7 +45,7 @@ export default{
                         }),
                     ]),
                     h("div", {
-                        attrs: { class: "text-flow",title: data.title },
+                        attrs: { class: data.disabled ? "gray text-flow" : "text-flow",title: data.title },
                         style: {
                           flex:1,
                           display: "flex",
@@ -98,7 +98,7 @@ export default{
                                   alignItems: "center",
                               },
                           },
-                          (this.isShowAllBtn && data.id == "0") ? [
+                          (this.isShowAllBtn && data.id == "0" && this.multiple) ? [
                             h("div", {on: {"click": ()=>{ event.stopPropagation();}}},[
                                 h("Button", {
                                     props: { size: "small" },
@@ -159,7 +159,7 @@ export default{
                 h("Checkbox", {
                     props: {
                         value: data.checked,
-                        disabled: data.disabled || (this.isRelation && data.pChecked)
+                        disabled: data.disabled || (this.isRelation && data.pChecked && this.multiple)
                     },
                     on: {
                         "on-change":(state)=>{
@@ -170,7 +170,10 @@ export default{
                 }),
             ]),
               h("img", {
-                  attrs: { src: data.selected ? data.selectIcon : data.icon },
+                  attrs: { 
+                    src: data.selected ? data.selectIcon : data.icon,
+                    class: data.disabled ? "gray text-flow" : "text-flow"
+                },
                   style: this.isModal ? {
                       marginRight: "8px",
                       width: "26px",
@@ -188,7 +191,7 @@ export default{
               h(
                   "span",
                   { 
-                    attrs: { class: "text-flow" },
+                    attrs: { class: data.disabled ? "gray text-flow" : "text-flow" },
                     style: { fontSize: "14px",flex: 1 } },
                     data.title
                     // data.title + "(" + data.getson_count + ")"

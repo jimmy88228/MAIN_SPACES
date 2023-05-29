@@ -123,20 +123,20 @@ export default {
               if(item.consult_result == 1 || (item.handle && !item.handle.dispose)){
                 item._disabled = true
               }
-              let getSchedule = item.get_consultant_schedule;
-              if(getSchedule){
+              let getSchedule = {};
+              if(item.schedule_day){
                 // 增加剔除最后秒数
-                if(getSchedule.begin_time){
-                  let beginTimeArr = getSchedule.begin_time.split(":");
+                if(item.begin_time){
+                  let beginTimeArr = item.begin_time.split(":");
                   beginTimeArr.length > 2 && beginTimeArr.splice(-1, 1);
                   getSchedule.beginTime = beginTimeArr.join(":")
                 }
-                if(getSchedule.end_time){
-                  let endTimeArr = getSchedule.end_time.split(":");
+                if(item.end_time){
+                  let endTimeArr = item.end_time.split(":");
                   endTimeArr.length > 2 && endTimeArr.splice(-1, 1);
                   getSchedule.endTime = endTimeArr.join(":")
                 }
-                getSchedule.scheduleTime = getSchedule.schedule_day + ' '+getSchedule.beginTime + '-' + getSchedule.endTime
+                getSchedule.scheduleTime = item.schedule_day + ' '+getSchedule.beginTime + '-' + getSchedule.endTime
                 item.getSchedule = getSchedule
               }
               

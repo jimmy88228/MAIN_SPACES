@@ -1,7 +1,7 @@
 <template>
     <custom-modal
       ref="modal"
-      class="page-drawer-area"
+      class="member-modal-area hold-modal-zindex"
       :footerHide="true"
       :width="530"
     >
@@ -227,7 +227,7 @@ export default {
 
 <style lang="less" scoped>
 @import "@/assets/css/variables.less";
-.page-drawer-area{
+.member-modal-area{
   .edit-cont-area{
     border: 0 none !important;
   }

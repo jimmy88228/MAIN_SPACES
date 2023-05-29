@@ -21,6 +21,9 @@ Vue.mixin({
         };
     },
     computed: {
+        _isNeedResetPwd(){
+            return LM.isNeedResetPwd || false;
+        },
         _loginAdmin() {
             return LM.userInfos|| {}
         },

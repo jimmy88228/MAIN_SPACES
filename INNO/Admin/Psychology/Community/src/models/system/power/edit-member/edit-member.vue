@@ -1,7 +1,7 @@
 <template>
     <custom-modal
       ref="modal"
-      class="page-drawer-area"
+      class="page-drawer-area hold-modal-zindex"
       :footerHide="true"
       :width="530"
     >
@@ -11,13 +11,13 @@
                 <div class="edit-cont-area">
                     <Form :label-width="100" :model="adminInfo" ref="formDataRef" :rules="ruleValidate">
                         <FormItem label="人员名称" prop="user_name">
-                            <Input class="base-260-44" v-model="adminInfo.user_name"></Input>
+                            <custom-input placeholder="请输入人员名称" class="base-260-44" v-model="adminInfo.user_name"></custom-input>
                         </FormItem>
                         <FormItem label="手机号" prop="mobile_phone">
-                            <Input class="base-260-44" v-model="adminInfo.mobile_phone"></Input>
+                            <custom-input placeholder="请输入手机号" class="base-260-44" v-model="adminInfo.mobile_phone" :maxlength="11"></custom-input>
                         </FormItem>
                         <FormItem label="权限组" prop="role_id">
-                            <Select v-model="adminInfo.role_id" class="base-260-44" style="height:44px;">
+                            <Select v-model="adminInfo.role_id" class="base-260-44" style="height:44px;" @on-change="changeRole">
                                 <Option v-for="item in rolesList" :key="item.id" :value="item.id">{{item.role_name || '暂无名称'}}</Option>
                             </Select>
                         </FormItem>
@@ -56,6 +56,7 @@ export default {
             adminInfo: {
                 id:0,
                 role_id: 0,
+                role_type: "",
                 user_name: "",
                 structure_ids_arr: [],
                 structure_ids: 0,
@@ -94,30 +95,6 @@ export default {
                         message: "请选择组织",
                     },
                 ],
-                // role_id: [
-                //     {
-                //         required: true,
-                //         validator: this._checkString,
-                //         message: "请选择组织",
-                //         trigger: "blur",
-                //     },
-                // ],
-                // campus_id: [
-                //     {
-                //         required: true,
-                //         validator: this._checkThanInt,
-                //         message: "请选择校区",
-                //         trigger: "blur",
-                //     },
-                // ],
-                // structure_ids: [
-                //     {
-                //         required: true,
-                //         validator: this._checkThanInt,
-                //         message: "请选择对应的值",
-                //         trigger: "blur",
-                //     },
-                // ],
             },
         };
     },
@@ -131,6 +108,11 @@ export default {
                     "role_id",
                     rolesList[0].id
                 );
+                this.$set( 
+                    this.adminInfo,
+                    "role_type",
+                    rolesList[0].role_type
+                );
             }
             return rolesList;
         },
@@ -141,11 +123,13 @@ export default {
         },
         showModal({ adminInfo = {} }) {
             this.$refs["formDataRef"] && this.$refs["formDataRef"].resetFields();
+            let role_id = adminInfo.role_info && adminInfo.role_info[0] && adminInfo.role_info[0].role_id || 0;
             let _adminInfo = {
                 id: adminInfo.id || 0,
                 user_name: adminInfo.user_name || "",
                 mobile_phone: adminInfo.mobile_phone||"",
-                role_id: adminInfo.role_info && adminInfo.role_info[0] && adminInfo.role_info[0].role_id || 0,
+                role_id: role_id,
+                role_type: this.getRoleById(role_id).role_type,
                 structure_ids: adminInfo.role_info && adminInfo.role_info.map(item=>item.structure_id).join(',') || "",
                 structure_ids_arr : adminInfo.role_info && adminInfo.role_info.map(item=>{
                     return { id: item.structure_id, structure_name: item.structure_name }
@@ -155,17 +139,38 @@ export default {
             this.$refs.modal.show();
         },
         handleDeleteTag(data){
-            console.log('handleDeleteTag',data);
             this.adminInfo.structure_ids_arr = data;
         },
+        getRoleById(id){
+            let result = {};
+            try {
+                this.rolesList.map((item)=>{
+                    if(item.id == id){
+                        throw new Error(JSON.stringify(item))
+                    }
+                })
+            } catch (error) {
+                let message = error.message;
+                if(message){
+                    result = JSON.parse(message);
+                }
+            }
+            return result;
+        },
+        changeRole(id){
+            this.$set(this.adminInfo, "role_type", this.getRoleById(id).role_type || "");
+            this.$set(this.adminInfo, "structure_ids_arr", []);
+        },
         handleSelect(){
+            let adminInfo = this.adminInfo;
             this.$UIModule({
                 mode:"organize-modal",
                 props: {
                     isShowAdd: false,
-                    isRelation: true,
+                    isRelation: adminInfo.role_type == 'social_worker' ? false : true,
                     organizeType: 1,
-                    isLImitMain: false
+                    isLImitMain: adminInfo.role_type == 'social_worker' ? true : false,
+                    multiple: adminInfo.role_type == 'social_worker' ? false : true
                 },
                 options:this.adminInfo.structure_ids_arr||[],
                 success:(data)=>{

@@ -91,9 +91,11 @@ export default {
       type: Boolean | String,
       default: ""
     },
+    isHideMainCheck: Boolean,
     isShowAllBtn: Boolean,
     isOnlyCanSel:Boolean,
     onlyCanSelArr:Array,
+    isShowLevel: Boolean
   },
   data() {
     return {
@@ -184,7 +186,11 @@ export default {
       this._handleTreeData(
         this.c_organizeList,
         "checked",
-        selectItem
+        selectItem,
+        0,
+        {
+          isShowLevel: this.isShowLevel
+        }
       );
     },
     addOrganize(){

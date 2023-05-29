@@ -46,7 +46,7 @@
               <!-- :row-class-name="setRowClass" -->
                 <template slot="selectArea" slot-scope="{ row }">
                   <div>
-                    <Checkbox :value="ids.indexOf(row.id) != -1" @on-change="(state)=>checkMember(state, row)">{{row.member_name}}</Checkbox>
+                    <Checkbox :value="ids.indexOf(row.id) != -1" :disabled="disabledIds.indexOf(row.id) != -1" @on-change="(state)=>checkMember(state, row)">{{row.member_name}}</Checkbox>
                   </div>
                 </template>
               </Table>
@@ -77,6 +77,7 @@
               <Icon
                 type="md-close"
                 class="close-icon pointer"
+                v-if="disabledIds.indexOf(item.id) == -1"
                 @click="delMember(index)"
               />
             </div>
@@ -155,13 +156,14 @@ export default {
       // asyncList:[],
       editTitle: "",
       selectData: [],
-      isSelectAll: false
+      isSelectAll: false,
+      disabledIds: []
     };
   },
   computed: {
     ids() {
       let selectData = this.selectData || [];
-      let ids = [];
+      let ids = [], disabledIds = [];
       if (selectData instanceof Array) {
         for (let i = 0; i < selectData.length; i++) {
           let item = selectData[i];
@@ -169,6 +171,9 @@ export default {
             ids.push(item.id);
           } else {
             ids.push(item);
+          }
+          if(item.disabled){
+            disabledIds.push(item.id)
           }
         }
         // 全选
@@ -181,6 +186,7 @@ export default {
         })
         if(this.isSelectAll != isAll) this.isSelectAll = isAll;
       }
+      this.disabledIds = disabledIds;
       return ids;
     },
     search_list(){

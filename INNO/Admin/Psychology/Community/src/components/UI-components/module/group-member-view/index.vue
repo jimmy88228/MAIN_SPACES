@@ -18,18 +18,7 @@
           ></rewrite-search>
         </div>
         <div class="bar-box flex">
-          <!-- <organizeView
-            class="organize-box"
-            ref="organizeRef"
-            :isShowAdd="false"
-            :isShowSearch="false"
-            :isModal="true"
-            :showCheckbox="false"
-            :expandNode="expandNode"
-            :selectNode="selectNode"
-            @on-select-change="organizeChange"
-          ></organizeView> -->
-          <groupView style="width: 250px;" type="member" :canEdit="false" slot="left" @change="changeGroupPoint"></groupView>
+          <groupView style="width: 60%;" type="member" :canEdit="false" slot="left" @change="changeGroupPoint"></groupView>
           <div class="orgn-members-box" v-bar>
             <hold-layout>
               <Table
@@ -44,13 +33,13 @@
               <!-- :row-class-name="setRowClass" -->
                 <template slot="selectArea" slot-scope="{ row }">
                   <div>
-                    <Checkbox :value="ids.indexOf(row.id) != -1" @on-change="(state)=>checkMember(state, row)">{{row.member_name}}</Checkbox>
+                    <Checkbox :disabled="disabledIds.includes(row.id)" :value="ids.includes(row.id)" @on-change="(state)=>checkMember(state, row)">{{row.member_name}}</Checkbox>
                   </div>
                 </template>
               </Table>
               <div v-if="inputVal" class="search-result-box">
                 <div v-for="(item,index) in search_list" :key="index" class="check-box-box">
-                  <Checkbox :value="ids.indexOf(item.id) != -1" @on-change="(state)=>checkMember(state, item)">{{item.member_name}}</Checkbox>
+                  <Checkbox :disabled="disabledIds.includes(item.id)" :value="ids.includes(item.id)" @on-change="(state)=>checkMember(state, item)">{{item.member_name}}</Checkbox>
                 </div>
               </div>
             </hold-layout>
@@ -73,6 +62,7 @@
             >
               <div>{{ item.member_name||item.name||"" }}</div>
               <Icon
+                v-if="!item.disabled"
                 type="md-close"
                 class="close-icon pointer"
                 @click="delMember(index)"
@@ -99,7 +89,7 @@
 <script>
 import ListMixin from "@/helper/mixin/list-mixin";
 import mixins from "./mixins";
-import organizeView from "@/components/view-components/organize-view/index";
+// import organizeView from "@/components/view-components/organize-view/index";
 import groupView from "@/models/components/group-view/index.vue";
 
 export default {
@@ -113,18 +103,10 @@ export default {
     multiple: {
       type: Boolean,
       default: false,
-    },
-    expandNode: {
-      type: Boolean,
-      default: false,
-    },
-    selectNode: {
-      type: Boolean,
-      default: true,
-    },
+    }
   },
   components: {
-    organizeView,
+    // organizeView,
     groupView
   },
   data() {
@@ -139,13 +121,14 @@ export default {
       },
       editTitle: "",
       selectData: [],
+      disabledIds: [],
       isSelectAll: false
     };
   },
   computed: {
     ids() {
       let selectData = this.selectData || [];
-      let ids = [];
+      let ids = [], disabledIds = [];
       if (selectData instanceof Array) {
         for (let i = 0; i < selectData.length; i++) {
           let item = selectData[i];
@@ -153,6 +136,9 @@ export default {
             ids.push(item.id);
           } else {
             ids.push(item);
+          }
+          if(item.disabled){
+            disabledIds.push(item.id);
           }
         }
         // 全选
@@ -165,6 +151,7 @@ export default {
         })
         if(this.isSelectAll != isAll) this.isSelectAll = isAll;
       }
+      this.disabledIds = disabledIds;
       return ids;
     },
     search_list(){
@@ -195,6 +182,9 @@ export default {
           if (res.code) {
             let data = res.data || {};
             let items = data.items || [];
+            items.map((item)=>{
+              item.name = item.member_name;
+            })
             if(!extra || !extra.async){
               this.data = {
                 total: data.total,
@@ -211,6 +201,9 @@ export default {
     },
     checkMember(state, row){
       let index = this.ids.indexOf(row.id);
+      if(this.disabledIds.includes(row.id)){
+        return;
+      }
       if(state){
         if(index != -1) return;
         if(this.multiple){

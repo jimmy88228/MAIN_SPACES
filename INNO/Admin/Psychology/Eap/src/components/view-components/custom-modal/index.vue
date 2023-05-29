@@ -14,7 +14,7 @@
         :footer-hide="footerHide"
         :width="width"
         @on-ok="confirm">
-        <div class="header-view" slot="header" v-if="isSlotHeader">
+        <div class="header-view" :class="{ 'close-mode': closable }" slot="header" v-if="isSlotHeader">
             <slot name="header"></slot>
         </div>
         <slot></slot>
@@ -123,6 +123,10 @@ export default {
         font-weight: 600;
         color: #171717;
         line-height: 25px;
+        min-height: 10px;
+    }
+    .close-mode{
+        padding-right: 20px;
     }
     .ivu-modal-close{
         .ivu-icon{

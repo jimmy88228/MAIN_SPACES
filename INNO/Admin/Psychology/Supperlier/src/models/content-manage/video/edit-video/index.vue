@@ -16,13 +16,12 @@
         @handleMaxSize="uploadIng = false"
         :btnTxt="formData.path ? '重新上传' : '上传视频'"
         >
-          <!-- <Button :loading="uploadIng" type="primary">{{ formData.path ? '重新上传' : '上传视频' }}</Button> -->
         </uploadBtn>
         <p class="upload-file" v-if="uploadVideo.fileName">{{uploadVideo.fileName}}</p>
         <custom-input v-show="false" v-model="formData.path" />
       </FormItem>
       <FormItem label="视频标题" prop="title">
-        <custom-input size="large" class="base-320" v-model="formData.title" :show-word-limit="true" :maxlength="30"></custom-input>
+        <custom-input size="large" class="base-320" v-model="formData.title" :show-word-limit="true" :maxlength="60"></custom-input>
       </FormItem>
       <FormItem label="视频封面" prop="cover_pic">
         <img-view uploadType="video" ref="coverPicImgRef" :width="87" :img="formData.cover_pic" @delImg="formData.cover_pic = ''" @selectImg="(src)=>{ selectImg(src, 'cover_pic') }"></img-view>
@@ -169,6 +168,7 @@ export default {
       this.formData.time_length = detail.duration;
       if(!this.formData.title){
         this.formData.title = data[0].name ? data[0].name.replace(".mp4", "") : "";
+        this.formData.title = this.formData.title.substring(0, 60);
       }
       if(!this.formData.cover_pic){
         this.formData.cover_pic = detail.coverImage;

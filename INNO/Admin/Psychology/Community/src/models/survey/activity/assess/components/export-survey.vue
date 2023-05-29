@@ -46,7 +46,7 @@
           </FormItem>
           <FormItem label="选择维度" v-show="exportInfo.selectOption == 2 && dimensionData.length>0">
             <div class="base-320">
-              <data-select size="large" :params="{ model_id:  exportInfo.selectModel}" :isAuto="false" type="dimension" ref="dimensionSelectRef" v-model="exportInfo.dimensionalityData" @getData="getDimensionData" :multiple="true"></data-select>
+              <data-select size="large" :isShowAll="false" :params="{ model_id:  exportInfo.selectModel}" :isAuto="false" type="dimension" ref="dimensionSelectRef" v-model="exportInfo.dimensionalityData" @getData="getDimensionData" :multiple="true"></data-select>
             </div>
           </FormItem>
         </div>
@@ -155,7 +155,10 @@ export default {
             break;
       }
       this.exportInfo.dimensionalityData = [];
-      initFirst && this.$refs["dimensionSelectRef"] && this.$refs["dimensionSelectRef"].getData();
+      this.$nextTick(()=>{
+        initFirst && this.$refs["dimensionSelectRef"] && this.$refs["dimensionSelectRef"].getData();
+      })
+      
     },
     getDimension(){
       this.$nextTick(()=>{

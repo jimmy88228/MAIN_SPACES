@@ -76,7 +76,7 @@ export default {
                 .then(res => {
                     if (res.code === "1") {
                         this.dismiss();
-                        this.$Message.info("修改成功，请重新登陆");
+                        this.$Message.info("修改成功，请重新登录");
                         LM.logout().then(() =>
                             this.$router.push({ name: "Login" })
                         );

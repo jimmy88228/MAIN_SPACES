@@ -97,7 +97,11 @@ export default {
       this.$refs.modal.dismiss();
     },
     showModal({ subscribeInfo = {} }) {
-      this.$refs["formDataRef"] && this.$refs["formDataRef"].resetFields();
+      try {
+        this.$refs["formDataRef"] && this.$refs["formDataRef"].resetFields();
+      } catch (error) {
+        
+      }
       let _subscribeInfo = JSON.parse(JSON.stringify(subscribeInfo));
       this.get_consultant = _subscribeInfo.get_consultant;
       this.viewData = _subscribeInfo;

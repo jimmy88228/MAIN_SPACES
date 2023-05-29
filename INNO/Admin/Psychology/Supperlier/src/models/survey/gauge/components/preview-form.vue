@@ -1,13 +1,14 @@
 <template>
     <Form class="choose-problem-form no-tip m-b-10 p-10" inline :label-width="80">
       <Form-item label="筛选维度">
-        <dimensionSelect :canEdit="false" :showData="hasDimensions" :multiple="true" @change="search()" :modelId="modelId" v-model="searchForm.dimensions" placeholder="选择维度"></dimensionSelect>
+        <dimensionSelect :canEdit="false" type="gauge" :showData="hasDimensions" :multiple="true" @change="search()" :id="modelId" v-model="searchForm.dimensions" placeholder="选择维度"></dimensionSelect>
       </Form-item>
     </Form>
 </template>
 
 <script>
-import dimensionSelect from "@/models/survey/gauge/edit-gauge/components/dimension-select/index.vue";
+// import dimensionSelect from "@/models/survey/gauge/edit-gauge/components/dimension-select/index.vue";
+import dimensionSelect from "@/components/view-components/editable-select/index.vue";
 export default {
     name: "previewProblemSearchForm",
     components: { dimensionSelect },

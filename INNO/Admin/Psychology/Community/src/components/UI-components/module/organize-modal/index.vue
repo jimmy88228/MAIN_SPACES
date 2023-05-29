@@ -15,6 +15,9 @@
           :selectData="selectData"
           :isLImitMain="isLImitMain"
           :isShowAllBtn="isShowAllBtn"
+          :expandLevel="expandLevel"
+          :isOnlyCanSel="isOnlyCanSel"
+          :onlyCanSelArr="onlyCanSelArr"
           >
           </organizeView>
         </div>
@@ -24,7 +27,7 @@
         <p class="area-title">已选组织：</p>
         <div class="area-cont" v-bar>
           <div class="p-r-10">
-            <div class="select-item flex-b-c" v-for="(item, index) in selectData" :key="item.id" v-show="(isRelation && !item.pChecked) || !isRelation">
+            <div class="select-item flex-b-c" v-for="(item, index) in selectData" :key="item.id" v-show="(isRelation && !item.pChecked && multiple) || !isRelation || !multiple">
               <p class="text-flow text-r text-rtl" :title="item._parentName && item._parentName.join('/') + '/' + item.title">
                 {{item.reverseTitle}}<span v-for="(nItem, nindex) in item.reversePName" :key="nindex">&nbsp;/&nbsp;{{nItem}}</span>
               </p>
@@ -53,7 +56,7 @@ export default {
     },
     multiple: {
       type: Boolean,
-      default: false,
+      default: true,
     },
     isShowAdd: {
       type: Boolean,
@@ -72,7 +75,13 @@ export default {
       type: Boolean | String,
       default: ""
     },
-    isShowAllBtn: Boolean
+    isShowAllBtn: Boolean,
+    isOnlyCanSel:Boolean,
+    onlyCanSelArr:Array,
+    expandLevel: {
+      type: String | Number,
+      default: 1
+    }
   },
   data() {
     return {
@@ -94,7 +103,7 @@ export default {
     },
     getData(){
       let selectData = this.selectData || [];
-      if(this.isRelation){ // 只返回父级ID
+      if(this.isRelation && this.multiple){ // 只返回父级ID
        return selectData.filter((item)=>{
           return !item.pChecked
         })
