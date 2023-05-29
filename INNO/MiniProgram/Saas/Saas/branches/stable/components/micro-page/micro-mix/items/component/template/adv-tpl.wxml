@@ -1,0 +1,75 @@
+<template name="adv-tpl">
+<view class="relative ovh"
+      style="width:{{ _data.open_slide? '100%;' : (_data.code == 'userCard' || _data.type=='t1') ? 100/_data.row + '%;' : swiperMsg.swiper_ws[index] + 'rpx;'}}" >
+  <view 
+    id="listItemId"
+    class="ovh list-item list-item-{{_data.layout}}" 
+    bindtap="{{!listGoods.videoSrc?'linkJump':''}}" 
+    data-data="{{listGoods}}" 
+    data-type="imageAd"
+    style="width:{{ _data.open_slide? '100%;' : (_data.code == 'userCard' || _data.type=='t1') ? 100/_data.row + '%;' : swiperMsg.swiper_ws[index] + 'rpx;'}}" 
+    >
+    <image bindload="imgLoad" data-setting="{{_data}}" lazy-load data-key="{{index}}" class="list-img" mode="widthFix" src="{{listGoods.img}}">
+      <view class="initBg" wx:if="{{!isInited}}"></view>
+      <!--新版热点区域-->
+      <block wx:if="{{listGoods.hot_map && listGoods.hot_map.length > 0}}">
+        <view 
+          wx:for="{{listGoods.hot_map}}" 
+          wx:for-item="map_item" 
+          wx:for-index="map_index" 
+          wx:key="map_index" 
+          class="map_area" 
+          style="top:{{map_item.y}}%;left:{{map_item.x}}%;width:{{map_item.w}}%;height:{{map_item.h}}%;" 
+          data-data="{{map_item}}" 
+          data-type="imageAd"
+          catchtap="linkJump"
+          >
+          <btns 
+            wx:if="{{map_item.link && map_item.link.code == 'couponUrl'}}"
+            class="btn_link"
+            isLogin="{{isLogin}}"
+            tapInterval="{{3000}}"
+            bindclickcallback="linkJump"
+            data-data="{{map_item}}"
+            data-type="imageAd"
+          ></btns>
+        </view>
+      </block>
+      <!-- 旧版热点区域  -->
+      <block wx:elif="{{listGoods.poster_map && listGoods.poster_map.length > 0}}">
+        <view 
+          wx:for="{{listGoods.poster_map}}" 
+          wx:for-item="map_item" 
+          wx:for-index="map_index" 
+          wx:key="map_index" 
+          class="map_area" 
+          style="bottom:{{map_item.y}}rpx;left:{{map_item.x}}rpx;width:{{map_item.w}}rpx;height:{{map_item.h}}rpx;"
+          data-data="{{map_item}}" 
+          data-type="imageAd"
+          catchtap="linkJump"
+          >
+          <btns 
+            wx:if="{{map_item.link && map_item.link.code == 'couponUrl'}}"
+            class="btn_link"
+            isLogin="{{isLogin}}"
+            tapInterval="{{3000}}"
+            bindclickcallback="linkJump"
+            data-data="{{map_item}}"
+            data-type="imageAd"
+          ></btns>
+        </view>
+      </block>
+      <btns 
+        wx:if="{{listGoods.link && (listGoods.link.func_type == 'COUPONURL' || listGoods.link.code == 'customUrl' )}}"
+        isLogin="{{isLogin}}"
+        tapInterval="{{3000}}"
+        bindclickcallback="linkJump"
+        data-data="{{listGoods}}" 
+        data-type="imageAd"
+        position-type="absolute"
+      ></btns>
+    </image>
+    <mp-video wx:if="{{listGoods.videoSrc}}" ext-video-class="video" poster="{{listGoods.img}}" src="{{listGoods.videoSrc}}"></mp-video>
+  </view>
+</view>
+</template>

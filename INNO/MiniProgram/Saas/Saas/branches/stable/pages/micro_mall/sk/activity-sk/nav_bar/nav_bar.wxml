@@ -1,0 +1,9 @@
+<!--pages/micro_mall/sk/activity-sk/nav_bar/nav_bar.wxml-->
+<scroll-view scroll-with-animation="{{false}}" scroll-into-view="{{cur_view}}" class="scroll_box" style="" scroll-x>
+  <view class="f_box">
+    <view id="view_{{item.activityId}}" bindtap="handle_tab" class="f_item _C_333 {{cur_num==item.activityId && activityList.length>1 ?'active':''}} {{activityList.length==1?'bold':''}}"   data-ac-num="{{acNum}}" data-ac-id="{{item.activityId}}" wx:for="{{activityList}}" wx:key="activityId" wx:for-index="acNum">
+      <view style=" {{cur_num==item.activityId? 'color:' + ac_conf.theme_color + ';': ''}}" class="f_time _font_26 {{item.status.id==4?'_C_b2':''}}">{{item.activityName}}</view>
+      <view style=" {{cur_num==item.activityId? 'color:' + ac_conf.theme_color + ';': ''}}" class="f_title _font_20 _C_b2">{{item.status.name}}</view>
+    </view>
+  </view>	
+</scroll-view>

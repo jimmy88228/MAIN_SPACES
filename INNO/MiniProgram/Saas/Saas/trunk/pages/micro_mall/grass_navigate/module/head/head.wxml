@@ -1,0 +1,41 @@
+
+<view class="head_area">
+  <view class="area_l">
+    <view  class="operate_item" catchtap="changeStyle">
+      <image class="o_icon" src="{{styles[styleType].url}}" mode="aspectFit" />
+      <view class="o_txt">{{styles[styleType].txt}}</view>
+    </view>
+    <view class="operate_item" catchtap="filtrate">
+      <image class="o_icon" src="{{sort}}" mode="aspectFit" />
+      <view class="o_txt" >{{sortData.txt}}</view>
+    </view>
+  </view>
+  <view class="area_r " >
+    <view class="search_stay " catchtap='handle_focus'>
+      <view class="act_search {{(current_focus || search_value)  ? 'searching' : ''}}">
+        <image data-value-type="search_value"  class='img_search' src="{{search_gray}}" mode='aspectFit'></image>
+        <view class="search_txt" hidden="{{current_focus || search_value}}">搜索...</view>
+        <input  
+        hidden="{{!current_focus && !search_value}}"
+        bindconfirm='handle_confirm' 
+        bindfocus='handle_focus' 
+        bindblur="handle_blur" 
+        focus='{{current_focus}}' 
+        class='search_input' 
+        bindinput='handle_input' 
+        placeholder-class='placeholderStyle' 
+        placeholder='请输入关键字' 
+        value='{{search_value}}' 
+        data-value-type="search_value" />
+      </view>
+    </view>
+    <view class="publish_btn" hidden='{{current_focus || search_value}}' style="background-color: {{brand_info.style.bg_color}};">
+      <btns isLogin="{{isLogin}}" customData="{{publishData}}" bindclickcallback="jump">
+        <image class='img_publish' src="{{edit}}" mode='aspectFit'></image>
+      </btns>
+    </view>
+    <view class='cancel_btn' hidden='{{!current_focus && !search_value}}' data-type="cancel" catchtap='handle_blur'>
+      <view class='header_text bold C_7f'>取消</view>
+    </view>
+  </view>
+</view>

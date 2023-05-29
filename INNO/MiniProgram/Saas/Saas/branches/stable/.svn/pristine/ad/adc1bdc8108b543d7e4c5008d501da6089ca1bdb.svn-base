@@ -1,0 +1,106 @@
+<view class="main">
+    <scroll-view hidden='{{none}}' scroll-y class='scroll' bindscrolltolower="handle_scroll">
+        <view wx:for="{{parentsComments}}" wx:for-item="parentItem" wx:for-index="parentIndex" wx:key="id" class='comment_list_item'>
+            <view class='comment_info'>
+                <view class='comment_info_left'>
+                    <image src='{{parentItem.portrait_path || defaultAvatar}}' class="img_comment_user" mode="aspectFit"></image>
+                    <view class='comment_user'>
+                        <view class='comment_name font_20 bold mb_10'>{{parentItem.real_name}}</view>
+                        <view class='comment_time font_18 '>{{parentItem.ccomment_date}}</view>
+                    </view>
+                </view>
+                <view class='comment_like'>
+
+
+                    <!-- <view catchtap='handle_login_reply' data-level="{{parentItem.Level}}" data-name="{{parentItem.real_name}}" data-is_reply="{{parentItem.is_reply}}" data-comment-id="{{parentItem.comment_id}}" data-comment-num="{{parentIndex}}" class='font_22 recomment' style='color:{{brand_info.style.font_color}}'>
+                        <text>回复</text>
+
+                        <button hover-class='none' data-level="{{parentItem.Level}}" data-name="{{parentItem.real_name}}" data-is_reply="{{parentItem.is_reply}}" data-comment-id="{{parentItem.comment_id}}"  data-comment-num="{{parentIndex}}"  class='login_reply' open-type='getUserInfo' bindgetuserinfo='handle_login_reply' wx:if="{{!isLogin}}" ></button> 
+                    </view> -->
+                    <view class="reply_operate" style='color:{{brand_info.style.font_color}}'>
+                      <btns
+                      isLogin="{{isLogin}}"
+                      customData="{{parentItem.customData}}"
+                      bindclickcallback="handle_login_reply"
+                      >
+                      <text class="font_22 reply_operate_txt" style='color:{{brand_info.style.font_color}}'>回复</text>
+                      </btns>
+                    </view>
+
+                    <view class='comment_line'></view>
+
+
+                    <!-- <view class='comment_like_box' catchtap='handle_login_like'  data-comment-num="{{parentIndex}}"  data-id="{{parentItem.comment_id}}">
+                        <image src='{{parentItem.isSelfLike==1?grass_like_active:grass_like}}' class="img_comment_like" mode="aspectFit"></image>
+                        <view class='font_22 C_7f comment_like_num'>{{parentItem.likes}}</view>
+                        <button data-id="{{parentItem.comment_id}}"  data-comment-num="{{parentIndex}}"  hover-class='none' class='login_like' open-type='getUserInfo' bindgetuserinfo='handle_login_like' wx:if="{{!isLogin}}"></button>
+                    </view> -->
+                    <view>
+                      <btns
+                      isLogin="{{isLogin}}"
+                      customData="{{parentItem.customData}}"
+                      bindclickcallback="handle_login_like"
+                      >
+                      <view class="comment_like_box">
+                        <image src='{{parentItem.isSelfLike==1?grass_like_active:grass_like}}' class="img_comment_like" mode="aspectFit"></image>
+                        <view class='font_22 C_7f comment_like_num'>{{parentItem.likes}}</view>
+                        </view>
+                      </btns>
+                    </view>
+
+                </view>
+            </view>
+            <view class='comment_text'>
+                <view class='font_24 C000 comment_parent'>{{parentItem.comment_content}}</view>
+            </view>
+
+            <block wx:if="{{childComments[parentItem.comment_id] && childComments[parentItem.comment_id].length>0}}">
+                <!-- 大于 3 -->
+                <view class='childComments_box' wx:if="{{childComments[parentItem.comment_id].length>3}}">
+                    <block wx:if="{{childIndex<3 && !parentsComments[parentIndex].showAll}}" wx:for="{{childComments[parentItem.comment_id]}}" wx:key="id" wx:for-item="child" wx:for-index="childIndex">
+                        <view class='childComments_item font_24' catchtap='handle_focus' data-num="{{childIndex}}" data-level="{{child.Level}}" data-is_reply="{{child.is_reply}}" data-comment-id="{{child.comment_id}}" data-parents-id="{{child.parent_comment_id}}" data-name="{{child.real_name}}">
+                            <text class='font_24' style='color:{{brand_info.style.font_color}}'>{{child.real_name}}</text>
+                            <text class='mr_10 ml_10 font_26 ' style='color:{{brand_info.style.font_color}}'>:</text>
+                            <text class='font_26 break_style'>{{child.comment_content}}</text>
+                        </view>
+                    </block>
+                    <block wx:if="{{parentsComments[parentIndex].showAll}}" wx:for="{{childComments[parentItem.comment_id]}}" wx:key="id" wx:for-item="child" wx:for-index="childIndex">
+                        <view class='childComments_item font_24' catchtap='handle_focus' data-parents-id="{{child.parent_comment_id}}" data-num="{{childIndex}}" data-level="{{child.Level}}" data-is_reply="{{child.is_reply}}" data-comment-id="{{child.comment_id}}" data-name="{{child.real_name}}">
+                            <text class='font_24' style='color:{{brand_info.style.font_color}}'>{{child.real_name}}</text>
+                            <text class='mr_10 ml_10 font_26 ' style='color:{{brand_info.style.font_color}}'>:</text>
+                            <text class='font_26 break_style'>{{child.comment_content}}</text>
+                        </view>
+                    </block>
+
+                    <view catchtap='handle_showAll' data-comment-num="{{parentIndex}}" data-comment-id="{{parentItem.comment_id}}" wx:if="{{!parentsComments[parentIndex].showAll}}" style='color:{{brand_info.style.font_color}}' class='load_more font_22'>展开查看更多</view>
+                </view>
+                <!-- 小于=3 -->
+                <view class='childComments_box' wx:else>
+                    <view wx:for="{{childComments[parentItem.comment_id]}}" wx:key="id" wx:for-item="child" wx:for-index="childIndex" class='childComments_item font_24' catchtap='handle_focus' data-parents-id="{{child.parent_comment_id}}" data-num="{{childIndex}}" data-level="{{child.Level}}"
+                        data-is_reply="{{child.is_reply}}" data-comment-id="{{child.comment_id}}" data-name="{{child.real_name}}">
+                        <block>
+                            <text class='font_24' style='color:{{brand_info.style.font_color}}'>{{child.real_name}}</text>
+                            <text class='mr_10 ml_10 font_26 ' style='color:{{brand_info.style.font_color}}'>:</text>
+                            <text class='font_26 break_style'>{{child.comment_content}}</text>
+                        </block>
+                    </view>
+                </view>
+            </block>
+        </view>
+    </scroll-view>
+
+    <view hidden='{{!none}}' class='no_data_area'>暂无评论</view>
+</view>
+
+<view class='bottom_box'>
+    <input cursor-spacing="18" class='inputStyle C_333  font_24' bindconfirm='handle_confirm' bindinput="handle_input" value='{{search_value}}' data-value-type="search_value" placeholder='{{placeholder_value?placeholder_value:"说点什么吧......"}}' placeholder-class='placeholder_style'
+        focus="{{current_focus}}"></input>
+    <text catchtap='handle_confirm' class='comment_confirm bold' style='color:{{brand_info.style.font_color}};'>发表评论</text>
+</view>
+<btns
+class="bottom_button"
+isLogin="{{isLogin}}"
+wx:if="{{!isLogin}}"
+bindclickcallback="handle_login_bottom"
+></btns>
+<!-- <button class='bottom_button' hover-class='none' wx:if="{{isLogin}}" open-type='getUserInfo' bindgetuserinfo='handle_login_bottom'> </button> -->

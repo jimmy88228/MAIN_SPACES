@@ -1,0 +1,62 @@
+<!--components/micro-page/items/component/ad-swiper/swiper.wxml-->
+<import src="../template/adv-tpl.wxml" />
+<view class="main {{!isInited?'init':''}}" hidden="{{isEmpty}}">
+  <block wx:if="{{_data.type == 't1' || _data.showStyle == '1'}}">
+    <swiper class="swiper" style="height:{{swiperMsg.swiper_h}}rpx;" current="{{current}}"
+      autoplay="{{swiperData.length>1?_data.autoPlay:false}}" interval="3000" circular="{{circular}}"
+      vertical="{{vertical}}" bindchange="onChange" display-multiple-items="{{_data.row}}">
+      <block wx:for="{{swiperData}}" wx:key="index" wx:for-item="listGoods">
+        <swiper-item>
+          <template is="adv-tpl"
+            data="{{_data,listGoods,isInited,index,swiperMsg}}"></template>
+        </swiper-item>
+      </block>
+    </swiper>
+    <view class="switch_point" wx:if="{{_data.indicator != 'none'}}">
+      <text class="point {{cg_current === index ? 'active' : ''}} {{_data.indicator}}" wx:for="{{swiperData}}"
+        wx:key="index"></text>
+    </view>
+  </block>
+  <block wx:elif="{{_data.showStyle == '2'}}">
+    <scroll-view 
+      class="scroll_swiper"
+      style="height: {{swiperMsg.swiper_h}}rpx"
+      scroll-x
+      >
+      <view class="scroll_long">
+        <view
+        class="scroll_swiper_item"
+        wx:for="{{swiperData}}" 
+        wx:for-item="listGoods"
+        wx:key="index"
+        data-index="{{index}}"
+        style="{{swiperMsg.swiper_ws[index] ? 'width:' + swiperMsg.swiper_ws[index] + 'rpx' : ''}}"
+        >
+          <!-- <template is="carousel-item" data="{{listGoods: listGoods, index: index, isLogin: isLogin, img_url: img_url}}"/> -->
+          <template is="adv-tpl" data="{{_data,listGoods,isInited,index,swiperMsg}}"></template>
+        </view>
+      </view>
+    </scroll-view>
+  </block>
+  <block wx:elif="{{_data.showStyle == '3'}}">
+    <view 
+      class="float_swiper"
+      data-current="{{swiper_current}}"
+      bindtouchstart="swiperTouchS"
+      bindtouchend="swiperTouchE"
+      style="height:{{swiperMsg.swiper_h}}rpx"
+      >
+        <view
+        class="float_swiper_item"
+        wx:for="{{swiperData}}" 
+        wx:for-item="listGoods"
+        data-index="{{index}}"
+        style="{{styleList[index].style}}"
+        wx:key="index"
+        >
+          <!-- <template is="carousel-item" data="{{listGoods: listGoods, index: index, isLogin: isLogin, img_url: img_url}}"/> -->
+          <template is="adv-tpl" data="{{_data,listGoods,isInited,index,swiperMsg}}"></template>
+        </view>
+      </view>
+  </block> 
+</view>

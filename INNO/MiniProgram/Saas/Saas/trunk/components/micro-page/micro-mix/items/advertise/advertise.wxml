@@ -1,0 +1,34 @@
+<!--components/micro-page/items/advertise/advertise.wxml-->
+<wxs module="dfCss" src="../../../help/defaultCss.wxs"></wxs>
+<import src="../component/template/adv-tpl.wxml"/>
+<view class="main {{!isInited?'init':''}}" id="main" data-module-id="{{_data.moduleId}}" style="{{dfCss.getDfCss(_data,screenWidth)}}">
+  <group-head bindonTap="onTap" group="{{_data.imagesGroup}}" show-tab="{{showTab}}" cur-tab="{{curTab}}">
+    <block wx:if="{{_data.code == 'userCard'}}">
+      <!-- 会员卡 -->
+      <view class="list warp">
+        <block wx:for="{{_data.imagesGroup[isLogin?0:1].images}}" wx:key="index">
+          <template is="adv-tpl" data="{{_data:_data,listGoods:item,isInited:isInited,index,isLogin}}"></template>
+        </block>
+      </view>
+    </block>
+    <block wx:elif="{{_data.type == 't1'}}">
+    <!-- 静态图 -->
+      <block wx:if="{{_data.open_slide}}">
+        <!-- 左右滑动(轮播) -->
+        <swiper-mod id="swiperId" dt="{{_data}}" isInited="{{isInited}}"></swiper-mod>
+      </block>
+      <block wx:else>
+      <!-- 普通布局 -->
+        <view class="list warp">
+          <block wx:for="{{_data.imagesGroup[curTab].images}}" wx:key="index">
+            <template is="adv-tpl" data="{{_data:_data,listGoods:item,isInited:isInited,index,isLogin}}"></template>
+          </block>
+        </view>
+      </block>
+    </block>
+    <block wx:elif="{{_data.type == 't2'}}">
+    <!-- 轮播图 -->
+      <swiper-mod id="swiperId" dt="{{_data}}" isInited="{{isInited}}"></swiper-mod>
+    </block>
+  </group-head>
+</view>

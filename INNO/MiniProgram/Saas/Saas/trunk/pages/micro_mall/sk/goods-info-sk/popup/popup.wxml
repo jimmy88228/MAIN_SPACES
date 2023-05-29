@@ -1,0 +1,111 @@
+<!-- <window class="window" ext-class="window-ext">  
+   <view class="dialog-content" catchtouchmove="_noFn" style="{{boxStyle}}"> -->
+  <view class="dialog-content {{isIphoneX?'dialog-content-ipX':''}}">
+    <view class="spec_msg_box">
+      <view class="dialog-header">
+        <view class="img_goods_box"><image class="img_goods" src="{{picture}}" mode="aspectFit"></image></view>
+        <view class="dialog-header-right">
+          <block wx:if="{{productInfo.productId}}">
+            <view class="header-top">
+              <view style="color:{{ac_conf.theme_color}}" class="txt-price unit bold _v_b">{{productInfo.price}}</view>
+              <block wx:if="{{productInfo.price != productInfo.marketPrice}}">
+                <text class="txt-old-price bold _v_b" style="margin-left:10rpx;">¥{{productInfo.marketPrice}}</text>
+              </block>
+            </view>
+            <!-- <text class="txt-bottom">商品款号：{{productInfo.sku}}</text>  -->
+            <!-- <text class="txt-bottom">库存:{{productInfo.inventoryRemnant}}</text> -->
+            <view class="txt-bottom tip"><block>已选</block><text class="_p_r_14"></text><block>{{productInfo.colorName || ""}}</block><text class="_p_r_10" wx:if="{{productInfo.sizeName}}"></text><block>{{productInfo.sizeName || ""}}</block></view>
+          </block>
+          <view class="header-top" wx:else>
+            <view style="color:{{ac_conf.theme_color}}" class="txt-price unit bold _v_b">{{goodsTotalInfo.minPrice}}</view>
+            <block wx:if="{{goodsTotalInfo.minPrice != goodsTotalInfo.maxPrice}}">
+              <text class="_p_5 bold char _v_b" style="color:{{ac_conf.theme_color}}">-</text>
+              <view style="color:{{ac_conf.theme_color}}" class="txt-price unit bold _v_b">{{goodsTotalInfo.maxPrice}}</view>
+            </block>
+            <block wx:if="{{((goodsTotalInfo.minPrice != goodsTotalInfo.minMarketPrice) || (goodsTotalInfo.maxPrice != goodsTotalInfo.maxMarketPrice))}}">
+              <text class="txt-old-price bold _v_b" style="margin-left:10rpx;">¥{{goodsTotalInfo.minMarketPrice}}</text>
+              <text wx:if="{{goodsTotalInfo.maxMarketPrice != goodsTotalInfo.minMarketPrice}}" class="txt-old-price _pre bold _v_b"> - ¥{{goodsTotalInfo.maxMarketPrice}}</text>
+            </block>
+            <!-- <view class="txt-bottom" style="margin-left:0">库存:--</view> -->
+            <view class="txt-bottom" style="padding-left:0"><text class="_p_r_14">请选择</text><text>{{goodsExtend.size_name_title || "规格二"}}</text></view>
+          </view>
+        </view>
+      </view>
+    </view>
+
+    <view class="spec_scroll_box">
+      <scroll-view class="dialog-scroll" scroll-y>
+        <view class="select-container">
+          <text class="select-txt-title">{{goodsExtend.color_name_title || "规格一"}}</text>
+          <view class="color-container">
+            <block wx:for="{{colorArr}}" wx:key="index" wx:for-item="colorItem">
+              <!-- <view 
+                class="size" 
+                style="{{colorItem.colorId == cur_color_id? 'color:' + ac_conf.theme_color + ';border-color:' + ac_conf.theme_color:''}}" 
+                data-invent="{{goodsExtend.attrCount == 1 ? colorObj[colorItem.colorId].inventoryRemnant : colorObj[colorItem.colorId].sizeList[cur_size_id].inventoryRemnant}}" 
+                catchtap="colorSelect" 
+                data-color_id="{{colorItem.colorId}}"
+              > -->
+              <button 
+                class="size" 
+                hover-class="none"
+                style="{{colorItem.colorId == cur_color_id? 'color:' + ac_conf.theme_color + ';border-color:' + ac_conf.theme_color:''}}" 
+                data-invent="{{colorObj[colorItem.colorId].sizeList[cur_size_id].inventoryRemnant}}" 
+                catchtap="colorSelect" 
+                disabled="{{sizeObj[cur_size_id].colorList[colorItem.colorId].inventoryRemnant<=0}}"
+                data-color_id="{{colorItem.colorId}}">{{colorItem.colorName}}</button>
+            </block>
+          </view>
+        </view>
+        <view class="select-container" wx:if="{{goodsExtend.attrCount == 2}}">
+          <text class="select-txt-title">{{goodsExtend.size_name_title || "规格二"}}</text>
+          <view class="size-container">
+            <block wx:for="{{sizeArr}}" wx:key="index" wx:for-item="sizeItem">
+              <button 
+                class="size" 
+                hover-class="none"
+                style="{{sizeItem.sizeId == cur_size_id? 'color:' + ac_conf.theme_color + ';border-color:' + ac_conf.theme_color:''}}" 
+                catchtap="sizeSelect" 
+                disabled="{{colorObj[cur_color_id].sizeList[sizeItem.sizeId].inventoryRemnant<=0}}"
+                data-invent="{{colorObj[cur_color_id].sizeList[sizeItem.sizeId].inventoryRemnant}}" 
+                data-size_id="{{sizeItem.sizeId}}">{{sizeItem.sizeName}}</button>
+            </block>
+          </view>
+        </view> 
+      </scroll-view>
+      <!--选择配送方式-->
+      <view class="shipping_list">
+        <view class="shipping_item" data-index="2" bindtap="onTap" data-type="shipSelect" wx:if="{{goodsExtend.selfGet == 0 || goodsExtend.selfGet == 2}}">
+          <view class="select_radio">
+            <image src="{{ls_icon2}}" class="radio_select" mode="aspectFit" wx:if="{{selectShipInfo.selectIndex == 2 || goodsExtend.selfGet == 2}}" />
+            <image src="{{ls_icon1}}" class="radio_select " mode="aspectFit" wx:else />
+          </view>
+          <text class="">快递配送</text>
+        </view>
+        <view class="shipping_item" data-index="1" bindtap="onTap" data-type="{{selectShipInfo.id?'shipSelect':'selectStore'}}" wx:if="{{goodsExtend.selfGet == 0 || goodsExtend.selfGet == 1}}">
+          <view>
+            <view class="store_select_cont">
+              <view class="select_radio">
+                <image src="{{ls_icon2}}" class="radio_select" mode="aspectFit" wx:if="{{selectShipInfo.selectIndex == 1}}" />
+                <image src="{{ls_icon1}}" class="radio_select " mode="aspectFit" wx:else />
+              </view>
+              <text>门店自提</text>
+              <button hover-class="none" class="store_select_btn" data-index="1" data-type="selectStore" catchtap="onTap">前往选择店铺<text class="store_arrow"></text></button>
+            </view>
+            <view class="font_22 C_aaa select_store_name" wx:if="{{selectShipInfo.id}}">{{selectShipInfo.name}}</view>
+          </view>
+        </view>
+      </view>
+
+      <sizeChart wx:if="{{dimensionPlanInfo.isSpecShowSizeImg}}" id="sizeChart" size_img1="{{dimensionPlanInfo.Size_Img1}}" size_img2="{{dimensionPlanInfo.Size_Img2}}" showTip="{{false}}"></sizeChart>
+    </view>
+
+    <form class="goods-size-form" bindsubmit="formAction" report-submit="true">
+      <view class="btn_box {{isIphoneX?'ip_x_bottom':''}}">
+        <button wx:if="{{productInfo.akId && productInfo.inventoryRemnant<=0}}" hover-class="none" style="background:#b2b2b2;" class="btn-bottom" form-type="submit">售罄</button>
+        <button wx:elif="{{canBuy}}" bindtap="skuConfirm" hover-class="none" style="background:{{ac_conf.theme_color}}" class="btn-bottom" form-type="submit">立即秒杀</button>
+        <button wx:else hover-class="none" style="background:{{ac_conf.theme_color}};color:#FD8253;" class="btn-bottom" form-type="submit">立即秒杀</button>
+      </view>
+    </form>
+  </view>
+<!--</window> -->

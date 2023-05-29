@@ -1,0 +1,35 @@
+.wxParse-ol>.wxParse-li{
+  counter-increment: item;
+}
+.wxParse-ol>.wxParse-li>.wxParse-li-inner{
+  display: inline-flex;
+  line-height: 1em;
+  height: 1em;
+}
+.wxParse-ol .wxParse-li-circle::before{
+  display: inline;
+}
+.wxParse-ol[style*="lower-roman"] .wxParse-li-circle::before{
+  content: counter(item, lower-roman) '.';
+}
+.wxParse-ol[style*="upper-roman"] .wxParse-li-circle::before{
+  content: counter(item, upper-roman) '.';
+}
+.wxParse-ol[style*="upper-alpha"] .wxParse-li-circle::before{
+  content: counter(item, upper-alpha) '.';
+}
+.wxParse-ol[style*="lower-alpha"] .wxParse-li-circle::before{
+  content: counter(item, lower-alpha) '.';
+}
+.wxParse-ol[style*="decimal"] .wxParse-li-circle::before{
+  content: counter(item, decimal) '.';
+}
+.wxParse-ul[style*="disc"] .wxParse-li-circle::before{
+  content: counter(item, disc) '.';
+}
+.wxParse-ul[style*="circle"] .wxParse-li-circle::before{
+  content: counter(item, circle) '.';
+}
+.wxParse-ul[style*="square"] .wxParse-li-circle::before{
+  content: counter(item, square) '.';
+}

@@ -1,0 +1,5 @@
+@import '../component/template/gds-list-css.wxss';
+
+.main {
+  background-color: #fafafa;
+}

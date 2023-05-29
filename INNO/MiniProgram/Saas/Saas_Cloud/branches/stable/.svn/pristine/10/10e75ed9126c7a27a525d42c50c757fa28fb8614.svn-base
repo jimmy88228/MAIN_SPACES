@@ -1,0 +1,5 @@
+<view class="alignment_container" style="{{customStyle}}{{levelStyle}}">
+  <slot name="share"></slot>
+  <slot name="home"></slot>
+  <slot name="backTop"></slot>
+</view>

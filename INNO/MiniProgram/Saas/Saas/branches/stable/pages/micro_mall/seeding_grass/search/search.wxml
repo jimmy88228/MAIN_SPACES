@@ -1,0 +1,14 @@
+<view class="search_area">
+    <form bindsubmit="formAction" report-submit="true">
+        <view class="_search" style="border:1px solid {{brand_info.style.bg_color}};">
+            <button class="search_btn" hover-class='none' catchtap="search">
+                <image src="{{brand_info.icon_url + 'micro_mall/search_gray.png'}}" mode="aspectFit" />
+            </button>
+            <input type="text" data-key="strWhere" class="search_input" bindinput="syncInput" value="{{strWhere}}" bindconfirm="search" placeholder='输入关键字搜索' />
+            <button class="search_btn_right" data-key="strWhere" hidden='{{!strWhere}}' hover-class='none' catchtap="cancel">
+                <image src="{{brand_info.icon_url + 'micro_mall/comment_edit/remove_btn_icon.png'}}" mode="aspectFit" />
+            </button>
+        </view>
+    </form>
+</view>
+<view class="search_stay"></view>

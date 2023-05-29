@@ -1,0 +1,115 @@
+<wxs src="./advertise.wxs" module="f" />
+<form bindsubmit="formAction" report-submit="true" class="intersection_observe">
+  <block wx:if="{{m_item.length>5}}">
+    <carousel 
+      multiple="{{max_multiple}}" 
+      duration="2000" 
+      isLogin="{{isLogin}}" 
+      m_item="{{m_item}}" 
+      m_index="{{m_index}}" 
+      img_url="{{img_url}}"></carousel>
+  </block>
+  <block wx:else>
+    <view class="ad_module {{!m_data[0].module_id ? 'mb_10':''}}">
+      <view 
+      style="{{!m_data[0].module_id ? 'height:200rpx;' : ''}}" 
+      class="{{!m_data[0].module_id ? 'initStyle' : ''}} ad_box" 
+      wx:for="{{m_data}}" 
+      wx:for-item="a_item" 
+      wx:for-index="a_index" 
+      wx:key="a_index">
+        <image  
+          wx:if="{{a_item.func_type != 'VIDEO'}}"
+          lazy-load="{{true}}"
+          src="{{a_item.img_path?img_url + a_item.img_path:''}}"
+          mode="widthFix"
+          class="ad_img"
+          bindtap="goLink"
+          bindlongpress="noAction"
+          data-func_type="{{a_item.func_type}}"
+          data-related_id="{{a_item.related_id}}"
+          data-tag="{{a_item.tag}}"
+          data-goods_id="{{a_item.goods_id}}"
+          data-page_id="{{a_item.page_id}}"
+          data-index="{{a_index}}"
+          data-custom-data="{{a_item.customData}}"
+          data-extend_contentd="{{a_item.extend_contentd}}"
+          show-menu-by-longpress />
+        <block wx:if="{{a_item.func_type == 'VIDEO'}}">
+          <view class="videoContentBox" style="{{videoSizeObj['video_' + a_index] ? 'height:'+videoSizeObj['video_' + a_index].height+'rpx': ''}}">
+            <video 
+            poster="{{a_item.img_path?img_url + a_item.img_path:''}}" 
+            bindplay="videoAction"
+            bindpause="videoAction"
+            bindended="videoAction"
+            enable-play-gesture="{{true}}"
+            data-func_type="{{a_item.func_type}}"
+            data-related_id="{{a_item.related_id}}"
+            data-tag="{{a_item.tag}}"
+            data-goods_id="{{a_item.goods_id}}"
+            data-page_id="{{a_item.page_id}}"
+            data-index="{{a_index}}"
+            id="video_{{a_index}}" 
+            class='videoBox'
+            style="{{videoSizeObj['video_' + a_index] ? 'height:'+videoSizeObj['video_' + a_index].height+'rpx': ''}}"
+            src='{{brand_info.videoUrl}}{{a_item.link_url}}' 
+            direction='0'  ></video>
+            <view class="videoPoster" wx:if="{{needResetVideo['video_' + a_index]}}" 
+              data-func_type="{{a_item.func_type}}"
+              data-related_id="{{a_item.related_id}}"
+              data-tag="{{a_item.tag}}"
+              data-goods_id="{{a_item.goods_id}}"
+              data-page_id="{{a_item.page_id}}"
+              data-index="{{a_index}}"
+              data-type="play"
+              data-id="video_{{a_index}}" 
+              catchtap="videoAction"
+              >
+              <image class="img_v_bg" lazy-load="{{true}}" src="{{img_url + a_item.img_path}}"></image>
+              <image class="img_play" lazy-load="{{true}}" src="{{brand_info.default_icon_url + 'playIcon.png'}}" mode="aspectFit"></image>
+            </view>
+          </view>
+        </block>
+        <!--热点区域-->
+        <block wx:elif="{{a_item.func_type == 'RD'}}">
+          <view 
+          class="map_area" 
+          style="top:{{map_item.y}}%;left:{{map_item.x}}%;width:{{map_item.w}}%;height:{{map_item.h}}%;" 
+          wx:for="{{a_item.map_data}}" 
+          wx:for-item="map_item" 
+          wx:for-index="map_index" 
+          wx:key="map_index" 
+          show-mute-btn="{{true}}"
+          data-func_type="{{map_item.func_id}}" 
+          data-related_id="{{map_item.f_child_id}}"
+          data-extent_id="{{map_item.extent_id}}"
+          data-applet_path="{{map_item.url}}"
+          data-page_id="{{a_item.page_id}}"
+          catchtap="{{f.checkIfNeedLogin(map_item) ? '' : 'goLink'}}"
+          data-tag="{{map_item.rd_tag}}"
+          >
+            <btns 
+            wx:if="{{f.checkIfNeedLogin(map_item)}}"
+            class="btn_link"
+            customData="{{map_item.customData}}" 
+            isLogin="{{isLogin}}"
+            tapInterval="{{3000}}"
+            bindclickcallback="goLink"
+            ></btns>
+          </view>
+        </block>
+        <!--按钮-->
+        <block wx:elif="{{f.checkIfNeedLogin(a_item)}}">
+          <btns
+          class="btn_link" 
+          customData="{{a_item.customData}}" 
+          isNormal="{{!f.checkIfNeedLogin(a_item)}}" 
+          isLogin="{{isLogin}}"
+          tapInterval="{{3000}}"
+          bindclickcallback="goLink"
+          ></btns>
+        </block>
+      </view>
+    </view>
+  </block>
+</form>

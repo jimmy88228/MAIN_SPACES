@@ -1,0 +1,132 @@
+page {
+    height: 100%;
+    background: #fff;
+}
+
+.main {
+    padding: 0 10rpx;
+    width: 100%;
+    box-sizing: border-box;
+    height: 100%;
+}
+
+.header {
+    /* width: 690rpx;
+    box-sizing: border-box;
+    margin: 0 20rpx;
+    display: flex;
+    align-items: center;
+    height: 60rpx;
+    border: 1px solid rgba(227, 227, 227, 1);
+    margin-bottom: 10rpx;
+    border-radius: 30rpx; */
+}
+
+.img_search {
+    width: 29rpx;
+    height: 29rpx;
+    margin: 0 15rpx 0 25rpx;
+}
+
+.input {
+    width: 610rpx;
+    height: 56rpx;
+    display: inline-block;
+    font-size: 24rpx;
+    box-sizing: border-box;
+    color: #333;
+}
+
+.placeholder_style {
+    color: rgba(51, 51, 51, 0.5);
+    font-size: 24rpx;
+}
+
+.scroll {
+    height: calc(100% - 170rpx);
+    width: 100%;
+}
+
+.data_list_box {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+}
+
+.data_list_item {
+    width: 360rpx;
+    position: relative;
+    margin-bottom: 30rpx;
+}
+
+.img_goods_box {
+    width: 100%;
+    height: 360rpx;
+    position: relative;
+}
+
+.img_goods {
+    width: 360rpx;
+    height: 360rpx;
+}
+
+.img_selected {
+    width: 36rpx;
+    height: 36rpx;
+    position: absolute;
+    padding: 20rpx 16rpx 20rpx 20rpx;
+    top: 0;
+    right: 0;
+}
+
+.fix_bottom {
+    width: 100%;
+    height: 100rpx;
+    background: rgba(255, 255, 255, 1);
+    box-shadow: 0px 0px 10px 0px rgba(205, 113, 143, 0.1);
+    box-sizing: border-box;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+}
+
+.button_confirm {
+    width: 160rpx;
+    height: 76rpx;
+    border-radius: 4rpx;
+    color: #fff;
+    display: inline-flex;
+}
+
+.fix_bottom_box {
+    position: relative;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    padding: 12rpx;
+    padding-left: 25rpx;
+    box-sizing: border-box;
+    display: inline-flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.list_text_title {
+    line-height: 22rpx;
+    padding: 23rpx 0 16rpx 0;
+}
+
+.list_text_price {
+    line-height: 28rpx;
+    padding-bottom: 10rpx;
+}
+
+.list_text_market {
+    text-decoration: line-through;
+    line-height: 22rpx;
+    padding-bottom: 23rpx;
+    color: rgba(84, 84, 84, 0.5);
+}

@@ -1,0 +1,36 @@
+<!--pages/micro_mall/sk/invited-sk/invited-sk.wxml-->
+<window class="window" ext-class="window-ext">
+  <view class="main" style="{{boxStyle}}" catchtouchmove="_noFn">
+    <view class="invited_box">
+      <view class="close" catchtap="close">
+        <view class="row line"></view>
+        <view class="column line"></view>
+      </view>
+      <image src="{{target.avatarUrl || defaultAvatar}}" class="i_img_head" mode="aspectFit"></image>
+      <block wx:if="{{target.isComplete == 1}}">
+        <view class="i_title bold"><view>{{target.userName}}已成功获得了</view><view>本场的秒杀资格</view></view>
+      </block>
+      <block wx:elif="{{target.isHelped == 1}}">
+        <view class="i_title bold"><view>{{target.userName}}已收到你的助力</view></view>
+        <view class="i_t_tip">{{ac_info.tipTime}}准时开抢</view>
+      </block>
+      <block wx:else>
+        <view class="i_title bold"><view>帮{{target.userName}}助力</view><view>为TA获得本场获得资格</view></view>
+      </block>
+      <view class="progress" hidden="{{target.isComplete == 1}}">
+        <progress_bar id="progress_bar" show-tran="{{true}}" tip="{{target.now>0? '已邀请' + target.now + '位':''}}" percent="{{target.percent||0}}" show-circle="{{true}}">
+            <view class="pro_tips" slot="start">需要{{target.target || ac_info.shareCondition}}位好友助力</view>
+            <view class="pro_tips" slot="end">获得资格</view>
+        </progress_bar>
+      </view>
+      <block>
+        <view class="_btn_ac {{target.isComplete == 1?'_m_t':''}}" style="background:linear-gradient(to right,{{ac_conf.to_color}},{{ac_conf.from_color}});">
+          <btns is-normal="{{true}}" wx:if="{{target.isHelped == 1 || target.isComplete == 1}}"  bindclickcallback="helpCallBack">
+            <view>我也要参与</view>
+          </btns>
+          <btns wx:else isLogin="{{isLogin}}" bindclickcallback="helpCallBack"><view>帮TA助力</view></btns>
+        </view> 
+      </block>  
+    </view>
+  </view> 
+</window>

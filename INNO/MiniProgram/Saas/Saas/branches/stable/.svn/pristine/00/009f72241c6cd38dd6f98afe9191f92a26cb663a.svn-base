@@ -1,0 +1,98 @@
+/* pages/micro_mall/buyBonus/getBonusActivitList.wxss */
+.get_bonus_activity_list_page{
+  padding:0px 13rpx;
+}
+.bonus_activity_head{
+  padding:0px 10rpx;
+}
+.bonus_activity_head .table_cell{
+  height:76rpx;
+}
+.check_bug_code{
+  width: 100%;
+  height: 100%; 
+  display: inline-flex;
+  justify-content: flex-end;
+  align-items: center; 
+}
+.activity_img_cell{
+  width:264rpx;
+}
+.bonus_activity_img_area{
+  width:264rpx;
+}
+.bonus_activity_img_area_stay{
+  width:100%;
+  padding-top:100%;
+  height:0px;
+  overflow:hidden;
+  position:relative;
+}
+.bonus_activity_img{
+  position:absolute;
+  top:50%;
+  left:50%;
+  transform:translate(-50%,-50%);
+  -ms-transform:translate(-50%,-50%); 
+  -moz-transform:translate(-50%,-50%); 
+  -webkit-transform:translate(-50%,-50%);
+  -o-transform:translate(-50%,-50%);
+  display:block;
+  width:100%;
+}
+.bonus_activity_info{
+  padding:7rpx 0px;
+  padding-left:29rpx;
+  width: 388rpx;
+  min-height: 264rpx;
+}
+.activity_name{
+  margin-bottom:25rpx;
+}
+.limit_buy_tip{
+  margin-left:10rpx;
+  padding:0rpx 7rpx;
+}
+.bonus_count{
+  margin-bottom:15rpx;
+}
+.bonus_sale_count{
+  display:inline-block;
+  padding:0px 5rpx;
+  border-radius:6rpx;
+  border:1px solid #efefef;
+  color:#efefef;
+  line-height:30rpx;
+  height:30rpx;
+  font-size:22rpx;
+}
+.bonus_price{
+  position:absolute;
+  bottom:7rpx;
+  left:29rpx;
+}
+.bonus_activity_btn{
+  position: absolute;
+  right: 0px;
+  bottom: 0px;
+  line-height: 36rpx;
+  min-width: 150rpx;
+  min-height: 60rpx;
+}
+.bonus_activity_btn .btn_buy{
+  color: #fff; 
+  border-radius:60rpx;
+}
+.main_box{
+  display: flex;
+  width: 100%;
+  box-sizing: border-box;
+  border:1px solid #e6e6e6;
+  border-radius:10rpx;
+  padding:20rpx;
+  margin-bottom:20rpx;
+  background:#fff;
+}
+.bonus_name_list{
+  padding-bottom: 76rpx;
+}

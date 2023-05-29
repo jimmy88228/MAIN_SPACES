@@ -1,0 +1,106 @@
+<view class='head_box'>
+    <view class='input_box1'>
+        <input wx:if="{{showInput}}" class='input' focus="{{showInput}}" bindblur="handleTap" bindinput='handleInput' bindconfirm='handleConfirm' type='text'></input>
+        <!-- <image src='{{team_search}}' catchtap='handleConfirm' class='img_search' mode='aspectFit'></image> -->
+        <block wx:else>
+            <view class="input _flex" catchtap="onTap" data-type="i_click">
+                <image src='{{team_search}}' class='img_search' mode='aspectFit'></image>
+                <view class="" style="color: rgba(129, 129, 129, 0.5);">搜索粉丝</view>
+            </view>
+        </block>
+    </view>
+    <view class='head_content'>
+        <view class='head_item' wx:for="{{infoTabs}}" wx:key="index">
+            <view class='head_value1'>
+                <text class='head_num' style='{{index==0?"":"color:#FF3400;"}}'>
+                    <block wx:if="{{index==0}}">{{detail_info.teams||0}}</block>
+                    <block wx:if="{{index==1}}">{{detail_info.directFans||0}}</block>
+                    <block wx:if="{{index==2}}">{{detail_info.subordinates||0}}</block>
+                    <block wx:if="{{index==3}}">{{detail_info.indirectFans||0}}</block>
+                </text>
+            </view>
+            <view class='head_value2' catchtap="{{index!=0?'onTap':''}}" data-type="tips" data-index="{{index}}">
+                <view>{{item.name}}</view>
+                <block wx:if="{{index!=0}}">
+                    <view class="tips"></view>
+                    <view wx:if="{{item.showTip}}" style="{{showAnim?'opacity:1;':''}}" class="tips_show {{index==3?'last_tip':''}}">
+                        {{index==1?label[0]:index==2?label[1]:index==3?label[2]:""}}
+                    </view>
+                    <view class="tipBg" catchtap="onTap" data-type="tips" data-index="{{index}}"></view>
+                </block>
+            </view>
+            <view class='border_right' wx:if="{{index==0}}"></view>
+        </view>
+    </view>
+</view>
+<view class='tab_box'>
+    <view wx:for="{{tabs}}" wx:for-index="indexNum" wx:key="id1" class='tab_item {{current==indexNum?"bold":""}}' catchtap='handleTab' data-type="{{indexNum}}" style='{{current==indexNum?"color:#000;":""}}'>
+        <text>{{item}}</text>
+        <view wx:if="{{current==indexNum}}" class="tab_line"></view>
+    </view>
+    <!-- <view class='line' style='background:{{brand_info.style.bg_color}};left:{{leftWidth}}'></view> -->
+</view>
+<view class='scroll_tabs' >
+    <view class='title'>
+        <view class='flex'>粉丝信息</view>
+        <view class='flex Small'>绑定时间</view>
+        <view class='flex'>会员等级</view>
+        <view class='flex Large' catchtap="onTap" data-type="amount">
+            <text>累积收益</text>
+            <view class="arrow_box">
+                <view class="arrow_top" style="border-bottom-color:{{cur_index==1?'#FF3400;':'#D8D8D8;'}}"></view>
+                <view class="arrow_down" style="border-top-color:{{cur_index==2?'#FF3400;':'#D8D8D8;'}}"></view>
+            </view>
+        </view>
+    </view>
+    <scroll-view  hidden='{{none[current]}}' class='scroll_box' bindscrolltolower="handleScroll" scroll-y>
+        <view class='content {{item.protectMinutes<0?"releaseBg":""}}' wx:for="{{list[current]}}" wx:key="key" data-name="{{item.realName}}" data-rank="{{item.rankName}}" data-last="{{item.lastClickTime}}" data-join-time="{{item.joinTime}}" data-comm-amount="{{item.commAmount}}" data-phone="{{item.mobilePhone}}" catchtap='showDetail'>
+            <view class='user flex'><view class="text-flow">{{item.realName}}</view><view class="_f_22" wx:if="{{item.protectMinutes>0}}" style="color:#FF3400;">{{item.timeStr}}</view> <view class="_f_22" wx:elif="{{item.protectMinutes<0}}" style="color:rgba(194,194,194,1);">已过保护期</view></view>
+            <view class='time_box Small'>
+                <view class='date'>{{item.date1}}</view>
+                <view class='time'>{{item.date2}}</view>
+            </view>
+            <view class='flex'>{{item.rankName}}</view>
+            <view class='flex price_box Large' >
+                <view class='min_box'>
+                    <text>¥{{item.commAmount}}</text>
+                </view>
+                <image src="{{staff_right}}" mode='widthFix' class='img'></image>
+                <button class="btn_link" hover-class="none" data-user-id="{{item.userId}}" catchtap="orderJump"></button>
+            </view>
+
+        </view>
+    </scroll-view>
+    <view class='none' hidden='{{!none[current]}}'>没有找到任何结果</view> 
+    <view class='date_box {{filter?"isShow":"isHide"}}'>
+        <view class='content_box box_title'>
+            <view class='left'>{{current==0?"粉丝详情":""}}{{current==1?"我的下级":""}}</view>
+            <view class='right'></view>
+        </view>
+        <view class='content_box'>
+            <view class='left'>昵称</view>
+            <view class='right text-flow'>{{name}}</view>
+        </view>
+        <view class='content_box'>
+            <view class='left'>累积收益</view>
+            <view class='right'>¥{{commAmount}}</view>
+        </view>
+        <view class='content_box'>
+            <view class='left'>用户等级</view>
+            <view class='right'>{{rank}}</view>
+        </view>
+        <view class='content_box'>
+            <view class='left'>最后点击</view>
+            <view class='right'>{{last}}</view>
+        </view>
+        <view class='content_box'>
+            <view class='left'>加入时间</view>
+            <view class='right'>{{joinTime}}</view>
+        </view>
+        <view class='content_box'>
+            <view class='left'>手机</view>
+            <view class='right'>{{mobilePhone}}</view>
+        </view>
+    </view>
+</view> 
+<view class='black_bg {{filter?"isShow":"isHide"}}' catchtap='showDetail'></view>

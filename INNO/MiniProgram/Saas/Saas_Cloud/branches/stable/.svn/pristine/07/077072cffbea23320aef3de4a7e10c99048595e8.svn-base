@@ -1,0 +1,265 @@
+page {
+    height: 100%;
+    background: #efefef;
+}
+
+.scroll_tabs {
+    height: calc(100%);
+}
+
+.scroll_box {
+    height: calc(100% - 66rpx);
+}
+
+.title {
+    font-size: 26rpx;
+    width: 100%;
+    height: 66rpx;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align:center;
+}
+
+.flex {
+    /* display: inline-flex;
+    align-items: center;
+    height: 100%;
+    width: 25%;
+    justify-content: center;*/
+    position:relative; 
+    flex: 1;
+}
+.flex.Small,.time_box.Small{
+     width:20%;
+}
+.flex.Large{
+     width:30%;
+}
+.content {
+    width: 100%;
+    height: 130rpx;
+    display: flex;
+    align-items: center;
+    border-bottom: 1px solid rgba(223, 223, 223, 1);
+    position: relative;
+    background:#fff;
+    text-align:center;
+    justify-content: center;
+}
+.content:last-child{
+    border-bottom: 0;
+}
+.time_box {
+    display: flex;
+    width: 25%;
+    height: 100%;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+.flex.price_box{
+    /* justify-content:flex-start; */
+/* padding-left:32rpx; */
+/* box-sizing:border-box; */
+
+}
+.img {
+    width: 12rpx;
+    position:absolute;
+    top:50%;
+    right:20rpx;
+    transform: translateY(-50%);
+}
+
+.black_bg {
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    position: fixed;
+    z-index: 11;
+    background: rgba(0, 0, 0, 0.7);
+    display: none;
+}
+
+.black_bg.isShow {
+    display: block;
+}
+
+.date_box {
+    padding: 0 30rpx;
+    box-sizing: border-box;
+    position: fixed;
+    bottom: 0px;
+    left: 25rpx;
+    width: 700rpx;
+    background: #fff;
+    transform: translateY(100%);
+    z-index: 111;
+    transition: all 0.4s;
+    background: rgba(255, 255, 255, 1);
+    border-radius: 16rpx;
+}
+
+.date_box.isShow {
+    transform: translateY(-25rpx);
+}
+
+.content_box {
+    width: 100%;
+    height: 90rpx;
+    box-sizing: border-box;
+    position: relative;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 26rpx;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.content_box.box_title {
+    height: 110rpx;
+    font-size: 28rpx;
+}
+.left{
+    color: #7f7f7f;
+}
+.none {
+    height: calc(100% - 100rpx);
+    color: #7f7f7f;
+    display: flex;
+    justify-content: center;
+    padding-top: 320rpx;
+    box-sizing: border-box;
+}
+
+.head_box {
+    width: 100%;
+    box-sizing: border-box;
+    padding: 13rpx 20rpx;
+}
+
+.input_box1 {
+    box-sizing: border-box;
+    width: 100%;
+    border-radius: 27rpx;
+    border: 2rpx solid rgba(239, 239, 239, 1);
+    height: 58rpx;
+    background: #fff;
+    position: relative;
+    margin-bottom: 13rpx;
+}
+
+.placeholder_class {
+    font-size: 18rpx;
+    color: rgba(129, 129, 129, 0.5);
+}
+
+.input {
+    height: 100%;
+    width: 600rpx;
+    display: inline-block;
+    vertical-align: middle;
+    padding-left: 34rpx;
+    box-sizing: border-box;
+    font-size: 18rpx;
+}
+
+.img_search {
+    width: 30rpx;
+    height: 30rpx;
+    padding: 10rpx 25rpx 10rpx 30rpx;
+    margin-left: 18rpx;
+    display: inline-block;
+    vertical-align: middle;
+}
+
+.head_content {
+    width: 100%;
+    height: 144rpx;
+    background: #fff;
+    border-radius: 10rpx;
+    display: flex;
+}
+
+.head_value1 {
+    font-size: 20rpx;
+}
+
+.head_value2 {
+    font-size: 24rpx;
+    margin-top: 20rpx;
+    color: rgba(51, 51, 51, 0.8);
+}
+
+.head_item {
+    height: 100%;
+    display: inline-flex;
+    flex: 1;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    position: relative;
+}
+
+.border_right {
+    position: absolute;
+    box-sizing: border-box;
+    height: 40rpx;
+    top: 50%;
+    transform: translateY(-50%);
+    right: 0;
+    width: 1px;
+    background: #e6e6e6;
+}
+
+.head_num {
+    font-size: 34rpx;
+    font-weight: bold;
+}
+
+.bold {
+    font-weight: bold;
+}
+
+.tab_box {
+    width: 100%;
+    height: 88rpx;
+    display: flex;
+    position: relative;
+    background: #fff;
+    box-shadow:0px 7rpx 15rpx rgba(239,239,239,0.5);
+    z-index:11;
+}
+
+.tab_item {
+    display: inline-flex;
+    flex: 1;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    font-size: 26rpx;
+    color: #777;
+}
+
+.line {
+    height: 6rpx;
+    border-radius: 4rpx;
+    position: absolute;
+    width: 53rpx;
+    bottom: -3rpx;
+    margin: 0 161rpx;
+    left: 0;
+    transition: left 0.42s;
+}
+ 
+.min_box{
+    display: inline-flex;
+    /* min-width:75%; */
+    height: 100%;
+    align-items: center;
+    justify-content: center;
+    box-sizing:border-box;
+    padding-right:20rpx;
+} 

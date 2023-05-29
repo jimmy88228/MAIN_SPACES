@@ -1,0 +1,9 @@
+<!--components/indexHead/showNearByStore.wxml-->
+<block wx:if="{{nearby_store == 1}}">
+    <!-- <view class="main" style="top:{{top}}px"> -->
+    <view class="main">
+        <image src="{{brand_url}}{{nearby_store_image}}" mode="aspectFit" class="img-near-by"></image>
+        <view class="near-by-name">{{nearByName}}</view>
+    </view>
+    <!-- <view class="stay"></view> -->
+</block>

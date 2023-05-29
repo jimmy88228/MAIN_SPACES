@@ -1,0 +1,34 @@
+<view wx:if="{{activityId}}">
+	<view class="no-choose-discount mb_10" wx:if="{{chooseDiscountGoods.length == 0}}">
+		<view class="n-c-cont" catchtap="chooseGoods">
+			<image class="n-c-img" src="{{activityImg}}" style="width:100%;" mode="widthFix" />
+			<view class="n-c-tip">超值购</view>
+		</view>
+	</view>
+	<view class="choose-discount mb_10" wx:else>
+		<view class="d_flex flex_b c-d-header">
+			<view class="font_26 C_F04C05">超值购</view>
+			<view class="font_24 d_flex" catchtap="chooseGoods">去换购<text class="font_24 iconfont icon-arrow-right"></text></view>
+		</view>
+		<view class="c-d-cont">
+			<view class=" c-d-cont-item" wx:for="{{chooseDiscountGoods}}" wx:key="index">
+				<view class="s_flex cont-item-stay">
+					<view class="flex_shrink_0 c-d-goods"><image class="c-d-goods-img" src="{{item.goodsInfo.goodsImg}}" mode="aspectFit"/></view>
+					<view class="c-d-detail pl_20 pr_10 pt_10">
+						<view>
+							<view class="text-flow">{{item.goodsInfo.goodsName}}</view>
+							<view	class="C_7f font_24 mt_10">{{item.productInfo.color_name}} {{item.productInfo.size_name}}</view>
+						</view>
+						<view class="mt_10 bold">¥{{item.productInfo.sale_price}}</view>
+					</view>
+					<view class="c-d-operate flex_shrink_0 pt_10">
+						<view class="font_28">x{{item.number}}</view>
+						<view class="c-d-remove" data-index="{{index}}" catchtap="removeGoods">移除</view>
+					</view>
+				</view>
+			</view>
+		</view>
+	</view>
+</view>
+<discountPopup id="discountPopup"></discountPopup>
+<pageDialog id="pageDialog"></pageDialog>

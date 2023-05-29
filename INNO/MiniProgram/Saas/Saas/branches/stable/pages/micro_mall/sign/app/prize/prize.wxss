@@ -1,0 +1,155 @@
+/* pages/micro_mall/sign/app/prize/prize.wxss */
+page{
+  background-color: rgb(239, 239, 239);
+}
+.title{
+  font-size:42rpx;
+  padding: 30rpx;
+  box-sizing: border-box;
+  font-weight: bold;
+}
+.box{
+  width: 700rpx;
+  margin:0 auto;
+  margin-bottom: 30rpx;
+  background-color: #fff;
+  border-radius: 18rpx;
+}
+.progress-box{
+  box-shadow: 0 3rpx 10rpx -1px rgba(0,0,0,0.09);
+  box-sizing: border-box;
+  padding:0 30rpx;
+  width: 100%;
+  min-height: 150rpx;
+}
+.progress-content{
+  display: flex;
+  align-items: center;
+  position: relative;
+  justify-content: space-between;
+  flex-wrap: nowrap; 
+  width: 100%;
+}
+ 
+.prize-box{
+  box-sizing: border-box;
+  padding: 36rpx 0 36rpx 36rpx;
+  min-height: 180rpx;
+  position: relative;
+}
+.prize-content{ 
+  border-bottom: 1px solid rgba(151,151,151,0.2);
+}
+.img-prize{
+  width: 134rpx;
+  height: 134rpx;
+  margin-right: 40rpx;
+  flex-shrink: 0;
+}
+.prize-msg{
+  width: 100%;
+  box-sizing: border-box;
+  padding:20rpx 70rpx 20rpx 0;
+  min-height: 180rpx;
+}
+.prize-title{
+  font-size: 24rpx;
+  color: #b2b2b2;
+  margin-bottom: 10rpx;
+}
+.prize-name{
+  font-size: 28rpx;
+}
+.arrow{
+  position: absolute;
+  right: 40rpx;
+  top: 50%;
+  transform:translateY(-50%) rotate(-45deg);
+  width: 8rpx;
+  height: 8rpx;
+  border: 1px solid transparent;
+  border-right-color:rgba(0,0,0,0.90);
+  border-bottom-color:rgba(0,0,0,0.90);
+}
+.prize-tip{
+  padding:30rpx 10rpx 0 10rpx;
+  font-size: 24rpx;
+  color: #B2B2B2;
+}
+
+/*  */
+
+.line{ 
+  position: absolute;
+  width: 96%;
+  height: 1px;
+  left: 50%;
+  transform:translateX(-50%);
+  top: 20rpx;
+  background: rgba(255,225,181,0.60);
+}
+
+.dayBoxNormal{
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  box-sizing: border-box;
+  font-size: 22rpx;
+  color: #7f7f7f;
+  position: relative;
+  z-index: 2;
+  min-height: 90rpx;
+  padding-top: 6rpx;
+}
+.dayBoxNormal.unactive{
+  /* padding-top: 6rpx; */
+}
+.arrow-box{
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform:translate(-50%,50%);
+  width: 20rpx;
+  height: 20rpx;
+  border-radius: 50%;
+  background-color: #F0570F;
+  border: 4rpx solid #fff;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.arrow-box-normal{
+   width: 12rpx;
+   height: 12rpx;
+   background-color: #fff;
+   border: 8rpx solid #FDE9CB;
+   border-radius: 50%;
+   /* margin-bottom: 10rpx; */
+  }
+.active .arrow-box-normal{
+  border: 8rpx solid#F0570F;
+} 
+
+.calendarBox {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+}
+.calendarBox.style3{
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: nowrap; 
+}
+.status-img-box{
+  position: absolute;
+  right: 20rpx;
+  bottom: 30rpx;
+  width: 140rpx;
+  height: 140rpx;
+}
+.status-img{
+  width:100%;
+  height: 100%; 
+}

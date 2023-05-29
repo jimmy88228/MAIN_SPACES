@@ -1,0 +1,6 @@
+{
+  "component": true,
+  "usingComponents": {
+    "seedGrass":"/pages/micro_mall/user/seed_grass/seed_grass"
+  }
+}

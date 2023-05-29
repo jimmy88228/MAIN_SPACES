@@ -1,0 +1,86 @@
+<swiper current="{{current}}" bindchange="swiperChange" class='swiper_box' style='height:{{swiperHeight}}'>
+    <swiper-item class='swiper_item' wx:for="{{tabs}}" wx:key="id" wx:for-index="swiperIndex">
+        <view class="dateFilter" style='background:{{bg_color}};' wx:if="{{pageType == 'commission' || pageType == 'share'}}" id="filterId">
+            <block wx:if="{{pageType == 'commission'}}">
+                <text class='titleText'>拥有<text class='sign'>{{records[swiperIndex]}}</text>张订单</text>
+                <view class='font_26 C_7f' wx:if="{{order_list_mod.allSale == '1'}}">销售总额 <text class='font_w' style='color:{{brand_info.style.font_color}};font-weight:600;'>¥{{total_order_amount[swiperIndex]}}</text></view>
+            </block>
+            <block wx:elif="{{pageType == 'share'}}">
+                <text class='titleText'>{{swiperIndex == 0?"总分享数：":"总访问人数："}}<text class='sign'>{{records[swiperIndex]}}</text></text>
+            </block>
+            <view class='dateText' style='background:{{brand_info.style.bg_color}}' bindtap='handleFilter'>{{buttonIndex=='today'?"今日":""}}{{buttonIndex=='week'?"本周":""}}{{buttonIndex=='month'?"本月":""}}{{buttonIndex=='set'?"时间筛选":""}}{{buttonIndex||buttonIndex!=0?"":"日期筛选"}}</view>
+        </view>
+        <scroll-view scroll-y wx:if="{{!none[swiperIndex]}}" lower-threshold="70" bindscrolltolower="handleScroll" data-num="{{swiperIndex}}" class='scroll_box' style='height:{{scrollHeight}}'>
+            <view class='list_box' bindtap='goDetail' data-sn="{{item.order_sn}}" data-price="{{item.comm_amount}}" wx:for-index="listIndex" wx:for="{{dataList[swiperIndex]}}" wx:key="id2" data-relation-type="{{item.relation_type}}">
+                <block wx:if="{{pageType == 'commission'}}">
+                    <image src="{{staff_right}}" mode='widthFix' class='img_right'></image>
+                    <!-- 分销订单 -->
+                    <view class='content_left left'>
+                        <view class='name mb_20'>
+                        <text class="nick_name text-flow" wx:if="{{item.comm_nick_name}}">{{item.comm_nick_name}}</text>
+                        <text class="relation_type" wx:if="{{item.relation_type}}">({{item.relation_type}})</text></view>
+                        <view class='time'>{{item.comm_date}}</view>
+                    </view> 
+                    <view class='content_middle middle' wx:if="{{order_list_mod.singleSale == '1'}}">
+                        <view class='name C_7f'>销售额 <text style='color:{{brand_info.style.font_color}};font-weight:600;'>¥{{item.order_amount}}</text></view> 
+                    </view>
+                    <view class='content_right right'>
+                        <view class='price mb_20' wx:if="{{order_list_mod.commAmount == '1' && commission}}" style='color:{{brand_info.style.font_color}}'>¥{{item.comm_amount}}</view>
+                        <view class='status'>{{item.comm_status}}</view>
+                    </view>
+                </block>
+                <block wx:if="{{pageType == 'record'}}">
+                    <!-- 提现记录 -->
+                    <view class="content_item">
+                        <view class="content_t">
+                            <view class='content_left' >
+                                <view class='recordTime mb_20'>{{item.create_time}}</view>
+                                <view class='recordPrice'>提现 ¥{{item.request_amount}}</view>
+                            </view>
+                            <view class='content_right right recordRight' wx:if="{{record}}">
+                                <view class='recordName {{item.status == 2?"b2":""}}' style='color:{{item.status==2?"":brand_info.style.font_color}}'>{{recordName[item.status]}}</view>
+                            </view>
+                        </view>
+                        <view class="content_b" wx:if="{{item.status != 1}}">{{item.confirm_remark}}</view>
+                    </view>
+                </block>
+                <block wx:elif="{{pageType == 'share'}}">
+                    <view class="my_share_box">
+                        <view class="m_s_item" wx:for="{{my_share_tab[swiperIndex]}}" wx:key="index" wx:for-item="myShareItem">
+                            <view class="m_s_item_ct">{{item[myShareItem.key]}}</view>
+                            <view class="m_s_item_ct">{{myShareItem.name}}</view>
+                        </view>
+                    </view>
+                </block>
+            </view>
+        </scroll-view>
+        <view wx:else class='none'>没有找到任何结果</view>
+    </swiper-item>
+</swiper>
+<view class='date_box {{filter?"isShow":"isHide"}} {{isIphoneX ? "fix_iphoneX" : ""}}'>
+    <view class='title b_b'>快速筛选</view>
+    <view class='quickBox b_b'>
+        <button bindtap='handleFilter' data-type="today" class="quickSelect" hover-class='none' style='{{buttonIndex=="today"?"background:"+brand_info.style.bg_color+";color:#fff;":""}}'>今日</button>
+        <button style='{{buttonIndex=="week"?"background:"+brand_info.style.bg_color+";color:#fff;":""}}' bindtap='handleFilter' data-type="week" class="quickSelect" hover-class='none'>本周</button>
+        <button style='{{buttonIndex=="month"?"background:"+brand_info.style.bg_color+";color:#fff;":""}}' bindtap='handleFilter' data-type="month" class="quickSelect" hover-class='none'>本月</button>
+    </view>
+    <view class='title b_b'>自定义时间查询</view>
+    <picker mode="multiSelector" bindchange='mul_change_start' range='{{multiSelector_start}}' value='{{mul_array_start}}'>
+        <view class='picker'>
+            <view class=''>开始时间</view>
+            <view class='C_7f'>{{quickTemp[0]?quickTemp[0]:'请选择时间'}}</view>
+            <image mode='widthFix' class='img' src=''></image>
+        </view>
+    </picker>
+    <picker mode="multiSelector" bindchange='mul_change_end' range='{{multiSelector_end}}' value='{{mul_array_end}}'>
+        <view class='picker'>
+            <view class=''>结束时间</view>
+            <view class='C_7f'>{{quickTemp[1]?quickTemp[1]:'请选择时间'}}</view>
+            <image mode='widthFix' class='img' src=''></image>
+        </view>
+    </picker>
+    <view class='button_box'>
+        <button bindtap='handleFilter' data-type="set" class='button' style='background:{{brand_info.style.bg_color}}'>确定筛选</button>
+    </view>
+</view>
+<view class='black_bg {{filter?"isShow":"isHide"}}' catchtap='handleFilter'></view>

@@ -1,0 +1,10 @@
+var checkIfNeedLogin = function(item = {}) { // 判断点击事件是否需要登录
+  var func_type = item.func_type || item.func_id || "";
+  if (func_type == 'COUPON') return true; // 一点领券
+  else if (func_type == "LINKURL") return true; // 自定义链接
+  else return false
+}
+
+module.exports = {
+  checkIfNeedLogin:checkIfNeedLogin,
+}

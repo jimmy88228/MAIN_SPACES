@@ -1,0 +1,11 @@
+<window class="window" ext-class="window-ext">
+	<view class="main" style="{{boxStyle}}" catchtap="_noFn">
+    <image catchtap="dismiss" src='{{server_close}}'  mode='widthFix' class='server_close'></image>
+    <view class="c-header">全部分类</view>
+    <view class="c-cates">
+      <block wx:for="{{groupList}}" wx:key="id">
+        <view wx:if="{{item.grouping_name}}" class="c-cate-item" hover-class="active" data-id="{{item.id}}" catchtap="handleCateTap" style="--bg-color: {{l_bg_color}};--font-color: {{brand_info.style.font_color}}">{{item.grouping_name}}</view>
+      </block>
+    </view>
+  </view>
+</window>

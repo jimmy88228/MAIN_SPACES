@@ -1,0 +1,14 @@
+<textarea 
+  class="delivery_text_area"
+  placeholder="粘贴收件人姓名、手机号、收货地址，可快速识别收货信息"
+  auto-height
+  maxlength="{{maxLength}}"
+  value="{{deliveryText}}"
+  bind:input="handleDeliveryInput"
+>
+  <view class="dt_btngroup">
+    <button class="dt_clear_btn" hover-class="active" catchtap="clear">清除</button>
+    <button class="dt_confirm_btn" style="background:{{brand_info.style.bg_color}};" hover-class="active" catchtap="confirm">提交</button>
+  </view>
+  <slot />
+</textarea>

@@ -1,0 +1,7 @@
+{
+  "navigationStyle":"custom",
+  "navigationBarTitleText": "好友列表",
+  "usingComponents": {
+    "page-nav": "/components/page-nav/page-nav"
+  }
+}

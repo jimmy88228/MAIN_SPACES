@@ -1,0 +1,113 @@
+/* pages/micro_mall/address/address_list.wxss */
+page{
+  background:#fff;
+}
+.address_page{
+  padding:20rpx;
+}
+.add_addr_btn{
+  width:100%;
+  line-height:100rpx;
+  height:100rpx;
+  text-align:center;
+  color:#fff;
+  border-radius:10rpx;
+  font-size:0px;
+  margin-bottom:20rpx;
+}
+.add_addr_btn .addr_icon{
+  font-weight:bold;
+  width:35rpx;
+  height:35rpx;
+  /* border-radius:100%; */
+  /* background:#fff; */
+  background-repeat:no-repeat;
+  background-size:80% auto;
+  background-position:center center;
+}
+.add_addr_btn text{
+  display:inline-block;
+  vertical-align: middle;
+  font-size:30rpx;
+   margin-left:5rpx; 
+}
+.addr_item{
+  border-radius:10rpx;
+  border:1px solid #e9e9e9;
+  margin-bottom:20rpx;
+  position:relative;
+  margin-top:40rpx;
+}
+.item_info{
+  border-bottom:1px solid #e9e9e9;
+  padding:20rpx;
+  display:table;
+  box-sizing:border-box;
+  width:100%;
+}
+.item_info .tit{
+  display:table-cell;
+  vertical-align: top;
+  width:5em;
+}
+.item_info .val{
+  display:table-cell;
+  vertical-align: top; 
+}
+.addr_operation{
+  padding:20rpx;
+  display:table;
+  width:100%;
+  box-sizing:border-box;
+}
+.addr_operation_l{
+  display:table-cell;
+   vertical-align: middle; 
+}
+.addr_operation_r{
+  display:table-cell;
+  text-align:right;
+   vertical-align: middle; 
+}
+.edit_addr{
+  display:inline-block;
+}
+.edit_addr image{
+  width:40rpx;
+  vertical-align: middle;
+}
+.del_addr{
+  display:inline-block;
+  margin-left:20rpx;
+}
+.del_addr image{
+  width:40rpx;
+  vertical-align: middle;
+}
+.edit_addr text,.del_addr text{
+  display:inline-block;
+  vertical-align: middle;
+}
+.select_addr_btn{
+  display:inline-block;
+  color:#fff;
+  padding:10rpx 25rpx;
+  border-radius:10rpx;
+  vertical-align: middle;
+  margin:0px 10rpx;
+}
+.set_default_btn{
+  display:inline-block;
+  color:#fff;
+  padding:10rpx 25rpx;
+  border-radius:10rpx;
+  vertical-align: middle;
+  margin:0px 10rpx;
+}
+
+.select_icon{
+  position:absolute;
+  top:-16rpx;
+  right:-16rpx;
+  background:#fff;
+}

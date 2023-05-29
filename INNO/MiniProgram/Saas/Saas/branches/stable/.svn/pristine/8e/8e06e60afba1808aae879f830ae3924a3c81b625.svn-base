@@ -1,0 +1,38 @@
+<!--pages/micro_mall/questionnaire/results/results.wxml-->
+<form bindsubmit="formAction" report-submit="true">
+  <view class="main" wx:if="{{showPage}}">
+    <block wx:if="{{showResult == 1 && info.length>0}}">
+      <view class="box" wx:for="{{info}}" wx:key="voteOptionId" wx:for-item="item_info">
+        <view class="vote_item">
+          <view class="title">{{item_info.title}}</view>
+          <view class="c_title">{{item.childTitle}}</view>
+          <view class="msg_box" wx:for="{{item_info.optionDetails}}" wx:key="voteOptionChildId" wx:for-item="item_option">
+            <view class="img_box" wx:if="{{item_info.voteTypeCode == 'vote_image'}}">
+              <image src="{{item_option.imgUrls[0]}}" class="img_vote" mode="aspectFit"></image>
+            </view>
+            <view class="pg_box {{item_info.voteTypeCode == 'vote_image' ? 'pics':''}}">
+              <view class="p_title">{{item_option.optionName}}</view>
+              <view class="pg">
+                <progress_bar ac-bg="{{item_option.isSelected==1?brand_info.style.bg_color:'#7f7f7f'}}" class="pg_show" tip="" percent="{{item_option.ratio}}"></progress_bar>
+                <text class="pg_text">{{item_option.ratio}}%</text>
+              </view>
+            </view>
+          </view>
+        </view>
+      </view>
+    </block>
+    <block wx:elif="{{terminatedOption}}">
+      <rich info="{{terminatedOption}}"></rich>
+    </block>
+    <block wx:else>
+      <view class="results">
+        <view class="r_msg_box">
+          <icon type="success" size="120rpx" color="{{'#F19234' || brand_info.style.font_color}}" style="margin-bottom: 30rpx;" mode="aspectFit" class="img_select"></icon>
+          <view style="color:{{'#F19234' || brand_info.style.font_color}};font-size: 48rpx ;margin-bottom: 48rpx;">非常感谢</view>
+          <view style="color:{{'#F19234' || brand_info.style.font_color}};font-size: 40rpx ;font-weight: normal;" hidden="{{brand_info && (brand_info.BRAND_CODE == 'JL' || brand_info.BRAND_CODE == 'CQ')}}">系统将自动发放您的专属优惠券</view>
+        </view>
+        <button class="results_text" bindtap="back">返回首页</button>
+      </view>
+    </block>
+  </view>
+</form>

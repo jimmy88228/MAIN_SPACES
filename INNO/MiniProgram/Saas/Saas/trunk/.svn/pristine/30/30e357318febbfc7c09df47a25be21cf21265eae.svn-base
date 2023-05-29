@@ -1,0 +1,27 @@
+<view class="main goods_list_main">
+    <view class="header_module">
+        <view class="ordertTab">
+            <view class="orderTabTit flex-c-c {{currentIndex == index ? 'current' : 'C_7f'}}" style="{{ currentIndex == index  ? 'color: '+brand_info.style.font_color+';background-color:'+ l_bg_color +';' : '' }}" wx:for="{{tabList}}" wx:key="id" data-index="{{index}}" catchtap="changeTab">
+                <text>{{item.value}}</text>
+            </view>
+        </view>
+        <view class="search_con {{currentIndex != 1?'hidden':''}}">
+            <!-- 搜索 -->
+            <search searchType="bonus" placeText="请输入商品关键词" bindinputCallback="getKeywork" bindonTapConfirm="handleFilterSearch" />
+        </view>
+    </view>
+    <!-- 分类目前只用到礼品模块 -->
+    <point-cates-bar id="pointCatesBar" class="pointCatesBar {{currentIndex != 1 ? 'hidden' : ''}}" bindcatechange="changeCate" />
+    <view class="content {{currentIndex == 1?'_have_cates':''}}">
+        <goods-list class="goods_list {{currentIndex==0?'background0':'background1'}}" id="integralMall">
+            <view class="user_module">
+                <view class="user_info">
+                    <image src="{{memberInfo.portrait_path || defaultAvatar}}" mode="widthFix" class="user_img relative"></image>
+                    <text class="inline_b v_m relative">当前可用积分</text>
+                    <text class="inline_b v_m point font_w relative">{{memberInfo.Points}}</text>
+                </view>
+                <button catchtap='jump_record' class='record font_24' hover-class='none'>兑换记录</button>
+            </view>
+        </goods-list>
+    </view>
+</view>

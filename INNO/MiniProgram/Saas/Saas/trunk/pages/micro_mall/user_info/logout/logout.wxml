@@ -1,0 +1,14 @@
+<!--pages/micro_mall/user_info/logout/logout.wxml-->
+<view class="info_group"> 
+  <view class="info_item">
+    <text class="info_tit">卡号</text>
+    <view class="info_input">{{userInfo.cardNum||userInfo.realName||""}}</view>
+  </view>
+  <view class="info_item" bindtap="logout" style="justify-content:space-between;">
+    <text class="info_tit">注销账号</text>
+    <view class="tip-box flex-e-c">
+      <view class="C_7f font_24">注销后无法恢复,请谨慎操作</view>
+      <view class="arrow-right"></view>
+    </view>
+  </view>
+</view>

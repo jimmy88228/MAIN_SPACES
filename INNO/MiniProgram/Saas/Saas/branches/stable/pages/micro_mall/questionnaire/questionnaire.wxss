@@ -1,0 +1,72 @@
+page{
+  /* background: #bebebe; */
+}
+
+/* .q_prod+.q_item_con.have_terminated_pro{
+  min-height: 80vh;
+} */
+.q_item_con.have_terminated_pro:not(.terminated){
+  opacity: 0;
+  visibility: hidden;
+  height: 0;
+  min-height: 0;
+}
+.q_item_con.terminated~.btn_box,
+.q_item_con.terminated~.q_item_con{
+    position: absolute;
+    top: 0;
+    left: -100vw;
+    height: 0;
+    margin: 0;
+    padding: 0;
+    opacity: 0;
+    visibility: hidden;
+    z-index: 0;
+    background: #fff;
+}
+.q_item_con{
+  transition: all 1s;
+  opacity: 1;
+  visibility: visible;
+  z-index: 1;
+  counter-increment: index;
+}
+.q_item_con:last-child{
+  margin-bottom: 0;
+}
+.btn_box{
+  width: 100%;
+  padding: 10rpx 0 20rpx 0;
+  box-sizing: border-box;
+}
+.btn{
+  width: 690rpx;
+  height: 80rpx;
+  border-radius: 6rpx;
+  color: #fff;
+  margin: 0 auto;
+}
+.login{
+  width: 300rpx;
+  height: 150rpx;
+  border-radius: 6rpx;
+  margin-right: 0 auto;
+  position: fixed;
+  top: 36%;
+  left: 50%;
+  transform: translate(-50%,-50%);
+}
+.btn_login{
+  width: 190rpx;
+  height: 90rpx;
+  color: #fff;
+  font-size: 30rpx;
+}
+.login.err_msg{
+  width: 420rpx;
+  height: 170rpx;
+  color: #fff;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}

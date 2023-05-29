@@ -1,0 +1,43 @@
+/* components/pop/staffApply/staffApply.wxss */
+.apply-box{
+  width: 620rpx;
+  box-sizing: border-box;
+  padding: 40rpx 40rpx;
+  border-radius: 20rpx;
+  background-color: #fff;
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform:translate(-50%,-50%);
+}
+.title{
+  font-weight: bold;
+  font-size:30rpx;
+  padding-bottom: 50rpx;
+  text-align: center;
+}
+.btn-box{
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 50rpx;
+}
+.cancel,.ok{
+  width: 250rpx;
+  height: 100rpx;
+  border-radius: 10rpx;
+  /* overflow: hidden; */
+  font-size: 28rpx;
+  position: relative;
+}
+.cancel{
+  background-color: #dfdfdf;
+  color: #7f7f7f;
+}
+.ok{
+  color: #fff;
+}
+.desc{
+  color: #7f7f7f;
+  font-size: 24rpx;
+  line-height: 40rpx;
+}

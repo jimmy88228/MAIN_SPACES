@@ -1,0 +1,233 @@
+<form bindsubmit="formAction" report-submit="true">
+	<view class="couponPage">
+		<view class="couponTab d_flex">
+			<view class="couponTabTit flex1" id="couponTab0" bindtap="swiperChangeCallback" wx:for="{{bonus_tab}}" wx:key="index" data-tab-id="{{index}}" style="{{selected == index ? 'border-color: '+ brand_info.style.bg_color +'; color: '+ brand_info.style.bg_color +';' : '' }}">
+				<text>{{item.txt}}</text>
+				<view class='lines' wx:if="{{selected == index}}" style="background: {{brand_info.style.font_color}}"></view>
+			</view>
+		</view>
+		<view class="show_tips flex_global flex_c flex_al_c" style="color:{{brand_info.style.font_color}};" wx:if="{{tips}}">{{tips}}</view>
+		<view class="couponList" style="{{tips?'padding-top:150rpx;':''}}"> <!-- hidden="{{!isReady}}" 隐藏会影响scroll-view的下拉刷新-->
+			<view class="availableCoupon">
+				<view class="content">
+						<list id='list' current="{{selected}}" tabData="{{bonus_tab}}" isSwiper="{{true}}" list-data="{{bonus_tab[selected].data}}" bindswiperChange="swiperChangeCallback" bindscrolltolower="scrolltolowerCallback" bindrefresherrefresh="refreshCallback">
+								<block>
+										<view slot="data{{lIndex}}" style="background:#EFEFEF;min-height:100%;" class="list_padding_box" wx:for="{{bonus_tab}}" wx:for-item="lItem" wx:for-index="lIndex" wx:key="lIndex">
+												<view wx:for="{{lItem.data}}" wx:key="index" class="">
+														<view class="box">
+																<view class="box_cont">
+																		<view class="c_coupon_box">
+																				<block wx:if="{{item.state == 1}}">
+																					<block wx:if="{{item.image_main}}">
+																							<image src="{{item.image_main}}" mode="aspectFill" class="c_coupon_bg" />
+																					</block>
+																					<block wx:else>
+																							<image class="c_coupon_bg" src="{{storeBonus}}" wx:if="item.send_type == 4 || item.send_type == 5" mode="aspectFill" />
+																							<image class="c_coupon_bg" src="{{onlineBonus}}" wx:else mode="aspectFill" />
+																					</block>
+																				</block>
+																				<block wx:else>
+																					<block wx:if="{{item.image_expire}}">
+																							<image src="{{item.image_expire}}" mode="aspectFill" class="c_coupon_bg" />
+																					</block>
+																					<block wx:else>
+																							<image class="c_coupon_bg" src="{{overdueStoreBonus}}" wx:if="item.send_type == 4 || item.send_type == 5" mode="aspectFill" />
+																							<image class="c_coupon_bg" src="{{overdueOnlineBonus}}" wx:else mode="aspectFill" />
+																					</block>
+																				</block>
+																				<view class="c_group_label">
+																						<block wx:if="{{item.send_type == 4}}">门店使用</block>
+																						<block wx:elif="{{item.send_type == 5}}">通用劵</block>
+																						<block wx:elif="{{item.send_type == 3}}">智慧支付</block>
+																						<block wx:else>微商城</block>
+																				</view>
+																				<view class="c_price_box">
+																						<block wx:if="{{item.is_hide_money_show != 1}}">
+																								<view class="c_price">
+																										<block wx:if="{{item.bonus_type == 4}}">
+																												<text class="c_price_ft">{{item.discountStr}}</text><text>折</text>
+																										</block>
+																										<block wx:else>
+																												<text>¥</text><text class="c_price_ft">{{item.type_money}}</text>
+																										</block>
+																								</view>
+																								<view class="c_price_tip">
+																										<block wx:if="{{item.bonus_type == 4 }}">
+																												<block wx:if="{{item.min_amount != item.max_amount}}">
+																														满{{item.min_amount}} ~ {{item.max_amount}}元可用
+																												</block>
+																										</block>
+																										<block wx:elif="{{item.min_goods_amount>0}}">
+																												满{{item.min_goods_amount}}元可用
+																										</block>
+																										<block wx:elif="{{item.min_goods_amount==0}}">
+																												无门槛
+																										</block>
+																								</view>
+																								<view class="c_split" wx:if="{{item.is_show_name == 1}}"></view>
+																						</block>
+																				</view>
+																				<text class="c_name">{{item.is_show_name == 1 ? item.type_name : ''}}</text>
+																		</view>
+																		<view class="btn_box">
+																				<block wx:if="{{item.state == 1}}">
+																					<button hover-class='none' class="dft_inset_shadow" open-type="share" wx:if="{{item.bonus_type_give_type == 1}}" data-send_index="{{index}}" data-bonus_id="{{item.bonus_id}}">赠送好友</button>
+																					<button hover-class='none' class="dft_inset_shadow" wx:elif="{{item.give_type == 2}}">赠送中</button>
+																					<button hover-class='none' class="dft_inset_shadow" wx:elif="{{item.give_type == 3}}">可转赠</button>
+																					<button hover-class='none' class="dft_inset_shadow" wx:if="{{item.send_type == 4 || item.send_type == 5 || item.send_type == 0}}" data-jump-config="{{item.jumpConfig}}" data-item-sn="{{item.bonus_sn}}" data-bonus-sn="{{item.bonus_sn}}" bindtap="{{item.send_type == 0 ? 'userJump' : 'onUseCounpon'}}" data-can-off="{{item.is_writeoff_self}}" data-id="{{index}}" form-type='submit'>立即使用</button>
+																					<!-- <button hover-class='none' class="dft_inset_shadow" wx:if="{{item.send_type == 4 || item.send_type == 5 || (item.send_type == 0 && item.jumpConfig)}}" data-jump-config="{{item.jumpConfig}}" data-item-sn="{{item.bonus_sn}}" bindtap="{{item.send_type == 0 && item.jumpConfig ? 'userJump' : 'onUseCounpon'}}" data-can-off="{{item.is_writeoff_self}}" data-id="{{index}}" form-type='submit'>立即使用</button> -->
+																				</block>
+																				<block wx:else>
+																						<image wx:if="{{item.state == 2}}" src="{{img_used}}" class="img_c_state" mode="aspectFit" />
+																						<image wx:if="{{item.state == 3}}" src="{{img_past}}" class="img_c_state" mode="aspectFit" />
+																				</block>
+																		</view>
+																</view>
+																<view class="tips_detail_box {{showLimitArr[lIndex].data[index].showLimit? 'active':''}}">
+																		<view class="useLimitStay">
+																				<view class="limit">
+																						<text wx:if="{{item.send_type == 5 }}">通用券</text>
+																						<text wx:elif="{{item.send_type == 4}}">限线下门店使用</text>
+																						<text wx:elif="{{item.send_type == 3}}">限线下店铺使用</text>
+																						<text wx:else>限线上微商城使用</text>
+																				</view>
+																				<mp-scroll-view class="tips_detail_scroll" wx:if="{{item.bonus_desc}}" boxStyle="width:100%;min-height: 100rpx;max-height:300rpx;">
+																					<text class="tips_detail" >{{item.bonus_desc}}</text>
+																				</mp-scroll-view>
+																		</view>
+																</view>
+																<view class="tips" catchtap="onShowUseLimit" data-id="{{index}}" wx:if="{{item.state == 1}}">
+																		<view class="t_title_box">
+																				<view class="t_title {{item.timeType == 2 || item.timeType == 3?'title_active':''}}">
+																						<block wx:if="{{item.timeType == 1}}">
+																								使用日期 {{item.fromTimeStr + ' - ' + item.toTimeStr}}
+																						</block>
+																						<block wx:elif="{{item.timeType == 2}}">
+																								{{item.detailTimeStr}}
+																						</block>
+																						<block wx:elif="{{item.timeType == 3}}">
+																								<!-- {{(actCountDown['1'][item.bonus_id].day||'0') + "天"}} -->
+																								{{(actCountDown['1'][item.bonus_id].hour||'00') + "时"}}{{(actCountDown['1'][item.bonus_id].min||'00') + "分"}}{{actCountDown['1'][item.bonus_id].sec||'00'}}
+																								<text style="padding-left:5rpx">过期</text>
+																						</block>
+																				</view>
+																				<view class="t_header flex_global flex_c flex_al_c">
+																						<view class="t_tip">使用说明</view>
+																						<image src="{{arrow}}" class="arrow {{showLimitArr[lIndex].data[index].showLimit?'arrow_active':''}}" mode="widthFix" />
+																				</view>
+																		</view>
+																</view>
+														</view>
+												</view>
+												<view class="empty_state" wx:if="{{lItem.status == 0}}"> 
+														<view class="empty_txt">暂无优惠券</view>
+												</view>
+										</view>
+								</block>
+						</list>
+				</view> 
+			</view>  
+		</view>
+	</view>
+
+
+	<view catchtouchmove="_noFn" class="selectedCouponMark" hidden="{{showPanel}}"></view>
+	<view catchtouchmove="_noFn" class="selectedCoupon" hidden="{{showPanel}}">
+		<view hidden="{{toShow}}">
+			<view class='coupon_header'>
+				<text>使用优惠券</text>
+				<view class='icon_wrapper'>
+					<image src="{{close}}" mode="aspectFit" class='close' />
+					<button class="from_btn" hover-class="none" form-type='submit' catchtap="onCloseUseCoupon"></button>
+				</view>
+			</view>
+			<view class="couponItem couponItem_select">
+				<view class="couponMsg couponMsg_select">
+						<view class="box">
+							<view class="box_cont">
+									<view class="c_coupon_box">
+											<block wx:if="{{UseItem.image_main}}">
+													<image src="{{UseItem.image_main}}" mode="aspectFill" class="c_coupon_bg" />
+											</block>
+											<block wx:else>
+													<image class="c_coupon_bg" src="{{storeBonus}}" wx:if="UseItem.send_type == 4 || UseItem.send_type == 5" mode="aspectFill" />
+													<image class="c_coupon_bg" src="{{onlineBonus}}" wx:else mode="aspectFill" />
+											</block>
+											<view class="c_group_label">
+													<block wx:if="{{UseItem.send_type == 4}}">门店使用</block>
+													<block wx:elif="{{UseItem.send_type == 5}}">通用劵</block>
+													<block wx:elif="{{UseItem.send_type == 3}}">智慧支付</block>
+													<block wx:else>微商城</block>
+											</view>
+											<view class="c_price_box">
+													<block wx:if="{{UseItem.is_hide_money_show != 1}}">
+															<view class="c_price">
+																	<block wx:if="{{UseItem.bonus_type == 4}}">
+																			<text class="c_price_ft">{{UseItem.discountStr}}</text><text>折</text>
+																	</block>
+																	<block wx:else>
+																			<text>¥</text><text class="c_price_ft">{{UseItem.type_money}}</text>
+																	</block>
+															</view>
+															<view class="c_price_tip">
+																	<block wx:if="{{UseItem.bonus_type == 4 }}">
+																			<block wx:if="{{UseItem.min_amount != UseItem.max_amount}}">
+																					满{{UseItem.min_amount}} ~ {{UseItem.max_amount}}元可用
+																			</block>
+																	</block>
+																	<block wx:else>
+																			满{{UseItem.min_goods_amount}}元可用
+																	</block>
+															</view>
+															<view class="c_split" wx:if="{{UseItem.is_show_name == 1}}"></view>
+													</block>
+											</view>
+											<text class="c_name">{{UseItem.is_show_name == 1 ? UseItem.type_name : ''}}</text>
+									</view>
+							</view>
+					</view>
+				</view>
+				
+			</view>
+
+			<!-- 条形码 -->
+			<view class="show_big_click">
+				<view class="barCanvas_area">
+					<canvas canvas-id="barCanvas" class="barCanvas" style="width: {{realWidth}}px; height: {{realHeight}}px;"></canvas>
+				</view>
+				<block wx:if="{{UseItem.onlyShowTime}}">
+					<view class="startTimeTile">【未到使用时间】</view>
+					<view class="startTimeTip">开始使用时间：{{UseItem.use_start_date_new}}</view>
+				</block>
+				<block wx:else>
+					<image class="barCanvas_img" src="{{canvasPath}}" mode="aspectFit" style="width: {{realWidth}}px; height: {{realHeight}}px;"/>
+					<view class="bonus_sn">{{UseItem.bonus_sn}}</view>
+					<view class='to_tips'>出示此条形码即可使用，可点击放大</view>
+					<button class="show_bonus_code from_btn" hover-class="none" form-type='submit' catchtap="onCheckCode"></button>
+				</block>
+			</view>
+			<view class="coupon_operate">
+				<button class="writeOff" wx:if="{{UseItem.jumpConfig && UseItem.jumpConfig.jump_type}}" style='background:{{brand_info.style.bg_color}}' data-jump-config="{{UseItem.jumpConfig}}" catchtap="userJump">立即使用</button>
+				<button hidden='{{!showButton}}' style='background:{{brand_info.style.bg_color}}' class='writeOff' data-sn="{{currentBonusSn}}" catchtap='handleWriteOff' data-type="show" hover-class='none'>核销</button>
+			</view>
+			<view class="info_tip" wx:if="{{UseItem.send_type == 4 || UseItem.send_type == 5}}">会员：{{user_infos.mobilePhone || user_infos.cardNum}}</view>
+		</view>
+	</view>
+
+	<view class="largetCodeMark" style="display:{{UseItemCode ? 'block' : 'none'}}" catchtap="onCloseCode"></view>
+	<view class="largetCode" style="display:{{UseItemCode ? 'block' : 'none'}}">
+		<image class="largetCodeImg" src="{{canvasPath}}" mode="aspectFit"></image>
+	</view>
+	
+	<alignment>
+		<pageHome slot="home" id="pageHome"></pageHome>
+	</alignment>
+
+
+	<view class='black_bg {{filter?"isShow":"isHide"}}' catchtouchmove="_noFn"></view>
+	<view class='share_box {{filter?"isShow":"isHide"}}'>
+		<view class='share_box_text'>您确定核销该优惠券吗</view>
+		<view class='confirm cancel' catchtap='handleWriteOff' data-type="cancle">取消</view>
+		<view class='confirm' catchtap='handleWriteOffConfirm'>确定</view>
+	</view>
+</form>

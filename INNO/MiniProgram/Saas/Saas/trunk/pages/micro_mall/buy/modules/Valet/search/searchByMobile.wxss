@@ -1,0 +1,175 @@
+.search_area{
+  width:80%;
+  position:fixed;
+  top:50%;
+  left:50%;
+  transform: translate(-50%,-50%);
+  border-radius:10rpx;
+  background-color:#fff;
+  padding:20rpx;
+}
+.input_picker{
+  width:100%;
+  height: 560rpx;
+  position:fixed;
+  left:0px;
+  bottom:0px;
+  overflow:hidden;
+  text-align:center;
+  background:#fff;
+  z-index:1000;
+}
+.input_picker_bg{
+  position:fixed;
+  top:0px;
+  left:0px;
+  width:100%;
+  height:100%;
+  background:rgba(0,0,0,.6);
+  z-index:1000;
+}
+.s_tit{
+  padding:20rpx 10rpx;
+}
+.s_cont{
+  padding:24rpx 10rpx;
+}
+.s_input{
+  display: flex;
+  align-items: center;
+  height: 56rpx;
+  margin-bottom: 16rpx;
+}
+.input_prefix{
+  text-align: center;
+  border: 1px solid #cccccc;
+  border-radius:10rpx;
+  height: 100%;
+  box-sizing: border-box;
+  padding: 8rpx 32rpx 8rpx 16rpx;
+  margin-right: 4rpx;
+  color: #666666;
+  width: 136rpx;
+}
+.input_options{
+  position: relative;
+}
+.tick_icon{
+  width: 8rpx;
+  height: 8rpx;
+  border: 1px solid;
+  border-color: transparent #999999 #999999 transparent;
+  transform: translateY(-60%) rotate(45deg);
+}
+.input_options>.tick_icon{
+  position: absolute;
+  top: 50%;
+  right: -20rpx;
+  z-index: 1;
+}
+.input_middle{
+  box-sizing: border-box;
+  padding:5rpx 10rpx;
+  border:1px solid #cccccc;
+  border-radius:10rpx;
+  height: 100%;
+  flex: 1;
+}
+.search_input{
+  width: 100%;
+  height: 100%;
+}
+.input_suffix{
+  height: calc(100% + 4rpx);
+}
+.search_btn {
+  width: 120rpx;
+  height: 60rpx;
+  display:inline-block;
+  text-align:center;
+  margin-left:12rpx;
+  overflow:hidden;
+  border-radius:6rpx;
+  color: #fff;
+}
+.s_user{
+  display: flex;
+  align-items: center;
+  padding: 16rpx 8rpx;
+  box-sizing: border-box;
+  border: 1px solid;
+  border-radius: 10rpx;
+}
+.s_user_avatar{
+  width: 89rpx;
+  height: 89rpx;
+  border-radius: 50%;
+  margin-right: 16rpx;
+}
+.s_user_name{
+  margin-right: 8rpx;
+  color: #333333;
+  max-width: 200rpx;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+}
+.s_user_card{
+  color: #333333;
+}
+.s_footer{
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.s_btns{
+  padding:10rpx;
+  padding-top:20rpx;
+  text-align:right;
+}
+.footer_btn{
+  width:150rpx;
+  display:inline-block;
+  text-align:center;
+  background-color:#b2b2b2;
+  margin-left:15rpx;
+  overflow:hidden;
+  border-radius:6rpx;
+}
+
+.fan_radio {
+  display: flex;
+  align-items: center;
+}
+.radio_select{
+  margin-right: 8rpx;
+}
+.radio_icon {
+  width: 31rpx;
+  height: 31rpx;
+  display: block;
+}
+.inputPickerConfirm{
+  font-size:30rpx;
+  padding:32rpx 20rpx;
+  border-bottom: 1px solid #ececec;
+  position: absolute;
+  top: 0rpx;
+  left: 0;
+  width: 100%;
+  box-sizing: border-box;
+  z-index: 2000;
+  display: flex;
+  align-items: center;
+  background-color: #fff;
+}
+.inputPickerConfirm>view{
+  flex: 1;
+}
+.inputPickerConfirm>.title{
+  color: #333333;
+}
+.i_confirm{
+  text-align: right;
+  color:#81D740;
+}

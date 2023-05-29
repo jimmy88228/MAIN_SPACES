@@ -1,0 +1,10 @@
+<form bindsubmit="formAction" report-submit="true">
+  <window class="window" ext-class="window-ext" >
+    <view class="page_pop" style="{{boxStyle}}" style="top:{{top}}px">
+      <view class="pop_cont">
+        <view>点击 “▪●▪” 添加商城到我的小程序</view>
+        <view>微信首页下拉即可快速访问商城</view>
+      </view>
+    </view>
+  </window>
+</form>

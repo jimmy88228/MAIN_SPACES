@@ -1,0 +1,25 @@
+<!--pages/micro_mall/questionnaire/upload/upload.wxml-->
+<view class="box {{tips_msg?'warn':''}}"> 
+  <view class="header">
+    <questionHead info="{{info}}" />
+  </view>
+  <view class="choose_image">
+    <view class="c_title">
+      <view>图片上传({{current_pics_arr.length || 0}}/1)</view>
+      <image src="/images/micro_mall/cn/trash_bin.png" bindtap="chooseImage" style="{{current_pics_arr.length > 0 ? '' : 'visibility: hidden'}};"/>
+    </view> 
+    <view class="choose_box">
+      <view class="choose" bindtap="chooseImage" wx:if="{{current_pics_arr.length == 0}}">
+        <view class="row c_style"></view>
+        <view class="column c_style"></view>
+      </view>
+      <block wx:for="{{current_pics_arr}}" wx:key="index" wx:if="{{current_pics_arr.length>0}}">
+        <image src="{{item}}" data-path="{{item}}" catchtap="previewImage" mode="aspectFit" class="img_choose _n_b"></image>
+      </block>
+    </view>
+    <view class="tips_line" wx:if="{{tips_msg}}">
+      <text>{{tips_msg}}</text>
+    </view>
+  </view>
+</view>
+<dialog id="dialog"></dialog>

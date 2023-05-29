@@ -1,0 +1,7 @@
+{
+  "component": true,
+  "usingComponents": {
+    "contactGuide": "/components/pop/contactGuide/contactGuide",
+    "contactStaff": "/components/pop/contactStaff/contactStaff"
+  }
+}

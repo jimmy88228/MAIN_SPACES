@@ -1,0 +1,72 @@
+<wxs module="moveTool" src="./custom_service.wxs"></wxs>
+<view 
+  wx:if="{{((configList.type) || always) && noLimit}}"
+  class="cs_link_area {{posType == 'left' ? 'posLeft' : ''}}" 
+  data-win-w="{{winW}}"
+  data-win-h="{{winH}}"
+  data-item-w="{{itemW}}"
+  data-item-h="{{itemH}}"
+  data-item-x="{{itemX}}"
+  data-item-y="{{itemY}}"
+  style="top:{{itemY}}px;left:{{itemX}}px;"
+  bindtouchstart="{{moveTool.touchstart}}"
+  catchtouchmove="{{moveTool.touchmove}}"
+  catchtouchend="{{moveTool.touchend}}">
+  <!-- 微商城客服 和 第三方客服 -->
+  <btns 
+  class="cs_link" 
+  isLogin="{{isLogin}}"
+  bindclickcallback="getContact"
+  data-url="/pages/micro_mall/customer_service/contact_page"
+  wx:if="{{configList.type == 'THIRD_PARTY' || configList.type == 'H5' }}"
+  >
+    <image class="cs_link_img" src="{{brand_info.default_icon_url+'serviceIcon.png'}}" mode="aspectFit"/>
+  </btns>
+  <!-- 企业微信客服 -->
+  <btns 
+  class="cs_link" 
+  isLogin="{{isLogin}}"
+  bindclickcallback="getQyWxContact"
+  wx:elif="{{configList.type == 'ENTERPRISE_WECHAT'}}"
+  >
+    <image class="cs_link_img" src="{{brand_info.default_icon_url+'serviceIcon.png'}}" mode="aspectFit"/>
+  </btns>
+  <!-- 小程序客服 -->
+  <block wx:elif="{{configList.type == 'APPLET'}}">
+    <button 
+    class="cs_link" 
+    hover-class='none' 
+    open-type='contact' 
+    send-message-title="{{_cardInfo.title}}"
+    send-message-path="{{_cardInfo.path}}"
+    send-message-img="{{_cardInfo.img}}"
+    show-message-card="{{_cardInfo.showCard}}"
+    bindcontact="contactCallback"
+    catchtap="getWxContact"
+    wx:if="{{_cardInfo.img || _cardInfo.title}}"
+    session-from="{{sessionFrom}}" >
+      <image class="cs_link_img" src="{{brand_info.default_icon_url+'serviceIcon.png'}}" mode="aspectFit"/>
+    </button>
+    <button 
+    wx:else
+    class="cs_link" 
+    hover-class='none' 
+    open-type='contact'
+    send-message-path="{{_cardInfo.path}}"
+    show-message-card="{{_cardInfo.showCard}}"
+    bindcontact="contactCallback"
+    catchtap="getWxContact"
+    session-from="{{sessionFrom}}" >
+      <image class="cs_link_img" src="{{brand_info.default_icon_url+'serviceIcon.png'}}" mode="aspectFit"/>
+    </button>
+    <btns 
+    wx:if="{{!isLogin}}"
+    isLogin="{{isLogin}}"
+    class="user_authorize_btn"
+    bindclickcallback="authorizeUserInfo"
+    >
+    </btns>
+  </block>
+</view>
+
+

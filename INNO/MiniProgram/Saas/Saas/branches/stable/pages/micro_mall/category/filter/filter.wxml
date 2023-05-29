@@ -1,0 +1,47 @@
+<form bindsubmit="formAction" report-submit="true">
+        <view class="filter {{hidePanel?'showFilter':'hideFilter'}}" bindtap="closePanel" hidden='{{showImg}}'>
+            <scroll-view class="right_panel {{hidePanel?'hide_panel':''}}" scroll-y style="padding-bottom:calc({{isIphoneX?'126rpx + 34px' + '' :'126rpx'}});" catchtap="stopClose">
+                <view 
+                    wx:for="{{filterList}}" 
+                    wx:for-item="wrapper" 
+                    wx:for-index="wrapperIndex" 
+                    wx:key="wrapperIndex"
+                    hidden="{{wrapper.PropertyName=='品牌' && wrapper.CurGoodsBrandPropertyArray.length==0}}" 
+                    class='right_inner'
+                    >
+                        <view class='property'>
+                            <view class='header'>
+                                <view class='title'>{{wrapper.PropertyName}}</view>
+                                <view class='icon_wrapper'>
+                                    <image src="{{wrapper.isFixed?arrow_show:arrow_hide}}" mode='aspectFit' class='arrow' wx:if="{{wrapper.hasMore}}" bindtap="showMore" data-index="{{wrapperIndex}}" />
+                                </view>
+                            </view>
+                            <view class="content {{wrapper.isFixed?'fixed':''}}">
+                                <view 
+                                    class="item text-flow" 
+                                    style="{{itemSort.isActive?'background: '+brandInfo.style.font_color+';'+'color:white'+';'+'border:'+'1px solid transparent':''}}" 
+                                    wx:for="{{wrapper.GoodPropertyArray || wrapper.ColorPropertyArray || wrapper.SizePropertyArray || wrapper.CurGoodsBrandPropertyArray}}"
+                                    wx:key="itemIndex" wx:for-item="itemSort" wx:for-index="itemIndex" bindtap="selectSort" 
+                                    data-index="{{itemIndex}}" 
+                                    data-sort="{{wrapperIndex}}" 
+                                    data-data="{{wrapper}}" 
+                                    data-arr-key="{{itemSort.arrKey}}"
+                                    data-color-id="{{itemSort.color_id}}" 
+                                    data-size-id="{{itemSort.size_id}}" 
+                                    data-attr-id="{{itemSort.attr_id || wrapper.id}}" 
+                                    data-attr-value="{{itemSort.attr_value}}"
+                                    data-brand-id="{{itemSort.goods_brand_id}}"
+                                    >
+                                    {{itemSort.attr_value || itemSort.color_name || itemSort.size_name || itemSort.goods_brand_name}}
+                                </view>
+                            </view>
+                            <!-- <view class='lines'></view> -->
+                        </view>
+                </view>
+            </scroll-view>
+            <view catchtap='_noFn' class="btn_group {{hidePanel?'hide_btn':''}} {{isIphoneX ? 'sk_box_IX' : ''}}">
+                <button class='btn_reset' form-type='submit' hover-class="none" catchtap='reset' style="{{'color: '+brandInfo.style.font_color+';border-color:'+brandInfo.style.font_color+';'}}">重置</button>
+                <button class='btn_confirm' form-type='submit' hover-class="none" bindtap="submit" style="{{'background: '+brandInfo.style.font_color+';'}}">确定</button>
+            </view>
+        </view>
+</form>

@@ -1,0 +1,12 @@
+<!--pages/micro_mall/huiyou/act/index.wxml-->
+<import src="./list/index"></import>
+<view class="list-box {{ipx_p_b_style}} {{customTab?'customTab':''}}"> 
+  <template is="scroll" data="{{listData:list,btnText,isStaff}}"/>
+</view>
+<btns wx:if="{{!isLogin}}" class="login-btn fullW fullH fixed" bindclickcallback="loginCallBack"></btns>
+<!--分享选择框-->
+<share 
+  id="shareModule"  
+  bindchooseShareType="chooseShareType" 
+  custom-tab="{{customTab}}"></share>  
+<shareImg id="shareImg" allData="{{allData}}"></shareImg>

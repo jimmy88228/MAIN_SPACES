@@ -1,0 +1,3 @@
+<picker class="date-time-picker-in" disabled="{{disabled}}" mode="multiSelector" bindchange="pickerChange" bindcolumnchange="pickerColumnChange" bindcancel ="pickerCancel" value="{{pickerIndex}}" range="{{[pickerArray[0], pickerArray[1], pickerArray[2]]}}" range-key="{{'name'}}">
+  <slot />
+</picker>

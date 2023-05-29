@@ -1,0 +1,27 @@
+.title_box{
+
+}
+.title{
+  line-height: 26rpx;
+  padding: 0 20rpx 15rpx 0;
+  position: relative;
+  font-size: 28rpx;
+}
+.title>view{
+  line-height: 40rpx;
+}
+.is_required {
+  padding-right: 4rpx;
+  color: red;
+  transform: translateY(-80%);
+  position: absolute;
+  top: 100%;
+  left: -14rpx;
+}
+.tips{  
+  padding-left: 10rpx; 
+  padding-bottom: 16rpx;
+  font-size: 24rpx;
+  line-height: 24rpx;
+  color: #7f7f7f;
+}

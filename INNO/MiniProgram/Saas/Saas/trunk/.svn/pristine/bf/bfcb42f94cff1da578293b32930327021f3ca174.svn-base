@@ -1,0 +1,13 @@
+<window class="window" ext-class="window-ext">
+	<view class="main" style="{{boxStyle}}">
+    <!-- 头部图 -->
+    <image class="top_img" src="../../../images/micro_mall/assistance/oval.png" mode="widthFix" />
+    <!-- 头像 -->
+    <image wx:if="{{sourceUserAvatar}}" class="user_avatar" src="{{sourceUserAvatar}}" />
+    <view class="assistance_msg {{'status-' + code}}">{{code == 1 ? "感谢你的助力" : "助力失败了"}}</view>
+    <view class="assistance_tips">{{code == 1 ? "你已成功为TA助力" : msg}}</view>
+    <view class="btn_con">
+      <button class="confirm_btn" bindtap="dismiss">知道了</button>
+    </view>
+  </view>
+</window>

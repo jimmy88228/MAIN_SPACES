@@ -1,0 +1,76 @@
+<window class="window" ext-class="window-ext">
+  <view class="search_area" style="{{boxStyle}}">
+    <view>
+      <view class="s_tit">选择会员</view>
+      <view class="s_cont">
+        <view class="s_input">
+          <view class="input_prefix">
+            <picker class="option_picker" mode="selector" disabled="{{false}}" range="{{optionPicker.range}}" range-key="{{optionPicker.rangeKey}}" value="{{optionPicker.value}}" bindchange="handleOptionPickerChange" >
+              <view class="input_options">
+                <view class="option_name">{{optionPicker["range"][optionPicker.value][optionPicker.rangeKey]}}</view>
+                <view class="tick_icon"></view>
+              </view>
+            </picker>
+          </view>
+
+          <view class="input_middle">
+            <input class="search_input" bindinput='handleUserInput' value="{{search.searchStr}}" />
+          </view>
+
+          <view class="input_suffix">
+            <button class="search_btn" style="{{brand_info.style ? 'background-color:'+ brand_info.style.bg_color + ';' : ''}}" bindtap="handleSearchTap">搜索</button>
+          </view>
+        </view>
+
+        <view class="s_user" style="border-color: {{brand_info.style.bg_color}}" hidden="{{!selected.userToken}}">
+          <image class="s_user_avatar" src="{{selected.portrait_path}}" />
+          <text class="s_user_name">{{selected.realName}}</text>
+          <text class="s_user_card">{{selected.cardNo}}</text>
+        </view>
+      </view>
+
+      <view class="s_footer">
+        <view class="fan_radio" catchtap="isFansChange">
+          <view class="radio_select">
+            <image src="{{return_active}}" class="radio_icon" mode="widthFix" wx:if="{{!search.isFans}}" />
+            <image src="{{return_img}}" class="radio_icon" mode="widthFix" wx:else />
+          </view>
+          <view class="radio_name">粉丝</view>
+        </view>
+
+        <view class="s_btns">
+          <view class="footer_btn" style="{{brand_info.style ? 'background-color:'+ brand_info.style.bg_color + ';' : ''}}">
+            <button hover-class='none' style="color:#fff;" catchtap='confirm'>确认</button>
+          </view>
+          <view class="footer_btn"><button hover-class='none' catchtap='dismiss'>取消</button></view>
+        </view>
+      </view>
+    </view>
+  </view>
+  <view class="input_picker_bg" wx:if="{{showInputPicker}}" catchtap="inputPickerToggleF"></view>
+  <view class="input_picker" wx:if="{{showInputPicker}}">
+    <view class="inputPickerConfirm" catchtap="handleInputPickerConfirm">
+      <view></view>
+      <view class="title">
+        选择会员
+      </view>
+      <view class="i_confirm">
+        确定
+      </view>
+    </view>
+    <picker-view 
+      class="input_picker" 
+      indicator-style="height: 50px;color: #ffffff; z-index: 0; background-color: #ffffff" 
+      value="{{inputPicker.value}}"
+      bindpickstart="handleInputPickerStart"
+      bindpickend="handleInputPickerEnd"
+      bindchange="handleInputPickerChange"
+    >
+      <picker-view-column>
+        <view wx:for="{{inputPicker.range}}" wx:key="index" style="line-height: 50px; text-align: center;">
+          {{item.realName}} {{item.cardNo}}
+        </view>
+      </picker-view-column>
+    </picker-view>
+  </view>
+</window>

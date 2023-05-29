@@ -1,0 +1,86 @@
+/* components/micro-page/items/advertise/advertise.wxss */
+
+.list {
+  display: flex;
+  width: 100%;
+  align-items: center;
+  position: relative;
+  /* 白条测试 */
+  margin-top: -0.5px;
+}
+.list.scroll{
+  /* height: 500rpx; */
+}
+.list.warp{
+  flex-wrap: wrap;
+}
+.list-item {
+  /* flex: 1; */
+  flex-shrink: 0;
+  position: relative;
+}
+.list-img{
+  /* width: 100%; */
+  width: calc(100% + 1rpx);
+  position: relative;
+  display: block;
+}
+.map_area{
+  position: absolute;
+  z-index: 11;
+}
+.init .list-img{
+  /* min-height: 250rpx; */
+  /* background: #dfdfdf; */
+  width: 96%;
+  margin: 8rpx auto;
+}
+.init .initBg{
+  width: 100%;
+  height: 100%;
+  background: #dfdfdf;
+  position: absolute;
+  z-index: 2;
+  left: 0;
+  top: 0;
+}
+.video{
+  width: 100%;
+  height: 100%;
+  display: block;
+  position: absolute;
+  top: 50%;
+  left: 0px;
+  transform: translateY(-50%);
+}
+.btn_link{
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  z-index: 12;
+}
+.btns-box{
+  /* position: absolute;
+  left: 0;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 2; */
+}
+.relative{
+  position: relative;
+}
+.ovh{
+  overflow: hidden;
+}
+.testClass{
+  position: fixed;
+  z-index: 999;
+  width: 500rpx;
+  height: 700rpx;
+  border: 1px solid;
+  left: 0;
+  top: 200rpx;
+}

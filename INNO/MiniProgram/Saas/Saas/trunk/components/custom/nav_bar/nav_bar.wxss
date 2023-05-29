@@ -1,0 +1,24 @@
+/* components/custom/nav_bar/nav_bar.wxss */
+.bar_box{
+  position: fixed;
+  left: 0;
+  z-index: 100;
+  display: flex;
+  width: 100%;
+  justify-content: center;
+  align-items: center;
+  background: #fff;
+}
+.main_icon{
+  /* padding-left: 30rpx; */
+  position: absolute;
+  left: 0;
+  top: 50%;
+  transform: translateY(-50%);
+}
+.img_back{
+  width: 18rpx;
+  height: 34rpx;
+  display: block;
+  padding: 15rpx 60rpx 15rpx 20rpx;
+}

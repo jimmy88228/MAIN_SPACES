@@ -1,0 +1,16 @@
+{
+  "navigationBarTitleText": "商品详情",
+  "backgroundColor":"#fbfbfb",
+  "usingComponents": {
+    "dialog": "/components/ui/cps/dialog/dialog",
+    "cs": "/components/cs/custom_service",
+    "popup":"./popup/popup",
+    "btns": "/components/buttons/btns",
+    "share": "/pages/micro_mall/goods/popup/share",
+    "shareImg": "/pages/micro_mall/goods/popup/shareImg",
+    "multi_color": "/components/multi_color/multi_color",
+    "specPop":"/components/pop/specPop",
+    "comments":"/components/comments/comments",
+    "sizeChart": "/pages/micro_mall/goods/module/sizeChart/sizeChart"
+  }
+}

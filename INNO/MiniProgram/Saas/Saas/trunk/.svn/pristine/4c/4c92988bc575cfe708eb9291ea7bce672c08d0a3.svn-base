@@ -1,0 +1,14 @@
+/* pages/micro_mall/huiyou/act/index.wxss */
+@import "./list/index.wxss";
+page{
+  height: 100%;
+}
+.list-box{ 
+  box-sizing: border-box;
+  height: 100%;
+}
+.login-btn{
+  left: 0;
+  top: 0;
+  z-index: 99;
+}

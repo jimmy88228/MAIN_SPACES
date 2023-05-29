@@ -1,0 +1,6 @@
+<!--components/micro-page/items/rich-text/rich-text.wxml-->
+<wxs module="dfCss" src="../../../help/defaultCss.wxs"></wxs>
+<!-- <view class="main {{!isInited?'init':''}}" id="main" style="{{dfCss.getDfCss(_data,screenWidth)}}"> -->
+<view class="main" id="main" style="{{dfCss.getDfCss(_data,screenWidth)}}">
+  <rich-text space="ensp" nodes="{{htmlNodes}}"></rich-text>
+</view>

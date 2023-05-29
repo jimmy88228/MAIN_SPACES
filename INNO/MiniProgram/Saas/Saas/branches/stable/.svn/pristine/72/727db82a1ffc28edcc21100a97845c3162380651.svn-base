@@ -1,0 +1,8 @@
+{
+  "navigationBarTitleText": "",
+  "usingComponents": {
+    "pageTab": "/components/custom/pageTab/pageTab",
+    "micro-page": "/components/micro-page/micro-mix/micro-page/micro-page",
+    "indexHeader": "/components/indexHead/indexHeader"
+  }
+}

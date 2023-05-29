@@ -1,0 +1,167 @@
+/* pages/micro_mall/prepaid/prepaid_card_erp.wxss */
+page {
+  background: #fff;
+}
+
+.canUseShop {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  padding-top: 10rpx;
+  padding-right:30rpx;
+  box-sizing: border-box;
+}
+
+.shop_logo {
+  width: 45rpx;
+  height: 45rpx;
+}
+
+.shop_text {
+  padding: 0 5rpx;
+  margin-left: 2rpx;
+  line-height: 26rpx;
+}
+
+/* .shop_in {
+  transform: rotate(90deg);
+  -ms-transform: rotate(90deg);
+  -moz-transform: rotate(90deg);
+  -webkit-transform: rotate(90deg);
+  -o-transform: rotate(90deg);
+  width: 20rpx;
+  height: 20rpx;
+} */
+.arrow{
+  width: 14rpx;
+  height: 14rpx;
+  border-right: 1px solid #171717;
+  border-bottom: 1px solid #171717;
+  transform: rotate(-45deg);
+}
+.prepaid_card {
+  text-align: center;
+  padding-bottom: 120rpx;
+}
+
+.brand_logo {
+  margin: 20rpx 0px;
+}
+
+.brand_logo image {
+  width: 40%;
+  margin: 0 auto;
+  display: block;
+}
+
+.cont_title {
+  padding: 30rpx 0px;
+}
+
+.prepaid_card_info {
+  margin: 0 auto;
+  width: 640rpx;
+  height: 320rpx;
+  background-repeat: no-repeat;
+  background-size: 100% 100%;
+  background-position: center center;
+  text-align: left;
+  position: relative;
+}
+
+.brand_card_logo {
+  padding-top: 30rpx;
+  padding-left: 30rpx;
+  width: 40%;
+}
+
+.brand_card_logo image {
+  display: block;
+}
+
+.prepaid_card_tip {
+  padding: 30rpx 0px;
+}
+
+.card_msg {
+  position: absolute;
+  left: 0px;
+  bottom: 0px;
+  padding-left: 30rpx;
+}
+
+.card_msg_row {
+  padding: 20rpx 0px;
+}
+
+.bind_phone {
+  padding-bottom: 30rpx;
+}
+
+.card_phone_icon {
+  width: 20rpx;
+  display: inline-block;
+  vertical-align: middle;
+}
+
+/* add */
+.note_pic image {
+  width: 100%;
+  display: block;
+}
+
+.mini_logo {
+  width: 100rpx;
+  height: 100rpx;
+}
+
+.phone_number {
+  vertical-align: middle;
+  margin-left: 20rpx;
+}
+
+.scan_code_wrapper {
+  width: 300rpx;
+  margin: 30rpx auto;
+}
+
+.scan_code {
+  width: 100%;
+  height: 80rpx;
+  line-height: 80rpx;
+  text-align: center;
+  font-size: 26rpx;
+  border-radius: 5px;
+}
+
+.recharge_wrapper {
+  position: fixed;
+  left: 0px;
+  bottom: 0px;
+  padding: 0px 55rpx;
+  width: 640rpx;
+  background-color: #fff;
+}
+
+.recharge,
+.recharge_none {
+  width: 100%;
+  height: 80rpx;
+  line-height: 80rpx;
+  text-align: center;
+  font-size: 26rpx;
+  border-radius: 5px;
+  color: #fff;
+  margin: 20rpx 0px;
+}
+
+.recharge_none {
+  color: #000;
+  background: #e1e1e1;
+}
+
+.bind_row {
+  display: inline-block;
+}
+
+.arrow{}

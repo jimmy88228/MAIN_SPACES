@@ -1,0 +1,6 @@
+<!--components/empty_tip/empty_tip.wxml-->
+<view class="empty_box flex_global flex_col flex_al_c">
+  <image wx:if="{{showImg}}" src="{{empty_tip_img}}" mode="aspecFit" class="empty_img ep_p"></image>
+  <view class="empty_tip ep_p">{{tip}}</view>
+  <button wx:if="{{showBtn}}" catchtap="jump" class="empty_btn ep_p" hover-class="none">{{btnText}}</button>
+</view>

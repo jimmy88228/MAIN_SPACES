@@ -1,0 +1,8 @@
+{
+  "component": true,
+  "usingComponents": {
+    "agreementPop": "/components/pop/agreementPop",
+    "getCouponsPop": "/components/pop/getCouponsPop/getCouponsPop",
+    "contactStaffGuide": "/components/pop/contactStaffGuide/contactStaffGuide"
+  }
+}

@@ -1,0 +1,6 @@
+{
+  "navigationBarTitleText": "订单结算",
+  "usingComponents": {
+    "btns": "/components/buttons/btns"
+  }
+}

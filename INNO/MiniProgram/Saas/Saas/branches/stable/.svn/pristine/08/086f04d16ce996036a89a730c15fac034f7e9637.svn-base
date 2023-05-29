@@ -1,0 +1,18 @@
+<!--components/custom/alert.wxml-->
+<view class="{{show_alert ? '' : 'hide'}}">
+  <view class="alert_bg {{alert_animate ? 'isshow' : ''}}" ></view>
+  <view class="alert_area {{ alert_animate ? 'isshow' : 'ishide'}}">
+    <view class="alert_cont">
+      <view class="alert_title">{{title}}</view>
+      <view class="alert_content">{{content}}</view>
+    </view>
+    <view class="alert_btns d_flex">
+      <view class="alert_btn_area flex1" wx:if="{{show_cancel}}">
+        <button class="alert_btn cancel_btn" catchtap='cancelClick' >取消</button>
+      </view>
+      <view class="alert_btn_area flex1" wx:if="{{show_confirm}}">
+        <button class="alert_btn confirm_btn"catchtap='confirmClick' >确定</button>
+      </view>
+    </view>
+  </view>
+</view>

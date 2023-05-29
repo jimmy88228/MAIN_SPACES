@@ -1,0 +1,69 @@
+@import "/static/wxss/common.wxss";
+.nav-view{
+  width:100%;
+  position:fixed;
+  top:0px;
+  left:0px;
+  z-index:999;
+}
+.nav-box{
+  /* padding:20rpx;
+  width:32rpx;
+  height:32rpx; */
+  display:flex;
+  align-items: center;
+  position:relative;
+  padding:0 16rpx;
+}
+.back-icon{
+  flex-grow: 0;
+  padding:15rpx;
+  position: relative;
+  z-index:2;
+}
+.nav-logo{
+  display:block;
+  width:30rpx;
+  height:30rpx;
+  position: relative;
+}
+.home-icon{
+  flex-grow: 0;
+  padding:5rpx;
+  position: relative;
+  z-index:2;
+  border-radius: 100%;
+  overflow: hidden;
+  background-color:#fff;
+}
+.nav-home{
+  display:block;
+  width:50rpx;
+  height:50rpx;
+  position: relative;
+}
+.back-arrow{
+  position:absolute;
+  top:50%;
+  left:50%;
+  transform: translate(-50%,-50%) rotate(-45deg);
+  border:6rpx solid #000;
+  border-radius: 5rpx;
+  border-right:transparent;
+  border-bottom:transparent;
+  width:68%;
+  height:68%;
+}
+
+.nav-title{
+  position:absolute;
+  top:50%;
+  left:50%;
+  transform: translate(-50%,-50%);
+  max-width:100%;
+  font-size:28rpx;
+}
+.nav-stay{
+  width:100%;
+}
+

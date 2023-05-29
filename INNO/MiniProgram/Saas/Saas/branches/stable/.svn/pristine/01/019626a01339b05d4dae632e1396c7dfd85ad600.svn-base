@@ -1,0 +1,56 @@
+<import src="../module/promote/promote.wxml" />
+<view id="baseInfo" class="time_down_box">
+  <view class="top_box">
+    <view class="title font_24">以下优惠适用如下商品</view>
+    <view class="time" wx:if="{{baseInfo.timeType==1}}">
+      每周<block wx:for="{{baseInfo.weekdays}}" wx:key="index">{{WEEK[item]}}<block wx:if="{{index < baseInfo.weekdays.length}}"> , </block></block>促销
+    </view>
+    <view class="time" wx:elif="{{baseInfo.timeType==2}}">每月{{baseInfo.limitDays}}号促销</view>
+    <view class="time_content" wx:else>
+      <view class="tip_title font_22">距结束</view>
+      <view class="time_down">
+        <text wx:if="{{count_down.day>0}}" class="i_b_m">{{count_down.day}}天</text>
+        <text wx:if="{{count_down.day>0}}" class="i_b_m p_r_f_5"> </text>
+        <text class="i_b_m time_style">{{count_down.hour}}</text>
+        <text class="i_b_m p_r_f_5">:</text>
+        <text class="i_b_m time_style">{{count_down.min}}</text>
+        <text class="i_b_m p_r_f_5">:</text>
+        <text class="i_b_m time_style">{{count_down.sec}}</text>
+      </view>
+    </view> 
+  </view>
+  <view class="">
+    <template is="promote-module" data="{{array: list, type: 'detail'}}"></template>
+  </view>
+</view>
+<!-- <scroll-view style="height:calc(100% - {{height}}px)" scroll-y bindscrolltolower="handleScroll" class="category_page"> -->
+  <form bindsubmit="formAction" report-submit="true">
+    <!--没有商品时-->
+    <view class="has_no_goods" hidden="{{!none}}">
+      <image src="{{brand_info.icon_url}}micro_mall/category/img_empty_goods.png" mode="widthFix" />
+      <view class="txt">没有活动商品</view>
+    </view>
+    <view class="goods_list" hidden="{{none}}">
+      <view class="goods_item_box right">
+        <block wx:for="{{goods_list}}" wx:key="index">
+          <view class="content_box">
+            <button catchtap='handleJump' form-type='submit' hover-class='none' data-goods_id="{{item.goods_id}}" data-color_id="{{item.color_id}}" class="goods_item">
+              <view class="goods_img_box {{sys_info.goods_image_size == '4-3' ? 'ratio_3_4' : ''}}">
+                <view class="goods_img_stay">
+                  <image src="{{item.goodsImage}}" mode="aspectFit" />
+                </view>
+              </view>
+            </button>
+            <view class="goods_info">
+              <view class="goods_name font_22 C_333">{{item.goods_name}}</view>
+              <view class="goods_price font_28 ">
+                <view class="shop_price" style="color:{{ brand_info.style.font_color}};">¥{{item.price}}</view>
+                <view class="market_price view_crossed font_22" wx:if="{{item.market_price!=item.price}}">¥{{item.market_price}}</view>
+              </view>
+            </view>
+          </view>
+        </block>
+      </view>
+    </view>
+  </form>
+<!-- </scroll-view> -->

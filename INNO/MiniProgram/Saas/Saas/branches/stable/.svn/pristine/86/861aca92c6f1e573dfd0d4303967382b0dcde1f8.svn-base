@@ -1,0 +1,115 @@
+<!--pages/micro_mall/sk/orders-sk/order-status.wxml-->
+<form bindsubmit="formAction" report-submit="true">
+  <view class="main {{isIphoneX?'i_p_box':''}}" hidden="{{!showPage}}">
+    <view class="time_tip" wx:if="{{orderInfos.state==1 && !isPayed}}">
+        <text>请在<text class="time">{{time}}</text>前支付订单</text>
+    </view>
+    <view class="status_box" wx:elif="{{orderInfos.state!=1}}">
+      <block wx:if="{{orderInfos.state==2 || orderInfos.state==6}}">
+        <image src="{{sk_success}}" mode="aspectFit" class="img_status"></image>
+        <view class="status_msg" style="color:{{ac_conf.theme_color}}">
+          支付成功
+        </view>
+      </block>
+      <block wx:else> <!-- 3 4 5  -->
+        <image src="{{sk_fail}}" mode="aspectFit" class="img_status"></image>
+        <view class="status_msg status_fail">
+          {{failReason.tip}}
+        </view>
+      </block>
+    </view>
+    <view class="box p_b_n">
+      <view class="title">{{orderInfos.isForecdShopSelf == 1?'自提店铺':'收货地址详情'}}</view>
+      <view class="address">
+        <block wx:if="{{address}}">
+          <view class="a_msg">
+            <view class="a_n_p">
+              <text class="a_name">{{address.consignee}}</text>
+              <text>{{address.phone}}</text>
+            </view>
+            <view class="a_a_d">{{orderInfos.isForecdShopSelf == 1?storeInfo.storeName:address.address}}</view>
+          </view>
+        </block>
+      </view>
+    </view>
+    <!-- <block wx:if="{{orderInfos.isForecdShopSelf == 1}}">
+      <view class="box p_b_n">
+        <view class="title">自提店铺</view>
+        <view class="address">
+          <block wx:if="{{address}}">
+            <view class="a_msg">
+              <view class="a_a_d">{{storeInfo.storeName}}</view>
+            </view>
+          </block>
+        </view>
+      </view>
+      <view class="box p_b_n">
+        <view class="title">收货人信息</view>
+        <view class="address">
+          <view class="a_msg">
+            <view class="a_n_p" style="padding-bottom:0;">
+              <text class="a_name">{{address.consignee}}</text>
+              <text>{{address.phone}}</text>
+            </view>
+          </view>
+        </view>
+      </view>
+    </block> -->
+ 
+
+    <view class="box">
+      <view class="title">商品详情</view>
+      <view class="goods" wx:for="{{goods}}" wx:key="index">
+        <view class="img_goods_box">
+          <image src="{{item.picture}}" mode="aspectFit" class="img_goods"></image>
+        </view>
+        <view class="msg">
+          <view class="m_title">{{item.goodsName}}</view>
+          <view class="sku">{{item.goodsAttr}}</view>
+          <view class="price_box">
+            <view class="price">
+              <text class="unit">{{item.price}}</text>
+              <text class="p_sm unit_sm _C_7f" wx:if="{{item.price!=item.marketPrice}}">{{item.marketPrice}}</text>
+            </view>
+            <view class="count">x{{item.goodsNumber}}</view>
+          </view>
+        </view>
+      </view>
+    </view>
+
+    <view class="box p_t_n p_b_n">
+      <view class="pay_msg">
+        <view>商品总计</view>
+        <view>共{{orderInfos.goodsNum}}件 ￥{{orderInfos.price}}</view>
+      </view>
+      <view class="pay_msg">
+        <view class="_C_7f">优惠券抵扣</view>
+        <view>{{orderInfos.discountPrice>0?'-':''}}￥{{orderInfos.discountPrice||0}}</view>
+      </view>
+      <view class="pay_msg">
+        <view class="_C_7f">订单运费</view>
+        <view>￥{{orderInfos.factFrieght}}</view>
+      </view>
+      <view class="pay_msg _bold" style="border:0">
+        <view>实际支付</view>
+        <view style="color:{{ac_conf.theme_color}}">￥{{orderInfos.orderFactPrice}}</view>
+      </view>
+    </view>
+
+    <view class="btn_buy_box {{ipx_b_b_style}}">
+    <!-- <view class="btn_buy_box {{isIphoneX?'ipx_b':''}}"> -->
+      <button hover-class="none" form-type="submit" wx:if="{{orderInfos.state==1 && !isPayed && showBtn}}" style="background:{{ac_conf.theme_color}}" class="btn_buy" bindtap="payAgain">
+      使用微信支付{{orderInfos.orderFactPrice}}元
+      </button>
+      <button wx:elif="{{orderInfos.state!=1 && orderInfos.outOrderId && showBtn}}" hover-class="none" form-type="submit" data-url="/pages/micro_mall/order/order_info" data-order_id="{{orderInfos.orderId}}" data-out_order_id="{{orderInfos.outOrderId}}" data-type="detail" bindtap="jump" style="background:{{ac_conf.theme_color}}" class="btn_buy">
+        订单详情
+      </button>  
+      <button wx:elif="{{(orderInfos.state==2 && !orderInfos.outOrderId) && showBtn}}" hover-class="none" form-type="submit" class="btn_buy polling">
+        <view class="poll_cir"></view><text>订单详情同步中...</text>
+      </button>
+    </view>
+
+  </view>
+</form>
+<orderSync id="orderSync" mask-bg="transparent" touch-cancel="{{false}}" type='small' tips="订单同步中"/>
+<dialog id="dialog"></dialog>

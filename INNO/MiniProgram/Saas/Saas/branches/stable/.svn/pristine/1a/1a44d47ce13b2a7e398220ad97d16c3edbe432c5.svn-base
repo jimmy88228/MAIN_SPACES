@@ -1,0 +1,49 @@
+<!--components/comments/comments.wxml-->
+<block wx:if="{{commentList.length > 0}}">
+	<view class="b_t"></view>
+	<view class="goods_comment">
+		<view class="comment_tit font_24">
+			<text class="C_7f">商品评价</text>
+			<text class="high_praise font_22" style="color:{{brand_info.style.font_color}};">好评度{{favCommentRatio}}</text>
+		</view>
+		<view class="comment_list">
+			<view class="comment_item" wx:for="{{commentList}}" wx:for-item="commentItem" wx:key="order_id" wx:for-index="itemIndex">
+				<view class="comment_info_tip border_bottom">
+					<view class="user_img_box">
+						<image src="{{commentItem.portrait_path || defaultAvatar}}" class="user_img" mode="aspectFit"></image>
+					</view>
+					<view class="user_name font_20">{{commentItem.real_name}}</view>
+					<view class="score_box">
+						<image wx:for="{{commentItem.score}}" wx:key="index" src="{{item ? start_icon_active : start_icon}}" class="start" mode="widthFix"></image>
+					</view>
+				</view>
+				<view class="comment_info">
+					<view class="comment_content font_24">{{commentItem.comment_content}}</view>
+					<view class="order_goods_info font_18">
+						<text>{{commentItem.goods_attr}}</text>
+						<view class="time">{{commentItem.create_time}}</view>
+					</view>
+					<view class="goods_share_img_list">
+						<view class="goods_share_img_item" wx:for="{{commentItem.imgList}}" wx:key="index">
+							<image src="{{item}}" mode="aspectFit" data-itemindex="{{itemIndex}}" data-imgindex="{{index}}" bindtap="handleShowBigImg"></image>
+						</view>
+					</view>
+				</view>
+				<view class="reply_msg_view" wx:if="{{commentItem.reply_msg}}">
+					<view class="table reply_msg_table font_18">
+						<view class="table_cell t_l reply_msg_tip">
+							<text class="tip_line" style="background-color:{{brand_info.style.bg_color}};"></text>
+							<text class="tip_txt">官方回复</text>
+						</view>
+						<view class="table_cell t_r reply_msg_time">{{commentItem.reply_time}}</view>
+					</view>
+					<view class="reply_msg_cont font_24">{{commentItem.reply_msg}}</view>
+				</view>
+			</view>
+
+			<view class="more_comment_box">
+				<button hover-class='none' bindtap='jump_comment' class="more_comment font_20 color_96">查看全部评价</button>
+			</view>
+		</view>
+	</view>
+</block>

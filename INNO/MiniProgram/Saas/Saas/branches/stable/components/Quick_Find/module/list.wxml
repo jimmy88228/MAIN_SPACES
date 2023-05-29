@@ -1,0 +1,9 @@
+<!--components/Quick_Find/module/list.wxml-->
+<view id="box" class="box">
+	<view class="key" style="{{active?'color:#171717;':''}}">{{listMod.key||""}}</view>
+	<block wx:for="{{listMod.datas}}" wx:key="index">
+		<view class="item" catchtap="onTap" data-id="{{item.shippingId}}" data-name="{{item.shippingName}}">
+			{{item.shippingName}}
+		</view>
+	</block>
+</view>

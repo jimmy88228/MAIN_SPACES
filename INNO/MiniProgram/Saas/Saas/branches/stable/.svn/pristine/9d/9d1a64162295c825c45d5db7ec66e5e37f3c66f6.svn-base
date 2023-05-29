@@ -1,0 +1,6 @@
+<shopNav isEdit="{{isEdit}}"></shopNav>
+<cartList 
+isEditAll="{{isEdit}}"
+id="cartListModule" 
+checkIphoneX="{{true}}" 
+customTab="{{customTab}}"></cartList>

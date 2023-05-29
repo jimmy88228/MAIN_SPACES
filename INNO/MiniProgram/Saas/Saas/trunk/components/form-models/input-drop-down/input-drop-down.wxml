@@ -1,0 +1,46 @@
+<!--components/form-models/input-drop-down/input-drop-down.wxml-->
+<!-- input输入框的下拉框组件 -->
+<view class="fold-box {{focus && searchText ?'unfold':''}}" style="--fold-height:{{_styleModels['fold-height']}};--unfold-height:{{_styleModels['unfold-height']}};--box-width:{{_styleModels['box-width']}};--item-height:{{_styleModels['item-height']}}">
+    <view
+        class="input-box flex-s-c {{inputActive?'active':''}}">
+        <mp-input 
+            id="mpInput" 
+            class="input-class-box"
+            setFocus
+            placeholder="{{placeholder}}" 
+            disabled="{{disabled}}"
+            placeholderStyle="color:#afafaf;"
+            ext-input-class="input-class {{inputActive?'active':''}}"
+            ext-placeholder-class="placeholder-class" 
+            bindhandleFocus="handleFocus"
+            bindtap="handleTap"
+            bindhandleInput="handleInput"></mp-input>
+        <view class="arrow-box flex-c-c" bindtap="handleToggle" wx:if="{{setUnfold}}">
+            <view class="arrow {{focus?'unfold':''}}"></view>
+        </view>
+    </view>
+    <mp-scroll-view 
+        wx:if="{{focus && searchText && vocabulary.length>0}}"
+        ext-scroll-view="scroll-box"
+        bindscrolltolower="scrollToLower">
+        <view class="scroll">
+            <block wx:for="{{vocabulary}}" wx:key="index">
+                <view class="vocabulary-item flex-s-c" catchtap="selectItem" data-data="{{item}}">
+                    <block wx:if="{{fromType == 'staff'}}">
+                        <text class="vocabulary-code">[{{item.dstb_staff_code}}]</text>
+                        <text class="vocabulary-name">{{item.dstb_staff_name}}</text>
+                    </block>
+                    <block wx:elif="{{fromType == 'store'}}">
+                        <text class="vocabulary-code">[{{item.storeCode}}]</text>
+                        <text class="vocabulary-name">{{item.storeName}}</text>
+                    </block>
+                    <!-- <text class="staff-code">[{{item.dstb_staff_code}}]</text>
+                    <text class="staff-name">{{item.dstb_staff_name}}</text> -->
+                </view>
+            </block>
+        </view>
+    </mp-scroll-view>
+    <view wx:elif="{{emptyText && focus && searchText}}" class="vocabulary-item emptyText">
+        {{emptyText}}
+    </view>
+</view>

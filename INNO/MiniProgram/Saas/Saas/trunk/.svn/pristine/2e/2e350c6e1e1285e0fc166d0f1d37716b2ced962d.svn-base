@@ -1,0 +1,7 @@
+{
+  "component": true,
+  "usingComponents": {
+    "marqueeView": "/components/custom/marquee_view",
+    "micro-page": "/components/micro-page/micro-mix/micro-page/micro-page"
+  }
+}

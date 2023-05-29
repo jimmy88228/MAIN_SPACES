@@ -1,0 +1,9 @@
+@import "/components/thirdParty/wxParse/wxParse.wxss";
+.wxParse-inline{
+  display: inline;
+}
+.product_pic::after{
+  display: inline;
+  content: "[图片]";
+  color: blue
+}

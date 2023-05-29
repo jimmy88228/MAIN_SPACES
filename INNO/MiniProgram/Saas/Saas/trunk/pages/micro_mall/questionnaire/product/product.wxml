@@ -1,0 +1,22 @@
+<view class="box" wx:if="{{info && info.length}}">
+  <swiper 
+    style="{{swiperH?'height:'+swiperH+'px': ''}}"
+    current="{{current}}" 
+    bindchange="handleSwiperChange"
+    autoplay
+    circular
+    interval="{{3000}}"
+  >
+    <swiper-item wx:for="{{info}}" wx:key="index" class="q_product">
+      <view class="g_info">
+        <view class="g_image">
+          <image src="{{item.goodsImg}}" data-src="{{item.goodsImg}}" bindtap="previewImage" />
+        </view>
+        <view class="g_name">
+          <view class="q_product_name">{{item.goodsName}}</view>
+        </view>
+        <view class="g_spec" wx:if="{{item.sizeName || item.colorName}}">规格 {{item.colorName}} {{item.sizeName?'/' + (item.sizeName || '') : ''}}</view>
+      </view>
+    </swiper-item>
+  </swiper>
+</view>

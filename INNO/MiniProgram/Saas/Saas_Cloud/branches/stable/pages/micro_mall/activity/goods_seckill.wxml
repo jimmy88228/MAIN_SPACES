@@ -1,0 +1,78 @@
+<!--pages/micro_mall/activity/goods_seckill.wxml-->
+<view class="goods_seckill" style="{{issue.background_image ? 'background-image:url('+issue.background_image+');' : ''}}">
+    <scroll-view scroll-y class="goods_seckill_scroll" bindscrolltolower="onReachBottom">
+        <search 
+        class="_input_box"
+        searchType="goods" 
+        placeText="请输入商品关键词" 
+        bindinputCallback="getKeywork"
+        bindonTapConfirm="handleFilterSearch" />
+        <view class="seckill_tit">
+            <image src="{{issue.title_image}}" mode="widthFix" />
+        </view>
+        <view class="category_page">
+
+            <view class="count_down_area" style="color:{{brand_info.style.font_color || '#000'}};">
+                <view class="count_down" style="background-image:url({{brand_info.icon_url}}micro_mall/clock_icon.png);">
+                    <text class="count_down_txt " wx:if="{{is_begin}}">距离秒杀结束 </text>
+                    <text class="count_down_txt " wx:else>距离秒杀开始 </text>
+                    <view class="count_down_num bold">
+                        <!-- <text class="down_day" wx:if="{{count_down.day > 0}}">{{count_down.day}}天</text>
+            <text class="down_hour">{{count_down.hour}}小时</text>
+            <text class="down_min">{{count_down.min}}分钟</text>
+            <text class="down_sec">{{count_down.sec}}秒</text> -->
+                        <text class="">{{time}}</text>
+                    </view>
+                </view>
+            </view>
+
+            <view class="goods_list">
+                <navigator url="../goods/goods_info?goods_id={{item.goods_id}}&color_id={{item.color_id}}&issued_id={{issue.issue_id}}" class="goods_item" hover-class='none' wx:for="{{seckill_data}}" wx:key="index">
+                    <view class="goods_img_box {{goods_image_size == '4-3' ? 'ratio_3_4' : ''}}">
+                        <view class="goods_img_stay">
+                            <image src="{{item.goods_thumb}}" mode="widthFix" />
+                        </view>
+                    </view>
+                    <!-- <view class="seckill_item_tip bg_E60012 radius_00 table" wx:if="{{item.zekou != '%'}}">
+              <view class="table_cell v_m">
+                <view class="font_24">折扣</view>
+                <text class="font_36">{{item.zekou}}</text>
+              </view>
+            </view> -->
+                    <view class="property_box" style='background:#E1E1E1' wx:if="{{item.goods_brief!='' && item.goods_brief!=null}}">
+                        <view class="propertyClass">
+                            {{item.goods_brief}}
+                        </view>
+                    </view>
+                    <view class="label_box">
+                        <!-- <block wx:for="{{goodsTagList}}" wx:key="id" wx:for-item="tag" > -->
+                        <block wx:for="{{goodsTagList}}" wx:key="id" wx:for-item="tag" wx:if="{{item.goods_id==tag.goods_id && tag.width>0 }}">
+                            <image class="tag_img" style='width:{{tag.width}}rpx' mode='widthFix' src='{{tag.pic_path}}'></image>
+                        </block>
+                    </view>
+                    <view class="goods_info font_22">
+                        <view class="goods_name">{{item.goods_name}}</view>
+                        <view class="goods_price" style="color:{{brand_info.style.font_color || '#000'}};">
+                            <view class="price_box">
+                                <text class="font_28" style='font-weight:600'>
+                                    <text class="money_char font_28" style='margin:0'>¥ </text>{{item.shop_price || item.price}}
+                                </text>
+                                <!-- <text class="good_integral C_E60012" wx:if="{{item.integral > 0}}">+{{item.integral}}积分</text> -->
+                                <view class="market_price text_crossed font_22" style='color:#B2B2B2;' wx:if="{{item.market_price != item.shop_price&&item.market_price!=item.price}}">
+                                    <text class="money_char font_22 line_t" style='margin:0;color:#B2B2B2;'>¥ </text>{{item.market_price}}
+                                </view>
+                            </view>
+                            <view class="salesVolume" wx:if="{{showSalesVolume==1}}"><text class="sale_title">销量</text><text>{{item.scoreStr}}</text></view>
+                        </view>
+                    </view>
+                </navigator>
+
+                <!--没有商品时-->
+                <view class="has_no_goods" wx:if="{{has_no_data}}">
+                    <image src="{{brand_info.icon_url}}micro_mall/category/img_empty_goods.png" mode="widthFix" />
+                    <view class="txt">没有搜索到商品</view>
+                </view>
+            </view>
+        </view>
+    </scroll-view>
+</view>

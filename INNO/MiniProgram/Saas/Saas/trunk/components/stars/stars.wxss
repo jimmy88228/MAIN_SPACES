@@ -1,0 +1,23 @@
+page {
+  --score_number: 0;
+  --gutter: 20 ;
+}
+.star_box{
+  display: flex;
+  align-items: center;
+}
+.star{
+  width: 38rpx;
+  height: 38rpx;
+  /* scale: calc(((var(--score_number) * 0.05) + 1)); */
+  transition: padding 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+.star_box.in .star.active{
+  animation: emphasize 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+@keyframes emphasize{
+  0%{transform: scale(1);}
+  50%{transform: scale(1.25);}
+  100%{transform: scale(1);}
+}

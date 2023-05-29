@@ -1,0 +1,19 @@
+<template name="tag-list">
+  <view class="tag-box" wx:if="{{tagJson[goods_id] && tagJson[goods_id].length}}" style="{{boxStyle||''}}">
+    <block 
+      wx:for="{{tagJson[goods_id]}}" 
+      wx:key="goods_id" 
+      wx:for-item="tag" 
+      wx:for-index="tag_index">
+      <image 
+        class="tag-img" 
+        mode='widthFix' 
+        data-id="{{goods_id}}" 
+        data-index="{{tag_index}}" 
+        bindload="loadTag"
+        style='width:{{tag.width || 0}}rpx;height:{{tag.height || 0}}rpx' 
+        src='{{tag.path}}'>
+      </image>
+    </block>
+  </view> 
+</template>

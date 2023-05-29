@@ -1,0 +1,61 @@
+.goods_cates_module {
+  padding: 0 25rpx 35rpx 25rpx;
+  display: flex;
+  align-items: center;
+  background-color: #ffffff;
+  max-height: 120rpx;
+}
+
+.goods_cates {
+  width: 88%;
+  display: flex;
+  overflow-x: scroll;
+  height: 60rpx;
+}
+
+.goods_cates::-webkit-scrollbar {
+  width: 0;
+  height: 0;
+  color: transparent;
+}
+
+.cate_item {
+  padding: 12rpx 20rpx;
+  position: relative;
+  white-space: nowrap;
+  display: inline-flex;
+  align-items: center
+}
+.cate_item .line {
+  width: 40%;
+  height: 5rpx;
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  transition: all 0.25s ease;
+  opacity: 0;
+}
+
+.cate_item .line.show {
+  opacity: 1;
+}
+
+
+.all_cates_btn {
+  width: 12%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transform: translateY(-5rpx);
+}
+
+.all_cates_btn>image {
+  width: 32rpx;
+  height: 48rpx;
+  transition: all 0.2s ease;
+}
+
+.all_cates_btn.active>image {
+  transform: scale(1.05);
+}

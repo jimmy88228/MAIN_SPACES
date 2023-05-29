@@ -1,0 +1,7 @@
+{
+  "navigationBarTitleText": "更新昵称/头像",
+  "usingComponents": {
+    "window": "/components/ui/cps/window/window",
+    "uploadAvatarBtn": "/components/buttons/uploadAvatarBtn"
+  }
+}

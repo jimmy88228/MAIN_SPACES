@@ -1,0 +1,38 @@
+/* 用来实现动画的keyframes;  从0度旋转到360度 */
+@keyframes spin {
+	from { transform: rotate(0deg); }
+	to { transform: rotate(360deg); }
+}
+
+/* 实现光线辐射效果 */
+.raysDemoHolder	{ 
+	position: relative; 
+	width: 490px; 
+	height: 490px; 
+	margin: 100px 0 0 200px; 
+}
+.raysLogo { 
+	width: 300px; 
+	height: 233px; 
+	text-indent: -3000px; 
+	background: url(logo.png) 0 0 no-repeat; 
+	display: block; 
+	position: absolute; 
+	top: 0; 
+	left: 0; 
+	z-index: 2; 
+}
+.rays	{ /* 表现动画效果 */
+	background: url(rays.png) 0 0 no-repeat; 
+	position: absolute; 
+	top: -100px; 
+	left: -100px; 
+	width: 490px; 
+	height: 490px; 
+
+	/* microsoft ie */
+	animation-name: spin; 
+	animation-duration: 40000ms; /* 40 seconds */
+	animation-iteration-count: infinite; 
+	animation-timing-function: linear;
+}

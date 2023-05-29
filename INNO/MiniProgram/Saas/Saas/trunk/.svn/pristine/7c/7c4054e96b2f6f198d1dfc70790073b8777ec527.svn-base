@@ -1,0 +1,21 @@
+<view class="btns_hold {{disabled && !hideDisStyle ? 'disabled' : ''}} {{positionType}}">
+    <slot></slot>
+    <block>
+      <block wx:if="{{isLogin || isNormal}}">
+        <button form-type="submit" class="handle_btn v1" catchtap='handleUserInfo' disabled='{{disabled}}' hover-class='none'></button>
+      </block>
+      <block wx:else> 
+        <button wx:if="{{isCanUrPf}}" form-type="submit" class="handle_btn v2" disabled='{{disabled}}' catchtap='handleUserInfo'></button>
+        <button wx:else form-type="submit" class="handle_btn v3" open-type='getUserInfo' disabled='{{disabled}}' bindgetuserinfo='handleUserInfo'></button>
+      </block>
+    </block>
+  </view>
+
+<!-- 注册协议 -->
+<agreementPop id="agreementPop" confirmIsGetInfoBtn="{{true}}" />
+
+<!-- 注册完成后领券 -->
+<getCouponsPop id="getCouponsPop" />
+
+<!--手机登录-->
+<loginPage id="loginPage" wx:if="{{needBindPhone}}" bindloginCallback="bindPhoneCallback"></loginPage>

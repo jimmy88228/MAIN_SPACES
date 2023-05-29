@@ -1,0 +1,188 @@
+/* pages/micro_mall/bargain/index/bargain_index.wxss */
+.banner, .active_banner{
+    width: 750rpx;
+    display: block;
+}
+.bargain_list{
+    padding:10rpx;
+    box-sizing: border-box;
+    /* padding-bottom:100rpx; */
+    background-color: rgba(248, 248, 248, 1);
+}
+.bargain_item{
+    display: flex;
+    padding:20rpx;
+    box-sizing: border-box;
+    margin-bottom: 20rpx;
+    border-radius: 16rpx;
+    background-color: #fff;
+}
+.product_img_wrapper{
+    /* flex-basis: 270rpx; */
+    margin-right: 20rpx;
+    width: 248rpx;
+    height: 248rpx;
+    overflow: hidden;
+    flex-shrink: 0;
+    position:relative;
+}
+.product_img{
+    width: 100%;
+    height: 100%;
+}
+.product_info_wrapper{
+    flex-grow: 1;
+    flex-shrink: 1;
+    padding-top: 10rpx;
+    min-height: 248rpx;
+    position: relative;
+    /* border-bottom: 1px solid #ddd; */
+    /* padding-top: 10rpx;
+    padding-bottom: 50rpx; */
+}
+.product_code{
+    width: 410rpx;
+    white-space: pre-wrap;
+}
+.product_name{
+    width: 410rpx;
+    font-size: 28rpx;
+    line-height: 38rpx;
+    display: -webkit-box;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    word-wrap: break-word;
+}
+.product_code{
+    font-size: 24rpx;
+    color: #7f7f7f;
+    margin-bottom: 20rpx;
+}
+.product_primary{
+    font-size: 24rpx;
+    color: #7f7f7f;
+    /* margin-bottom: 10rpx; */
+}
+.money_sign:before{
+    content: '￥';
+    font-size: 24rpx;
+}
+.money_sign2:before{
+    content: '￥';
+    font-size: 30rpx;
+    font-weight: 600;
+}
+.product_primary_title, .product_primary_price{
+    display: inline-block;
+    vertical-align: middle;
+    color: #7f7f7f;
+}
+.product_price_title, .product_price_wrapper{
+    display: inline-block;
+    vertical-align: baseline;
+}
+.product_price_title{
+    font-size: 26rpx;
+}
+.product_price{
+    font-size: 34rpx;
+    font-weight: 600;
+}
+.product_interact{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 410rpx;
+    margin-top: 40rpx;
+}
+.join{
+    font-size: 20rpx;
+    line-height: 32rpx;
+    height:32rpx;
+    padding: 0px 12rpx;
+    border-radius: 22rpx;
+    margin-top: 15rpx;
+    display: inline-block;
+    border: 1px solid transparent;
+}
+.join_txt{
+  display:flex;
+  height:100%;
+  justify-content: center;
+  align-items: center;
+}
+.bargain_btn{
+    width: 200rpx;
+    height: 66rpx;
+    line-height: 66rpx;
+    border-radius: 20px;
+    font-size: 28rpx;
+    color: #fff;
+    font-weight: 600;
+    box-shadow: 0 0 10px 0 rgba(225, 27, 27, .4);
+}
+
+.tips{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 100vh;
+}
+.count-box{
+    border-radius: 4rpx;
+    overflow: hidden;
+}
+.price_msg_box{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    width: 100%;
+}
+.price_msg{
+}
+.p_title{
+    font-size: 20rpx;
+    line-height: 20rpx;
+    color: #7f7f7f;
+}
+.p_box{
+    margin-top:15rpx ;
+}
+.p_price{
+    display: inline-block;
+    vertical-align: baseline;
+    line-height: 32rpx;
+}
+
+.p_m_price{
+    color: #B2B2B2;
+    padding-left: 8rpx;
+    display: inline-block;
+    vertical-align: baseline;
+    line-height: 24rpx;
+    text-decoration: line-through;
+}
+.btn_text{
+    opacity: 0.6;
+    color: #fff;
+}
+.can_bargain{
+    opacity: 1;
+}
+.btn_tiem{
+    color: #fff;
+    padding-top:4rpx;
+    opacity: 0.6;
+    font-size: 18rpx;
+    line-height: 18rpx;
+}
+.to_end{
+    opacity:.6;
+    color: #fff;
+  }

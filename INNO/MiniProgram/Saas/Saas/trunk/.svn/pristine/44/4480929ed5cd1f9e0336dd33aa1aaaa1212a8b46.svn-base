@@ -1,0 +1,229 @@
+/* pages/micro_mall/bargain/bargain/order_confirm.wxss */
+page {
+    background-color: #f3f3f3;
+}
+
+.order_detail{
+    padding-bottom: 150rpx;
+}
+.order_detail_item{
+    background: #fff;
+    margin-top: 10rpx;
+}
+.order_detail_item:first-of-type{
+    border-top: 1px solid #efefef;
+    margin-top: 0;
+}
+.addr_item{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 26rpx 16rpx 26rpx 36rpx;
+}
+.right_arrow{
+    width: 50rpx;
+}
+.r_arrow {
+    width: 50rpx;
+    display: block;
+}
+.addr_title{
+    font-size: 24rpx;
+    color: #7f7f7f;
+    margin-bottom: 20rpx;
+}
+.name_phone{
+    font-size: 26rpx;
+    margin-bottom: 24rpx;
+}
+.detail_addr{
+    width: 630rpx;
+    font-size: 26rpx;
+    white-space: pre-wrap;
+}
+
+.product_item{
+    padding: 20rpx 36rpx 36rpx 36rpx;
+}
+.product_item_item{
+    font-size: 24rpx;
+    color: #7f7f7f;
+    margin-bottom: 20rpx;
+}
+.product_item_info{
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-around;
+}
+.product_img, .pro_img{
+    width: 210rpx;
+    height: 210rpx;
+    border-radius: 4px;
+}
+.pro_intro{
+    padding-top: 15rpx;
+    width: 376rpx;
+}
+.pro_name{
+    width: 100%;
+    white-space: pre-wrap;
+    font-size: 26rpx;
+    margin-bottom: 6rpx;
+}
+.color, .size{
+    display: inline-block;
+    vertical-align: middle;
+    font-size: 26rpx;
+    color: #7f7f7f;
+    margin-bottom: 50rpx;
+}
+.size{
+    margin-left: 30rpx;
+}
+/*  */
+.product_primary{
+    font-size: 24rpx;
+    color: #7f7f7f;
+    margin-bottom: 10rpx;
+}
+.money_sign:before{
+    content: '￥';
+    font-size: 24rpx;
+}
+.money_sign2:before{
+    content: '￥';
+    font-size: 30rpx;
+    font-weight: 600;
+}
+.product_primary_title, .product_primary_price{
+    display: inline-block;
+    vertical-align: middle;
+    color: #7f7f7f;
+}
+.product_price_title, .product_price_wrapper{
+    display: inline-block;
+    vertical-align: baseline;
+}
+.product_price_title{
+    font-size: 26rpx;
+}
+.product_price{
+    font-size: 30rpx;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+}
+/*  */
+.product_num{
+    align-self: flex-start;
+    font-size: 24rpx;
+    line-height: 30rpx;
+    margin-top: 15rpx;
+}
+
+.amount_item{
+    padding: 24rpx 36rpx;
+}
+.amount_item_title{
+    font-size: 24rpx;
+    color: #7f7f7f;
+    margin-bottom: 20rpx;
+}
+.amount_type{
+    margin-bottom: 20rpx;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.amount_type:last-of-type {
+    margin-bottom: 0;
+}
+.amount_type_name{
+    display: inline-block;
+    vertical-align: middle;
+    font-size: 26rpx;
+    margin-right: 46rpx;
+}
+.amount_type_value, .amount_type_num{
+    display: inline-block;
+    vertical-align: middle;
+    font-size: 26rpx;
+}
+.amount_type_value:before{
+    content: '￥';
+    font-size: 26rpx;
+}
+.freight{
+    margin-right: 98rpx;
+}
+
+.remark_item{
+    padding: 28rpx 36rpx;
+}
+.remark_item_title{
+    width: 100%;
+    font-size: 26rpx;
+    margin-bottom: 20rpx;
+    overflow: hidden;
+    white-space: pre-wrap;
+    word-break: break-all;
+}
+.input_remark{
+    padding: 20rpx;
+    width: 100%;
+    height: 150rpx;
+    box-sizing: border-box;
+    border: 1px solid #e9e9e9
+}
+.remark_text{
+    font-size: 26rpx;
+    width: 680rpx;
+    height:1.4rem;
+    line-height: 1.4rem;
+    white-space: pre-wrap;
+    word-break:break-all;
+}
+
+.pay_wrapper{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: fixed;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    padding: 10rpx 36rpx;
+    box-sizing: border-box;
+    background: #fff;
+}
+.pay_title, .money_sign3{
+    display: inline-block;
+    vertical-align: middle;
+}
+.pay_title{
+    font-size: 26rpx;
+    color: #333;
+    margin-right: 30rpx;
+}
+.money_sign3{
+    font-size: 32rpx;
+    font-weight: 600;
+}
+.money_sign3:before{
+    content: "￥";
+}
+.pay_btn{
+    width: 380rpx;
+    height: 86rpx;
+    line-height: 86rpx;
+    text-align: center;
+    border-radius: 10rpx;
+    font-size: 28rpx;
+    color: #fff;
+    font-weight: 600;
+    box-shadow:0px 4px 20px 2px rgba(127,127,127,0.2);
+}
+/* iphoneX */
+.sk_box_IX {
+    padding-bottom: 34px;
+}

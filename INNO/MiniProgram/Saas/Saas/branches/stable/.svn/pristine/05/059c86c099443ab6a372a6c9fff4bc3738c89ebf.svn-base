@@ -1,0 +1,11 @@
+{
+  "navigationBarTitleText": "文章详情",
+  "usingComponents": {
+    "dialog": "/components/ui/cps/dialog/dialog",
+    "alignment":"/components/alignment/alignment",
+    "pageHome": "/components/sceneOperate/pageHome",
+    "btns": "/components/buttons/btns",
+    "share": "/pages/micro_mall/goods/popup/share",
+    "shareImg": "/pages/micro_mall/goods/popup/shareImg"
+  }
+}

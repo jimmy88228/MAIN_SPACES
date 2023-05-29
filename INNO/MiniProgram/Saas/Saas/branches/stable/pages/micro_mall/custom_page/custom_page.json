@@ -1,0 +1,12 @@
+{
+  "navigationBarTitleText": "加载中",
+  "navigationStyle":"custom",
+  "backgroundColor": "#ffffff",
+  "usingComponents": {
+    "pageTab": "/components/custom/pageTab/pageTab",
+    "micro-page": "/components/micro-page/micro-mix/micro-page/micro-page",
+    "indexHeader": "/components/indexHead/indexHeader",
+    "page-nav": "/components/page-nav/page-nav",
+    "welcome": "/components/pop/welcome/welcome"
+  }
+}

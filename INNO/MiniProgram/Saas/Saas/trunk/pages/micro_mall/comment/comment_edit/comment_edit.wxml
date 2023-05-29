@@ -1,0 +1,134 @@
+<nav_bar title="评价" page-type="comment" id="nav_bar" bindinit="nav_init" bindtap="nav_tap"></nav_bar>
+<view class="comment_edit_main" wx:if="{{showNav}}" style="{{detail_top?'padding-top:' + detail_top + 'rpx;':''}}">
+  <view class="comment_edit_area">
+    <view class="goods_info_box">
+      <view class="goods_img_box">
+        <image
+          wx:if="{{goodsImgUrl}}"
+          src="{{goodsImgUrl}}" mode="widthFix"></image>
+        <image wx:else
+          src="{{empty_url}}"
+          mode="widthFix"/>
+      </view>
+      <view class="goods_comment_box">
+        <view class="tomment_box">
+          <text class="comment_title">商品评价</text>
+          <text class="tips" wx:if="{{pointBenefit.point > 0 || bonusBenefits.length > 0}}"><text>评价有机会获得</text>
+            <block wx:if="{{pointBenefit.point>0}}"><text class="c_light">{{pointBenefit.point}}</text><text>积分</text><text wx:if="{{sortNum>1}}">、</text></block>
+            <block wx:if="{{bonusBenefits.length>0}}" wx:for="{{bonusBenefits}}" wx:key="index">
+              <text class="c_light">{{item.type == 4 ? item.discountStr : item.moneyStr}}</text><text class="c_light">{{item.type == 4?'折':'元'}}</text><text>优惠券</text>
+              <text wx:if="{{bonusBenefits.length>1 && index != (bonusBenefits.length-1)}}">、</text>
+            </block>
+          </text>
+        </view>
+        <view class="score_box">
+          <image
+            wx:for="{{startScore}}"
+            wx:key="index"
+            src="{{item ?comment_like: comment_unlike}}"
+            class="start"
+            mode="aspectFit"
+            data-index="{{index}}"
+            bindtap="handleScoreGoods"
+          ></image>
+        </view>
+		 		<text class="score_text">{{scoreTextList[score]}}</text> 
+      </view>
+    </view>
+    <view class="comment_input_section">
+      <image src="{{comment_edit}}" mode="aspectFit" class="img_t_area"></image>
+      <textarea
+      maxlength='{{maxTextNum}}'
+			placeholder="详细的评价商品，可以帮助更多想了解的人哦"
+      placeholder-class="_placeholder"
+			class="comment_input"
+      value="{{commentContent}}"
+			bindinput="handleContentInput" />
+      <view class='currentText'>{{currentTextNum}}/{{maxTextNum}}</view>
+    </view>
+    <!--上传图片-->
+    <view class="img_list">
+			<view class="comment_img_box" wx:for="{{imgList}}" wx:key="item">
+				<image src="{{item}}" class="comment_img" mode="aspectFit"></image>
+				<view class="remove_img_btn" bindtap="removeImg">
+					<image
+						src="{{brand_info.icon_url}}/micro_mall/comment/comment_edit/remove_btn_icon.png"
+						mode="widthFix" data-index="{{index}}"></image>
+				</view>
+			</view>
+			<view class="add_img" bindtap='addImg' wx:if="{{imgList.length<9}}">
+				<image
+					src="{{comment_camera}}"
+					class="camera" mode="widthFix"></image>
+				<view>添加图片</view>
+			</view>
+		</view> 
+  </view>
+  <view class="bg_line"></view>
+  <view class="logistics_comment {{hasCommentLogistics ? 'hascommented' : ''}}">
+    <view class="commented" wx:if="{{hasCommentLogistics}}">
+      <image src="{{comment_shipping}}" mode="aspectFit" class="img_shipping"></image>
+    </view>
+    <block wx:if="{{isStoreOrder}}">
+      <view class="comment_item comment_title_box" style="color:#171717;">
+        店铺体验评价
+      </view>
+      <view class="comment_item">
+          <text>店铺环境</text>
+          <view class="score_box_b">
+              <image wx:for="{{storeLevel}}" wx:key="index" src="{{item ? comment_like: comment_unlike}}" class="start_b" mode="aspectFit" data-index="{{index}}" data-commenttype="storeLevel" bindtap="handleScore"></image>
+          </view>
+          <view>{{shippingText.storeLevel}}</view>
+      </view>
+
+      <view class="comment_item">
+          <text>导购服务</text>
+          <view class="score_box_b">
+              <image wx:for="{{staffLevel}}" wx:key="index" src="{{item ? comment_like: comment_unlike}}" class="start_b" mode="aspectFit" data-index="{{index}}" data-commenttype="staffLevel" bindtap="handleScore"></image>
+          </view>
+          <view>{{shippingText.staffLevel}}</view>
+      </view>
+
+      <view class="comment_item">
+          <text>导购仪表</text>
+          <view class="score_box_b">
+              <image wx:for="{{staffMannerLevel}}" wx:key="index" src="{{item ? comment_like: comment_unlike}}" class="start_b" mode="aspectFit" data-index="{{index}}" data-commenttype="staffMannerLevel" bindtap="handleScore"></image>
+          </view>
+          <view>{{shippingText.staffMannerLevel}}</view>
+      </view>
+    </block>
+    <block wx:else>
+      <view class="comment_item comment_title_box" style="color:#171717;">
+        物流服务评价
+      </view>
+      <view class="comment_item">
+          <text>快递包装</text>
+          <view class="score_box_b">
+              <image wx:for="{{packageLevel}}" wx:key="index" src="{{item ? comment_like: comment_unlike}}" class="start_b" mode="aspectFit" data-index="{{index}}" data-commenttype="packageLevel" bindtap="handleScore"></image>
+          </view>
+          <view>{{shippingText.packageLevel}}</view>
+      </view>
+
+      <view class="comment_item">
+          <text>送货速度</text>
+          <view class="score_box_b">
+              <image wx:for="{{shippingLevel}}" wx:key="index" src="{{item ? comment_like: comment_unlike}}" class="start_b" mode="aspectFit" data-index="{{index}}" data-commenttype="shippingLevel" bindtap="handleScore"></image>
+          </view>
+          <view>{{shippingText.shippingLevel}}</view>
+      </view>
+
+      <view class="comment_item">
+          <text>服务态度</text>
+          <view class="score_box_b">
+              <image wx:for="{{mannerLevel}}" wx:key="index" src="{{item ? comment_like: comment_unlike}}" class="start_b" mode="aspectFit" data-index="{{index}}" data-commenttype="mannerLevel" bindtap="handleScore"></image>
+          </view>
+          <view>{{shippingText.mannerLevel}}</view>
+      </view>
+    </block>
+  </view>
+</view>
+<view class="commit_data_box" bindtap="handleCommitData">
+  <button hover-class="none" class="commit_data_btn">发布</button>
+</view>
+
+<dialog id="dialog" marsk="{{marskValue}}"></dialog>

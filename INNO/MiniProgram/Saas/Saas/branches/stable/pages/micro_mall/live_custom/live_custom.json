@@ -1,0 +1,6 @@
+{
+  "navigationBarTitleText": "",
+  "usingComponents": {
+    "pageTab": "/components/custom/pageTab/pageTab"
+  }
+}

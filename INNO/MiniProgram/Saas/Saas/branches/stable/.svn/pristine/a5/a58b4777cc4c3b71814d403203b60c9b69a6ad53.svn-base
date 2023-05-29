@@ -1,0 +1,43 @@
+{
+  "setting": {
+    "compileHotReLoad": false
+  },
+  "condition": {
+    "miniprogram": {
+      "list": [
+        {
+          "name": "pages/micro_mall/user/user",
+          "pathName": "pages/micro_mall/user/user",
+          "query": "",
+          "scene": null
+        },
+        {
+          "name": "pages/micro_mall/prepaid/erp/prepaid_card_erp_recharge",
+          "pathName": "pages/micro_mall/prepaid/erp/prepaid_card_erp_recharge",
+          "query": "activityId=12&type=recharge",
+          "scene": null
+        },
+        {
+          "name": "pages/micro_mall/selfGet/self_get_set",
+          "pathName": "pages/micro_mall/selfGet/self_get_set",
+          "query": "loc_f=0&showModalMsg=0&recIds=69425&select_store_id=36268&store_name=AB2&staff_name=&staff_id=0",
+          "scene": null
+        },
+        {
+          "name": "pages/micro_mall/lottery/lottery",
+          "pathName": "pages/micro_mall/lottery/lottery",
+          "query": "activityId=6060",
+          "scene": null
+        },
+        {
+          "name": "pages/micro_mall/custom_page/custom_page",
+          "pathName": "pages/micro_mall/custom_page/custom_page",
+          "query": "page_id=1",
+          "scene": null
+        }
+      ]
+    }
+  },
+  "description": "项目私有配置文件。此文件中的内容将覆盖 project.config.json 中的相同字段。项目的改动优先同步到此文件中。详见文档：https://developers.weixin.qq.com/miniprogram/dev/devtools/projectconfig.html",
+  "projectname": "INNO_DEV_%E6%89%93%E7%89%88Stable"
+}

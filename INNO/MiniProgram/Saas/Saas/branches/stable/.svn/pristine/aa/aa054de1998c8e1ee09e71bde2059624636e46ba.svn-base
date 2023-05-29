@@ -1,0 +1,4 @@
+<!-- <block  wx:if="{{(isCheckLogin && !isLogin)}}">
+  <loginWin class="login-box" binloginCallBack="loginCallBack" registerExtra="{{registerExtra}}"></loginWin>
+</block>   -->
+<web-view class="web-box" hidden="{{isCheckLogin && !isLogin}}" src="{{url}}" bindmessage='getMessage'></web-view>

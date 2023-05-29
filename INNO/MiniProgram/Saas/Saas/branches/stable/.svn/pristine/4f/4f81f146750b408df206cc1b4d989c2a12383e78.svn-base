@@ -1,0 +1,24 @@
+function titleStyle(info = {}, goodsList = [], extra={}) {
+  var type = info.vote_type_code || "";
+  var title = info.title || "";
+  var style = "";
+  switch (type) {
+    case "vote_text":
+      style += 'padding: 0 32rpx;color: #333;font-size: 36rpx;font-weight: 700;line-height: 48rpx;text-align: center;'
+      if (goodsList && goodsList.length) style += 'margin-top: 48rpx;';
+      else style += 'margin-bottom: 48rpx;'
+      break;
+    case "vote_star":
+      if(extra.specialStyle) style += 'font-size: 32rpx';
+      else if (title.length > 7) style += 'font-size: 28rpx'; // 判断标题字数大于7，那么应该会换行，换行了，需要字体比不换行的大
+      else style += 'font-size: 26rpx'
+      break
+    default:
+      break;
+  }
+  return style
+}
+
+module.exports = {
+  titleStyle: titleStyle
+}

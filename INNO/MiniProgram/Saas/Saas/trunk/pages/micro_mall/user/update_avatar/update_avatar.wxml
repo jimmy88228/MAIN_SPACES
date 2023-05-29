@@ -1,0 +1,23 @@
+<view class="u_a_container">
+  <form class="update_avatar_form">
+    <view class="form_row_center">
+      <view class="avatar_wrapper" hover-class="hover">
+        <uploadAvatarBtn id="uploadAvatarBtn" bindprocessfinish="handleAfterUploadAvatar" avatar-btn-class="avatar-btn">
+          <image class="avatar" style="color: {{brand_info.style.bg_color}};" src="{{avatar}}">
+            <view class="avatar_alt" hidden="{{avatar}}"></view>
+          </image>
+        </uploadAvatarBtn>
+      </view>
+    </view>
+    <view class="form_row">
+      <view class="prefix">昵称</view>
+      <view class="form_row_input">
+        <input type="nickname" placeholder="请输入昵称" maxlength="20" value="{{nickName}}" bindinput="handleUserInput" data-type="nickName" />
+      </view>
+    </view>
+  </form>
+
+  <view class="u_a_footer">
+    <button class="save_btn" bindtap="handleSaveTap" style="background-color: {{brand_info.style.font_color}}; color: #ffffff;">保存</button>
+  </view>
+</view>

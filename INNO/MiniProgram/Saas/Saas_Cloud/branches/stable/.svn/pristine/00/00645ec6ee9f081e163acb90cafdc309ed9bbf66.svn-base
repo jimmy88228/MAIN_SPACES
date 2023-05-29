@@ -1,0 +1,86 @@
+<view class="store_order_comment_main">
+  <view class="goods_list">
+    <view class="goods_item" wx:for="{{orderGoodsInfoList}}" wx:key="goods_sn">
+      <view class="goods_img_box">
+      <image src="{{empty_url}}" mode="aspectFit" wx:if="{{item.goods_img == ''}}" class='pics'/>
+        <image src="{{item.goods_img}}" mode="widthFix" wx:else class='pics'/>
+      </view>
+      <view class="goods_info_box">
+        <view>
+          <text class="goods_name">{{item.goods_name}}</text>
+        </view>
+        <view>
+          <text class="goods_sn">({{item.goods_sn}})</text>
+        </view>
+      </view>
+      
+      <block  wx:if="{{item.can_comment === 1}}">
+        <navigator
+        url="../comment_edit/comment_edit?order_id={{orderId}}&goods_id={{item.goods_id}}&type=store&goods_sn={{item.goods_sn}}&goods_img={{item.goods_img}}&order_sn={{order_sn}}&goods_type=1"
+        class="comment_model comment_btn" style="color:{{brand_info.style.font_color}};border:1px solid {{brand_info.style.font_color}};"
+      >评价</navigator> 
+      </block>
+      <block wx:else>
+        <view class="is_comment_tip">
+          <view class="comment_tip_txt">已评论</view>
+        </view>
+      </block>
+    </view>
+  </view>
+
+  <!-- <view class="store_experience_comment" wx:if="{{is_show}}">
+
+    <view class="comment_item comment_title_box">店铺体验评价</view>
+    <view class="comment_item">
+      <text>店铺环境</text>
+      <view class="score_box">
+        <image
+          wx:for="{{storeLevel}}"
+          wx:key="index"
+          src="{{brand_info.icon_url}}micro_mall/comment_edit/{{item ? 'start_icon_active.png' : 'start_icon.png'}}"
+          class="start"
+          mode="widthFix"
+          data-index="{{index}}"
+          data-commenttype="storeLevel"
+          bindtap="handleScore"
+        ></image>
+      </view>
+    </view>
+
+    <view class="comment_item">
+      <text>导购服务</text>
+      <view class="score_box">
+        <image
+          wx:for="{{staffLevel}}"
+          wx:key="index"
+          src="{{brand_info.icon_url}}micro_mall/comment_edit/{{item ? 'start_icon_active.png' : 'start_icon.png'}}"
+          class="start"
+          mode="widthFix"
+          data-index="{{index}}"
+          data-commenttype="staffLevel"
+          bindtap="handleScore"
+        ></image>
+      </view>
+    </view>
+
+    <view class="comment_item">
+      <text>导购仪表</text>
+      <view class="score_box">
+        <image
+          wx:for="{{mannerLevel}}"
+          wx:key="index"
+          src="{{brand_info.icon_url}}micro_mall/comment_edit/{{item ? 'start_icon_active.png' : 'start_icon.png'}}"
+          class="start"
+          mode="widthFix"
+          data-index="{{index}}"
+          data-commenttype="mannerLevel"
+          bindtap="handleScore"
+        ></image>
+      </view>
+    </view>
+
+    <view class="comment_item confirm_comment_btn_box" wx:if="{{!hasCommentLogistics}}">
+      <view class="confirm_comment_btn" bindtap="confirmComment">确认评价</view>
+    </view>
+  </view> -->
+</view>

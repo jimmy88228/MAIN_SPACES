@@ -1,0 +1,35 @@
+<view class="title_box">
+  <view class="title" style="{{titleStyle||''}}" wx:if="{{info.title}}">
+    <!-- 用数组展示文本
+    <text wx:if="{{info.autoLabel}}" style="position: absolute;top: -2rpx;left: 0;"><text class="is_required" wx:if="{{info.is_required}}">*</text>{{info.autoLabel}}.</text> -->
+    <view>
+        <block wx:if="{{info.titleArr}}">
+          <block wx:for="{{info.titleArr}}" wx:key="index">
+            <block wx:if="{{item && item.goodsName}}">
+              {{item.goodsName}}<text catchtap="previewImage" style="color: blue" data-paths="{{item.goodsImg}}">[图片]</text>
+            </block>
+            <block wx:elif="{{item}}">
+              {{item}}
+            </block>
+          </block>
+        </block>
+        <block wx:else>{{info.title}}</block>
+    </view>
+  </view>
+  <view class="tips" style="{{childTitleStyle||''}}" wx:if="{{info.child_title}}">
+    <!-- 用数组展示文本 -->
+    <block wx:if="{{info.childTitleArr}}">
+      <block wx:for="{{info.childTitleArr}}" wx:key="index">
+        <block wx:if="{{item && item.goodsName}}">
+          {{item.goodsName}}<text catchtap="previewImage" data-paths="{{item.goodsImg}}" style="color: blue">[图片]</text>
+        </block>
+        <block wx:elif="{{item}}">
+          {{item}}
+        </block>
+      </block>
+    </block>
+    <block wx:else>{{info.title}}</block>
+  </view>
+</view>
+
+<!-- 遍历titleArr, 字符串显示text，对象要处理图片和文本 -->

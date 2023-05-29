@@ -1,0 +1,8 @@
+{
+  "component": true,
+  "usingComponents": {
+    "window": "/components/ui/cps/window/window",
+    "shippingTypeMod":"/components/shippingTypeMod/shippingTypeMod",
+    "specPop":"/components/pop/specPop"
+  }
+}

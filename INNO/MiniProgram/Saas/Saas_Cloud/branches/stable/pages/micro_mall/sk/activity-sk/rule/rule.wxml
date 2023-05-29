@@ -1,0 +1,4 @@
+<!--pages/micro_mall/sk/activity-sk/rule/rule.wxml-->
+<view class="rule_box">
+  <text>{{ruleInfo}}</text>
+</view>

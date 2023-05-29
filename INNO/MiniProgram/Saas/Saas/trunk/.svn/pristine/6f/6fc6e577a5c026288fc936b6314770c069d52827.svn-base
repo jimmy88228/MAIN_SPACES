@@ -1,0 +1,14 @@
+{
+  "navigationBarTitleText": "商品列表",
+  "disableScroll": true,
+  "usingComponents": {
+    "indexHeader": "/components/indexHead/indexHeader",
+    "cs": "/components/cs/custom_service",
+    "tab":"./tab/tab",
+    "pageHome": "/components/sceneOperate/pageHome",
+    "alignment":"/components/alignment/alignment",
+    "s_view": "/components/search/s_view",
+    "btns":"/components/buttons/btns",
+    "spec-mod": "/components/pop/specMod/specMod"
+  }
+}

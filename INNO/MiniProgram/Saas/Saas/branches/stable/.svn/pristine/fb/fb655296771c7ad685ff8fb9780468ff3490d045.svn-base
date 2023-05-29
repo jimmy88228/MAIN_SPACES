@@ -1,0 +1,178 @@
+<!--pages/micro_mall/header/indexHeader.wxml-->
+<block wx:if="{{!isHide}}">
+	<view class="main" style="top:{{top}}px;">
+		<showNearByStore id="showNearByStoreId" bindshowNearInit="showNearInit"></showNearByStore>
+		<block wx:if="{{showType == 'normal'}}">
+			<view class="index_header {{close_scan_buy && close_nearby_store ? 'center' : ''}}">
+				<form bindsubmit="formAction" report-submit="true">
+					<view class="left_menu">
+						<block wx:if="{{style==1}}">
+							<view class="search_wrapper">
+								<button class='toStore' style="border: 1px solid {{brand_info.style.nav_border_color}}"
+									hover-class="none" form-type='submit' bindtap="toStore" hidden="{{close_nearby_store}}">
+									<image src="{{storeIcon}}" mode="aspectFit" class='icon_store' />
+								</button>
+								<view class='input_content' style="border: 1px solid {{brand_info.style.nav_border_color}}">
+									<image src="{{search_url}}" mode="aspectFit" class='icon_search' />
+									<input type='text' placeholder='请输入商品关键词' class='search_input'
+										placeholder-class='change_style' bindtap='getSearchGoods' disabled='true' />
+								</view>
+								<view class="scan" bindtap="scan" hidden="{{close_scan_buy}}">
+									<image src="{{scanIcon||default_scan}}" mode="aspectFit" class='img_scan'></image>
+									<view class="scanTip" style="{{scanIcon?'color:'+brand_info.style.font_color:''}}">扫码购
+									</view>
+								</view>
+							</view>
+						</block>
+					
+						<block wx:elif="{{style==2}}">
+							<view class="search_wrapper_{{style}}">
+								<view class='brandIconBox'>
+									<image src="{{brandIcon}}" mode="aspectFit" class='icon_brandIcon' />
+								</view>
+								<view class='input_content_{{style}}'
+									style="background: {{brand_info.style.nav_bg_color}};border: 1px solid {{brand_info.style.nav_bg_color}}">
+									<image src="{{searchIcon}}" mode="aspectFit" class='icon_brand icon_search' />
+									<text type='text' class='search_input_{{style}}' bindtap='getSearchGoods'>搜索喜欢的商品</text>
+								</view>
+								<button style="border: 1px solid {{brand_info.style.nav_bg_color}}" class='toStore store_brand'
+									hover-class="none" form-type='submit' bindtap="toStore" hidden="{{close_nearby_store}}">
+									<image src="{{storeIcon}}" mode="aspectFit" class='icon_store' />
+								</button>
+								<view class="scan" bindtap="scan" hidden="{{close_scan_buy}}">
+									<image src="{{scanIcon||default_scan}}" mode="aspectFit" class='img_scan'></image>
+									<view class="scanTip" style="{{scanIcon?'color:'+brand_info.style.font_color:''}}">扫码购
+									</view>
+								</view>
+							</view>
+						</block>
+					
+						<block wx:else>
+							<view class="search_wrapper">
+								<button class='toStore' hover-class="none" form-type='submit' bindtap="toStore" hidden="{{close_nearby_store}}"
+									style="background: {{brand_info.style.nav_bg_color}}; border: 1px solid {{brand_info.style.nav_border_color}}">
+									<image src="{{menu_url}}" mode="aspectFit" class='icon_store' />
+								</button>
+								<view class='input_content'
+									style="background: {{brand_info.style.nav_bg_color}}; border: 1px solid {{brand_info.style.nav_border_color}}">
+									<image src="{{search_url}}" mode="aspectFit" class='icon_search' />
+									<input type='text' placeholder='请输入商品关键词' class='search_input'
+										placeholder-class='change_style' bindtap='getSearchGoods' disabled='true' />
+								</view>
+								<view class="scan" bindtap="scan" hidden="{{close_scan_buy}}">
+									<image src="{{default_scan}}" mode="aspectFit" class='img_scan'></image>
+									<view class="scanTip" style="{{scanIcon?'color:'+brand_info.style.font_color:''}}">扫码购
+									</view>
+								</view>
+							</view>
+						</block>
+					</view>
+				</form>
+			</view>
+		</block>
+		<block wx:elif="{{showType == 'storesForA'}}">
+			<view class='stores_a'>
+				<button hover-class='none' class='icon_location_box' bindtap='handle_location'>
+					{{store_name}}
+					<image src="{{location_down}}" mode="aspectFit" class='icon_location' />
+				</button>
+				<view class="icon_search_area" bindtap='handle_search' style="border-color:{{brand_info.style.font_color}};">
+					<image src="{{search_url}}" mode="aspectFit" class='store_icon_search' />
+					<text class="search_txt">请输入</text>
+				</view>
+				<view class="store_scan" bindtap="scan" hidden="{{close_scan_buy}}">
+					<image src="{{default_scan}}" mode="aspectFit" class='img_scan'></image>
+					<view class="scanTip" style="{{scanIcon?'color:'+brand_info.style.font_color:''}}">扫码购</view>
+				</view>
+			</view>
+		</block>
+		<!-- <block wx:if="{{showType == 'normal'}}">
+			<view class="stay_normal"></view>
+			<view class="index_header" style="top:{{top+extraTop}}px">
+				<form bindsubmit="formAction" report-submit="true">
+					<view class="left_menu">
+						<block wx:if="{{style==1}}">
+							<view class="search_wrapper">
+								<button class='toStore' style="border: 1px solid {{brand_info.style.nav_border_color}}"
+									hover-class="none" form-type='submit' bindtap="toStore">
+									<image src="{{storeIcon}}" mode="aspectFit" class='icon_store' />
+								</button>
+								<view class='input_content' style="border: 1px solid {{brand_info.style.nav_border_color}}">
+									<image src="{{search_url}}" mode="aspectFit" class='icon_search' />
+									<input type='text' placeholder='请输入商品关键词' class='search_input'
+										placeholder-class='change_style' bindtap='getSearchGoods' disabled='true' />
+								</view>
+								<view class="scan" bindtap="scan">
+									<image src="{{scanIcon||default_scan}}" mode="aspectFit" class='img_scan'></image>
+									<view class="scanTip" style="{{scanIcon?'color:'+brand_info.style.font_color:''}}">扫码购
+									</view>
+								</view>
+							</view>
+						</block>
+					
+						<block wx:elif="{{style==2}}">
+							<view class="search_wrapper_{{style}}">
+								<view class='brandIconBox'>
+									<image src="{{brandIcon}}" mode="aspectFit" class='icon_brandIcon' />
+								</view>
+								<view class='input_content_{{style}}'
+									style="background: {{brand_info.style.nav_bg_color}};border: 1px solid {{brand_info.style.nav_bg_color}}">
+									<image src="{{searchIcon}}" mode="aspectFit" class='icon_brand icon_search' />
+									<text type='text' class='search_input_{{style}}' bindtap='getSearchGoods'>搜索喜欢的商品</text>
+								</view>
+								<button style="border: 1px solid {{brand_info.style.nav_bg_color}}" class='toStore store_brand'
+									hover-class="none" form-type='submit' bindtap="toStore">
+									<image src="{{storeIcon}}" mode="aspectFit" class='icon_store' />
+								</button>
+								<view class="scan" bindtap="scan">
+									<image src="{{scanIcon||default_scan}}" mode="aspectFit" class='img_scan'></image>
+									<view class="scanTip" style="{{scanIcon?'color:'+brand_info.style.font_color:''}}">扫码购
+									</view>
+								</view>
+							</view>
+						</block>
+					
+						<block wx:else>
+							<view class="search_wrapper">
+								<button class='toStore' hover-class="none" form-type='submit' bindtap="toStore"
+									style="background: {{brand_info.style.nav_bg_color}}; border: 1px solid {{brand_info.style.nav_border_color}}">
+									<image src="{{menu_url}}" mode="aspectFit" class='icon_store' />
+								</button>
+								<view class='input_content'
+									style="background: {{brand_info.style.nav_bg_color}}; border: 1px solid {{brand_info.style.nav_border_color}}">
+									<image src="{{search_url}}" mode="aspectFit" class='icon_search' />
+									<input type='text' placeholder='请输入商品关键词' class='search_input'
+										placeholder-class='change_style' bindtap='getSearchGoods' disabled='true' />
+								</view>
+								<view class="scan" bindtap="scan">
+									<image src="{{default_scan}}" mode="aspectFit" class='img_scan'></image>
+									<view class="scanTip" style="{{scanIcon?'color:'+brand_info.style.font_color:''}}">扫码购
+									</view>
+								</view>
+							</view>
+						</block>
+					</view>
+				</form>
+			</view>
+		</block>
+		<block wx:elif="{{showType == 'storesForA'}}">
+			<view class="stay_stores"></view>
+			<view class='stores_a' style="top:{{top+extraTop}}px">
+				<button hover-class='none' class='icon_location_box' bindtap='handle_location'>
+					{{store_name}}
+					<image src="{{location_down}}" mode="aspectFit" class='icon_location' />
+				</button>
+				<view class="icon_search_area" bindtap='handle_search' style="border-color:{{brand_info.style.font_color}};">
+					<image src="{{search_url}}" mode="aspectFit" class='store_icon_search' />
+					<text class="search_txt">请输入</text>
+				</view>
+				<view class="store_scan" bindtap="scan">
+					<image src="{{default_scan}}" mode="aspectFit" class='img_scan'></image>
+					<view class="scanTip" style="{{scanIcon?'color:'+brand_info.style.font_color:''}}">扫码购</view>
+				</view>
+			</view>
+		</block> -->
+	</view>
+	<view class="stay" style="height:{{realHeight}}px;"></view>
+	<dialog id="pageDialog"></dialog>
+</block>

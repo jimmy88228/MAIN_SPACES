@@ -1,0 +1,7 @@
+{
+  "navigationBarTitleText": "订单详情",
+  "usingComponents": {
+    "alignment":"/components/alignment/alignment",
+    "pageHome": "/components/sceneOperate/pageHome"
+  }
+}

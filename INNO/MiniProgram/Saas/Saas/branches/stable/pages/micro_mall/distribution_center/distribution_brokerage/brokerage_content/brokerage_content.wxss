@@ -1,0 +1,143 @@
+.header {
+    width: 750rpx;
+    height: 330rpx;
+    overflow: hidden;
+    position: relative;
+}
+
+.margin {
+    margin-left: 35rpx;
+    margin-top: 37rpx;
+}
+
+.title {
+    color: #fff;
+    font-size: 26rpx;
+    line-height: 26rpx;
+    /* margin-top: 38rpx; */
+    margin-bottom: 23rpx;
+}
+
+.price {
+    color: #fff;
+    padding-bottom: 34rpx;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.6);
+}
+
+.rmb {
+    font-size: 44rpx;
+    line-height: 44rpx;
+    display: inline-block;
+    vertical-align: baseline;
+}
+
+.value {
+    font-size: 117rpx;
+    line-height: 117rpx;
+    display: inline-block;
+    vertical-align: baseline;
+}
+
+.receiving {
+    margin-top: 25rpx;
+    /* height: 89rpx; */
+}
+
+.img1 {
+    width: 750rpx;
+    height: 330rpx;
+    position: absolute;
+    left: 0;
+    top: 0;
+    z-index: -1;
+}
+
+.img2 {
+    width: 26rpx;
+    margin-right: 10rpx;
+    display: inline-block;
+    vertical-align: middle;
+}
+
+.receiving_text {
+    font-size: 26rpx;
+    line-height: 26rpx;
+    display: inline-block;
+    vertical-align: middle;
+    color: #fff;
+}
+
+.box {
+    display: flex;
+    padding: 0 35rpx;
+    align-items: center;
+    justify-content: space-between;
+    box-sizing: border-box;
+    width: 100%;
+    height: 103rpx;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.img_right {
+    width: 12rpx;
+}
+
+.box_title {
+    font-size: 26rpx;
+    line-height: 26rpx;
+}
+.fix{
+    opacity: 0;
+    position: fixed;
+    right: 0;
+    bottom: 0; 
+    top: 0;
+    left: 0;
+}
+.fix.mid{
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%,-50%);
+}
+.tip_bg{
+    transition: all 0.2s ease-in-out;
+    background: rgb(0, 0, 0);
+    z-index: 9;
+    opacity: 0;
+}
+.tip_box{
+    background: #fff;
+    font-size: 30rpx;
+    z-index: 11;
+    transition: all 0.32s ease-in-out;
+    opacity: 0;
+    width: 580rpx;
+    height: 580rpx;
+    box-sizing: border-box;
+    border-radius: 55rpx;
+    border: 1px solid rgb(225, 225, 225);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;  
+    padding-top:30rpx; 
+}
+.tip_title{
+    text-align: center;
+}
+.tip_content{
+    word-break: break-all;
+    box-sizing: border-box;
+    padding: 20rpx 45rpx 10rpx 45rpx;
+    width: 100%;
+}
+.tip_btn{
+    width: 300rpx;
+    height: 76rpx; 
+    font-size: 28rpx;
+    border-radius: 16rpx;
+    color: #fff;
+}
+._minH{
+    min-height: 50rpx;
+}

@@ -1,0 +1,22 @@
+<!--pages/micro_mall/buy/modules/signTip/signTip.wxml-->
+<!-- 订单不可选时，隐藏 -->
+<block wx:if="{{!(signOrderActivityReward.hasInventory && shippingWay.shippingStoreId && !signOrderActivityReward.isInstoreOrderEnabled)}}">
+  <view class="main {{!(signOrderActivityReward.hasInventory && (!shippingWay.shippingStoreId || (shippingWay.shippingStoreId && signOrderActivityReward.isInstoreOrderEnabled)))?'saleUpMain':''}}">
+    <view class="title" style="color:{{brand_info.style.font_color}};">连签奖励</view>
+    <view class="box" bindtap="select">
+      <image src="{{signOrderActivityReward.goodsImg}}" class="img-prize" mode="aspectFit"></image>
+      <view class="prize-name">{{signOrderActivityReward.goodsName}}</view>
+      <block wx:if="{{signOrderActivityReward.hasInventory && (!shippingWay.shippingStoreId || (shippingWay.shippingStoreId && signOrderActivityReward.isInstoreOrderEnabled))}}">
+        <image wx:if="{{signOrderActivityReward.hasInventory}}" src="{{isSelect?return_active:return_img}}" class="radio_icon" mode="widthFix" />
+      </block>
+      <block wx:else>
+        <view wx:if="{{!signOrderActivityReward.hasInventory}}" class="saleUp">
+          已赠完
+        </view>
+        <!-- <view wx:elif="{{shippingWay.shippingStoreId}}" class="saleUp">
+          该订单不可选
+        </view> -->
+      </block>
+    </view>
+  </view>
+</block>

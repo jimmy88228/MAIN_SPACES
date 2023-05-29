@@ -1,0 +1,8 @@
+{
+  "navigationBarTitleText": "积分商城",
+  "usingComponents": {
+    "search": "/components/search/s_view",
+    "goods-list": "/pages/micro_mall/point/point_goods_list/goods_list/goods_list",
+    "point-cates-bar": "/pages/micro_mall/point/point_goods_list/pointCatesBar/pointCatesBar"
+  }
+}

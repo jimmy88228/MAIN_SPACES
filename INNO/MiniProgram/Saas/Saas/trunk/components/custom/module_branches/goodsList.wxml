@@ -1,0 +1,99 @@
+<import src="../../template/commission.wxml" />
+<wxs src="/common/utils/wxs/filter.wxs" module="f"/>
+<form bindsubmit="formAction" report-submit="true">
+  <view hidden="{{hidePage}}" class="goods_module module_type{{page_module_list.moduleStyles}}  {{showInit?'mb_10':''}}" >
+    <!--商品列表-->
+    <block wx:if="{{page_module_list.moduleStyles != 4}}">
+      <view 
+      class="goods_item " 
+      style="{{(page_module_list.moduleStyles == 1 || (page_module_list.moduleStyles == 3 && g_item.index % 3  == 0)) ? 'width:100%;' : ''}}"  
+      wx:for="{{showInit ? initArr : m_data}}" 
+      wx:for-item="g_item"
+      wx:for-index="g_index"
+      wx:key="g_index"
+      wx:if="{{showInit || (g_item.goods_img || g_item.goods_thumb)}}"
+      >
+    <!-- <block wx:if="{{page_module_list.moduleStyles != 4}}">
+      <view class="goods_item " style="{{(page_module_list.moduleStyles == 1 || (page_module_list.moduleStyles == 3 && g_item.index % 3  == 0)) ? 'width:100%;' : ''}}" wx:if="{{g_item.goods_id}}" wx:for="m_data" wx:for-item="g_item" wx:for-index="g_index"
+        wx:key="g_index"> -->
+        <view class="goods_item_stay">
+          <view class="good_img_stay {{showInit?'initStyle':''}}">
+            <view class="good_img {{sysConf.goods_image_size == '4-3' ? 'ratio_3_4':''}}">
+              <image src="{{g_item.goods_img || g_item.goods_thumb}}" lazy-load="{{true}}" mode="aspectFit" />
+            </view>
+          </view>
+          <view class="goods_info">
+            <view class="tag_img_list" wx:if="{{tagList && tagList[g_item.goods_id]}}">
+              <block wx:for="{{tagList[g_item.goods_id]}}" wx:key="id" wx:for-item="tag" wx:if="{{tagVal && tagVal[tag] && tagVal[tag].height}}">
+                <image class="tag_img" src="{{tag}}"  style='width:{{tagVal[tag].width}}rpx;height:{{tagVal[tag].height}}rpx;' mode='aspectFit'></image>
+              </block>
+            </view> 
+            <!-- 名字 -->
+            <view class="good_name {{showInit?'initStyle textInit':''}}" wx:if="{{page_module_list.showGoodsName == 1}}">{{g_item.goods_name}}</view>
+            <!-- 卖点 -->
+            <view class="property_box flex-b-c" wx:if="{{g_item.goods_brief}}">
+              <view class="property_left">
+                  <view class="property_circle" style="color: {{brand_info.style.font_color}}"></view>
+                  <view class="property">{{g_item.goods_brief}}</view>
+              </view>
+              <view class="property_right">
+                  <view class="iconfont icon-arrow-right"></view>
+              </view>
+            </view>
+            <!-- <view class="good_name" wx:if="{{g_item.config_value.showGoodsName == 1}}">{{g_item.goods_name}}</view> -->
+            <!-- <view class="good_sku" wx:if="{{g_item.config_value.showGoodsPrice == 1}}"> -->
+            <view class="goods_price_sale">
+              <view class="re_allocate">
+                <!-- 佣金 一般情况 -->
+                <block wx:if="{{page_module_list.moduleStyles != '1' && !(page_module_list.moduleStyles == '3' && g_index % 3 == 0 )}}">
+                  <view class="goods_commission" wx:if="{{showCommission}}" style="--light_color:{{l_color}};--main_color:{{brand_info.style.font_color}}">
+                    <template is="commissionId" data="{{commission,item:g_item}}"></template>
+                  </view>
+                </block>
+                <block wx:if="{{page_module_list.showGoodsPrice == 1}}">
+                  <view class="text_crossed original_p {{showInit?'initStyle textInit half':''}}"wx:if="{{ (g_item.price && g_item.price != g_item.market_price) || (g_item.shop_price && g_item.shop_price != g_item.market_price) || g_item.sale_type == 4}}">
+                    <text wx:if="{{!showInit}}">¥</text>
+                    <text>{{f.price_fixed(g_item.market_price)}}</text>
+                  </view>
+                </block>
+
+                <!-- 现价 -->
+                <view class="flex-s-c present_p {{showInit?'initStyle textInit half':''}}"  wx:if="{{page_module_list.showGoodsPrice == 1}}" style="color:{{brand_info.style.font_color || default_bg}}">
+                  <text class="RMB_line" wx:if="{{!showInit}}">¥</text>
+                  <text>{{f.price_fixed(g_item.shop_price || g_item.price)}}</text>
+                  <text wx:if="{{ g_item.integral > 0 }}"> + {{g_item.integral || g_item.old_integral}} 积分</text>
+                  <!-- 佣金  一行一个 或者 大小图中的大图 才显示 -->
+                  <block wx:if="{{page_module_list.moduleStyles == '1' || (page_module_list.moduleStyles == '3' && g_index % 3 == 0 )}}">
+                    <view class="goods_commission" wx:if="{{showCommission}}" style="--light_color:{{l_color}};--main_color:{{brand_info.style.font_color}}">
+                      <template is="commissionId" data="{{commission,item:g_item}}"></template>
+                    </view>  
+                  </block>
+                </view>
+                <!-- 销量 -->
+                <view class="sales_vol_box" wx:if="{{showSalesVolume}}">
+                  <text class="sales_vol_title">销量</text><text>{{g_item.salesVolumeStr}}</text>
+                </view>
+              </view>
+            </view>
+          </view>
+        </view>
+        <button 
+        class="btn_link" 
+        data-goods_id="{{g_item.goods_id}}" 
+        data-color_id="{{g_item.color_id}}" 
+        data-issue_id="{{g_item.issue_id}}"
+        bindtap="goLink" 
+        data-func_type="{{page_module_list.catType || 'GOODS'}}"
+        data-related_id="{{page_module_list.catId}}" 
+        form-type="submit"
+        data-tag="{{page_module_list.tag}}"
+        ></button>
+      </view>
+    </block>
+
+    <!--商品滚动-->
+    <block wx:else>
+      <marqueeView id="marquee" commission="{{commission}}" showCommission="{{showCommission}}" sysConf="{{sysConf}}" showSalesVolume="{{showSalesVolume}}"></marqueeView>
+    </block>
+  </view>
+</form>

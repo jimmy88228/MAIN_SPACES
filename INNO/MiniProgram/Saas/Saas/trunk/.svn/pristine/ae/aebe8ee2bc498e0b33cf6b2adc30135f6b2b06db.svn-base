@@ -1,0 +1,2 @@
+<!--components/css3/snow/snow.wxml-->
+<canvas type="2d" class="canvas"  id="canvas" wx:if="{{show}}" hidden="{{hidden}}"></canvas>

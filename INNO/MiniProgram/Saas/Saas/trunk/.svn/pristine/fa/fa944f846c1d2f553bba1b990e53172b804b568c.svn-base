@@ -1,0 +1,7 @@
+{
+  "component": true,
+  "disableScroll": true,
+  "usingComponents": {
+    "act-count-down":"/components/act-count-down/act-count-down"
+  }
+}

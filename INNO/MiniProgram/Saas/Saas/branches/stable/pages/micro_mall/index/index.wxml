@@ -1,0 +1,29 @@
+<view hidden="{{pageHidden}}" class="main">
+  <page-nav holdStay="{{true}}" bindgetNavH="getNavH" title="{{pageTitle}}"></page-nav>
+  <indexHeader top="{{navH}}" id="indexHeader" bindrefreshExtraH="refreshExtraH" needVerify></indexHeader>
+  <!-- <storesForA bindgetStoreMsg='getStoreMsg' top="{{navH}}" id="stores_a_id" show-stores-a="{{showStoresA}}"></storesForA> -->
+
+  <view class="index_page {{ipx_p_b_style}} {{customTabStyle}}">
+    <pageTab 
+      wx:if="{{microType == 'pageTab'}}"
+      id="pageTab" 
+      bindpageShareSaving="pageShareSaving"
+      isHidePageHome
+      top="{{extraH}}"
+      custom-tab="{{customTab}}"></pageTab>
+    <micro-page
+      wx:if="{{microType == 'microPage'}}" 
+      id="microPage" 
+      isCustomNav
+      isHidePageHome
+      bindpageShareSaving="pageShareSaving"
+      extraH="{{extraH}}"
+      custom-tab="{{customTab}}"></micro-page>
+  </view>
+  <btnFollow id="btnFollow" customTab="{{customTab}}"></btnFollow>
+  <pagePop id="pagePop" top="{{navH}}"></pagePop>
+</view>
+<welcome id="welcome" top="{{navH}}"></welcome>
+<snow id="snow" bindstatus="snowStatus"></snow>
+<!-- 其他浮窗的容器 -->
+<outsideContainer id="outsideContainer" componentsCollection="{{outsideComponents}}" />

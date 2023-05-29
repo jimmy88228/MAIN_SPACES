@@ -1,0 +1,5 @@
+{
+  "usingComponents": {
+    "act_bonus": "/components/act_bonus/act_bonus"
+  }
+}

@@ -1,0 +1,12 @@
+{
+  "navigationBarTitleText": "",
+  "enablePullDownRefresh": true,
+  "backgroundTextStyle": "dark",
+  "navigationStyle":"custom",
+  "usingComponents": {
+    "receiveFail": "/pages/micro_mall/coupon_center/pop/receive/fail",
+    "pageTab":"/components/custom/pageTab/pageTab",
+    "micro-page": "/components/micro-page/micro-mix/micro-page/micro-page",
+    "btns": "/components/buttons/btns"
+  }
+}

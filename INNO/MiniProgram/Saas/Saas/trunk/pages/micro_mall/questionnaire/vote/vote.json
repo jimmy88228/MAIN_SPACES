@@ -1,0 +1,8 @@
+{
+  "component": true,
+  "usingComponents": {
+    "stars":"/components/stars/stars",
+    "questionHead": "../header/header",
+    "product":"/pages/micro_mall/questionnaire/product/product"
+  }
+}

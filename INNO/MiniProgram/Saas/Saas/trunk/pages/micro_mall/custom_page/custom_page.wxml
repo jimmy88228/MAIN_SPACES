@@ -1,0 +1,25 @@
+<view class="hide_page" hidden="{{pageHidden}}">
+  <page-nav holdStay="{{true}}" isHideBackOrHome="{{hideBackNav}}" title="{{pageTitle}}"></page-nav>
+  <indexHeader isHide="{{hideIndexHeader}}" top="{{navH}}" id="indexHeader" bindrefreshExtraH="refreshExtraH" needVerify></indexHeader> 
+  <view class="index_page">
+    <pageTab 
+      wx:if="{{microType == 'pageTab'}}"
+      top="{{extraH}}" 
+      id="pageTab" 
+      bindpageShareSaving='pageShareSaving' 
+      actData="{{act_data}}"
+      isHideAllBtn="{{hideBackNav}}"
+      bindpageType="onTap"></pageTab>
+    <micro-page 
+      wx:if="{{microType == 'microPage'}}" 
+      id="microPage"
+      bindpageShareSaving="pageShareSaving"
+      extraH="{{extraH}}"
+      isCustomNav="{{true}}"
+      isHideAllBtn="{{hideBackNav}}"
+      custom-tab="{{customTab}}"></micro-page>
+  </view>
+</view>
+<welcome id="welcome"></welcome>
+
+ 

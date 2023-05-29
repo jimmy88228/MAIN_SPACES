@@ -1,0 +1,5 @@
+<contactStaff 
+id="contactStaff" 
+setStyle="padding-bottom:100rpx"
+bindcontactCallBack="contactCallBack"></contactStaff>
+<contactGuide id="contactGuide" ></contactGuide>

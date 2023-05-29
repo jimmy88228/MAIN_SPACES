@@ -1,0 +1,33 @@
+.customTab {
+    padding-bottom: 90rpx !important;
+    /* box-sizing: border-box; */
+}
+
+.ipx_p_b,.fix_iphoneX {
+    padding-bottom: 34px !important;
+    /* box-sizing: border-box; */
+}
+
+.customTab.ipx_p_b , .customTab.fix_iphoneX {
+    padding-bottom: calc(90rpx + 34px) !important;
+    /* box-sizing: border-box; */
+}
+
+.ipx_b_b{
+    bottom: 34px !important;
+}
+
+.customTab.ipx_b_b {
+    padding-bottom: 0 !important;
+    bottom: calc(90rpx + 34px) !important;
+}  
+
+.padding-area-inset-bottom{
+    padding-bottom: env(safe-area-inset-bottom);
+    padding-bottom: constant(safe-area-inset-bottom);
+}
+
+.bottom-area-inset-bottom{
+    bottom: env(safe-area-inset-bottom);
+    bottom: constant(safe-area-inset-bottom);
+}

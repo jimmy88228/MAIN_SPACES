@@ -1,0 +1,15 @@
+{
+  "component": true,
+  "usingComponents": {
+    "custom_module": "/components/custom/custom_module",
+    "button_share": "/components/custom/page_button_mod/share",
+    "pageHome": "/components/sceneOperate/pageHome",
+    "cs": "/components/cs/custom_service",
+    "couponAssist":"/components/market/assist/coupon",
+    "embed_custom_module": "/components/custom/embed_custom/embed_custom",
+    "btnBackTop":"/components/btnBackTop/btnBackTop",
+    "adsPop":"/components/pop/adsPop",
+    "alignment":"/components/alignment/alignment",
+    "assistancePop": "/components/pop/assistancePop/assistancePop"
+  }
+}

@@ -1,0 +1,13 @@
+{
+  "navigationBarTitleText": "签到",
+  "onReachBottomDistance": 100,
+  "usingComponents": {
+    "alignment":"/components/alignment/alignment",
+    "pageHome": "/components/sceneOperate/pageHome",
+    "pageTab":"/components/custom/pageTab/pageTab",
+    "micro-page": "/components/micro-page/micro-mix/micro-page/micro-page",
+    "adsPop":"/components/pop/adsPop",
+    "signMod":"/components/signMod/signMod"
+  },
+  "backgroundColor": "#ffffff"
+}

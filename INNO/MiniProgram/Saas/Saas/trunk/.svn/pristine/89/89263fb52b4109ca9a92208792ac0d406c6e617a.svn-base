@@ -1,0 +1,82 @@
+<!--pages/micro_mall/bargain/bargain/order_detail.wxml-->
+<view class="order_detail" hidden="{{isHidden}}">
+    <view class="order_detail_item addr_item" bindtap="goAddress">
+        <view class="addr_info">
+            <view class="addr_title">收货地址</view>
+            <view wx:if="{{defaultTip}}" class="addr_title">
+                请选择收货地址
+            </view>
+            <view wx:else>
+                <view class="name_phone">{{consignee}} {{mobile}}</view>
+                <view class="detail_addr">{{address}}</view>
+            </view>
+        </view>
+        <view class="right_arrow">
+            <image src="{{rightbutton}}" class="r_arrow" mode="widthFix" />
+        </view>
+    </view>
+    <view class="order_detail_item product_item">
+        <view class="product_item_item">商品详情</view>
+        <view class="product_item_info">
+            <view class="product_img">
+                <image class="pro_img" mode="aspectFit" src="{{goodsEntity.goodsImg}}" />
+            </view>
+            <view class="pro_intro">
+                <view class="pro_name">{{goodsEntity.goodsName}}</view>
+                <view>
+                    <view wx:if="{{goodsEntity.colorName}}" class="color">{{goodsEntity.colorNameTitle}} {{goodsEntity.colorName}}</view>
+                    <view wx:if="{{goodsEntity.sizeName && goodsEntity.attrCount > 1}}" class="size">{{goodsEntity.sizeNameTitle}} {{goodsEntity.sizeName}}</view>
+                </view>
+                <view class="product_primary">
+                    <!-- <view class="product_primary_title">原价</view> -->
+                    <view class="money_sign product_primary_price">{{goodsEntity.marketPrice}}</view>
+                </view>
+                <view class="product_price" style="color: {{brand_info.style.bargain_color.theme_color}}">
+                    <view class="product_price_title">砍价</view>
+                    <view class="money_sign2 product_price_wrapper">{{goodsEntity.hagglePrice}}</view>
+                </view>
+            </view>
+            <view class="product_num">x{{goodsEntity.number}}</view>
+        </view>
+    </view>
+    <view class="order_detail_item amount_item">
+        <view class="amount_item_title">资费详情</view>
+        <view class="amount_type">
+            <view class="amount_type_name">商品件数</view>
+            <view class="amount_type_num">{{infoEntity.totalNum}}件</view>
+        </view>
+        <view class="amount_type">
+            <view class="amount_type_name">商品总价</view>
+            <view class="amount_type_value">{{infoEntity.totalMarketPrice}}</view>
+        </view>
+        <view class="amount_type" wx:if="{{infoEntity.totalYouHuiPrice}}">
+            <view class="amount_type_name">优惠金额</view>
+            <view class="amount_type_value">{{infoEntity.totalYouHuiPrice}}</view>
+        </view>
+        <view class="amount_type" wx:if="{{infoEntity.shippingFee}}">
+            <view class="amount_type_name freight">运费</view>
+            <view class="amount_type_value">{{infoEntity.shippingFee}}</view>
+        </view>
+        <view class="amount_type">
+            <view class="amount_type_name">订单金额</view>
+            <view class="amount_type_value">{{infoEntity.totalPrice}}</view>
+        </view>
+    </view>
+    <view class="order_detail_item remark_item">
+        <view class="remark_item_title">备注</view>
+        <textarea class="input_remark" placeholder="请输入备注信息" value="{{keyword}}" bindinput="inputRemark" />
+    </view>
+</view>
+<view class="pay_wrapper {{isIphoneX ? 'sk_box_IX' : ''}}" hidden="{{isHidden}}">
+    <view class="pay_amount">
+        <view class="pay_title">实付款</view>
+        <view class="money_sign3" style="color: {{brand_info.style.bargain_color.theme_color}};">{{infoEntity.totalPrice}}</view>
+    </view>
+    <view class="toPay">
+        <btns bindclickcallback="addOrder">
+            <view class="pay_btn" style="background: {{brand_info.style.bargain_color.theme_color}};">
+                {{infoEntity.totalPrice > 0 ? '立即支付' : '生成订单'}}
+            </view>
+        </btns>
+    </view>
+</view>

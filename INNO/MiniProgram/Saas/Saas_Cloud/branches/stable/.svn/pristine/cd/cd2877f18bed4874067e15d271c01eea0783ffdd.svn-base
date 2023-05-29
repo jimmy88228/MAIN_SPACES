@@ -1,0 +1,6 @@
+{
+  "navigationBarTitleText": "门店选择",
+    "usingComponents": {
+      "dialog": "/components/ui/cps/dialog/dialog"
+    }
+}

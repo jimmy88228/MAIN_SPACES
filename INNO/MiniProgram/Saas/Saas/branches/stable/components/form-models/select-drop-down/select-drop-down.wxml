@@ -1,0 +1,9 @@
+<!--components/form-models/select-drop-down/select-drop-down.wxml-->
+<view class="options_select">
+  <view class="seletc_title flex-c-c" catchtap="openClose">
+    <text class="current-name">{{current.name}}</text>
+  </view>
+  <view class="option_list" wx:if="{{isShow}}" catchtap="optionTap">
+    <text class="option" wx:for="{{options}}" wx:key="name" data-name="{{item}}">{{item.name}}</text>
+  </view>
+</view>

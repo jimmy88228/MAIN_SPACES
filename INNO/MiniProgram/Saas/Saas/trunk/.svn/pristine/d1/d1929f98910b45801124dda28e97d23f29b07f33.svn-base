@@ -1,0 +1,32 @@
+<!--pages/micro_mall/huiyou/act/list/index.wxml-->
+<template name="scroll"> 
+  <scroll-view scroll-y class="scroll-box">
+    <block wx:for="{{listData}}" wx:key="index">
+      <view class="list-item" catchtap="onTap" data-url="{{item.linkUrl}}" data-ac-id="{{item.id}}">
+        <mode-image src="{{item.shareThumbnail}}" mode="widthFix" ext-class="img-act" preview="{{false}}"/>
+        <!-- <mode-image src="{{item.shareThumbnail}}" ext-class="img-act" preview="{{false}}"/> -->
+        <view class="msg-box flex-b-s">
+          <view class="left-box flex-1">
+            <view class="title">
+              {{item.name}}
+            </view>
+            <view class="time">
+              活动时间：{{item.showTime||"--"}}
+            </view>
+            <view class="desc">
+              活动描述：{{item.shareDesc}}
+            </view> 
+          </view>
+          <view class="right-box flex-s-c flex-col flex-shrink-0">
+            <view class="state flex-c-c cur-{{item.state}}">
+              {{btnText[item.state]}}
+            </view>
+            <view class="state flex-c-c cur-{{item.state}}" wx:if="{{isStaff}}" catchtap="share" data-item="{{item}}">
+              分享
+            </view>
+          </view>
+        </view>
+      </view>
+    </block>
+  </scroll-view>
+</template>

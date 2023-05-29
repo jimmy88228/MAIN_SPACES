@@ -1,0 +1,10 @@
+{
+    "navigationBarTitleText": "申请售后",
+    "backgroundColor": "#7f7f7f",
+    "usingComponents": {
+        "areaSelect": "/components/address/areaSelect",
+        "cs": "/components/cs/custom_service",
+        "specView":"/components/selectSpec/specView",
+        "subscribe-btn":"/components/subscribe-btn/subscribe-btn"
+    }
+}

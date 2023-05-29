@@ -1,0 +1,7 @@
+<!-- <view hidden="{{isNoGroup}}" class="has_no_group">
+  目前没有群信息，请从群分享卡片进入
+</view>
+<block wx:if="{{isNoGroup}}">
+  <web-view src="{{url}}" bindload="webLoad" binderror="webError"></web-view>
+</block> -->
+<web-view src="{{url}}" bindload="webLoad" binderror="webError"></web-view>

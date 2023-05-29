@@ -1,0 +1,47 @@
+.slidingBox{
+  /* padding-top: 310rpx; */
+  position: relative;
+  min-width: 320rpx;
+}
+.arrows{
+  position: absolute;
+  bottom: 114rpx;
+  width: 106rpx;
+  height: 235rpx;
+  left: 50%;
+  transform:translate(-50%,0);
+  animation: animSliding_arrows 2s linear 1s infinite;
+}
+.hand{
+  position: absolute;
+  bottom: 90rpx;
+  width: 156rpx;
+  height: 176rpx;
+  left: 48%;
+  animation: animSliding_hand 2s linear 1s infinite;
+}
+.guide_text{
+  font-size: 40rpx;
+  color:rgba(248,248,248,1);
+  text-shadow:0 3rpx 10rpx rgba(0, 0, 0, 0.2);
+}
+
+
+@keyframes animSliding_arrows
+{
+0% {opacity: 1;transform:translate(-50%,0)}
+25% {opacity: 1;transform:translate(-50%,0)}
+35% {opacity: 1;transform:translate(-50%,-48rpx)}
+50% {opacity: 0;transform:translate(-50%,-120rpx)}
+100% {opacity: 0;transform:translate(-50%,-120rpx)}
+}
+
+@keyframes animSliding_hand
+{
+0% {opacity: 1;transform:translateY(0)}
+30% {opacity: 1;transform:translateY(-80rpx)}
+70% {opacity: 1;transform:translateY(-80rpx)}
+80% {opacity: 0;transform:translateY(-80rpx)}
+100% {opacity: 0;transform:translateY(-80rpx)}
+}
+ 

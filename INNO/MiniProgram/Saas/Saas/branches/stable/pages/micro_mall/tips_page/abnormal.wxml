@@ -1,0 +1,11 @@
+<!--pages/micro_mall/tips_page/abnormal.wxml-->
+<view class="main">
+
+  <view class="box">
+      <image hidden="{{hideImg}}" binderror="handle_error" src="{{busy}}" mode="aspectFit" class="img_abnormal"></image>
+      <view class="tips">当前的平台访问人数太多啦！</view>
+      <view class="tips">稍后再试一下呗</view>
+      <button hover-class="none" class="btn" bindtap="jump" data-type="tab" data-url="/pages/micro_mall/user/user">返回个人中心</button>
+  </view>
+
+</view>

@@ -1,0 +1,10 @@
+var checkIfNeedLogin = function(item = {}) { // 判断点击事件是否需要登录
+  var jump_type = item.jump_type || "";
+  var jump_value = item.jump_value || "";
+  if (jump_type == 'PAGE_PATH' && (jump_value.indexOf("couponUrl") != -1 || jump_value.indexOf("contactStaffUrl") != -1) ) return true; // 一点领券 和 联系店员
+  else return false
+}
+
+module.exports = {
+  checkIfNeedLogin:checkIfNeedLogin,
+}

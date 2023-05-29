@@ -1,0 +1,15 @@
+<!--components/pop/staffApply/staffApply.wxml-->
+<form bindsubmit="formAction" report-submit="true">
+  <window touchCancel="{{false}}" class="window" ext-class="window-ext" >
+    <view class="apply-box" style="{{boxStyle}}" catchtouchmove="_noFn">
+      <view class="title">{{applyDstbMsg.applyDstbHint}}</view>
+      <view class="btn-box">
+        <button hover-class="none" bindtap="cancel" class="cancel">否</button>
+        <btns hover-class="none" btn-type="bindPhone" style="background:{{brand_info.style.bg_color}};" class="ok" isLogin="{{isLogin}}" bindclickcallback="ok" show-msg-bool="{{false}}">是</btns>
+      </view>
+      <view class="desc">{{applyDstbMsg.applyDstbDesc}}</view>
+    </view>
+  </window>
+</form>
+
+<loginPhone id="loginPhone" handleType="expose" bindloginCallback="loginPhoneCallBack"></loginPhone>

@@ -1,0 +1,42 @@
+<!--pages/balance/mybalance.wxml-->
+<view class="balancePage" hidden='{{showImg}}'>
+    <view class="balanceState">
+        <view class="balanceTxt">
+            <view class="balanceTit">
+                <view>{{balance_info.title || "可用余额"}}</view>
+                <!-- <view wx:if="{{balance_info.historyPoint && balance_info.historyPoint>0}}">{{balance_info.balance || 0.00}}</view> -->
+            </view>
+            <view class="balanceNum">
+                <text class="font_36">¥</text>
+                <text class="balanceNumTxt">{{balance_info.balance || 0.00}}</text>
+                <!-- <view class="balanceNumTip bg_E70408 inline_b" wx:if="{{balance_info.enable_exchange_tips == 1}}">
+                    可抵{{balance_info.exchange_money}}元
+                    <image class="num_tip_icon" src="{{deduction_url}}" mode="widthFix" />
+                </view> -->
+            </view>
+        </view>
+        <image src="{{url}}" mode='widthFix' />
+        <view class="bg_icon">¥</view>
+        <view class='bg_color' style='background:{{brand_info.style.bg_color}};'></view>
+    </view>
+    <scroll-view scroll-y style="height:calc(100% -  318rpx - {{(currentIndex == tabList[1].label && (balance_list.length != 0))?'92':'0'}}rpx)" bindscrolltolower="handle_scroll" class='balance_list'>
+        <view class='balance_item' wx:if="{{balance_list.length > 0}}" wx:for="{{balance_list}}" wx:key="index">
+            <view class='time_item'>
+                <view class='time_info'>
+                <text class="">{{item.change_type}} </text> 
+                <text class="C_7f font_24" wx:if="{{item.change_type != item.reason}}">{{item.reason}}</text>
+                </view>
+                <view class='remark C_7f'>余额 {{item.amount}}</view>
+            </view>
+            <view class='balance t_r'>
+              <view class="font_34">{{item.amount_change > 0 ? '+' : ''}}{{item.amount_change}}</view>
+              <view class="font_24 C_7f">{{item.change_time}}</view>
+            </view>
+        </view>
+        <view class="no_data_area" wx:if="{{balance_list.length == 0}}">暂时没有记录</view>
+    </scroll-view>
+</view>
+
+<alignment>
+    <pageHome slot="home" id="pageHome"></pageHome>
+</alignment>

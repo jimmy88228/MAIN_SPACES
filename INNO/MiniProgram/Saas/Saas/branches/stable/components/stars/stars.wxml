@@ -1,0 +1,16 @@
+<!-- type: questionnaire  -->
+<!-- style="--score_number:{{(score / length) * 5}};padding-right:{{gutter + (score / length) * 5 * 1}}rpx;{{starStyle || ''}}" -->
+<block wx:if="{{type === 'vote_star'}}">
+  <view class="star_box {{animationClass}}" style="{{boxStyle}}">
+      <image
+        wx:for="{{length}}"
+        wx:key="index"
+        src="{{score - 1 >= index ? likeImage: unlikeImage}}"
+        style="--score_number:{{(score / length) * 5}};padding-right:{{gutter}}rpx;{{starStyle || ''}}"
+        class="star {{score - 1 >= index?'active':''}}"
+        mode="aspectFit"
+        data-score="{{index + 1}}"
+        bindanimationend="animationEnd"
+        catchtap="handleStarTap" />
+  </view>
+</block>

@@ -1,0 +1,12 @@
+page{
+  height: 100%;
+}
+.main{
+  width: 100%;
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  background: #fff;
+  min-height: calc(100vh - 488rpx);
+  max-height: calc(100vh - 200rpx);
+}

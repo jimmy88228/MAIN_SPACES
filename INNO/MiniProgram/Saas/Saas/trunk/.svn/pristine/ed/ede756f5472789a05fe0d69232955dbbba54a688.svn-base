@@ -1,0 +1,68 @@
+/* shipping */
+.shipping_list{
+    width:702rpx;
+    /* width:690rpx; */
+    margin:0 auto;
+    /* border-top: 1px solid #efefef; */
+    border-bottom: 1px solid #efefef;
+  }
+  .shipping_item{
+    width:100%;
+    padding:20rpx 0px;
+    /* border-bottom:1px solid #efefef; */
+    display:flex;
+    align-items: center;
+    line-height:normal;
+  }
+  .select_radio{
+    display:inline-block;
+    width:30rpx;
+    height:30rpx;
+    padding:10rpx;
+    margin-right:20rpx;
+  }
+  .radio_select{
+    width:100%;
+    height:100%;
+  }
+  .store_select_cont{
+    display:flex;
+    align-items: center;
+    line-height:normal;
+  }
+  .store_select_btn{
+    background-color:none;
+    display:inline-block;
+    vertical-align: middle;
+    color:#24ADF3;
+    border:1px solid #24ADF3;
+    margin:0px 10rpx;
+    border-radius:4rpx;
+    padding:0rpx 10rpx;
+    line-height:normal;
+    position:relative;
+    padding-right:26rpx;
+    font-size:20rpx;
+  }
+  .store_select_btn .store_arrow{
+    width:8rpx;
+    height:8rpx;
+    position:absolute;
+    top:50%;
+    right:13rpx;
+    display:inline-block;
+    vertical-align: middle;
+    border:1px solid #24ADF3;
+    border-left-color: transparent;
+    border-bottom-color: transparent;
+    transform:translateY(-50%) rotate(45deg);
+  }
+  .select_store_name{
+    color: #7f7f7f;
+    padding-top:7rpx;
+    box-sizing: border-box;
+    padding-left: 70rpx;
+    font-size: 22rpx;
+    color: #aaa;
+  }
+  

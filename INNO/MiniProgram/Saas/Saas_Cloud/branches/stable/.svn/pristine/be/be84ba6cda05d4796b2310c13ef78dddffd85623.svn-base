@@ -1,0 +1,146 @@
+/* pages/store_pay/store_pay_history/history_info.wxss */
+
+page {
+  background:#EFEFEF;
+  height: 100%;
+}
+.main{
+  width: 100%;
+  box-sizing: border-box;
+}
+.history_pay_result{
+  padding: 0 20rpx;
+  padding-bottom: 25rpx;
+  box-sizing: border-box;
+  background: #fff;
+  border-radius: 12rpx;
+  margin: 12rpx 12rpx 20rpx 12rpx;
+}
+.history_pay_result .area_box {
+  border-top: 1px solid #dfdfdf;
+  padding: 20rpx;
+  box-sizing: border-box;
+  height: 100%;
+  position: relative;
+  color: #7f7f7f;
+  font-size: 28rpx;
+}
+._b_b{ 
+  border-bottom: 1px solid #dfdfdf;
+}
+
+.brand_icon {
+  width: 100%;
+  text-align: center;
+  line-height: 90rpx;
+  height: 90rpx;
+}
+
+.brand_icon image {
+  width: 300rpx;
+  display: inline-block;
+  vertical-align: middle;
+}
+
+.pay_amount {
+  text-align: center;
+  padding: 40rpx 0px;
+}
+
+.amount_count {
+  font-size: 70rpx;
+  font-weight: bold;
+  margin-right: 10rpx;
+}
+
+.amount_text {
+  margin-top: 10rpx;
+}
+
+.area_row {
+  display: table;
+  width: 100%;
+  padding: 20rpx 0px;
+}
+
+.row_tit {
+  display: table-cell;
+  text-align: left;
+  /* color: #ababab; */
+  /* color: #7f7f7f; */
+  /* font-size: 28rpx; */
+}
+
+.row_val {
+  display: table-cell;
+  text-align: right;
+}
+.val_point{
+  text-decoration: underline;
+}
+.award_img {
+  width: 100%;
+  padding: 20rpx 0px;
+  background: #ecf0f0;
+}
+
+.award_img image {
+  width: 100%;
+}
+
+.bottom {
+  display: flex;
+  width: calc(100% - 24rpx);
+  height: 86rpx; 
+  position: fixed;
+  bottom: 0;
+  left: 0; 
+  padding: 0 12rpx;
+}
+
+.cancel, .goPay {
+  display: flex;
+  flex: 1;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  color: #fff;
+  border: 1px solid ;
+  box-sizing: border-box;
+} 
+
+.logo{
+  width: 60rpx;
+  height: 60rpx;
+  border-radius: 50%;
+  display: inline-block;
+  vertical-align: middle;
+}
+._mid{
+  display: inline-block;
+  vertical-align: middle;
+  padding-right: 20rpx;
+}
+._flex{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.staff_left{ 
+  /* color: #ababab; */
+}
+._C_30{
+  color: #303030;
+}
+.ad_img{
+  display:block;
+  background-color:#fff;
+}
+/* 
+.goPay {
+  display: flex;
+  flex: 1;
+  height: 100%;
+  justify-content: center;
+  align-items: center;
+} */

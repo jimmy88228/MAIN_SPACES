@@ -1,0 +1,22 @@
+<!--pages/micro_mall/tab_define/tab_define.wxml-->
+<view class="index_page {{isIphoneX ? 'ipx_p_b' : ''}} {{customTab ? 'customTab' : ''}}">
+    <pageTab 
+        wx:if="{{microType == 'pageTab'}}"
+        isHideShare
+        hideContact
+        class="pager_tab" 
+        id="pageTab"
+        isHidePageHome
+        bindgetPageId="getPageId" 
+        bindvideoPlayPage="videoPlayPage" 
+        bindpageShareSaving="pageShareSaving"
+        top="0"
+        custom-tab="{{customTab}}"></pageTab>
+    <micro-page
+      wx:if="{{microType == 'microPage'}}" 
+      id="microPage" 
+      extraH="0"
+      isHideShare
+      isHidePageHome
+      hideContact></micro-page>
+</view>

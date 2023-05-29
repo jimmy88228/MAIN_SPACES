@@ -1,0 +1,66 @@
+/* pages/micro_mall/huiyou/act/list/index.wxss */
+.scroll-box{
+  height: 100%;
+  padding: 24rpx;
+  box-sizing: border-box;
+  background-image: linear-gradient(-26deg, #F7FAFD 5%, #E1ECFA 100%);
+}
+.list-item{
+  width: 100%;
+  border-radius: 12rpx;
+  overflow: hidden;
+  margin-bottom: 26rpx;
+}
+.list-item:last-child{
+  margin-bottom: 0;
+}
+.img-act{
+  width: 100%;
+  /* height: 400rpx; */
+  display: block;
+}
+.msg-box{
+  padding: 26rpx;
+  background-color: #fff; 
+  box-sizing: border-box;
+}
+.title{  
+  font-size: 32rpx;
+  color: #172650;
+  letter-spacing: 1.2rpx;
+  margin-bottom: 18rpx;
+}
+.time,.desc{
+  font-size: 24rpx;
+  color: #8D8D8D;
+  letter-spacing: 1rpx;
+}
+.time{
+  margin-bottom: 6rpx;
+}
+.right-box{
+  width: 120rpx;
+  padding-left: 2rpx;
+}
+.state{ 
+  width: 110rpx;
+  height: 48rpx;
+  background-image: linear-gradient(270deg, #46A3FF 0%, #3480F2 100%);
+  border-radius: 26rpx;
+  margin-bottom: 20rpx;
+  color: #fff;
+  font-size: 24rpx; 
+  letter-spacing: 1rpx;
+} 
+.state:last-child{
+  margin-bottom: 0;
+}
+.flex-shrink-0{
+  flex-shrink: 0;
+}
+.cur-1,.cur-2{
+  opacity: 0.5;
+}
+.cur-4{
+  background-image: linear-gradient(270deg, #EAEAEA 0%, #EBEDEE 100%);
+}

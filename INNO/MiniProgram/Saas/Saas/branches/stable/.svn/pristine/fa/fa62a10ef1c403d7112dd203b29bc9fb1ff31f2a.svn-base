@@ -1,0 +1,5 @@
+{
+    "usingComponents": {
+        "cardCode": "/components/pop/card_code/card_code"
+    }
+}

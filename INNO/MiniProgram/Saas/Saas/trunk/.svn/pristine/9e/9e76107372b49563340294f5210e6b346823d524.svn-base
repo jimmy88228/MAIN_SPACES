@@ -1,0 +1,107 @@
+<view hidden="{{showImg == 0}}">
+  <view hidden="{{showImg == -1}}">
+    <view class='fixed_posi'>
+      <view class='search_wrapper flex-s-c'>
+        <view class='input'>
+          <image src="{{url}}" mode="aspectFit" class='icon_search' />
+          <input type='text' bindinput='synchroInput' val="{{keyword}}" placeholder='请输入城市，街道，店铺名称'
+            placeholder-class="common_place" class='input_content' bindconfirm="searchStore" />
+        </view>
+        <view class="toSearch flex-c-c" style="background:{{brand_info.style.bg_color}};border-color: {{brand_info.style.bg_color}};"
+          bindtap="searchStore">搜索</view>
+        <view class="scan" bindtap="scan" wx:if="{{!jumpUrl && isScanShow}}">
+          <image src="{{scanIcon||default_scan}}" mode="aspectFit" class='img_scan'></image>
+          <view class="scanTip" style="{{scanIcon?'color:'+brand_info.style.font_color:''}}">扫码购</view>
+        </view>
+        <select-drop-down class="dropDownBox" wx:if="{{type == 'prepaid'}}" options="{{optionList}}" bindtabsChange="handleTabsChange"></select-drop-down>
+      </view>
+    </view>
+    <view class='map_wrapper'>
+      <block wx:if="{{type != 'prepaid'}}">
+        <map wx:if="{{!jumpUrl}}" id="map" class="map" longitude="{{currlocation.o_longitude}}"
+          latitude="{{currlocation.o_latitude}}" scale="14" markers="{{markers}}" show-location="{{loc_f==0}}"></map>
+        <view class="jumpStyleMsg" wx:else>
+          <!-- 需求待定 -->
+          <!-- <view class="curLocationBox" style="background:{{brand_info.style.bg_color}};">
+            <view class="locAddr">
+              <block wx:if="{{GeocoderAddr}}">
+                <view class="locLogoBox">
+                  <view class="locLogoTop" style="background:{{brand_info.style.bg_color}};"></view>
+                  <view class="locLogoBottom"></view>
+                </view>
+                <text>{{GeocoderAddr||""}}</text>
+              </block>
+              <text wx:else style="color:transparent;">地址获取中</text>
+            </view>
+            <view class="changeAddr" bindtap="onTap" data-type="changeAddr">修改收货地址</view>
+          </view> -->
+          <view class="jumpStyleBox">
+            <view class="jumpStyleContent" bindtap="scan">
+              <image src="{{scanIcon||default_scan}}" mode="aspectFit" class='img_jump_style'></image>
+              <view style="{{scanIcon?'color:' + brand_info.style.font_color :''}}" class="jumpStyleText">扫码购</view>
+            </view>
+            <view class="jumpStyleContent" bindtap="onTap" data-type="jumpUrl">
+              <image src="{{storeIcon}}" mode="aspectFit" class='img_jump_style'></image>
+              <view style="{{storeIcon?'color:' + brand_info.style.font_color :''}}" class="jumpStyleText">门店自提</view>
+            </view>
+          </view>
+        </view>
+      </block>
+      <view class="store_lists">
+        <view class="store_item" wx:for="{{viewData}}" wx:key="index" style="{{select_store.store_id != '' ? '' : ''}}">
+          <view class="select_area"
+            catchtap="{{select_store.store_id != '' && !(item.isShowProductNumber == 1 && item.productNum <= 0) ? 'getAddrMap':''}}"
+            data-store_sub="{{index}}" data-click-type="selected">
+            <view class="select_item" wx:if="{{select_store.store_id != ''}}">
+              <view class="saleUp" wx:if="{{item.isShowProductNumber == 1 && item.productNum <= 0}}">无货</view>
+              <view wx:else class="radio_select" data-store_sub="{{index}}" data-click-type="selected"
+                catchtap="getAddrMap">
+                <image src="{{brand_info.icon_url}}micro_mall/return_active.png" class="radio_icon" mode="aspectFit"
+                  wx:if="{{item.id == select_store.store_id}}" />
+                <image src="{{brand_info.icon_url}}micro_mall/return.png" class="radio_icon" mode="aspectFit" wx:else />
+              </view>
+              <!-- <view class="num_tip " wx:if="{{item.isShowProductNumber == 1}}">{{item.productNum < 10 ? '库存紧张':''}}</view> -->
+            </view>
+            <!-- <view></view> -->
+
+            <view class="store_item_name">
+              <view class="stroe_name">
+                <view class="name">{{item.name}}</view>
+                <view wx:if="{{type == 'prepaid'}}" class="store_label store_value {{item.isAllowUseStoredValue != 0 ? 'active' : ''}}">
+                  <block wx:if="{{item.isAllowUseStoredValue != 0}}">可用</block>
+                  <block wx:else>不可用</block>
+                </view>
+                <view class="store_label" wx:elif="{{item.enableSelfGet == 1}}">门店自提</view>
+
+              </view>
+              <view class="phone" wx:if="{{storePhoneShow && item.phone}}">联系电话：{{item.phone}}</view>
+              <view class="openTimeDesc" wx:if="{{item.openTimeDesc}}">{{item.openTimeDesc}}</view>
+              <view class="stroe_address">{{item.area_name}}<block wx:if="{{item.address}}">/{{item.address}}</block>
+              </view>
+              <view style="background:{{brand_info.style.bg_color}};" class="pageBtn" bindtap="onTap"
+                data-page-id="{{item.pageId}}" data-type="pageId" wx:if="{{item.pageId>0}}">查看货品专柜</view>
+            </view>
+          </view>
+          <view class='store_item_dis' data-store_sub="{{index}}" catchtap="getAddrMap" data-item="{{item}}"
+            data-open-time-desc="{{item.openTimeDesc}}">
+            <view>
+              <view class="store_item_distance">{{item.sort_str}}</view>
+              <view class="font_22">查看详情</view>
+            </view>
+            <!-- <image src="{{btn_url}}" mode="aspectFit" class='store_pic'/> -->
+          </view>
+        </view>
+
+        <view class="has_no_data" wx:if="{{viewData.length == 0}}">{{select_store.store_id != '' ? '该订单商品没有可选店铺！' :
+          '暂没可选店铺！'}}</view>
+      </view>
+    </view>
+    <cover-view class='stopPanel' wx:if="{{viewData.length == 0}}"></cover-view>
+  </view>
+  <view class="empty_state" hidden="{{showImg == 1}}">
+    <view class="empty_txt">
+      <button class="author_btn" hover-class="none" catchtap="authorizeData">请重新授权定位</button>
+    </view>
+  </view>
+</view>
+<dialog id="pageDialog"></dialog>

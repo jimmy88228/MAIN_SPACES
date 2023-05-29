@@ -1,0 +1,19 @@
+<view class="index_page">
+  <pageTab 
+    wx:if="{{microType == 'pageTab'}}" 
+    class="page_tab" 
+    id="pageTab"
+    bindpageShareSaving='pageShareSaving' 
+    bindvideoplay="videoPlay" 
+    actData="{{act_data}}"></pageTab>
+  <micro-page
+      wx:if="{{microType == 'microPage'}}" 
+      id="microPage" 
+      extraH="0"
+      isHideShare
+      hideContact></micro-page> 
+</view>
+ <!--首页-->
+<!-- <pageHome id="pageHome"></pageHome> -->
+
+ 

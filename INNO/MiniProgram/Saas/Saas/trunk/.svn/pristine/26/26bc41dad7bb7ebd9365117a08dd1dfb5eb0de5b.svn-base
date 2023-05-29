@@ -1,0 +1,12 @@
+{
+    "navigationBarTitleText": "砍价首页",
+    "backgroundColor": "#EFEFEF",
+    "enablePullDownRefresh": true,
+    "usingComponents": {
+        "tabbar": "/components/custom/tabBar",
+        "pageTab": "/components/custom/pageTab/pageTab",
+        "micro-page": "/components/micro-page/micro-mix/micro-page/micro-page",
+        "search":"/components/search/s_view",
+        "act-count-down":"/components/act-count-down/act-count-down"
+    }
+}

@@ -1,0 +1,39 @@
+<view class="get_bonus_activity_list_page">
+  <view class="table bonus_activity_head font_22">
+    <view class="table_cell t_l">数量有限，先到先得</view>
+    <view class="table_cell t_r">
+      <view bindtap="jump" data-url="/pages/micro_mall/buyBonus/getBonusOrderList" class="check_bug_code">查看购买记录</view>
+    </view>
+  </view>
+  <view bindtap="jump" data-url="/pages/micro_mall/buyBonus/getBonusActivityDetail?activityId={{item.activityId}}" wx:for="{{activitList}}" wx:key='index' class="b_box main_box">
+    <view class="table_cell activity_img_cell v_t">
+      <view class="bonus_activity_img_area b_1">
+        <view class="bonus_activity_img_area_stay">
+          <image src='{{item.imgUrl}}' class="bonus_activity_img" mode="widthFix"></image>
+        </view>
+      </view>
+    </view>
+    <view class="table_cell t_l bonus_activity_info v_t font_24">
+      <view class="font_0 bold activity_name">
+        <text class="inline_b font_32 v_m">{{item.activityName}}</text>
+        <text wx:if="{{item.allowBuys > 0}}" style="color:{{brand_info.style.bc_color.font_color}};border-color:{{brand_info.style.bc_color.font_color}};" class="b_1 radius_4 font_20 t_c limit_buy_tip v_m inline_b">限购</text>
+      </view>
+      <view class="bonus_count C_7f">礼包含券：{{item.bonusCount}}</view>
+      <view class="bonus_sale_count" style="color:{{brand_info.style.bc_color.font_color}};border-color:{{brand_info.style.bc_color.font_color}}">已售{{item.buyTimeTotal}}</view>
+      <!-- <view class="bonus_name_list C_7f">{{item.bonusNameList}}</view> -->
+
+      <view style="color:{{brand_info.style.bc_color.font_color}};" class="bonus_price bold">
+        <text class="font_28 money_char">￥</text>
+        <text class="font_38">{{item.price}}</text>
+      </view>
+      <block wx:if="{{item.canBuy == 0}}">
+        <button hover-class="none" class="bonus_activity_btn font_24" style="background:{{item.canBuy == 0? '#DDDDDD' : brand_info.style.bc_color.font_color}};" >不可购买</button>
+      </block>
+      <block wx:else>
+        <act-count-down class="bonus_activity_btn" id="actCountDownId{{index}}"></act-count-down>
+      </block>
+    </view>
+  </view>
+  <!--空状态-->
+  <view class="no_data_area" wx:if="{{empty}}">暂时还没有礼包活动</view>
+</view>

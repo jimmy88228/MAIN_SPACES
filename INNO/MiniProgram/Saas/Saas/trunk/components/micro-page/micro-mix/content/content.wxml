@@ -1,0 +1,29 @@
+<!--components/micro-page/micro-mix/content/content.wxml-->
+  <block wx:if="{{true}}">
+      <view class="main main{{dt.moduleId}}" id="main"> 
+        <block wx:if="{{_data.code == 'text'}}">
+          <text-header id="cItem" extraInfo="{{extraInfo}}" dt="{{_data.setting}}"></text-header>
+        </block>
+        <block wx:elif="{{_data.code == 'imageAd' || _data.code == 'userCard'}}">
+          <advertise id="cItem" extraInfo="{{extraInfo}}" dt="{{_data.setting}}" isLogin="{{isLogin}}"></advertise>
+        </block>
+        <block wx:elif="{{_data.code == 'imageTextNavigate'}}">
+          <ad-nav id="cItem" extraInfo="{{extraInfo}}" dt="{{_data.setting}}"></ad-nav>
+        </block>
+        <block wx:elif="{{_data.code == 'goodsList'}}">
+          <goods-list id="cItem" extraInfo="{{extraInfo}}" dt="{{_data.setting}}"></goods-list>
+        </block> 
+        <block wx:elif="{{_data.code == 'richText'}}">
+          <mc-rich-text id="cItem" extraInfo="{{extraInfo}}" dt="{{_data.setting}}"></mc-rich-text>
+        </block>
+        <block wx:elif="{{_data.code == 'video'}}">
+          <mc-video id="cItem" extraInfo="{{extraInfo}}" dt="{{_data.setting}}"></mc-video>
+        </block>
+        <block wx:elif="{{_data.code == 'textScroll'}}">
+          <notice id="cItem" extraInfo="{{extraInfo}}" dt="{{_data.setting}}"></notice>
+        </block>
+        <block wx:elif="{{_data.code == 'integralSale' || _data.code == 'limitTimeSale' || _data.code == 'pinSale' || _data.code == 'secKill' || _data.code == 'preSale' || _data.code == 'preSale' || _data.code == 'kanSale' || _data.code == 'packageSale'}}">
+          <ac-goods-list id="cItem" extraInfo="{{extraInfo}}" dt="{{_data.setting}}"></ac-goods-list>
+        </block>
+      </view>
+  </block>  

@@ -1,0 +1,60 @@
+/* components/sceneOperate/pageHome.wxss */
+.page_home_icon{
+  position:fixed;
+  bottom:300rpx;
+  right:20rpx;
+  width:75rpx;
+  height:75rpx;
+  z-index:50;
+  background-color:#fff;
+  border-radius:100%;
+  box-shadow: 0px 0px 15rpx #ccc;
+}
+.img_icon{
+  position:absolute;
+  top:50%;
+  left:50%;
+  transform: translate(-50%,-50%);
+  width:70%;
+  height:70%;
+}
+.cir_anim{
+  width: 22rpx;
+  height: 22rpx;
+  border-radius: 50%;
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  opacity: 0;
+  transform: translate(23%,-50%) scale(1,1);
+  z-index: 2;
+  margin-top: -22rpx;
+
+}
+@keyframes animShow_cart
+{
+  0% {
+      opacity: 1;
+      transform: translate(23%,-50%) scale(1,1);
+  }
+  5% {
+      opacity: 1;
+      transform: translate(23%,-50%) scale(0.6,0.6);
+  }
+  15% {
+      opacity: 1;
+      transform: translate(23%,-50%) scale(1,1);
+  }
+  80% {
+      opacity: 1;
+      transform: translate(23%,-50%) scale(1,1);
+  }
+  90% {
+      opacity: 0.5;
+      transform: translate(23%,-60%) scale(1,1);
+  }
+  100% {
+      opacity: 0.2;
+      transform: translate(23%,-70%) scale(1.2,1.2);
+  }
+}

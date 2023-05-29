@@ -1,0 +1,146 @@
+<!--components/pop/specMod/specMod.wxml-->
+<!-- 只负责数据展示,组件不setData,不调接口,只对数据结构的适配, 新组件,以后慢慢替换旧的-->
+<specPop class="ext-class" id="specPop" bindonDetached="onDetached">
+  <view class="spec_box {{customTabStyle}} {{isIphoneX?'ipx':''}}">
+    <!-- 头部信息 -->
+    <block wx:if="{{isShowHeader}}">
+      <view class="goods_area">
+        <!-- 商品图片 -->
+        <view class="goods_img_box">
+          <view class="goods_img_stay">
+            <image class="goods_img" src="{{color_img[select_goods.select_color_id][0].img_url || goods_gallery[0].img_url || default_img}}" mode="aspectFit" />
+          </view>
+        </view>
+        <!-- 商品信息 -->
+        <view class="goods_info_box">
+          <!-- 价格、积分 -->
+          <view wx:if="{{isShowPriceInfo}}" class="goods_price_box">
+            <block wx:if="{{select_goods.productInfo.product_id}}">
+              <!-- 已选完 -->
+              <block wx:if="{{select_goods.productInfo.sale_price}}">
+                <view class="goods_price_box font_36" style='color:{{brand_info.style.font_color}}'>
+                    {{select_goods.productInfo.sale_price}}
+                </view>
+              </block>
+              <block wx:if="{{select_goods.productInfo.exchange_point > 0}}">
+                <text class="goods_point font_w" style="color:{{brand_info.style.font_color || 'red'}};">
+                    加积分{{select_goods.productInfo.exchange_point}}
+                </text>
+              </block>
+            </block>
+            <block wx:else>
+              <!-- 未选完 -->
+              <block wx:if="{{select_goods.productInfo.min_price > 0}}">
+                <view class="goods_price_box font_36" style='color:{{brand_info.style.font_color}}'>
+                    <view class="goods_price">
+                        <block>¥{{select_goods.productInfo.min_price}}</block>
+                        <block wx:if="{{select_goods.productInfo.min_price != select_goods.productInfo.max_price}}"> - {{select_goods.productInfo.max_price}}</block>
+                    </view>
+                </view>
+              </block>
+              <block wx:if="{{select_goods.productInfo.min_point > 0}}">
+                <text class="goods_point font_w" style="color:{{brand_info.style.font_color || 'red'}};">
+                    <block wx:if="{{select_goods.productInfo.max_point > select_goods.productInfo.min_point}}">
+                        加积分{{select_goods.productInfo.min_point}} ~ {{select_goods.productInfo.max_point}}
+                    </block>
+                    <block wx:else>
+                        加积分{{select_goods.productInfo.min_point}}
+                    </block>
+                </text>
+              </block>
+            </block>
+          </view>
+          <!-- 款号 -->
+          <block wx:if="{{select_goods.productInfo.product_id}}">
+            <view class="product_sn C_7f font_24">商品款号 {{select_goods.productInfo.product_sn}}</view>
+          </block>
+          <!-- 已选 -->
+          <view class="spec C_7f font_24" wx:if="{{select_goods.select_color || select_goods.select_size}}">已选 {{select_goods.select_color}} {{select_goods.select_size}}</view>
+        </view>
+      </view>
+    </block>
+    <!-- 其他信息 -->
+    <view class="spec_scroll_box">
+      <!-- 规格 -->
+      <block wx:if="{{isShowSpec}}">
+        <scroll-view scroll-y="true" class="select_cont" scroll-with-animation="true">
+          <view class="color_select">
+            <view class="font_24 tit C_333">{{goodsExtend.color_name_title || '规格一'}}</view>
+            <view class="color_select_box">
+              <view class="select_item" wx:for="{{color_arr}}" wx:key="index">
+                <button bindtap="colorSelect" data-goods_id="{{item.goods_id}}" data-color_id="{{item.color_id}}" data-color_name="{{item.color_name}}" class="{{(color_size[item.color_id].total_num < 1 || (select_goods.select_size_id && color_size[item.color_id][select_goods.select_size_id].product_number < 1)) ? 'disabled': ''}}" style="{{select_goods.select_color_id == item.color_id ? 'border-color:'+brand_info.style.bg_color+';color:'+'#fff' + ';background:' + brand_info.style.bg_color +';' : '#000'}}" disabled="{{color_size[item.color_id].total_num < 1 || (select_goods.select_size_id && color_size[item.color_id][select_goods.select_size_id].product_number < 1)}}">
+                  <view class="color_name_txt">{{item.color_n}}</view>
+                </button>
+              </view>
+            </view>
+          </view>
+          <view class="size_select" wx:if="{{goodsExtend.attr_count == 2}}">
+            <view class="tit">{{goodsExtend.size_name_title || '规格二'}}</view>
+            <view class="color_select_box">
+              <view class="select_item" wx:for="{{size_arr}}" wx:key="index">
+                <button bindtap="sizeSelect" data-goods_id="{{item.goods_id}}" data-size_id="{{item.size_id}}" data-size_name="{{item.size_name}}" data-product_sn="{{item.product_sn}}" class="{{(size_color[item.size_id].total_num < 1 || (select_goods.select_color_id && size_color[item.size_id][select_goods.select_color_id].product_number < 1)) ? 'disabled': ''}}" style="{{select_goods.select_size_id == item.size_id ? 'border-color:'+brand_info.style.bg_color+';color:'+'#fff;' + 'background:' + brand_info.style.bg_color +';' : '#000'}}" disabled="{{size_color[item.size_id].total_num < 1 || (select_goods.select_color_id && size_color[item.size_id][select_goods.select_color_id].product_number < 1)}}">
+                  <view class="size_name_txt">{{item.size_n}}</view>
+                </button>
+              </view>
+            </view>
+          </view>
+        </scroll-view>
+      </block>
+      <!-- 数量 -->
+      <block wx:if="{{isShowInv}}">
+        <view class="goods_count">
+          <view class='goods_text_box'>
+            <view class="font_24">数量</view>
+            <view class="inventory font_22 C_333" wx:if="{{select_goods.productInfo.product_number >= 0}}">(库存{{select_goods.productInfo.product_number}})</view>
+          </view>
+          <view wx:if="{{isShowCount}}" class="goods_count_operate">
+            <view class="count_operate reduce_btn" bindtap="reduceGoodsNum">
+              <text class="iconfont icon-reduct" style="color:{{select_goods.select_goods_count > 1 ? brandStyle.font_color : '#7f7f7f' }};"></text>
+            </view>
+            <input class="count_input C_000" type="number" disabled="{{!select_goods.productInfo.product_id}}" value="{{select_goods.select_goods_count}}" bindblur="inputGoodsNum" />
+            <view class="count_operate add_btn" bindtap="addGoodsNum">
+              <block wx:if="{{goodsExtend.is_limit_buy == 1}}">
+                <block wx:if="{{(goodsExtend.limit_buy_times < select_goods.productInfo.product_number && select_goods.select_goods_count < goodsExtend.limit_buy_times) || (goodsExtend.limit_buy_times > select_goods.productInfo.product_number && select_goods.select_goods_count < select_goods.productInfo.product_number)}}">
+                  <text class="iconfont icon-add" style="color:{{brandStyle.font_color}};"></text>
+                </block>
+                <block wx:else>
+                  <text class="iconfont icon-add" style="color:#7f7f7f;"></text>
+                </block>
+              </block>
+              <block wx:else>
+                <text class="iconfont icon-add" style="color:{{brandStyle.font_color}};" wx:if="{{select_goods.select_goods_count < select_goods.productInfo.product_number}}"></text>
+                <text class="iconfont icon-add" style="color:#7f7f7f;" wx:else></text>
+              </block>
+            </view>
+          </view>
+        </view>
+      </block>
+      <!-- 配送方式 -->
+      <block wx:if="{{isShowShipping}}">
+        <view class="shpping_box">
+          <shippingTypeMod id="shippingTypeMod" select_goods="{{select_goods}}" bindjumpStoreNav="jumpStoreNav" bindshippingChange="shippingChange" goodsExtend="{{goodsExtend}}" goodsType="{{goodsType}}" selectGoodsInfo="{{select_goods}}"></shippingTypeMod>
+        </view>
+      </block>
+      <sizeChart wx:if="{{isShowSizeChart}}" size_img1="{{dimensionPlanInfo.Size_Img1}}" size_img2="{{dimensionPlanInfo.Size_Img2}}" showTip="{{false}}"></sizeChart>
+      <!-- 底部按钮 -->
+      <block wx:if="{{isShowTwoBtn}}">
+        <view class="box {{customTab?'customTab':''}} {{ipx_b_b_style}}">
+          <button form-type="submit" wx:if="{{select_goods.productInfo.product_number<=0}}" class="add_cart_btn default_btn_bg font_28 " style='background:#dddddd'>售 罄</button>
+          <block wx:else>
+            <view class="btn-box flex-s-s" style="{{'border-color:' + brand_info.style.font_color +';'}}">
+              <view catchtap="confirmSelect" data-type="cart" class="btn-cart flex-c-c flex-1" style="{{'color:' + brand_info.style.font_color +';'}}">加入购物车</view>
+              <view catchtap="confirmSelect" data-type="buy" class="btn-buy flex-c-c flex-1" style="{{'background-color:' + brand_info.style.bg_color +';'}}">立即购买</view>
+            </view>
+          </block>
+        </view> 
+      </block>
+      <block wx:elif="{{isShowBtn}}">
+        <view class="add_cart_btn_area {{customTab?'customTab':''}} {{ipx_b_b_style}}">
+          <button form-type="submit" wx:if="{{select_goods.productInfo.product_number<=0}}" class="add_cart_btn default_btn_bg font_28 " style='background:#dddddd'>售 罄</button>
+          <button class="add_cart_btn default_btn_bg font_28" style='background:{{brand_info.style.bg_color}}' catchtap='confirmSelect' data-type="normal" data-buy_type="" wx:elif="{{select_goods.productInfo.product_number > 0}}" form-type="submit"> {{ (goods_info.sale_type !=1 && goods_info.is_started == "0") ? '原价购买' : '确 认' }}</button> 
+          <button wx:elif="{{!select_goods.productInfo.product_id}}" class="add_cart_btn default_btn_bg font_28" catchtap='' style='background:#dcdcdc;color:#7f7f7f;' data-buy_type="" form-type="submit"> {{ (goods_info.sale_type !=1 && goods_info.is_started == "0") ? '原价购买' : '确 认' }}</button>
+        </view>
+      </block> 
+    </view>
+  </view>
+</specPop>

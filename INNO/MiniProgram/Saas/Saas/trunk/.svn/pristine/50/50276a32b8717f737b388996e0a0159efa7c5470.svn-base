@@ -1,0 +1,116 @@
+<!--pages/micro_mall/category/category.wxml-->
+<import src="../../../components/template/commission.wxml" />
+<wxs src="/common/utils/wxs/filter.wxs" module="f"/>
+    <s_view 
+    class="_input_box"
+    searchType="goods" 
+    placeText="请输入商品关键词" 
+    initVal="{{initVal}}"
+    bindinputCallback="get_value"
+    bindonTapConfirm="handleFilterSearch" />
+    <tab id="tabs" bindsortSend="handleTab" binddetail="handleFilter" bindsearch="handleFilterSearch" the-list="{{propertyList}}" brand-info="{{brand_info}}"  /> 
+<scroll-view scroll-y="{{!noScroll}}" bindscrolltolower="scrolltolower" bindscroll="onPageScroll" class="category_page">
+    <form bindsubmit="formAction" report-submit="true">
+        <view class="goods_list bg_FAFAFA" wx:if="{{!noData}}">
+            <view 
+            class="goods_item_box" 
+            wx:for="{{list}}" 
+            id="page{{p_index}}" 
+            wx:key="p_index"
+            wx:for-index="p_index" 
+            wx:for-item="p_item"
+            style="height:{{p_item.height ? p_item.height+'px':'auto'}}"
+            >
+                <view 
+                class="list_item" 
+                wx:if='{{p_item.length > 0}}'
+                wx:for="{{p_item}}" 
+                wx:key="index"
+                >
+                  <view class="p_item" catchtap='handleJump' data-is_precise="{{item.is_precise || 0}}" data-url="/pages/micro_mall/goods/goods_info?goods_id={{item.goods_id}}&color_id={{item.color_id || 0}}&issued_id={{item.issue_id || 0}}">
+                    <view class="goods_img_box {{sys_info.goods_image_size == '4-3' ? 'ratio_3_4' : ''}}">
+                        <view class="goods_img_stay">
+                            <image src="{{item.goods_thumb}}" mode="aspectFit" />
+                        </view>
+                    </view>
+                    <!-- <button catchtap='handleJump' hover-class='none' data-url="/pages/micro_mall/goods/goods_info?goods_id={{item.goods_id}}&color_id={{item.color_id || 0}}" class="goods_item">
+                    </button> -->
+                    <!-- <view class="property_box" style='background:#E1E1E1' wx:if="{{item.goods_brief!='' && item.goods_brief!=null}}">
+                        <view class="propertyClass">
+                            {{item.goods_brief}}
+                        </view>
+                    </view> -->
+                    <view class="goods_info">
+                        <!-- 标签 -->
+                        <view class="ml_10 label_box">
+                            <block 
+                            wx:for="{{tagJson[item.goods_id]}}" 
+                            wx:key="goods_id" 
+                            wx:for-item="tag" 
+                            wx:for-index="tag_index">
+                                <image 
+                                class="tag_img" 
+                                data-id="{{item.goods_id}}" 
+                                data-index="{{tag_index}}" 
+                                bindload="loadTag" 
+                                style='width:{{tag.width || 0}}rpx;height:{{tag.height || 0}}rpx' 
+                                mode='aspectFit' 
+                                src='{{tag.pic_path}}'></image>
+                            </block>
+                        </view>
+                        <!-- 名字 -->
+                        <view class="ml_10 goods_name C_333">{{item.goods_name}}</view>
+                        <!-- 卖点 -->
+                        <view class="property_box flex-b-c" wx:if="{{item.goods_brief!='' && item.goods_brief!=null}}">
+                            <view class="property_left">
+                                <view class="property_circle" style="color: {{brand_info.style.font_color}}"></view>
+                                <view class="propertyClass">
+                                    {{item.goods_brief}}
+                                </view>
+                            </view>
+                            <view class="property_right">
+                                <view class="iconfont icon-arrow-right"></view>
+                            </view>
+                        </view>
+                        <!-- 佣金 新版固定颜色,品牌色暂不会用到 -->
+                        <view class="mb_10" wx:if="{{showCommission}}" style="--light_color:{{l_color}};--main_color:{{brand_info.style.font_color}}">
+                            <template is="commissionId" data="{{commission,item}}"></template>
+                        </view>
+                        <!-- 划线原价 -->
+                        <view class="market_price view_crossed font_22 ml_10" wx:if="{{(item.market_price != item.shop_price&&item.market_price!=item.price) || item.sale_type == 4}}"><text>¥</text>{{f.price_fixed(item.market_price)}}</view>
+                        <!--  -->
+                        <view class="price_sale_buy">
+                            <view class="ml_10 goods_price_box flex-s-c">
+                                <!-- 现价 -->
+                                <view class="goods_price mr_10">
+                                    <view class="shop_price flex-s-c font_36" style="color:{{ brand_info.style.font_color}};"><text class="price_symbol">¥</text><text>{{f.price_fixed(item.shop_price || item.price)}}</text></view>
+                                </view>
+                                <!-- 销量 -->
+                                <view wx:if="{{showSalesVolume == 1}}" class="sales_box">
+                                    <text>销量</text><text>{{item.scoreStr}}</text>
+                                </view>
+                            </view>
+                            <view wx:if="{{customBuy == 1}}" class="btn-buy-box" catchtap="noAction">
+                                <btns throttleTime="800" bindclickcallback="buy" data-img="{{item.goods_thumb}}" data-issue-id="{{item.issue_id}}" data-goods-id="{{item.goods_id}}">
+                                    <button hover-class="none" class="btn-buy" style="color: {{main_font_color}};">立即购买</button>
+                                </btns>
+                            </view>
+                        </view>
+                    </view>
+                  </view>
+                </view>
+            </view> 
+        </view>
+        <view class="has_no_goods" wx:else>
+            <image src="{{brand_info.icon_url}}micro_mall/category/img_empty_goods.png" mode="widthFix" />
+            <view class="txt">没有搜索到商品</view>
+        </view>
+    </form>
+</scroll-view>
+<!--客服-->
+<cs></cs>
+<alignment>
+    <pageHome slot="home" id="pageHome"></pageHome>
+</alignment>
+
+<spec-mod id="specMod" ext-class="specMod" isShowShipping isShowTwoBtn catchChangeData="changeData" select_goods="{{select_goods}}"  bindconfirmSelect="confirmSelect"></spec-mod>

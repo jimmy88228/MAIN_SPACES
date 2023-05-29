@@ -1,0 +1,45 @@
+<window class="window" ext-class="window-ext" catchtap="hideFn">
+	<view class="main" style="{{boxStyle}}" catchtap="_noFn" wx:if="{{agreeData && (agreeData.article_title || agreeData.article_content)}}">
+    <view class="header">{{agreeData.article_title}}</view>
+    <scroll-view class="article_content" scroll-y bindscrolltolower="handleScrollToLower">
+      <text>{{agreeData.article_content}}</text>
+    </scroll-view>
+    <view class="footer">
+      <view class="agree_tips">
+        点击同意即表示您已阅读并同意
+        <block wx:if="{{agreeData.child_article && agreeData.child_article.length}}">
+          <text class="agree_child"
+            wx:for="{{agreeData.child_article}}"
+            wx:key="index"
+            style="color:orange;"
+            data-url="/pages/micro_mall/articles/agreet/agreet?articleId={{item.article_id}}"
+						catchtap="goJump"
+          >
+            <block wx:if="{{index>0}}">，</block>
+            <block>{{item.article_title}}</block>
+          </text>
+        </block>
+      </view>
+      <view class="btn_group">
+        <view class="btn_view deny">
+          <button class="normal_btn" hover-class="active" bindtap="handleUserDeny">不同意</button>
+        </view>
+        <view class="btn_view confirm">
+          <block wx:if="{{confirmIsGetInfoBtn}}">
+            <button class="login_trigger_btn" wx:if="{{isCanUrPf}}" form-type="submit" catchtap='handleUserConfirm'></button>
+            <button class="login_trigger_btn" wx:else form-type="submit" open-type='getUserInfo' bindgetuserinfo='handleUserConfirm'></button>
+          </block>
+          <btns 
+            class="login_trigger_btn" 
+            isLogin="{{isLogin}}"
+            ignoreAgreement="{{true}}"
+            data-click-type="handle"
+            wx:elif="{{confirmUseBtns}}"
+            bindclickcallback="handleUserConfirm">
+          </btns>
+          <button class="normal_btn" style="background-color:{{brand_info.style.bg_color}}; color: #ffffff" hover-class="active" bindtap="handleUserConfirm">同意</button>
+        </view>
+      </view>
+    </view>
+  </view>
+</window>

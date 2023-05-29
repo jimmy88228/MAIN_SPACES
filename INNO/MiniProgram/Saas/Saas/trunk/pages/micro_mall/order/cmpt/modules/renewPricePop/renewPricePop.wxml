@@ -1,0 +1,17 @@
+<window class="window" ext-class="window-ext">
+  <view class="search_area" style="{{boxStyle}}">
+    <view>
+      <view class="s_tit">输入金额</view>
+      <view class="s_cont">
+        <view class="s_tips">请输入{{priceConfig.minChangePrice}}~{{priceConfig.maxChangePrice}}之间的数字</view>
+        <input class="search_input" type="digit" placeholder="填写金额" bindinput='inputEvent' data-key="price" value="{{price}}"/>
+      </view>
+      <view class="s_btns">
+        <view class="search_btn" style="{{brand_info.style ? 'background-color:'+ brand_info.style.bg_color + ';' : ''}}">
+          <button hover-class='none' style="color:#fff;" catchtap='confirm'>确认</button>
+        </view>
+        <view class="search_btn"><button hover-class='none' catchtap='dismiss'>取消</button></view>
+      </view>
+    </view>
+  </view>
+</window>

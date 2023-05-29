@@ -1,0 +1,9 @@
+{
+  "component": true,
+  "usingComponents": {
+    "share": "/pages/micro_mall/goods/popup/share",
+    "shareImg": "/pages/micro_mall/goods/popup/shareImg",
+    "btns":"/components/buttons/btns",
+    "subscribe-btn":"/components/subscribe-btn/subscribe-btn"
+  }
+}

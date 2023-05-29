@@ -1,0 +1,23 @@
+<!--components/pop/specMod/shippingMod/shippingMod.wxml-->
+<view class="shipping_list">
+	<view class="shipping_item" data-index="2" bindtap="onTap" data-type="shippingChange" wx:if="{{select_goods.shippingInfo.selfGet == 0 || select_goods.shippingInfo.selfGet == 2}}">
+		<view class="select_radio">
+			<image src="{{ls_icon2}}" class="radio_select" mode="aspectFit" wx:if="{{(select_goods.shippingInfo.shippingType == 2 || select_goods.shippingInfo.shippingType == 0) || select_goods.shippingInfo.selfGet == 2}}" />
+			<image src="{{ls_icon1}}" class="radio_select " mode="aspectFit" wx:else />
+		</view>
+		<text class="">快递配送</text>
+	</view>
+	<view class="shipping_item" data-index="1" bindtap="onTap" data-type="{{select_goods.shippingInfo.storeId?'shippingChange':'selectStore'}}" wx:if="{{select_goods.shippingInfo.selfGet == 0 || select_goods.shippingInfo.selfGet == 1}}">
+		<view>
+			<view class="store_select_cont">
+				<view class="select_radio">
+					<image src="{{ls_icon2}}" class="radio_select" mode="aspectFit" wx:if="{{select_goods.shippingInfo.shippingType == 1 || select_goods.shippingInfo.selfGet == 1}}" />
+					<image src="{{ls_icon1}}" class="radio_select " mode="aspectFit" wx:else />
+				</view>
+				<text>门店自提</text>
+				<button hover-class="none" class="store_select_btn" data-index="1" data-type="selectStore" catchtap="onTap">前往选择店铺<text class="store_arrow"></text></button>
+			</view>
+			<view class="select_store_name" wx:if="{{select_goods.shippingInfo.storeId}}">{{select_goods.shippingInfo.name}}</view>
+		</view>
+	</view>
+</view>

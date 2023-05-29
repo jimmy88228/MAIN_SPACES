@@ -1,0 +1,27 @@
+<!--app_sign.wxml-->
+<view class="main" catchtouchstart="{{_showRule?'_noFn':''}}" style="{{_showRule?'overflow:hidden;':''}}">
+  <signMod id="signMod" type="signPage" isLogin="{{isLogin}}" calendar="{{calendar}}" bindhandle_rule="handle_rule" bindcancel_rule="cancel_rule"  bindcustomPageId="customPageId"></signMod>
+  <!-- <pageHome id="pageHome"></pageHome> -->
+  <view class="pageTab" style="{{showPadding}}" wx:if="{{!hideCustom}}">
+    <pageTab 
+      wx:if="{{microType == 'pageTab'}}" 
+      type="inline" 
+      bindsignStatusEvent="signStatusEvent"
+      isHidePageHome
+      id="pageTab">
+    </pageTab>
+    <micro-page
+      wx:if="{{microType == 'microPage'}}" 
+      id="microPage"
+      extraH="0"
+      isHidePageHome
+      hideContact>
+    </micro-page> 
+  </view>
+</view>
+<adsPop class="adsPop" pop-data="{{adsPop}}"></adsPop>
+<alignment>
+  <pageHome slot="home" id="pageHome"></pageHome>
+</alignment>
+<!-- 其他浮窗的容器 -->
+<outsideContainer id="outsideContainer" componentsCollection="{{outsideComponents}}" />

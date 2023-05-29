@@ -1,0 +1,43 @@
+<!--pages/micro_mall/comment/order_comment/order_comment_detail.wxml-->
+<view class="comment_detail" >
+  <view class="table b_b user_info">
+    <view class="table_cell v_b user_info_l " >
+      <view class="inline_b v_b user_header">
+        <image src="{{commentDetail.portraitPath || defaultAvatar}}" mode="aspectFit"/>
+      </view>
+      <view class="inline_b v_b user_msg">
+        <view class="font_26">{{commentDetail.realName}}</view>
+        <view class="comment_level_list">
+          <view 
+          class="comment_level_item"
+          wx:for="{{commentDetail.comment_level}}" 
+          wx:key="index">
+            <image src="{{brand_info.icon_url}}micro_mall/comment/start_icon_active.png" mode="aspectFit"/>
+          </view>
+        </view>
+      </view>
+    </view>
+    <view class="table_cell v_b t_r">
+      <view>{{commentDetail.create_time}}</view>
+    </view>
+  </view>
+  <view class="comment_content">{{commentDetail.comment_content}}</view>
+  <view class="comment_img_list">
+    <view class="comment_img_item" wx:if="{{item.imgUrl}}" wx:for="{{commentImg}}" wx:key="index">
+      <image mode="aspectFit" src="{{item.imgUrl}}" />
+    </view>
+  </view>
+  <view class="comment_detail_img">
+    <view class="table detail_img_stay">
+      <view class="table_cell detail_img_l v_t">
+        <image src="{{commentDetail.goods_img}}" mode="aspectFit"/>
+      </view>
+      <view class="table_cell detail_img_r v_t">
+        <view class="font_26 mb_10">{{commentDetail.goods_name}}</view>
+        <view class="font_24 mb_10">{{commentDetail.goods_sn}}</view>
+        <view class="font_24">{{commentDetail.goods_attr}}</view>
+      </view>
+    </view>
+  </view>
+</view>
+<view class="stay_line"></view>

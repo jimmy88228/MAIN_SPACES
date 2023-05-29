@@ -1,0 +1,7 @@
+{
+  "disableScroll": true,
+  "navigationBarTitleText": "红包明细",
+  "usingComponents": {
+    "list":"/components/list/list"
+  }
+}

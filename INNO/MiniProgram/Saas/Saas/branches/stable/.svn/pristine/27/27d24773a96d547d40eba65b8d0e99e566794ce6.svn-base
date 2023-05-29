@@ -1,0 +1,26 @@
+<!--pages/micro_mall/distribution_center/distribution_service/guest_follows/sync-member/sync-member.wxml-->
+<view class="main">
+    <view class="box tip">场景：微商城注册的会员，手动同步至第三方公司</view>
+    <view class="box border-box">
+        <view class="title">选择会员</view>
+        <input-drop-down class="block drop-down-member" id="idMember" bindhandleInput="handleInput" placeholder="请输入手机号"></input-drop-down>
+    </view>
+    <view class="box border-box">
+        <view class="title">选择店铺</view>
+        <input-drop-down 
+            id="idStore"
+            class="block drop-down-store"
+            setUnfold 
+            vocabulary="{{storeList}}" 
+            fromType="store" 
+            emptyText="无搜索结果" 
+            bindselectItem="selectStore"
+            bindhandleInput="handleInput" 
+            bindscrolltolower="scrollToLower" 
+            inputActive="{{selectItem.storeName == searchText}}" 
+            placeholder="默认店员当前店铺"></input-drop-down>
+    </view>
+    <view class="btn-box flex-e-c border-box">
+        <button hover-class="none" class="btn" bindtap="sync" style="background:{{brand_info.style.bg_color}};">同步</button>
+    </view>
+</view>

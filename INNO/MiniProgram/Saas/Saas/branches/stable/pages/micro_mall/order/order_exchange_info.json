@@ -1,0 +1,8 @@
+{
+  "navigationBarTitleText": "",
+  "enablePullDownRefresh": true,
+  "usingComponents": {
+    "pageDialog": "/components/ui/cps/dialog/dialog",
+    "cs": "/components/cs/custom_service"
+  }
+}

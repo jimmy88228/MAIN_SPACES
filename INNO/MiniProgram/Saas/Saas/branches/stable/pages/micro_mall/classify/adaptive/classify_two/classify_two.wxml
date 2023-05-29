@@ -1,0 +1,33 @@
+<!--pages/micro_mall/classify/adaptive/classify_two/classify_two.wxml-->
+<view class="two_main" wx:if="{{showPage}}">
+  <scroll-view scroll-y="{{true}}" class="main_scroll {{ isIphoneX ? 'ipx_p_b' : ''}} {{customTab ? 'customTab' : ''}}" >
+    <view class="categorysStyle {{styleType==2?'p_t_0':''}}">
+      <scroll-view class="tab_box" wx:if="{{styleType==1}}" scroll-x scroll-into-view="{{cur_view}}">
+        <view class="tab_item_box">
+          <view class="tab_item" id="tab{{t_index}}" catchtap="onTap" data-type="tab" data-cur="{{t_index}}" wx:for="{{categoryArr}}" wx:key="t_index" wx:for-index="t_index" wx:for-item="tab_item">
+            <view class="t_i_title {{t_index==cur_tab?'_bold':''}}">
+                {{tab_item.title}}
+            </view>
+            <view class="line" hidden="{{t_index!=cur_tab}}"></view>
+          </view>
+        </view>
+      </scroll-view>
+      <view class="content_box">
+        <view class="c_item" catchtap="onTap" data-cur="{{c_i_index}}" data-type="item" data-link-type="{{c_i_item.linkType}}" data-link-data="{{c_i_item.linkData}}" data-link-data="{{}}" wx:for="{{categoryArr[cur_tab].childCategorys}}" wx:key="c_i_index" wx:for-index="c_i_index" wx:for-item="c_i_item">
+          <view class="item_title_box {{c_i_item.isActive?'p_b_0':''}}">
+            <view class="item_title">{{c_i_item.title}}</view>
+            <view class="isActive" wx:if="{{categoryArr[cur_tab].childCategorys[c_i_index].childCategorys.length>0}}">
+              <view class="row style"></view>
+              <view class="col style" hidden="{{c_i_item.isActive}}"></view>
+            </view>
+          </view>
+          <view wx:if="{{c_i_item.isActive}}" catchtap="onTap" data-type="child" data-cur="{{c_i_child_index}}" data-link-type="{{c_i_child_item.linkType}}" data-link-data="{{c_i_child_item.linkData}}" class="c_i_child_box" wx:for="{{categoryArr[cur_tab].childCategorys[c_i_index].childCategorys}}" wx:key="c_i_child_index" wx:for-index="c_i_child_index" wx:for-item="c_i_child_item">
+            <view class="c_i_child">
+              {{c_i_child_item.title}}
+            </view>
+          </view>
+        </view>
+      </view>
+    </view>
+  </scroll-view>
+</view>

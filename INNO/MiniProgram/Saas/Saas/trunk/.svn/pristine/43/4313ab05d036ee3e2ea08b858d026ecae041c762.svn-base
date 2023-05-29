@@ -1,0 +1,8 @@
+{
+  "navigationBarTitleText": "订单详情",
+  "enablePullDownRefresh": true,
+  "backgroundTextStyle": "dark",
+  "usingComponents": { 
+    "order_info":"/pages/micro_mall/order/cmpt/order_info"
+  }
+}

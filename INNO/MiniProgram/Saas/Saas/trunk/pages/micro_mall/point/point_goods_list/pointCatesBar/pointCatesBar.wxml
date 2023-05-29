@@ -1,0 +1,17 @@
+<!-- 目前只有礼品用到 -->
+<!-- <view class="goods_cates_module show"> -->
+<view class="goods_cates_module">
+  <scroll-view class="goods_cates" scroll-x enable-flex bindscrolltolower="handleCatesReachRight">
+    <!-- 礼品 -->
+    <block wx:for="{{currentType == 'goods' ? goodsGroupList : bounsGroupList}}" wx:key="id">
+        <view class="cate_item" wx:if="{{item.grouping_name && item.status == 1}}" bindtap="changeCate" data-id="{{item.id}}">
+            <text>{{item.grouping_name}}</text>
+            <view class="line {{(currentType == 'goods' ? goodsGroupCurrentId : bounsGroupCurrentId) == item.id?'show':''}}" style="background-color: {{brand_info.style.font_color}};"></view>
+        </view>
+    </block>
+  </scroll-view>
+  <view class="all_cates_btn" hover-class="active" bindtap="handleMoreTap">
+    <image src="/images/micro_mall/cn/menu.png" />
+  </view>
+</view>
+<categoryPop id="categoryPop" bindcatetap="changeCate"/>

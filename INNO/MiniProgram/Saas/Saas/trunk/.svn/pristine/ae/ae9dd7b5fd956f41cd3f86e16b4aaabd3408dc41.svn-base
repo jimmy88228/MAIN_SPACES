@@ -1,0 +1,107 @@
+@import "/static/iconFont/font.wxss"; 
+.box{
+  padding: 20rpx 40rpx;
+  box-sizing: border-box;
+}
+.input_box{
+  position: relative;
+  box-sizing: border-box;
+  border: 1px solid #bebebe;
+  height: 70rpx;
+  display: flex;
+  justify-content: space-between;
+  border-radius: 8rpx
+}
+.inputClass{
+  width: 80%;
+  height: 100%;
+  padding-left: 20rpx;
+  box-sizing: border-box; 
+}
+._placeholderClass{
+  color: #7f7f7f;
+  font-size: 24rpx;
+}
+.close{
+  width: 34rpx;
+  height: 34rpx;
+  background: #bebebe;
+  border-radius: 50%;
+  position: relative;
+  transform: rotate(45deg);
+}
+.row{ 
+  width: 74%;
+  height: 4rpx; 
+}
+.column{
+  height: 74%;
+  width: 4rpx; 
+}
+.line{ 
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%,-50%);
+  border-radius: 6rpx;
+  background: #fff;
+}
+.tips_box{
+  position: relative;
+  width: 20%;
+  padding-right: 20rpx;
+  box-sizing: border-box;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+}
+.tips_line{
+  color: #FF0000;
+}
+.tips_line text{
+  transform: translateX(4rpx);
+}
+.tips_line::before{
+  content: "*";
+  display: inline-block;
+  vertical-align: middle;
+  transform: translateY(20%);
+  font-size: 24rpx;
+}
+.textarea_box{
+  border-radius: 8rpx;
+  box-sizing: border-box;
+  border: 1px solid #bebebe;
+  position: relative;
+}
+.textarea_box>.icon-bianjishuru{
+  position: absolute;
+  top: 16rpx;
+  left: 20rpx;
+}
+._textarea{
+  width: 100%;
+  min-height: 100rpx;
+  padding: 16rpx 20rpx;
+  box-sizing: border-box;
+}
+._C_7f{
+  color: #7f7f7f;
+}
+
+.picker{
+  position: relative;
+  box-sizing: border-box;
+  border: 1px solid #bebebe;
+  height: 70rpx;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 20rpx;
+  border-radius: 8rpx;
+}
+.box.warn .input_box,
+.box.warn .textarea_box,
+.box.warn .picker{
+  border: 1px solid red;
+}

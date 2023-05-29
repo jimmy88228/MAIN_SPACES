@@ -1,0 +1,291 @@
+<!--pages/micro_mall/bargain/goods/goods_detail.wxml-->
+<import src="/components/thirdParty/wxParse/wxParse.wxml"/>
+<wxs module="calcColor">
+    //isEnabled(当前是否库存), curIndex(当前索引值), index(item的索引值)
+    var getColor = function(isEnabled, curIndex, index) {
+        if (!isEnabled) {
+            return 'disabled';
+        }
+        if (curIndex == index) return 'active';
+    }
+    //brand_color(品牌颜色), font_color(字体颜色), border_color(边框颜色)
+    var getTheme = function(isEnabled, curIndex, index, brand_color, font_color, border_color) {
+        if (!isEnabled) {
+            return 'none';
+        } else {
+            return curIndex == index ? 'color: ' + brand_color + ';' + 'border: 1px solid ' + brand_color : 'color: ' + font_color + ';' + 'border: 1px solid ' + border_color;
+        }
+    }
+    module.exports = {
+        getColor: getColor,
+        getTheme: getTheme
+    }
+</wxs>
+<view 
+    hidden="{{isHidden}}"
+    class="detail_wrapper {{isIphoneX?'isIphoneX':''}}">
+    <view class="banner_wrapper">
+        <swiper 
+                wx:if="{{goods_info.imgList}}"
+                class="banner_swiper" 
+                duration="500" 
+                autoplay="{{isAutoplay}}" 
+                circular="{{isCircular}}">
+            <block wx:for="{{goods_info.imgList}}" wx:key="index">
+                <swiper-item>
+                    <image catchtap="preView" src="{{item.img_url}}" data-url="{{item.img_url}}" class="slide_image" mode="aspectFit"/>
+                </swiper-item>
+            </block>
+        </swiper> 
+        <act-count-down id="actCountDownId">
+            <view class="_flex">
+                <view class="product_price_color">
+                    <view class="product_price_title" style="background:{{l_color}};">砍价</view>
+                </view>
+                <view class="product_primary">
+                    <view 
+                        wx:if="{{goods_info.minBottomPrice !== goods_info.maxBottomPrice}}"
+                        class="product_price_wrapper">
+                        <text class="money_sign product_price">{{goods_info.minBottomPrice}}
+                        </text>
+                        <text class="product_price" style="padding-left:2rpx;">-</text>
+                        <text class="font_34 bold product_price">{{goods_info.maxBottomPrice}}
+                        </text>
+                    </view>
+                    <view wx:else class="money_sign product_price_wrapper">{{goods_info.minBottomPrice}}</view>
+                    <view 
+                        wx:if="{{goods_info.minMarketPrice !== goods_info.maxMarketPrice}}"
+                        class="product_primary_price"
+                        style="padding-left:6rpx;"
+                        >
+                        <text class="money_sign2 product_primary_price">{{goods_info.minMarketPrice}}
+                        </text>
+                        <text class="product_primary_price">-</text>
+                        <text class="font_22 product_primary_price">{{goods_info.maxMarketPrice}}
+                        </text>
+                    </view>
+                    <view 
+                        wx:else 
+                        class="money_sign2 product_primary_price">{{goods_info.minMarketPrice}}</view>
+                </view>
+            </view>
+        </act-count-down>
+    </view>
+    <view class="product_info_wrapper">
+        <view class="product_info">
+            <view class="product">
+                <view class="product_name">{{goods_info.goodsName}}</view>
+                <view class="product_code">{{goods_info.goodsSn}}</view>
+            </view>
+            <view class="rules" data-key="msg_pop" bindtap="showMsgPop">
+                <image class="rules_img" mode="widthFix" src="{{rule_img}}"/>
+                <view class="rules_title">活动规则</view>
+            </view>
+            <btns isLogin="{{isLogin}}" class="share_img_box" bindclickcallback="getShare">
+              <image class="share_img" mode="aspectFit" src="{{brand_info.icon_url}}micro_mall/detail_share.png"></image>
+              <!-- <view class="share_img_box">
+              </view> -->
+            </btns>
+        </view>
+        <view class="product_show" wx:if="{{goods_info.goodsDesciption}}">
+            <view class="product_show_title">商品详情</view>
+            <view>
+                <!--调用富文本-->
+                <template is="wxParse" data="{{wxParseData:article.nodes}}" />
+            </view>
+        </view>
+    </view>
+</view>
+<view 
+    hidden="{{isHidden}}"
+    class="interact {{isIphoneX ? 'sk_box_IX' : ''}}" 
+    style="height: {{interactHeight}}rpx;">
+    <view class="home_wrapper" bindtap="toHome">
+        <image class="home" mode="aspectFit" src="{{home}}"/>
+        <view class="home_title">首页</view>
+    </view>
+    <view class="buy_wrapper">
+        <btns 
+            class="common buy" 
+            style="color: {{brand_info.style.bargain_color.theme_color}}"
+            isLogin="{{isLogin}}" 
+            bindclickcallback="toBuy">原价购买</btns>
+        <block wx:if="{{goods_info && goods_info.goodsRepertoryAmount == 0}}">
+        <button
+            class="common bargain"
+            form-type="submit"
+            hover-class="none"
+            disabled="true"
+            style="background:#b2b2b2;border: 1px solid #b2b2b2;"
+        >已砍完</button>
+        </block>
+        <block wx:elif="{{activity_info.userActivityId == 0 && !activity_info.canJoin}}">
+          <button
+          class="common bargain"
+          form-type="submit"
+          hover-class="none"
+          disabled="true"
+          style="background:#b2b2b2;border: 1px solid #b2b2b2;"
+          >
+            限购{{activity_info.preLimitBuyTimes}}次
+          </button>
+        </block>
+        <block wx:else>
+            <btns 
+                wx:if="{{activity_info.canJoin}}"
+                class="common bargain" 
+                style="background: {{brand_info.style.bargain_color.theme_color}};border 1px solid {{brand_info.style.bargain_color.theme_color}};"
+                isLogin="{{isLogin}}" 
+                data-key="size_pop"
+                disabled="{{disabledTip}}"
+                bindclickcallback="getSku">{{disabledTip?disabledTip:'参与砍价'}}</btns>
+            <button 
+                wx:else
+                class="common bargain" 
+                form-type="submit"
+                hover-class="none"
+                style="background: {{brand_info.style.bargain_color.theme_color}};border 1px solid {{brand_info.style.bargain_color.theme_color}};"
+                data-user-activity-id="{{activity_info.userActivityId}}"
+                bindtap="jumpToDetails">
+                砍价中
+            </button>
+        </block>
+        
+    </view>
+</view>
+
+<!--规则弹框-->
+<view class="msg_pop" wx:if="{{show_msg_pop}}">
+    <view 
+        class="msg_pop_bg pop_bg {{msg_pop_animate ? 'isshow' : 'ishide'}}" 
+        data-key="msg_pop" 
+        catchtap="switchStylePop"></view>
+    <view class="msg_pop_cont bg_fff {{msg_pop_animate ? 'isshow' : 'ishide'}}">
+        <image 
+            class="msg_img"
+            src="{{server_close}}" 
+            mode="widthFix" 
+            data-key="msg_pop" 
+            catchtap="switchStylePop"></image>
+        <view class="msg_C_title bold font_28 msg_title t_c"></view>
+        <scroll-view scroll-y class="msg_scroll">
+            <text 
+                class="rule_content" 
+                decode="true" 
+                space="true">
+              {{activity_info.ruleDescription}}
+            </text>
+        </scroll-view>
+        <view 
+            class="radius_10 msg_collage_btn t_c" 
+            style="background:{{brand_info.style.bargain_color.theme_color}};" 
+            data-key="msg_pop" 
+            catchtap="switchStylePop">确定</view>
+    </view>
+</view>
+
+<!--尺码选择-->
+<!-- <view class="size_pop" wx:if="{{show_size_pop && loadSku}}">
+    <view 
+        class="size_pop_bg pop_bg {{size_pop_animate ? 'isshow' : 'ishide'}}" 
+        data-key="size_pop" 
+        catchtap="switchStylePop"></view> -->
+<specPop id="specPop"> 
+    <view class="size_pop_cont bg_fff">
+        <view class="spec_msg_box">
+            <image 
+                class="msg_img size_msg_img"
+                src="{{server_close}}" 
+                mode="widthFix" 
+                data-key="size_pop" 
+                catchtap="hidePop"></image>
+            <view class="sku_content">
+                <view class="sku_img_wrapper">
+                    <image class="sku_img" mode="aspectFit" src="{{goods_info.imgList[specImgIndex].img_url}}"/>
+                </view>
+                <view class="sku_info">
+                    <view class="sku_info_inner">
+                        <view class="sku_price_wrapper" style="color: {{brand_info.style.bargain_color.theme_color}};">
+                            <view class="sku_tag" style="background:{{brand_info.style.bargain_color.theme_color}};" >砍价</view>
+                            <view 
+                                wx:if="{{skuPrice.minBottomPrice !== skuPrice.maxBottomPrice}}"
+                                class="sku_price">
+                            <text class="money_sign sku_price">{{skuPrice.minBottomPrice}}
+                                </text>
+                                <text class="sku_price">-</text>
+                                <text class="money_sign sku_price">{{skuPrice.maxBottomPrice}}
+                                </text>
+                            </view>
+                            <view 
+                                wx:else 
+                                class="money_sign sku_price">{{skuPrice.minBottomPrice}}</view>
+                        </view>
+                        <view class="sku_primary">
+                            <!-- <view class="sku_primary_title">原价</view> -->
+                            <view 
+                                wx:if="{{skuPrice.minMarketPrice !== skuPrice.maxMarketPrice}}"
+                                class="sku_primary_price">
+                                <text class="money_sign2 sku_primary_price">{{skuPrice.minMarketPrice}}
+                                </text>
+                                <text class="sku_primary_price">-</text>
+                                <text class="money_sign2 sku_primary_price">{{skuPrice.maxMarketPrice}}
+                                </text>
+                            </view>
+                            <view 
+                                wx:else 
+                                class="money_sign2 sku_primary_price">{{skuPrice.minMarketPrice}}</view>
+                        </view>
+                    </view>
+                    <view class="sku_code" wx:if="{{skuPrice.productSn}}">商品条码: {{skuPrice.productSn}}</view>
+                    <view class="sku_code">已选: {{skuPrice.colorName}} {{skuPrice.sizeName}}</view>
+                </view>
+            </view>
+        </view>
+
+        <view class="spec_scroll_box box">
+            <scroll-view scroll-y class="size_scroll">
+                <view class="color_standard">
+                    <view class="color_standard_title">{{skuDetals.color_name_title}}</view>
+                    <view class="color_standard_list">
+                        <view 
+                            class="specBtn color_standard_item {{calcColor.getColor(item.isEnabled, colorIndex, index)}}" 
+                            style="{{calcColor.getTheme(item.isEnabled, colorIndex, index, brand_info.style.bargain_color.theme_color, '#000', 'rgba(221, 221, 221, 1)')}}"
+                            wx:for="{{colorList}}" 
+                            wx:key="index"
+                            data-index="{{index}}"
+                            bindtap="{{item.isEnabled ? 'selectColor' : ''}}">
+                            {{item.colorName}}
+                        </view>
+                    </view>
+                </view>
+                <view class="size_standard" wx:if="{{skuDetals.attr_count === 2}}">
+                    <view class="size_standard_title">{{skuDetals.size_name_title}}</view>
+                    <view class="size_standard_list">
+                        <view 
+                            class="specBtn size_standard_item {{calcColor.getColor(item.isEnabled, sizeIndex, index)}}" 
+                            style="{{calcColor.getTheme(item.isEnabled, sizeIndex, index, brand_info.style.bargain_color.theme_color, '#000', 'rgba(221, 221, 221, 1)')}}" 
+                            wx:for="{{sizeList[colorIndex]}}" 
+                            wx:key="index"
+                            data-index="{{index}}"
+                            bindtap="{{item.isEnabled ? 'selectSize' : ''}}">
+                            {{item.sizeName}}
+                        </view>
+                    </view>
+                </view>
+            </scroll-view>
+        </view>
+        <view 
+            class="radius_10 msg_collage_btn t_c size_btn" 
+            style="background:{{brand_info.style.bargain_color.theme_color}};" 
+            data-key="size_pop" 
+            catchtap="confirmStandard">确定</view>
+    </view>
+</specPop> 
+<!-- </view> -->
+
+<share id="shareModule" bindchooseShareType="chooseShareType" bindcheckIfStaffDstbCallBack="checkIfStaffDstbCallBack"></share>
+<shareImg id="shareImg" allData="{{allData}}"></shareImg>
+<!-- 全民分销 -->
+<staffApply touchCancel="{{false}}" isLogin="{{isLogin}}" id="staffApply"></staffApply>
+<!-- 最外层容器 -->
+<outsideContainer id="outsideContainer" componentsCollection="{{outsideComponents}}" />

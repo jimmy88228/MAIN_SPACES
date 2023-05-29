@@ -1,0 +1,60 @@
+<!--pages/micro_mall/prepaid/prepaid_card_erp.wxml-->
+<view class="prepaid_card" hidden="{{showCard}}">
+  <view class="canUseShop" bindtap="handleSelectShop">
+    <image src="{{shopIcon}}" class="shop_logo"></image>
+    <view class="shop_text">可用门店</view>
+    <view class="arrow"></view>
+  </view>
+  <view class="brand_logo">
+    <image src="{{headerImg}}" mode="widthFix"/>
+  </view>
+  <view class="cont_title">
+    <navigator 
+      hover-class="none"
+      url="/pages/micro_mall/prepaid/erp/prepaid_card_erp_detail?storeValue={{storedValue}}"
+      >余额查询</navigator>
+  </view>
+
+  <view 
+        class="prepaid_card_info"
+        style="background-image:url({{brand_info.icon_url}}micro_mall/perpaid/balance_bg.png)" 
+        bindtap="checkRecode">
+    <view class="brand_card_logo">
+      <image src="{{headerImg}}" mode="aspectFit" class="mini_logo"/>
+    </view>
+    <view class="card_msg bind_phone" wx:if="{{mobilePhone === ''}}">
+      <view class="card_msg_row">请绑定会员手机后查询</view>
+      <view class="card_msg_row bind_row" catchtap="goToBind">立即去绑定</view>
+    </view>
+    <view class="card_msg" wx:else>
+      <view class="card_msg_row">
+        <image class="card_phone_icon" src="{{telephoneIcon}}" mode="widthFix"/>
+        <text class="phone_number">{{mobilePhone}}</text>
+      </view>
+      <view class="card_msg_row font_60 font_w" style="color:{{brand_info.style.font_color}};">{{storedValue}}元</view>
+    </view>
+  </view>
+  <view class="scan_code_wrapper">
+    <button 
+    class="scan_code"
+    hover-class="none"
+    wx:if="{{showCodeBtn == 1}}"
+    style="color:{{brand_info.style.font_color}};border: 1px solid {{brand_info.style.font_color}};"
+    bindtap="showCode">查看口令</button>
+  </view>
+  <view class="note_pic">
+    <image src="{{noteImg}}" mode="widthFix"/>
+  </view>
+  <view wx:if="{{showRecharge == 1}}" class="recharge_wrapper {{isIphoneX ? 'fix_iphoneX' : ''}}">
+    <button 
+            class="recharge" 
+            style="background: {{brand_info.style.bg_color}}"
+            hover-class="none"  
+            bindtap="jumpDetails">去充值</button>
+    <!-- <button 
+            wx:else
+            class="recharge_none" 
+            hover-class="none">暂无充值活动，如有需要请前往线下门店咨询</button> -->
+  </view>
+</view>
+<cardCode id="cardCode"/>

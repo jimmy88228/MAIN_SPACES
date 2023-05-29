@@ -1,0 +1,179 @@
+/*================动画效果=================*/
+/*背景动画*/
+@keyframes bg_show {
+    0% {
+        opacity: 0;
+    }
+
+    100% {
+        opacity: 1;
+    }
+}
+
+@-webkit-keyframes bg_show {
+    0% {
+        opacity: 0;
+    }
+
+    100% {
+        opacity: 1;
+    }
+}
+
+@keyframes bg_hide {
+    0% {
+        opacity: 1;
+    }
+
+    100% {
+        opacity: 0;
+    }
+}
+
+@-webkit-keyframes bg_hide {
+    0% {
+        opacity: 1;
+    }
+
+    100% {
+        opacity: 0;
+    }
+}
+
+/*页面顶部掉出*/
+@keyframes pop_show {
+    0% {
+        opacity: 0;
+        transform: translateY(-150%);
+    }
+
+    100% {
+        opacity: 1;
+        transform: translateY(-50%);
+    }
+}
+
+@-webkit-keyframes pop_show {
+    0% {
+        opacity: 0;
+        -webkit-transform: translateY(-150%);
+    }
+
+    100% {
+        opacity: 1;
+        -webkit-transform: translateY(-50%);
+    }
+}
+
+@keyframes pop_hide {
+    0% {
+        opacity: 1;
+    }
+
+    100% {
+        opacity: 0;
+    }
+}
+
+@-webkit-keyframes pop_hide {
+    0% {
+        opacity: 1;
+    }
+
+    100% {
+        opacity: 0;
+    }
+}
+
+/*底部滑出*/
+@keyframes bottom_slip {
+    0% {
+        transform: translateY(130%);
+    }
+
+    100% {
+        transform: translateY(0);
+    }
+}
+
+@-webkit-keyframes bottom_slip {
+    0% {
+        -webkit-transform: translateY(130%);
+    }
+
+    100% {
+        -webkit-transform: translateY(0);
+    }
+}
+
+@keyframes bottom_slip_out {
+    0% {
+        transform: translateY(0);
+    }
+
+    100% {
+        transform: translateY(130%);
+    }
+}
+
+@-webkit-keyframes bottom_slip_out {
+    0% {
+        -webkit-transform: translateY(0);
+    }
+
+    100% {
+        -webkit-transform: translateY(130%);
+    }
+}
+
+
+/*弹性弹出*/
+/*显示*/
+@keyframes show_alert {
+    0% {
+        transform: scale(0);
+    }
+
+    40% {
+        transform: scale(1.2);
+    }
+
+    60% {
+        transform: scale(1);
+    }
+}
+
+@-webkit-keyframes show_alert {
+    0% {
+        -webkit-transform: scale(0);
+    }
+
+    40% {
+        -webkit-transform: scale(1.2);
+    }
+
+    60% {
+        -webkit-transform: scale(1);
+    }
+}
+
+/*隐藏*/
+@keyframes hide_alert {
+    0% {
+        opacity: 1;
+    }
+
+    100% {
+        opacity: 0;
+    }
+}
+
+@-webkit-keyframes hide_alert {
+    0% {
+        opacity: 1;
+    }
+
+    100% {
+        opacity: 0;
+    }
+}

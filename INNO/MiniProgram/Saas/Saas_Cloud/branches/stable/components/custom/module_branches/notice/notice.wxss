@@ -1,0 +1,111 @@
+/* components/micro-page/items/notice/notice.wxss */
+page{
+  --voice-bg:"#171717";
+  --baseW:305px;
+  --baseH:70rpx;
+  --textWH:305px;
+  --textWH_reserve:-305px; 
+  --textTime:10s; 
+}
+.box{
+  width: 100%;
+  display: flex;
+  align-items: center;
+  padding:10rpx 20rpx;
+  box-sizing: border-box;
+}
+.icon-box{
+  flex-shrink: 0;
+  width: 55rpx;
+  height: 40rpx;
+  display: flex;
+  align-items: center;
+}
+.text_box{
+  width: 100%;
+  height: var(--baseH);
+  background: #fff;
+  overflow: hidden;
+  position: relative;
+}
+.text_content{
+  /* width: 100%; */
+  box-sizing: border-box;
+  padding:20rpx 0;
+} 
+
+/* 从下往上移动 */
+.noticeType_12{
+  min-height: var(--baseH);
+  padding:0;
+  transform: translate(0,var(--baseH)); 
+  animation: anim_noticeType_12 var(--textTime) linear infinite;
+}
+/* 从上往下移动 */
+.noticeType_11{
+  min-height: var(--baseH);
+  padding:0;
+  transform: translate(0,-100%);
+  animation: anim_noticeType_12 var(--textTime) linear infinite reverse;
+} 
+
+/* 从右往左移动 */
+.noticeType_10{
+  transform: translate(100%,0);
+  animation: anim_noticeType_10 var(--textTime) linear infinite; 
+  white-space: nowrap;
+
+  display: flex;
+  align-items: center;
+  height: 100%;
+} 
+/* 从左往右移动 */
+.noticeType_9{
+  opacity: 1;
+  transform: translate(var(--textWH_reserve),0);
+  animation: anim_noticeType_10 var(--textTime) linear infinite reverse; 
+  white-space: nowrap;
+  
+  display: flex;
+  align-items: center;
+  height: 100%;
+}
+
+@keyframes anim_noticeType_12
+{
+0% {transform:translate(0,var(--baseH))}
+100% {transform:translate(0,-100%);}
+}
+
+@keyframes anim_noticeType_10
+{
+0% {transform:translate(100%,0)}
+100% {transform:translate(var(--textWH_reserve),0)}
+}
+.text_size_test,.text_size_test_ver{
+  opacity: 0;
+  position: fixed;
+  left: -1000px;
+  bottom: -100px;
+}
+.noticeImg{
+  width: 40rpx;
+  height: 40rpx;
+}
+.more_box{
+  width: 50rpx;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  flex-shrink: 0;
+  justify-content: space-around;
+  flex-shrink: 0;
+  padding-left: 20rpx; 
+  min-height: 80rpx;
+}
+.more{
+  width: 10rpx;
+  height: 10rpx;
+  border-radius: 50%;
+  background: rgba(216, 30, 6, 1);
+}

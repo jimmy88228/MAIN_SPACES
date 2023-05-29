@@ -1,0 +1,56 @@
+<!--pages/micro_mall/bargain/index/bargain_index.wxml-->
+<view class="bargain_index">
+    <search 
+    class="_input_box"
+    searchType="goods" 
+    placeText="请输入商品关键词" 
+    bindinputCallback="getKeywork"
+    bindonTapConfirm="handleFilterSearch" />
+    <!-- <view class="banner">
+        <image class="active_banner" mode="widthFix" src="{{banner}}"/>
+    </view> -->
+    <pageTab 
+        wx:if="{{microType == 'pageTab'}}"
+        id="pageTab"
+        bindgetPageId="getPageId"
+        isHideShare
+        hideContact
+        autoShow
+        bindvideoPlayPage="videoPlayPage"
+    ></pageTab>
+    <micro-page
+      wx:if="{{microType == 'microPage'}}" 
+      id="microPage" 
+      extraH="0"
+      isHideShare
+      hideContact></micro-page>
+    <view class="bargain_list" wx:if="{{!isEmpty}}">
+        <view class="bargain_item" wx:for="{{bargainList}}" data-activity-id="{{item.activityId}}" bindtap="goDetails" wx:key="index">
+            <view class="product_img_wrapper b_1">
+                <image class="product_img" mode="aspectFit" src="{{item.activityImg}}"/>
+                <view class='activity-tag' style="{{brandStyle ? 'background-color:'+ brandStyle.bargain_color.theme_color +';' : ''}}">砍价</view>
+            </view>
+            <view class="product_info_wrapper">
+                <view class="product_name font_26">{{item.activityName}}</view>
+                <view class="join" style="border-color:{{brandStyle.bargain_color.theme_color}};color:{{brandStyle.bargain_color.theme_color}};" wx:if="{{item.joins}}">
+                  <view class="join_txt">已参与{{item.joins}}人</view>
+                </view>
+                <view class="price_msg_box">
+                    <view class="price_msg">
+                        <view class="p_title">最低可砍至</view>
+                        <view class="p_box">
+                            <view class="p_price bold font_22" style="color:{{brandStyle.bargain_color.theme_color}};">¥</view>
+                            <view class="p_price bold font_26" style="color:{{brandStyle.bargain_color.theme_color}};">{{item.minBottomPrice}}</view>
+                            <view class="p_m_price font_22">¥{{item.maxMarketPrice}}</view>
+                        </view>
+                    </view>
+                    <view class="count-box">
+                        <act-count-down id="actCountDownId{{index}}"></act-count-down>
+                    </view>
+                </view>
+            </view>
+        </view>
+    </view>
+    <view class="empty_state" wx:if="{{isEmpty}}">暂无砍价活动~</view>
+</view>
+<tabbar id="custom_tabbar" type="{{jumpType}}"></tabbar>

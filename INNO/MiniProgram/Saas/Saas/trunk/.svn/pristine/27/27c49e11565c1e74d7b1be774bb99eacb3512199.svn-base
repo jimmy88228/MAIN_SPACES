@@ -1,0 +1,100 @@
+<!--pages/micro_mall/questionnaire/vote/vote.wxml-->
+<wxs src="./specific.wxs" module="f"/>
+<view class="box {{info.vote_type_code}} {{tips_msg?'warn':''}}">
+  <questionHead info="{{info}}" titleStyle="{{f.titleStyle(info, goodsList ,{specialStyle:(firstStarIndex == label || lastStarIndex == label)})}}"  />
+
+  <!-- GOSO定制的文本投票 产品模块 -->
+  <block wx:if="{{info.vote_type_code == 'vote_text' && goodsList && goodsList.length}}">
+    <view class="q_prod {{productHide?'hidden':''}}">
+      <product info="{{goodsList}}" />
+    </view>
+  </block>
+
+  <block wx:if="{{info.vote_type_code == 'vote_text'}}">   <!-- 文字投票 -->
+    <!-- GOSO定制 -->
+    <block wx:if="{{'传入了一个特别的值'}}">
+      <view class="spec_select_box">
+        <view class="spec_btn {{item.is_stop?'termination':''}}" style="{{item.is_stop?'':'background-color:'+ '#F19234' || brand_info.style.font_color}}"
+        wx:for="{{info.child_list}}"
+        wx:key="child_id"
+        bindtap="handle_select"
+        data-is_termination="{{item.is_stop}}"
+        data-num="{{index}}"
+        data-child_id="{{item.child_id}}">
+          <view class="option_name">{{item.option_name}}</view>
+        </view>
+      </view>
+    </block>
+
+    <!-- 普通情况 -->
+    <block wx:else>
+      <view class="select_box">
+        <view class="s_item"
+        wx:for="{{info.child_list}}"
+        wx:key="child_id"
+        bindtap="handle_select"
+        data-is_termination="{{item.is_stop}}"
+        data-num="{{index}}"
+        data-child_id="{{item.child_id}}">
+            <!-- <image wx:if="{{!item.status}}" src="{{}}" mode="aspectFit" class="img_select" style="{{}}"></image> -->
+            <icon type="success" size="30rpx" color="{{item.status?brand_info.style.font_color:'rgb(190,190,190)'}}" mode="aspectFit" class="img_select" style="{{}}"></icon>
+            <view class="s_t" style="{{item.status?'color: '+brand_info.style.font_color:''}}">{{item.option_name}}</view>
+            <view class="order_input_con" wx:if="{{item.is_other_option != 0 && item.status && item.can_edit}}" catchtap="_noFn">
+              <textarea auto-height bindinput="handleUserInput" value="{{item.txtData || ''}}" data-index="{{index}}" />
+            </view>
+        </view>
+      </view>
+    </block>
+  </block>
+
+  <block wx:elif="{{info.vote_type_code == 'vote_image'}}"> <!-- 图片投票 -->
+    <view class="select_box_pic">
+      <view class="s_item_pic s_item_pic{{info.image_show_style}}" wx:for="{{info.child_list}}" wx:for-index="l_index"  wx:key="child_id">
+          <block wx:for="{{item.img_url}}" wx:key="index" wx:for-item="item_url">
+            <image src="{{item_url}}" mode="widthFix" class="img_select_pic_bg"></image>    
+          </block>
+          <view class="option_name">{{item.option_name}}</view>
+          <view catchtap="handle_select" data-child_id="{{item.child_id}}" data-num="{{l_index}}" class="select_pic_box" wx:if="{{item.img_url.length>0}}">
+            <!-- <image src="{{}}" mode="aspectFit" class="img_select_pic"></image> -->
+            <icon type="success" size="30rpx" color="{{item.status?brand_info.style.font_color:'rgb(255,255,255)'}}" mode="aspectFit" class="img_select" style="{{}}"></icon>
+            <view class="s_t" style="color: {{item.status?brand_info.style.font_color:''}}">选择</view>
+          </view>
+      </view>
+    </view>
+  </block>
+
+  <block wx:elif="{{info.vote_type_code == 'vote_star'}}">
+    <view class="select_box_star {{(firstStarIndex == label || lastStarIndex == label)?'special':''}}">
+      <view class="stars_container">
+        <stars
+          type="vote_star"
+          length="{{info.max_options || (info.child_list && info.child_list.length) || 5}}"
+          likeImage="/pages/micro_mall/questionnaire/vote/vote_icon/star_on.png"
+          unlikeImage="/pages/micro_mall/questionnaire/vote/vote_icon/star_off.png"
+          score="{{score}}"
+          boxStyle="padding-bottom: 15rpx"
+          starStyle="width:48rpx;height:48rpx"
+          gutter="{{32}}"
+          bindstartap="handleStarTap"
+        />
+      </view>
+      <!-- GOSO要求去掉 评分备注，如有需要再改 -->
+      <!-- <view class="rate_content">
+        <block wx:for="{{info.child_list || []}}" wx:key="sort">
+          {{index + 1 == score?item.option_name:''}}
+        </block>
+      </view> -->
+    </view>
+    <!-- GOSO定制 -->
+    <view class="order_input_con" wx:if="{{score > 0 && score <= info.need_question_num}}" catchtap="_noFn">
+      <textarea auto-height bindinput="handleUserInput" placeholder="具体是哪些地方不够好呢？" value="{{info.child_list[score-1].txtData}}" data-index="{{score - 1}}" />
+    </view>
+  </block>
+
+  <view class="tips_line" wx:if="{{tips_msg}}">
+    <text>{{tips_msg}}</text>
+  </view>
+
+  <!-- 星星项的下划线 -->
+  <view class="select_box_star_line" wx:if="{{info.vote_type_code == 'vote_star'}}"></view>
+</view>

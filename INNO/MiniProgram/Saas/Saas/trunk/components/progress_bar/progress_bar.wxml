@@ -1,0 +1,18 @@
+<!--components/progress_bar/progress_bar.wxml-->
+<view class="progressBox" style="{{auto_h?'height:100%;':''}}">
+  <view class="bar {{showTran?'tran':''}}" style="width:{{percent}}%; background:{{acBg || ac_conf.theme_color}};">
+  <!-- <view class="bar" style="width:{{percent}}%; background:linear-gradient(to right,{{ac_conf.to_color}},{{ac_conf.from_color}});"> -->
+    <view wx:if="{{showCircle}}" class="barCircle" style="background:{{acBg || ac_conf.theme_color}}" >
+      <view wx:if="{{tip}}" class="tip" style="background:linear-gradient(to right,{{acBg || ac_conf.to_color}},{{acBg || ac_conf.from_color}});">{{tip}}</view>
+    </view>
+  </view>
+  <view wx:if="{{showCircle && percent!=100}}" class="end_cir"></view>
+</view>
+<view class="s_e_tip {{!showCircle?'hide_p':''}}">
+  <view class="start">
+    <slot name="start"></slot>
+  </view>
+  <view class="end">
+    <slot name="end"></slot>
+  </view>
+</view>

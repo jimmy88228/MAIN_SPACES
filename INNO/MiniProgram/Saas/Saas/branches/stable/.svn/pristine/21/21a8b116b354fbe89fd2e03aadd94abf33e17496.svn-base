@@ -1,0 +1,16 @@
+{
+  "component": true,
+  "backgroundTextStyle": "dark",
+  "usingComponents": {
+    "cs": "/components/cs/custom_service",
+    "btnFollow": "/components/btnFollow/btnFollow",
+    "bgHover": "/components/bg_hover/bg_hover",
+    "tips_window": "/pages/micro_mall/shopping/cart_list/tips_window/tips_window",
+    "pageDialog": "/components/ui/cps/dialog/dialog",
+    "orderSync": "/components/pop/order-sync/order-sync",
+    "adsPop":"/components/pop/adsPop",
+    "btns": "/components/buttons/btns",
+    "captchaPop": "./modules/captchaPop/captchaPop",
+    "renewPricePop": "./modules/renewPricePop/renewPricePop"
+  }
+}

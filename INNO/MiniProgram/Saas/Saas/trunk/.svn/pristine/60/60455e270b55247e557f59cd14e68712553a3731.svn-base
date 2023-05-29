@@ -1,0 +1,8 @@
+{
+  "navigationBarTitleText": "活动记录",
+  "backgroundColor": "#fbfbfb",
+  "usingComponents": {
+    "tabbar": "/components/custom/tabBarMod",
+    "dialog": "/components/ui/cps/dialog/dialog"
+  }
+}

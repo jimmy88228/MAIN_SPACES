@@ -1,0 +1,249 @@
+<!--pages/micro_mall/order/apply_return.wxml-->
+<view hidden="{{thisPageHidden}}">
+  <view class="return_page" >
+      <view class="page_tab return_row padding_0" >
+          <block>
+              <view 
+              class="page_tab_item tab_item_right" 
+              wx:for="{{returnTab.tab}}" 
+              wx:key="index" 
+              wx:if="{{(hasGift && item.id == 0) || !hasGift}}"
+              data-select_id="{{item.id}}" 
+              bindtap="singleSelect">
+                  <view class="select_radio inline_b">
+                      <image src="{{return_active}}" class="radio_select" mode="widthFix" wx:if="{{returnTab.curr == item.id}}" />
+                      <image src="{{return_img}}" class="radio_select" mode="widthFix" wx:else />
+                  </view>
+                  <text class="tab_txt" style="min-width:100rpx;">{{item.txt}}</text>
+                  <text class="tab_txt" style="color:#7f7f7f;">{{item.tip}}</text>
+              </view>
+          </block>
+      </view>
+      <view class="return_tip">为了更快处理您的售后申请，建议先联系客服哦</view>
+      <view >
+          <block wx:if="{{isChange}}">
+            <view class="orderBox" catchtap='changeAddress'>
+              <view class="{{address_data.address_id?'tit':''}}">收货地址</view>
+              <view class="cont"> 
+                <block wx:if="{{address_data.address_id}}">
+                  <view class="addr_row bold">{{address_data.consignee}} {{address_data.mobile}}</view>
+                  <view class="addr_row mt_10">{{address_data.regionAddr}} {{address_data.address}}</view>
+                </block>
+              </view>
+              <image src="{{rightbutton}}" class="r_arrow" mode="widthFix" />
+            </view>
+            <view class="mb_16"></view>
+          </block>
+          <view class="orderGoods orderBox p_b_0" wx:for="{{formDataArr}}" wx:key="index" wx:for-item="list_item">
+          <!-- <view class="orderGoods orderBox" wx:if="{{isChange}}"> -->
+          <!-- 商品信息 -->
+              <view class="orderGood">
+                  <view class="goods_detail_img" catchtap='jump_detail' data-color-id="{{list_item.img_color}}" data-id="{{list_item.goodsId}}">
+                      <view class="goods_detail_img_stay {{sys_config.goods_image_size == '4-3' ? 'ratio_3_4' : ''}}">
+                          <image src="{{list_item.img_url}}" mode="aspectFit" />
+                      </view>
+                  </view>
+                  <view class="good_msg">
+                      <view class='good_top'>
+                          <view wx:if="{{list_item.sale_kind==1}}" style='background:{{brand_info.style.bg_color}};' class='sale_type'>{{list_item.sale_kind==1?"海淘商品":""}}</view>
+                          <view class="good_name">{{list_item.goods_Name}}</view>
+                          <view class="good_info">
+                              <view class="csName" wx:if="{{list_item.colorName}}">{{list_item.colorName}}</view>
+                              <view class="csName {{list_item.sizeName && list_item.colorName?'csName_right':''}}" wx:if="{{list_item.sizeName}}">{{list_item.sizeName}}</view>
+
+
+                          </view>
+                          
+                      </view>
+                      <view class='money_bottom'>
+                          <view class="font_w font_28 price_bottom" style="color:{{brand_info.style.font_color}}">
+                              <block wx:if="{{list_item.goodPrice && list_item.goodPrice > 0 && list_item.goodsType ==1}}">
+                                  <view class="font_28 RMB">¥ </view>
+                                  <text class="">{{list_item.goodPrice}}</text>
+                                  <text class="" wx:if="{{list_item.exchange_integral > 0}}"> + </text>
+                              </block>
+                              <block wx:if="{{list_item.exchange_price && list_item.exchange_price > 0 && list_item.goodsType !=1}}">
+                                  <view class="font_28 RMB">¥ </view>
+                                  <text>{{list_item.exchange_price}}</text>
+                                  <text class="" wx:if="{{list_item.exchange_integral > 0}}"> + </text>
+                              </block>
+                              <block wx:if="{{list_item.exchange_integral > 0}}">
+                                  <text>{{list_item.exchange_integral}}积分</text>
+                              </block>
+                              <view class="originalPrice" wx:if="{{ (list_item.market_price != list_item.goodPrice || (list_item.goodsType==5 && list_item.exchange_price!=list_item.market_price)) && list_item.market_price > 0}}">
+                                <view class="RMB_line">¥ </view>
+                              <view style='display:inline-flex;text-decoration:line-through'>{{list_item.market_price}}</view>
+                          </view>
+                          </view>
+                          <!-- <view class="originalPrice" wx:if="{{ (list_item.market_price != list_item.goodPrice || (list_item.goodsType==5 && list_item.exchange_price!=list_item.market_price)) && list_item.market_price > 0}}">
+                              <view class="RMB_line">¥ </view>
+                              <view style='display:inline-flex;text-decoration:line-through'>{{list_item.market_price}}</view>
+                          </view> -->
+                          <view class="good_count">购买数量 <text class="bold">{{list_item.goods_num}}</text></view>
+                          <view class="send_count">发货数量 <text class="bold">{{list_item.send_number}}</text></view>
+                      </view>
+                  </view>
+              </view>
+              <!-- 申请数量 -->
+              <view class="orderBox box_inline">
+                <view class="cont table">
+                  <view class="table_cell C_7f">
+                    申请数量
+                  </view>
+                  <view class="table_cell">
+                    <view class="count_operation">
+                        <view class="reduce_btn">
+                            <image 
+                            src="{{g_reduce}}" 
+                            mode="aspectFit" 
+                            wx:if="{{formDataArr[index].return_num > 1}}" 
+                            data-type="{{carts.type}}" 
+                            data-index="{{index}}" 
+                            data-rec-id="{{item.rec_id}}"
+                            data-op="reduce"
+                            catchtap="reduceGoodsNum" />
+                            <image src="{{g_reduce_none}}" mode="aspectFit" wx:else />
+                        </view>
+                        <text class="count_input">{{formDataArr[index].return_num}}</text>
+                        <view class="add_btn">
+                            <image 
+                            src="{{g_add}}" 
+                            mode="aspectFit" 
+                            data-type="{{carts.type}}" 
+                            data-index="{{index}}"
+                            data-rec-id="{{item.rec_id}}" 
+                            data-op="add"
+                            wx:if="{{formDataArr[index].return_num < formDataArr[index].canReturnNum}}"  
+                            catchtap="addGoodsNum" />
+                            <image src="{{g_add_none}}" mode="aspectFit" wx:else  />
+                        </view>
+                    </view>
+                  </view>
+                </view>
+              </view>
+          </view>
+          <!-- <view class="orderBox">
+            <view class="cont table">
+              <view class="table_cell C_7f">
+                申请数量
+              </view>
+              <view class="table_cell">
+                <view class="count_operation">
+                    <view class="reduce_btn">
+                        <image 
+                        src="{{g_reduce}}" 
+                        mode="aspectFit" 
+                        wx:if="{{formData.return_num > 1}}" 
+                        data-type="{{carts.type}}" 
+                        data-index="{{index}}" 
+                        data-rec-id="{{item.rec_id}}"
+                        catchtap="reduceGoodsNum" />
+                        <image src="{{g_reduce_none}}" mode="aspectFit" wx:else />
+                    </view>
+                    <text class="count_input">{{formData.return_num}}</text>
+                    <view class="add_btn">
+                        <image 
+                        src="{{g_add}}" 
+                        mode="aspectFit" 
+                        data-type="{{carts.type}}" 
+                        data-index="{{index}}"
+                        data-rec-id="{{item.rec_id}}" 
+                        wx:if="{{formData.return_num < canReturnNum}}"  
+                        catchtap="addGoodsNum" />
+                        <image src="{{g_add_none}}" mode="aspectFit" wx:else  />
+                    </view>
+                </view>
+              </view>
+            </view>
+          </view> -->
+
+          <view class="orderBox" wx:if="{{isChange}}">
+            <view class="cont table">
+              <view class="table_cell C_7f">
+                申请换货规格
+              </view>
+              <view class="table_cell t_r select_goods" catchtap='showSpec'>
+                <text class="select_txt" wx:if="{{selectGoods && selectGoods.productInfo}}">{{selectGoods.productInfo.color_name}} {{selectGoods.productInfo.size_name}}</text>
+                <text class="select_txt C_7f" wx:else>选择规格</text>
+                <image src="{{rightbutton}}" class="r_arrow" mode="widthFix" />
+              </view>
+            </view>
+          </view>
+          <view class="mb_16"></view>
+          
+          <view class="orderBox">
+            <view class="cont table">
+              <view class="table_cell C_7f">{{isChange?'换货':'退货'}}原因</view>
+              <view class="table_cell">
+                <picker class="full_w reason_picker" bindchange="returnReason" range="{{reason_list}}">
+                      <view  
+                      class="return_row_stay" 
+                      wx:if="{{formData.reason_id === 0 || formData.reason_id }}">{{reason_list[formData.reason_id]}}</view>
+                      <view wx:else class="return_row_stay C_7f padding_22">选择{{isChange?'换货':'退货'}}原因</view>
+                      <image src="{{rightbutton}}" class="r_arrow" mode="widthFix" />
+                  </picker>
+              </view>
+            </view>
+          </view>
+          <view class="orderBox">
+            <view class="cont min_h">
+            <view class="remark_area C_7f {{show_remarks_val ? '' : 'hide' }}" catchtap="ShowRemarksVal">{{formData['explain'] ? formData['explain'] : '填写具体原因'}}</view>
+              <textarea 
+              hidden='{{noScroll}}'
+              focus="{{remarks_focus}}"
+              class="remark_area {{show_remarks_val ? 'hide' : '' }}" 
+              placeholder-class="remark_area" 
+              placeholder='填写具体原因' 
+              data-key="explain" 
+              bindinput="SetRemark"
+              bindblur="ShowRemarksVal"
+              maxlength="{{limitNum}}"
+              ></textarea>
+              <view class="remark_num">{{explainNum}}/{{limitNum}}</view>
+            </view>
+          </view>
+          
+          
+          
+          
+          <!-- <view class="" wx:if="{{isShowExchange == 1}}">
+              <view class="return_row">
+                  <input type="text" class="return_row_stay" placeholder='联系人' data-key="userName" bindinput="SetRemark" />
+              </view>
+              <view class="return_row">
+                  <input type="text" class="return_row_stay" placeholder='联系人电话' data-key="userMobile" bindinput="SetRemark" />
+              </view>
+              <view class="return_row">
+                  <view 
+                  catchtap="showRegionSelect" 
+                  class="return_row_stay {{address_data.district ? '' : 'C_7f'}}">{{address_data.province_str || '省'}} - {{address_data.city_str || '城市'}} - {{address_data.district_str || '地区'}}</view>
+              </view>
+              <view class="return_row">
+                  <input type="text" class="return_row_stay" placeholder='收货地址' data-key="address" bindinput="SetRemark" />
+              </view>
+          </view> -->
+
+      </view>
+  </view>
+  <view class="page_btn_area">
+      <view class="return_notice" wx:if="{{articleList.length > 0}}">
+        <text>确认已阅读并同意</text>
+        <text
+        class="notice_point" 
+        wx:for="{{articleList}}" 
+        catchtap="jumpAction" 
+        wx:key="index" 
+        data-url="/pages/micro_mall/articles/agreet/agreet?articleId={{item.article_id}}">《{{item.article_title}}》</text>
+      </view>
+      <button 
+      form-type='true'
+      class="confrim_btn C_fff font_26" 
+      bindtap="{{formData.return_type > 1 ? 'createExchangeReshipOrder' : 'confirmReturn'}}" 
+      style="background-color:{{brand_info.style.bg_color}}">确定提交</button>
+  </view>
+</view>
+<areaSelect id="areaSelect"></areaSelect>
+<!--客服-->
+<cs id="csId"></cs>
+<!--选择规格-->
+<specView id="specView" bindconfirmSelect="confirmSelectCallback"></specView>

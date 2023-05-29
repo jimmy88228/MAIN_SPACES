@@ -1,0 +1,53 @@
+<!--pages/goods/popup/service.wxml-->
+<window class="window" ext-class="window-ext">
+    <view class="service_popup" style="{{boxStyle}}" catchtouchmove="_noFn" >
+        <from bindsubmit="formAction" report-submit="true">
+            <!--保存画布-->
+            <canvas canvas-id="saveShareCanvas" style="width:{{canvasConf.width*2}}rpx;height:{{canvasConf.height*2}}rpx;" class="saveShareCanvas"></canvas>  
+            <view hidden="{{isShowList}}">
+                <!--展示画布-->
+                <view class="share_canvas_view" style="width:{{canvasConf.width}}rpx;height:{{canvasConf.height}}rpx;">
+                    <canvas canvas-id="shareCanvas" style="width:{{canvasConf.width}}rpx;height:{{canvasConf.height}}rpx;" class="shareCanvas"></canvas>
+                </view>
+                <cover-view class="save_share_bg {{showTwoBtn?'showTwoBtn_box':''}}">
+                    <cover-view wx:if="{{showTwoBtn}}" class="save_bg_btn  {{showTwoBtn?'showTwoBtn':''}}" catchtap='resetFn' style="color:#fff;background-color:{{theme_color || brand_info.style.font_color || '#000'}};">重新生成</cover-view>
+                    <cover-view class="save_bg_btn {{showTwoBtn?'showTwoBtn':''}}" data-canvas-id="saveShareCanvas" catchtap='saveShareCanvas' style="color:#fff;background-color:{{theme_color || brand_info.style.font_color || '#000'}};">保存海报</cover-view>
+                </cover-view>
+                
+            </view>
+            <view hidden="{{!isShowList}}" >
+              <swiper 
+              class="list_swiper" 
+              indicator-dots="{{true}}"
+              bindchange="changeView"
+              style="width:{{canvasConf.width}}rpx;height:900rpx;"
+              >
+                <swiper-item class="l_swiper_item" wx:for="{{imgList}}" wx:key="index">
+                  <view class="swiper_stay" style="max-height:900rpx;"><!--style="width:{{listInfo[index].w ? listInfo[index].w + 'rpx' : '100%'}};height:{{listInfo[index].h}}rpx;max-height:900rpx;"-->
+                    <image src="{{item}}" data-indedx="{{index}}" mode="widthFix" class="share_bg"/>
+                    <view class="code_info">
+                      <view class="code_img">
+                        <image class="code_img_bg" src="{{QRCode}}" mode="aspectFit" />
+                        <image class="user_head" wx:if="{{allData.goodsInfo.opKind != 'STORE_STAFF'}}" src="{{portraitImg}}" mode="aspectFit" />
+                      </view>
+                      <view class="staff_code" style="color:{{cStyle.cTxt}};" wx:if="{{allData.scene && allData.scene.staff_code}}">{{allData.scene.staff_code}}</view>
+                      <view class="code_txt" style="color:{{cStyle.cTip}};" >{{allData.opKind == 'STORE_STAFF' ? '扫码注册会员' : '长按识别get同款'}}</view>
+                    </view>
+                  </view>
+                </swiper-item>
+              </swiper>
+              <view class="save_share_bg {{showTwoBtn?'showTwoBtn_box':''}}">
+                    <!-- <cover-view wx:if="{{showTwoBtn}}" class="save_bg_btn  {{showTwoBtn?'showTwoBtn':''}}" catchtap='resetFn' style="color:#fff;background-color:{{theme_color || brand_info.style.font_color || '#000'}};">重新生成</cover-view> -->
+                    <view 
+                    class="save_bg_btn {{showTwoBtn?'showTwoBtn':''}}" 
+                    data-canvas-id="saveShareCanvas" 
+                    catchtap='allSaveHandle' 
+                    style="width:400rpx;color:#fff;background-color:{{theme_color || brand_info.style.font_color || '#000'}};">保存全部海报</view>
+              </view>
+            </view>
+            <image src='{{tempImg}}' class='tempImg' bindload='imgFn' binderror='imgFnErr'></image>
+        </from>
+    </view>
+
+</window>
+<!-- <progress id="saveProgress" current="{{saveCurrent}}" touchCancel="{{false}}" all="{{listInfo.length}}"></progress> -->
