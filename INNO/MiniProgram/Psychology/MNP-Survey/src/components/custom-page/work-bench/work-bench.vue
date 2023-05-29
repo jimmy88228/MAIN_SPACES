@@ -15,7 +15,7 @@
                     <view class="flex-s-c flex1" style="min-height: 0 ">
                       <image class="organize-icon" :src="staticAddress+organizeIcon" mode="widthFix" />
                       <view class="flex1 clamp">
-                        <view class="font-26 clamp m-b-5">{{item.classFullName||item.className||""}}</view>
+                        <view class="font-26 clamp m-b-5">{{item.classFullName || item.className || ""}}{{item.schoolYear?`（${item.schoolYear}级）` : ''}}</view>
                         <!-- <view class="font-18 C_7f clamp">{{item.parentStructureName ? item.parentStructureName : ''}}
                         </view> -->
                       </view>

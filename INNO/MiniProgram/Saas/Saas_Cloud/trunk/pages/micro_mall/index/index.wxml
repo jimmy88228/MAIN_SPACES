@@ -1,4 +1,3 @@
-<!-- <include src="../header/index_header" /> -->
 <view hidden="{{pageHidden}}">
   <view class="box" id="box">
     <page-nav holdStay="{{true}}" title="{{pageTitle}}"></page-nav>

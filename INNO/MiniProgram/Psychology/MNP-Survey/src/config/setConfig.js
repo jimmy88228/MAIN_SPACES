@@ -1,27 +1,30 @@
 import stringUtil from "@/common/support/utils/string-util.js";
 import brandM from "@/common/manager/brand-manager.js";
-function getSetConfig(config = {}, brandConfig){
+
+function getSetConfig(config = {}, brandConfig) {
 	let platformCode = config.platformCode; // 决定平台接口，图片域名配置
 	let env = config.env;
 	// #ifdef H5
-		// brandM记录每次地址栏带进来的appCode
-		let pageParams = stringUtil.getAppUrlParams(); 
-		if(pageParams.appCode){
-			brandM.setData({appCode: pageParams.appCode}) // 决定请求头appCode参数
-		}
-		return {
-			...config,
-			...brandConfig,
-			...((allBrandConfig[platformCode] && allBrandConfig[platformCode][env]) || {})
-		}
+	// brandM记录每次地址栏带进来的appCode
+	let pageParams = stringUtil.getAppUrlParams();
+	if (pageParams.appCode) {
+		brandM.setData({
+			appCode: pageParams.appCode
+		}) // 决定请求头appCode参数
+	}
+	return {
+		...config,
+		...brandConfig,
+		...((allBrandConfig[platformCode] && allBrandConfig[platformCode][env]) || {})
+	}
 	// #endif
 	// #ifndef H5
-		return {
-			...config,
-			...brandConfig,
-			...((allBrandConfig[platformCode] && allBrandConfig[platformCode][env]) || {}),
-			appCode: config.appCode || '' // 决定小程序appCode
-		}
+	return {
+		...config,
+		...brandConfig,
+		...((allBrandConfig[platformCode] && allBrandConfig[platformCode][env]) || {}),
+		appCode: config.appCode || '' // 决定小程序appCode
+	}
 	// #endif
 }
 export default getSetConfig;
@@ -33,33 +36,36 @@ const allBrandConfig = {
 			appType: "edu",
 			staticConfig: "https://psyimage.innourl.com/v/asset/edu/general/static",
 			"apiDomain": {
+				"LOGAPI": "https://surveyapi.innourl.com/log",
 				"USERAPI": "https://surveyapi.innourl.com",
-					"REGAPI": "https://surveyapi.innourl.com",
-					"WECHATAPI": "https://surveyapi.innourl.com",
-					"EDEAPI": "https://surveyapi.innourl.com",
-					"EVALUATEAPI": "https://surveyapi.innourl.com",
-					"PAGEAPI": "https://surveyapi.innourl.com",
-					"COMMONAPI": "https://surveyapi.innourl.com",
-					"RESOURCEAPI": "https://surveyapi.innourl.com",
-					"CONSULTANTAPI": "https://surveyapi.innourl.com",
-					"COMMISSIONERAPI": "https://surveyapi.innourl.com",
-					"SUPERVISIONAPI": "https://surveyapi.innourl.com",
-					"ARCHIVESAPI": "https://surveyapi.innourl.com",
-					"SUPERVISORAPI": "https://surveyapi.innourl.com",
-					"PSYSERVICEAPI": "https://surveyapi.innourl.com",
-					"TEACHERAPI": "https://surveyapi.innourl.com",
-					"REPORTAPI": "https://surveyapi.innourl.com",
-					"EXAMAPI":"https://surveyapi.innourl.com",
-					"COURSEAPI": "https://surveyapi.innourl.com",
-					"CLASSMANAGERAPI": "https://surveyapi.innourl.com",
-					"FUNTESTAPI": "https://surveyapi.innourl.com",
-					"SPECIALSECTIONAPI": "https://surveyapi.innourl.com",
+				"REGAPI": "https://surveyapi.innourl.com",
+				"WECHATAPI": "https://surveyapi.innourl.com",
+				"EDEAPI": "https://surveyapi.innourl.com",
+				"EVALUATEAPI": "https://surveyapi.innourl.com",
+				"PAGEAPI": "https://surveyapi.innourl.com",
+				"COMMONAPI": "https://surveyapi.innourl.com",
+				"RESOURCEAPI": "https://surveyapi.innourl.com",
+				"CONSULTANTAPI": "https://surveyapi.innourl.com",
+				"COMMISSIONERAPI": "https://surveyapi.innourl.com",
+				"SUPERVISIONAPI": "https://surveyapi.innourl.com",
+				"ARCHIVESAPI": "https://surveyapi.innourl.com",
+				"SUPERVISORAPI": "https://surveyapi.innourl.com",
+				"PSYSERVICEAPI": "https://surveyapi.innourl.com",
+				"TEACHERAPI": "https://surveyapi.innourl.com",
+				"REPORTAPI": "https://surveyapi.innourl.com",
+				"EXAMAPI": "https://surveyapi.innourl.com",
+				"COURSEAPI": "https://surveyapi.innourl.com",
+				"CLASSMANAGERAPI": "https://surveyapi.innourl.com",
+				"FUNTESTAPI": "https://surveyapi.innourl.com",
+				"SPECIALSECTIONAPI": "https://surveyapi.innourl.com",
+				"GAMEAPI": "https://surveyapi.innourl.com",
 			}
 		},
 		prod: {
 			appType: "edu",
 			staticConfig: "https://psyimage.innourl.com/v/asset/edu/general/static",
 			"apiDomain": {
+				"LOGAPI": "https://ylpsyvsapi.innourl.com/edu/",
 				"USERAPI": "https://edupsyapi.innourl.com",
 				"REGAPI": "https://edupsyapi.innourl.com",
 				"WECHATAPI": "https://edupsyapi.innourl.com",
@@ -77,10 +83,11 @@ const allBrandConfig = {
 				"TEACHERAPI": "https://edupsyapi.innourl.com",
 				"REPORTAPI": "https://edupsyapi.innourl.com",
 				"COURSEAPI": "https://edupsyapi.innourl.com",
-				"EXAMAPI":"https://edupsyapi.innourl.com",
-				"CLASSMANAGERAPI":"https://edupsyapi.innourl.com",
-				"FUNTESTAPI":"https://edupsyapi.innourl.com",
-				"SPECIALSECTIONAPI":"https://edupsyapi.innourl.com",
+				"EXAMAPI": "https://edupsyapi.innourl.com",
+				"CLASSMANAGERAPI": "https://edupsyapi.innourl.com",
+				"FUNTESTAPI": "https://edupsyapi.innourl.com",
+				"SPECIALSECTIONAPI": "https://edupsyapi.innourl.com",
+				"GAMEAPI": "https://edupsyapi.innourl.com",
 			}
 		}
 	},
@@ -91,6 +98,7 @@ const allBrandConfig = {
 			appType: "edu",
 			staticConfig: "https://shximage.innourl.com/v/asset/edu/general/static",
 			"apiDomain": {
+				"LOGAPI": "https://shxpsyvsapi.innourl.com/edu",
 				"USERAPI": "https://shxeduapi.innourl.com",
 				"REGAPI": "https://shxeduapi.innourl.com",
 				"WECHATAPI": "https://shxeduapi.innourl.com",
@@ -107,11 +115,12 @@ const allBrandConfig = {
 				"PSYSERVICEAPI": "https://shxeduapi.innourl.com",
 				"TEACHERAPI": "https://shxeduapi.innourl.com",
 				"REPORTAPI": "https://shxeduapi.innourl.com",
-				"EXAMAPI":"https://shxeduapi.innourl.com",
+				"EXAMAPI": "https://shxeduapi.innourl.com",
 				"COURSEAPI": "https://shxeduapi.innourl.com",
 				"CLASSMANAGERAPI": "https://shxeduapi.innourl.com",
 				"FUNTESTAPI": "https://shxeduapi.innourl.com",
 				"SPECIALSECTIONAPI": "https://shxeduapi.innourl.com",
+				"GAMEAPI": "https://shxeduapi.innourl.com",
 			}
 		}
 	},
@@ -122,6 +131,7 @@ const allBrandConfig = {
 			appType: "edu",
 			staticConfig: "https://cseduimage.innourl.com/v/asset/edu/general/static",
 			"apiDomain": {
+				"LOGAPI": "https://cspsyvsapi.innourl.com/edu",
 				"USERAPI": "https://cseduapi.innourl.com",
 				"REGAPI": "https://cseduapi.innourl.com",
 				"WECHATAPI": "https://cseduapi.innourl.com",
@@ -139,335 +149,12 @@ const allBrandConfig = {
 				"TEACHERAPI": "https://cseduapi.innourl.com",
 				"REPORTAPI": "https://cseduapi.innourl.com",
 				"COURSEAPI": "https://cseduapi.innourl.com",
-				"EXAMAPI":"https://cseduapi.innourl.com",
-				"CLASSMANAGERAPI":"https://cseduapi.innourl.com",
-				"FUNTESTAPI":"https://cseduapi.innourl.com",
-				"SPECIALSECTIONAPI":"https://cseduapi.innourl.com",
+				"EXAMAPI": "https://cseduapi.innourl.com",
+				"CLASSMANAGERAPI": "https://cseduapi.innourl.com",
+				"FUNTESTAPI": "https://cseduapi.innourl.com",
+				"SPECIALSECTIONAPI": "https://cseduapi.innourl.com",
+				"GAMEAPI": "https://cseduapi.innourl.com",
 			}
 		}
 	},
-	SURVEY_GZBY: {
-		dev: {
-			appCode: "SURVEY_GZBY",
-			appType: "edu",
-			platformSrc: "WXAPP",
-			staticConfig: "https://shximage.innourl.com/v/asset/edu/general/static",
-			"apiDomain": {
-				"USERAPI": "https://shxeduapi.innourl.com",
-				"REGAPI": "https://shxeduapi.innourl.com",
-				"WECHATAPI": "https://shxeduapi.innourl.com",
-				"EDEAPI": "https://shxeduapi.innourl.com",
-				"EVALUATEAPI": "https://shxeduapi.innourl.com",
-				"PAGEAPI": "https://shxeduapi.innourl.com",
-				"COMMONAPI": "https://shxeduapi.innourl.com",
-				"RESOURCEAPI": "https://shxeduapi.innourl.com",
-				"CONSULTANTAPI": "https://shxeduapi.innourl.com",
-				"COMMISSIONERAPI": "https://shxeduapi.innourl.com",
-				"SUPERVISIONAPI": "https://shxeduapi.innourl.com",
-				"ARCHIVESAPI": "https://shxeduapi.innourl.com",
-				"SUPERVISORAPI": "https://shxeduapi.innourl.com",
-				"PSYSERVICEAPI": "https://shxeduapi.innourl.com",
-				"TEACHERAPI": "https://shxeduapi.innourl.com",
-				"REPORTAPI": "https://shxeduapi.innourl.com",
-				"EXAMAPI":"https://shxeduapi.innourl.com",
-				"COURSEAPI": "https://shxeduapi.innourl.com",
-			}
-		},
-		prod: {
-			appCode: "SURVEY_GZBY",
-			appType: "edu",
-			platformSrc: "WXAPP",
-			staticConfig: "https://shximage.innourl.com/v/asset/edu/general/static",
-			"apiDomain": {
-				"USERAPI": "https://shxeduapi.innourl.com",
-				"REGAPI": "https://shxeduapi.innourl.com",
-				"WECHATAPI": "https://shxeduapi.innourl.com",
-				"EDEAPI": "https://shxeduapi.innourl.com",
-				"EVALUATEAPI": "https://shxeduapi.innourl.com",
-				"PAGEAPI": "https://shxeduapi.innourl.com",
-				"COMMONAPI": "https://shxeduapi.innourl.com",
-				"RESOURCEAPI": "https://shxeduapi.innourl.com",
-				"CONSULTANTAPI": "https://shxeduapi.innourl.com",
-				"COMMISSIONERAPI": "https://shxeduapi.innourl.com",
-				"SUPERVISIONAPI": "https://shxeduapi.innourl.com",
-				"ARCHIVESAPI": "https://shxeduapi.innourl.com",
-				"SUPERVISORAPI": "https://shxeduapi.innourl.com",
-				"PSYSERVICEAPI": "https://shxeduapi.innourl.com",
-				"TEACHERAPI": "https://shxeduapi.innourl.com",
-				"REPORTAPI": "https://shxeduapi.innourl.com",
-				"EXAMAPI":"https://shxeduapi.innourl.com",
-				"COURSEAPI": "https://shxeduapi.innourl.com",
-			}
-		}
-	},
-	SURVEY_INNO_STREET: {
-		dev: {
-			appCode: "SURVEY_INNO_STREET",
-			appType: "edu",
-			platformSrc: "WXAPP",
-			staticConfig: "https://psyimage.innourl.com/v/asset/edu/general/static",
-			"apiDomain": {
-				"USERAPI": "https://surveyapi.innourl.com",
-					"REGAPI": "https://surveyapi.innourl.com",
-					"WECHATAPI": "https://surveyapi.innourl.com",
-					"EDEAPI": "https://surveyapi.innourl.com",
-					"EVALUATEAPI": "https://surveyapi.innourl.com",
-					"PAGEAPI": "https://surveyapi.innourl.com",
-					"COMMONAPI": "https://surveyapi.innourl.com",
-					"RESOURCEAPI": "https://surveyapi.innourl.com",
-					"CONSULTANTAPI": "https://surveyapi.innourl.com",
-					"COMMISSIONERAPI": "https://surveyapi.innourl.com",
-					"SUPERVISIONAPI": "https://surveyapi.innourl.com",
-					"ARCHIVESAPI": "https://surveyapi.innourl.com",
-					"SUPERVISORAPI": "https://surveyapi.innourl.com",
-					"PSYSERVICEAPI": "https://surveyapi.innourl.com",
-					"TEACHERAPI": "https://surveyapi.innourl.com",
-					"REPORTAPI": "https://surveyapi.innourl.com",
-					"EXAMAPI":"https://surveyapi.innourl.com",
-					"COURSEAPI": "https://surveyapi.innourl.com",
-			}
-		},
-		prod: {
-			appCode: "SURVEY_INNO_STREET",
-			appType: "edu",
-			platformSrc: "WXAPP",
-			staticConfig: "https://psyimage.innourl.com/v/asset/edu/general/static",
-			"apiDomain": {
-				"USERAPI": "https://edupsyapi.innourl.com",
-				"REGAPI": "https://edupsyapi.innourl.com",
-				"WECHATAPI": "https://edupsyapi.innourl.com",
-				"EDEAPI": "https://edupsyapi.innourl.com",
-				"EVALUATEAPI": "https://edupsyapi.innourl.com",
-				"PAGEAPI": "https://edupsyapi.innourl.com",
-				"COMMONAPI": "https://edupsyapi.innourl.com",
-				"RESOURCEAPI": "https://edupsyapi.innourl.com",
-				"CONSULTANTAPI": "https://edupsyapi.innourl.com",
-				"COMMISSIONERAPI": "https://edupsyapi.innourl.com",
-				"SUPERVISIONAPI": "https://edupsyapi.innourl.com",
-				"ARCHIVESAPI": "https://edupsyapi.innourl.com",
-				"SUPERVISORAPI": "https://edupsyapi.innourl.com",
-				"PSYSERVICEAPI": "https://edupsyapi.innourl.com",
-				"TEACHERAPI": "https://edupsyapi.innourl.com",
-				"REPORTAPI": "https://edupsyapi.innourl.com",
-				"COURSEAPI": "https://edupsyapi.innourl.com",
-				"EXAMAPI":"https://edupsyapi.innourl.com",
-			}
-		}
-	},
-	SURVEY_INNO_THXX: {
-		dev: {
-			appCode: "SURVEY_INNO_THXX",
-			appType: "edu",
-			platformSrc: "WXAPP",
-			staticConfig: "https://psyimage.innourl.com/v/asset/edu/general/static",
-			"apiDomain": {
-				"USERAPI": "https://surveyapi.innourl.com",
-					"REGAPI": "https://surveyapi.innourl.com",
-					"WECHATAPI": "https://surveyapi.innourl.com",
-					"EDEAPI": "https://surveyapi.innourl.com",
-					"EVALUATEAPI": "https://surveyapi.innourl.com",
-					"PAGEAPI": "https://surveyapi.innourl.com",
-					"COMMONAPI": "https://surveyapi.innourl.com",
-					"RESOURCEAPI": "https://surveyapi.innourl.com",
-					"CONSULTANTAPI": "https://surveyapi.innourl.com",
-					"COMMISSIONERAPI": "https://surveyapi.innourl.com",
-					"SUPERVISIONAPI": "https://surveyapi.innourl.com",
-					"ARCHIVESAPI": "https://surveyapi.innourl.com",
-					"SUPERVISORAPI": "https://surveyapi.innourl.com",
-					"PSYSERVICEAPI": "https://surveyapi.innourl.com",
-					"TEACHERAPI": "https://surveyapi.innourl.com",
-					"REPORTAPI": "https://surveyapi.innourl.com",
-					"EXAMAPI":"https://surveyapi.innourl.com",
-					"COURSEAPI": "https://surveyapi.innourl.com",
-			}
-		},
-		prod: {
-			appCode: "SURVEY_INNO_THXX",
-			appType: "edu",
-			platformSrc: "WXAPP",
-			staticConfig: "https://psyimage.innourl.com/v/asset/edu/general/static",
-			"apiDomain": {
-				"USERAPI": "https://edupsyapi.innourl.com",
-				"REGAPI": "https://edupsyapi.innourl.com",
-				"WECHATAPI": "https://edupsyapi.innourl.com",
-				"EDEAPI": "https://edupsyapi.innourl.com",
-				"EVALUATEAPI": "https://edupsyapi.innourl.com",
-				"PAGEAPI": "https://edupsyapi.innourl.com",
-				"COMMONAPI": "https://edupsyapi.innourl.com",
-				"RESOURCEAPI": "https://edupsyapi.innourl.com",
-				"CONSULTANTAPI": "https://edupsyapi.innourl.com",
-				"COMMISSIONERAPI": "https://edupsyapi.innourl.com",
-				"SUPERVISIONAPI": "https://edupsyapi.innourl.com",
-				"ARCHIVESAPI": "https://edupsyapi.innourl.com",
-				"SUPERVISORAPI": "https://edupsyapi.innourl.com",
-				"PSYSERVICEAPI": "https://edupsyapi.innourl.com",
-				"TEACHERAPI": "https://edupsyapi.innourl.com",
-				"REPORTAPI": "https://edupsyapi.innourl.com",
-				"COURSEAPI": "https://edupsyapi.innourl.com",
-				"EXAMAPI":"https://edupsyapi.innourl.com",
-			}
-		}
-	},
-	SURVEY_INNO_SCHOOL: {
-		dev: {
-			appCode: "SURVEY_INNO_SCHOOL",
-			appType: "edu",
-			platformSrc: "WXAPP",
-			staticConfig: "https://psyimage.innourl.com/v/asset/edu/general/static",
-			"apiDomain": {
-				"USERAPI": "https://surveyapi.innourl.com",
-					"REGAPI": "https://surveyapi.innourl.com",
-					"WECHATAPI": "https://surveyapi.innourl.com",
-					"EDEAPI": "https://surveyapi.innourl.com",
-					"EVALUATEAPI": "https://surveyapi.innourl.com",
-					"PAGEAPI": "https://surveyapi.innourl.com",
-					"COMMONAPI": "https://surveyapi.innourl.com",
-					"RESOURCEAPI": "https://surveyapi.innourl.com",
-					"CONSULTANTAPI": "https://surveyapi.innourl.com",
-					"COMMISSIONERAPI": "https://surveyapi.innourl.com",
-					"SUPERVISIONAPI": "https://surveyapi.innourl.com",
-					"ARCHIVESAPI": "https://surveyapi.innourl.com",
-					"SUPERVISORAPI": "https://surveyapi.innourl.com",
-					"PSYSERVICEAPI": "https://surveyapi.innourl.com",
-					"TEACHERAPI": "https://surveyapi.innourl.com",
-					"REPORTAPI": "https://surveyapi.innourl.com",
-					"EXAMAPI":"https://surveyapi.innourl.com",
-					"COURSEAPI": "https://surveyapi.innourl.com",
-			}
-		},
-		prod: {
-			appCode: "SURVEY_INNO_SCHOOL",
-			appType: "edu",
-			platformSrc: "WXAPP",
-			staticConfig: "https://psyimage.innourl.com/v/asset/edu/general/static",
-			"apiDomain": {
-				"USERAPI": "https://edupsyapi.innourl.com",
-				"REGAPI": "https://edupsyapi.innourl.com",
-				"WECHATAPI": "https://edupsyapi.innourl.com",
-				"EDEAPI": "https://edupsyapi.innourl.com",
-				"EVALUATEAPI": "https://edupsyapi.innourl.com",
-				"PAGEAPI": "https://edupsyapi.innourl.com",
-				"COMMONAPI": "https://edupsyapi.innourl.com",
-				"RESOURCEAPI": "https://edupsyapi.innourl.com",
-				"CONSULTANTAPI": "https://edupsyapi.innourl.com",
-				"COMMISSIONERAPI": "https://edupsyapi.innourl.com",
-				"SUPERVISIONAPI": "https://edupsyapi.innourl.com",
-				"ARCHIVESAPI": "https://edupsyapi.innourl.com",
-				"SUPERVISORAPI": "https://edupsyapi.innourl.com",
-				"PSYSERVICEAPI": "https://edupsyapi.innourl.com",
-				"TEACHERAPI": "https://edupsyapi.innourl.com",
-				"REPORTAPI": "https://edupsyapi.innourl.com",
-				"COURSEAPI": "https://edupsyapi.innourl.com",
-				"EXAMAPI":"https://edupsyapi.innourl.com",
-			}
-		}
-	},
-	SURVEY_INNO_THXX: {
-		dev: {
-			appCode: "SURVEY_INNO_THXX",
-			appType: "edu",
-			platformSrc: "WXAPP",
-			staticConfig: "https://psyimage.innourl.com/v/asset/edu/general/static",
-			"apiDomain": {
-				"USERAPI": "https://surveyapi.innourl.com",
-					"REGAPI": "https://surveyapi.innourl.com",
-					"WECHATAPI": "https://surveyapi.innourl.com",
-					"EDEAPI": "https://surveyapi.innourl.com",
-					"EVALUATEAPI": "https://surveyapi.innourl.com",
-					"PAGEAPI": "https://surveyapi.innourl.com",
-					"COMMONAPI": "https://surveyapi.innourl.com",
-					"RESOURCEAPI": "https://surveyapi.innourl.com",
-					"CONSULTANTAPI": "https://surveyapi.innourl.com",
-					"COMMISSIONERAPI": "https://surveyapi.innourl.com",
-					"SUPERVISIONAPI": "https://surveyapi.innourl.com",
-					"ARCHIVESAPI": "https://surveyapi.innourl.com",
-					"SUPERVISORAPI": "https://surveyapi.innourl.com",
-					"PSYSERVICEAPI": "https://surveyapi.innourl.com",
-					"TEACHERAPI": "https://surveyapi.innourl.com",
-					"REPORTAPI": "https://surveyapi.innourl.com",
-					"EXAMAPI":"https://surveyapi.innourl.com",
-					"COURSEAPI": "https://surveyapi.innourl.com",
-			}
-		},
-		prod: {
-			appCode: "SURVEY_INNO_THXX",
-			appType: "edu",
-			platformSrc: "WXAPP",
-			staticConfig: "https://psyimage.innourl.com/v/asset/edu/general/static",
-			"apiDomain": {
-				"USERAPI": "https://edupsyapi.innourl.com",
-				"REGAPI": "https://edupsyapi.innourl.com",
-				"WECHATAPI": "https://edupsyapi.innourl.com",
-				"EDEAPI": "https://edupsyapi.innourl.com",
-				"EVALUATEAPI": "https://edupsyapi.innourl.com",
-				"PAGEAPI": "https://edupsyapi.innourl.com",
-				"COMMONAPI": "https://edupsyapi.innourl.com",
-				"RESOURCEAPI": "https://edupsyapi.innourl.com",
-				"CONSULTANTAPI": "https://edupsyapi.innourl.com",
-				"COMMISSIONERAPI": "https://edupsyapi.innourl.com",
-				"SUPERVISIONAPI": "https://edupsyapi.innourl.com",
-				"ARCHIVESAPI": "https://edupsyapi.innourl.com",
-				"SUPERVISORAPI": "https://edupsyapi.innourl.com",
-				"PSYSERVICEAPI": "https://edupsyapi.innourl.com",
-				"TEACHERAPI": "https://edupsyapi.innourl.com",
-				"REPORTAPI": "https://edupsyapi.innourl.com",
-				"COURSEAPI": "https://edupsyapi.innourl.com",
-				"EXAMAPI":"https://edupsyapi.innourl.com",
-			}
-		}
-	},
-	SURVEY_CG_STREET: {
-		dev: {
-			appCode: "SURVEY_CG_STREET",
-			appType: "edu",
-			platformSrc: "WXAPP",
-			staticConfig: "https://psyimage.innourl.com/v/asset/edu/general/static",
-			"apiDomain": {
-				"USERAPI": "https://surveyapi.innourl.com",
-					"REGAPI": "https://surveyapi.innourl.com",
-					"WECHATAPI": "https://surveyapi.innourl.com",
-					"EDEAPI": "https://surveyapi.innourl.com",
-					"EVALUATEAPI": "https://surveyapi.innourl.com",
-					"PAGEAPI": "https://surveyapi.innourl.com",
-					"COMMONAPI": "https://surveyapi.innourl.com",
-					"RESOURCEAPI": "https://surveyapi.innourl.com",
-					"CONSULTANTAPI": "https://surveyapi.innourl.com",
-					"COMMISSIONERAPI": "https://surveyapi.innourl.com",
-					"SUPERVISIONAPI": "https://surveyapi.innourl.com",
-					"ARCHIVESAPI": "https://surveyapi.innourl.com",
-					"SUPERVISORAPI": "https://surveyapi.innourl.com",
-					"PSYSERVICEAPI": "https://surveyapi.innourl.com",
-					"TEACHERAPI": "https://surveyapi.innourl.com",
-					"REPORTAPI": "https://surveyapi.innourl.com",
-					"EXAMAPI":"https://surveyapi.innourl.com",
-					"COURSEAPI": "https://surveyapi.innourl.com",
-			}
-		},
-		prod: {
-			appCode: "SURVEY_CG_STREET",
-			appType: "edu",
-			platformSrc: "WXAPP",
-			staticConfig: "https://psyimage.innourl.com/v/asset/edu/general/static",
-			"apiDomain": {
-				"USERAPI": "https://edupsyapi.innourl.com",
-				"REGAPI": "https://edupsyapi.innourl.com",
-				"WECHATAPI": "https://edupsyapi.innourl.com",
-				"EDEAPI": "https://edupsyapi.innourl.com",
-				"EVALUATEAPI": "https://edupsyapi.innourl.com",
-				"PAGEAPI": "https://edupsyapi.innourl.com",
-				"COMMONAPI": "https://edupsyapi.innourl.com",
-				"RESOURCEAPI": "https://edupsyapi.innourl.com",
-				"CONSULTANTAPI": "https://edupsyapi.innourl.com",
-				"COMMISSIONERAPI": "https://edupsyapi.innourl.com",
-				"SUPERVISIONAPI": "https://edupsyapi.innourl.com",
-				"ARCHIVESAPI": "https://edupsyapi.innourl.com",
-				"SUPERVISORAPI": "https://edupsyapi.innourl.com",
-				"PSYSERVICEAPI": "https://edupsyapi.innourl.com",
-				"TEACHERAPI": "https://edupsyapi.innourl.com",
-				"REPORTAPI": "https://edupsyapi.innourl.com",
-				"COURSEAPI": "https://edupsyapi.innourl.com",
-				"EXAMAPI":"https://edupsyapi.innourl.com",
-			}
-		}
-	}
 }

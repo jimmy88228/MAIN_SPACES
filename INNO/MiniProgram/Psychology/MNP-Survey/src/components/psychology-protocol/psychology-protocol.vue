@@ -172,13 +172,6 @@
             transform: translate(-18%, -80%) rotate(40deg);
           }
         }
-
-        .agree-link {
-          display: inline-block;
-          color: #178ed2;
-          padding: 0px 10rpx;
-          text-decoration: underline;
-        }
       }
 
       .confirm {

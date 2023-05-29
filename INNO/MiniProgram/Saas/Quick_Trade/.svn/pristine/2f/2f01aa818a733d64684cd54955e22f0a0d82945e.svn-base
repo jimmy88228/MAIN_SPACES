@@ -1,0 +1,17 @@
+<include src="/common/base/component/index.wxml" />
+<scroll-view 
+    class="ext-class" 
+    scroll-x="{{scrollType == 'x'||scrollX}}" 
+    scroll-y="{{(scrollType == 'y' || (scrollY&&!scrollX))}}" 
+    bindscroll="{{setScroll?scroll:''}}"
+    bindscrolltolower="scrolltolower"
+    bindscrolltoupper="scrolltoupper"
+    bindrefresherrefresh="refresherrefresh"
+    refresher-enabled="{{refresherEnabled}}"
+    refresher-triggered="{{refresherTriggered}}"
+    scroll-with-animation="{{scrollWithAnimation}}"
+    scroll-top="{{scrollTop}}"
+    >
+    <slot></slot>
+</scroll-view>
+<!-- slot插槽无法用scroll-into-view滚动,只能用scroll-top -->

@@ -28,6 +28,9 @@ Page(App.BP({
     this.setData({
       storeStaffInfo: App.LM.storeInfo
     });
+    this.setView({
+      ValetModuleRef:{get:()=>this.findView('#ValetModule')}
+    })
     initCheckoutData.call(this);
   },
 
@@ -52,8 +55,7 @@ Page(App.BP({
       .then(() => this.checkout())
   },
   handleValetRadioTap() {
-    this.ValetModule = this.ValetModule || this.selectComponent("#ValetModule");
-    this.ValetModule.changeValet();
+    this.ValetModuleRef.changeValet();
   },
   getvaletinfo(e){
     const valetInfo = e.detail || {};
@@ -148,9 +150,13 @@ Page(App.BP({
       App.SMH.showToast({title: validateError});
       return 
     }
+    let key = this._throttleApi('handleTakeOrderBtnTap');
     return addOrderRequest.call(this)
       .then(data => {
-        WxApi.redirectTo({url: `/pages/micro_mall/order/order_info?order_id=${data.orderId}&first_time_topay=1`})
+        WxApi.redirectTo({url: `/${App.Conf.navConfig.ORDER_DETAIL}?order_id=${data.orderId}&first_time_topay=1`})
+        return data;
+      }).finally(()=>{
+        this._throttleApi('handleTakeOrderBtnTap','release',key);
       })
   },
 }))
@@ -215,12 +221,7 @@ function addOrderRequest() {
       if (res.code == 1) {
         return res.data
       }
-      return Promise.reject(res.msg || "下单失败")
-    })
-    .catch(err => {
-      console.log("addOrderRequest", err);
-      App.SMH.showToast({title: err});
-      return Promise.reject(err)
+      return Promise.reject(res)
     })
     .finally(() => {this.hideLoading();})
 }

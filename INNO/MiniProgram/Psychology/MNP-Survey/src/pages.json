@@ -31,7 +31,7 @@
 				"navigationBarTitleText": "用户类型选择",
 				"enablePullDownRefresh": false
 			}
-		},{
+		}, {
 			"path": "pages/teacher-register/teacher-register",
 			"style": {
 				"navigationBarTitleText": "教师注册",
@@ -45,36 +45,11 @@
 				"enablePullDownRefresh": false
 			}
 		},
-		{
-			"path": "pages/login/login",
-			"style": {
-				"navigationBarTitleText": "用户登录",
-				"enablePullDownRefresh": false
-			}
-		},
-		{
-			"path": "pages/login/class-sid-login",
-			"style": {
-				"navigationBarTitleText": "用户登录",
-				"enablePullDownRefresh": false
-			}
-		},
-		{
-			"path": "pages/information/information",
-			"style": {
-				"navigationBarTitleText": "新增信息",
-				"enablePullDownRefresh": false
-			}
-		}, {
-			"path": "pages/report/report-list/report-list",
+		 {
+			"path": "pages/report-list/report-list",
 			"style": {
 				"navigationBarTitleText": "测评报告",
-				"enablePullDownRefresh":true
-			}
-		}, {
-			"path": "pages/report/report-info/report-info",
-			"style": {
-				"navigationBarTitleText": "测评详情"
+				"enablePullDownRefresh": true
 			}
 		}, {
 			"path": "pages/public/404",
@@ -117,62 +92,13 @@
 				"navigationBarTitleText": "自定义页面",
 				"enablePullDownRefresh": false
 			}
-		},
-		{
-			"path": "pages/psychology/tutor/tutor",
-			"style": {
-				"navigationBarTitleText": "选择心理导师",
-				"enablePullDownRefresh": false
-			}
-		},{
-			"path": "pages/psychology/resume/resume",
-			"style": {
-				"navigationBarTitleText": "导师简历",
-				"enablePullDownRefresh": false
-			}
-		},{
-			"path": "pages/psychology/reserve/reserve",
-			"style": {
-				"navigationBarTitleText": "预约资讯",
-				"enablePullDownRefresh": false
-			}
-		},{
-			"path": "pages/psychology/reserve-result/reserve-result",
-			"style": {
-				"navigationBarTitleText": "预约结果",
-				"enablePullDownRefresh": false
-			}
-		},{
-			"path": "pages/psychology/my-reserve/my-reserve",
-			"style": {
-				"navigationBarTitleText": "我的预约",
-				"enablePullDownRefresh": false
-			}
-		},{
-			"path": "pages/nearby-address/address-nav/address-nav",
-			"style": {
-				"navigationBarTitleText": "附近地址",
-				"enablePullDownRefresh": false
-			}
-		},{
-			"path": "pages/nearby-address/address-detail/address-detail",
-			"style": {
-				"navigationBarTitleText": "地址详情",
-				"enablePullDownRefresh": false
-			}
-		},{
-			"path": "pages/course-list/course-list",
-			"style": {
-				"navigationBarTitleText": "课程列表",
-				"enablePullDownRefresh": false
-			}
-		},{
+		}, {
 			"path": "pages/web-view/web-view",
 			"style": {
 				"navigationBarTitleText": "",
 				"enablePullDownRefresh": false
 			}
-		},{
+		}, {
 			"path": "pages/message-box/message-box",
 			"style": {
 				"navigationBarTitleText": "消息列表",
@@ -180,225 +106,379 @@
 			}
 		}
 	],
-	"subPackages": [
-		{
+	"subPackages": [{
 			"root": "pages/activities",
 			"pages": [{
-				"path": "evaluating/detail/detail",
-				"style": {
-					"navigationBarTitleText": "测评详情",
-					"enablePullDownRefresh": false
-				}
-			},
-			{
-				"path": "evaluating/list/ac-list",
-				"style": {
-					"navigationBarTitleText": "活动列表",
-					"enablePullDownRefresh": false
-				}
-			},
-			{
-				"path": "evaluating/answer/answer",
-				"style": {
-					"navigationBarTitleText": "心理测评题目",
-					"enablePullDownRefresh": false
-				}
-			},
-			{
-				"path": "evaluating/answer/answer-result",
-				"style": {
-					"navigationBarTitleText": "测评结果",
-					"enablePullDownRefresh": false
-				}
-			},
-			{
-				"path": "fun-assessment/list/fun-list",
-				"style": {
-					"navigationBarTitleText": "趣味测试列表",
-					"enablePullDownRefresh": false
-				}
-			},
-			{
-				"path": "fun-assessment/detail/detail",
-				"style": {
-					"navigationBarTitleText": "趣味测试详情",
-					"enablePullDownRefresh": false
-				}
-			},
-			{
-				"path": "fun-assessment/answer/answer-result",
-				"style": {
-					"navigationBarTitleText": "趣味测试结果",
-					"enablePullDownRefresh": false
-				}
-			},
-			{
-				"path": "fun-assessment/answer/answer",
-				"style": {
-					"navigationBarTitleText": "趣味测试",
-					"enablePullDownRefresh": false
-				}
-			}
-		]
-		},
-		{
-			"root": "pages/activities",
-			"pages": [
-			{
-				"path": "exam/answer/answer",
-				"style": {
-					"navigationBarTitleText": "测验题目",
-					"enablePullDownRefresh": false
-				}
-			},
-			{
-				"path": "exam/answer/exam-record",
-				"style": {
-					"navigationBarTitleText": "查看答卷",
-					"enablePullDownRefresh": false
-				}
-			},
-			{
-				"path": "exam/answer/check-scores",
-				"style": {
-					"navigationBarTitleText": "得分",
-					"enablePullDownRefresh": false
-				}
-			}
-		]
-		},
-		{
-			"root": "pages/work-bench",
-			"pages": [
+					"path": "evaluating/detail/detail",
+					"style": {
+						"navigationBarTitleText": "测评详情",
+						"enablePullDownRefresh": false
+					}
+				},
 				{
-					"path": "work-bench-detail/work-bench-detail",
+					"path": "evaluating/list/ac-list",
 					"style": {
-						"navigationBarTitleText": "eap工作台",
-						"enablePullDownRefresh": false
-		
-					}
-				},{
-					"path": "participation/participation",
-					"style": {
-						"navigationBarTitleText": "参与情况",
-						"enablePullDownRefresh": false
-		
-					}
-				},{
-					"path": "reserve-supervise-list/reserve-supervise-list",
-					"style": {
-						"navigationBarTitleText": "预约督导列表",
-						"enablePullDownRefresh": false
-		
-					}
-				},{
-					"path": "reserve-supervise/reserve-supervise",
-					"style": {
-						"navigationBarTitleText": "预约督导",
-						"enablePullDownRefresh": false
-		
-					}
-				},{
-					"path": "referrals/referrals",
-					"style": {
-						"navigationBarTitleText": "请求转介",
-						"enablePullDownRefresh": false
-		
-					}
-				},{
-					"path": "caring-staff/caring-staff",
-					"style": {
-						"navigationBarTitleText": "关爱人员",
-						"enablePullDownRefresh": false
-		
-					}
-				},{
-					"path": "intervene-record/intervene-record",
-					"style": {
-						"navigationBarTitleText": "干预记录",
-						"enablePullDownRefresh": false
-		
-					}
-				},{
-					"path": "archives/archives",
-					"style": {
-						"navigationBarTitleText": "档案详情",
+						"navigationBarTitleText": "活动列表",
 						"enablePullDownRefresh": false
 					}
-				},{
-					"path": "psy-book/psy-book",
+				},
+				{
+					"path": "evaluating/record-list/record-list",
 					"style": {
-						"navigationBarTitleText": "心理手册",
+						"navigationBarTitleText": "活动记录",
 						"enablePullDownRefresh": false
 					}
-				},{
-					"path": "warning-list/warning-list",
+				},
+				{
+					"path": "evaluating/answer/answer",
 					"style": {
-						"navigationBarTitleText": "预警名单",
+						"navigationBarTitleText": "心理测评题目",
 						"enablePullDownRefresh": false
 					}
-				},{
-					"path": "warning-mark/warning-mark",
+				},
+				{
+					"path": "evaluating/answer/answer-result",
 					"style": {
-						"navigationBarTitleText": "审核标记",
+						"navigationBarTitleText": "测评结果",
 						"enablePullDownRefresh": false
 					}
-				},{
-					"path": "course-details/course-details",
+				},
+				{
+					"path": "fun-assessment/list/fun-list",
 					"style": {
-						"navigationBarTitleText": "课程目录",
+						"navigationBarTitleText": "趣味测试列表",
 						"enablePullDownRefresh": false
 					}
-				},{
-					"path": "course-video/course-video",
+				},
+				{
+					"path": "fun-assessment/detail/detail",
 					"style": {
-						"navigationBarTitleText": "课程视频",
+						"navigationBarTitleText": "趣味测试详情",
 						"enablePullDownRefresh": false
 					}
-				},{
-					"path": "course-audio/course-audio",
+				},
+				{
+					"path": "fun-assessment/answer/answer-result",
 					"style": {
-						"navigationBarTitleText": "课程音频",
+						"navigationBarTitleText": "趣味测试结果",
 						"enablePullDownRefresh": false
 					}
-				},{
-					"path": "class-manage/class-manage",
+				},
+				{
+					"path": "fun-assessment/answer/answer",
 					"style": {
-						"navigationBarTitleText": "班级管理",
+						"navigationBarTitleText": "趣味测试",
 						"enablePullDownRefresh": false
 					}
-				},{
-					"path": "student-info/student-info",
+				}, {
+					"path": "exam/answer/answer",
 					"style": {
-						"navigationBarTitleText": "学生信息",
+						"navigationBarTitleText": "测验题目",
 						"enablePullDownRefresh": false
 					}
-				},{
-					"path": "student-edit/student-edit",
+				},
+				{
+					"path": "exam/answer/exam-record",
 					"style": {
-						"navigationBarTitleText": "信息编辑",
+						"navigationBarTitleText": "查看答卷",
+						"enablePullDownRefresh": false
+					}
+				},
+				{
+					"path": "exam/answer/check-scores",
+					"style": {
+						"navigationBarTitleText": "得分",
 						"enablePullDownRefresh": false
 					}
 				}
 			]
+		},
+		{
+			"root": "pages/psychology",
+			"pages": [{
+				"path": "tutor/tutor",
+				"style": {
+					"navigationBarTitleText": "选择心理导师",
+					"enablePullDownRefresh": false
+				}
+			}, {
+				"path": "resume/resume",
+				"style": {
+					"navigationBarTitleText": "导师简历",
+					"enablePullDownRefresh": false
+				}
+			}, {
+				"path": "reserve/reserve",
+				"style": {
+					"navigationBarTitleText": "预约资讯",
+					"enablePullDownRefresh": false
+				}
+			}, {
+				"path": "reserve-result/reserve-result",
+				"style": {
+					"navigationBarTitleText": "预约结果",
+					"enablePullDownRefresh": false
+				}
+			}, {
+				"path": "my-reserve/my-reserve",
+				"style": {
+					"navigationBarTitleText": "我的预约",
+					"enablePullDownRefresh": false
+				}
+			}]
+		},
+		{
+			"root": "pages/work-bench",
+			"pages": [{
+				"path": "work-bench-detail/work-bench-detail",
+				"style": {
+					"navigationBarTitleText": "教师工作台",
+					"enablePullDownRefresh": false
+
+				}
+			}, {
+				"path": "participation/participation",
+				"style": {
+					"navigationBarTitleText": "参与情况",
+					"enablePullDownRefresh": false
+
+				}
+			}, {
+				"path": "reserve-supervise-list/reserve-supervise-list",
+				"style": {
+					"navigationBarTitleText": "预约督导列表",
+					"enablePullDownRefresh": false
+
+				}
+			}, {
+				"path": "reserve-supervise/reserve-supervise",
+				"style": {
+					"navigationBarTitleText": "预约督导",
+					"enablePullDownRefresh": false
+
+				}
+			}, {
+				"path": "referrals/referrals",
+				"style": {
+					"navigationBarTitleText": "请求转介",
+					"enablePullDownRefresh": false
+
+				}
+			}, {
+				"path": "caring-staff/caring-staff",
+				"style": {
+					"navigationBarTitleText": "关爱人员",
+					"enablePullDownRefresh": false
+
+				}
+			}, {
+				"path": "intervene-record/intervene-record",
+				"style": {
+					"navigationBarTitleText": "干预记录",
+					"enablePullDownRefresh": false
+
+				}
+			}, {
+				"path": "archives/archives",
+				"style": {
+					"navigationBarTitleText": "档案详情",
+					"enablePullDownRefresh": false
+				}
+			}, {
+				"path": "psy-book/psy-book",
+				"style": {
+					"navigationBarTitleText": "心理手册",
+					"enablePullDownRefresh": false
+				}
+			}, {
+				"path": "warning-list/warning-list",
+				"style": {
+					"navigationBarTitleText": "预警名单",
+					"enablePullDownRefresh": false
+				}
+			}, {
+				"path": "warning-mark/warning-mark",
+				"style": {
+					"navigationBarTitleText": "审核标记",
+					"enablePullDownRefresh": false
+				}
+			}, {
+				"path": "course-details/course-details",
+				"style": {
+					"navigationBarTitleText": "课程目录",
+					"enablePullDownRefresh": false
+				}
+			}, {
+				"path": "course-video/course-video",
+				"style": {
+					"navigationBarTitleText": "课程视频",
+					"enablePullDownRefresh": false
+				}
+			}, {
+				"path": "course-audio/course-audio",
+				"style": {
+					"navigationBarTitleText": "课程音频",
+					"enablePullDownRefresh": false
+				}
+			}, {
+				"path": "class-manage/class-manage",
+				"style": {
+					"navigationBarTitleText": "班级管理",
+					"enablePullDownRefresh": false
+				}
+			}, {
+				"path": "student-info/student-info",
+				"style": {
+					"navigationBarTitleText": "学生信息",
+					"enablePullDownRefresh": false
+				}
+			}, {
+				"path": "student-edit/student-edit",
+				"style": {
+					"navigationBarTitleText": "信息编辑",
+					"enablePullDownRefresh": false
+				}
+			}]
+		},
+		{
+			"root": "pages/game",
+			"pages": [{
+					"path": "find-out-difference/game-index",
+					"style": {
+						"navigationBarTitleText": "开始游戏",
+						"enablePullDownRefresh": false,
+						"disableScroll": true
+					}
+				},
+				{
+					"path": "find-out-difference/game",
+					"style": {
+						"navigationBarTitleText": "找出不同",
+						"enablePullDownRefresh": false,
+						"disableScroll": true
+					}
+				},
+				{
+					"path": "find-out-difference/rank/list",
+					"style": {
+						"navigationBarTitleText": "排行榜",
+						"enablePullDownRefresh": false,
+						"disableScroll": true
+					}
+				},
+				{
+					"path": "find-out-difference/result/result",
+					"style": {
+						"navigationBarTitleText": "闯关结果",
+						"enablePullDownRefresh": false
+					}
+				}
+			]
+		},
+		{
+			"root": "pages/report-info",
+			"pages": [{
+				"path": "report-info",
+				"style": {
+					"navigationBarTitleText": "测评报告",
+					"enablePullDownRefresh": false
+				}
+			}]
+		},
+		{
+			"root": "pages/nearby-address",
+			"pages": [{
+				"path": "address-nav/address-nav",
+				"style": {
+					"navigationBarTitleText": "附近地址",
+					"enablePullDownRefresh": false
+				}
+			}, {
+				"path": "address-detail/address-detail",
+				"style": {
+					"navigationBarTitleText": "地址详情",
+					"enablePullDownRefresh": false
+				}
+			}]
+		},
+		{
+			"root": "pages/course-list",
+			"pages": [{
+				"path": "course-list",
+				"style": {
+					"navigationBarTitleText": "课程列表",
+					"enablePullDownRefresh": false
+				}
+			}]
+		},
+		{
+			"root": "pages/login",
+			"pages": [{
+					"path": "login",
+					"style": {
+						"navigationBarTitleText": "用户登录",
+						"enablePullDownRefresh": false
+					}
+				},
+				{
+					"path": "class-sid-login",
+					"style": {
+						"navigationBarTitleText": "用户登录",
+						"enablePullDownRefresh": false
+					}
+				}
+			]
+		},
+		{
+			"root": "pages/information",
+			"pages": [{
+				"path": "information",
+				"style": {
+					"navigationBarTitleText": "新增信息",
+					"enablePullDownRefresh": false
+				}
+			}
+			]
 		}
 	],
+	"preloadRule": {
+		"pages/startup/startup": {
+			"network": "all",
+			"packages": ["pages/login"]
+		},
+		"pages/user-type-select/user-type-select": {
+			"network": "all",
+			"packages": ["pages/work-bench"]
+		},
+		"pages/index/index": {
+			"network": "all",
+			"packages": ["pages/activities", "pages/psychology", "pages/game", "pages/nearby-address"]
+		},
+		"pages/report-list/report-list": {
+			"network": "all",
+			"packages": ["pages/report-info"]
+		},
+		"pages/user/user": {
+			"network": "all",
+			"packages": ["pages/activities", "pages/course-list","pages/information"]
+		}
+	},
 	"tabBar": {
 		"color": "#E2E2E2",
 		"selectedColor": "#05BC4D",
 		"backgroundColor": "#fff",
 		"borderStyle": "white",
 		"list": [{
-			"pagePath": "pages/index/index",
-			"iconPath": "/static/images/tabbar/Homes.png",
-			"selectedIconPath": "/static/images/tabbar/getHomes.png",
-			"text": "首页"
-		},{
-			"pagePath": "pages/report/report-list/report-list",
-			"iconPath": "/static/images/tabbar/Report.png",
-			"selectedIconPath": "/static/images/tabbar/getReport.png",
-			"text": "报告"
-		},
+				"pagePath": "pages/index/index",
+				"iconPath": "/static/images/tabbar/Homes.png",
+				"selectedIconPath": "/static/images/tabbar/getHomes.png",
+				"text": "首页"
+			}, {
+				"pagePath": "pages/report-list/report-list",
+				"iconPath": "/static/images/tabbar/Report.png",
+				"selectedIconPath": "/static/images/tabbar/getReport.png",
+				"text": "报告"
+			},
 			{
 				"pagePath": "pages/user/user",
 				"iconPath": "/static/images/tabbar/Users.png",
@@ -407,7 +487,7 @@
 			}
 		]
 	},
-	
+
 	"globalStyle": {
 		"navigationBarTextStyle": "black",
 		"navigationBarTitleText": "INNO",

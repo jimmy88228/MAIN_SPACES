@@ -99,32 +99,36 @@ function initParamsNew(setting,code,apiParams,extend={}){
       goodsList = goodsGroup[index].goodsList||[];
       goodsListType = goodsGroup[index].goodsListType;
       ids = mapGoodsList(goodsList) || [];
+      apiParams.m = "POST";
+      apiParams.params = { 
+        goodsIds:[],
+        functype: goodsSearch[goodsListType] || 'CA',
+        catId: 0,
+        strAttrId: '',
+        strAttrValue: '',
+        colorCatId: 0,
+        startPrice: -1,
+        endPrice: -1,
+        strWhere: '',
+        pageSize: setting.showNum||1000,
+        pageIndex: 1, 
+        sortField: 'goods_id',
+        sortBy: 'desc',
+        goods_brand_ids: 0,
+        storeId: '0',
+      }
       if(goodsSearch[goodsGroup[index].goodsListType] == 'goods'){
-        apiParams.url = "getALLGoodsListByGoodsIds";
-        apiParams.m = "POST";
-        apiParams.params = {
-           goodsIdList : ids
-        }
+        apiParams.url = "searchGoodsList";
+        // apiParams.url = "getALLGoodsListByGoodsIds";
+        apiParams.params.goodsIds = ids;
+        apiParams.params.catId = 0;
       }else{
-        apiParams.url = "getSearchGoodsListBySkip";
+        apiParams.url = "searchGoodsList";
+        // apiParams.url = "getSearchGoodsListBySkip";
         ids = ids.join(',');
-        apiParams.params = {
-          functype: goodsSearch[goodsListType] || 'CA',
-          catId: goodsListType != 'goodsBrand' ? ids : 0,
-          strAttrId: '',
-          strAttrValue: '',
-          colorCatId: 0,
-          startPrice: -1,
-          endPrice: -1,
-          strWhere: '',
-          pageSize: 1000,
-          pageIndex: 1,
-          skipCount: setting.skip || 0,
-          sortField: 'goods_id',
-          sortBy: 'desc',
-          goods_brand_ids: goodsListType == 'goodsBrand' ? ids : 0,
-          storeId: '0',
-        }
+        apiParams.params.goodsIds = [];
+        apiParams.params.catId = goodsListType != 'goodsBrand' ? ids : 0;
+        apiParams.params.goods_brand_ids = goodsListType == 'goodsBrand' ? ids : 0; 
       }
     } 
   }

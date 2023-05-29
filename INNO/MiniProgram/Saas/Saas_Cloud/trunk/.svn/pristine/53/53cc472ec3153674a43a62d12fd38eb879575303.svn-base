@@ -1,0 +1,57 @@
+<!--pages/micro_mall/buy/modules/redPopup/redPopup.wxml-->
+<window class="window" ext-class="window-ext">
+  <view class="main {{isIphoneX ? 'ipX' : ''}}" style="{{boxStyle}}">
+    <view class="close" catchtap="dismiss">
+      <text class="iconfont  icon-fill-del"></text>
+    </view>
+    <view class="title padding_box">
+      <text class="font_32 bold">超值购</text>
+    </view>
+    <scroll-view scroll-y="{{true}}" class="rule-list">
+      <view wx:for="{{ruleList}}" class="rule-item" wx:key="rIndex" wx:for-item="rItem" wx:for-index="rIndex">
+        <view class="d_flex rule-condition">
+          <text class="rule-tip mr_10" style="color:{{brandStyle.font_color}}">
+            <text class="r-t-bg" style="background-color:{{brandStyle.bg_color}}"></text>
+            <text class="r-t-cont">满额换购</text>
+          </text>
+          满{{rItem.ruleCondition}}元，可换购商品
+        </view>
+        <view class="rule-item-goods" wx:for="{{rItem.goodsList}}" wx:key="index" data-goods-id="{{item.goodsId}}" data-rule-index="{{rIndex}}" data-goods-index="{{index}}"  data-is-fit="{{rItem.isFit}}" data-mix-num="{{item.mixNum}}" data-rule-id="{{item.rule_id}}" catchtap="getGoodsDetail">
+          <view class="s_flex goods-item">
+            <view class="rule-goods mr_10 flex_shrink_0">
+              <image class="r-g-img" src="{{item.goodsImg}}" mode="aspectFit"/>
+              <view class="r-g-tip" wx:if="{{idGoodsChoose[item.rule_id+'_'+item.goodsId].number > 0}}">已换购{{idGoodsChoose[item.rule_id+'_'+item.goodsId].number}}件</view>
+            </view>
+            <view class="pl_10 rule-goods-detail">
+              <view class="">
+                <view class="text-flow2 r-g-name flex_shrink_0">{{item.goodsName}}</view>
+                <view class="C_7f font_22 r-g-sn mt_5">{{item.goodsSn}}</view>
+              </view>
+              <view class="d_flex flex_b flex_al_e">
+                <view style="color:{{brandStyle.font_color}};">
+                  换购价 <text class="font_22">¥ </text> <text class="font_28 bold">{{item.minPrice}}</text> <text class="line-through C_90 font_22 ml_5" wx:if="{{item.minMarketPrice}}"> ¥ {{item.minMarketPrice}}</text>
+                </view>
+                <view>
+                  <text class="iconfont  icon-fill-add" data-rule-index="{{rIndex}}" data-goods-index="{{index}}" data-goods-id="{{item.goodsId}}" data-is-fit="{{rItem.isFit}}" data-mix-num="{{item.mixNum}}" data-rule-id="{{item.rule_id}}" catchtap="showProduct" style="color:{{ rItem.isFit && (item.mixNum > 0) ? brandStyle.font_color : '#b2b2b2'}};"></text>
+                </view>
+              </view>
+            </view>
+          </view>
+        </view>
+      </view>
+      <view wx:if="{{ruleList.length == 0 || !ruleList}}" class="empty_state">暂无可选优惠商品</view>
+    </scroll-view>
+
+    <view class="add-goods-btn">
+      <view class="add-goods-btn-stay {{isIphoneX ? 'ipX' : ''}}" >
+        <view class="add-btn-l">已换购{{selectAllCount || 0}}/{{orderBuyLimit}}件</view>
+        <view class="add-btn-r">
+          <button catchtap="addDiscount" style="background:{{brand_info.style.bg_color}};margin-left:auto;" hover-class="none" class="btn">确认</button>
+        </view>
+      </view>
+    </view>
+  </view>
+</window>
+
+<tipsPopup id="tipsPopup"></tipsPopup>
+<specView id="specView" showCount="{{true}}" bindconfirmSelect="confirmSpec"></specView>

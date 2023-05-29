@@ -1,7 +1,7 @@
 <template>
   <view class="station-broadcasting">
     <view class="broadcasting-bg flex-s-c">
-      <image class="icon" :src="setStaticAddress('/broadcast.png')" mode="aspectFit" />
+      <image class="icon" :src="requireStatic('/broadcast.png')" mode="aspectFit" />
       <view class="broadcasting-view" id="broadcasting">
         <view @tap.stop="jumpAction(playData[current].link)">
           <swiper class="swiper-box" :current-item-id="index" :circular="swiperOps.circular"

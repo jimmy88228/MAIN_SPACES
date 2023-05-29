@@ -1,14 +1,17 @@
 <template>
 	<view class="user-header header flex-s-c relative">
-		<auth-button class="avatar-wrapper shrink0" :open-type="authUserInfo.profilePicture || imgUser ? '' : 'getUserInfo'"
+		<auth-button class="avatar-wrapper shrink0" :open-type="'chooseAvatar'"
 			@authed="onChooseAvatar">
-			<image v-if="authUserInfo.profilePicture || imgUser" class="avatar" :src="authUserInfo.profilePicture || imgUser">
-			</image>
+			<!-- <image v-if="authUserInfo.profilePicture || imgUser" class="avatar" :src="authUserInfo.profilePicture || imgUser">
+			</image> -->
+			<oriImage v-if="authUserInfo.profilePicture || imgUser" class="avatar" :src="authUserInfo.profilePicture || imgUser" />
 			<view v-else class="avatar-txt"> 点击授权头像 </view>
 		</auth-button>
 		<view class="name">{{userInfo.loginName||""}}</view>
-		<view class="switch-box flex-c-c absolute" v-if="authUserInfo.bindUsers > 1 && userInfo.loginConfig != 'password'">
-			<image class="icon-switch" :src="requireStatic('/user-switch.png')" mode="aspectFit" />
+		<view class="switch-box flex-c-c absolute" v-if="userInfo.loginConfig != 'password' && authUserInfo.bindUsers > 1">
+
+			<!-- <image class="icon-switch" :src="requireStatic('/user-switch.png')" mode="aspectFit" /> -->
+			<oriImage customStyle="width: 22rpx;height: 22rpx;margin-right: 12rpx;" :src="requireStatic('/user-switch.png')" mode="aspectFit" />
 			<view class="font-22 C_fff" @click="jumpAction" data-url="/pages/user-switch/user-switch?from=user">切换绑定
 			</view>
 		</view>
@@ -16,9 +19,14 @@
 </template>
 
 <script>
+  import oriImage from "@/components/ori-comps/image/ori-image"
+
 	const app = getApp();
 	const pageOption = Page.BasePage({
 		name: "user-header",
+		components:{
+			oriImage
+		},
 		props: {
 			userInfo: {
 				type: Object,
@@ -37,7 +45,7 @@
 		mounted() {},
 		methods: {
 			onChooseAvatar(data) {
-				this.imgUser = data.data;
+        uni.$emit("onChooseAvatar", data)
 			}
 		}
 	})

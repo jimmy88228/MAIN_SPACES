@@ -8,10 +8,7 @@
         <view v-show="showLoading" class="loading-view flex-c-c">
           <loading-view></loading-view>
         </view>
-         <view class="evaluating-bg-area-cover" v-if="answerBgImg && !isH5 && !showLoading">
-          <image class="evaluating-bg-area-cover-image" @load="getBgSize" :style="{height:bgHeight,width:bgWidth}"
-            :src="answerBgImg" />
-        </view>
+        <fullScreenImg v-if="answerBgImg && !isH5 && !showLoading" :src="answerBgImg"></fullScreenImg>
         <view v-show="!showLoading" class="flex-s-s flex-col flex1 main-box box flex-col-1">
           <view class="tips" style="padding: 0px 80rpx" v-if="acInfo.modelInstruction"> {{ acInfo.modelInstruction }}
           </view>
@@ -124,6 +121,7 @@
 </template>
 
 <script>
+  import fullScreenImg from "@/components/full-screen-img/full-screen-img.vue"
   import utils from '@/common/support/utils.js'
   import LoadingView from '@/components/css3/loading/loading.vue';
   import sysInfosHandler from "@/common/helper/sys-infos-handler";
@@ -135,6 +133,7 @@
   const app = getApp();
   const pageOption = Page.BasePage({
     components: {
+      fullScreenImg,
       LoadingView,
       oriPopup,
       safeArea,
@@ -142,10 +141,6 @@
     },
     data() {
       return {
-        // *背景图
-        bgHeight: 0,
-        bgWidth: 0,
-        //********/
         buttonAnimation: 'animate-fade-in-right',
         showLoading: true,
         modelId: 0,
@@ -180,7 +175,6 @@
     onReady() {
       this.getActInfo().then(() => {
         this.init();
-
       });
     },
     watch: {
@@ -566,17 +560,6 @@
         );
 
       },
-      getBgSize({
-        detail
-      }) {
-        let width = detail.width;
-        let height = detail.height;
-        utils.getBgSize(width, height).then(res => {
-          this.bgWidth = res.imgW + "px"
-          this.bgHeight = res.imgH + "px"
-          this.isLoadBg = true;
-        })
-      },
       getBoxH() {
         return this._getQuery("#swiperId,#btnBox", "all").then((res) => {
           let swiperInfo = (res[0] && res[0][0]) || {};
@@ -629,22 +612,6 @@
   .answer {
     height: 100vh;
     width: 100%;
-
-  .evaluating-bg-area-cover {
-      position: fixed;
-      top: 0px;
-      left: 0px;
-      width: 100%;
-      height: 100%;
-      z-index: -1;
-
-      .evaluating-bg-area-cover-image {
-        position: absolute;
-        left: 50%;
-        top: 50%;
-        transform: translate(-50%, -50%);
-      }
-    }
 
     .msg-box {
       width: 320rpx;

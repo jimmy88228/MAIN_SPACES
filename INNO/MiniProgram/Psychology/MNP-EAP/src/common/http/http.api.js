@@ -36,6 +36,11 @@ export const WechatApiList = {
 		u: "/wechat/updateUserProfile",
 		m: "post"
 	},
+	
+	uploadWxAvatarUrl: {
+		u: "/wechat/uploadWxAvatarUrl",
+		m: "post"
+	},
 	createActivityAppletCode: {
 		u: "/wechat/createActivityAppletCode",
 		m: "post"
@@ -243,6 +248,15 @@ export const courseApiList = {
 	selectCourseListByPage: "/course/selectCourseListByPage",
 	punchCard: {
 		u: "/course/punchCard",
+		m: "post"
+	}
+
+}
+export const questionaireApiList = {
+	getQuestionaireQuestionList: "/questionaire/getQuestionList",
+	getQuestionaireStateInfo: "/questionaire/getQuestionaireStateInfo",
+	questionaireSubmitAnswer: {
+		u: "/questionaire/submitAnswer",
 		m: "post"
 	}
 

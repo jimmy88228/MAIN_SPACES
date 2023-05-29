@@ -31,7 +31,7 @@ module.exports = Behavior({
           data.tag = data.item.tag;
         }
       }
-      PageJump(data); 
+      PageJump(data,this); 
     },
     throttle(time,key,fnc,init) {
       if(this[key]){

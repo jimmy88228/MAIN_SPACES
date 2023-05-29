@@ -5,6 +5,7 @@ import {
 	Http
 } from "../http/http.interceptor.js";
 import storageH from "./storage-handler";
+import strH from "@/common/support/utils/string-util.js";
 const STORAGE_HOLD_SCAN = "HOLD_SCAN";
 class scanCodeManager {
 	static getInstance() {
@@ -44,6 +45,12 @@ class scanCodeManager {
 		return this.scanReqHold = scanReq.call(this, scene, showLoading).then((data) => {
 			let sceneOption = data.sceneOption || {};
 			let getInfoArr = [];
+			if(sceneOption.paramsKey){
+					let paramsKey = decodeURIComponent(ops.paramsKey)
+					let paramsStr = CryptoJS.AES.decrypt(paramsKey, 'paramsKey').toString(CryptoJS.enc.Utf8);
+					let params = strH.getUrlParam(paramsStr.replace(/\"/g, ''));
+					sceneOption = params;
+			}
 			if(sceneOption.activityId){
 				getInfoArr.push(getBaseActivityInfo.call(this, sceneOption.activityId));
 			}

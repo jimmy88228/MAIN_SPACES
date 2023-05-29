@@ -8,7 +8,7 @@
       mode="{{mode}}" 
       bindload="load" 
       binderror="onError"
-      catchtap="onTap"
+      catchtap="{{preview?'onTap':''}}"
       show-menu-by-longpress="{{showMenuByLongpress}}">
     </ori-image>
   </view>

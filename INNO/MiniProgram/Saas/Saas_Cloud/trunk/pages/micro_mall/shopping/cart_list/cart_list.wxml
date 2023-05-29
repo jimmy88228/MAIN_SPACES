@@ -109,7 +109,7 @@
                             class="goods_info_link">
                                 <view class="goods_img_box {{sys_config.goods_image_size == '4-3' ? 'ratio_3_4' : ''}}">
                                     <image src="{{goodsJson[item.recId].goods_img || item.thumb2_url}}" mode="aspectFit" />
-                                    <view class="invalid_block" wx:if="{{goodsJson[item.recId].is_invalid == 1 || (goodsJson[item.recId].number > goodsJson[item.recId].product_number || goodsJson[item.recId].product_number == 0)}}">
+                                    <view class="invalid_block" wx:if="{{!goodsJson[item.recId].extend_field1 && (goodsJson[item.recId].is_invalid == 1 || (goodsJson[item.recId].number > goodsJson[item.recId].product_number || goodsJson[item.recId].product_number == 0))}}">
                                       <block wx:if="{{goodsJson[item.recId].is_invalid == 1}}">
                                         <view class="invalid_text">下 架</view>
                                       </block>
@@ -122,14 +122,14 @@
                             </view>
                               <scroll-view 
                               bindscroll="viewScoll"  
-                              scroll-x="{{goodsJson[item.recId].extend_field1 ? false : true}}" 
+                              scroll-x="{{!(goodsJson[item.recId].extend_field1 && goodsJson[item.recId].extend_id != 1) ? true : false}}" 
                               class="goods_edit" 
                               scroll-with-animation="{{scrollAnimation}}" 
                               scroll-left="{{edit_states[goodsJson[item.recId].rec_id].showDelete}}" >
                                 <view 
-                                bindtouchmove='{{goodsJson[item.recId].extend_field1 ? "noFun":"handleMove"}}'  
-                                bindtouchstart='{{goodsJson[item.recId].extend_field1 ? "noFun":"handleStart"}}' 
-                                bindtouchend='{{goodsJson[item.recId].extend_field1 ? "noFun":"handleEnd"}}'  
+                                bindtouchmove='{{!(goodsJson[item.recId].extend_field1 && goodsJson[item.recId].extend_id != 1) ? "handleMove":"noAction"}}'  
+                                bindtouchstart='{{!(goodsJson[item.recId].extend_field1 && goodsJson[item.recId].extend_id != 1) ? "handleStart":"noAction"}}' 
+                                bindtouchend='{{!(goodsJson[item.recId].extend_field1 && goodsJson[item.recId].extend_id != 1) ? "handleEnd":"noAction"}}'  
                                 data-rec-id="{{goodsJson[item.recId].rec_id}}"
                                 class="goods_edit_list"   
                                 style='{{edit_states[item.rec_id].edit ? "" : "width:calc(100% + 106rpx)"}}'>
@@ -145,7 +145,7 @@
                                         <view class="goods_style C_7f font_22" style=''>{{goodsJson[item.recId].goods_attr}}</view>
                                         <view>
                                           <view 
-                                          wx:if="{{!(goodsJson[item.recId].extend_field1 && goodsJson[item.recId].extend_id)}}"
+                                          wx:if="{{!(goodsJson[item.recId].extend_field1 && goodsJson[item.recId].extend_id != 1)}}"
                                           class="change_shipping_btn" 
                                           data-key="{{item.recId}}"
                                           catchtap="changeShipping">
@@ -254,6 +254,10 @@
                                       class='delete' 
                                       bindtap="delectShoppingCart" 
                                       data-rec-id="{{goodsJson[item.recId].rec_id}}"
+                                      data-module-index="{{list_index}}"
+                                      data-carts-index="{{carts_i}}"
+                                      data-data="{{item}}"
+                                      data-type="single"
                                       style='{{"background:"+brand_info.style.bg_color+";"}} {{edit_states[goodsJson[item.recId].rec_id].edit?"opacity:0;width:0;":"opacity:1"}}'>删除</view>
                                     </view>
                                 </view>
@@ -261,7 +265,7 @@
                             </scroll-view>
                         </view>
                     </view>
-                    <view class="stay_line" ></view>
+                    <!-- <view class="stay_line" ></view> -->
                   </view>
                   <view class="stay_line"></view>
                 </view> 

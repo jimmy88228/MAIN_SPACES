@@ -5,9 +5,9 @@ const codeForPage = {
 
 // 资源库
 const repositoryPage = {
-  "video":"pages/video-detail/video-detail",
-  "audio":"pages/audio-detail/audio-detail",
-  "article":"pages/article-detail/article-detail",
+  "video":"pages/content-library/video-detail/video-detail",
+  "audio":"pages/content-library/audio-detail/audio-detail",
+  "article":"pages/content-library/article-detail/article-detail",
 }
 
 

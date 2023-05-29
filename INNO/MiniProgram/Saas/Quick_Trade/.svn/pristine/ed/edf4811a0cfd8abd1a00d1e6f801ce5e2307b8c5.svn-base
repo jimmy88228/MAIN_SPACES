@@ -1,0 +1,68 @@
+import StorageH from "../storage-handler/index";
+import utils from "../../utils/normal/index";
+class SystemInfoHelper {
+  static getInstance() {
+    console.log("getIns")
+    if (!SystemInfoHelper.instance) {
+      SystemInfoHelper.instance = new SystemInfoHelper();
+    }
+    return SystemInfoHelper.instance
+  }
+  
+  get systemInfo() {
+    if (!this._systemInfo) this._systemInfo = wx.getSystemInfoSync() || {};
+    return this._systemInfo;
+  }
+
+  get capsuleButtonInfo() {
+    let buttonInfo;
+    try{buttonInfo = wx.getMenuButtonBoundingClientRect()}catch(e){};
+    return buttonInfo || {};
+  }
+
+  get navBarHeight(){
+    const {top: capsuleButtonTop = 0, height: capsuleButtonHeight = 0} = this.capsuleButtonInfo,
+      statusBarHeight = this.systemInfo.statusBarHeight || 0,
+      menuTop = capsuleButtonTop - statusBarHeight;
+    return (capsuleButtonHeight + menuTop * 2) || 44;
+  }
+  
+  get statusBarHeight(){
+    return this.systemInfo.statusBarHeight;
+  }
+  
+  get navPlace(){
+      let menuTop = ( this.capsuleButtonInfo.top - this.systemInfo.statusBarHeight)
+      return this.systemInfo.statusBarHeight + this.capsuleButtonInfo.height + menuTop * 2;
+  }
+
+  get cookieId() {
+    console.log("sadasds")
+    this._cookieId = StorageH.get("O_ID");
+    if (this._cookieId) {
+        if(typeof(this._cookieId) != "string"){
+          this._cookieId = StorageH.get("COOKIE_ID") || utils.uuid16ByTime(32);
+        }
+        if(this._cookieId != StorageH.get("COOKIE_ID")){
+          StorageH.set("COOKIE_ID", this._cookieId, 60 * 24);
+        }
+        return this._cookieId;
+    }
+    this._cookieId = StorageH.get("COOKIE_ID") || utils.uuid16ByTime(32);
+    if(this._cookieId != StorageH.get("COOKIE_ID")){
+      StorageH.set("COOKIE_ID", this._cookieId, 60 * 24);
+    }
+    return this._cookieId;
+  }
+
+  get sdkVersion() {
+    return this.systemInfo.SDKVersion;
+  }
+  
+  compareVersion(v1, v2) {
+    v2 || (v2 = this.sdkVersion);
+    return utils.compareVersion(v1, v2);
+  }
+}
+
+export default SystemInfoHelper.getInstance()

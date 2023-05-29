@@ -10,14 +10,14 @@ class OriginalApiManager {
 
     constructor(){}
     
-    scanCode({onlyFromCamera=true,scanType=[]}){
+    scanCode({onlyFromCamera=true,scanType=[]}){ //扫码
         return API.scanCode(...arguments);
     }
 
-    requestPayment({pay_info={}}){
+    requestPayment({pay_info={}}){ //支付
         return API.requestPayment(...arguments);
     }
-
+ 
 }
 
 const API = {
@@ -53,6 +53,7 @@ const API = {
             'paySign': pay_info.sign,
         })
     },
+ 
     
 }
   

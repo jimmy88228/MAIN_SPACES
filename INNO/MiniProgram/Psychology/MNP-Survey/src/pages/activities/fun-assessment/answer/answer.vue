@@ -1,5 +1,5 @@
 <template>
-  <frame-box>
+  <frame-box :showPage="mixShowPage">
     <template v-slot:body>
       <view class="answer flex-s-s flex-col" :class="[popupH5Bool ? 'blur' : '']">
         <!-- #ifdef MP -->
@@ -10,9 +10,6 @@
                   class="font-24">进度{{ answerCount }}</text>/<text
                   class="font-18 C_B2">{{ answerCount + restQuestions }}</text>
               </view>
-              <!-- <view class="progress-title C_7f f-shrink-0 bold p-r-20"><text
-                  class="font-24">进度{{ current + 1 }}</text>/<text class="font-18 C_B2">{{ totalCount }}</text>
-              </view> -->
               <view class="progress">
                 <progress :percent="getPercent(answerCount, answerCount + restQuestions)" active active-mode="forwards"
                   :duration="10" stroke-width="6" border-radius="8" activeColor="#21B014"
@@ -36,9 +33,6 @@
                   class="font-24">进度{{ answerCount }}</text>/<text
                   class="font-18 C_B2">{{ answerCount + restQuestions }}</text>
               </view>
-              <!-- <view class="progress-title C_7f f-shrink-0 bold p-r-20"><text
-                  class="font-24">进度{{ current + 1 }}</text>/<text class="font-18 C_B2">{{ totalCount }}</text>
-              </view> -->
             </view>
             <view class="flex-s-c">
               <button class="sm-btn flex-c-c" @click="last">上一题</button>
@@ -53,8 +47,6 @@
           <loading-view></loading-view>
         </view>
         <view v-show="!showLoading" class="box flex-col-1">
-          <!-- <view class="tips" style="padding: 0px 80rpx" v-if="acInfo.activityInstruction">
-            {{ acInfo.activityInstruction }}</view> -->
           <view id="swiperId" class="swiper flex1" :class="[isFinish ? 'showSubmit' : '']">
             <view class="swiper-item-box flex-s-s" :style="'transform:translateX(-' + current * 100 + '%);'">
               <view v-for="(item, index) in list" :key="index" class="swiper-item"
@@ -70,28 +62,36 @@
                     {{ item.question || "" }}
                   </view>
                   <template v-if="item.pictureForm">
-                    <view :class="['answer-box-picture',current == index?buttonAnimation:'']" v-if="item.optionList">
-                      <view
-                        :class="['answer-item-picture',current == index ? buttonAnimation : 'animate-fade-out-down']"
-                        @click="onAnswer(c_item.optionId, index)" v-for="(c_item, c_index) in item.optionList"
-                        :key="c_index" :style="{'animation-delay':`${current == index ? c_item.showTime : 0}s`}">
-                        <image :src="c_item.optionPicture" mode="aspectFill" />
-                        <view class="answer-item-picture-text" v-if="c_item.optionContent">{{ c_item.optionContent }}
-                        </view>
-                        <view :style="filterSelect(c_item.optionId) == 1?'opacity:1':''" class="'active-view'">
-                        </view>
-                      </view>
+                    <view :class="['answer-box-picture']" v-if="item.optionList">
+                       <animateCustom :animation-class="current == index ? buttonAnimation : 'animate-fade-out-down'" :animation-delay="current == index ? c_item.showTime : 0" v-for="(c_item, c_index) in item.optionList"
+                            :key="c_index" >
+                        <template slot="content">
+                          <view
+                            :class="['answer-item-picture']"
+                            @click="onAnswer(c_item.optionId, index)">
+                            <image :src="c_item.optionPicture" mode="aspectFill" />
+                            <view class="answer-item-picture-text" v-if="c_item.optionContent">{{ c_item.optionContent }}
+                            </view>
+                            <view :style="filterSelect(c_item.optionId) == 1?'opacity:1':''" class="'active-view'">
+                            </view>
+                          </view>
+                        </template>
+                       </animateCustom>
                     </view>
                   </template>
                   <template v-else>
-                    <view :class="['answer-box','flex-c-c','flex-col',current == index?buttonAnimation:'']"
+                    <view :class="['answer-box','flex-c-c','flex-col']"
                       v-if="item.optionList">
-                      <view
-                        :class="['answer-item','bold', 'flex-c-c',filterSelect(c_item.optionId) == 1 ? 'active' : '',current == index ? buttonAnimation : 'animate-fade-out-down']"
-                        @click="onAnswer(c_item.optionId, index)" v-for="(c_item, c_index) in item.optionList"
-                        :key="c_index" :style="{'animation-delay':`${current == index ? c_item.showTime : 0}s`}">
-                        {{ c_item.optionContent }}
-                      </view>
+                      <animateCustom :animation-class="current == index ? buttonAnimation : 'animate-fade-out-down'" :animation-delay="current == index ? c_item.showTime : 0" v-for="(c_item, c_index) in item.optionList"
+                            :key="c_index">
+                        <template slot="content">
+                          <view
+                            :class="['answer-item','bold', 'flex-c-c',filterSelect(c_item.optionId) == 1 ? 'active' : '']"
+                            @click="onAnswer(c_item.optionId, index)">
+                            {{ c_item.optionContent }}
+                          </view>
+                        </template>
+                      </animateCustom>
                     </view>
                   </template>
                 </view>
@@ -158,6 +158,8 @@
   import SMH from "@/common/helper/show-msg-handler";
   import oriPopup from "@/components/ori-comps/popup/ori-popup";
   import safeArea from "@/components/safe-area/index.vue";
+  import animateCustom from "@/components/animate-custom/animate-custom.vue"
+  import oriImage from "@/components/ori-comps/image/ori-image"
 
   const app = getApp();
   const pageOption = Page.BasePage({
@@ -165,6 +167,8 @@
       LoadingView,
       oriPopup,
       safeArea,
+      animateCustom,
+      oriImage,
     },
     data() {
       return {
@@ -241,7 +245,8 @@
           this.getBoxH();
         }).finally(() => {
           setTimeout(() => {
-            this.showLoading = false
+            this.mixShowPage = true;
+            this.showLoading = false;
           }, 300);
         });
       },
@@ -569,26 +574,6 @@
   @import "./H5.scss";
   @import "./MP.scss";
 
-
-
-  .animate-fade-in-right {
-    animation-name: fadeInRight;
-    animation-iteration-count: 1;
-    animation-fill-mode: forwards;
-  }
-
-  .animate-fade-in-left {
-    animation-name: fadeInLeft;
-    animation-iteration-count: 1;
-    animation-fill-mode: forwards;
-  }
-
-  .animate-fade-out-down {
-    animation-name: fadeOutDown;
-    animation-iteration-count: 1;
-    animation-fill-mode: forwards;
-  }
-
   .loading-view {
     position: fixed;
     z-index: 99;
@@ -710,8 +695,6 @@
 
       .answer-item-picture {
         position: relative;
-        animation-duration: 0.5s;
-        opacity: 0;
         width: 317rpx;
         background: #FFFFFF;
         box-shadow: 0px 2px 17px 0px rgba(181, 181, 181, 0.17);
@@ -752,9 +735,6 @@
     }
 
     .answer-item {
-      transition: border 0.2s;
-      animation-duration: 0.5s;
-      opacity: 0;
       border-radius: 10rpx;
       font-size: 26rpx;
       margin-bottom: 20rpx;
@@ -766,10 +746,6 @@
       color: #333333;
       border: 1px solid #EFEFEF;
       line-height: 37rpx;
-
-      &:last-child {
-        margin-bottom: 0;
-      }
 
       &.active {
         // color: #fff;
@@ -909,39 +885,6 @@
     }
   }
 
-  @keyframes fadeInRight {
-    from {
-      opacity: 0;
-      transform: translateX(20%);
-    }
-
-    to {
-      opacity: 1;
-      transform: translateX(0);
-    }
-  }
-
-  @keyframes fadeInLeft {
-    from {
-      opacity: 0;
-      transform: translateX(-20%);
-    }
-
-    to {
-      opacity: 1;
-      transform: translateX(0);
-    }
-  }
-
-  @keyframes fadeOutDown {
-    from {
-      opacity: 1;
-    }
-
-    to {
-      opacity: 0;
-    }
-  }
 
   @keyframes activeAnim {
     0% {

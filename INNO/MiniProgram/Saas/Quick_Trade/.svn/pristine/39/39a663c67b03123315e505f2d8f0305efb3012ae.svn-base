@@ -1,0 +1,5 @@
+<!-- public 必须是第一个元素 -->
+<include src="/common/base/page/index.wxml" />
+<view class="order-list-box {{isInited ? 'inited':''}}">
+  <order-list id="orderList" orderTabList="{{orderTabList}}" staff_type="{{staff_type}}"></order-list>
+</view>

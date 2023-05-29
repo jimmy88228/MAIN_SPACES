@@ -15,8 +15,8 @@
                   <view>
                     发起时间 {{ initDate(item.createTime) }}
                   </view>
-                  <view class="self-pay-type flex-c-c" v-if="item.payType == 'self'">
-                    自费
+                  <view class="self-pay-type flex-c-c" v-if="item.payType">
+                    {{item.payType == 'self' ? '自费' : '报销'}}
                   </view>
                 </view>
                 <view class="bold C_333 font-30 clamp">预约咨询师 {{ item.consultantName }}</view>
@@ -26,10 +26,10 @@
               <image class="f-shrink-0" :src="staticAddress+informationIcon" mode="widthFix" />
               <view>
                 <view class="bold C_333 m-b-15 flex">
-                  <view>{{consultResultType[item.consultResult]}}</view>
+                  <view>{{item.whetherExpired ? '预约失败' : consultResultType[item.consultResult]}}</view>
                   <view class="reserve-tips flex-c-c" v-if="item.serviceType == 'offline' && item.consultResult == 1">
                     请及时前往线下咨询</view>
-                  <template v-else>
+                  <template v-else-if="!item.whetherExpired">
                     <view class="reserve-tips flex-c-c" v-if="item.appointmentType =='UNSTART'">待开始</view>
                     <view class="reserve-tips flex-c-c" v-else-if="item.appointmentType =='STARTING'">已开始</view>
                     <view class="reserve-tips flex-c-c reserve-tips-grey" v-else-if="item.appointmentType =='FINISH'">
@@ -40,7 +40,12 @@
                       待确认</view>
                   </template>
                 </view>
-                <template v-if="item.consultResult == 2">
+                <template v-if="item.whetherExpired">
+                  <view class="flex font-26 opa-60">
+                    <view class="C_333">本次预约的时间未成功</view>
+                  </view>
+                </template>
+                <template v-else-if="item.consultResult == 2">
                   <view class="flex font-26 opa-60">
                     <view class="C_333">{{item.remark}}</view>
                   </view>
@@ -48,7 +53,7 @@
                 <template v-else>
                   <view class="flex font-26 m-b-15 opa-60">
                     <view class="C_7f f-shrink-0 m-r-10" style="width:105rpx">预约日期</view>
-                    <view class="C_333">{{replaceMonthStr(item.scheduleDay || '')+' '+(item.consultTime||'')}}</view>
+                    <view class="C_333">{{item.schedule && replaceMonthStr(item.schedule.scheduleDay || '')+' '+(item.schedule && item.schedule.consultTime||'')}}</view>
                   </view>
                   <view class="flex font-26 opa-60">
                     <view class="C_7f f-shrink-0 m-r-10" style="width:105rpx">咨询方式</view>
@@ -67,7 +72,7 @@
                 <view class="enter-room enter-room-disabled flex-c-c font-24 "
                   v-else-if="item.appointmentType == 'UNSTART' && item.join == 0">进入房间</view>
               </template>
-              <view class="enter-room flex-c-c font-24" v-if="item.consultResult == 0" @click="cancelReserve"
+              <view class="enter-room flex-c-c font-24" v-if="item.consultResult == 0 && !item.whetherExpired" @click="cancelReserve"
                 :data-pg-index="pageIndex" :data-item="item">取消预约</view>
             </view>
           </view>
@@ -85,16 +90,17 @@
           <view class="top-tips flex-b-c m-b-30">
             <view class="reserve-type-group flex-s-c">
               <view class="reserve-type font-26 C_333 bold">
-                {{consultResultType[popupItem.consultResult]}}</view>
+                {{popupItem.whetherExpired ? '预约失败' : consultResultType[popupItem.consultResult]}}</view>
               <view class="begin-type" v-if="popupItem.serviceType == 'offline' && popupItem.consultResult == 1">
                 请及时前往线下咨询</view>
-              <template v-else>
+              <template v-else-if="!popupItem.whetherExpired">
                 <view class="begin-type" v-if="popupItem.appointmentType =='STARTING'">已开始</view>
                 <view class="begin-type" v-else-if="popupItem.appointmentType =='UNSTART'">待开始</view>
                 <view class="begin-type begin-type-grey" v-else-if="popupItem.appointmentType =='FINISH'">已结束</view>
                 <view class="begin-type begin-type-grey" v-else-if="popupItem.appointmentType =='UNCONFIRM'">待确认</view>
               </template>
-              <view class="pay-type" v-if="popupItem.payType == 'self'">自费</view>
+              <view class="pay-type flex-c-c">
+                {{popupItem.payType == 'self' ? '自费' : '报销'}}</view>
             </view>
             <view class="close-icon" @click="closePupup"></view>
           </view>
@@ -107,7 +113,7 @@
             </view>
             <view class="font-24 m-b-18">
               <text class="C_7f m-r-10">预约日期</text><text
-                class="C_333">{{replaceMonthStr(popupItem.scheduleDay || '')+' '+(popupItem.consultTime||'')}}</text>
+                class="C_333">{{popupItem.schedule && replaceMonthStr(popupItem.schedule.scheduleDay || '')+' '+(popupItem.schedule && popupItem.schedule.consultTime||'')}}</text>
             </view>
           </view>
           <view class="flex-col-1 p-t-32" style="overflow: hidden;">
@@ -571,35 +577,32 @@
         }
 
         .begin-type {
-          background: #E3FFE7;
-          border-radius: 5rpx;
-          opacity: 0.5;
-          border: 1rpx solid #35AC47;
-          font-size: 16rpx;
-          color: $uni-main-color;
-          padding: 0 5rpx;
-          margin-right: 9rpx;
-          box-sizing: border-box;
-          line-height: 22rpx;
-        }
+            margin-left: 7rpx;
+            font-size: 16rpx;
+            line-height: 22rpx;
+            padding: 0 4rpx;
+            background: rgba($color: #E3FFE7, $alpha: 0.5);
+            border-radius: 5rpx;
+            border: 1px solid rgba($color: #35AC47, $alpha: 0.5);
+            color: $uni-main-color;
+            margin-right: 9rpx;
+          }
 
-        .begin-type-grey {
-          background: rgba($color: #E9E9E9, $alpha: 0.5);
-          border-radius: 5rpx;
-          border: 1px solid rgba($color: #B2B2B2, $alpha: 0.5);
-          color: #7F7F7F;
-        }
+          .begin-type-grey{
+            background: rgba($color: #E9E9E9, $alpha: 0.5);
+            border-radius: 5rpx;
+            border: 1px solid rgba($color: #B2B2B2, $alpha: 0.5);
+            color: #7F7F7F;
+          }
 
         .pay-type {
-          background: #E9E9E9;
-          border-radius: 5rpx;
-          opacity: 0.5;
-          border: 1rpx solid #B2B2B2;
-          font-size: 16rpx;
-          color: #7F7F7F;
-          padding: 0 5rpx;
-          box-sizing: border-box;
+          width: 41rpx;
           line-height: 22rpx;
+          background: rgba($color: #E9E9E9, $alpha: 0.5);
+          border-radius: 5rpx;
+          border: 1rpx solid rgba($color: #B2B2B2, $alpha: 0.5);
+          color: #7F7F7F;
+          font-size: 16rpx;
         }
       }
 

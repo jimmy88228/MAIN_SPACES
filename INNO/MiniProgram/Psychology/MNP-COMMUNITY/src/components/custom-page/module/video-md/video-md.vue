@@ -61,7 +61,7 @@ const pageOption = Page.BasePage({
       let id = currentTarget.dataset.id; 
       let item = currentTarget.dataset.item; 
       item = encodeURIComponent(JSON.stringify(item))
-      this.jumpAction(`/pages/video-detail/video-detail?id=${id}&item=${item}`);
+      this.jumpAction(`/pages/content-library/video-detail/video-detail?id=${id}&item=${item}`);
     },
      coverBackground(coverUrl) {
       if (coverUrl == "" || coverUrl == "errorCover") {

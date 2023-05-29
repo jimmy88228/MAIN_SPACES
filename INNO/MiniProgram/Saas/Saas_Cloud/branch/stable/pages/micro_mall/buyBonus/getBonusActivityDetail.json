@@ -1,0 +1,12 @@
+{
+  "navigationBarTitleText": "商品详情",
+  "usingComponents": {
+    "btns":"/components/buttons/btns",
+    "bgHover": "/components/bg_hover/bg_hover",
+    "dialog": "/components/ui/cps/dialog/dialog",
+    "act_bonus":"/components/act_bonus/act_bonus",
+    "act-count-down":"/components/act-count-down/act-count-down",
+    "share":"/pages/micro_mall/goods/popup/share",
+    "shareImg": "/pages/micro_mall/goods/popup/shareImg"
+  }
+}

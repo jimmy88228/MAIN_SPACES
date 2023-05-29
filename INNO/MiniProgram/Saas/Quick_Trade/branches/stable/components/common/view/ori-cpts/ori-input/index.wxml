@@ -1,0 +1,17 @@
+<!-- <include src="/common/base/component/index.wxml" /> -->
+<input 
+    class="ori-input ext-class"
+    placeholder-class="ext-placeholder-class default-placeholder-class" 
+    placeholder="{{placeholder}}" 
+    type="{{type}}" 
+    value="{{value}}" 
+    password="{{password}}"
+    disabled="{{disabled}}"
+    maxlength="{{maxlength}}"
+    always-embed="{{alwaysEmbed}}"
+    cursor-spacing="{{cursorSpacing}}"
+    bindtap="onTap" 
+    bindinput="onInput"
+    bindfocus="{{setFocus?'onFocus':''}}"
+    bindblur="{{setBlur?'onBlur':''}}"
+/>

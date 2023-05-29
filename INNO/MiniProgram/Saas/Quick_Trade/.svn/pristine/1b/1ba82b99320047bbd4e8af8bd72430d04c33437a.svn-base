@@ -1,0 +1,9 @@
+{
+  "navigationBarTitleText": "",
+  "backgroundColor": "#fff",
+  "usingComponents": {
+    "my-radio-group":"/components/common/view/custom-view/radio-group/index",
+    "operation-log":"../../modules/operation-log/index",
+    "confirm-pop":"/components/common/basic/pop/confirm-pop/index"
+  }
+}

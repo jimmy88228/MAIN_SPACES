@@ -1,0 +1,13 @@
+<!--app_sign.wxml-->
+<view class="main" catchtouchstart="{{_showRule?'_noFn':''}}" style="{{_showRule?'overflow:hidden;':''}}">
+  <signMod id="signMod" type="signPage" isLogin="{{isLogin}}" calendar="{{calendar}}" bindhandle_rule="handle_rule" bindcancel_rule="cancel_rule"  bindcustomPageId="customPageId"></signMod>
+  <pageHome id="pageHome"></pageHome>
+  <view class="pageTab" style="{{showPadding}}" wx:if="{{!hideCustom}}">
+    <micro-page
+      class="page_tab" 
+      id="mcPage"
+      extraH="{{extraH}}"
+      isCustomNav="{{false}}"></micro-page>  
+    </view>
+</view>
+<adsPop class="adsPop" pop-data="{{adsPop}}"></adsPop>

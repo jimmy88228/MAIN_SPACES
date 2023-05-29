@@ -1,5 +1,5 @@
 import {data} from "../default-options/index";
-import {tabKeys} from "../../../../custom-tab-bar/tabBar";
+import {tabKeys} from "../../../../config/tabBar";
 export const getCurrentPageInstance = () => {
   let pages = getCurrentPages() || [],
     curPage = pages[pages.length - 1] || {};

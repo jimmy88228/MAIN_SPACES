@@ -1,0 +1,2 @@
+/* 全局样式 */
+@import "/common/base/app/default-wxss/index.wxss";

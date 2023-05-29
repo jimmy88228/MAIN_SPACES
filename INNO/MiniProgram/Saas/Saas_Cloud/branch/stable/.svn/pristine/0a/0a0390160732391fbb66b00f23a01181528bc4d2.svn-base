@@ -1,0 +1,48 @@
+@import '../template//gds-list-css.wxss';
+@import '../../ac-goods-list/ac-goods-list.wxss';
+
+/* {{_data.layout}}-{{arrLen}} 是作用在swiper里的 */
+/* swiper display-multiple-items 不能大于实际item数量,只有实际item数量为1的时候能优化宽度,其他都采取撑满自适应 */
+.one-row .two-1{
+  min-width: 50%;
+  max-width: 50%;
+}
+.one-row .three-1{
+  min-width: 33.33%;
+  max-width: 33.33%;
+}
+.one-row .four-1{
+  min-width: 20%;
+  max-width: 20%;
+}
+ 
+/* 一行1-4个 */
+.list-item-one {
+  min-width: 100%;
+  max-width: 100%;
+  font-size: 30rpx;
+}
+
+.list-item-two {
+  min-width: 100%;
+  max-width: 100%;
+  font-size: 24rpx;
+}
+
+.list-item-three {
+  min-width: 100%;
+  max-width: 100%;
+  font-size: 22rpx;
+}
+
+.list-item-four {
+  min-width: 100%;
+  max-width: 100%;
+  font-size: 20rpx;
+}
+.list-item {
+  margin-bottom: 0; 
+}
+.main.init{
+  width: 100%;
+}

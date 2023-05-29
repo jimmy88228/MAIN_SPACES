@@ -163,7 +163,7 @@
         questionIndex: 0,
         restQuestions: 0,
         answerCount: 0,
-        examRecordId: 0
+        examRecordId: 0,
       };
     },
     onLoad(options) {
@@ -171,6 +171,8 @@
     },
     onReady() {
       this.getActInfo().then(() => {
+        // 创建测评记录id
+        this.createExamRecordId()
         this.init();
       });
     },
@@ -182,37 +184,12 @@
     // onShareAppMessage(e){},
     methods: {
       init() {
-        // let current = parseInt(this.options.current || 0);
-        // let currentPage = Math.ceil(((current || 1)) / this.pageSize);
-        // let loadPage = currentPage > 1 ? currentPage - 1 : 1;
-        // let loadPageSize = currentPage > 1 ? this.screenPage * this.pageSize : this.pageSize * (this.screenPage - 1);
-        // this.loadData(loadPage, loadPageSize).then(()=>{
-        // 	this.getBoxH();
-        // })
-
-        // #ifdef H5
-        // let current = parseInt(this.acInfo.answerCount || 0);
-        // #endif
-        // #ifdef MP
-        // let allCount = parseInt(this.options.allCount || 0);
-        // let current = parseInt(this.options.current || 0);
-        //#endif
-        // this.searchTargetQuestion(this.acInfo.lastQuestion.nextQuestionId,this.acInfo.lastQuestion.questionId)
         let allCount = parseInt(this.acInfo.questionCount || 0);
-        // let current = parseInt(this.acInfo.lastQuestion.questionSort || 0);
 
-
-        // if (!(allCount > current)) current = current - 1;
-        // let lastPageIndex = Math.ceil(
-        //   ((current || 1) + this.preview) / this.pageSize
-        // );
-        // let lastPageSize = lastPageIndex * this.pageSize;
         let lastPageIndex = Math.ceil(allCount / this.pageSize);
         let lastPageSize = lastPageIndex * this.pageSize;
         this.loadData(1, lastPageSize).then(() => {
-          // if (!(allCount > current)) {
-          //   this.setSubmitBtn(true);
-          // }
+
           if (!this.acInfo.lastQuestion.nextQuestionId && this.acInfo.lastQuestion.questionId) {
             this.searchTargetQuestion(this.acInfo.lastQuestion.questionId, this.acInfo.lastQuestion
               .fromQuestionId)
@@ -222,13 +199,23 @@
             this.searchTargetQuestion(this.acInfo.lastQuestion.nextQuestionId, this.acInfo.lastQuestion
               .questionId)
           }
-          // this.searchTargetQuestion(0, 0)
+
           this.pageIndex = lastPageIndex;
           this.getBoxH();
-          // if (this.CurPreviewNum >= this.pageIndex * this.pageSize) {
-          //   this.loadData();
-          // }
+
         });
+      },
+      createExamRecordId(){
+        return this.$Http(this.$Apis.createExamRecord,{
+          data:{
+            recordId:courseManage.recordId,
+            contentId:this.options.contentId
+          }
+        }).then(res=>{
+          if(res.code){
+            this.examRecordId = res.data
+          }
+        })
       },
       searchTargetQuestion(nextQuestionId, fromQuestionId) {
         let list = this.list;
@@ -244,7 +231,6 @@
         })
         if (question && question.length > 0) {
           console.log(this.list[current], fromQuestionId)
-          // if(fromQuestionId) this.$set(this.list[current],"fromQuestionId",fromQuestionId)
           if (fromQuestionId) this.list[current].fromQuestionId = fromQuestionId;
           this.current = current
         } else {
@@ -258,16 +244,13 @@
       getActInfo() {
         return this.$Http(this.$Apis.getExamModel, {
           data: {
-            activityId:this.options.activityId,
+            // activityId:this.options.activityId,
             modelId: this.options.modelId,
-            contentId:this.options.contentId
+            contentId:this.options.contentId,
+            recordId:courseManage.recordId
           },
         }).then((res) => {
           if (res.code == 1) {
-            // let data = res.data || {};
-            // this.restQuestions = data.questionCount;
-            // this.answerCount = 0;
-            // this.acInfo = data;
             let data = res.data || {};
             // 判断剩余题目
             if (!data.answerCount) {
@@ -293,8 +276,6 @@
             activityId: this.options.activityId || 0,
             contentId: this.options.contentId || 0,
             modelId: this.options.modelId || 0,
-            // pageIndex: pageIndex,
-            // pageSize: pageSize
             skip: parseInt(pageIndex - 1) * this.pageSize, // 跳过行数
             take: pageSize, // 取得行数
           },
@@ -393,9 +374,11 @@
         }, ];
         return this.$Http(this.$Apis.submitExam, {
           data: {
-            activityId: Number(this.options.activityId) || 0,
-            contentId: this.options.contentId || 0,
-            courseId: this.options.courseId || 0,
+            // activityId: Number(this.options.activityId) || 0,
+            // contentId: this.options.contentId || 0,
+            // courseId: this.options.courseId || 0,
+            examRecordId:this.examRecordId,
+            recordId:courseManage.recordId,
             answerList,
           },
           other: {
@@ -404,7 +387,7 @@
         }).then((res) => {
           if (res.code == 1) {
             let data = res.data || {};
-            this.examRecordId = data.examRecordId || 0;
+            // this.examRecordId = data.examRecordId || 0;
             this.isFinish = data.isFinish || false;
             this.isFinish && (this.restQuestions = 0);
             return Promise.resolve(res);
@@ -469,27 +452,17 @@
         return Number((cur / len).toFixed(2)) * 100;
       },
       submitFinish() {
-        // let index = -1;
-        // let check = this.list.every((item, i) => {
-        //   index = i;
-        //   return item.selectOptionId > 0;
-        // });
         if (!this.isFinish) {
           SMH.showToast({
             title: `还有未打完的题目，请检查`,
           });
-          // this.current = index;
           return;
         }
         return this.$Http(this.$Apis.finishExam, {
-
-          // customUrl: this.$Apis.finishSurvey.u +
-          //   `?activityId=${this.options.activityId || 0}`,
           data: {
-            activityId:Number(this.options.activityId),
-            contentId:this.options.contentId
-            // courseId: Number(this.options.courseId),
-            // examRecordId: this.examRecordId || 0
+            // activityId:Number(this.options.activityId),
+            // contentId:this.options.contentId
+            examRecordId:this.examRecordId
           },
 
           other: {
@@ -561,7 +534,6 @@
       overflow-y: hidden;
 
       &.showSubmit {
-        // padding-bottom: 190rpx;
         padding-bottom: 40rpx;
       }
     }

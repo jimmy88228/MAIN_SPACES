@@ -1,0 +1,85 @@
+page {
+    --content:"0.00";
+}
+
+.main {
+    background: #fff;
+    position: relative;
+    margin-bottom: 12rpx;
+    /* display: flex; */
+}
+
+.title {
+    padding: 27rpx 0rpx 39rpx 45rpx;
+    box-sizing: border-box;
+    font-weight: bold;
+    font-size: 24rpx;
+    line-height: 24rpx;
+}
+
+.box {
+    display: flex;
+    flex-wrap: wrap;
+    width: 750rpx;
+}
+
+.content {
+    width: 25%;
+    display: inline-flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 0rpx 0 20rpx 0;
+}
+
+.name {
+    line-height: 20rpx;
+    font-size: 20rpx;
+    color: #333;
+}
+
+.button {
+    width: 100rpx;
+    height: 38rpx;
+    border: 1px solid rgba(228, 228, 228, 1);
+    border-radius: 19rpx;
+    padding: 10rpx 20rpx;
+    font-size: 20rpx;
+    color: #333;
+}
+
+.decoration {
+    position: absolute;
+    width: 6rpx;
+    height: 19rpx;
+    left: 27rpx;
+    top: 27rpx;
+    /* background: rgba(205, 113, 143, 1); */
+}
+
+.mb_10 {
+    margin-bottom: 12rpx;
+}
+
+.money {
+    width: 100%;
+    font-weight: bold;
+    margin-bottom: 23rpx;
+    line-height: 28rpx;
+    /* transition: all 1.2s; */
+    text-align: center;
+}
+
+.priceLeft {
+    vertical-align: top;
+    font-size: 20rpx;
+    line-height: 24rpx;
+}
+
+.priceRight {
+    font-size: 28rpx;
+    vertical-align: top;
+}
+
+.priceRight::after{
+    content: var(--content);
+}

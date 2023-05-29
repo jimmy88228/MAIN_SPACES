@@ -1,0 +1,45 @@
+@import "/common/base/page/default-wxss/index.wxss";
+
+.category-detail-page{
+  width: 100vw;
+  height: 100vh;
+}
+.category-detail-main{
+  width: 100%;
+  height: 100%;
+}
+.category-detail-list{ 
+  width: 100%;
+  height: 100%;
+  border-radius: 12rpx;
+  overflow: hidden;
+  background-color: #fff;
+  height: 100%;
+  padding: 20rpx;
+}
+.list:last-of-type{
+  margin-bottom: 0;
+}
+.msg-box{
+  padding: 20rpx;
+  box-sizing: border-box;
+}
+.goods-img{
+  width: 170rpx;
+  height: 170rpx;
+}
+.content{
+  padding-top: 2rpx;
+  padding-left: 18rpx;
+  box-sizing: border-box;
+}
+.title{
+  color: #b2b2b2;
+  margin-right: 16rpx;
+}
+.cdl-nodata{
+  color: #b2b2b2;
+  padding: 20rpx;
+  width: 100%;
+  height: 100%;
+}

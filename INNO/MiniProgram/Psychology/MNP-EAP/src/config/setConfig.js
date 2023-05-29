@@ -39,6 +39,7 @@ const allBrandConfig = {
 				"SPECIALSECTIONAPI": "https://eapapi.innourl.com",
 				"EXAMAPI": "https://eapapi.innourl.com",
 				"COURSEAPI": "https://eapapi.innourl.com",
+				"QUESTIONAIREAPI": "https://eapapi.innourl.com",
 				"LOGAPI": "https://eapapi.innourl.com/log",
 			}
 		},
@@ -69,6 +70,7 @@ const allBrandConfig = {
 				"FUNTESTAPI": "https://psyapi.innourl.com",
 				"SPECIALSECTIONAPI": "https://psyapi.innourl.com",
 				"EXAMAPI": "https://psyapi.innourl.com",
+				"QUESTIONAIREAPI": "https://psyapi.innourl.com",
 				"COURSEAPI": "https://psyapi.innourl.com",
 			}
 		}
@@ -104,6 +106,7 @@ const allBrandConfig = {
 				"SPECIALSECTIONAPI": "https://shxeapapi.innourl.com",
 				"EXAMAPI": "https://shxeapapi.innourl.com",
 				"COURSEAPI": "https://shxeapapi.innourl.com",
+				"QUESTIONAIREAPI": "https://shxeapapi.innourl.com",
 			}
 		},
 		prod: {
@@ -134,6 +137,7 @@ const allBrandConfig = {
 				"SPECIALSECTIONAPI": "https://shxeapapi.innourl.com",
 				"EXAMAPI": "https://shxeapapi.innourl.com",
 				"COURSEAPI": "https://shxeapapi.innourl.com",
+				"QUESTIONAIREAPI": "https://shxeapapi.innourl.com",
 			}
 		}
 
@@ -168,6 +172,7 @@ const allBrandConfig = {
 				"SPECIALSECTIONAPI": "https://shxeapapi.innourl.com",
 				"EXAMAPI": "https://shxeapapi.innourl.com",
 				"COURSEAPI": "https://shxeapapi.innourl.com",
+				"QUESTIONAIREAPI": "https://shxeapapi.innourl.com",
 			}
 		},
 		prod: {
@@ -198,6 +203,7 @@ const allBrandConfig = {
 				"SPECIALSECTIONAPI": "https://shxeapapi.innourl.com",
 				"EXAMAPI": "https://shxeapapi.innourl.com",
 				"COURSEAPI": "https://shxeapapi.innourl.com",
+				"QUESTIONAIREAPI": "https://shxeapapi.innourl.com",
 			}
 		}
 
@@ -232,6 +238,7 @@ const allBrandConfig = {
 				"SPECIALSECTIONAPI": "https://shxeapapi.innourl.com",
 				"EXAMAPI": "https://shxeapapi.innourl.com",
 				"COURSEAPI": "https://shxeapapi.innourl.com",
+				"QUESTIONAIREAPI": "https://shxeapapi.innourl.com",
 			}
 		},
 		prod: {
@@ -262,6 +269,7 @@ const allBrandConfig = {
 				"SPECIALSECTIONAPI": "https://shxeapapi.innourl.com",
 				"EXAMAPI": "https://shxeapapi.innourl.com",
 				"COURSEAPI": "https://shxeapapi.innourl.com",
+				"QUESTIONAIREAPI": "https://shxeapapi.innourl.com",
 			}
 		}
 
@@ -296,6 +304,7 @@ const allBrandConfig = {
 				"SPECIALSECTIONAPI": "https://shxeapapi.innourl.com",
 				"EXAMAPI": "https://shxeapapi.innourl.com",
 				"COURSEAPI": "https://shxeapapi.innourl.com",
+				"QUESTIONAIREAPI": "https://shxeapapi.innourl.com",
 			}
 		},
 		prod: {
@@ -326,6 +335,7 @@ const allBrandConfig = {
 				"SPECIALSECTIONAPI": "https://shxeapapi.innourl.com",
 				"EXAMAPI": "https://shxeapapi.innourl.com",
 				"COURSEAPI": "https://shxeapapi.innourl.com",
+				"QUESTIONAIREAPI": "https://shxeapapi.innourl.com",
 			}
 		}
 

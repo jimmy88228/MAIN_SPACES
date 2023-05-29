@@ -37,7 +37,7 @@ class mobileManager {
   }
 }
 function checkIsBindMobile(){
-  return CacheD.setCatchDate("bindMobile",3).then(()=>{
+  return CacheD.setCatchDate("bindMobile",5).then(()=>{
     return checkIsBindMobileReq.call(this);
   }).catch(res=>{
     if (res && res.code != "1"){
@@ -63,10 +63,6 @@ function checkIsBindMobileReq() {
       this.mobileStorage(data,"set");
       return Promise.resolve(data);
     }
-    // SMH.showToast({
-    //   title:e.msg
-    // })
-    console.log("checkIsBindMobileReq 错误")
     return Promise.reject(e);
   }).finally(()=>{
     this.keepCheckBindMobil = false;

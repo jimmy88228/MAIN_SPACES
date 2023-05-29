@@ -24,28 +24,34 @@ class cacheDateManager {
       StorageH.remove("cacheDate");
     }
   }
-  checkCatchData(key,time= 1){
+  checkCatchData(key,times= 1){
     if (!key) return false;
     let cacheDate = this._cacheDate;
     let pervDate = cacheDate[key];
     let dataCacheTime = Conf.dataCacheTime || 1;
     if (pervDate){
       let nextDate = new Date();
-      if ((nextDate.getTime() - pervDate) < (time * dataCacheTime * 60 * 1000)) {
-        return false;
+      // console.log('check缓存',key,(nextDate.getTime() - pervDate),(times * dataCacheTime * 60 * 1000))
+      if ((nextDate.getTime() - pervDate) < (times * dataCacheTime * 60 * 1000)) {
+        console.log('缓存时间内',key,'剩余'+(((times * dataCacheTime * 60 * 1000)-(nextDate.getTime() - pervDate))/(60*1000)).toFixed(1)+"分钟");
+        return false; //缓存时间内
+      }else{
+        console.log('缓存已结束',key)
+        return true
       }
     }
-    return true;
+    console.log('无缓存',key);
+    return true; //无缓存/缓存结束
   }
-  setCatchDate(key,time = 1){
+  setCatchDate(key,times = 1){
     if (!key) return Promise.reject();
-    if (this.checkCatchData(key,time)){
+    if (this.checkCatchData(key,times)){ //无缓存/缓存结束
       let cacheDate = this._cacheDate;
       let nextDate = new Date();
       cacheDate[key] = nextDate.getTime();
       StorageH.set("cacheDate", cacheDate);
       return Promise.resolve();
-    }else{
+    }else{ //缓存时间内
       return Promise.reject(); 
     }
   }

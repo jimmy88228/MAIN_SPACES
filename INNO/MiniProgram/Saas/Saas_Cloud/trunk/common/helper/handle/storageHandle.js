@@ -1,3 +1,4 @@
+const CheckIsTimeoutKey = "CheckIsTimeout"
 class StorageManager{
   static getInstance() {
     if (!StorageManager.instance) {
@@ -49,6 +50,25 @@ class StorageManager{
       value: v
     }
     wx.setStorageSync(k, setValue);
+  }
+  checkIsTimeout({key,type="get",value,t=0}){ //t 时间(单位分钟
+    let storage = this.get(CheckIsTimeoutKey,{},false); //CheckIsTimeout缓存
+    storage[key] || (storage[key] = {})
+    let item = storage[key];
+    if(type == 'get'){
+      if(item.DEADTIME){
+        let DEADTIME = item.DEADTIME;
+        // console.log('DEADTIME',DEADTIME,new Date().getTime(),DEADTIME - new Date().getTime())
+        if(DEADTIME > (new Date().getTime())){
+          return false //缓存时间未过期
+        }
+      }
+      return true //缓存时间过期
+    }else if(type == 'set'){
+      item.DEADTIME = (new Date().getTime()) + t * 60 * 1000; //单位分钟(60 * 1000)
+      item.value = value;
+      this.set(CheckIsTimeoutKey,storage)
+    }
   }
 }
 

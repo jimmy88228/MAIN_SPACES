@@ -36,12 +36,9 @@
         <view v-show="showLoading" class="loading-view flex-c-c">
           <loading-view></loading-view>
         </view>
-        <view class="evaluating-bg-area-cover" v-if="answerBgImg && !isH5 && !showLoading">
-          <image class="evaluating-bg-area-cover-image" @load="getBgSize" :style="{height:bgHeight,width:bgWidth}"
-            :src="answerBgImg" />
-        </view>
+        <fullScreenImg v-if="answerBgImg && !isH5 && !showLoading" :src="answerBgImg"></fullScreenImg>
         <view v-show="!showLoading" class="flex-s-s flex-col flex1 main-box box flex-col-1">
-          <view class="tips" style="padding: 0px 80rpx" v-if="acInfo.modelInstruction"> {{ acInfo.modelInstruction }}
+          <view class="tips" style="padding: 0px 80rpx"> {{ list[current].instruction || acInfo.modelInstruction  }}
           </view>
           <view id="swiperId" class="swiper flex1" :class="[isFinish ? 'showSubmit' : '']">
             <view class="swiper-item-box flex-s-s" v-if="list.length>0"
@@ -55,45 +52,10 @@
                     <!-- ,current == index?buttonAnimation:'' -->
                     <view :class="['answer-box','flex-c-c','flex-col',current == index?buttonAnimation:''  ]"
                       v-if="item.optionList">
-                      <view v-show="item.optionList.length>7">
-                        <ori-picker @pickerChange="(e) => pickerChange(e, 'optionSelect')" range-key="optionContent"
-                          mode="selector" :range="item.optionList" :pickerValue="item.pickerValue">
-                          <template v-slot:content>
-                            <view
-                              :class="['font-32', 'answer-select', 'flex-b-c',current == index ? buttonAnimation : 'animate-fade-out-down']">
-                              <template v-if="item.pickerValue == -1">
-                                <view class="C_8E">请选择选项</view>
-                              </template>
-                              <template v-else>
-                                <view class="bold">{{item.optionList[item.pickerValue].optionContent}}</view>
-                              </template>
-                              <view :style="{color:brandStyle.themeColor}">选择</view>
-                            </view>
-                          </template>
-                        </ori-picker>
-                        <view v-if="index < list.length - 1"
-                          :class="['answer-confirm','flex-c-c','font-32','bold',current == index ? buttonAnimation : 'animate-fade-out-down',item.pickerValue == -1 || disableNext?'grey-button':'primary-button']"
-                          @click="selectPicker()">
-                          下一题
-                        </view>
-                      </view>
-                      <view v-show="item.optionList.length<=7"
-                        :class="[current == index ? buttonAnimation : 'animate-fade-out-down']">
-                        <!-- ,current == index ? buttonAnimation : 'animate-fade-out-down' -->
-                        <button :class="[
-                        'answer-item',
-                        'bold',
-                        'flex-c-c',
-                        item.selectOptionId == c_item.optionId
-                          ? 'active'
-                          : '' ,
-                           current == index ? buttonAnimation : 'animate-fade-out-down'
-                      ]" @click="onAnswer(c_item.optionId, index,c_item)" v-for="(c_item, c_index) in item.optionList"
-                          :key="c_index" :style="{'animation-delay':`${current == index ? c_item.showTime : 0}s`}">
-                          <!-- :style="{'animation-delay':`${current == index ? c_item.showTime : 0}s`}" -->
-                          {{ c_item.optionContent }}
-                        </button>
-                      </view>
+                      <!-- 选择器样式 -->
+                       <answerPicker v-if="item.optionList.length>7" :showNext="index < list.length - 1" :disableNext="disableNext" :questionDetail="item" @pickerChange="pickerChange" @selectPicker="selectPicker" :buttonAnimation="current == index ? buttonAnimation : 'animate-fade-out-down'"></answerPicker>
+                       <!-- 一般样式 -->
+                       <answerNormal v-else-if="item.optionList.length<=7" :index="index" :current="current" :questionDetail="item" :buttonAnimation="current == index ? buttonAnimation : 'animate-fade-out-down'" @onAnswer="onAnswer"></answerNormal>
                     </view>
                   </view>
                 </scroll-view>
@@ -158,6 +120,7 @@
 </template>
 
 <script>
+  import fullScreenImg from "@/components/full-screen-img/full-screen-img.vue"
   import utils from '@/common/support/utils.js'
   import LoadingView from '@/components/css3/loading/loading.vue';
   import sysInfosHandler from "@/common/helper/sys-infos-handler";
@@ -166,18 +129,24 @@
   import oriPopup from "@/components/ori-comps/popup/ori-popup";
   import safeArea from "@/components/safe-area/index.vue";
   import stagePopup from "./components/stage-popup/stage-popup.vue"
+  // 回答题目的样式
+  import answerNormal from "./components/answer-normal/answer-normal.vue"
+  import answerPicker from "./components/answer-picker/answer-picker.vue"
   // 小程序答题进度条（多量表、单量表通用）
   import mpAnswerProgress from "./components/mp-answer-progress/mp-answer-progress.vue"
 
   const app = getApp();
   const pageOption = Page.BasePage({
     components: {
+      fullScreenImg,
       LoadingView,
       oriPopup,
       safeArea,
       oriPicker,
       stagePopup,
-      mpAnswerProgress
+      mpAnswerProgress,
+      answerNormal,
+      answerPicker,
     },
     data() {
       return {
@@ -185,11 +154,6 @@
         totalTime: 0,
         answerTimer: '',
         beginAnswer: false,
-        //*********/
-        // *背景图
-        bgHeight: 0,
-        bgWidth: 0,
-        //********/
         disableNext: false,
         buttonAnimation: 'animate-fade-in-right',
         scaleInfo: {},
@@ -328,17 +292,7 @@
           }, 1000)
         }
       },
-      getBgSize({
-        detail
-      }) {
-         let width = detail.width;
-        let height = detail.height;
-        utils.getBgSize(width, height).then(res => {
-          this.bgWidth = res.imgW + "px"
-          this.bgHeight = res.imgH + "px"
-          this.isLoadBg = true;
-        })
-      },
+
       uploadAnswerTime(upload = true) {
         if (!this.beginAnswer || !this.totalTime) return
         if (this.answerTimer) {
@@ -489,7 +443,7 @@
         currentItem.pickerValue = selectIndex;
         currentItem.selectOptionId = id;
         this.submit(index).then(() => {
-          this.restQuestions = currentItem.restQuestions - 1;
+          // this.restQuestions = currentItem.restQuestions - 1;
           // 答题完成
           if (this.isFinish || currentItem.restQuestions == 0 || optionItem.nextQuestionId == 0) {
             this.restQuestions = 0;
@@ -554,7 +508,9 @@
         }
 
       },
-      onAnswer(id, index, optionItem) {
+      onAnswer({id, index, optionItem}) {
+        console.log(id, index, optionItem,"213213213")
+
         if (this.list[this.current].questionId != this.list[index].questionId) return
         if (index != this.totalCount - 1) {
           let check = this._clickHold("answer", 400);
@@ -802,24 +758,7 @@
 <style lang="scss" scoped>
   @import "./H5.scss";
   @import "./MP.scss";
-
-  .animate-fade-in-right {
-    animation-name: fadeInRight;
-    animation-iteration-count: 1;
-    animation-fill-mode: forwards;
-  }
-
-  .animate-fade-in-left {
-    animation-name: fadeInLeft;
-    animation-iteration-count: 1;
-    animation-fill-mode: forwards;
-  }
-
-  .animate-fade-out-down {
-    animation-name: fadeOutDown;
-    animation-iteration-count: 1;
-    animation-fill-mode: forwards;
-  }
+  @import "./animate.scss";
 
   .loading-view {
     position: fixed;
@@ -841,13 +780,6 @@
       width: 100%;
       height: 100%;
       z-index: -1;
-
-      .evaluating-bg-area-cover-image {
-        position: absolute;
-        left: 50%;
-        top: 50%;
-        transform: translate(-50%, -50%);
-      }
     }
 
     .msg-box {
@@ -1114,77 +1046,5 @@
     }
   }
 
-  @keyframes fadeInRight {
-    from {
-      opacity: 0;
-      transform: translateX(20%);
-    }
-
-    to {
-      opacity: 1;
-      transform: translateX(0);
-    }
-  }
-
-  @keyframes fadeInLeft {
-    from {
-      opacity: 0;
-      transform: translateX(-20%);
-    }
-
-    to {
-      opacity: 1;
-      transform: translateX(0);
-    }
-  }
-
-  @keyframes fadeOutDown {
-    from {
-      opacity: 1;
-    }
-
-    to {
-      opacity: 0;
-    }
-  }
-
-  @keyframes activeAnim {
-    0% {
-      border-radius: 50%;
-      opacity: 0;
-      transform: scale3d(0.15, 1, 1);
-    }
-
-    50% {
-      border-radius: 58rpx;
-      opacity: 1;
-    }
-
-    100% {
-      border-radius: 58rpx;
-      opacity: 1;
-      transform: scale3d(1, 1, 1);
-    }
-  }
-
-  @keyframes dismissAnim {
-    0% {
-      border-radius: 58rpx;
-      opacity: 1;
-      transform: scale3d(1, 1, 1);
-    }
-
-    20% {
-      border-radius: 58rpx;
-      color: transparent;
-    }
-
-    100% {
-      border-radius: 50%;
-      box-shadow: 0 9rpx 44rpx 0 transparent;
-      font-size: 0;
-      opacity: 0;
-      transform: scale3d(0.15, 1, 1);
-    }
-  }
+  
 </style>

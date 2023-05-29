@@ -1,0 +1,9 @@
+<!--pages/goods/popup/service.wxml-->
+<window class="window" ext-class="window-ext">
+  <view class="short_link_popup" style="{{boxStyle}}">
+    <image catchtap="dismiss" src='{{server_close}}'  mode='widthFix' class='s_l_close'></image>
+    <view class="s_l_header">链接已复制</view>
+    <view class="s_l_content">{{path}}</view>
+    <button class="s_l_confirm" style="background-color:{{brand_info.style.bg_color || ''}};" catchtap="dismiss" >去粘贴给好友</button>
+  </view>
+</window>

@@ -1,0 +1,23 @@
+<include src="/common/base/component/index.wxml" />
+<window show="{{show}}" bindmasktap="dismiss" name="slide-from-bottom">
+    <transition show="{{show}}" name="slide-from-bottom" class="transition-box">
+    <view class="picker-header flex-b-c">
+      <view class="op-tip" bindtap="pickerAdd">
+         去添加
+      </view>
+      <view>
+        请选择分类
+      </view>
+      <view class="op-tip" bindtap="pickerSel">
+         确定
+      </view>
+    </view>
+      <picker-view class="picker-view" indicator-style="height: 50px;" value="{{catValue}}" bindchange="pickerChange">
+        <picker-view-column>
+          <view wx:for="{{catList}}" class="picker-view-column" wx:key="id" style="line-height: 50px; text-align: center;">{{item.catName}}</view>
+        </picker-view-column>
+      </picker-view> 
+    </transition>
+</window> 
+
+<create-pop id="create-pop" />

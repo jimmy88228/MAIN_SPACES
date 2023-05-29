@@ -19,8 +19,8 @@ export const LogMap = {
   ["pages/psychology/my-reserve/my-reserve"]: "PSYCHOLOGY_MY_RESERVE",
 
   // 报表
-  ["pages/report/report-list/report-list"]: "REPORT_REPORT_LIST",
-  ["pages/report/report-info/report-info"]: "REPORT_REPORT_INFO",
+  ["pages/report-list/report-list"]: "REPORT_REPORT_LIST",
+  ["pages/report-info/report-info"]: "REPORT_REPORT_INFO",
 
   //资源详情
   ["pages/audio-detail/audio-detail"]: "PUBLIC_AUDIO_DETAIL",
@@ -267,7 +267,7 @@ export const KeyParamName = {
   ["pages/startup/startup"]:["scene"], //启动页
   ["pages/psychology/resume/resume"]:["consultantId"], //导师简历
   ["pages/psychology/reserve/reserve"]:["consultantId"], //预约资讯
-  ["pages/report/report-info/report-info"]:["recordId"], //测评详情
+  ["pages/report-info/report-info"]:["recordId"], //测评详情
   ["pages/audio-detail/audio-detail"]:["id"], //音乐详情
   ["pages/video-detail/video-detail"]:["id"], //视频详情
   ["pages/article-detail/article-detail"]:["id"], //文章详情

@@ -4,54 +4,61 @@
       <page-nav>
         <template slot="title"> 选择心理导师 </template>
       </page-nav>
-      <view v-if="!isEmpty">
-        <view v-for="(pageItem, pageIndex) in tutorList" :key="pageIndex">
-          <view class="tutor-item" v-for="(item, index) in pageItem" :key="index" @click="consult"
-            :data-consultant-id="item.consultantId">
-            <view class="flex-b-c">
-              <image class="avatar m-r-25" :src="item.profilePicture" mode="aspectFill" />
-              <view class="flex1 clamp">
-                <view class="m-b-20 tutor-info">
-                  <view class="font-28 bold m-r-15">{{ item.name?item.name:"" }}</view>
-                  <view class="font-22 C_7f p-t-10">{{ item.qualification?item.qualification:"" }}</view>
-                </view>
-                <view class="flex-b-c user-exp">
-                  <view class="inline-block">
-                    <view class="exp-item">
-                      <view class="flex-s-c">
-                        <image :src="staticAddress+timeIcon" mode="widthFix" />
-                        <view class="C_885200 bold">{{caculateExpTime(item.experienceHour) || 0}}时数</view>
-                        <view class="C_7f">经验</view>
-                      </view>
-                      <view class="split" v-if="item.experienceYear"></view>
-                      <view class="C_885200 bold" v-if="item.experienceYear">从业{{item.experienceYear || 0}}年</view>
-                    </view>
+      <template v-if="!showLoading">
+        <view v-if="!isEmpty">
+          <view v-for="(pageItem, pageIndex) in tutorList" :key="pageIndex">
+            <view class="tutor-item animate-fade-in-top" :style="{'animation-delay':`${item.showTime}s`}"
+              v-for="(item, index) in pageItem" :key="index" @click="consult" :data-consultant-id="item.consultantId">
+              <view class="flex-b-c">
+                <oriImage customStyle="width: 120rpx;height: 120rpx;border-radius: 50%;background-color: #efefef;" class="f-shrink-0 m-r-25" :src="item.profilePicture" mode="aspectFill" />
+                <view class="flex1 clamp">
+                  <view class="m-b-20 tutor-info">
+                    <view class="font-28 bold m-r-15">{{ item.name?item.name:"" }}</view>
+                    <view class="font-22 C_7f p-t-10">{{ item.qualification?item.qualification:"" }}</view>
                   </view>
-                  <view class="address flex-s-c" v-if="item.address">
-                    <image :src="staticAddress+addressIcon" mode="widthFix" />
-                    <view class="C_7f font-22 clamp">{{item.address}}</view>
+                  <view class="flex-b-c user-exp">
+                    <view class="inline-block">
+                      <view class="exp-item">
+                        <view class="flex-s-c">
+                          <image :src="staticAddress+timeIcon" mode="widthFix" />
+                          <view class="C_885200 bold">{{caculateExpTime(item.experienceHour) || 0}}时数</view>
+                          <view class="C_7f">经验</view>
+                        </view>
+                        <view class="split" v-if="item.experienceYear"></view>
+                        <view class="C_885200 bold" v-if="item.experienceYear">从业{{item.experienceYear || 0}}年</view>
+                      </view>
+                    </view>
+                    <view class="address flex-s-c" v-if="item.address">
+                      <image :src="staticAddress+addressIcon" mode="widthFix" />
+                      <view class="C_7f font-22 clamp">{{item.address}}</view>
+                    </view>
                   </view>
                 </view>
               </view>
-            </view>
-            <view class="flex f-wrap good-at" v-if="item.fields && item.fields.length>0">
-              <view class="good-at-item" v-for="(goodAtITem, goodAtIndex) in item.fields" :key="goodAtIndex">
-                {{ goodAtITem }}
+              <view class="flex f-wrap good-at" v-if="item.fields && item.fields.length>0">
+                <view class="good-at-item" v-for="(goodAtITem, goodAtIndex) in item.fields" :key="goodAtIndex">
+                  {{ goodAtITem }}
+                </view>
               </view>
             </view>
           </view>
         </view>
-      </view>
-      <view class="absolute empty" v-else>
-        <image :src="staticAddress+emptyIcon" class="empty-icon" mode="scaleToFill" />
-        <view class="C_B2 font-32">暂无可以咨询的导师哦~</view>
+        <view class="absolute empty" v-else>
+          <image :src="staticAddress+emptyIcon" class="empty-icon" mode="scaleToFill" />
+          <view class="C_B2 font-32">暂无可以咨询的导师哦~</view>
+        </view>
+      </template>
+      <view class="loading-view flex-c-c" v-else>
+        <loading-view></loading-view>
       </view>
     </view>
   </view>
 </template>
 
 <script>
+  import LoadingView from "@/components/css3/loading/loading.vue";
   import UniApi from "@/common/support/tools/uni-api-promise";
+  import oriImage from "@/components/ori-comps/image/ori-image";
   const app = getApp();
   const pageOption = Page.BasePage({
     data() {
@@ -60,11 +67,16 @@
         pageIndex: 0,
         pageSize: app.Conf.PAGE_SIZE,
         hasMore: true,
+        showLoading: true,
         timeIcon: "/time.png",
         addressIcon: "/address.png",
         emptyIcon: "/list-empty.png",
         tutorList: [],
       };
+    },
+    components: {
+      LoadingView,
+      oriImage,
     },
     onReady() {
       this.init();
@@ -90,6 +102,11 @@
               let data = res.data || {};
               this.pageIndex = pageIndex;
               let currPage = pageIndex - 1 ? pageIndex - 1 : 0;
+               data.list.forEach((item, index) => {
+              // 动画延时
+              let time = 0.1;
+              item.showTime = (index * time).toFixed(1);
+            })
               this.tutorList[currPage] = data.list || [];
               this.hasMore = this.pageIndex * this.pageSize < data.totalCount;
               this.setEmpty(this.tutorList);
@@ -99,12 +116,11 @@
           })
           .catch(() => {
             this.setEmpty(this.tutorList);
+          }).finally(() => {
+            setTimeout(() => {
+            this.showLoading = false
+          }, 300);
           });
-      },
-      jump({
-        currentTarget
-      }) {
-        this.jumpAction(dataset.url);
       },
       setEmpty(data) {
         if (data instanceof Array) {
@@ -143,6 +159,17 @@
 </script>
 
 <style lang="scss" scoped>
+  .loading-view {
+    width: 100%;
+    height: 100vh;
+  }
+
+  .animate-fade-in-top {
+    animation-name: fadeInTop;
+    animation-iteration-count: 1;
+    animation-fill-mode: forwards;
+  }
+
   .tutor-page {
     padding: 18rpx 21rpx 64rpx 21rpx;
     min-height: 100vh;
@@ -150,20 +177,14 @@
     width: 100%;
 
     .tutor-item {
+      opacity: 0;
+      animation-duration: 0.6s;
       border-radius: 17rpx;
       background: #ffffff;
       margin-top: 20rpx;
 
       &>view:first-child {
         padding: 20rpx 32rpx 20rpx 22rpx;
-      }
-
-      .avatar {
-        flex-shrink: 0;
-        width: 120rpx;
-        height: 120rpx;
-        border-radius: 50%;
-        background-color: #efefef;
       }
 
       .tutor-info {
@@ -255,6 +276,18 @@
       height: 254rpx;
       margin-bottom: 47rpx;
       margin: 0 auto;
+    }
+  }
+
+  @keyframes fadeInTop {
+    from {
+      opacity: 0;
+      transform: translateY(20%);
+    }
+
+    to {
+      opacity: 1;
+      transform: translateY(0);
     }
   }
 </style>

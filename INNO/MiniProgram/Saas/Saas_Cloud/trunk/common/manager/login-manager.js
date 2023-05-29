@@ -31,7 +31,7 @@ function userRegister(showLoading, iData = {}) {
   iData = iData || {};
   console.log('进来 userRegister', iData)
   let paramsJson = PH.paramsJson() || {};
-  let storeId = paramsJson.store_id || (paramsJson.options && paramsJson.options.query && paramsJson.options.query.store_id) || 0;
+  let storeId = paramsJson.store_id || (paramsJson.options && paramsJson.options.query && paramsJson.options.query.store_id) || (storeH.storeId) || 0;
   if (paramsJson.staff_id && storeId) {
     storeId = 0;
   }
@@ -76,15 +76,13 @@ function userRegister(showLoading, iData = {}) {
 
 //登录请求
 function userLogin(sessionId, showLoading) {
-  return WxApi.login().then(e => {
-      return CL_RegApi.login({
-        data: {
-          sessionId
-        },
-        other: {
-          isShowLoad: showLoading
-        }
-      })
+    return CL_RegApi.login({
+      data: {
+        sessionId
+      },
+      other: {
+        isShowLoad: showLoading
+      }
     })
     .then(e => {
       e.data = e.data || {};
@@ -257,7 +255,7 @@ function checkIfStaffDstb() {
     }
   }).then(e => {
     if (e.code == "1") {
-      console.log('checkIfStaffDstb',e)
+      console.log('检测分销 then',e)
       let data = e.data || {};
       this.setStaffInfo(data);
       setTimeout(function () {
@@ -307,6 +305,7 @@ class LoginManager {
   }
   //创建sessionId
   createWxSessionId(showLoading) {
+    console.log('微信LOGIN')
     return WxApi.login()
       .then(e => {
         this.removeSessionId();
@@ -358,10 +357,12 @@ class LoginManager {
         let data = e.data || {};
         this.saveLoginData({
           ...data,
-          register: false
         });
         if (!data.userKey) return Promise.reject("loginAsync->data.userKey不存在");
-        return getUserExtraInfos.call(this, data.userKey);
+        return getUserExtraInfos.call(this, data.userKey).then(res=>{
+          this.callLoginEB(false);
+          return res;
+        });
       }).finally(() => {
         //500毫秒后释放；
         setTimeout(() => {
@@ -407,8 +408,8 @@ class LoginManager {
           this.saveLoginData({
             ...userData,
             userInfo: userInfo,
-            register: true
           })
+          this.callLoginEB(true);
           return userData.userKey;
         })
       });
@@ -531,10 +532,10 @@ class LoginManager {
   }
   //检测分销
   checkIfStaffDstbEvent(checkIsStaff = false) {
-    console.log('检测分销')
+    console.log('检测分销 CHECK',this.staffInfo)
     if (checkIsStaff) {
       let staffInfo = this.staffInfo || {};
-      console.log(staffInfo.isStaffDstbData, staffInfo)
+      console.log("检测分销 取缓存",this.staffInfo)
       if (staffInfo.isStaffDstbData) {
         return Promise.resolve(staffInfo);
       }
@@ -549,10 +550,8 @@ class LoginManager {
     this._csfh = h = CDateH.setCatchDate("checkStaff", 2).then(() => {
       return checkIfStaffDstb.call(this);
     }).catch(() => {
-      console.log(this.staffInfo, "--catch");
-      if (this.staffInfo) {
-        return Promise.resolve(this.staffInfo);
-      }
+      console.log("检测分销 取缓存",this.staffInfo);
+      return Promise.resolve(this.staffInfo||{});
     }).finally(() => {
       this._csfh && delete this._csfh;
     })
@@ -561,9 +560,9 @@ class LoginManager {
   //检测店员
   checkIfStore(reset = false) {
     let storeInfo = this.storeInfo || '';
-    console.log('检测店员:', storeInfo);
+    console.log('检测店员:', storeInfo , (!storeInfo || reset) , !this.storeChecked);
     if (!storeInfo || reset) {
-      if ((!storeInfo || reset) && !this.storeChecked) {
+      if (!this.storeChecked) {
         return checkIfStoreFn.call(this).then(res => {
           this.storeChecked = true;
           this.setStoreInfo(res.data);
@@ -674,8 +673,6 @@ class LoginManager {
     if (data.isTotalNewUser) { // 注册接口返回的: "是否全新用户" 区分商城和云店的
       StorageH.set("isTotalNewUser", 2, 60 * 24);
     }
-    console.log("LoginStateChange, ", data.register);
-    EB.call("LoginStateChange", data.register); // 后续调整废除
     //处理分销
     console.log("判断分销", this._needBindStaffInfo, this);
     // if (this._needBindStaffInfo) {
@@ -687,6 +684,10 @@ class LoginManager {
       PH.initParam(options)
     }
   } 
+  callLoginEB(register){
+    console.log("EB.CALL LoginStateChange",register);
+    EB.call("LoginStateChange", register);
+  }
   logout() { //注销 openId / cookieId、token、userInfo
     this.removeLoginData();
     this.removeSessionId();
@@ -743,9 +744,6 @@ class LoginManager {
   get userKey() {
     return this._userKey || "";
   }
-  // get validToken() {
-  //   return this._validToken || "";
-  // }
   get sessionId() {
     return this._sessionId || "";
   }

@@ -1,0 +1,35 @@
+<!--pages/micro_mall/shopping/prom_pop/prom_pop.wxml-->
+<window class="window" ext-class="window-ext">
+  <view class="main" style="{{boxStyle}}" catchtouchmove="_noFn">
+    <view class="box">
+      <view class="goods-box">
+        <view class="img-box">
+          <image src="{{data.goods_img}}" mode="aspectFit" class="img-goods"></image>
+        </view>
+        <view class="msg-box">
+          <view class="msg-title">{{data.goods_name}}</view>
+          <view class="msg-price">¥{{data.sale_price}}</view>
+        </view>
+        <view class="close-box" catchtap="close">
+          <view class="close-row close"></view>
+          <view class="close-col close"></view>
+        </view>
+      </view> 
+      <view class="rule-list-box">
+        <view class="rule-title">更改促销</view>
+        <block wx:for="{{data.ruleList}}" wx:key="rule_id">
+          <view class="rule-list" catchtap="onTap" data-id="{{item.rule_id}}">
+            <view class="rule-sel-box {{curRuleId == item.rule_id?'active':''}}">
+              <view class="rule-sel-cir"></view>
+            </view>
+            <view class="rule-identify">{{item.condition_type == 0?'满额减':'满件赠'}}</view>
+            <view class="rule-msg">{{item.rule_nick_name || item.rule_name}}</view>
+          </view>
+        </block>
+      </view> 
+      <view class="btn-box">
+        <button class="btn" hover-class="none" catchtap="confirm">确认</button>
+      </view>
+    </view>
+  </view>
+</window>

@@ -38,6 +38,9 @@ const allBrandConfig = {
 				"FUNTESTAPI": "https://devgovpsyapi.innourl.com",
 				"SPECIALSECTIONAPI": "https://devgovpsyapi.innourl.com",
 				"WXSUBSCRIBEAPI": "https://devgovpsyapi.innourl.com",
+				"LECTUREAPI": "https://devgovpsyapi.innourl.com",
+				"EXAMAPI": "https://devgovpsyapi.innourl.com",
+				"COURSEAPI": "https://devgovpsyapi.innourl.com",
 			}
 		},
 		prod: {
@@ -45,27 +48,30 @@ const allBrandConfig = {
 			staticConfig: "https://psyimage.innourl.com/v/asset/eap/general/static",
 			"apiDomain": {
 				"LOGAPI": "https://ylpsyvsapi.innourl.com/cmt",
-				"USERAPI": "https://govpsyapi.innourl.com",
-				"REGAPI": "https://govpsyapi.innourl.com",
-				"WECHATAPI": "https://govpsyapi.innourl.com",
-				"EDEAPI": "https://govpsyapi.innourl.com",
-				"EVALUATEAPI": "https://govpsyapi.innourl.com",
-				"PAGEAPI": "https://govpsyapi.innourl.com",
-				"RESOURCEAPI": "https://govpsyapi.innourl.com",
-				"CONSULTANTAPI": "https://govpsyapi.innourl.com",
-				"COMMONAPI": "https://govpsyapi.innourl.com",
-				"SUPERVISIONAPI": "https://govpsyapi.innourl.com",
-				"SUPERVISORAPI": "https://govpsyapi.innourl.com",
-				"WARNINGAPI": "https://govpsyapi.innourl.com",
-				"ARCHIVESAPI": "https://govpsyapi.innourl.com",
-				"COMMISSIONERAPI": "https://govpsyapi.innourl.com",
-				"PSYSERVICEAPI": "https://govpsyapi.innourl.com",
-				"TREEHOLEAPI": "https://govpsyapi.innourl.com",
-				"GAMEAPI": "https://govpsyapi.innourl.com",
-				"AUTHAPI": "https://govpsyapi.innourl.com",
-				"FUNTESTAPI": "https://govpsyapi.innourl.com",
-				"SPECIALSECTIONAPI": "https://govpsyapi.innourl.com",
-				"WXSUBSCRIBEAPI": "https://govpsyapi.innourl.com",
+				"USERAPI": "https://govpsyapi2.innourl.com",
+				"REGAPI": "https://govpsyapi2.innourl.com",
+				"WECHATAPI": "https://govpsyapi2.innourl.com",
+				"EDEAPI": "https://govpsyapi2.innourl.com",
+				"EVALUATEAPI": "https://govpsyapi2.innourl.com",
+				"PAGEAPI": "https://govpsyapi2.innourl.com",
+				"RESOURCEAPI": "https://govpsyapi2.innourl.com",
+				"CONSULTANTAPI": "https://govpsyapi2.innourl.com",
+				"COMMONAPI": "https://govpsyapi2.innourl.com",
+				"SUPERVISIONAPI": "https://govpsyapi2.innourl.com",
+				"SUPERVISORAPI": "https://govpsyapi2.innourl.com",
+				"WARNINGAPI": "https://govpsyapi2.innourl.com",
+				"ARCHIVESAPI": "https://govpsyapi2.innourl.com",
+				"COMMISSIONERAPI": "https://govpsyapi2.innourl.com",
+				"PSYSERVICEAPI": "https://govpsyapi2.innourl.com",
+				"TREEHOLEAPI": "https://govpsyapi2.innourl.com",
+				"GAMEAPI": "https://govpsyapi2.innourl.com",
+				"AUTHAPI": "https://govpsyapi2.innourl.com",
+				"FUNTESTAPI": "https://govpsyapi2.innourl.com",
+				"SPECIALSECTIONAPI": "https://govpsyapi2.innourl.com",
+				"WXSUBSCRIBEAPI": "https://govpsyapi2.innourl.com",
+				"LECTUREAPI": "https://govpsyapi2.innourl.com",
+				"EXAMAPI": "https://govpsyapi2.innourl.com",
+				"COURSEAPI": "https://govpsyapi2.innourl.com",
 			}
 		}
 
@@ -98,6 +104,9 @@ const allBrandConfig = {
 				"FUNTESTAPI": "https://devgovpsyapi.innourl.com",
 				"SPECIALSECTIONAPI": "https://devgovpsyapi.innourl.com",
 				"WXSUBSCRIBEAPI": "https://devgovpsyapi.innourl.com",
+				"LECTUREAPI": "https://devgovpsyapi.innourl.com",
+				"EXAMAPI": "https://devgovpsyapi.innourl.com",
+				"COURSEAPI": "https://devgovpsyapi.innourl.com",
 			}
 		},
 		prod: {
@@ -126,6 +135,9 @@ const allBrandConfig = {
 				"FUNTESTAPI": "https://govpsyapi2.innourl.com",
 				"SPECIALSECTIONAPI": "https://govpsyapi2.innourl.com",
 				"WXSUBSCRIBEAPI": "https://govpsyapi2.innourl.com",
+				"LECTUREAPI": "https://govpsyapi2.innourl.com",
+				"EXAMAPI": "https://govpsyapi2.innourl.com",
+				"COURSEAPI": "https://govpsyapi2.innourl.com",
 			}
 		}
 
@@ -158,6 +170,9 @@ const allBrandConfig = {
 				"FUNTESTAPI": "https://shxgovapi.innourl.com",
 				"SPECIALSECTIONAPI": "https://shxgovapi.innourl.com",
 				"WXSUBSCRIBEAPI": "https://shxgovapi.innourl.com",
+				"LECTUREAPI": "https://shxgovapi.innourl.com",
+				"EXAMAPI": "https://shxgovapi.innourl.com",
+				"COURSEAPI": "https://shxgovapi.innourl.com",
 			}
 		},
 		prod: {
@@ -186,6 +201,9 @@ const allBrandConfig = {
 				"FUNTESTAPI": "https://shxgovapi.innourl.com",
 				"SPECIALSECTIONAPI": "https://shxgovapi.innourl.com",
 				"WXSUBSCRIBEAPI": "https://shxgovapi.innourl.com",
+				"LECTUREAPI": "https://shxgovapi.innourl.com",
+				"EXAMAPI": "https://shxgovapi.innourl.com",
+				"COURSEAPI": "https://shxgovapi.innourl.com",
 			}
 		}
 
@@ -218,6 +236,9 @@ const allBrandConfig = {
 				"FUNTESTAPI": "https://shxgovapi.innourl.com",
 				"SPECIALSECTIONAPI": "https://shxgovapi.innourl.com",
 				"WXSUBSCRIBEAPI": "https://shxgovapi.innourl.com",
+				"LECTUREAPI": "https://shxgovapi.innourl.com",
+				"EXAMAPI": "https://shxgovapi.innourl.com",
+				"COURSEAPI": "https://shxgovapi.innourl.com",
 			}
 		},
 		prod: {
@@ -246,6 +267,9 @@ const allBrandConfig = {
 				"FUNTESTAPI": "https://shxgovapi.innourl.com",
 				"SPECIALSECTIONAPI": "https://shxgovapi.innourl.com",
 				"WXSUBSCRIBEAPI": "https://shxgovapi.innourl.com",
+				"LECTUREAPI": "https://shxgovapi.innourl.com",
+				"EXAMAPI": "https://shxgovapi.innourl.com",
+				"COURSEAPI": "https://shxgovapi.innourl.com",
 			}
 		}
 
@@ -278,6 +302,9 @@ const allBrandConfig = {
 				"FUNTESTAPI": "https://csgovapi.innourl.com",
 				"SPECIALSECTIONAPI": "https://csgovapi.innourl.com",
 				"WXSUBSCRIBEAPI": "https://csgovapi.innourl.com",
+				"LECTUREAPI": "https://csgovapi.innourl.com",
+				"EXAMAPI": "https://csgovapi.innourl.com",
+				"COURSEAPI": "https://csgovapi.innourl.com",
 			}
 		},
 		prod: {
@@ -306,6 +333,9 @@ const allBrandConfig = {
 				"FUNTESTAPI": "https://csgovapi.innourl.com",
 				"SPECIALSECTIONAPI": "https://csgovapi.innourl.com",
 				"WXSUBSCRIBEAPI": "https://csgovapi.innourl.com",
+				"LECTUREAPI": "https://csgovapi.innourl.com",
+				"EXAMAPI": "https://csgovapi.innourl.com",
+				"COURSEAPI": "https://csgovapi.innourl.com",
 			}
 		}
 

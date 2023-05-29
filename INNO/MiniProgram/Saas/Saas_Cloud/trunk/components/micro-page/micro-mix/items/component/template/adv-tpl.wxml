@@ -47,14 +47,14 @@
     </image>
     <btns 
       wx:if="{{f.checkIfNeedLogin(listGoods.link)}}"
-      class="btn_link"
       isLogin="{{isLogin}}"
       tapInterval="{{3000}}"
       bindclickcallback="linkJump"
       data-data="{{listGoods}}" 
       data-type="imageAd"
-    ></btns>
+      position-type="absolute"
+      show-msg-bool="{{false}}"
+    ></btns> 
     <mp-video wx:if="{{listGoods.videoSrc}}" ext-video-class="video" poster="{{listGoods.img}}" src="{{listGoods.videoSrc}}"></mp-video>
-    <!-- <video wx:if="{{listGoods.videoSrc}}" class="video" src="{{listGoods.videoSrc}}"></video> -->
   </view>
 </template>

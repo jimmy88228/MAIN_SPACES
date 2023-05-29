@@ -1,0 +1,6 @@
+{
+
+    "usingComponents": {
+        "search": "/pages/micro_mall/seeding_grass/search/search"
+    }
+}

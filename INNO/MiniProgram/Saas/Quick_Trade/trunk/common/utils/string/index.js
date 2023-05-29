@@ -35,5 +35,17 @@ export default {
   },
   _toFixed(data,digits=2){
     return Number(Number(data).toFixed(digits));
+  },
+  checkValidNumber(num,fixed=2){
+    let reg = `^((([^0][0-9]+|0)\\.([0-9]{1,${fixed}}))$)|^(([1-9]+)\\.([0-9]{1,${fixed}})$)|^([0-9]+[^\\.]*$)`;
+    try {
+      if(new RegExp(reg).test(String(num))){
+        return true;
+      }
+      return false;
+    }catch(e){
+      console.log(e)
+      return false;
+    }
   }
 }

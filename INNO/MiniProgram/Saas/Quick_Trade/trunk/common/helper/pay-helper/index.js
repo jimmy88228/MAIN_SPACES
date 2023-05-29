@@ -1,5 +1,5 @@
 import {
-  QT_NewPayApi
+  NewPayApi
 } from "../../manager/http-manager/index";
 import {
   PayType
@@ -54,7 +54,7 @@ class payManager {
 }
 //通联第三方
 function getUnifiedorderByOrderId(type, orderId) {
-  return QT_NewPayApi.unifiedCloudShopOrder({
+  return NewPayApi.unifiedCloudShopOrder({
     params: {
       orderId: orderId,
       payType: PayType[type].type,
@@ -68,7 +68,7 @@ function getUnifiedorderByOrderId(type, orderId) {
 }
 
 function unifiedCloudShopOrderByCode(type, orderId) {
-  return QT_NewPayApi.unifiedCloudShopOrderByCode({
+  return NewPayApi.unifiedCloudShopOrderByCode({
     params: {
       orderId,
       payType: PayType[type].type,

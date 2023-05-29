@@ -1,10 +1,8 @@
 <template>
   <view>
     <view v-if="!showLoading" class="video-detail-page"
-      :style="{'background-color':backgroundShow?'transparent':'#9AB9B2'}">
-      <!-- <image @load="getBgSize" :style="{height:bgHeight,width:bgWidth}" class="video-detail-background"
-        v-if="videoDetail.videoBgPic" @error="backgroundError" :src="videoDetail.videoBgPic" mode="widthFix" /> -->
-      <page-nav :isTransparent="true" isClose="true" :full="true"></page-nav>
+      :style="{'background':(!isTest && showVideo) && videoDetail.videoUrl?'#000000':'#FFFFFF'}">
+      <page-nav :isTransparent="true" mode="Close" :full="true"></page-nav>
       <template v-if="(!isTest && showVideo) && videoDetail.videoUrl">
         <view class="video-content">
           <video @ended="videoEnded" @pause="videoPause" id="video"
@@ -13,10 +11,8 @@
             :enable-play-gesture="videoOptions.enablePlayGesture" :object-fit="videoOptions.objectFit"
             @loadedmetadata="getVideoDetail"></video>
           <view class="video-detail-info">
-            <!-- <view class="bold font-28 m-b-25" :class="!!videoDetail.videoBgPic ? 'C_fff':'C_333'"> -->
             <view class="font-28 m-b-18 bold C_fff">
               {{videoDetail.videoTitle?videoDetail.videoTitle:""}}</view>
-            <!-- <view class="font-24" style="line-height: 49rpx;" :class="!!videoDetail.videoBgPic ? 'C_fff':'C_7f'"> -->
             <view class="font-24 C_fff" style="line-height: 49rpx;">
               {{subText || videoDetail.videoDescription}}<text class="C_008acb m-l-10"
                 style="text-decoration:underline;" @click="toggleText" v-if="subText">展开</text></view>
@@ -61,6 +57,7 @@
 <script>
   import oriPopup from "@/components/ori-comps/popup/ori-popup";
   import LoadingView from '@/components/css3/loading/loading.vue';
+  import utils from '@/common/support/utils.js'
 
   const app = getApp();
   const pageOption = Page.BasePage({
@@ -117,20 +114,12 @@
       getBgSize({
         detail
       }) {
-        console.log(detail, "获取图片的大小")
-        uni.getSystemInfo({
-          success: res => {
-            console.log(res.windowHeight, detail.height, res.windowWidth, detail.width)
-            // this.bgWidth = res.windowWidth + 'px';
-            let imgW = res.windowWidth;
-            let imgH = (res.windowWidth * detail.height) / detail.width;
-            if (imgH < res.windowHeight) {
-              imgH = res.windowHeight;
-              imgW = (res.windowHeight * detail.width) / detail.height;
-            }
-            this.bgWidth = imgW + "px"
-            this.bgHeight = imgH + "px"
-          }
+       let width = detail.width;
+        let height = detail.height;
+        utils.getBgSize(width, height).then(res => {
+          this.bgWidth = res.imgW + "px"
+          this.bgHeight = res.imgH + "px"
+          this.isLoadBg = true;
         })
       },
       init() {
@@ -161,6 +150,8 @@
               }else{
                 rj(data);
               }
+            }).catch(err=>{
+               rj(err);
             })
           }else if(item.path){ 
             data = {
@@ -239,10 +230,12 @@
 
 <style lang="scss" scoped>
   .video-detail-page {
-    width: 100%;
+   width: 100%;
     height: 100vh;
-    overflow: hidden;
     position: relative;
+    padding-bottom:constant(safe-area-inset-bottom); /*  兼容iOS < 11.2 */
+    padding-bottom:env(safe-area-inset-bottom); /*  兼容iOS > 11.2 */
+    box-sizing: border-box;
 
     .video-content {
       position: relative;
@@ -251,15 +244,17 @@
 
       .videoInfo {
         width: 100%;
-        height: 100vh;
+        height: 100%;
       }
 
       .video-detail-info {
         position: fixed;
-        bottom: 60rpx;
+        bottom: calc(60rpx + constant(safe-area-inset-bottom));/*  兼容iOS < 11.2 */
+        bottom: calc(60rpx + env(safe-area-inset-bottom));/*  兼容iOS > 11.2 */
         width: 100%;
         box-sizing: border-box;
-        padding: 0rpx 36rpx 24rpx;
+        padding: 0rpx 36rpx;
+        margin-bottom: 24rpx;
         z-index: 99;
       }
 

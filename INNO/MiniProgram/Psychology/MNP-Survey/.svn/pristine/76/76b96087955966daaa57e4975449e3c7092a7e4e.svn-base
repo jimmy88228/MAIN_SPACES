@@ -1,0 +1,357 @@
+<template>
+	<loading-box :showPage="mixShowPage">
+		<view class="login">
+				<!-- #ifdef MP -->
+				<page-nav :hideBtn="true" :isTransparent="customerInfo.bgImg?true:false"></page-nav>
+				<!-- #endif -->
+				<template v-if="!showTip">
+						<view v-show="actState == 1">
+							<classSIDLogin 
+							ref="classSIDLoginRef"
+							:inputStyle="inputStyle"
+							:schoolInfo="schoolInfo"
+							:actInfo="actInfo"
+							:customerInfo="customerInfo"
+							:selectAgree="selectAgree"
+							@chooseAgree="chooseAgree"
+							@checkAgree="checkAgree"
+							@bindStudentByClassSID="bindStudentByPwdCallback"
+							></classSIDLogin>
+						</view>
+						<view v-show="actState == -1">
+							<view class="invalid-link-tip">该活动链接已失效</view>
+						</view>
+				</template>
+				<template v-else>
+					<view class="empty-area">无效APP CODE</view>
+				</template>
+		</view>
+	</loading-box>
+</template>
+
+<script>
+import SCH from "@/common/helper/school-info-handler";
+import CIH from '@/common/helper/common-info-handler.js';
+import StorageH from "@/common/helper/storage-handler.js";
+import brandM from "@/common/manager/brand-manager.js";
+import entryM from "@/common/manager/entry-manager.js";
+import classSIDLogin from './components/classSIDLogin.vue';
+const app = getApp();
+const pageOption = Page.BasePage({
+	components:{
+		classSIDLogin
+	},
+	data(){
+		return {
+			selectAgree: false,
+			inputData: {
+				schoolCode: "",
+				account: "",
+				password: "",
+			},
+			activityId:0,
+			schoolInfo:{},
+			actState: 0,
+			actInfo:{},
+			customerInfo:{},
+			showTip: false,
+		}
+	},
+	computed: {
+		inputStyle(){
+			return "width:100%;height:100%;padding:20rpx 20rpx 20rpx 50rpx;box-sizing:border-box;"
+		}
+	},
+	onLoad(options){
+		this.options = options || {};
+	},
+	onShow(){
+		this.init().then(()=>{
+			this.checkAppCode().then(()=>{
+				this.initCustomerInfo().then(()=>{
+					this.$nextTick(()=>{
+						this.mixShowPage = true;
+					})
+				})
+				this.checkAct(this.options.id).then(()=>{
+					this.$nextTick(()=>{
+						this.$refs["classSIDLoginRef"] && this.$refs["classSIDLoginRef"].init(this.options)
+					})
+				})
+			})
+		})
+	},  
+	methods: {
+		checkAppCode(){
+			// #ifdef H5
+			let appCode = brandM.appCode || "";
+			if(!appCode){
+				brandM.removeData();
+				this.showTip = "无效的APP CODE";
+				app.SMH.showToast({
+					title: this.showTip
+				})
+				this.$nextTick(()=>{
+					this.mixShowPage = true;
+				})
+				return Promise.reject();
+			}
+			// #endif
+			return Promise.resolve();
+		},
+		init(){
+			// #ifdef H5
+			console.log("options", this.options);
+			entryM.setloginType("classSID");
+			app.LM.logout().logout('bsnUserToken');
+			app.PM.setParams('initId',parseInt(this.options.id) || app.PM.getParams('initId')||0);
+			app.PM.setParams('schoolId',parseInt(this.options.schoolId));
+			app.PM.setParams('campusId',parseInt(this.options.campusId));
+			app.PM.setParams('classId',parseInt(this.options.classId));
+			this.activityId = parseInt(this.options.id);
+			// let hasRepalce = false;
+			// if(!this.options.id && this.activityId){
+			// 	this.options.id = this.activityId;
+			// 	hasRepalce = true;
+			// }
+			// if(this.options.id && this.options.paramsKey){
+			// 	hasRepalce = true;
+			// }
+			// if(hasRepalce){
+			// 	let optionStr = "";
+			// 	delete this.options.paramsKey;
+			// 	optionStr = utils.paramsByJson(this.options || {});
+			// 	console.log("optionStr", optionStr);
+			// 	if(optionStr){
+			// 		this.reLaunchAction(`/pages/login/class-sid-login?${optionStr}`)
+			// 		return Promise.reject();
+			// 	}
+			// }
+			this.initSchoolInfo(this.options.schoolId);
+			return Promise.resolve();
+			// #endif
+		},
+		initSchoolInfo(schoolId){
+			if(!Number(schoolId)){ return }
+			return SCH.getSchoolInfo(schoolId).then(schoolInfo=>{
+				this.schoolInfo = schoolInfo||{};
+			})
+		},
+		initCustomerInfo(){
+			return CIH.getCustomerInfo().then(res=>{
+				this.customerInfo = res||{};
+				StorageH.set("CUSTOMER_INFO",res)
+			})
+		},
+		bindStudentByPwdCallback(res = {}){
+			if(res.data){
+				let data = res.data || '';
+				let recordId=data, bsnUserToken=data, authUserToken="";
+				// #ifdef H5
+				
+				bsnUserToken = data.authUserToken; 
+				authUserToken = data.authUserToken;
+				recordId = data.recordId;
+				app.LM.savePrivateInfo({authUserToken});
+				// #endif
+				app.LM.savePrivateInfo({recordId});
+				app.IM.getUserInfoByToken().then(()=>{
+					// #ifdef H5
+					// StorageH.set("LOGIN_CERTIFICATE",inputData)
+					this.redirectAction(this.options.fromRoute || `/pages/activities/evaluating/detail/detail?activityId=${this.activityId||0}`);
+					// #endif
+
+					// #ifdef MP
+					this.reLaunchAction('/pages/index/index')
+					// #endif
+				})
+			}
+		},
+		chooseAgree(){
+			this.selectAgree = !this.selectAgree;
+		},
+		checkAgree(){
+			this.jumpAction('/pages/agree/agree');
+		},
+		checkAct(activityId){
+			if(!Number(activityId)) return;
+			this.actState = 0;
+			return this.$Http(this.$Apis.getActivityBaseInfo, {
+				data: {
+					activityId: activityId,
+				},
+			}).then((res) => {
+				if (res.code == 1) {
+					this.actState = 1;
+					this.actInfo = res.data || {};
+					return Promise.resolve()
+				} else {
+					this.actState = -1;
+					return Promise.reject();
+				}
+			}).catch(()=>{
+				this.actState = -1;
+				return Promise.reject();
+			})
+		}
+	},
+})
+export default pageOption
+</script>
+
+<style scoped lang="scss">
+::v-deep .main{
+		padding:220rpx 0rpx 0 96rpx;
+		color: #333;
+		.title,.content{
+			font-size: 62rpx;
+			font-weight: bold;
+			text-overflow: -o-ellipsis-lastline;
+			overflow: hidden;
+			text-overflow: ellipsis;
+			display: -webkit-box;
+			-webkit-line-clamp: 3;
+			line-clamp: 3;
+			-webkit-box-orient: vertical;
+		}
+		.login-logo{
+			width:160rpx;
+			height: 160rpx;
+			display: block;
+			margin-bottom: 65rpx;
+		}
+		.login-logo-big{
+			position: fixed;
+      left: 50%;
+      top: 50%;
+      transform: translate(-50%, -50%);
+		}
+	}
+	::v-deep .footer{
+		position: fixed;
+		flex-direction: column;
+		bottom: 80rpx;
+		left: 50%;
+		transform: translateX(-50%);
+	}
+	::v-deep .btn-box{ 
+		width: 580rpx;
+		height: 110rpx;
+		border-radius: 55rpx;
+		overflow: hidden;
+		background-color: $uni-main-color;
+	}
+	::v-deep .btn{
+		width: 100%;
+		height: 100%;
+		border-radius: 55rpx;
+	}
+::v-deep .box{
+	position: fixed;
+	bottom: 30rpx;
+	left: 50%;
+	transform: translateX(-50%);
+}
+::v-deep .account-main{
+	padding-top: 80rpx;
+	text-align: center;
+	
+	.title,.content{
+		font-size: 30rpx;
+		font-weight: bold;
+		margin-bottom: 50rpx;
+	}
+	.title{
+		font-size: 36rpx;
+		margin-bottom: 30rpx;
+	}
+	.content{
+		color:#7f7f7f;
+	}
+	.hold-style{
+		color: #E9E9E9;
+	}
+	.login-logo{
+		width:236rpx;
+		height: 236rpx;
+		display: block;
+		margin: 0 auto;
+		margin-bottom: 20rpx;
+	}
+	.input-area{
+		.input-item{
+			text-align:left;
+			margin: 0px auto;
+			margin-bottom: 25rpx;
+			width: 600rpx;
+			height: 120rpx;
+			display: flex;
+			background: #FAFAFA;
+			border-radius: 60rpx;
+			._input{
+				width:100%;
+				height:100%;
+				display: flex;
+				align-items: center;
+			}
+		}
+	}
+	.btn-box{
+		width: 300rpx;
+		height: 100rpx;
+		border-radius: 55rpx;
+		overflow: hidden;
+		background-color: $uni-main-color;
+		margin: 0 auto;
+	}
+	.agree-area{
+		justify-content: center;
+		margin: 0px;
+		margin-bottom: 144rpx;
+	}
+}
+
+::v-deep .agree-area{
+	line-height: 30rpx;
+	font-family: PingFangSC-Regular;
+	font-size: 22rpx;
+	margin-top:35rpx;
+	display: flex;
+	.agree-icon{
+		padding:5rpx 20rpx;
+		.select-switch{
+			background: #EFEFEF;
+			border: 1px solid #979797;
+			border-radius: 4rpx;
+			width: 23rpx;
+			height: 23rpx;
+			position:relative;
+		}
+		.selected::after{
+			content: "";
+			display: block;
+			position: absolute;
+			top: 50%;
+			left: 50%;
+			width: 30%;
+			height: 80%;
+			border-radius: 4rpx;
+			border: 6rpx solid  $uni-main-color;
+			border-top-color:transparent;
+			border-left-color:transparent;
+			transform: translate(-18%, -80%) rotate(40deg);
+		}
+	}
+	.agree-link{
+		display: inline-block;
+		color: #178ED2;
+		padding: 0px 10rpx;
+	}
+}
+.invalid-link-tip{
+	font-size: 50rpx;
+	text-align: center;
+	color:#7f7f7f;
+	margin-top: 400rpx;
+}
+</style>

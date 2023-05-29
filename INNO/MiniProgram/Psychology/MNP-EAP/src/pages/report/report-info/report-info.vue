@@ -20,11 +20,17 @@
         <template v-else-if="item.reportStyle == 'progress'">
           <reportInfoB :analyze="item" :has-data="hasData"></reportInfoB>
         </template>
-        <!-- <template v-else-if="item.reportStyle == 'sdq'">
+        <template v-else-if="item.reportStyle == 'sdq'">
           <reportInfoC :analyze="item" :has-data="hasData"></reportInfoC>
-        </template> -->
+        </template>
         <template v-else-if="item.reportStyle == 'rutter'">
           <reportInfoRutter :analyze="item" :has-data="hasData"></reportInfoRutter>
+        </template>
+        <template v-else-if="item.reportStyle == 'sectional'">
+          <reportInfoSectional :analyze="item" :has-data="hasData"></reportInfoSectional>
+        </template>
+        <template v-else>
+          <reportInfoA :analyze="item" :has-data="hasData"></reportInfoA>
         </template>
       </view>
   </view>
@@ -35,12 +41,15 @@
   import reportInfoB from "@/pages/report/report-info/report-info-component/report-info-component-b.vue"
   import reportInfoC from "@/pages/report/report-info/report-info-component/report-info-component-c.vue"
   import reportInfoRutter from "@/pages/report/report-info/report-info-component/report-info-component-rutter.vue"
+  import reportInfoSectional from "@/pages/report/report-info/report-info-component/report-info-component-sectional.vue"
+
   const pageOption = Page.BasePage({
     components: {
       reportInfoA,
       reportInfoB,
       reportInfoC,
-      reportInfoRutter
+      reportInfoRutter,
+      reportInfoSectional
     },
     data() {
       return {
@@ -51,9 +60,9 @@
     },
     onLoad(options) {
       this.options = options;
+      this.loadData();
     },
     onShow() {
-      this.loadData();
     },
     onReady() {
     },

@@ -6,6 +6,7 @@ const App = getApp();
 Page(App.BP({
   data: {
     countDownTime: {
+      days:0,
       hours: 0,
       minutes: 0,
       seconds: 0
@@ -17,30 +18,31 @@ Page(App.BP({
   },
   onLoad(pageQuery) {
     this.pageQuery = pageQuery;
+    this.setView({
+      goodsSpecPopRef:{ get: () => this.findView("#goods-spec-pop") }, 
+      sharePopRef:{ get: () => this.findView("#share-pop") }, 
+      posterPopRef:{ get: () => this.findView("#poster-pop") }, 
+    });
+    if(pageQuery.fromType == 'PREVIEW'){
+      this.setData({fromType:pageQuery.fromType})
+      wx.hideShareMenu();
+    }
   },
   onShow() {
     getGoodsDetail.call(this)
       .then(data => handleGoodsDetail.call(this, data))
-      .catch(err => {
-        console.log("onShow", err);
-        App.SMH.showToast({title: err});
-      })
   },
   onHide() {
     stopCountDown.call(this);
   },
   handlePurchaseBtnTap() {
+    this._throttle('handlePurchaseBtnTap');
     getSumaryGoodsProductInfo.call(this)
       .then(data => {
         let goodsInfo = this.data.goods_info || {};
         data.goodsImg = goodsInfo.goods_img || "";
         data.goodsId = goodsInfo.goods_id || 0;
-        this.goodsSpecPop = this.goodsSpecPop || this.selectComponent("#goods-spec-pop");
-        this.goodsSpecPop.showModal(data)
-      })
-      .catch(err => {
-        console.log("handlePurchaseBtnTap err", err);
-        App.SMH.showToast({title: err})
+        this.goodsSpecPopRef.showModal(data)
       })
   },
   handleSwpierItemTap(e) {
@@ -52,8 +54,8 @@ Page(App.BP({
     })
   },
   handleShareBtnTap() {
-    this.sharePop = this.sharePop || this.selectComponent("#share-pop");
-    this.sharePop.showModal({needLogin: true})
+    this._throttle('handleShareBtnTap');
+    this.sharePopRef.showModal({needLogin: true})
       .then(selectedItem => {
         if (selectedItem.shareId === 2) { // 生成海报
           let {goods_info, activity_info} = this.data;
@@ -70,8 +72,7 @@ Page(App.BP({
               ...this.pageQuery
             }
           }
-          this.posterPop = this.posterPop || this.selectComponent("#poster-pop");
-          this.posterPop.showModal({type: "goods", data: posterData});
+          this.posterPopRef.showModal({type: "goods", data: posterData});
         }
       })
   },
@@ -98,6 +99,11 @@ Page(App.BP({
     if (delta) {
       WxApi.navigateBack({
         delta
+      }).catch(e=>{
+        console.log(e,'catch');
+        WxApi.reLaunch({
+          url:'/'+App.Conf.navConfig.INDEX_PATH
+        })
       })
     }
   }
@@ -105,11 +111,15 @@ Page(App.BP({
 
 function getGoodsDetail() {
   this.showLoading();
+  let extra = {};
+  this.pageQuery.fromType == 'PREVIEW' && (extra.other = {customStoreId:App.LM.storeInfo.store_id||storeInfo.storeId||0})
   return App.Http.QT_GoodsApi.get_Sumary_GoodsDetailData({
     params: {
       activityId: this.pageQuery.activity_id || 0,
-      goodsId: this.pageQuery.goods_id || 0
-    }
+      goodsId: this.pageQuery.goods_id || 0,
+      cach:this.pageQuery.fromType == 'PREVIEW' ? 0 : 1
+    },
+    ...extra
   })
     .then(res => {
       if (res.code == 1) {
@@ -134,12 +144,15 @@ function handleGoodsDetail(data) {
 
 function getSumaryGoodsProductInfo() {
   let {goods_id} = this.data.goods_info || {};
+  let extra = {};
+  this.pageQuery.fromType == 'PREVIEW' && (extra.other = {customStoreId:App.LM.storeInfo.store_id||storeInfo.storeId||0})
   return App.Http.QT_GoodsApi.get_Sumary_GoodsProductInfo({
     params: {
       activityId: this.pageQuery.activity_id || 0,
       goodsId: goods_id,
       colorId: 0
-    }
+    },
+    ...extra
   })
     .then(res => {
       if (res.code == 1) {
@@ -182,11 +195,13 @@ function setCountDown() {
         this.refreshPage();
         stopCountDown.call(this);
       } else {
-        let days = parseInt(e.value / (1000 * 60 * 60 * 24));
-        let hours = parseInt(days * 24 + (e.value % (24 * 3600 * 1000)) / (3600 * 1000));
+        let days = parseInt(e.value / (1000 * 3600 * 24));
+        let hours = parseInt((e.value % (24 * 3600 * 1000)) / (3600 * 1000));
+        // let hours = parseInt(days * 24 + (e.value % (24 * 3600 * 1000)) / (3600 * 1000));
         let minutes = parseInt((e.value % (3600 * 1000)) / (60 * 1000));
         let seconds = parseInt((e.value % (1000 * 60)) / 1000);
         this.setData({
+          "countDownTime.days": days,
           "countDownTime.hours": hours,
           "countDownTime.minutes": minutes,
           "countDownTime.seconds": seconds,

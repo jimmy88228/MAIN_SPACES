@@ -78,6 +78,11 @@ Component(app.BTAB({
         })
       }
     },
+    activeCustomerService(e){
+      console.log('企微 activeCustomerService',e)
+      this.contactStaff = this.contactStaff || this.selectComponent("#contactStaff");
+      this.contactStaff.initData();
+    },
     imgLoad(){}
   }
 }))

@@ -1,0 +1,14 @@
+@import "/common/base/component/default-wxss/index.wxss";
+.radio-sel{
+  width: 30rpx;
+  height: 30rpx;
+  border-radius: 50%;
+  position: relative;
+}
+.radio-sel::after{
+  content: "";
+  width: 30%;
+  height: 30%;
+  background: #fff;
+  border-radius: 50%;
+}

@@ -1,0 +1,18 @@
+<!--pages/goods/popup/service.wxml-->
+<window class="window" ext-class="window-ext">
+  <view class="alert_popup" style="{{boxStyle}}">
+    <view class="alert_title" style="{{brand_info.style.bg_color ? 'background-color:'+ brand_info.style.bg_color : '#DD5145' }}">{{title}}</view>
+    <view class="alert_cont">
+    <block wx:if="{{conts.length && conts.length > 0}}">
+      <view class="cont_tip" wx:for="{{conts}}" wx:key="index">{{item}}</view>
+    </block>
+    <block wx:else>
+      <view class="cont_tip">{{conts}}</view>
+    </block>
+    </view>
+    <view class="alert_btns">
+      <button class="alert_btn" hover-class="none" bindtap="tapHandle">{{btns.txt}}</button>
+    </view>
+  </view>
+  
+</window>

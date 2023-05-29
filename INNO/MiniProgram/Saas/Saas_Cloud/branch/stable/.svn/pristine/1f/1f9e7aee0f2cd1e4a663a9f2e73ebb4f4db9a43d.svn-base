@@ -1,0 +1,130 @@
+page {
+  --theme_color: #1697ee;
+} 
+.cr_main{
+  margin-top: 98rpx;
+  height: calc(100vh - 98rpx);
+  box-sizing: border-box;
+}
+.cr_header{
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 10;
+}
+.setting_row{
+  box-sizing: border-box;
+  padding: 0 20rpx 10rpx 20rpx;
+}
+.all_set_btn{
+  width: 280rpx;
+}
+.all_set_btn>button{
+  color: #ffffff;
+  border-radius: 10rpx;
+  transition: all 0.2s ease;
+}
+.all_set_btn>button.active{
+  opacity: 0.6;
+}
+.table_container{
+  padding: 10rpx 20rpx;
+}
+.cr_table,
+.cr_th_title,
+.cr_tc{
+  border: 1px solid #cccccc;
+  text-align: center;
+  vertical-align: middle;
+}
+.cr_table{
+  display: table;
+  border-collapse: collapse;
+  min-width: 100%;
+}
+.cr_table>.cr_th{
+  display: table-header-group;
+}
+.cr_th>.cr_th_title{
+  display: table-cell;
+}
+.cr_tb{
+  display: table-row-group;
+}
+.cr_tr{
+  display: table-row;
+}
+.cr_tr.hover{
+  
+}
+.cr_tr:nth-of-type(2n-1){
+  background-color: rgba(242, 242, 242, 0.8);
+  /* background-color: rgba(22, 151, 238, 0.05); */
+}
+.cr_tr>.cr_tc{
+  display: table-cell;
+  vertical-align: middle;
+}
+.cr_tc{
+  min-width: calc((750rpx - 200rpx) / 3);
+  padding: 10rpx;
+}
+.ratio_wrap{
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+.ratio_wrap>input{
+  display: inline-flex;
+  width: 33%;
+  border: 1px solid #cccccc;
+  border-radius: 5rpx;
+  box-sizing: border-box;
+  padding-left: 2rpx;
+  margin-right: 4rpx;
+  align-items: center
+}
+
+/* 对话框slot */
+.ratio_set_input {
+  display: flex;
+  align-items: center;
+  padding: 24rpx 56rpx;
+  justify-content: center;
+}
+
+.ratio_set_input_label {
+  font-size: 28rpx;
+  margin-right: 10rpx;
+}
+
+.ratio_set_qty {
+  display: flex;
+  align-items: center;
+}
+
+.ratio_set_qty .ratio_set_input_number {
+  width: 90rpx;
+  text-align: center;
+  margin: 0 4rpx;
+  border: 1px solid #ccc;
+  border-radius: 5rpx;
+}
+
+.ratio_set_qty>view {
+  border: 1px solid currentColor;
+  border-radius: 4rpx;
+  padding: 6rpx 8rpx;
+}
+
+.ratio_set_qty>view.disabled {
+  background-color: #eee !important;
+  color: #ccc !important;
+  border-color: #eee !important;
+}
+
+.cr_tc.no_data_tc{
+  color: #999999;
+}
+

@@ -59,17 +59,6 @@ const pageOption = Page.BasePage({
           isShowLoad: true,
         },
       })
-      // .then((res) => {
-      //   if (res.code == 1) {
-      //     let data = res.data || {};
-      //     this.$refs["customPageRef"].initData(data);
-      //   }
-      // })
-      // .catch((err) => {
-      //   setTimeout(() => {
-      //     this.backAction();
-      //   }, 1500);
-      // });
     },
     getPsycHandbook(){
       return this.$Http(this.$Apis.getPsycHandbook, {

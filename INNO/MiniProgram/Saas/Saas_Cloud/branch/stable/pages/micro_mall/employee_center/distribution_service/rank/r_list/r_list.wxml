@@ -1,0 +1,30 @@
+<!--pages/micro_mall/employee_center/distribution_service/rank/r_list/r_list.wxml-->
+<view class="box">
+  <view class="title_box">
+    <view class="title_fst">
+      <view class="t_f_rank">排名</view><view>榜单信息</view>
+    </view>
+    <view class="title_scd">销售额</view>
+  </view>
+  <scroll-view class="list_box" scroll-y wx:if="{{!empty}}" bindscrolltolower="paging">
+    <view wx:for="{{list}}" wx:key="index" class="list_item">
+      <view class="l_rank f_shink" style="{{index<3?'color:' + high_light :''}}">
+        <block wx:if="{{index<3}}">
+          <image src="{{index == 0?rank_fst:index == 1?rank_snd:rank_trd}}" class="img_rank" mode="aspectFit"></image>  
+        </block>
+        <block wx:else>
+          {{item.rank_index}}
+        </block>
+      </view>
+      <image class="img_user f_shink" src="{{item.portrait_path || defaultAvatar}}" mode="aspectFit"></image>
+      <view class="adr_box f_shink">
+        <view class="u_name">{{item.staff_name}}</view>
+        <view class="u_address">{{item.store_name}}</view>
+      </view>
+      <view class="sales">{{item.order_amount}}</view>
+    </view>
+  </scroll-view>
+  <view wx:else class="list_box empty">
+    暂无数据
+  </view>
+</view>

@@ -1,0 +1,34 @@
+@import "/common/base/page/default-wxss/index.wxss";
+page{
+  height: 100%; 
+} 
+.footer-box{ 
+  width: 100%;
+  position: fixed;
+  left: 0;
+  bottom: 0;
+  padding-bottom: var(--tab-bar-bottom);
+}
+.footer{  
+  width: 100%;
+  height: var(--tab-bar-height); 
+  padding-right: var(--tab-bar-horizental-margin);
+} 
+.preview-btn{
+  width: 200rpx;
+  height: 110rpx;
+  border-radius: 20rpx;
+  background-color: #fff; 
+  margin-left: 18rpx;
+}
+.preview-btn:first-child{
+  margin-left: 0;
+}
+.save-btn{
+  width: 250rpx;
+  height: 110rpx; 
+  margin-left: 18rpx;
+  background: var(--main-color);
+  border-radius: 20rpx;
+  color: #fff;
+} 

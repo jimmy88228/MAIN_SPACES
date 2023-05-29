@@ -5,11 +5,12 @@
   <block wx:if="{{_data.open_slide}}">
     <list refresh="{{false}}" scroll-x="{{true}}" scroll-y="{{false}}" >
       <view slot="data">
-        <template is="ad-nav-tpl" data="{{_data:_data,isInited:isInited}}"></template>
+        <template is="ad-nav-tpl" data="{{_data:_data,isInited:isInited,isLogin}}"></template>
       </view>
     </list>
   </block>
   <block wx:else>
-    <template is="ad-nav-tpl" data="{{_data:_data,isInited:isInited}}"></template>
+    <template is="ad-nav-tpl" data="{{_data:_data,isInited:isInited,isLogin}}"></template>
   </block>
 </view>
+<contactStaff id="contactStaff"></contactStaff>

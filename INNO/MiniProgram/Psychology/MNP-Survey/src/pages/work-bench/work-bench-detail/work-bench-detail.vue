@@ -3,9 +3,9 @@
     <page-nav mode="None">
       <template slot="custom-content">
         <view class="bench-title flex-b-c">
-          <view class="flex-s-c" @click="showOrganizeLsit" style="max-width: 300rpx;">
+          <view class="flex-s-c" @click="showOrganizeLsit" style="max-width: 400rpx;">
             <image class="organize-icon shrink0" :src="requireStatic(organizeIcon)" />
-            <view v-if="tcrUserInfo.roleType == 'class_teacher'" class="font-24 clamp">{{oragnize.classFullName || ''}}
+            <view v-if="tcrUserInfo.roleType == 'class_teacher'" class="font-24 clamp">{{oragnize.classFullName || ''}}({{oragnize.schoolYear||''}}级)
             </view>
             <view v-else class="font-24 clamp">{{schoolName || ''}}</view>
             <image class="change-icon shrink0" v-if="showChangeClass" :src="requireStatic(changeIcon)" />
@@ -21,7 +21,7 @@
     <view class="bench-top-area flex-s-c" :style="{'top':navTop+'px'}">
       <template v-if="tcrUserInfo.roleType == 'class_teacher' || tcrUserInfo.roleType == 'psyc_teacher'">
         <view class="bench-top-item" @click="turnPage" data-mode="caring-staff">
-          <image :src="staticAddress+caringStaffIcon" mode="widthFix" />
+          <oriImage class="bench-top-item-image" :src="staticAddress+caringStaffIcon" mode="widthFix" />
           <view class="C_7f font-22">
             关爱人员
           </view>
@@ -29,21 +29,21 @@
       </template>
       <template v-if="tcrUserInfo.roleType == 'psyc_teacher'">
         <view class="bench-top-item" @click="turnPage" data-mode="reserve-supervise-list">
-          <image :src="staticAddress+reserveSuperviseIcon" mode="widthFix" />
+          <oriImage class="bench-top-item-image" :src="staticAddress+reserveSuperviseIcon" mode="widthFix" />
           <view class="C_7f font-22">
             预约督导
           </view>
         </view>
       </template>
       <view class="bench-top-item" @click="jumpAction('/pages/custom/page/page?type=psycHandbook')">
-        <image :src="staticAddress+psychologyBookIcon" mode="widthFix" />
+        <oriImage class="bench-top-item-image" :src="staticAddress+psychologyBookIcon" mode="widthFix" />
         <view class="C_7f font-22">
           心理手册
         </view>
       </view>
       <template v-if="tcrUserInfo.roleType == 'class_teacher'">
         <view class="bench-top-item" @click="turnPage" data-mode="class-manage">
-          <image :src="requireStatic(classManage)" mode="widthFix" />
+          <oriImage class="bench-top-item-image" :src="requireStatic(classManage)" mode="widthFix" />
           <view class="C_7f font-22">
             班级管理
           </view>
@@ -98,6 +98,7 @@
   import classTeacherItem from './components/class-teacher-item.vue'
   import psycTeacherItem from './components/psyc-teacher-item.vue'
   import normalTeacherItem from './components/normal-teacher-item.vue'
+  import oriImage from "@/components/ori-comps/image/ori-image"
 
   const app = getApp();
   const pageOption = Page.BasePage({
@@ -107,7 +108,8 @@
       workBench,
       classTeacherItem,
       psycTeacherItem,
-      normalTeacherItem
+      normalTeacherItem,
+      oriImage,
     },
     data() {
       return {
@@ -535,10 +537,9 @@
         align-items: center;
         margin-right: 68rpx;
 
-        &>image {
+        .bench-top-item-image {
           width: 80rpx;
           height: 80rpx;
-          background: #ECB8A0;
           border-radius: 12rpx;
           margin-bottom: 16rpx;
         }

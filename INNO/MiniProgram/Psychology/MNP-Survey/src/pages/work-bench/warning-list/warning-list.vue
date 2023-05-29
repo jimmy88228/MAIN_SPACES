@@ -10,7 +10,7 @@
         <view class="top-select-item flex-s-c">
           <view class="top-select-title font-24 m-r-15">班级</view>
           <view class="select-input flex-b-c" @click="showOrganizeLsit">
-            <view class="font-24">{{selectClass}}</view>
+            <view class="font-24">{{selectClass}}{{schoolYear?`(${schoolYear})`:''}}</view>
             <view class="select-icon"></view>
           </view>
         </view>
@@ -34,7 +34,8 @@
               <view class="flex-b-c student-info">
                 <view class="flex-s-c p-t-15 p-b-15 m-r-20">
                   <view class="font-32 bold text-wrap">{{item.name}}</view>
-                  <view class="font-22 C_7f m-l-13 p-t-10 shrink0">{{item.clazz}}</view>
+                  <view class="font-22 C_7f m-l-13 p-t-10 shrink0">{{item.clazz}}({{item.schoolYear}})</view>
+                  <view class="graduate flex-c-c m-l-15 shrink0" v-if="Object.keys(graduateInfo).includes(String(item.state))">{{graduateInfo[item.state]}}</view>
                 </view>
                 <view :data-pIndex="pageIndex" @click="turnPage" :data-item="item" data-mode="archives"
                   :data-key="['name','userId']" class="archives-button flex-c-c shrink0">
@@ -57,15 +58,16 @@
                   <view class="font-24 C_333 p-t-32 p-b-32">
                     {{sItem.modelName}}
                   </view>
-                  <view>
-                    <view class="font-22 C_7f flex-e-c">
-                      <view class="m-r-10">测评得分</view>
-                      <text class="font-36 bold">{{sItem.point}}</text>
-                    </view>
+                  <view class="flex-c-c">
                     <view v-if="sItem.result == 0" :data-item="{...item,...sItem}" @click="turnPage"
                       data-mode="warning-mark" :data-key="['name','userId','recordId','modelId']"
-                      :data-pIndex="pageIndex" class="warning-item-button font-20 flex-c-c button-green m-t-15">
-                      审核标记
+                      :data-pIndex="pageIndex" class="m-r-10 warning-item-button font-18 flex-c-c button-green">
+                      <text>审核\n标记</text>
+                    </view>
+                    <view :data-item="{...item,...sItem}" @click="turnPage"
+                      data-mode="report-info" :data-key="['userId','recordId']" :data-pIndex="pageIndex"
+                      class="warning-item-button font-18 flex-c-c button-green">
+                      <text>报告\n结果</text>
                     </view>
                   </view>
 
@@ -102,6 +104,10 @@
         mentalFileIcon: 'class-manage/mental-file.png',
         options: {},
         navTop: SIH.navPlace,
+        graduateInfo:{
+          2:"已毕业",
+          3:"已转校"
+        },
         approvalStatusGroup: [
           //  -1-全部 0-待审核，1-已标记，2-已复核
           {
@@ -127,6 +133,7 @@
         pageSize: app.Conf.PAGE_SIZE,
         state: -1,
         selectClass: '',
+        schoolYear: '',
         structureId: 0,
         hasMore: true,
         isEmpty: false,
@@ -202,6 +209,9 @@
         let data = currentTarget.dataset.item || {};
         let keyArr = currentTarget.dataset.key || [];
         let url = `/pages/work-bench/${mode}/${mode}`;
+        if (mode == "report-info") {
+          url = `/pages/report-info/report-info`
+        }
         keyArr.forEach((item, index) => {
           url = url + `${index == 0?'?':'&'}${item}=${data[item]||""}`
         })
@@ -216,6 +226,7 @@
           this.$refs.psychologyProtocol.showModal();
           return
         }
+
         this.checkPIndex(pIndex)
         this.jumpAction(url);
       },
@@ -259,14 +270,16 @@
         this.$refs[ref].showBench();
       },
       loadOrganizeSuccess(e) {
-        this.structureId = e[0].classId;
-        this.selectClass = e[0].className;
+        this.structureId = e[0].classId || 0;
+        this.selectClass = e[0].className || "";
+        this.schoolYear = e[0].schoolYear || "";
         this.loadData()
       },
       selectClassAction(e) {
         console.log(e)
-        this.structureId = e.classId;
-        this.selectClass = e.className;
+        this.structureId = e.classId || 0;
+        this.selectClass = e.className ||"";
+        this.schoolYear = e.schoolYear || ""
         this.initData()
       },
       confirmProtocol() {
@@ -345,6 +358,19 @@
           background: #FFFFFF;
           box-shadow: 0px 4rpx 9rpx 0px rgba(0, 0, 0, 0.07);
           box-sizing: border-box;
+
+          .graduate{
+            width: 58rpx;
+            height: 20rpx;
+            margin-top:18rpx;
+            background: #F6F6F6;
+            border: 1px solid #D1D1D1;
+            font-size: 16rpx;
+            font-family: PingFangSC-Regular, PingFang SC;
+            color: #7F7F7F;
+            line-height: 22rpx;
+          }
+
         }
 
         .archives-button {
@@ -393,9 +419,9 @@
           }
 
           .warning-item-button {
-            width: 145rpx;
-            height: 40rpx;
-            border-radius: 20rpx;
+            width: 80rpx;
+            height: 80rpx;
+            border-radius: 50%;
           }
 
           .button-grey {

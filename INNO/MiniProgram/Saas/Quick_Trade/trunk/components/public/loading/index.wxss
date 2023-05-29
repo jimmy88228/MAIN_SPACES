@@ -1,12 +1,18 @@
 @import "/common/base/component/default-wxss/index.wxss";
 .loading_container{
-  position: absolute;
+  position: fixed;
   top: 50%;
   left: 50%;
-  transform: translate(-50%,-50%);
-  /* bottom: 0;
-  right: 0; */
-  z-index: 98999;
+  transform: translate(-50%,-50%); 
+  z-index: 999; 
+}
+.loading_container.full{ 
+  position: absolute;
+  transform: unset;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
 }
 
 .loading_masker{
@@ -15,8 +21,8 @@
   left: 0;
   bottom: 0;
   right: 0;
-  z-index: 99010;
-  /* background-color: hsla(0,0%,100%,0.05); */
+  z-index: 998;
+  background-color: rgba(0, 0, 0, 0.3);
 }
 
 .loading_icon{
@@ -24,7 +30,7 @@
   top: 50%;
   left: 50%;
   transform: translate(-50%,-50%);
-  z-index: 99020;
+  z-index: 999;
 }
 
 .loading_icon,
@@ -41,38 +47,44 @@
 
 .loading_icon_i {
   display: inline-block;
-  float: none;
+  /* float: none; */
   background-color: currentColor;
   border: 0 solid currentColor;
 }
 
 .loading_icon {
-  width: 32px;
-  height: 32px;
+  width: 40px;
+  height: 40px;
+  position: relative;
 }
 
 .loading_icon_i {
-  width: 32px;
-  height: 32px;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%,-50%);
+  width: 40px;
+  height: 40px;
   background: transparent;
   border-width: 2px;
   border-radius: 100%;
   opacity: 0;
-  animation: ball-scale-ripple 1s 0s infinite cubic-bezier(0.21, 0.53, 0.56, 0.8);
-}
+  animation: ball-scale-ripple 1.0s 0s infinite cubic-bezier(0.21, 0.53, 0.56, 0.8);
+} 
 
 @keyframes ball-scale-ripple {
   0% {
     opacity: 1;
-    transform: scale(0.1);
+    transform:translate(-50%,-50%) scale(0.1);
   }
 
-  70% {
-    opacity: 0.65;
-    transform: scale(1);
+  50% {
+    opacity: 0.5;
+    transform:translate(-50%,-50%) scale(1);
   }
 
   100% {
     opacity: 0;
+    transform:translate(-50%,-50%) scale(1);
   }
 }

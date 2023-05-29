@@ -31,11 +31,13 @@ function appletCode(data) {
     return getWxCodeForWap.call(this, data);
   }else{
     let storeInfo = StoreH.storeInfo || {}
+    let storeStaff = LM.storeInfo || {};
     if(storeInfo.storeCode){
       scene.storeCode = storeInfo.storeCode
     }
-    if (LM.storeInfo && LM.storeInfo.staff_code || storeInfo.staffCode){
-      scene.staffCode = LM.storeInfo && LM.storeInfo.staff_code || storeInfo.staffCode
+    let staffCode = StoreH.lastShareInfo && StoreH.lastShareInfo.staffCode ? storeInfo.staffCode : storeStaff.staff_code||storeInfo.staffCode;
+    if (staffCode){
+      scene.staffCode = staffCode;
     }
     if(LM.shareCode){ //云店fromUser
       scene.fromUser = LM.shareCode
@@ -52,16 +54,13 @@ function appletCode(data) {
         "isBackGround": 0,
         "is_White_Bg": info.is_White_Bg || 0,
         "extend_id": info.extend_id || "",
-        "transPage": "",
-        "appId": "wx657efe00b45e3a6a",
+        "transPage": "", 
+        // "appId": "wx657efe00b45e3a6a",
       }
     }).then(e => {
       if (e.code == "1") {
         return Promise.resolve(e.data);
-      } 
-    SMH.showToast({
-        'title': e.msg || "生成小程序码错误"
-    })
+      }
       return Promise.resolve('');
     }).catch((e)=>{
         return Promise.resolve('');

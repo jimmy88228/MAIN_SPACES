@@ -1,0 +1,20 @@
+  <!--三级联动-->
+  <view class="region_select_bg" wx:if="{{show_region_select_pop}}" bindtap="SwitchAreaSelect"></view>
+  <view class="region_select" wx:if="{{show_region_select_pop}}">
+    <view class="confirm_btn"  >确定<button class="confirm_btn_float"  catchtap="confirmSelectArea"></button></view>
+    <view class="region_select_area">
+      <picker-view class="region_select_picker" indicator-style="height: 50px;" value="{{currVal}}" bindchange="bindChange">
+        <picker-view-column>
+          <view class="region_select_item" wx:key="index" wx:for="{{regionData.prov_data.region_names}}" >{{item}}</view>
+        </picker-view-column>
+        <picker-view-column>
+          <view class="region_select_item" wx:key="index" wx:for="{{regionData.city_data.region_names}}" >{{item}}</view>
+        </picker-view-column>
+        <picker-view-column>
+          <view class="region_select_item" wx:key="index" wx:for="{{regionData.dist_data.region_names}}" >{{item}}</view>
+        </picker-view-column>
+      </picker-view>
+    </view>
+  </view>
+
+

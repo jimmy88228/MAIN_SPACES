@@ -1,0 +1,26 @@
+import getSetConfig from "./getNeedConfig.js";
+import EXT from "../common/helper/brand-helper/index.js";
+import navConfig from "./nav-config";
+import { merge } from "../common/utils/object/index.js";
+const API_TYPE = "1";  //1:测试环境 ，2：正式环境 ，3： 雅鹿,百家好,新saas定制
+const BRAND_CODE= "INNOVATION"; // INNOVATION,YNKS
+const ICONNAME= ""; //可传空
+
+let _config = getSetConfig({
+  BRAND_CODE: BRAND_CODE, // 品牌名称
+  iconFileName: ICONNAME, // 品牌icon文件夹
+  visitApiType: API_TYPE,
+  barCodeApiType: API_TYPE,
+  dataCacheTime: 2,//页面缓存时间（分钟）
+  PAGE_SIZE: 20,
+  PLATFORM:{
+    TYPE: "QUICK_TRADE", //WXAPP,QQ
+    APITYPE: "WXAPP"
+  },
+  navConfig
+})
+
+const config = merge(_config);
+// const config = merge(_config, EXT.BInfo);
+console.log("本地配置: ", _config, "\nExt配置: ", EXT.BInfo, "\n合并后", config);
+export default config;

@@ -1,0 +1,55 @@
+import WxApi from "../../../../common/utils/wxapi/index";
+import EB from "../../../../common/support/event-bus/index";
+const App = getApp();
+Component(App.BC({
+  properties: {
+    showBack: {
+      type: Boolean,
+      value: true
+    },
+    styleType: { // 0: 普通
+      type: String,
+      value: "0"
+    },
+    title: { // 标题
+      type: String,
+      value: ""
+    },
+    navColor:{
+      type: String,
+      value: "#000"
+    }
+  },
+  pageLifetimes:{
+    show(){
+      this.getStoreInfo();
+      if(!App.LM.isLogin && !this._listenId){ 
+          this._listenId = EB.listen('LOGIN_EB',()=>{
+            // console.log('EB CALL LOGIN_EB',this._listenId)
+            App.LM.loginAsync().ignore(()=>{
+              EB.unListen('LOGIN_EB',this._listenId);
+              App.StoreH.getVisitStore()
+              .ignore(()=>this.getStoreInfo())
+            }) 
+          })
+        }
+      }
+  },
+  data:{
+    storeInfo:{}
+  },
+  methods: {
+    getStoreInfo(){
+      let storeInfo = App.StoreH.storeInfo||{};
+      console.log('storeInfo',storeInfo)
+      this.setData({
+        storeInfo
+      })
+    },
+    naviBack() {
+      WxApi.navigateBack({
+        delta: 1
+      })
+    }
+  }
+}))

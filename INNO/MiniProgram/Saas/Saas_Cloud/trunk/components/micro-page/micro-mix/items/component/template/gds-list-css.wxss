@@ -158,8 +158,8 @@
   font-size: 1em;
 }
 
-.list-msg-sale-price.char::before {
-  font-size: 0.6em;
+.list-msg-sale-price .char::before {
+  font-size: 0.65em;
   margin-right: 3rpx;
 }
 
@@ -464,4 +464,9 @@
   bottom: 0px;
   z-index: 10;
   opacity: 0;
+}
+.goods_empty{
+  margin: 100rpx 0;
+  color: #afafaf; 
+  text-align: center;
 }

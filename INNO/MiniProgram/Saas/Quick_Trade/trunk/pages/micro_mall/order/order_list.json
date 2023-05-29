@@ -1,4 +1,6 @@
 {
   "navigationBarTitleText": "订单列表",
-  "usingComponents": {}
+  "usingComponents": {
+    "order-list":"/pages/micro_mall/order/modules/order-list/index"
+  }
 }

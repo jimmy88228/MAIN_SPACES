@@ -1,0 +1,32 @@
+<view class='main' hidden="{{!showData}}">
+    <view class='main_top' style='background:linear-gradient(-22deg,{{brand_info.style.bg_color}},{{bg_color}})'>
+        <picker class="m_picker" mode="selector" range="{{manageStoreList}}" range-key="name" bindchange="handleManageStoreChange" >
+            <view class="manager_area" wx:if="{{(dataDetail && dataDetail.staff_type == 1) && currentStore.id}}">
+                <text class="iconfont icon-change change_icon" style="font-size: 32rpx;"></text>
+                <text class="current_store_name">{{currentStore.name}}</text>
+            </view>
+        </picker>
+        <view class="main_top_user">
+            <view class="main_top_left">
+                <image class='user' mode="widthFix" src='{{dataDetail.portrait_path || defaultAvatar}}'></image>
+                <view class='name font_28 text-flow2'>{{dataDetail.staff_name}}/{{dataDetail.staff_code}}</view>
+            </view>
+            <view class="main_top_right">
+                <view class="user_comm_rate" wx:if="{{dataDetail.comm_rate != undefined && dataDetail.staff_type == 0}}">当前比例: {{dataDetail.comm_rate}}%</view>
+            </view>
+        </view>
+    </view>
+    <view class='main_content mt_10'>
+    <!-- 我的收益 brokerage -->
+        <!-- 加条件: 店长不能提现 -->
+        <brokerage id="brokerage" wx:if="{{commission_mod_show}}" tabs="{{brok_tabs}}" can_cashout="{{can_cashout && !(dataDetail && dataDetail.staff_type == 1)}}" commission="{{commission}}"></brokerage>
+    <!-- 我的销量 sale -->
+        <sales  id="sales" wx:if="{{sales_tabs.length>0}}" tabs="{{sales_tabs}}"></sales>
+    <!-- 购券销量 -->
+        <bonus_sales id="bonus_sales" wx:if="{{bonus_sales_tabs.length > 0}}" tabs="{{bonus_sales_tabs}}" />
+    <!-- 订单 orders -->
+        <orders commission="{{commission}}" dataDetail="{{dataDetail}}"></orders>
+    <!-- 服务 service -->
+        <service wx:if="{{service_mod_show}}" service_mod="{{service_mod}}" page_id="{{page_id}}" dataDetail="{{dataDetail}}"></service>
+    </view>
+</view>

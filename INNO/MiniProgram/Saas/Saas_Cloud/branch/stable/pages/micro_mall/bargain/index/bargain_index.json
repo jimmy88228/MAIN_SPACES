@@ -1,0 +1,10 @@
+{
+    "navigationBarTitleText": "砍价",
+    "enablePullDownRefresh": true,
+    "usingComponents": {
+        "tabbar": "/components/custom/tabBar",
+        "micro-page": "/components/micro-page/micro-mix/micro-page/micro-page",
+        "search":"/components/search/s_view",
+        "act-count-down":"/components/act-count-down/act-count-down"
+    }
+}

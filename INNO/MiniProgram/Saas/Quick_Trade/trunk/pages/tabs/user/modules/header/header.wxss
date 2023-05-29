@@ -78,7 +78,10 @@
   width: 98rpx;
   height: 98rpx;
   border-radius: 50%;
-  background-color: #cfcfcf;
+  background-color: rgba(255,255,255,0.5);
   color: #fff;
   font-size: 22rpx;
+}
+.user-row-box{
+  padding-bottom: 20rpx;
 }

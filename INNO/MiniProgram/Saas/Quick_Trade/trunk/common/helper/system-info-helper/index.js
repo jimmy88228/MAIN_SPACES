@@ -2,7 +2,6 @@ import StorageH from "../storage-handler/index";
 import utils from "../../utils/normal/index";
 class SystemInfoHelper {
   static getInstance() {
-    console.log("getIns")
     if (!SystemInfoHelper.instance) {
       SystemInfoHelper.instance = new SystemInfoHelper();
     }
@@ -26,8 +25,17 @@ class SystemInfoHelper {
       menuTop = capsuleButtonTop - statusBarHeight;
     return (capsuleButtonHeight + menuTop * 2) || 44;
   }
+  
+  get statusBarHeight(){
+    return this.systemInfo.statusBarHeight;
+  }
+  
+  get navPlace(){
+      let menuTop = ( this.capsuleButtonInfo.top - this.systemInfo.statusBarHeight)
+      return this.systemInfo.statusBarHeight + this.capsuleButtonInfo.height + menuTop * 2;
+  }
+
   get cookieId() {
-    console.log("sadasds")
     this._cookieId = StorageH.get("O_ID");
     if (this._cookieId) {
         if(typeof(this._cookieId) != "string"){
@@ -45,7 +53,6 @@ class SystemInfoHelper {
     return this._cookieId;
   }
 
-  
   get sdkVersion() {
     return this.systemInfo.SDKVersion;
   }

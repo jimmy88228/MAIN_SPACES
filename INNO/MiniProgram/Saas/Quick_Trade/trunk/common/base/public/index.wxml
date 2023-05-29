@@ -1,2 +1,3 @@
 <!-- 这里不能放其他组件 除了public-component -->
 <public-component id="public-component" />
+<!-- "public-component": "/common/base/public/component/index" -->

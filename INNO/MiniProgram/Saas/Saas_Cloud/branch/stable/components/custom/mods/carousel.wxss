@@ -1,0 +1,142 @@
+.swiper_module {
+    position: relative;
+}
+.custom_swiper_item {
+    position: relative;
+}
+.s_item_view{
+    position: relative;
+}
+.video_swiper{
+  min-height: 422rpx !important;
+}
+.videoBox{
+  position:absolute;
+  top:50%;
+  left:50%;
+  transform: translate(-50%,-50%);
+  width: 750rpx;
+  height: 422rpx;
+}
+.swiper_img {
+    width: 100%;
+    display:block;
+    background-color:#fff;
+}
+
+.switch_point {
+    position: absolute;
+    width: 100%;
+    bottom: 16rpx;
+    left:0;
+    padding-right: 24rpx;
+    box-sizing: border-box;
+    text-align: center;
+}
+
+.switch_point .point {
+    background: #fff;
+    width: 10rpx;
+    height: 10rpx;
+    border-radius: 10rpx;
+    display: inline-block;
+    margin: 0px 6rpx;
+    transition: all 0.32s;
+    border:2rpx solid #ccc;
+}
+
+/* .switch_point .active {
+    background: rgba(0, 0, 0, 1);
+} */
+
+
+/* common */
+
+
+
+/*热区*/
+.map_area {
+    position: absolute;
+    z-index: 10;
+}
+
+.play_icon_area {
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    width: 100%;
+    height: 100%;
+    z-index: 11;
+}
+ 
+.play_icon {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 120rpx;
+    height: 120rpx;
+    transform: translate(-50%, -50%);
+    background: rgba(0, 0, 0, 0.4);
+    border-radius: 100%;
+}
+
+.btn_link {
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    right: 0px;
+    bottom: 0px;
+    z-index: 10;
+    opacity: 0;
+}
+.module_type2 .swiper_img{
+    background-color:#8e8e8e;
+}
+.module_type2 .s_item_view{
+    margin:10rpx 15rpx;
+    overflow: hidden;
+}
+.float_swiper{
+    width:100%;
+    height:400rpx;
+    position: relative;
+}
+.float_swiper_item{
+    width:400rpx;
+    height:100%;
+    background-color:#fff;
+    border-radius:10rpx;
+    overflow: hidden;
+    box-sizing: border-box;
+    padding:10rpx;
+    position: absolute;
+    z-index:2;
+    transition: opacity .3s ease-out, transform .6s, top .6s, left .6s;
+    top:50%;
+    left:50%;
+    transform: translate(-50%, -50%);
+    box-shadow: 0px 0px 10rpx #ccc;
+}
+.float_swiper_item .swiper_img{
+    width:100%;
+    position:absolute;
+    top:50%;
+    left:50%;
+    transform: translate(-50%, -50%);
+}
+/*左右滑动*/
+.scroll_swiper{
+    width:100%;
+}
+.scroll_long{
+    display:flex;
+}
+.scroll_swiper_item{
+    position:relative;
+    flex-shrink: 0;
+}
+::-webkit-scrollbar{
+    width: 0;  
+    height: 0;
+    color: transparent;
+}

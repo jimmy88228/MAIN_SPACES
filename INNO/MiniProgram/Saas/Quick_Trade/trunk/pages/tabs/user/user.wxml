@@ -1,9 +1,13 @@
 <!-- public 必须是第一个元素 -->
 <include src="/common/base/page/index.wxml" />
 <view class="page-bg"></view>
-<custom-nav styleType="0" showBack="{{false}}" nav-color="#fff" title="个人中心"/>
-<scroll-view class="tab-bar-page-container scroll-view-box" scroll-y>
-  <view class="user-page">
+<view class="tab-bar-page-container scroll-view-box flex-c-c flex-col">
+  <page-nav class="full-width" isTransparent>
+    <view class="center-title">
+      个人中心
+    </view>
+  </page-nav>
+  <view class="user-page flex-1" scroll-y>
     <!-- 用户头部 -->
     <user-header userData="{{userData}}" isLogin="{{isLogin}}" />
 
@@ -11,10 +15,11 @@
     <order-bar userData="{{userData}}"/>
 
     <!-- 会员 -->
-    <user-service />
+    <user-service userData="{{userData}}" />
 
     <!-- 店员 -->
-    <staff-service userData="{{userData}}"/>
+    <staff-service userData="{{userData}}"/>  
+
   </view>
-</scroll-view>
+</view>
 <btns wx:if="{{!isLogin}}" class="login-btn" bindclickcallback="clickcallback"></btns>

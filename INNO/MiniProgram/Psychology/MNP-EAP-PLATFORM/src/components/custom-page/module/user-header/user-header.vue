@@ -1,11 +1,10 @@
 <template>
   <view class="user-header header flex-s-c relative">
-    <!-- <image class='img-user' :src="imgUser" mode="aspectFit" /> -->
-    <!-- <button class="avatar-wrapper" open-type="chooseAvatar" @chooseavatar="onChooseAvatar">
-		  <image v-if="imgUser" class="avatar" :src="imgUser"></image>
-			<view v-else class="avatar-txt"> 点击授权头像 </view>
-		</button> -->
-    <auth-button class="avatar-wrapper" open-type="getUserInfo" @authed="onChooseAvatar">
+    <!-- <auth-button class="avatar-wrapper" open-type="getUserInfo" @authed="onChooseAvatar">
+      <image v-if="userInfo.profilePicture" class="avatar" :src="userInfo.profilePicture"></image>
+      <view v-else class="avatar-txt"> 点击授权头像 </view>
+    </auth-button> -->
+     <auth-button class="avatar-wrapper" open-type="chooseAvatar" @authed="onChooseAvatar">
       <image v-if="userInfo.profilePicture" class="avatar" :src="userInfo.profilePicture"></image>
       <view v-else class="avatar-txt"> 点击授权头像 </view>
     </auth-button>

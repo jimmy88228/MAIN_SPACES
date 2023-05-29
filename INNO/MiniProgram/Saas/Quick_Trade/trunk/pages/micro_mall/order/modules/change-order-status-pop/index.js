@@ -94,9 +94,4 @@ function getShippingList() {
       }
       return Promise.reject(res.msg || "获取物流信息失败")
     })
-    .catch(err => {
-      console.log(err);
-      App.SMH.showToast({title: err});
-      return Promise.reject(err);
-    })
 }

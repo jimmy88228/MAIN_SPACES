@@ -19,7 +19,7 @@ class startPageHandle {
     if (page.route != Conf.STARTUP_PAGE && params.scene){ //旧码 //扫码场景1
       storeH.getStoreAsync().then(()=>{
         let paramsStr = MyStr.getPageParamsStr(params);
-        console.log('需要更新storeCode:',page.route,' 跳去中间页');
+        console.log('(扫码途径)需要更新storeCode:',page.route,' 跳去中间页');
         this.setReleasePage(false);
         wx.redirectTo({
           url: "/" + Conf.STARTUP_PAGE + "?" + paramsStr, 

@@ -82,7 +82,6 @@
     background-color: #F7F7F7;
 
     .form-list {
-      // padding: 30rpx 25rpx calc(env(safe-area-inset-bottom) + 165rpx);
       padding: 30rpx 25rpx 165rpx;
 
       .input-panel {

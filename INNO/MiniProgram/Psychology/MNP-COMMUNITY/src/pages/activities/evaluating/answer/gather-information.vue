@@ -22,9 +22,7 @@
                 :class="{'swiper-item-action':current == index}">
                 <scroll-view class="flex1" scroll-y>
                   <view class="item-box">
-                    <!--v-show="current == index"-->
                     <view class="title bold"> {{ item.question || "" }}</view>
-                    <!-- ,current == index?buttonAnimation:'' -->
                     <view :class="['answer-box','flex-c-c','flex-col' ]" v-if="item.optionList">
                       <view v-show="item.optionList.length>7">
                         <ori-picker @pickerChange="(e) => pickerChange(e, 'optionSelect')" range-key="optionContent"
@@ -49,7 +47,6 @@
                         </view>
                       </view>
                       <view v-show="item.optionList.length<=7">
-                        <!-- ,current == index ? buttonAnimation : 'animate-fade-out-down' -->
                         <button :class="[
                         'answer-item',
                         'bold',
@@ -59,7 +56,6 @@
                           : '' 
                       ]" @click="onAnswer(c_item.optionId, index,c_item)" v-for="(c_item, c_index) in item.optionList"
                           :key="c_index">
-                          <!-- :style="{'animation-delay':`${current == index ? c_item.showTime : 0}s`}" -->
                           {{ c_item.optionContent }}
                         </button>
                       </view>
@@ -124,7 +120,7 @@
 </template>
 
 <script>
-  import utils from '@/common/support/utils.js'
+  import utils from '@/common/support/utils/utils.js'
   import LoadingView from '@/components/css3/loading/loading.vue';
   import sysInfosHandler from "@/common/helper/sys-infos-handler";
   import SMH from "@/common/helper/show-msg-handler";
@@ -552,7 +548,6 @@
         }
       },
       getPercent(cur, len) {
-        console.log(cur, len, "百分比")
         return Number((cur / len).toFixed(2)) * 100;
       },
       submitFinish() {
@@ -585,7 +580,6 @@
             footerInfo.top - swiperInfo.top + "px" :
             "70vh";
           this.swiperStyle = `height:${height};`;
-          console.log("_getQuery", res, this, this.swiperStyle);
           return this.swiperStyle;
         });
       },

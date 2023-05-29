@@ -21,6 +21,11 @@ Component(App.BC({
       })  
     }
   },
+  ready(){
+    this.setView({ 
+      createPopRef: { get: () => this.findView("#create-pop") }, 
+    })
+  },
   methods: { 
     showModal() {
       this.setData({show: true});
@@ -51,8 +56,7 @@ Component(App.BC({
       }, 600);
     },
     pickerAdd() {
-      this.createPop = this.createPop || this.selectComponent("#create-pop");
-      this.createPop.showModal()
+      this.createPopRef.showModal("","add")
       .then(catName => {
         this.showLoading();
         return createOrUpdateCategoryInfo({catName, id: 0})

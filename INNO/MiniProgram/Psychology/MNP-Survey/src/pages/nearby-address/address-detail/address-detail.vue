@@ -8,19 +8,6 @@
 				@controltap="controltap" :markers="markers" @markertap="markertap" :polyline="polyline"
 				:show-location="loc_f==0" :scale="scale">
 			</map>
-			<!-- <view v-if="loc_f==0" class='top_header' :style="{top:navPlace+'px'}">
-				<view class='allWays' :style="'border-bottom:1rpx solid '+brand_info.style.bg_color+';'">
-					<view class="ways" @click='goTo' data-type="car" :class="statusType == 'car'?'statusActive':''">驾车</view>
-					<view class="ways" @click='goTo' data-type="walk" :class="statusType == 'walk'?'statusActive':''">步行</view>
-					<view class="ways" @click='goTo' data-type="ride" :class="statusType == 'ride'?'statusActive':''">骑行</view>
-				</view>
-				<view class='result' v-if="showPanel">
-					<view class="distance_msg"><text style="padding-right:10rpx">距您</text><text>{{distance}}</text></view>
-					<view class="line_style"></view>
-					<view class="typeName"><text style="padding-right:10rpx">{{typeName}}</text><text>{{time}}</text></view>
-				</view>
-			</view> -->
-
 			<view class="msg_box" @click="toNavigate">
 				<view class="stroe_name">
 					<view class="name">{{detailData.name}}</view>
@@ -82,10 +69,9 @@
 <script>
 	import SMH from "@/common/helper/show-msg-handler.js";
 	import oriPopup from '@/components/ori-comps/popup/ori-popup'
-	// var amapFile = require('@/common/support/libs/amap-wx/amap-wx.js');
-	const app = getApp()
 
-	const pageOption = Page.BaseComp({
+	const app = getApp()
+	const pageOption = Page.BasePage({
 		components: {
 			oriPopup
 		},
@@ -353,10 +339,6 @@
 						that.distance = distance;
 						that.distance_botm = distance_botm;
 						that.time = parseInt(data.paths[0].duration / 60) + "分钟 ";
-						// that.$set(that.polyline, "points", points)
-						// that.$set(that.polyline, "color", color)
-						// that.$set(that.polyline, "width", 6)
-						// that.$set(that.polyline, "arrowLine", true)
 						that.polyline = [{
 							points: points,
 							color: color,
@@ -396,7 +378,6 @@
 </script>
 
 <style lang="scss" scoped>
-	/* pages/micro_mall/stores/store_map.wxss */
 	page {
 		background-color: #fff;
 	}

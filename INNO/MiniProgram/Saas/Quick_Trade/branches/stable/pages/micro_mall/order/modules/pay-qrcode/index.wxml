@@ -1,0 +1,8 @@
+<window show="{{show}}" catchtap="_noFn" bind:masktap="dismiss">
+	<view class="main" bintap="hideFn" >
+    <view class="header">微信支付</view>
+    <view class="content">
+      <canvas canvas-id="pay_qrcode" style="width: 450rpx;height: 450rpx;"></canvas>
+    </view>
+  </view>
+</window>

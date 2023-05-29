@@ -19,8 +19,8 @@ export let Http = function (api, reqData = {}) {
 					SMH.showLoading()
 				}
 				let header = reqData.header || {};
-				header.appCode = Conf.appCode;;
-				header.appType = Conf.appType;;
+				header.appCode = Conf.appCode;
+				header.appType = Conf.appType;
 				header.platformType = Conf.platformSrc;
 				header.userToken = LM.userToken || '';
 				header.recordId = LM.recordId || 0;

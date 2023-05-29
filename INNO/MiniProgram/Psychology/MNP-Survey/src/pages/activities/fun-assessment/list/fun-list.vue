@@ -10,7 +10,7 @@
           <swiper class="swiper" :current="current" circular :indicator-dots="imgSwiperOpts.indicatorDots"
             :autoplay="imgSwiperOpts.autoplay" :interval="imgSwiperOpts.interval" :duration="imgSwiperOpts.duration">
             <swiper-item v-for="(item,i) in swiperListInfo.pictureList" :key="i" @click="jumpAction(item.path)">
-              <image class="cover-image" :src="item.picture" mode="aspectFill" />
+              <oriImage class="cover-image" :src="item.picture" mode="aspectFill" />
             </swiper-item>
           </swiper>
         </view>
@@ -25,8 +25,8 @@
                     ">
               <view class="msg-box flex-s-s">
                 <view class="relative">
-                  <image :src="item.coverPic ? item.coverPic : staticAddress+activityIcon"
-                    @error="imgerror($event, index, pIndex)" class="img" mode="aspectFill" />
+                  <oriImage :src="item.coverPic ? item.coverPic : staticAddress+activityIcon"
+                    @error="imgerror($event, index, pIndex)" customStyle=" width: 220rpx; height: 165rpx; border-radius: 10rpx;" class="shrink0" mode="aspectFill" />
                 </view>
                 <view class="content clamp2">
                   <view class="tip-title font-30 clamp2">{{
@@ -52,9 +52,13 @@
 
 <script>
   import SMH from "@/common/helper/show-msg-handler";
+  import oriImage from "@/components/ori-comps/image/ori-image"
 
   const app = getApp();
   const pageOption = Page.BasePage({
+    components:{
+      oriImage
+    },
     data() {
       return {
         imgSwiperOpts: {
@@ -242,13 +246,6 @@
       padding: 25rpx 0;
       box-sizing: border-box;
       // border-bottom: 1px solid rgba($color: #979797, $alpha: 0.2);
-    }
-
-    .img {
-      width: 220rpx;
-      height: 165rpx;
-      border-radius: 10rpx;
-      flex-shrink: 0;
     }
 
     .btn {

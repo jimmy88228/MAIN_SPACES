@@ -1,0 +1,6 @@
+{
+  "component": true,
+  "usingComponents": {
+    "confirm-pop":"/components/common/basic/pop/confirm-pop/index"
+  }
+}

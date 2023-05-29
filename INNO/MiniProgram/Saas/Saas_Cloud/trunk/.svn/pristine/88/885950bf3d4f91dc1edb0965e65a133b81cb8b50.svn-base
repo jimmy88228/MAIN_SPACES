@@ -1,0 +1,6 @@
+{
+  "navigationBarTitleText": "预加载",
+  "usingComponents": {
+    "sevenFish":"plugin://sevenFish/chat"
+  }
+}

@@ -1,0 +1,77 @@
+/* 凑单助手 */
+.pa_con{
+  background-color: #fddec5;
+}
+.pa_row{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  min-height: 80rpx;
+  padding: 8rpx 12rpx;
+  box-sizing: border-box;
+}
+.pa_left{
+  display: flex;
+}
+.pa_right{
+  display: flex;
+  align-items: center;
+}
+.pa_left{
+  width: 80%;
+  max-height: 92rpx;
+}
+.pa_tips{
+  font-size: 24rpx;
+  color: #222222;
+}
+.coudan_icon{
+  border: 1px solid #ed4014;
+  border-radius: 100rpx;
+  color: #ed4014;
+  font-size: 24rpx;
+  padding: 4rpx 12rpx;
+  margin-right: 12rpx;
+  font-weight: bold;
+}
+.close_icon{
+  position:relative;
+  width:46rpx;
+  height:46rpx;
+  /* border:5rpx solid #b2b2b2; */
+  border-radius:100%;
+  transform: rotate(45deg); 
+}
+.close_icon .row{
+  position:absolute;
+  top:50%;
+  left:50%;
+  width:5rpx;
+  height:80%;
+  transform: translate(-50%,-50%);
+  background-color:#b2b2b2;
+}
+.close_icon .line{
+  position:absolute;
+  top:50%;
+  left:50%;
+  height:5rpx;
+  width:80%;
+  transform: translate(-50%,-50%);
+  background-color:#b2b2b2;
+}
+.pa_right>.close_icon{
+  width: 32rpx;
+  height: 32rpx;
+}
+.pa_right>.close_icon>.row{
+  height: 60%;
+  width: 4rpx;
+  background-color: #ed4014;
+}
+.pa_right>.close_icon>.line{
+  width: 60%;
+  height: 4rpx;
+  background-color: #ed4014;
+}

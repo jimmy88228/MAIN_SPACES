@@ -35,6 +35,7 @@ Component(app.BTAB({
   },
   attached(){
     this.isAttached = true;
+    this.extraParams = {};
   },
   data: {
     htmlNodes:"",
@@ -58,22 +59,29 @@ Component(app.BTAB({
         showTab: group.length>1,
       });
     },
-    loadData(_data){
+    loadData(fromType){
       getSysConf.call(this,'goods_list_show_buy_button','customBuy');
-      let _p = getParams(this.data._data||{},this);
-      return app.RunApi.go(_p.m,_p.api,_p.url,_p.params,_p.extra).then(res=>{
+      let params = Object.assign({},getParams(this.data._data||{},this),this.extraParams)
+      return app.RunApi.go("post","CL_GoodsApi","searchGoodsList",params).then(res=>{
         let data = res.data||{};
+        let listData = data.goods_list || data.goodsList || [];
+        if(params.goodsIds && params.goodsIds.length>0){
+          listData = customSort(params.goodsIds,listData);
+          listData = quickSort(listData);
+        }
         let tagList = data.goodsTagList||[];
         let tagJson = this.data.tagJson||{};
         tagJson = TLH.setTagJson({tagList}) || {};
         this.setData({
           tagJson,
           isInited:true,
-          listData: data.goods_list || data.goodsList || [],
+          listData,
         })
         console.log('listData',this.data.listData,res)
-        getCommission.call(this);
-        getPromLabels.call(this);
+        if(fromType != 'filter'){
+          getCommission.call(this);
+          getPromLabels.call(this);
+        }
         if(!this.data._data.open_slide){ //swiper 先不刷新
           this.mcItemRefresh();
         }
@@ -144,46 +152,65 @@ Component(app.BTAB({
       this.setData({select_goods});
       this.buy({},true);
     },
+    
+    onSort: function(e) { 
+      let newParams = e.detail;
+      console.log('筛选sort点击',newParams);
+      Object.assign(this.extraParams, newParams);
+      this.loadData('filter');
+    },
+    onConfim: function(e) { 
+        let newParams = e.detail;
+        newParams = JSON.parse(JSON.stringify(newParams));
+        newParams.colorCatId = (newParams['colorCatId'] != "") ? encodeURI(newParams['colorCatId']) : ("0"); 
+        newParams.goods_brand_ids = encodeURI(newParams['goods_brand_ids'].join(",")) || "";
+        newParams.strAttrId = encodeURIComponent(newParams['strAttrId'].join(","));
+        newParams.strAttrValue= encodeURIComponent(newParams['strAttrValue'].join("$#_!"));
+        console.log('筛选confirm',newParams);
+        Object.assign(this.extraParams, newParams)
+        this.loadData('filter');
+    }, 
+    onReset: function(e) {
+        console.log('筛选reset');  
+        this.extraParams = {};
+    },
   }
 }))
 
 function getParams(setting,that){
-  let apiParams = {};
-  apiParams.api = "CL_GoodsApi";
-  // apiParams.extra = {diy:true};
-  let goodsGroup = [],goodsList = [],ids,goodsListType, index=that.data.curTab||0;
+  let apiParams = {},goodsGroup = [],goodsList = [],ids,goodsListType, index=that.data.curTab||0;
   if(Array.isArray(setting.goodsGroup)){
     goodsGroup = setting.goodsGroup||[];
     goodsList = goodsGroup[index].goodsList||[]; 
     goodsListType = goodsGroup[index].goodsListType;
     ids = mapGoodsList(goodsList) || [];
-    if(goodsSearch[goodsGroup[index].goodsListType] == 'goods'){ //指定商品
-      apiParams.url = "getALLGoodsListByGoodsIds";
-      apiParams.m = "POST";
-      apiParams.params = {
-        goodsIdList : ids
-      }
+    apiParams = { 
+      goodsIds:[],
+      functype: goodsSearch[goodsListType] || 'CA',
+      catId: 0,
+      strAttrId: '',
+      strAttrValue: '',
+      colorCatId: 0,
+      startPrice: -1,
+      endPrice: -1,
+      strWhere: '',
+      pageSize: 500,
+      pageIndex: 1, 
+      sortField: 'goods_id',
+      sortBy: 'desc',
+      goods_brand_ids: '',
+      storeId: '0',
+    };
+    if(goodsSearch[goodsGroup[index].goodsListType] == 'goods'){ //指定商品 
+      apiParams.goodsIds = ids;
+      apiParams.catId = 0;
     }else{
       let showNum = goodsGroup[index].showNum || MAX_SORT_NUM;
-      apiParams.url = "getSearchGoodsListBySkip"; //分类
       ids = ids.join(',');
-      apiParams.params = {
-        functype: goodsSearch[goodsListType] || 'CA',
-        catId: goodsListType != 'goodsBrand' ? ids : 0,
-        strAttrId: '',
-        strAttrValue: '',
-        colorCatId: 0,
-        startPrice: -1,
-        endPrice: -1,
-        strWhere: '',
-        pageSize: showNum,
-        pageIndex: 1,
-        skipCount: setting.skip || 0,
-        sortField: 'goods_id',
-        sortBy: 'desc',
-        goods_brand_ids: goodsListType == 'goodsBrand' ? ids : 0,
-        storeId: '0',
-      }
+      apiParams.goodsIds = [];
+      apiParams.pageSize = showNum;
+      apiParams.catId = ids;
+      apiParams.goods_brand_ids = goodsListType == 'goodsBrand' ? ids : '';  
     }
   }
   console.log('apiParams',setting,apiParams)
@@ -269,7 +296,7 @@ function getSumaryGoodsProductInfo(goods_id,noCheck) {
 }
 
 function getSysConf(key,dataName=""){
-  if(!dataName)return Promise.reject();
+  if(!dataName || this.data[dataName])return Promise.reject();
   return app.sysTemConfig(key).then(data => {
       this.setData({
         [dataName]: data.Value||0
@@ -324,4 +351,28 @@ function getPromLabels(){
       })
       return Promise.resolve(promotionLabels);
     })
+}
+
+function customSort(ids,listData){
+  let obj = {};
+  ids && ids.forEach((item,index)=>{
+    obj[item] = index;
+  })
+  let arr = listData.map(item=>({...item,sort:obj[item.goods_id]}))
+  return arr
+}
+function quickSort(arr){ 
+    if(!arr || arr.length == 1 || arr.length == 0){return arr||[]};
+    let left = [];
+    let right = [];
+    let mid = arr[0];
+    for(let i = 1;i<arr.length;i++){
+        if(arr[i].sort<mid.sort){
+            left.push(arr[i])
+        }else{
+            right.push(arr[i])
+        }
+    }
+    return [...quickSort(left),mid,...quickSort(right)]; 
+  
 }

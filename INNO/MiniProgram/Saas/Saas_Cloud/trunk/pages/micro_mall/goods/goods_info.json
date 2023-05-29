@@ -19,6 +19,7 @@
     "micro-page": "/components/micro-page/micro-mix/micro-page/micro-page",
     "adsPop":"/components/pop/adsPop",
     "promotionLabel":"/components/promotionLabel/promotionLabel",
-    "promoteAssistance":"/components/promote-assistance/promote-assistance"
+    "promoteAssistance":"/components/promote-assistance/promote-assistance",
+    "collocationTip": "/pages/micro_mall/goods/module/collocation/tip"
   }
 }

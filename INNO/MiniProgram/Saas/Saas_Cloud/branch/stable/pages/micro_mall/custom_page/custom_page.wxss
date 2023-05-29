@@ -1,0 +1,15 @@
+page{
+  background-color:#fff;
+  width:100%;
+  box-sizing:border-box;
+}
+.index_page{
+  width:100%;
+  box-sizing:border-box; 
+} 
+.index_page image{
+  display:block;
+}
+.page_tab{
+  width:100%;
+}

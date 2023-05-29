@@ -306,7 +306,7 @@ text {
 }
 
 .invalidOpacity {
-    opacity: .3;
+    opacity: .2;
 }
 
 /*字体颜色*/

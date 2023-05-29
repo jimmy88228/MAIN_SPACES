@@ -7,7 +7,7 @@
       <!-- 会员卡 -->
       <view class="list warp">
         <block wx:for="{{_data.imagesGroup[isLogin?0:1].images}}" wx:key="index">
-          <template is="adv-tpl" data="{{_data:_data,listGoods:item,isInited:isInited,index}}"></template>
+          <template is="adv-tpl" data="{{_data:_data,listGoods:item,isInited:isInited,index,isLogin}}"></template>
         </block>
       </view>
     </block>
@@ -21,7 +21,7 @@
       <!-- 普通布局 -->
         <view class="list warp">
           <block wx:for="{{_data.imagesGroup[curTab].images}}" wx:key="index">
-            <template is="adv-tpl" data="{{_data:_data,listGoods:item,isInited:isInited,index}}"></template>
+            <template is="adv-tpl" data="{{_data:_data,listGoods:item,isInited:isInited,index,isLogin}}"></template>
           </block>
         </view>
       </block>
@@ -32,3 +32,4 @@
     </block>
   </group-head>
 </view>
+<contactStaff id="contactStaff"></contactStaff>

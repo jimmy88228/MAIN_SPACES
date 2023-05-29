@@ -1,0 +1,18 @@
+<include src="/common/base/component/index.wxml" />
+<view class="nav-box" style="{{navBoxStyle}}">
+  <view class="nav-stay" style="{{customPlace?customPlace:navPlace}}" wx:if="{{!full}}"></view>
+  <view class="nav fixed" style="{{(customPlace?customPlace:navPlace)+statusBarPlace+boxStyle}}">
+    <view class="nav-bg" style="{{'opacity:'+bgOpacity}}"></view>
+    <view class="nav-body" style="{{MenuObjectPadding+bodyStyle}}">
+      <view class="back-link" hover-class="back-link-hover" wx:if="{{hasBack && !hideBtn}}" bindtap="toBack">
+        <image class="{{backMode.c}}" src="{{'/assets/images/common/' + backMode.i + '.png'}}" mode="widthFix"></image>
+      </view>
+      <view class="custom-content-box clamp">
+        <slot name="custom-content"></slot>
+      </view>
+      <view style="{{'transition: 0.5s all;'}}" class="text-flow2 title-content {{hasBack?'with-back':''}}" >
+        <slot></slot>
+      </view>
+    </view>
+  </view>
+</view>

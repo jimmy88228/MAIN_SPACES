@@ -1,6 +1,7 @@
 // StyleHelper主要是给出 所有Page节点 和 一个tabBar节点 的Style
 import tabBarStyle, {tabBarSize} from "./tabBar";
 import pageStyle from "./page";
+import iconBase64 from "./base64"
 
 class StyleHelper {
   static getInstance() {
@@ -23,9 +24,17 @@ class StyleHelper {
     return this.pageStyleStr
   }
 
+  get pageStyleObj(){
+    return pageStyle
+  }
+
   get tabBarStyle() {
     if (!this.tabBarStyleStr) this.tabBarStyleStr = this.styleObjToStr(tabBarStyle);
     return this.tabBarStyleStr
+  }
+
+  get base64(){
+    return iconBase64
   }
 }
 

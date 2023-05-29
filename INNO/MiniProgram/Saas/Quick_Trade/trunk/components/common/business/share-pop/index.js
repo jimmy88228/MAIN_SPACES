@@ -45,6 +45,7 @@ Component(App.BC({
       this.setData({show: false})
     },
     handlePopItemTap(e) {
+      this._throttle('handlePopItemTap');
       let item = this.getDataset(e, "item");
       this.setData({show: false}, () => {
         typeof this.resolveF === "function" && this.resolveF(item);

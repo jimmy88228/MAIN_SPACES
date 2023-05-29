@@ -1,6 +1,6 @@
 <template>
   <view class="date-select">
-    <scroll-view :scroll-into-view="dateXScroll" scroll-with-animation class="date-select-list-scroll" :scroll-x="true"
+    <scroll-view :enhanced="true" :show-scrollbar="false" :scroll-into-view="dateXScroll" scroll-with-animation class="date-select-list-scroll" :scroll-x="true"
       :refresh='false'>
         <view :id="'dateX'+i" class="date-item" v-for="(item,i) in dateList"
           :key="i" :data-index="i" @click="selectDate">
@@ -70,7 +70,6 @@
     },
     methods: {
       init() {
-        // let dateList = dateUtil.getFollowUpDate();
         let dateList = JSON.parse(JSON.stringify(this.dateList));
         let newDate = new Date();
         let today = dateUtil.getDate(newDate, 0)
@@ -110,7 +109,6 @@
           this.init();
         },
         immediate:true,
-        // deep:true
       }
     }
   })
@@ -125,13 +123,11 @@
     box-shadow: 0rpx 16rpx 20rpx 0rpx rgba($color: #000000, $alpha: 0.02);
 
     .date-select-list-scroll {
-      // overflow: hidden;
       height: 100%;
       white-space: nowrap;
 
       .date-item {
         display: inline-block;
-        // padding: 23rpx 0rpx;
         padding-top: 23rpx;
         height: 100%;
         box-sizing: border-box;
@@ -149,7 +145,7 @@
 
       .date-item-act {
         border-bottom: 4rpx solid $uni-main-color;
-        padding-bottom: 18rpx;
+        padding-bottom: 16rpx;
       }
     }
 
@@ -196,7 +192,6 @@
           width: 56rpx;
           height: 56rpx;
           line-height: 52rpx;
-          // border: 1px solid #025299;
           background-color: transparent;
           position: relative;
         }

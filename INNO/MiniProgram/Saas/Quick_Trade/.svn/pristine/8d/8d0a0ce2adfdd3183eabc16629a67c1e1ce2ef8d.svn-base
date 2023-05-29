@@ -1,0 +1,140 @@
+import WxApi from "../../../../common/utils/wxapi/index";
+
+const App = getApp();
+Component(App.BC({
+  properties: {
+    showShortCut: { // 是否显示"商品详情"捷径
+      type: Boolean,
+      value: false
+    },
+    activity_status:Number
+  },
+  data: {
+    activityId: 0, // 活动id
+    goodsId: 0, // 商品id,
+    goodsImg: "", // 商品图片
+    show: false, // 是否显示
+    skuList: [], // 规格列表
+    productList: [], // 产品列表
+    selectSkuFinished: false, // 是否完成选择sku
+    selectedSku: [], //已选择的sku列表
+    selectedProductInfo: {}, // 已选中的产品信息
+    selectedProductNumber: 1, // 已选产品数量
+    shippingWay: 0, // 0快递配送、1门店自提
+    hasInventory: 0, // 所有产品数量总和
+  },
+  ready(){
+    this.setView({ 
+      skuRef: { get: () => this.findView("#sku") }, 
+    })
+  },
+  methods: {
+    showModal({skuList = [], productList = [], goodsId = 0, goodsImg = "", activityId = 0}) {
+      // if (this.data.goodsId === goodsId) { // 同一个商品打开，不用再初始化数据 //（需求改成实时刷新库存，先注释）
+      //   this.toggle();
+      // } else { // 不同商品打开，需要初始化数据
+      //   this.initSkuCompnent({skuList, productList}, {isRefresh: true, autoSelect: true});
+      //   this.setData({
+      //     skuList,
+      //     productList,
+      //     activityId,
+      //     goodsId,
+      //     goodsImg,
+      //     selectSkuFinished: false, // 是否完成选择sku
+      //     selectedSku: [], //已选择的sku列表
+      //     selectedProductInfo: {}, // 已选中的产品信息
+      //     selectedProductNumber: 1, // 已选产品数量
+      //     shippingWay: 0, // 0快递配送、1门店自提
+      //     hasInventory: productList.some(item => item.goods_number) , // 所有产品数量
+      //   }, () => {
+      //     this.toggle();
+      //   })
+      // }
+      this.initSkuCompnent({skuList, productList}, {isRefresh: true, autoSelect: true});
+      this.setData({
+        skuList,
+        productList,
+        activityId,
+        goodsId,
+        goodsImg,
+        selectSkuFinished: false, // 是否完成选择sku
+        selectedSku: [], //已选择的sku列表
+        selectedProductInfo: {}, // 已选中的产品信息
+        selectedProductNumber: 1, // 已选产品数量
+        shippingWay: 0, // 0快递配送、1门店自提
+        hasInventory: productList.some(item => item.goods_number) , // 所有产品数量
+      }, () => {
+        this.toggle();
+      })
+    },
+    /**
+     * 初始化sku组件
+     * @param {Object} skuData 包含 skuList: 所有规格的列表 productList: 所有产品的列表
+     * @param {Obejct} options 配置项(可选)
+     *  @param {Boolean} isRefresh 是否刷新sku组件
+     *  @param {Boolean} autoSelect 刷新时，是否自动帮忙选中有效的第一个产品 
+     */
+    initSkuCompnent(skuData, options = {isRefresh: false, autoSelect: false}) {
+      let {isRefresh, autoSelect} = options;
+      if (isRefresh) this.skuRef.reset();
+      this.skuRef.initData(skuData);
+      if (isRefresh && autoSelect) this.skuRef.autoSelectFirstAvailableProduct(skuData);
+    },
+    handleSkuSelect(e) {
+      const {finished = false, productInfo = {}, selectedSku = []} = e.detail;
+      this.setData({selectedProductInfo: productInfo, selectSkuFinished: finished, selectedSku, selectedProductNumber: 1})
+    },
+    handleProductNumberInput(e) {
+      let {selectSkuFinished, selectedProductInfo} = this.data;
+      if (!selectSkuFinished) return;
+      if (e.detail.value === "") {
+        this.setData({selectedProductNumber: ""});
+        return;
+      }
+      let inputValue = Number(e.detail.value) || 1;
+      if (inputValue <= 0) inputValue = 0;
+      else if (inputValue > selectedProductInfo.goods_number) inputValue = selectedProductInfo.goods_number;
+      this.setData({
+        selectedProductNumber: inputValue
+      })
+    },
+    handleProductNumberResize(e) {
+      let {num, disabled} = e.currentTarget.dataset;
+      if (disabled) return;
+      let {selectedProductInfo, selectedProductNumber} = this.data;
+      let productGoodsNumber = selectedProductInfo.goods_number || 0;
+      selectedProductNumber += Number(num);
+      if (selectedProductNumber <= 0 || selectedProductNumber > productGoodsNumber) return;
+      this.setData({selectedProductNumber});
+    },
+    handleShippingWayRadioChange(e) {
+      let shippingWay = e.detail.value || 1;
+      if (shippingWay === this.data.shippingWay) return;
+      this.setData({shippingWay: Number(shippingWay)})
+    },
+    handlePurchaseButtonTap() {
+      this._throttle('handlePurchaseButtonTap');
+      WxApi.navigateTo({url: `/pages/main/cart/checkout/checkout?activity_product_id=${this.data.selectedProductInfo.activity_product_id}&goods_number=${this.data.selectedProductNumber}&shippingWay=${this.data.shippingWay}`}).then(this.toggle())
+    },
+    previewImage(e) {
+      const src = e.currentTarget.dataset.src || "";
+      src && WxApi.previewImage({
+        urls: [src]
+      });
+    },
+    handleShortCutTap() {
+      if (this.data.goodsId) {
+        WxApi.navigateTo({url: `/pages/main/goods/index?goods_id=${this.data.goodsId}&activity_id=${this.data.activityId}`})
+        this.toggle();
+      }
+    },
+    toggle() {
+      let show = this.data.show;
+      // this.tabBarToggle(show);
+      WxApi.nextTick(() => {
+        this.setData({show: !show})
+      })
+    },
+    noFn() {}
+  }
+}))

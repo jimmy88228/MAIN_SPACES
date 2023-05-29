@@ -1,0 +1,57 @@
+<view class="model_area" style="{{customTab?assistBmH?assistBmH:'bottom:90rpx;' : ''}}" hidden="{{!showActModel}}">
+  <view class="model_cont {{ isIphoneX ? 'ipx_p_b' : '' }}">
+    <view class="model_cont_l">
+      <view class="cont_l">
+        <view class="coupon_list">
+          <view class="list_item" wx:for="{{actList}}" wx:key="index">
+            <view class="list_item_cont">
+              <view class="item_value">
+                <!-- <image class="item_bg" src="{{item.giftImage}}" mode="aspectFit" /> -->
+                {{item.detailName}}
+              </view>
+              <view class="line"></view>
+              <view class="item_tip">
+                <block wx:if="{{item.isReceiveBenefit == 0}}">{{item.sharedMens}}好友助力</block>
+                <block wx:elif="{{item.isReceiveBenefit == 1}}">优惠券已到账</block>
+              </view>
+            </view>
+          </view>
+        </view>
+        <view class="progress_area">
+          
+          <view class="progress_bg">
+            <view class="progress" style="width:{{progress + '%'}};"></view>
+            <block>
+              <!--进度点-->
+              <view class="point_list">
+                <view 
+                wx:for="{{actList}}" 
+                wx:key="index" 
+                class="point {{assistCount > item.sharedMens || assistCount == item.sharedMens ? 'is_get' : ''}}">
+                <text class="point_icon"></text>
+                </view>
+              </view>
+            </block>
+          </view>
+        </view>
+      </view>
+    </view>
+    <view class="model_cont_r">
+      <view class="assist_btn_area">
+        <btns 
+        class="assist_btn"
+        isLogin="{{isLogin}}"
+        bindclickcallback="shareTap"
+        >
+          分享好友助力
+        </btns>
+      </view>
+      <view class="assist_tip">已获得 {{assistCount}} 位好友助力</view>
+    </view>
+  </view>
+</view>
+
+<!--分享海报-->
+<share id="shareModule" bindchooseShareType="chooseShareType" bindcheckIfStaffDstbCallBack="checkIfStaffDstbCallBack"></share>
+<!--分享图-->
+<shareImg id="shareImg" allData="{{allData}}"></shareImg>

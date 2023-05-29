@@ -36,6 +36,10 @@ export const WechatApiList = {
 		u: "/wechat/updateUserProfile",
 		m: "post"
 	},
+	uploadWxAvatarUrl: {
+		u: "/wechat/uploadWxAvatarUrl",
+		m: "post"
+	},
 	createActivityAppletCode: {
 		u: "/wechat/createActivityAppletCode",
 		m: "post"
@@ -250,4 +254,56 @@ export const wxSubscribeApiList = {
 		u: "/wxSubscribe/submitSubscribe",
 		m: "post"
 	},
+}
+
+export const lectureApiList = {
+	getLectureAnswerCoupon: "/lecture/getAnswerCoupon",
+	getLectureCourseExamRecordInfo: "/lecture/getCourseExamRecordInfo",
+	getLectureExamModel: "/lecture/getExamModel",
+	getLectureExamQuestionList: "/lecture/getQuestionList",
+	getLectureCourseContent: "/lecture/getCourseContent",
+	selectLectureCourseListByPage: "/lecture/selectCourseListByPage",
+	punchCardLecture: {
+		u: "/lecture/punchCard",
+		m: "post"
+	},
+	submitExamLecture: {
+		u: "/lecture/submitExam",
+		m: "post"
+	},
+	finishExamLecture: {
+		u: "/lecture/finishExam",
+		m: "post"
+	},
+	getLectureDetailInfo:"/lecture/getLectureDetailInfo",
+	sign: {
+		u: "/lecture/sign",
+		m: "post"
+	},
+}
+
+export const examApiList = {
+	getAnswerCoupon: "/course/exam/getAnswerCoupon",
+	getCourseExamRecordInfo: "/course/exam/getCourseExamRecordInfo",
+	getExamModel: "/course/exam/getExamModel",
+	getExamQuestionList: "/course/exam/getQuestionList",
+	submitExam: {
+		u: "/course/exam/submitExam",
+		m: "post"
+	},
+	finishExam: {
+		u: "/course/exam/finishExam",
+		m: "post"
+	}
+}
+
+export const courseApiList = {
+	getCourse: "/course/getCourse",
+	getCourseContent: "/course/getCourseContent",
+	selectCourseListByPage: "/course/selectCourseListByPage",
+	punchCard: {
+		u: "/course/punchCard",
+		m: "post"
+	}
+
 }

@@ -441,9 +441,9 @@ function initAllData(arr){
   let customJump = 0;
   if (this.currentIndex == "1") {
     if (thisData.relatedType == 1){
-      let urlData =  MyStr.getUrlParam(thisData.relatedUrl,true);
+      let urlData =  MyStr.getUrlParam(thisData.relatedUrl,true)||{};
       console.log("urlData", urlData)
-      paramsJson = urlData.params;
+      paramsJson = urlData.params||{};
       paramsJson.staffActivityId = thisData.activityId||0; // lately inserted
       path = urlData.path
       // paramsName = "";

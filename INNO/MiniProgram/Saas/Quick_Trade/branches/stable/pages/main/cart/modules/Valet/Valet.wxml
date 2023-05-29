@@ -1,0 +1,4 @@
+<searchByMobile id="searchByMobile" bindsearchresult="searchResult"></searchByMobile>
+<phoneSms id="phoneSms"></phoneSms>
+<phoneSms id="phonePaySms"></phoneSms>
+

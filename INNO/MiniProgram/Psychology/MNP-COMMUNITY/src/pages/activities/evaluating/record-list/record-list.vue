@@ -9,14 +9,13 @@
         <view class="content-scroll">
           <scroll-view scroll-y class="scroll-box" id="scrollId" @scrolltolower="scrolltolower">
             <view class="item-page" v-for="(pItem, pIndex) in list" :key="pIndex">
-              <view v-for="(item, index) in pItem" :key="item.activityId">
-                <!-- <view class="wrap m-b-25" v-if="pIndex == finishPage - 1 && index == finishIndex">已结束测评</view> -->
-
-                <view class="item">
+                <view v-for="(item, index) in pItem" :key="item.activityId" class="item">
                   <view class="msg-box flex-s-c">
                     <view class="relative">
-                      <image :lazy-load="true" :src="item.logo.trim() ? item.logo : staticAddress+activityIcon"
-                        @error="imgerror($event, index, pIndex)" class="img" mode="aspectFill" />
+                      <ori-image :lazy-load="true" :src="item.logo.trim() ? item.logo : staticAddress+activityIcon"
+                        @error="imgerror($event, index, pIndex)" customStyle="width: 180rpx;height: 180rpx;border-radius: 12rpx;" class="shrink0" mode="aspectFill" ></ori-image>
+                      <!-- <image :lazy-load="true" :src="item.logo.trim() ? item.logo : staticAddress+activityIcon"
+                        @error="imgerror($event, index, pIndex)" class="img" mode="aspectFill" /> -->
                     </view>
                     <view class="content flex1 flex flex-col flex-b-s">
                       <view>
@@ -59,20 +58,18 @@
                       </view>
                     </view>
                   </view>
-
-                  <view class="btn flex-e-c font-28 m-r-32"
+                  <view class="btn flex-e-c font-28"
                     v-if="item.joinState == 'joining' || (item.joinState == 'finished' && item.recordId != 0)">
-                    <view v-if="item.joinState == 'finished'" class="active-btn" @click="report"
+                    <view v-if="item.joinState == 'finished'" class="active-btn m-r-32" @click="report"
                       :data-state="item.joinState" data-p-index="pIndex"
-                      :data-url="`pages/report/report-info/report-info?recordId=${item.recordId}`">查看报告</view>
-                    <view v-else-if="item.joinState == 'joining'" class="active-btn" @click="jump"
+                      :data-url="`pages/report-info/report-info?recordId=${item.recordId}`">查看报告</view>
+                    <view v-else-if="item.joinState == 'joining'" class="active-btn m-r-32" @click="jump"
                       :data-state="item.joinState" data-p-index="pIndex" :data-url="
                       '/pages/activities/evaluating/detail/detail?activityId=' +
                       item.activityId
                     ">继续测评</view>
                   </view>
                 </view>
-              </view>
             </view>
           </scroll-view>
         </view>
@@ -87,9 +84,13 @@
 
 <script>
   import SMH from "@/common/helper/show-msg-handler";
+  import oriImage from "@/components/ori-comps/image/ori-image"
 
   const app = getApp();
   const pageOption = Page.BasePage({
+    components:{
+      oriImage
+    },
     data() {
       return {
         activityIcon: "/activity-icon.jpg",
@@ -241,24 +242,11 @@
       border-radius: 20rpx;
       background-color: #fff;
       margin: 20rpx;
-      // border: 1px solid rgba($color: #EFEFEF, $alpha: 0.8);
       box-shadow: 0px 0px 17rpx 0 rgba(0, 0, 0, 0.09);
-
-      // &:last-child{
-      //   margin-bottom: 0;
-      // }
-      &:first-child {
-        margin-top: 0;
-      }
-
-      &>view:nth-child(2) {
-        // border-top: 1px solid rgba($color: #979797, $alpha: 0.2);
-      }
 
       .msg-box {
         padding: 25rpx;
         box-sizing: border-box;
-        border-bottom: 1px solid rgba($color: #979797, $alpha: 0.2);
       }
 
       .img {
@@ -285,6 +273,7 @@
       }
 
       .btn {
+        border-top: 1px solid rgba($color: #979797, $alpha: 0.2);
         height: 100rpx;
       }
 

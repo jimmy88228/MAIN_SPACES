@@ -32,7 +32,7 @@
 
 <script>
   import LoadingView from '@/components/css3/loading/loading.vue';
-  import utils from '@/common/support/utils.js'
+  import utils from '@/common/support/utils/utils.js'
 
   const app = getApp();
   const pageOption = Page.BasePage({

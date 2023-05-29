@@ -1,0 +1,7 @@
+<!-- pages/component/pop/order-sync/order-sync.wxml-->
+<window class="window" ext-class="window-ext">
+    <view class="tips {{type || ''}}" wx:if="{{tips}}" style="{{boxStyle}}">
+      <button loading="{{true}}"></button>
+      <view class="tip_text">{{tips}}</view>
+    </view>
+</window>

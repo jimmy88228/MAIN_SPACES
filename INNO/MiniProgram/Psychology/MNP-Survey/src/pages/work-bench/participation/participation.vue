@@ -9,10 +9,8 @@
       <view class="font-22 C_B2 clamp m-b-10">{{myOrganize.structureName}}</view>
       <view class="flex-b-c">
         <view class="font-36 C_33 flex-s-c" @click="toggleOrganizeLsit"><text class="clamp"
-            style="max-width:300rpx">{{myOrganize.classFullName}}</text><text>（{{successCount || 0}}/{{organizeList.length || 0}}）</text>
-          <!-- <view class="select-icon" :style="selectRotate"></view> -->
+            style="max-width:400rpx">{{myOrganize.classFullName}}（{{myOrganize.schoolYear}}）</text><text>（{{successCount || 0}}/{{organizeList.length || 0}}）</text>
         </view>
-        <!-- <view v-if="organizeCount > 0" class="C_7f font-24 f-shrink-0">共{{organizeCount}}个小组</view> -->
       </view>
     </view>
     <view class="organize-situation">
@@ -21,19 +19,14 @@
         <view v-if="item.code == 2" class="check-style check-style-2">!</view>
         <view class="organize-item-text flex-c-c relative">
           <view class="font-22 clamp4">{{item.memberName}}</view>
-          <!-- <view v-if="item.shortName" class="organize-item-shortName">{{item.shortName || ''}}</view> -->
         </view>
       </view>
     </view>
-    <!-- <work-bench ref="workBench" :isChild="true" :activityId="activityId" @loadSuccess="loadOrganizeSuccess"
-      @selected="selectOrganize" @popupChange="popupChange">
-    </work-bench> -->
   </view>
 </template>
 
 <script>
   import SIH from "@/common/helper/sys-infos-handler"
-  // import workBench from "@/components/custom-page/work-bench/work-bench"
 
   const app = getApp();
   const pageOption = Page.BasePage({
@@ -49,9 +42,6 @@
         activityId: 0
       }
     },
-    // components: {
-    //   workBench
-    // },
     computed: {
       selectRotate() {
         let popupShow = this.popupShow;
@@ -108,34 +98,6 @@
         });
         // 2红 1蓝 0灰
       },
-      // toggleOrganizeLsit() {
-      //   return
-      //   let ref = "workBench";
-      //   if (!this.popupShow) {
-      //     this.$refs[ref].showBench();
-      //   } else {
-      //     this.$refs[ref].hideBench()
-      //   }
-      // },
-      // loadOrganizeSuccess(e) {
-      //   this.selectedOrganize = e[0];
-      //   this.organizeSelectList = e;
-      //   console.log(e,"小组长度")
-      //   this.organizeCount = e[0].isAll ? e.length - 1 : e.length;
-      //   this.initPage(this.selectedOrganize.isAll)
-      // },
-      // selectOrganize(e) {
-      //   this.selectedOrganize = e;
-      //   console.log(e,"选择的项")
-      //   if (e.isAll) {
-      //     this.loadData(1)
-      //   } else {
-      //     this.loadData()
-      //   }
-      // },
-      // popupChange(e) {
-      //   this.popupShow = e
-      // }
     }
   })
   export default pageOption

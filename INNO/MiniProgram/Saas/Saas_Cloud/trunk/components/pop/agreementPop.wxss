@@ -14,10 +14,10 @@
   padding: 36rpx;
   box-sizing: border-box;
   text-align: left;
+  /* min-height: 70vh;
+  max-height: 70vh; */
   min-height: 60vh;
-  max-height: 60vh;
-  height: 60vh;
-  padding-bottom: calc(90rpx + 20rpx);
+  padding-bottom: calc(90rpx);
   /* z-index: 180; */
   color: #333333;
   font-size: 24rpx;
@@ -32,7 +32,7 @@
 }
 .article_content{
   box-sizing: border-box;
-  height: calc(60vh - 408rpx);
+  height: calc(60vh - 378rpx);
   margin-bottom: 20rpx;
   font-size: 28rpx;
   color: #333333;
@@ -52,11 +52,11 @@
   height: 80rpx;
 }
 .footer>.agree_tips{
-  height: 40rpx;
+  /* height: 40rpx; */
   line-height: 40rpx;
   font-size: 28rpx;
   font-weight: bold;
-  margin: 40rpx 0;
+  margin: 30rpx 0;
   text-indent: 10rpx;
 }
 .footer>.btn_group>.btn_view{

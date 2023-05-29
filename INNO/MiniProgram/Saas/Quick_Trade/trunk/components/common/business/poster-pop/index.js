@@ -50,6 +50,7 @@ Component(App.BC({
 
 function createAndDrawPoster({type, data}) {
   let canvas = this.canvasInstance = new WxCanvas2d();
+  console.log('canvas',canvas)
   let getSeries;
   if (type === "goods") {
     getSeries = getGoodsSeries;

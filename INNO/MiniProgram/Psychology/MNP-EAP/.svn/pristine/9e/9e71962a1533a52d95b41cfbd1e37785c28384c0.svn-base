@@ -1,0 +1,314 @@
+
+export const LogMap = {
+
+  ["pages/startup/startup"]: "STARTUP",
+  ["pages/index/index"]: "INDEX",
+  ["pages/user/user"]: "USER",
+  ["pages/login/login"]: "LOGIN",
+  ["pages/information/information"]: "INFORMATION",
+  ["pages/register/register"]: "REGISTER",
+  ["pages/agree/agree"]: "AGREE",
+  ["pages/custom/page/page"]: "CUSTOM_PAGE",
+  ["pages/web-view/web-view"]: "WEB_VIEW",
+
+  // 心理咨询
+  ["pages/psychology/tutor/tutor"]: "PSYCHOLOGY_TUTOR",
+  ["pages/psychology/resume/resume"]: "PSYCHOLOGY_RESUME",
+  ["pages/psychology/reserve/reserve"]: "PSYCHOLOGY_RESERVE",
+  ["pages/psychology/reserve-result/reserve-result"]: "PSYCHOLOGY_RESERVE_RESULT",
+  ["pages/psychology/my-reserve/my-reserve"]: "PSYCHOLOGY_MY_RESERVE",
+
+  // 报表
+  ["pages/report/report-list/report-list"]: "REPORT_REPORT_LIST",
+  ["pages/report/report-info/report-info"]: "REPORT_REPORT_INFO",
+
+  //资源详情
+  ["pages/audio-detail/audio-detail"]: "PUBLIC_AUDIO_DETAIL",
+  ["pages/video-detail/video-detail"]: "PUBLIC_VIDEO_DETAIL",
+  ["pages/article-detail/article-detail"]: "PUBLIC_ARTICLE_DETAIL",
+  
+  // 量表测评
+  ["pages/activities/evaluating/detail/detail"]: "ACTIVITIES_EVALUATING_DETAIL",
+  ["pages/activities/evaluating/list/ac-list"]: "ACTIVITIES_EVALUATING_LIST",
+  ["pages/activities/evaluating/answer/answer"]: "ACTIVITIES_EVALUATING_ANSWER",
+  ["pages/activities/evaluating/answer/answer-result"]: "ACTIVITIES_EVALUATING_ANSWER_RESULT",
+  ["pages/activities/evaluating/answer/gather-information"]: "ACTIVITIES_EVALUATING_GATHER_INFORMATION",
+
+  // 趣味测评
+  ["pages/activities/fun-assessment/list/fun-list"]: "ACTIVITIES_FUN_ASSESSMENT_FUN_LIST",
+  ["pages/activities/fun-assessment/detail/detail"]: "ACTIVITIES_FUN_ASSESSMENT_DETAIL",
+  ["pages/activities/fun-assessment/answer/answer"]: "ACTIVITIES_FUN_ASSESSMENT_ANSWER",
+  ["pages/activities/fun-assessment/answer/answer-result"]: "ACTIVITIES_FUN_ASSESSMENT_ANSWER_RESULT",
+
+  
+  // 工作台
+  ["pages/work-bench/work-bench-detail/work-bench-detail"]: "WORK_BENCH_DETAIL",
+  ["pages/work-bench/participation/participation"]: "WORK_BENCH_PARTICIPATION",
+  ["pages/work-bench/reserve-supervise-list/reserve-supervise-list"]: "WORK_BENCH_RESERVE_SUPERVISE_LIST",
+  ["pages/work-bench/reserve-supervise/reserve-supervise"]: "WORK_BENCH_RESERVE_SUPERVISE",
+  ["pages/work-bench/intervene-record/intervene-record"]: "WORK_BENCH_INTERVENE_RECORD",
+  ["pages/work-bench/referrals/referrals"]: "WORK_BENCH_REFERRALS",
+  ["pages/work-bench/caring-staff/caring-staff"]: "WORK_BENCH_CARING_STAFF",
+  ["pages/work-bench/psy-book/psy-book"]: "WORK_BENCH_PSY_BOOK",
+
+  // 转院渠道
+  ["pages/nearby-address/address-detail/address-detail"]: "ADDRESS_DETAIL",
+  ["pages/nearby-address/address-nav/address-nav"]: "ADDRESS_NAV",
+  
+  // 树洞
+  ["pages/tree-hole/index"]: "TREE_HOLE_INDEX",
+  ["pages/tree-hole/record"]: "TREE_HOLE_RECORD",
+  
+  // 小游戏
+  ["pages/game/find-out-difference/game-index"]: "FIND_OUT_DIFFERENCE_INDEX",
+  ["pages/game/find-out-difference/game"]: "FIND_OUT_DIFFERENCE_GAME",
+  ["pages/game/find-out-difference/rank/list"]: "FIND_OUT_DIFFERENCE_RANK_LIST",
+  ["pages/game/find-out-difference/result/result"]: "FIND_OUT_DIFFERENCE_RESULT",
+
+  // 课程任务
+  ["pages/course/course-list/course-list"]: "COURSE_COURSE_LIST",
+  ["pages/course/course-details/course-details"]: "COURSE_COURSE_DETAILS",
+  ["pages/course/course-video/course-video"]: "COURSE_COURSE_VIDEO",
+  ["pages/course/course-audio/course-audio"]: "COURSE_COURSE_AUDIO",
+  ["pages/activities/exam/answer/exam-record"]:"COURSE_EXAM_RECORD", 
+  ["pages/activities/exam/answer/check-scores"]:"COURSE_CHECK_SCORES", 
+  ["pages/activities/exam/answer/answer"]:"COURSE_COURSE_ANSWER", 
+  
+  // 调查问卷
+  ["pages/questionnaire/answer/answer"]:"QUESTIONNAIRE_ANSWER", 
+  ["pages/questionnaire/detail/detail"]:"QUESTIONNAIRE_DETAIL", 
+  ["pages/questionnaire/result/result"]:"QUESTIONNAIRE_result", 
+
+  // 404
+  ["pages/public/404"]:"PUBLIC_404"
+};
+
+export const WithOutLogMap = {
+};
+
+export const ActionRoute = {
+}
+
+export const ActionName = {
+  
+}
+
+export const SceneChannel = {
+  1008:{
+    channel:"GROUP_SHARE"
+  },
+  1007: {
+    channel: "USER_SHARE"
+  },
+  1044: {
+    channel: "GROUP_SHARE"
+  },
+  1035: {
+    channel: "OFFIACCOUNT_MENU"
+  },
+  1043: {
+    channel: "OFFIACCOUNT_MSG"
+  },
+  1074: {
+    channel: "OFFIACCOUNT_MSG"
+  },
+  1082: {
+    channel: "OFFIACCOUNT_MSG"
+  },
+  1058: {
+    channel: "OFFIACCOUNT_ARTICLE"
+  },
+  1091: {
+    channel: "OFFIACCOUNT_ARTICLE"
+  },
+  1037: {
+    channel: "MINIPRO"
+  },
+  1011: {
+    channel: "CUSTOM"
+  },
+  1012: {
+    channel: "CUSTOM"
+  },
+  1013: {
+    channel: "CUSTOM"
+  },
+  1047: {
+    channel: "CUSTOM"
+  },
+  1048: {
+    channel: "CUSTOM"
+  },
+  1049: {
+    channel: "CUSTOM"
+  },
+  1025: {
+    channel: "CUSTOM"
+  },
+  1031: {
+    channel: "CUSTOM"
+  },
+  1032: {
+    channel: "CUSTOM"
+  },
+  //视频号渠道
+  1175: { // 视频号主页商店入口
+    channel: "VIDEOLIVE"
+  },
+  1176: { // 视频号直播间主播打开小程序
+    channel: "VIDEOLIVE"
+  },
+  1177: { // 视频号直播商品
+    channel: "VIDEOLIVE"
+  },
+  1191: { // 视频号活动
+    channel: "VIDEOLIVE"
+  },
+  1195: { // 视频号主页商品tab
+    channel: "VIDEOLIVE"
+  },
+  1197: { // 视频号主播从直播间返回小游戏
+    channel: "VIDEOLIVE"
+  },
+  1198: { // 视频号开播界面打开小游戏
+    channel: "VIDEOLIVE"
+  },
+  
+  1045: {
+    channel: 'FRIENDS_CIRCLE'
+  },
+  1046: {
+    channel: 'FRIENDS_CIRCLE'
+  },
+  1084: {
+    channel: 'FRIENDS_CIRCLE'
+  },
+  // 1154: {
+  //   channel: 'FRIENDS_CIRCLE'
+  // },
+}
+ 
+export const PageType = {
+} 
+
+// 生成二维码标识
+export const OpKind = {
+  ["NORMAL"]: "POSTER_SHARE",
+  ["CUSTOM_INDEX"]: "CUSTOM_INDEX",    //首页
+  ["CUSTOM_PAGE"]: "CUSTOM_PAGE",      //自定义页
+  ["SECKILL_HELP"]: "SECKILL_HELP",    //秒杀活动页
+  ["SECKILL_GOODS"]: "SECKILL_GOODS",  //秒杀商品页
+  ["NORMAL_GOODS"]:"NORMAL_GOODS",     //普通商品
+  ["PRE_SALE_GOODS"]:"PRE_SALE_GOODS", //预售商品
+  ["POINT_GOODS"]:"POINT_GOODS",       //积分商品
+  ["POINT_COUPON"]: "POINT_COUPON",       //积分优惠券
+  ["COLLOCATE_GOODS"]: "COLLOCATE_GOODS", //搭配商品
+  ["STAFF_ACTIVITY"]:"STAFF_ACTIVITY", //分销活动
+  ["STAFF_GOODS"]:"STAFF_GOODS",       //分销商品
+  ["COLLAGE_GROUP"]: "COLLAGE_GROUP",  //拼团邀请
+  ["COLLAGE_GOODS"]: "COLLAGE_GOODS",  //拼团商品
+  ["BARGAIN_SHARE"]: "BARGAIN_SHARE",  //砍价邀请
+  ["BARGAIN_GOODS"]: "BARGAIN_GOODS",  //砍价商品
+  ["VIDEO_SHOP"]: "VIDEO_SHOP",        //视频购物
+  ["STAFF_INVITE"]:"STAFF_INVITE",     //分销中心邀请好友分享
+  ["USER_MY_CODE"]:"USER_MY_CODE",     //个人中心我的码
+  ["GUIDE_MY_CODE"]:"GUIDE_MY_CODE",   //导购中心导购码
+  ["NEW_USER_SHARE"]:"NEW_USER_SHARE",    //个人中心公众号码
+  ["INVITE_AWARD"]:"INVITE_AWARD",    //邀请有奖分享
+  ["STORE_STAFF"]:"STORE_STAFF",  //导购公众号码
+  ["STAFF_COUPON"]:"STAFF_COUPON", //分销派券
+  ["FRIEND_INVITE"]:"FRIEND_INVITE" //分销派券
+}
+
+export const ShareType = {
+  ...OpKind,
+  ["NORMAL"]: "PAGE_SHARE",
+}
+
+export const ShareConf = {
+}
+
+export const PageLogin = { 
+}  
+
+export const SceneType= {
+
+  1007: { type: "card" },//"单人聊天小程序卡片",
+  1008: { type: "card" },//"群聊会话小程序卡片",
+  1011: { type: "qrcode" },//"扫描二维码",
+  1012: { type: "qrcode" },//"长按图片识别二维码",
+  1013: { type: "qrcode" },//"扫描手机相册中选取的二维码",
+  1025: { type: "qrcode" },//"扫描一维码",
+  1031: { type: "qrcode" },//"长按识别一维码",
+  1032: { type: "qrcode" },//"扫描手机相册中选取的一维码",
+  1036: { type: "card" },//"App 分享消息卡片",
+  1044: { type: "card" },//"带 shareTicket 的小程序消息卡片",
+  1047: { type: "qrcode" },//"扫描小程序码",
+  1048: { type: "qrcode" },//"长按图片识别小程序码",
+  1049: { type: "qrcode" },//"扫描手机相册中选取的小程序码",
+  1072: { type: "qrcode" },//"二维码收款页面",
+  1073: { type: "card" },//"客服消息列表下发的小程序消息卡片",
+  1074: { type: "card" },//"公众号会话下发的小程序消息卡片",
+  1096: { type: "chat" },//"聊天记录",
+} 
+
+export const videoAccountType = {
+  1175: { type: "videoAccountIndexGoods" },
+  1177: { type: "videoAccountLiveGoods" },
+} 
+
+export const TabKeys = {  
+}  
+
+export const KeyParamName = {
+  ["pages/startup/startup"]:["scene"], //启动页
+  ["pages/psychology/resume/resume"]:["consultantId"], //导师简历
+  ["pages/psychology/reserve/reserve"]:["consultantId"], //预约资讯
+  ["pages/report/report-info/report-info"]:["recordId"], //测评详情
+  ["pages/audio-detail/audio-detail"]:["id"], //音乐详情
+  ["pages/video-detail/video-detail"]:["id"], //视频详情
+  ["pages/article-detail/article-detail"]:["id"], //文章详情
+  ["pages/custom/page/page"]:["page_id","type"], //自定义页
+  ["pages/web-view/web-view"]:["url"], //web-view
+  ["pages/activities/evaluating/detail/detail"]:["activityId"], //测评详情
+  ["pages/activities/evaluating/answer/answer"]:["activityId","current","allCount"], //心理测评题目
+  ["pages/activities/evaluating/answer/gather-information"]:["activityId","current","allCount"], //人口信息收集
+  ["pages/activities/evaluating/answer/answer-result"]:["recordId"], //心理测评结果
+  ["pages/work-bench/participation/participation"]:["activityId"], //参与情况
+  ["pages/work-bench/reserve-supervise/reserve-supervise"]:["consultantId"], //预约督导
+  ["pages/work-bench/referrals/referrals"]:["userId","structureId"], //请求转介
+  ["pages/work-bench/intervene-record/intervene-record"]:["userId","structureId","warningLevel"], //干预记录
+  ["pages/work-bench/archives/archives"]:["userId"], //档案详情
+  ["pages/nearby-address/address-detail/address-detail"]:["id","name","address"], //导航页面
+  ["pages/nearby-address/address-nav/address-nav"]:["key_word"], //转院渠道
+  ["pages/game/find-out-difference/game-index"]:["gameActivityId"], //小游戏首页
+  ["pages/game/find-out-difference/game"]:["gameActivityId"], //小游戏页面
+  ["pages/game/find-out-difference/rank/list"]:["gameActivityId"], //排行榜
+  ["pages/game/find-out-difference/result/result"]:["gameActivityId","score"], //闯关结果
+  ["pages/course/course-details/course-details"]: ["courseActivityId"],//课程详情
+  ["pages/course/course-video/course-video"]: ["activityId","courseId","contentId"],//视频课程
+  ["pages/course/course-audio/course-audio"]: ["id","courseId"],//音频课程
+  ["pages/activities/exam/answer/exam-record"]:["activityId","contentId","courseId","modelId"], //答题课程得分
+  ["pages/activities/exam/answer/check-scores"]:["activityId","examRecordId"], //答题课程查看对错
+  ["pages/activities/exam/answer/answer"]:["activityId","contentId","courseId","modelId"], //答题课程
+  ["pages/questionnaire/answer/answer"]:["id"], 
+  ["pages/questionnaire/detail/detail"]:["id"], 
+
+}
+
+export const ExtendKeyParamName = {
+  ["STORE_CODE"]: ["store_id"],
+  ["STAFF_CODE"]: ["staff_id", "store_id", "staff_code"],
+  ["store_code"]: ["store_id"],
+  ["staff_code"]: ["staff_id", "store_id", "staff_code"],
+  ["USER_MY_CODE"]: ["store_id","staff_code"],
+  ["GUIDE_MY_CODE"]: ["staff_id", "store_id", "staff_code"],
+} 
+
+export const NotNeedLoginPage = {
+  'pages/login/login':true,
+  'pages/startup/startup':true,
+  'pages/information/information':true,
+  'pages/register/register':true,
+  'pages/user-switch/user-switch':true,
+}

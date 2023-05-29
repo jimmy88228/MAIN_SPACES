@@ -8,7 +8,17 @@
               mode="{{_data.open_icon?'aspectFit':'widthFix'}}" 
               src="{{item.image}}">
               <view class="initBg" wx:if="{{!isInited}}"></view>
-          </image>
+          </image> 
+          <btns 
+            wx:if="{{item.link.code == 'contactStaff'}}"
+            isLogin="{{isLogin}}"
+            tapInterval="{{3000}}" 
+            position-type="absolute"
+            bindclickcallback="linkJump"
+            data-data="{{item}}" 
+            data-type="imageAd"
+            show-msg-bool="{{false}}"
+          ></btns>
           <view class="title">{{item.title}}</view>
         </view>
       </block>

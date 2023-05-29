@@ -43,5 +43,6 @@ export const Apis = {
 	...addRequests(ApisList.specialSectionApiList,apiDomain.SPECIALSECTIONAPI),
 	...addRequests(ApisList.examApiList,apiDomain.EXAMAPI),
 	...addRequests(ApisList.courseApiList,apiDomain.COURSEAPI),
+	...addRequests(ApisList.questionaireApiList,apiDomain.QUESTIONAIREAPI),
 }
 console.log("install", Apis)

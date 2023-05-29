@@ -1,0 +1,11 @@
+<image
+  class="ext-class ori-image {{isInit?'show':''}}"
+  lazy-load="{{lazyLoad}}" 
+  src="{{src}}" 
+  mode="{{mode}}" 
+  bindload="load" 
+  binderror="onError"
+  show-menu-by-longpress="{{showMenuByLongpress}}" 
+>
+  <slot></slot>
+</image>

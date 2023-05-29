@@ -16,10 +16,9 @@
           <view class="title">{{loginData.customerName}}</view>
         </view>
       </view> -->
-      <view class="login-logo-container">
-        <image class="audio-detail-background" :src="loginData.logo" @load="getBgSize"
-          :style="{height:bgHeight,width:bgWidth}" v-if="loginData.logo"></image>
-      </view>
+      <!-- <view class="login-logo-container"> -->
+        <fullScreenImg :src="loginData.logo" v-if="loginData.logo"></fullScreenImg>
+      <!-- </view> -->
       <view class="footer flex-c-c">
         <template v-if="canInputPhone">
           <button class="btn-box" @click="register">
@@ -42,7 +41,7 @@
           <view class="agree-icon">
             <view class="select-switch" :class="{ selected: selectAgree }"></view>
           </view>
-          <view>我同意心理使用我所提交的信息用于快捷登录，查看
+          <view>我同意{{loginData.agreementCustomer || ""}}使用我所提交的信息用于快捷登录，查看
             <view class="agree-link" @click.stop="checkAgree">用户隐私保护指引</view>
           </view>
         </view>
@@ -72,7 +71,7 @@
           <view class="agree-icon">
             <view class="select-switch" :class="{ selected: selectAgree }"></view>
           </view>
-          <view>已阅读并同意心理
+          <view>已阅读并同意{{loginData.agreementCustomer || ""}}
             <view class="agree-link" @click.stop="checkAgree">用户隐私保护指引</view>
           </view>
           <!-- <view>已阅读并同意白云心理 <view class="agree-link" @click.stop="checkAgree">用户隐私保护指引</view></view> -->
@@ -86,6 +85,8 @@
 </template>
 
 <script>
+  import fullScreenImg from "@/components/full-screen-img/full-screen-img.vue"
+  import SM from '@/common/manager/structure-manage'
   import utils from '@/common/support/utils.js'
   import SIH from "@/common/helper/sys-infos-handler";
   import AuthButton from "@/components/auth-button/auth-button.vue";
@@ -95,6 +96,7 @@
   const app = getApp();
   const pageOption = Page.BasePage({
     components: {
+      fullScreenImg,
       AuthButton,
       oriInput,
     },
@@ -112,8 +114,6 @@
         schoolInfo: {},
         actInfo: {},
         loginData: {},
-        bgHeight: 0,
-        bgWidth: 0,
         canInputPhone: false,
         openType: "getPhoneNumber"
       };
@@ -132,17 +132,6 @@
       this.init();
     },
     methods: {
-      getBgSize({
-        detail
-      }) {
-         let width = detail.width;
-        let height = detail.height;
-        utils.getBgSize(width, height).then(res => {
-          this.bgWidth = res.imgW + "px"
-          this.bgHeight = res.imgH + "px"
-          this.isLoadBg = true;
-        })
-      },
       init() {
         // #ifdef H5
         app.LM.logout();
@@ -170,9 +159,8 @@
         //   this.isAccountLogin =
         //     app.Sysm.sysConf["applet_login_type"] == "password";
         // });
-        this.$Http(this.$Apis.getCustomerInfo).then((res) => {
-          this.loginData = res.data
-          console.log(res, "获得的首页")
+        SM.getCustomerInfo().then(res => {
+          this.loginData = res ||{}
         });
 
         this.checkLoginForm()
@@ -351,22 +339,8 @@
 </script>
 
 <style scoped lang="scss">
-  .login-logo-container {
-    width: 100%;
-    height: 100vh;
-    position: absolute;
-    left: 0;
-    top: 0;
-    overflow: hidden;
 
 
-    .audio-detail-background {
-      position: absolute;
-      left: 50%;
-      top: 50%;
-      transform: translate(-50%, -50%);
-    }
-  }
 
   .main {
     // padding: 220rpx 0rpx 0 96rpx;

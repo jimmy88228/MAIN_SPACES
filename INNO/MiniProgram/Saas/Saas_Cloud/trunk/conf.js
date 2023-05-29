@@ -8,12 +8,12 @@ import { PayType } from "./common/manager/log-map";
  * 
 */
 const API_TYPE = "2";  //1:测试环境 ，2：正式环境 ，3： 雅鹿,百家好,新saas定制
-const BRANDCODE= "SA";//"XLH"//TBH//JWTEST//ZZYXCODE//XXRMCODE//XIAICODE//ZZLD//JLY品牌名称
-const ICONNAME= "SA"; //JWTY//TBH//ZZ品牌icon文件夹//XA
+const BRANDCODE= "GOSO"; 
+const ICONNAME= "GOSO"; 
 
 let _config = getSetConfig({
-  brandCode: BRANDCODE,//"XLH"//TBH//JWTEST//ZZYXCODE//XXRMCODE//XIAICODE//ZZLD//JLY品牌名称
-  iconFileName: ICONNAME, //JWTY//TBH//ZZ品牌icon文件夹//XA
+  brandCode: BRANDCODE,//INNOVATION//XLH//TBH//JWTEST//ZZYXCODE//XXRMCODE//XIAICODE//ZZLD//JLY品牌名称
+  iconFileName: ICONNAME, //INNO//JWTY//TBH//ZZ品牌icon文件夹//XA
   visitApiType:API_TYPE,
   barCodeApiType: API_TYPE,
   dev: API_TYPE == "1" ? true : false,
@@ -33,7 +33,11 @@ let _config = getSetConfig({
   PAYTYPE: PayType,
   ext_params: {
     qq_map_api_key: "IQABZ-UE2C2-F7OU6-CGV3S-D74G6-ERFMR" // 腾讯位置信息服务key
-  }
+  },
+  sevenFishConf:{
+    APP_KEY:"e1bb172cdb3cad526c657df12526a225", //5c193d9a50d2c6bb6497773ea81b2359 //e1bb172cdb3cad526c657df12526a225
+    APP_ID:"zRK0QRkFZgq", //3f0eoV7OHWR //zRK0QRkFZgq
+  } 
 });
 // const config = EXT.tabbarHandle(Utils.merge(_config));
 const config = EXT.tabbarHandle(Utils.merge(_config, EXT.BInfo));

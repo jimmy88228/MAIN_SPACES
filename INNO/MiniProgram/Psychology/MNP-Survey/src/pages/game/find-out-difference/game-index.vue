@@ -1,0 +1,111 @@
+<template>
+  <view class="game-index-area text-c">
+    <page-nav :isTransparent="true">
+      <view slot="custom-content">
+        <image @click="getRank" class="game-rank-icon" :src="staticAddress + '/game/different/rank-icon.png'" mode="widthFix">
+      </view>
+    </page-nav>
+    <image  @load="getBgSize" v-show="isLoadBg"  class="game-index-bg" :src="bgImg" mode="widthFix">
+    <view class="operate-area" :class="[isIphoneX?'ipx_p_b':'']">
+      <view class="operate-btn" @click="startGame">
+        <image class="operate-icon" :src="staticAddress + '/game/different/game-start-v2.png'" mode="widthFix">
+      </view>
+    </view>
+  </view>
+</template>
+
+<script>
+const app = getApp();
+const pageOption = Page.BasePage({
+  components: { },
+  data() {
+    return {
+      bgWidth: "100%",
+      bgHeight: 0,
+      isLoadBg: false,
+      info:[]
+    };
+  },
+  onLoad(options) {
+    this.options = options || {};
+  },
+  computed:{
+    bgImg(){
+      let info = this.info;
+      let bgImg = info.bgImg || (this.staticAddress + '/game/different/game-index-bg-v2.jpg');
+      return bgImg
+    }
+  },
+  onReady(){
+    this.getGameInfo()
+  },
+  onShow() {},
+  onHide() {},
+  onUnload() {},
+  methods: {
+    getGameInfo(){
+      console.log(this.$Http,this.$Apis,"this")
+      this.$Http(this.$Apis.getGameActivityBaseInfo,{
+        data:{
+          activityId:this.options.gameActivityId || 2
+        }
+      }).then(res=>{
+        if(res.code == 1){
+          this.info = res.data
+        }
+      })
+    },
+    getBgSize({detail}) {
+      let wWidth = app.SIH.screenWidth;
+      let wHeight = app.SIH.screenHeight;
+      let imgW = wWidth;
+      let imgH = (wWidth * detail.height) / detail.width;
+      if (imgH < wHeight) {
+        imgH = wHeight;
+        imgW = (wHeight * detail.width) / detail.height;
+      }
+      this.bgWidth = imgW + "px"
+      this.bgHeight = imgH + "px"
+      this.isLoadBg = true;
+    },
+     getRank(){
+      this.jumpAction(`/pages/game/find-out-difference/rank/list?gameActivityId=${this.options.gameActivityId || 2}`);
+    },
+    startGame(){
+      this.jumpAction(`/pages/game/find-out-difference/game?gameActivityId=${this.options.gameActivityId || 2}`);
+    }
+  },
+});
+export default pageOption;
+</script>
+
+<style lang="scss">
+.game-index-area{
+  width: 100%;
+  height: calc(100vh);
+  position:relative;
+  background-color:#ffebc3;
+  .game-rank-icon{
+    width: 90rpx;
+    height: 90rpx;
+  }
+  .game-index-bg{
+    position:absolute;
+    top:50%;
+    left: 50%;
+    width:100%;
+    transform: translate(-50%, -50%);
+  }
+  .operate-area{
+    position:absolute;
+    left: 0px;
+    bottom: 50rpx;
+    width:100%;
+  }
+  .operate-icon{
+    width:100%;
+    display: block;
+  }
+}
+
+</style>

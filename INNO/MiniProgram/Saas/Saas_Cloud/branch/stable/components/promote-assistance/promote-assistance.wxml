@@ -1,0 +1,26 @@
+<wxs src="./promote-assistance.wxs" module="f" />
+<view class="pa_con">
+  <view class="pa_row" wx:if="{{promoteData && promoteData.ruleId}}">
+    <scroll-view class="pa_left" scroll-y enable-flex scroll-top="{{scrollTop}}">
+      <!-- <view class="pa_icon">凑单</view> -->
+      <view class="pa_tips">
+        限时优惠，再买<text style="color: red;font-weight: bold;">{{promoteData.needBuy}}{{f.conditionTypeUnit(promoteData.conditionType)}}</text>
+        即送
+        <block wx:for="{{promoteData.giftList}}" wx:key="giftName">
+          <block>
+            {{index != 0 ? '、': ''}}{{item.giftName}} {{item.giftNum > 1 ? 'x' + item.giftNum : ''}}
+          </block>
+        </block>
+      </view>
+    </scroll-view>
+    <view class="pa_right">
+      <btns class="coudan_icon" catchtap="handleCouDan" isLogin="{{isLogin}}" bindclickcallback="collectEvent">
+        去凑单
+      </btns>
+      <view class="close_icon" catchtap="close">
+        <text class="row"></text>
+        <text class="line"></text>
+      </view>
+    </view>
+  </view>
+</view>

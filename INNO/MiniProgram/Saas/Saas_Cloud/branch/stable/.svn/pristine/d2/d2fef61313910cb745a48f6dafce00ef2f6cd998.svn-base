@@ -1,0 +1,32 @@
+<!--pages/component/multi_color/multi_color.wxml-->
+
+<!--商品多色查看--> 
+<view class="main">
+  <block wx:if="{{viewArr.length > 0}}">
+    <view class="tip_box">
+      <view class="tip"><text class="t_letter">共</text><text class="t_letter">{{viewArr.length}}</text><text>种</text></view>
+      <view class="tip">{{colorName}}</view>
+    </view>
+  </block>
+  <view class="multicolor_box">
+    <view class="f_box">
+      <!-- <view bindtap="changeGoodsColor" data-color_id="{{item.color_id || item.colorId}}"  class="f_item" wx:if="{{index == 0}}" wx:for="{{color_img[label]}}" wx:key="index">
+        <view data-color_id="{{item.color_id || item.colorId}}" style="{{ (cur_c_id == item.color_id || cur_c_id == item.colorId) && df_show ? 'border-color:' + brand_info.style.bg_color : '' }}" class="f_img_box">
+          <image binderror="df_img_fnc" bindload="df_img_fnc" src="{{item.img_url || item.imgUrl}}" data-color_id="{{item.color_id || item.colorId}}" mode="aspectFit" class="f_img" />
+        </view>
+      </view> 
+      <view bindtap="changeGoodsColor" data-color_id="{{index}}" class="f_item" wx:for="{{color_img}}" wx:key="index"  wx:if="{{label != index}}">
+        <view data-color_id="{{index}}" style="{{ cur_c_id == index ? 'border-color:' + brand_info.style.bg_color : '' }}" class="f_img_box">
+          <image src="{{item[0].img_url || item[0].imgUrl}}" data-color_id="{{index}}" mode="aspectFit" class="f_img" />
+        </view>
+      </view> -->
+      <block>
+        <view bindtap="changeGoodsColor" data-color_id="{{item.color_id}}" class="f_item" wx:for="{{viewArr}}" wx:key="index"  >
+          <view data-color_id="{{item.color_id}}" style="{{ cur_c_id == item.color_id ? 'border-color:' + brand_info.style.bg_color : '' }}" class="f_img_box">
+            <image src="{{item.img_url}}" data-color_id="{{item.color_id}}" mode="aspectFit" class="f_img" />
+          </view>
+        </view>
+      </block>
+    </view>
+  </view>
+</view>

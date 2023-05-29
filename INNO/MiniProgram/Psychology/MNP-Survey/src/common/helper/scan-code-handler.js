@@ -15,6 +15,7 @@ class scanCodeManager {
 	}
 	constructor() {
 		this._scene = "";
+		this._type = "";
 		this._scanInfo = {};
 		this._schoolInfo = {};
 		this._classInfo = {};
@@ -23,6 +24,9 @@ class scanCodeManager {
 	}
 	get scene(){
 		return this._scene;
+	}
+	get type(){
+		return this._type;
 	}
 	get scanInfo(){
 		return this._scanInfo;
@@ -45,6 +49,7 @@ class scanCodeManager {
 	initScan(reqData){
 		console.log(reqData,"reqData")
 		this._scene = reqData.scene || "";
+		this._type = reqData.type || "";
 		if(this._scene || !storageH.get(STORAGE_HOLD_SCAN)) this.clearData();
 	}
 	hideScan(){ // 退出扫码到后台
@@ -52,9 +57,10 @@ class scanCodeManager {
 	}
 	scan(reqData, showLoading = true) {
 		let scene = (reqData && reqData.scene) || this._scene || "";
+		let type = (reqData && reqData.type) || this._type || "";
 		if(!scene) return Promise.resolve();
 		if(this.scanReqHold) return this.scanReqHold;
-		return this.scanReqHold = scanReq.call(this, scene, showLoading).then((data) => {
+		return this.scanReqHold = scanReq.call(this, scene,type, showLoading).then((data) => {
 			let sceneOption = data.sceneOption || {};
 			let getInfoArr = [];
 			if (sceneOption.schoolId) {
@@ -93,18 +99,20 @@ class scanCodeManager {
 		this._actBaseInfo = {};
 		if(isFull) {
 			this._scene = "";
+			this._type = "";
 		}
 	}
 }
 export default scanCodeManager.getInstance();
 
-function scanReq(scene, showLoading) {
+function scanReq(scene,type, showLoading) {
 	if(this._scanInfo[scene]){
 		return Promise.resolve(this._scanInfo[scene]);
 	}
 	return Http(Apis.getAppletCode, {
 		data: {
-			codeKey: scene
+			codeKey: scene,
+			type
 		},
 		other: {
 			isShowLoad: showLoading

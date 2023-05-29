@@ -11,6 +11,11 @@
   background:#bbb;
   color:#efefef;
 }
+.btns_hold.absolute{
+  position: absolute;
+  left: 0;
+  top: 0;
+}
 .handle_btn{
   position:absolute;
   top:0px;

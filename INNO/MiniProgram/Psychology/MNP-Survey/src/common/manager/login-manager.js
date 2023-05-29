@@ -140,9 +140,16 @@ class LoginManager {
     return Promise.resolve(true);
   }
   //跟更用户头像
-  updateUserProfile(showLoading) {
+  updateUserProfile(showLoading, avatarUrl) {
     if (this._profileHold) return this._profileHold;
     this._profileHold = this.getWxSessionIdAsync().then((sessionId) => {
+      if (avatarUrl) {
+        console.log(avatarUrl)
+        return updateUserProfileReq.call(this, showLoading, {
+          avatarUrl,
+          sessionId
+        });
+      } else {
       return Func._getUserProfile(showLoading).then((e) => {
         let {
           encryptedData,
@@ -154,7 +161,7 @@ class LoginManager {
           sessionId
         });
       });
-    }).finally(() => {
+    }}).finally(() => {
       setTimeout(() => {
         this._profileHold = null
       }, 500)
@@ -431,7 +438,7 @@ function createSession(showLoading, code) {
 
 //授权用户头像信息等
 function updateUserProfileReq(showLoading, data) {
-  if (!data.encryptedData || !data.iv || !data.sessionId) return Promise.reject();
+  if (!data.avatarUrl && (!data.encryptedData || !data.iv || !data.sessionId)) return Promise.reject();
   return Http(Apis.updateUserProfile, {
     data: data,
     other: {

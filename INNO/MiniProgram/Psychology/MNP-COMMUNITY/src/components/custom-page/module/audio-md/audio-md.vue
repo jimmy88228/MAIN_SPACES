@@ -97,7 +97,7 @@ const pageOption = Page.BasePage({
       let id = currentTarget.dataset.id;
       let item = currentTarget.dataset.item;
       item = encodeURIComponent(JSON.stringify(item));
-      this.jumpAction(`/pages/audio-detail/audio-detail?id=${id}&item=${item}`);
+      this.jumpAction(`/pages/content-library/audio-detail/audio-detail?id=${id}&item=${item}`);
     },
     coverBackground(coverUrl) {
       if (coverUrl == "" || coverUrl == "errorCover") {

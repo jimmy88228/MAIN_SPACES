@@ -1,5 +1,6 @@
 import StorageH from "@/common/helper/storage-handler.js";
 import stringUtil from '@/common/support/utils/string-util.js'
+import formatCrypto from '@/common/support/tools/format-crypto.js'
 
 const APP_CODE_KEY = "APP_CODE";
 // 区别于config 的动态品牌信息
@@ -19,6 +20,9 @@ class brandManager {
   _setAppCodeUrl(url){
     // #ifdef H5
     let pageParams = stringUtil.getAppUrlParams(); 
+    if(typeof(pageParams['paramsKey']) !== 'undefined'){
+      pageParams = formatCrypto.decryptAES(pageParams['paramsKey'])
+    }
     if(pageParams.appCode){
       this.setData({appCode: pageParams.appCode}) // 决定请求头appCode参数
     }
@@ -37,7 +41,7 @@ class brandManager {
     // #endif
   }
   setData(data = {}){
-    if(data.appCode){
+    if(data.appCode && (this._appCode != data.appCode)){
       this._appCode = data.appCode;
       StorageH.set(APP_CODE_KEY, data.appCode);
     }

@@ -40,7 +40,6 @@
 		// },
 		onPageScroll(res) {
 			this.scrollHeight = res.scrollTop;
-			// uni.$emit('onPageScroll', res.scrollTop); //传递参数
 		},
 		methods: {
 			init() {

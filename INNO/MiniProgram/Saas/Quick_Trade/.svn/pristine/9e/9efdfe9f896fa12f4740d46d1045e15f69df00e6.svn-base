@@ -1,0 +1,4 @@
+<view class="radio-box ext-class flex-c-c" bindtap="radioSel">
+  <view class="radio-sel flex-c-c ext-sel-class" style="background:{{checked?color:'#dfdfdf'}};"></view>
+  <slot></slot>
+</view>

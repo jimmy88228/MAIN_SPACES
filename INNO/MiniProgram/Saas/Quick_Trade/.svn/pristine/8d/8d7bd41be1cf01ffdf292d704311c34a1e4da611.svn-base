@@ -1,0 +1,103 @@
+@import "/common/base/component/default-wxss/index.wxss";
+.order-info-record-list {
+  position: relative;
+  width: 100%;
+}
+
+.order-info-record-item {
+  display: flex;
+}
+
+.order-info-record-mark {
+  margin-right: 19rpx;
+  padding-top: 5rpx;
+  width: 30rpx;
+  flex-shrink: 0;
+  position: relative;
+}
+
+.order-info-record-mark-circle-active {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 24rpx;
+  height: 24rpx;
+  background: #F5475F;
+  position: relative;
+  border-radius: 50%;
+}
+
+.order-info-record-mark-circle {
+  position: absolute;
+  left: 50%;
+  top: 15rpx;
+  transform: translateX(-50%);
+  width: 9rpx;
+  height: 9rpx;
+  background: #FFCDCD;
+  border-radius: 50%;
+}
+
+.order-info-record-mark-dashed {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  height: 100%;
+  border-left: 1rpx dashed #FFCDCD;
+}
+
+.order-info-record-mark-circle-active::after {
+  content: '';
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  width: 10rpx;
+  height: 10rpx;
+  background: #FFFFFF;
+  border-radius: 50%;
+}
+
+.order-info-record-show {
+ position: relative;
+ height: 50rpx;
+ display: flex;
+ justify-content: center;
+ align-items: center;
+}
+.order-info-record-show::before{
+  content: '展开全部';
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 117rpx;
+  height: 40rpx;
+  background: #FFFFFF;
+  border-radius: 30rpx;
+  border: 1px solid #C8C8C8;
+  font-size: 20rpx;
+  line-height: 28px;
+  color: #7F7F7F;
+}
+
+.order-info-record-message {
+  font-size: 24rpx;
+  font-family: PingFangSC-Semibold, PingFang SC;
+  font-weight: 600;
+  color: #555555;
+  line-height: 33rpx;
+  margin-bottom: 7rpx;
+}
+
+.order-info-record-message.active {
+  color: #F5475F;
+}
+
+.order-info-record-time {
+  font-size: 18rpx;
+  font-family: PingFangSC-Regular, PingFang SC;
+  font-weight: 400;
+  color: #7F7F7F;
+  line-height: 25rpx;
+  padding-bottom: 30rpx;
+}

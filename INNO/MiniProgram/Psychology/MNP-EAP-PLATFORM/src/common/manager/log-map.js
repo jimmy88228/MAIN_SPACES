@@ -74,6 +74,11 @@ export const LogMap = {
   ["pages/activities/exam/answer/check-scores"]:"COURSE_CHECK_SCORES", 
   ["pages/activities/exam/answer/answer"]:"COURSE_COURSE_ANSWER", 
 
+  // 调查问卷
+  ["pages/questionnaire/answer/answer"]:"QUESTIONNAIRE_ANSWER", 
+  ["pages/questionnaire/detail/detail"]:"QUESTIONNAIRE_DETAIL", 
+  ["pages/questionnaire/result/result"]:"QUESTIONNAIRE_result",
+
   // 404
   ["pages/public/404"]:"PUBLIC_404"
 };

@@ -1,29 +1,32 @@
 <view class="order-bar-container">
-  <view class="user-row">
-    <view class="user-row-header">
-      <view class="user-row-left">
-        <view class="user-row-title">会员服务</view>
+  <view class="user-row-box">
+    <view class="user-row">
+      <view class="user-row-header">
+        <view class="user-row-left">
+          <view class="user-row-title">会员服务</view>
+        </view>
+        <view class="user-row-right"></view>
       </view>
-      <view class="user-row-right"></view>
-    </view>
-    <view class="user-row-main">
-      <view class="user-row-list">
-        <block wx:for="{{barList}}" wx:key="state">
-          <view
-            class="user-row-item"
-            style="width: {{(100 /3) + ''}}%;"
-            catchtap="jump"
-            data-item="{{item}}"
-          >
-            <view class="user-row-item-icon">
-              <view class="user-row-item-image" style="background-image: url({{item.img}})"></view>
-              <view class="user-row-item-count" wx:if="{{userData[item.key]>0}}">{{userData[item.key] >= 100 ? "99+" : userData[item.key]||0}}</view>
+      <view class="user-row-main">
+        <view class="user-row-list">
+          <block wx:for="{{barList}}" wx:key="state">
+            <view
+              class="user-row-item"
+              style="width: {{(100 /3) + ''}}%;"
+              catchtap="jump"
+              data-item="{{item}}"
+            >
+              <view class="user-row-item-icon">
+                <view class="user-row-item-image {{item.key}}"></view>
+                <!-- <view class="user-row-item-image" style="background-image: url({{item.img}})"></view> -->
+                <view class="user-row-item-count" wx:if="{{userData[item.key]>0}}">{{userData[item.key] >= 100 ? "99+" : userData[item.key]||0}}</view>
+              </view>
+              <view class="user-row-item-name">
+                {{item.title}}
+              </view>
             </view>
-            <view class="user-row-item-name">
-              {{item.title}}
-            </view>
-          </view>
-        </block>
+          </block>
+        </view>
       </view>
     </view>
   </view>

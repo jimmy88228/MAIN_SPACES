@@ -1,0 +1,251 @@
+@import '../component//template/gds-list-css.wxss';
+.ac-tab-box {
+  display: flex;
+  background: rgba(247, 247, 247, 1);
+  /* margin-bottom: 20rpx; */
+  box-sizing: border-box;
+  padding: 10rpx;
+}
+
+.ac-tab-item {
+  flex: 1;
+  flex-shrink: 0;
+  /* height: 100%; */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  position: relative;
+  min-height: 100rpx;
+  font-size: 24rpx;
+  color: #7f7f7f;
+  border-radius: 8rpx;
+  box-sizing: border-box;
+  padding:10rpx 0;
+  line-height: 34rpx;
+}
+.ac-tab-item.active{
+  color: #fff;
+}
+.ac-tab-name {
+  text-align: center;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  width: 100%;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  box-sizing: border-box;
+  padding:0 8rpx;
+}
+.ac-tab-item.active{
+  color: #fff;
+}
+
+.ac-msg-box {
+  /* width: 220rpx; */
+  min-width: 200rpx;
+  flex-shrink: 0;
+  font-size: 1em; 
+  margin: 0 auto;
+  z-index: 1;
+  color: #fff;
+  
+  /* box-sizing: border-box;
+  padding:10rpx 10rpx;
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  align-items: center;
+  border-radius: 6rpx;
+  line-height: 34rpx;
+  max-height: 92rpx; */
+} 
+.ac-msg-btn-box{
+  box-sizing: border-box;
+  padding:10rpx 10rpx;
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  align-items: center;
+  border-radius: 6rpx;
+  line-height: 34rpx;
+  max-height: 92rpx;
+}
+
+.price-flex-box {
+  display: flex;
+  flex-wrap: nowrap;
+  position: relative;
+}
+
+/* 一行三、四个 价格信息、倒计时 */
+.list-item-three .price-flex-box,
+.list-item-four .price-flex-box {
+  flex-wrap: wrap;
+}
+.list-item-three .price-box,
+.list-item-four .price-box {
+  margin-bottom: 15rpx;
+}
+.list-item-one .ac-msg-box{
+  font-size: 0.75em;
+  margin: 0;
+  margin-left: auto;
+}
+
+.list-item-two .ac-msg-box{
+  font-size: 0.9em;
+}
+  
+.list-item-bigSmall .ac-msg-box {
+  font-size: 0.9em;
+  margin: 0;
+  margin-left: auto;
+} 
+
+.list-item-bigSmall:nth-child(3n+1) .ac-msg-box {
+  font-size: 0.8em;
+  margin: 0;
+  margin-left: auto;
+} 
+.list-item-list .price-box {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+}
+.list-item-list .ac-msg-box{
+  margin: 0;
+  margin-left: auto;
+  font-size: 0.75em;
+}
+
+.list-item-list .price-box {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+}
+.list-item-list .ac-msg-box{
+  margin: 0;
+  margin-left: auto;
+  font-size: 0.75em;
+}
+
+
+.box {
+  position: relative;
+  box-sizing: border-box; 
+  /* jimmy */
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+}
+.box.left.more-true{
+  padding-right: 120rpx;
+}
+
+.box.center {
+  padding: 0 120rpx;
+  justify-content: center;
+}
+.name{
+  line-height: 36rpx;
+  /* width: 100%; */
+}
+
+.more-text {
+  font-size: 24rpx;
+}
+
+.more-text-box {
+  display: flex;
+  align-items: center;
+  flex-shrink: 0;
+  position: absolute;
+  right: 0;
+  top: 50%;
+  transform: translate(0, -50%);
+}
+
+.more-icon {
+  width: 10rpx;
+  height: 10rpx;
+  background-color: transparent;
+  border-right: 1px solid;
+  border-bottom: 1px solid;
+  position: relative;
+  transform: rotate(-45deg);
+}
+
+.title-box {
+  box-sizing: border-box;
+  padding: 20rpx 30rpx;
+}
+
+.time-box{
+  display: inline-flex;
+  font-size:24rpx;
+  align-items: center;
+  color: #7f7f7f;
+}
+
+.time-box-tip {
+  margin-left: 24rpx;
+  margin-right: 15rpx;
+}
+
+.time-day {
+  margin-right: 10rpx;
+  min-width: 45rpx;
+}
+
+.time-down {
+  width: 42rpx;
+  height: 42rpx;
+  background-color: #efefef;  
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+}
+.init .ac-msg-box{
+  display: none;
+}
+.init .box,.init .time-down{
+  color: #dfdfdf !important;
+  background-color: #dfdfdf !important;
+}
+
+.progress_small {
+  width: 82rpx;
+  display: inline-block;
+  vertical-align: middle; 
+}
+
+.progress_text {
+  font-size: 18rpx;
+  line-height: 18rpx;
+  vertical-align: middle;
+  color: #7f7f7f;
+}
+.has_no_goods {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.has_no_goods image {
+  width: 150rpx;
+}
+
+.has_no_goods .txt {
+  color: #7f7f7f;
+  margin-top: -20rpx;
+}
+
+.progress_box{
+  min-width: 172rpx;
+  display: inline-flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-top: 10rpx;
+}

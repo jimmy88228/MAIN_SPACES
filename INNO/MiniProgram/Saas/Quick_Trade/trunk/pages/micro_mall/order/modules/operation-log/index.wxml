@@ -1,0 +1,17 @@
+<include src="/common/base/component/index.wxml" />
+<view class="order-info-record-list" wx:if="{{list.length>0}}">
+  <block wx:for="{{list}}" wx:for-item="recordItem"
+  wx:for-index="recordIndex" wx:key="recordIndex">
+    <view class="order-info-record-item" wx:if="{{recordIndex < 2 || allRecord}}">
+      <view class="order-info-record-mark  {{recordIndex == 0 && 'active' || ''}}">
+        <view class="{{recordIndex == 0?'order-info-record-mark-circle-active':'order-info-record-mark-circle'}}"></view>
+        <view wx:if="{{list.length != 1}}" class="order-info-record-mark-dashed"></view>
+      </view>
+      <view>
+        <view class="order-info-record-message {{recordIndex == 0 && 'active' || ''}}">{{recordItem.actionNote}}</view>
+        <view class="order-info-record-time">{{recordItem.time}}</view>
+      </view>
+    </view>
+  </block>
+  <view wx:if="{{list.length>2 && !allRecord}}" bindtap="handleMoreRecordTap" class="order-info-record-show"></view>
+</view>

@@ -60,7 +60,7 @@ class storeManager {
   getStoreAsync(ops){
     let options = ops || wx.getEnterOptionsSync && wx.getEnterOptionsSync() || {};
     let h = this._storeH;
-    console.log('getStoreAsync',options)
+    console.log('获取店铺信息 getStoreAsync',options)
     if(h){
       return h;
     }
@@ -77,9 +77,12 @@ class storeManager {
     return new Promise((rs,rj)=>{
       console.log('云店进来',ops)
       let query = ops.query || {};
-      if(query.barCodeId || query.scene || query.storeCode){ //rule_parameter_store 不可取消 
+      if(query.barCodeId || query.scene || this.getStoreCode(query)){ //rule_parameter_store 不可取消 
         console.log('云店分享途径',query)
-        return getVisitStore.call(this, {storeCode: query.storeCode}).finally(()=>{
+        if(query.scene && !this.getStoreCode(query) && this.storeInfo.storeId){
+          return rs();
+        }
+        return getVisitStore.call(this, {storeCode: this.getStoreCode(query)}).finally(()=>{
           rs();
         }); 
       } else { // 带定位请求
@@ -151,7 +154,7 @@ class storeManager {
         query._lastRoute = options.path||"";
         StartPageHandle.setReleasePage(false);
         let paramsStr = MyStr.getPageParamsStr(query);
-        console.log('需要更新storeCode:',options.path,'跳去中间页');
+        console.log('(非扫码)需要更新storeCode:',options.path,'跳去中间页');
         this._jumped_startup_page = true;
         wx.redirectTo({
           url: "/" + Conf.STARTUP_PAGE + "?" + paramsStr, 
@@ -202,7 +205,9 @@ class storeManager {
       StorageH.set(STORE_KEY, data,20);
     }
   }
-
+  getStoreCode(ops){
+    return ops&&(ops.storeCode||ops.store_code)||"";
+  }
   get storeInfo(){
     return this._storeInfo || {};
   }

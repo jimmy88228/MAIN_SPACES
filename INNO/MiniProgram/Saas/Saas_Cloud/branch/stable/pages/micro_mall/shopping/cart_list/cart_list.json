@@ -1,0 +1,18 @@
+{
+  "component": true,
+  "usingComponents": {
+    "btns": "/components/buttons/btns",
+    "toasts": "/components/ui/cps/toasts/toasts",
+    "dialog": "/components/ui/cps/dialog/dialog",
+    "shipPop":"/pages/micro_mall/shopping/ship_pop/ship_pop",
+    "promPop":"/pages/micro_mall/shopping/prom_pop/prom_pop",
+    "cs": "/components/cs/custom_service",
+    "promotion":"/pages/micro_mall/shopping/promotion/promotion",
+    "tips_window":"/pages/micro_mall/shopping/cart_list/tips_window/tips_window",
+    "embed_custom_module": "/components/custom/embed_custom/embed_custom",
+    "micro-page": "/components/micro-page/micro-mix/micro-page/micro-page",
+    "couponList":"/pages/micro_mall/goods/module/coupon/list",
+    "storeHead":"/components/indexHead/storeHead/storeHead",
+    "promoteAssistance":"/components/promote-assistance/promote-assistance"
+  }
+}

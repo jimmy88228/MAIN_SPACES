@@ -1,0 +1,7 @@
+{
+  "navigationBarTitleText": "佣金比例",
+  "usingComponents": {
+    "dialog": "/components/ui/cps/dialog/dialog",
+    "search": "/components/search/s_view"
+  }
+}

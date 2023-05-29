@@ -11,6 +11,10 @@ Component(App.BC({
       type:String,
       value:"aspectFill"
     },
+    preview:{
+      type:Boolean,
+      value:true
+    },
     showMenuByLongpress:Boolean,
   },
   data:{

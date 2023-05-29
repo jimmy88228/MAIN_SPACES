@@ -1,4 +1,4 @@
-@import '/static/iconFont/font.wxss';
+@import "/static/iconFont/font.wxss";
 .no-choose-discount{
   background-color:#fff;
   padding:30rpx;

@@ -10,6 +10,8 @@ Component(App.BC({
       value:true
     },
   },
+  data:{
+  },
   ready() {
     
   },

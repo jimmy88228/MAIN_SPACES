@@ -1,0 +1,4 @@
+/* pages/main/staff-module/repository/goods/spec/index.wxss */
+page{
+    background-color: #F2F2F2;
+}

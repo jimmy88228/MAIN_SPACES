@@ -1,0 +1,46 @@
+page{
+  /* background: #bebebe; */
+}
+.relative{
+  position: relative;
+  background: #fff;
+}
+.relative:last-child{
+  margin-bottom: 0;
+}
+.btn_box{
+  width: 100%;
+  padding: 10rpx 0 20rpx 0;
+  box-sizing: border-box;
+}
+.btn{
+  width: 690rpx;
+  height: 80rpx;
+  border-radius: 6rpx;
+  color: #fff;
+  margin: 0 auto;
+}
+.login{
+  width: 300rpx;
+  height: 150rpx;
+  border-radius: 6rpx;
+  margin-right: 0 auto;
+  position: fixed;
+  top: 36%;
+  left: 50%;
+  transform: translate(-50%,-50%);
+}
+.btn_login{
+  width: 190rpx;
+  height: 90rpx;
+  color: #fff;
+  font-size: 30rpx;
+}
+.login.err_msg{
+  width: 420rpx;
+  height: 170rpx;
+  color: #fff;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}

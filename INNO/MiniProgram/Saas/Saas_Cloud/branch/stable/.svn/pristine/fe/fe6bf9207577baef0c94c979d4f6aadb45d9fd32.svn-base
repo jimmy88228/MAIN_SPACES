@@ -1,0 +1,56 @@
+.window-ext{
+  z-index: 120!important;
+}
+.compute_pop{
+  position:fixed;
+  top:50%;
+  left:50%;
+  width:80%;
+  padding:0px 20rpx;
+  border-radius:10rpx;
+  background-color:#fff;
+  transform: translate(-50%,-80%);
+}
+.pop_cont{
+  white-space:nowrap;
+}
+.pop_t{
+  display:inline-block;
+  /* vertical-align: middle; */
+}
+.ship_item{
+  width:100%;
+  padding:30rpx;
+  display:flex;
+  align-items:center;
+  box-sizing:border-box;
+  border-top:1px solid #efefef;
+}
+.select_radio {
+  padding:15rpx;
+  position:relative;
+}
+.radio_select {
+  display: inline-block;
+  width: 36rpx;
+  height: 36rpx;
+  vertical-align: middle;
+}
+.user_operate{
+  display:flex;
+  width:100%;
+  height:90rpx;
+  align-items: center;
+  justify-content: center;
+  padding-bottom:20rpx;
+}
+.operate_item{
+  height:90rpx;
+  flex:1;
+  background-color:#ececec;
+}
+.store_name{
+  color:#4A8AF4;
+  text-decoration: underline;
+  padding:0px 20rpx;
+}

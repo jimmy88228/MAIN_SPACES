@@ -1,0 +1,16 @@
+<view class="ext-class radio-group flex-c-c">
+  <block wx:if="{{isMyRadio}}">
+    <my-radio 
+      wx:for="{{arr}}" 
+      wx:key="index"
+      value="{{item.key||index}}"
+      checked="{{item.checked || (curValue && curValue == item.key)}}" 
+      color="{{color}}" 
+      ext-class="ext-radio-class">
+      <view class="ext-name-class">
+        {{item.name}}
+      </view>
+    </my-radio>
+  </block>
+  <slot></slot>
+</view>

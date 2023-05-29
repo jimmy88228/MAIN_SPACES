@@ -143,17 +143,13 @@ const pageOption = Page.BasePage({
 		 getBgSize({
         detail
       }) {
-        let windowHeight = SIH.windowHeight;
-        let windowWidth = SIH.windowWidth;
-        let imgW = windowWidth;
-        let imgH = (windowWidth * detail.height) / detail.width;
-        if (imgH < windowHeight) {
-          imgH = windowHeight;
-          imgW = (windowHeight * detail.width) / detail.height;
-        }
-        this.bgWidth = imgW + "px"
-        this.bgHeight = imgH + "px"
-
+       let width = detail.width;
+        let height = detail.height;
+        utils.getBgSize(width, height).then(res => {
+          this.bgWidth = res.imgW + "px"
+          this.bgHeight = res.imgH + "px"
+          this.isLoadBg = true;
+        })
       },
 		checkAppCode(){
 			// #ifdef H5

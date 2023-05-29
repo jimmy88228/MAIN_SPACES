@@ -1,0 +1,3 @@
+/* component 公共样式 */
+/* public */
+@import "/common/base/public/default-wxss/index.wxss";

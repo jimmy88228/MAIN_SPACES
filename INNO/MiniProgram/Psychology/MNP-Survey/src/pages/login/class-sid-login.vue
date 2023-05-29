@@ -35,9 +35,7 @@ import CIH from '@/common/helper/common-info-handler.js';
 import StorageH from "@/common/helper/storage-handler.js";
 import brandM from "@/common/manager/brand-manager.js";
 import entryM from "@/common/manager/entry-manager.js";
-import utils from '@/common/support/utils.js';
 import classSIDLogin from './components/classSIDLogin.vue';
-
 const app = getApp();
 const pageOption = Page.BasePage({
 	components:{
@@ -103,31 +101,32 @@ const pageOption = Page.BasePage({
 		},
 		init(){
 			// #ifdef H5
-			// let inputData = StorageH.get("LOGIN_CERTIFICATE") || this.inputData || {	schoolCode: "",	account: "",	password: "",};
-			// this.$set(this.inputData,"schoolCode",inputData.schoolCode)
-			// this.$set(this.inputData,"account",inputData.account)
-			// this.$set(this.inputData,"password",inputData.password)
+			console.log("options", this.options);
 			entryM.setloginType("classSID");
 			app.LM.logout().logout('bsnUserToken');
 			app.PM.setParams('initId',parseInt(this.options.id) || app.PM.getParams('initId')||0);
 			app.PM.setParams('schoolId',parseInt(this.options.schoolId));
 			app.PM.setParams('campusId',parseInt(this.options.campusId));
 			app.PM.setParams('classId',parseInt(this.options.classId));
-			this.activityId = app.PM.getParams('initId');
-			let hasRepalce = false;
-			if(!this.options.id && this.activityId){
-				this.options.id = this.activityId;
-				hasRepalce = true;
-			}
-
-			if(hasRepalce){
-				let optionStr = "";
-				optionStr = utils.paramsByJson(this.options || {});
-				if(optionStr){
-					this.reLaunchAction(`/pages/login/class-sid-login?${optionStr}`)
-					return Promise.reject();
-				}
-			}
+			this.activityId = parseInt(this.options.id);
+			// let hasRepalce = false;
+			// if(!this.options.id && this.activityId){
+			// 	this.options.id = this.activityId;
+			// 	hasRepalce = true;
+			// }
+			// if(this.options.id && this.options.paramsKey){
+			// 	hasRepalce = true;
+			// }
+			// if(hasRepalce){
+			// 	let optionStr = "";
+			// 	delete this.options.paramsKey;
+			// 	optionStr = utils.paramsByJson(this.options || {});
+			// 	console.log("optionStr", optionStr);
+			// 	if(optionStr){
+			// 		this.reLaunchAction(`/pages/login/class-sid-login?${optionStr}`)
+			// 		return Promise.reject();
+			// 	}
+			// }
 			this.initSchoolInfo(this.options.schoolId);
 			return Promise.resolve();
 			// #endif

@@ -1,0 +1,12 @@
+{
+  "navigationBarTitleText": "商品列表",
+  "usingComponents": {
+    "indexHeader": "/components/indexHead/indexHeader",
+    "cs": "/components/cs/custom_service",
+    "tab":"./tab/tab",
+    "pageHome": "/components/sceneOperate/pageHome",
+    "search": "/components/search/s_view",
+    "tag-list":"/components/tag-list/tag-list",
+    "promotionLabel":"/components/promotionLabel/promotionLabel"
+  }
+}

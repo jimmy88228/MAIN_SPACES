@@ -61,7 +61,8 @@
                 :class="{'swiper-item-action':current == index}">
                 <view class="item-box" v-show="current == index">
                   <view class="item-image" v-if="item.questionPicture">
-                    <image :src="item.questionPicture" mode="aspectFill" />
+                    <oriImage :src="item.questionPicture" mode="aspectFill" />
+                    <!-- <image :src="item.questionPicture" mode="aspectFill" /> -->
                   </view>
                   <view class="title bold">
                     <view v-if="acInfo.multiChoice == 1" class="choice-type">
@@ -75,7 +76,8 @@
                         :class="['answer-item-picture',current == index ? buttonAnimation : 'animate-fade-out-down']"
                         @click="onAnswer(c_item.optionId, index)" v-for="(c_item, c_index) in item.optionList"
                         :key="c_index" :style="{'animation-delay':`${current == index ? c_item.showTime : 0}s`}">
-                        <image :src="c_item.optionPicture" mode="aspectFill" />
+                        <oriImage customStyle=" width: 100%; height: 288rpx;" :src="c_item.optionPicture" mode="aspectFill" />
+                        <!-- <image :src="c_item.optionPicture" mode="aspectFill" /> -->
                         <view class="answer-item-picture-text" v-if="c_item.optionContent">{{ c_item.optionContent }}
                         </view>
                         <view :style="filterSelect(c_item.optionId) == 1?'opacity:1':''" class="'active-view'">
@@ -158,6 +160,8 @@
   import SMH from "@/common/helper/show-msg-handler";
   import oriPopup from "@/components/ori-comps/popup/ori-popup";
   import safeArea from "@/components/safe-area/index.vue";
+  import oriImage from "@/components/ori-comps/image/ori-image";
+
 
   const app = getApp();
   const pageOption = Page.BasePage({
@@ -165,6 +169,7 @@
       LoadingView,
       oriPopup,
       safeArea,
+      oriImage,
     },
     data() {
       return {
@@ -657,10 +662,10 @@
       height: 366rpx;
 
       // background-color: #8E8E8E;
-      image {
-        width: 100%;
-        height: 100%;
-      }
+      // image {
+      //   width: 100%;
+      //   height: 100%;
+      // }
     }
 
     .title {

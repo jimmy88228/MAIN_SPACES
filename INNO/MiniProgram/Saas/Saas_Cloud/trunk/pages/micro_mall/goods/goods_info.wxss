@@ -1696,15 +1696,17 @@
   padding: 30rpx 0 30rpx 30rpx;
   box-sizing: border-box;
   position: fixed;
+  z-index: 100;
   bottom: 0;
   left: 0;
   background: #fff;
   transform: translateY(100%);
   transition: transform 0.32s;
   width: 100%;
-  font-size: 28rpx;
-  /* min-height: calc(100vh - 480rpx); */
-  /* max-height: calc(100vh - 250rpx); */
+  font-size: 28rpx; 
+}
+.attr_show_box.attr_isIphoneX{
+  padding-bottom: calc(30rpx + 34px);
 }
 .attr_show_box.attr_show{
   transform: translateY(0);

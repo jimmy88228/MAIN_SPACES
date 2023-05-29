@@ -17,13 +17,15 @@ import {
   TabKeys,
   LimitAddLog,
   ShareType,
-  CheckLastRoute
+  CheckLastRoute,
+  LogMap
 } from "../manager/log-map.js";
 import {
   CL_BrandApi
 } from "../manager/http-manager.js"
 import { checkCommissionOpenConfigAsync } from "../helper/commission-helper";
 import baseHelper from "./base-helper.js";
+import WeReportHelper from "../helper/we-report-helper.js";
 const STORAGE_USER_INFOS_KEY = "USER_INFOS";
 const BasePage = function (pageOptions){
   let po = pageOptions || {};
@@ -237,12 +239,14 @@ function getDefaultData(){
 
 function trimShareConf(_this,po,page,baseData){
    //分享配置
-   let cfgType = ShareConf[page.route] || "default";
+   let cfgType = ShareConf[page.route] || "custom_page";
+  //  console.log('trimShareConf',cfgType);
    if (cfgType != "goods" && po.onShareAppMessage) {
      baseData.pageShare = cfgType;
-     let reqType = cfgType == 'user_center' ? cfgType : "custom_page";
-     getWxappShareConfigEntity.call(_this, reqType).then(config => {
+    //  let reqType = cfgType == 'user_center' ? cfgType : "custom_page";
+     getWxappShareConfigEntity.call(_this, cfgType).then(config => {
        let allShareConfig = PH.paramsJson().shareConfig || {};
+       config.cfg_pic && config.cfg_pic.indexOf('http') == -1 && (config.cfg_pic = config.imgDomain+config.cfg_pic);
        allShareConfig[cfgType] = config;
        PH.saveParams({
          "shareConfig": allShareConfig
@@ -318,7 +322,7 @@ function setShare(po,bpo,baseData){
       _shareData.path = this.route + `?shareType=${_shareData.shareType}`;
     }
     //分享 fromUser
-    console.log('分享shareCode',LM.shareCode)
+    // console.log('分享shareCode',LM.shareCode)
     if (LM.isLogin && LM.shareCode) {
       if (_shareData.path) {
         _shareData.path += (_shareData.path.indexOf("?") >= 0 ? "&" : "?") + `fromUser=${LM.shareCode}`;
@@ -329,12 +333,13 @@ function setShare(po,bpo,baseData){
     //读取配置(shareData.isCustom ==== 页面如果需要自定义则不读配置) 
     if (baseData.pageShare && !_shareData.isCustom) {
       let allShareConfig = PH.paramsJson().shareConfig || {};
-      let shareConfig = allShareConfig[baseData.pageShare] || {};
-      if (shareConfig.cfg_title && !_shareData.title) {
-        _shareData.title = shareConfig.cfg_title;
+      let curShareConfig = allShareConfig[baseData.pageShare] || {};
+      // console.log('curShareConfig',baseData.pageShare,curShareConfig,_shareData)
+      if (curShareConfig.cfg_title && !_shareData.title) {
+        _shareData.title = curShareConfig.cfg_title || _shareData.secTitle || "";
       }
-      if (shareConfig.cfg_pic && !_shareData.imageUrl) {
-        _shareData.imageUrl = shareConfig.cfg_pic;
+      if (curShareConfig.cfg_pic && !_shareData.imageUrl) {
+        _shareData.imageUrl = curShareConfig.cfg_pic || _shareData.secImageUrl || "";
       }
     }
     _shareData.title = _shareData.title || "";
@@ -355,9 +360,9 @@ function setShare(po,bpo,baseData){
       } else if (STAFF_SHARE_DATA.cfg_pic == "name") { // && LogMap[this.route] != 'SECKILL_ACT_PAGE'
         let USER_INFOS = StorageH.get(STORAGE_USER_INFOS_KEY) || {};
         code = USER_INFOS.realName || staffInfo.staffCode;
-        console.log("USER_INFOS", USER_INFOS);
+        // console.log("USER_INFOS", USER_INFOS);
       }
-      console.log("STAFF_SHARE_DATA", STAFF_SHARE_DATA);
+      // console.log("STAFF_SHARE_DATA", STAFF_SHARE_DATA);
       _shareData.title = _shareData.title ? code ? code + '-' + _shareData.title : _shareData.title : code;
     }
     if (LM.storeInfo && LM.storeInfo.staff_code) { // 带上staff_code是店员code
@@ -371,7 +376,15 @@ function setShare(po,bpo,baseData){
       _shareData.path = splicePath.call(this,_shareData.path,`storeCode=${StoreH.storeInfo.storeCode}`);
     }
     shareData = _shareData;
-    console.log("onShareAppMessage", shareData);
+    let page = getCurrentPages().pop() || {};
+    let shareInfo= {
+      shareFrom:args && args[0] && args[0].from||"--",
+      shareImg:_shareData.imageUrl||"--",
+      shareTitle:_shareData.title||"--",
+      fromPage: LogMap[page.route] || '--'
+    }
+    WeReportHelper.setPageShare({shareInfo,goodsInfo:_shareData.goodsInfo||{}})
+    console.log("onShareAppMessage", _shareData);
     // 保存短暂切换后台数据
     retainSessionH.saveRetainSession({
       shortPath: this.route,

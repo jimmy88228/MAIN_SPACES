@@ -3,6 +3,7 @@
   "usingComponents": {
     "goods-spec-pop": "/components/common/business/goods-spec-pop/index",
     "share-pop": "/components/common/business/share-pop/index",
-    "poster-pop": "/components/common/business/poster-pop/index"
+    "poster-pop": "/components/common/business/poster-pop/index",
+    "mp-html":"/components/common/basic/mp-html/index"
   }
 }

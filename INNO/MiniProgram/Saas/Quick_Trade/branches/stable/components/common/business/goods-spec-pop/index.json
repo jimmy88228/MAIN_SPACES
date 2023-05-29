@@ -1,0 +1,6 @@
+{
+  "component": true,
+  "usingComponents": {
+    "sku": "/components/common/business/sku/index"
+  }
+}

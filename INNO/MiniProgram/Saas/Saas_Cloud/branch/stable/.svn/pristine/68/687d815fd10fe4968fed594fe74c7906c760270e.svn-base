@@ -1,0 +1,32 @@
+/* pages/micro_mall/employee_center/distribution_service/guest_follows/sync-member/sync-member.wxss */
+.main{
+    padding: 30rpx 40rpx;
+    box-sizing: border-box;
+}
+.tip{
+    margin-bottom: 30rpx;
+}
+.box{
+    padding: 30rpx;
+}
+.title{
+    padding-left: 1px;
+    padding-bottom: 10rpx;
+}
+.btn-box{
+    padding-top: 50rpx;
+    padding-right: 30rpx;
+}
+.btn{
+    width: 150rpx;
+    height: 60rpx;
+    border-radius: 8rpx;
+    overflow: hidden;
+    color: #fff;
+}
+.drop-down-member{
+    width: 250rpx;
+}
+.drop-down-store{
+    width: 450rpx;
+}

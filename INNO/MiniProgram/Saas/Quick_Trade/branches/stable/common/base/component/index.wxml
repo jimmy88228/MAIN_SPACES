@@ -1,0 +1,2 @@
+<!-- 这里不能放组件 -->
+<include src="/common/base/public/index.wxml" />

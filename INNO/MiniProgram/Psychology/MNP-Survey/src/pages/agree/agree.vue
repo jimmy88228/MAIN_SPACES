@@ -20,7 +20,7 @@
 </template>
 
 <script>
-	export default {
+	const pageOption = Page.BasePage({
 		data() {
 			return {
 			}
@@ -28,7 +28,8 @@
 		methods: {
 			
 		}
-	}
+	})
+	export default pageOption
 </script>
 
 <style lang="scss" scoped>

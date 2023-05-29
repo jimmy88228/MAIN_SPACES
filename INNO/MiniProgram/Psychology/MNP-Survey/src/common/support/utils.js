@@ -229,5 +229,28 @@ export default {
         }
         return arabic
     },
+    getBgSize(width, height) {
+        return new Promise((resolve, reject) => {
+            return uni.getSystemInfo({
+                success: res => {
+                    let imgW = res.windowWidth;
+                    let imgH = (res.windowWidth * height) / width;
+                    if (imgH < res.windowHeight) {
+                        imgH = res.windowHeight;
+                        imgW = (res.windowHeight * width) / height;
+                    }
+                    let bgSize = {
+                        imgW,
+                        imgH
+                    }
+                    resolve(bgSize)
+                },
+                fail: err => {
+                    reject(err)
+                }
+            })
+        })
+
+    }
 
 };

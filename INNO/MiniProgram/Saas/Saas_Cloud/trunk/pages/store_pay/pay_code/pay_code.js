@@ -7,10 +7,7 @@ const app = getApp();
 Component(app.BTAB({
   options: {
     addGlobalClass: true,
-  },
-  properties: {
-
-  },
+  }, 
   data: {
     code_data: {
       qr_pay_code: ''
@@ -43,43 +40,38 @@ Component(app.BTAB({
   },
   attached() {
     this.beforeInfo = {
-      payment_id: 0,
-      // pay_id: 0, //
-      // offline_sn: '', //
-      // bonus_id: '',
-      // user_point: 0,
-      // is_user_balance: 0,
-      // is_user_point: 0,
-      // prepaid_cardid: '',
-      storeId: '', //
-      // prepaid_card_money: 0,
+      payment_id: 0, 
+      storeId: '',  
       payment_status: 0,
     };
-    this.refresh_timer = null;
     this.check_timer = null;
-    this.refresh_time = 60000;
+    // this.refresh_time = 0;
     this.check_time = 3000;
     let applet_logo = this.data.brand_info.logo_path + "micro_mall/applet_logo.png";
     this.setData({
       applet_logo: applet_logo || ''
     })
-    console.log('attached', this.beforeInfo, this.refresh_timer, this.check_timer, this.refresh_time, this.check_time)
-  }, 
-  /**
-   * 组件的方法列表
-   */
-  methods: {
-    onLoadFn() {
-      getPayCode.call(this);
+  },   
+  methods: { 
+    onShowFn() {
+      _onShowFn.call(this);
+    },
+    onHideFn(){ 
+      console.log('onHide')
+      unListen.call(this);
     },
     onUnloadFn() {
+      console.log('onUnloadFn');
+      this.onUnloaded = true;
       unListen.call(this);
       app.StorageH.remove("userChoiceData");
     },  
     refreshCode() {
+      this._throttle('refreshCode');
+      unListen.call(this);
       getPayCode.call(this);
     },
-    showPayInfo(is_show = false) {
+    showPayInfo() {
       this.setData({
         show_pay_pop: "isshow"
       })
@@ -88,10 +80,7 @@ Component(app.BTAB({
       this.setData({
         show_pay_pop: 'ishide'
       })
-      getPayCode.call(this);
-      this.check_timer = setInterval(() => {
-        getOfflineOrderInfo.call(this);
-      }, this.check_time);
+      this.refreshCode(); 
     },
     /**
      * 使用积分
@@ -170,22 +159,15 @@ Component(app.BTAB({
     },
     switchCode(){
       this.setData({showCodeType: this.data.showCodeType === "barcode" ? "qrcode" : "barcode"})
-    }
-  },
-  pageLifetimes: {
-    show() {
-      _onShowFn.call(this);
     },
-    hide() {
-      unListen.call(this);
-    }
+    noFn(){}
   },
 }))
 
 
 function _onShowFn() {
   if (!(this.data.show_pay_pop == "isshow")) {
-    getPayCode.call(this);
+    this.refreshCode();
   } else {
     //是否选择优惠券
     this.selectBouns();
@@ -193,50 +175,49 @@ function _onShowFn() {
 }
 
 function unListen() {
-  clearInterval(this.check_timer);
-  clearInterval(this.refresh_timer);
+  // this.refresh_time = 0;
+  clearTimeout(this.check_timer);
+  this.check_timer = null;
 }
 
 
 //获取二维码
 function getPayCode() {
-  var that = this;
   return app.SmktPayApi.getPayCode({
     params: {
       brandCode: app.Conf.BRAND_CODE,
       userToken: app.LM.userKey
+    },
+    other:{
+      isShowLoad:true
     }
   }).then(e => {
-    if (e.code == "1") {
-      let data = e.data;
-      var qr_pay_code = e.data;
-      var code_data = {
-        qr_pay_code: qr_pay_code
-      }
+    if(this.onUnloaded){
+      unListen.call(this);
+      return Promise.reject();
+    }
+    if (e.code == "1") { 
+      let qr_pay_code = e.data || "";
+      console.log(qr_pay_code)
+      let code_data = {qr_pay_code};
+      this.qr_pay_code = qr_pay_code;
       this.setData({
-        code_data: code_data
+        code_data
       });
-      qrcode_custom('payCode', qr_pay_code, 450, 450,this);
-      barcode_custom('barCanvas', qr_pay_code, 500, 150,this);
-      clearInterval(this.refresh_timer);
-      clearInterval(this.check_timer);
-      this.refresh_timer = setInterval(function () {
-        getPayCode.call(that);
-      }, this.refresh_time);
-      this.check_timer = setInterval(function () {
-        getOfflineOrderInfo.call(that);
-      }, this.check_time);
-      return Promise.resolve(data);
+      qr_pay_code && qrcode_custom('payCode', qr_pay_code, 450, 450,this); //二维码
+      qr_pay_code && barcode_custom('barCanvas', qr_pay_code, 500, 150,this); //条形码
+      unListen.call(this);
+      getOfflineOrderInfo.call(this);
+      return e
     }
     return Promise.reject();
   })
 }
 //获取扫码状态
 function getOfflineOrderInfo() {
-  let qr_pay_code = this.data.code_data.qr_pay_code;
   return app.SmktPayApi.getOfflineOrderInfo({
     params: {
-      pay_barcode: qr_pay_code,
+      pay_barcode: this.qr_pay_code,
       brandCode: app.Conf.BRAND_CODE,
       userToken: app.LM.userKey
     },
@@ -247,27 +228,44 @@ function getOfflineOrderInfo() {
     if (e.code == "1") {
       let data = e.data || {};
       let payment_id = data.payment_id;
-
-      if (payment_id) {
+      if(this.onUnloaded){
+        unListen.call(this);
+        return e
+      }else if (payment_id) {
+        //停止刷新二维码
+        unListen.call(this);
         wx.showLoading({
           "title": "获取支付信息..."
         });
         this.beforeInfo.payment_status = data.payment_status;
         this.beforeInfo.storeId = data.store_id;
         this.beforeInfo.payment_id = data.payment_id;
-        //停止刷新二维码
-        clearInterval(this.refresh_timer);
-        clearInterval(this.check_timer);
         if (data.payment_status) { 
           jump.call(this, data.payment_id, 'result');
           return;
         }
         app.StorageH.remove("userChoiceData");
         getJiesuan.call(this);
+      }else{
+        // if(this.refresh_time >= 20){
+        //   this.refreshCode();
+        //   return e
+        // }
+        // this.refresh_time += 1;
+
+        unListen.call(this);
+        this.check_timer = setTimeout(() => {
+          unListen.call(this);
+          getOfflineOrderInfo.call(this);
+        }, this.check_time);
       }
-      return Promise.resolve();
+      return e
     }
     return Promise.reject();
+  }).catch(e=>{
+    console.log('catch',e)
+    this.refreshCode();
+    return e;
   })
 }
 
@@ -317,7 +315,6 @@ function getJiesuan() {
       let payId = this.data.payId;
       let payCode = this.data.payCode;
       let data = e.data || {};
-      let pay_info = data.pay_info;
       let bonus_info = data.bonusEntity;
       this.data.select_bonus.type_money = bonus_info.canUseCouponMoney;
       let orderInfo = data.orderinfoEntity;
@@ -371,8 +368,8 @@ function getJiesuan() {
         // select_bonus: this.data.select_bonus
       })
       //支付信息弹框动画
-      this.showPayInfo(true);
-      return Promise.resolve();
+      this.showPayInfo();
+      return e
     }
     return Promise.reject();
   }).finally(() => {
@@ -409,14 +406,12 @@ function updateOrderInfo() { //更新订单信息
         jump.call(this, payment_id,'result');
       } else {    //选择微信支付
         if (data > 0) {      
-          console.log('这里2')
           getOrderStatus.call(this, 'toPay');
         } else {
-          console.log('这里3') 
           jump.call(this, payment_id)
         } 
       }
-      return Promise.resolve();
+      return e
     } else {
       if(e.msg){
         app.SMH.showToast({

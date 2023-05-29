@@ -18,7 +18,8 @@ Page(app.BP({
         outsideComponents: { // 该页面的最外层容器的组件对象-解决层级问题用
             agreementPop: {confirmIsGetInfoBtn: true},
             getCouponsPop: {}
-        }
+        },
+        isCheckWeChat:3
     },
     onLoad: function (options) {
         //初始化图片预加载组件，并指定统一的加载完成回调
@@ -199,7 +200,8 @@ function loadData(isShowLoad = true) {
                 isShowJoinTime: data.isShowJoinTime || false,
                 joinTime: data.joinTime || 0,
                 prizeList: data.prizeList || [], 
-                activityType: LIST.lottery[data.activityTypeCode]
+                activityType: LIST.lottery[data.activityTypeCode],
+                isCheckWeChat:data.lotteryValue||0
             });
             this.preloadImgs(isShowLoad);
             return Promise.resolve(data);

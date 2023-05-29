@@ -1,0 +1,20 @@
+<window show="{{show}}" bindmasktap="dismiss">
+  <view class="search_area">
+    <view>
+      <view class="s_tit">会员手机号</view>
+      <view class="s_cont">
+        <input class="search_input" bindinput='mobileInput' value="{{mobilePhone}}"/>
+      </view>
+      <view class="s_btns">
+        <view class="search_btn">
+          <button hover-class='active' class="confirm-btn" style="color:#fff;" catchtap='searchByMobile'>确认</button>
+        </view>
+        <view class="search_btn">
+          <button hover-class='active' class="deny-btn" catchtap='dismiss'>取消</button>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <include src="/common/base/component/index.wxml" />
+</window>

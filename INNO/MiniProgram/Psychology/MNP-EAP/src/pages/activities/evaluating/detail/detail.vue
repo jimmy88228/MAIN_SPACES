@@ -49,7 +49,7 @@
             </view>
             </template>
             <template>
-              <view class="btn flex-c-c fixed-X-50 invalid C_B2" v-if="acInfo.joinState == 'cannot_join'" @click="jump">
+              <view class="btn flex-c-c fixed-X-50 invalid C_B2" v-if="acInfo.joinState == 'cannotjoin'" @click="jump">
                 开始测评</view>
               <view class="btn flex-c-c fixed-X-50 invalid-blue" v-else-if="acInfo.joinState == 'notstart'"
                 @click="jump">活动未开始</view>

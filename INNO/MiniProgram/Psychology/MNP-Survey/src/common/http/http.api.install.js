@@ -42,5 +42,6 @@ export const Apis = {
 	...addRequests(ApisList.classManageApiList, apiDomain.CLASSMANAGERAPI),
 	...addRequests(ApisList.funTestApiList, apiDomain.FUNTESTAPI),
 	...addRequests(ApisList.specialSectionApiList, apiDomain.SPECIALSECTIONAPI),
+	...addRequests(ApisList.gameApiList, apiDomain.GAMEAPI),
 }
 console.log("install", Apis)

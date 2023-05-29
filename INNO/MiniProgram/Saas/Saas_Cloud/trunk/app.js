@@ -27,13 +27,13 @@ import { OpKind, ShareType,SceneType,videoAccountType} from "./common/manager/lo
 import StorageH from "./common/helper/handle/storageHandle.js"
 import strH from "./common/helper/handle/strHandle.js"
 import StringUtl from "./common/support/utils/string-util.js";
-import OriginalApi from "./common/manager/original-api-manager";
+import OriginApi from "./common/manager/original-api-manager";
 import CDateH from "./common/helper/handle/cacheDateHandle.js"
 import CacheH from "./common/helper/handle/cacheHandle.js"
 import StoreH from "./common/helper/handle/storeHandle.js";
 import {checkCommissionOpenConfig} from "./common/helper/commission-helper.js";
 import retainSessionH from "./common/helper/handle/retainSessionHandle.js";
-
+import WeReportHelper from "./common/helper/we-report-helper.js"
 App({
   globalData: {
     isShowWelcome: false,
@@ -240,12 +240,18 @@ App({
   get StorageH(){
     return StorageH;
   },
-  get OriginalApi(){
-    return OriginalApi;
+  get OriginApi(){
+    return OriginApi;
   },
   get StoreH(){
     return StoreH;
   },
+  get WeReportHelper(){
+    return WeReportHelper;
+  },
+  // get myPluginInterface(){
+  //   return myPluginInterface
+  // },
   getColor(...args) {
     return getColor(...args);
   },
@@ -274,14 +280,15 @@ App({
      //检测更新
       checkUpdate();
     }
+    LgMg.getVersion();
 		//调用API从本地缓存中获取数据
 		var logs = wx.getStorageSync('logs') || []
     logs.unshift(Date.now());
     LM.reSetSimpleInfo();
+    LM.setStoreInfo();
     LM.checkStaffShare("sharing_identity");
 		wx.setStorageSync('logs', logs);
     wx.removeStorageSync('CART_DEFAULT_SELECT');
-    LM.setStoreInfo();
 	},
 	onShow: function (ops) {
     console.log("页面 onShow app", ops);
@@ -289,6 +296,7 @@ App({
       return;
     }
     if(ops.query && !ops.query.scene){
+      ops.query.store_code && (ops.query.storeCode = ops.query.store_code);
       StoreH.checkStoreUpdate(ops);
     }
     PH.saveParams({options:ops});
@@ -333,6 +341,8 @@ function appOnshow(ops){
   CDateH.delCacheDate();
   LgMg.initGlobalParams(ops);
   PH.initStatus();
+  LgMg.setBaseChannel(ops);   
+  WxGH.initStatus();
   LM.loginAsync(false).finally(() => {
     LgMg.setChannel(ops);
     if (!this.isCheckIfStaff) {
@@ -342,6 +352,8 @@ function appOnshow(ops){
           LM.checkIfStore();
         })
       }, 3000);
+    }else{
+      LM.checkIfStaffDstbEvent();
     }
     LM.isLogin && (this.isCheckIfStaff = true);
     FM.submit();
@@ -351,7 +363,6 @@ function appOnshow(ops){
     }
     this.saveOptions(ops);
   });
-  WxGH.initStatus();
 }
 
 function appOnhide(){
@@ -359,7 +370,5 @@ function appOnhide(){
   LgMg.clearGlobalParams();
   //清除强制登录配置
   PH.delParams(["needLogin", "page_id", "store_id", "staff_id", "fromUser", "staff_code", "goods_id","codeType"]);
-  //注销用户分销身份
-  LM.setStaffInfo({});
   wx.removeStorageSync('tabKey');
 }

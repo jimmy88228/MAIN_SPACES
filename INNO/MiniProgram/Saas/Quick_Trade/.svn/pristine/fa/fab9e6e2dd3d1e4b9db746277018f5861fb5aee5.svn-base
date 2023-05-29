@@ -1,0 +1,178 @@
+// pages/main/staff-module/repository/index.js
+const App = getApp();
+Page(App.BP({  
+    data: {
+        isSelect:false,
+        categoryList:[{
+            id:0,
+            catName:"全部"
+        }],
+        domainPath: "",
+        goodsList:[]
+    }, 
+    onLoad: function (options) {
+        this.options = options;
+        this.hasMore = true;
+        this.pageParams = {
+          pageIndex:1,
+          pageSize:20,
+          searchStr:"",
+          catId:0,
+          tempIndex:0,
+          tempSize:0,
+        }; 
+        this.setView({ 
+          goodsListRef: { get: () => this.findView("#goods-list") }, 
+        })
+        this.setData({
+            isSelect:options.fromType == 'activity'
+        })
+    },  
+    onShow(){
+      this.storageRefresh();
+      this.getGoodsCategoryInfo();
+    },
+    loadData(onRefresh=false){
+        this.showLoading();
+        this.setData({isInit:false,})
+        let {pageIndex,pageSize,searchStr,catId}=this.pageParams;
+        let ids = this.options.ids && this.options.ids.split(',')||[];
+        console.log('ids',ids)
+        return getGoodsInfo({searchStr,pageIndex,pageSize,catId}).then(res=>{
+            if(res.code==1){
+                let goodsList = res.data && res.data.goodsInfoSimpleInfos ||[];
+                goodsList = goodsList.map(item=>({
+                  ...item,
+                  disabled: !!(ids.includes(String(item.goods_id)))
+                }))
+                let domainPath = res.data && res.data.domainPath || "";
+                this.hasMore = ((this.pageParams.pageIndex * this.pageParams.pageSize) < res.data.allRowsCount)
+                this.pageParams.pageIndex += 1;
+                this.setData({
+                  goodsList:onRefresh?goodsList:[...this.data.goodsList,...goodsList],
+                  domainPath,
+                  isInit:true,
+                });
+                console.log('goodsList',this.data.goodsList)
+            }
+            return res;
+        }).finally(() => {this.hideLoading()})
+    },
+    getGoodsCategoryInfo(){
+      let pageIndex = 1, pageSize = 2000;
+      return getGoodsCategoryInfo({pageIndex, pageSize}).then(data=>{ 
+        this.setData({
+          categoryList: [this.data.categoryList[0], ...(data.goodsCategoryInfoResps||[])]});
+        console.log('categoryList',this.data.categoryList)
+      })
+    },
+    onSelect(e){
+        let detail = e.detail||{};
+        let {index,item} = detail; 
+        if(item){
+            this.setData({[`goodsList[${index}]`]:item})
+        }
+    },
+    onSelectAll(e){
+        let detail = e.detail||{};
+        let {goodsList} = detail; 
+        if(goodsList){
+            this.setData({goodsList})
+        }
+    },
+    onDelete(e){
+        this._setPageLoading('onDelete');
+        let detail = e.detail||{};
+        let {item} = detail;  
+        let params = {
+            goodsId:item.goods_id
+        }
+        return deleteGoodsInfo(params).then(res=>{
+            if(res.code==1){
+                return this.storageRefresh().then(()=>{
+                    App.SMH.showToast({title:"删除成功"});
+                })
+            }
+        })
+    },
+    copy(e){
+      this._setPageLoading('copy');
+      let detail = e.detail||{};
+      let {item} = detail;  
+      return copyGoods({goodsId:item.goods_id||0}).then(res=>{
+        return this.storageRefresh().then(()=>{
+          App.SMH.showToast({title:"复制成功"});
+          this.scrollToTop();
+        });
+      })
+    },
+    scrollToTop(){
+      this.goodsListRef.scrollToTop();
+    },
+    save(e){
+        let detail = e.detail ||{};
+        let goodsList = detail.goodsList||[];
+        App.StorageH.set('curGetGoodsList',{activity_id:this.options.activity_id,goodsList,domainPath:this.data.domainPath||''}) || ""; 
+        wx.navigateBack()
+    },
+    onRefresh() { // 刷新
+      this.pageParams.pageIndex = 1;
+      this.hasMore = true;
+      return this.loadData(true); 
+    },
+    storageRefresh(){
+      let reduceIndex = Number(this.pageParams.pageIndex) - 1;
+      reduceIndex <= 0 && (reduceIndex = 1);
+      this.pageParams.tempIndex = reduceIndex;
+      this.pageParams.tempSize = this.pageParams.pageSize;
+      this.pageParams.pageSize = this.pageParams.tempIndex * this.pageParams.tempSize;
+      this.pageParams.pageIndex = 1;
+      return this.loadData(true).finally(()=>{
+        this.pageParams.pageIndex = this.pageParams.tempIndex + 1;
+        this.pageParams.pageSize = this.pageParams.tempSize;
+      });
+    },
+    onConfirm(e){
+      let detail = e.detail||"";
+      this.pageParams.searchStr = detail; 
+      this.onRefresh();
+    },
+    scrolltolower(){
+      if(this.hasMore){
+        this.loadData();
+      }else{
+        App.SMH.showToast({title:"已经到底了"});
+      }
+    },
+    onCatSelect(e){
+      let detail = e.detail;
+      this.pageParams.catId = detail;
+      this.onRefresh();
+    }
+}))
+function getGoodsInfo(params){
+    return App.Http.QT_GoodsApi.getGoodsInfo({
+        data: params,
+    })
+}
+function deleteGoodsInfo(params){
+    return App.Http.QT_GoodsApi.deleteGoodsInfo({
+        data: params,
+    })
+}
+function getGoodsCategoryInfo(params) { 
+  return App.Http.QT_GoodsApi.getGoodsCategoryInfo({
+    params
+  })
+    .then(res => {
+      if (res.code == 1) {
+        return res.data || []
+      }
+      return Promise.reject(res.msg || "获取分类列表失败")
+    })
+}
+function copyGoods(params){
+  return App.Http.QT_GoodsApi.copyGoods({
+    params
+  })
+}

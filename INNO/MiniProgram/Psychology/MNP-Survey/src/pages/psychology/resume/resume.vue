@@ -7,7 +7,7 @@
         </view>
         <image class="user-avatar" :src="tutorInfo.profilePicture" mode="aspectFill" />
       </view>
-      <view class="user-info" :style="{'min-height': `calc(100vh - 421rpx - ${navplace}px)`}" v-if="!!tutorInfo">
+      <view :class="['user-info',loadSuccess && 'animate-fading-out']" :style="{'min-height': `calc(100vh - 421rpx - ${navplace}px)`}"  v-if="!!tutorInfo && loadSuccess">
         <view class="user-info-top">
           <view class="m-b-40 flex-s-c flex-wrap">
             <view class="font-38 bold m-r-20 clamp" style="max-width:50%;">{{ tutorInfo.name?tutorInfo.name:"" }}</view>
@@ -30,7 +30,6 @@
               <view class="C_7f font-24 clamp">{{tutorInfo.address}}</view>
             </view>
           </view>
-          <!-- <view class="m-r-25 C_B2 m-b-20">擅长领域</view> -->
           <view class="flex f-wrap good-at" v-if="tutorInfo.fields && tutorInfo.fields.length>0">
             <view class="good-at-item" v-for="(item, i) in tutorInfo.fields" :key="i">
               {{ item }}
@@ -68,7 +67,8 @@
         options: {},
         value: "",
         tutorInfo: {},
-        navplace: SIH.navPlace
+        navplace: SIH.navPlace,
+        loadSuccess:false,
       };
     },
     onLoad(options) {
@@ -91,6 +91,7 @@
           })
           data.detailList = detailList;
           this.tutorInfo = res.data
+          this.loadSuccess = true
         });
       },
       reserve() {
@@ -268,6 +269,25 @@
       height: 100rpx;
       background: $uni-main-color;
       border-radius: 16rpx;
+    }
+  }
+
+  .animate-fading-out{
+    opacity: 0;
+    animation-duration: 0.6s;
+    animation-name: fading-out;
+    animation-iteration-count: 1;
+    animation-fill-mode: forwards;
+  }
+  @keyframes fading-out {
+    0%{
+      opacity: 0;
+      transform: translateY(10rpx);
+    }
+
+    100%{
+      opacity: 1;
+      transform: translateY(0rpx);
     }
   }
 </style>

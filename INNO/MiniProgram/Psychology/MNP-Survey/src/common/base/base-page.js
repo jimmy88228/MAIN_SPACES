@@ -2,6 +2,8 @@ import LgMg from "../manager/log-manager.js";
 import {
 	NotNeedLoginPage
 } from '../manager/log-map.js'
+import formatCrypto from '@/common/support/tools/format-crypto.js'
+import brandM from "@/common/manager/brand-manager.js";
 const BasePage = function(pageOption) {
 	let po = pageOption || {};
 	let pageParams = {};
@@ -111,6 +113,10 @@ function decodeOption(ops){
 	ops = {
 		...ops
 	}
+	if(ops.paramsKey){
+		ops = formatCrypto.decryptAES(ops.paramsKey)
+	}
+	brandM.setData({appCode: ops.appCode});
 	for(let i in ops){
 		ops[i] = decodeURIComponent(ops[i]);
 	}

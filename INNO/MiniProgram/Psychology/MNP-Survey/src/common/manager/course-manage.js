@@ -26,6 +26,10 @@ class courseManager {
   get scrollIds() {
     return this._scrollIds || 0
   }
+  
+  get recordId(){
+    return this._recordId || 0
+  }
 
   getCurrSub(dataset = {}) {
     let chaptersIndex = dataset.chaptersIndex || "";
@@ -38,9 +42,11 @@ class courseManager {
   }
 
   getCourseList(id) {
+    let recordId  = this.recordId || 0;
     return Http(Apis.getCourse, {
       data: {
-        id
+        id,
+        recordId
       }
     }).then((res) => {
       if (res.code == 1) {
@@ -53,7 +59,23 @@ class courseManager {
       }
     });
   }
-
+  // 获取recordId创建用户课程参与记录，返回参与课程的记录ID
+  getRecordId(id){
+    return Http(Apis.createCourseUserRecord, {
+        data: {
+          activityId:id
+        }
+    }).then((res) => {
+      if (res.code == 1) {
+        this._recordId = res.data;
+        return res;
+      } else {
+        return Promise.reject()
+      }
+    }).catch(err=>{
+      return Promise.reject(err)
+    });
+  }
 
   formatDetail(courseDetail) {
     // if(this._courseList.id) return Promise.resolve(this._courseList)
@@ -130,12 +152,14 @@ class courseManager {
     let activityId = Number(formData.activityId)
     return Http(Apis.punchCard, {
       data: {
-        activityId,
+        recordId:this.recordId,
+        // activityId,
         contentId: formData.contentId,
-        courseId: formData.courseId,
+        // courseId: formData.courseId,
         isCard: formData.isCard,
         viewTime: formData.viewTime,
         progressTime: formData.progressTime
+        
       }
     }).then(res => {
       if (res.code == 1) {
@@ -173,8 +197,9 @@ class courseManager {
 
   initCourse() {
     this._courseList = [];
-    this._scrollId = 0;
+    this._scrollIds = 0;
     this._openIndex = '0'
+    this._recordId = 0
   }
 
 }
@@ -182,8 +207,9 @@ class courseManager {
 const Func = {
   _initStorage() {
     this._courseList = [];
-    this._scrollId = 0;
-    this._openIndex = '0'
+    this._scrollIds = 0;
+    this._openIndex = '0';
+    this._recordId = 0
   },
 }
 

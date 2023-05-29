@@ -117,7 +117,7 @@ EasyHttp.setRequestHandler(req => {
           if(data.code == 1001){//token失效
             console.log('token失效')
             LM.pastLogout();
-            return LM.loginAsync(false).then(()=>{
+            return LM.loginAsync(false).then(()=>{  
               if (LM.isLogin && req.headers["userToken"] != LM.userToken){
                 req.headers["userToken"] = LM.userToken;
                 console.log("重新登录成功, 触发重发");

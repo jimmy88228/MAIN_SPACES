@@ -1,0 +1,6 @@
+{
+  "component": true,
+  "usingComponents": {
+    "act-product-list":"/components/common/business/act-product-list/index"
+  }
+}

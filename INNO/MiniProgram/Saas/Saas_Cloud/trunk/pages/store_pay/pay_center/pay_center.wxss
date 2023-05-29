@@ -14,17 +14,15 @@ page{
   flex-direction: column; */
 }
 .user_info{
-  width:100%; 
-  /* background:#D6D6D6; */
+  width:100%;  
   color:#fff;
-  border-radius:16rpx;
-  /* margin-bottom:28rpx; */
+  border-radius:16rpx; 
   position:relative;
     display: flex;
   justify-content: center;
   align-items: center;
   flex-direction: column;
-  height: 140rpx;
+  min-height: 140rpx;
   /* margin-bottom:  */
 }
 .user_number{
@@ -45,11 +43,11 @@ page{
 .header_img_stay{
   width:130rpx;
   height:130rpx;
-  background:#ACACAC;
-  line-height:100%;
+  background:rgba(255,255,255,0.4); 
   border-radius:140rpx;
   overflow:hidden;
   display:inline-block;
+  margin-top:12rpx;
   /* margin-top:134rpx; */
   /* margin-bottom:38rpx;   */
 }

@@ -1,0 +1,6 @@
+<include src="/common/base/component/index.wxml" />
+<window show="{{show}}" bindmasktap="dismiss" name="{{transitionName}}">
+    <transition show="{{show}}" name="{{transitionName}}" class="transition-box"> 
+      <slot></slot>
+    </transition>
+</window> 

@@ -20,11 +20,11 @@
       <view class="price-flex-box">
         
         <view class="price-box" wx:if="{{_data.content_switch.show_price}}"> 
-          <view class="list-msg-sale-price char" style="color:{{main_bg_color}};">
-            <text>{{listGoods.price}}</text>
+          <view class="list-msg-sale-price" style="color:{{main_bg_color}};">
+            <text class="char">{{listGoods.price}}</text>
             <block wx:if="{{listGoods.max_price>listGoods.price}}">
               <text style="padding:0 6rpx;">-</text>
-              <text>¥{{listGoods.max_price}}</text> 
+              <text class="char">{{listGoods.max_price}}</text> 
             </block>
             <text style="white-space:pre;" wx:if="{{ listGoods.integral > 0 }}"> + {{listGoods.integral || listGoods.old_integral}}积分</text>
           </view>

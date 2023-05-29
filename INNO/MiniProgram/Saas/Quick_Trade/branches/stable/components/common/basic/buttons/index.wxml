@@ -1,0 +1,6 @@
+<view class="btns_hold {{disabled ? 'disabled' : ''}}">
+  <button wx:if="{{isCanUrPf}}" class="handle_btn" disabled='{{disabled}}' catchtap='handleTap'><slot /></button>
+  <button wx:else class="handle_btn" open-type='getUserInfo' disabled='{{disabled}}' catchtap="blankF" bindgetuserinfo='handleTap'>
+    <slot />
+  </button>
+</view>

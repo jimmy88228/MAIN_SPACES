@@ -1,18 +1,11 @@
 <template>
   <view class="report-info" v-if="hasData">
-    <!-- <view class="report-info"> -->
-    <image class="report-background" :src="staticAddress+'/report-info-background-a.png'" mode="scaleToFill" />
-    <page-nav :isTransparent="true"></page-nav>
+    <image class="report-background"  :src="staticAddress+'/scale_background.png'" mode="scaleToFill" />
     <view class="report-area relative p-l-25 p-r-25 p-b-32">
-      <view class="flex-b-s m-r-13 m-l-13 p-b-38">
-        <view class="">
-          <view class="report-title font-24 m-b-20">测评报告</view>
-          <view class="font-38 C_333 m-b-15 clamp2 bold" style="width: 100%">{{
-              analyze.activityName
-            }}</view>
-          <view class="font-22 C_7f">测评时间 {{ formatDate(analyze.completeTime) }}</view>
-        </view>
+      <view class="report-title">
+        {{analyze.modelName}}
       </view>
+      <view class="report-title-line"></view>
       <view class="report-tips">
         <view class="report-tips-title font-32">
           <view class="C_333 bold">感谢你的参与</view>
@@ -67,15 +60,16 @@
           </view>
         </template>
       </progressReport>
-      <custom-page v-if="analyze.adviseModules && analyze.adviseModules.length>0" :fullScreen="false" :isShowNav="false" ref="customPageRef"></custom-page>
+      <custom-page v-if="analyze.adviseModules && analyze.adviseModules.length>0" :fullScreen="false" :isShowNav="false"
+        ref="customPageRef"></custom-page>
     </view>
   </view>
 </template>
 
 <script>
   import LoadingView from "@/components/css3/loading/loading.vue";
-  import progressReport from "../report-info-component/module/progress-report.vue";
-  import dimension from "../report-info-component/module/dimension.vue";
+  import progressReport from "./module/progress-report.vue";
+  import dimension from "./module/dimension.vue";
   const pageOption = Page.BasePage({
     name: "report-info-component-c",
     components: {
@@ -188,23 +182,26 @@
     },
     onShow() {},
     onReady() {},
-    methods: { 
-      init(){ 
-        if(this.analyze && this.analyze.adviseModules && this.analyze.adviseModules.length>0) {
+    methods: {
+      init() {
+        if (this.analyze && this.analyze.adviseModules && this.analyze.adviseModules.length > 0) {
           setTimeout(() => {
-            this.$refs.customPageRef && this.$refs.customPageRef.initData({moduleList:this.analyze.adviseModules},'report');
+            this.$refs.customPageRef && this.$refs.customPageRef.initData({
+              moduleList: this.analyze.adviseModules
+            }, 'report');
           }, 500);
         }
       },
       formatDate(date) {
         return date.slice(0, 10)
-      }, 
-    }, 
-    watch : {
-      analyze : {
-        handler(nV){
+      },
+    },
+    watch: {
+      analyze: {
+        handler(nV) {
           this.init();
-        },immediate:true
+        },
+        immediate: true
       }
     }
   });
@@ -213,25 +210,38 @@
 
 <style lang="scss" scoped>
   .report-info {
-    min-height: 100vh;
-    background: #F0F7FD;
+    position: relative;
+    padding-top: 81rpx;
 
     .report-background {
       position: absolute;
+      top: 0px;
+      left: 0px;
       width: 100%;
-      height: 520rpx;
+      height: 587rpx;
     }
 
     .report-area {
-      margin-top: 50rpx;
+      position: relative;
+      z-index: 1;
 
       .report-title {
-        width: 123rpx;
-        color: #5EA6D9;
-        padding: 8rpx 0;
-        background: rgba($color: #5EA6D9, $alpha: 0.1);
-        border-radius: 8rpx;
-        text-align: center;
+        font-size: 36rpx;
+        font-weight: bold;
+        color: #FFFFFF;
+        margin-bottom: 27rpx;
+        margin-left: 45rpx;
+        position: relative;
+      }
+
+      .report-title-line {
+        width: 98rpx;
+        height: 4rpx;
+        background: #1E7FC5;
+        border-radius: 5rpx;
+        opacity: 0.2;
+        margin-left: 45rpx;
+        margin-bottom: 62rpx;
       }
 
       .report-tips {

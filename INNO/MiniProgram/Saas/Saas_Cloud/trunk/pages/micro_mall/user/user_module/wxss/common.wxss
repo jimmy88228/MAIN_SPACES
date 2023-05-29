@@ -19,7 +19,7 @@ padding-bottom:1rpx;
   background-size: 100%;
 }
 .bg_img_box {
-  width: 669rpx;
+  width: 670rpx;
   height: 260rpx;
   position: relative;
   overflow: hidden;

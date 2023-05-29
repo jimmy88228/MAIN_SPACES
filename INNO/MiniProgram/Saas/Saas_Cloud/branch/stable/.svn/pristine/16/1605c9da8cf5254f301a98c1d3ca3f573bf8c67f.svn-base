@@ -1,0 +1,56 @@
+.main{
+  box-sizing: border-box;
+  padding:30rpx;
+  background-color: #fff;
+  margin-bottom: 10rpx;
+}
+.title{
+  font-weight: bold;
+  padding-bottom: 25rpx;
+}
+.box{
+  display: flex;
+  align-items: center;
+  position: relative;
+}
+.img-prize{
+  width: 120rpx;
+  height: 120rpx;
+  margin-right: 40rpx;
+}
+.prize-name{
+  padding-right: 50rpx;
+  box-sizing: border-box;
+}
+.radio_icon {
+  width: 31rpx;
+  height: 31rpx;
+  display: block;
+  position: absolute;
+  right: 0;
+  top: 50%;
+  transform:translateY(-50%);
+}
+.saleUpMain{
+  opacity: 0.6;
+}
+.saleUp{
+  position: absolute;
+    right: 0;
+    bottom: -10rpx;
+    width: 150rpx;
+    height: 150rpx;
+    border: 1px solid #dfdfdf;
+    border-radius: 50%;
+    color: #7f7f7f;
+    font-size: 24rpx;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transform: rotate(-30deg);
+}
+.not_entitled{
+  text-align: right;
+  transform: translateY(16rpx);
+  color: rgb(216, 15, 15);
+}

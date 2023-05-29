@@ -162,7 +162,6 @@
 			.swiper-item {
 				.img-item {
 					width: 100%;
-					height: 100%;
 					position: relative;
 					.img-icon{
 						opacity: 0;

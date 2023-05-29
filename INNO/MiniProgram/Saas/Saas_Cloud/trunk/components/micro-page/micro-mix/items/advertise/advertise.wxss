@@ -62,3 +62,6 @@
   z-index: 10;
   opacity: 0;
 }
+.btn_link.contactPluginCell{
+  z-index: 9;
+}

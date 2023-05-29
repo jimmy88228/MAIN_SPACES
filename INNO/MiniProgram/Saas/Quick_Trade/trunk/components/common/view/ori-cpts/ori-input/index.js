@@ -1,4 +1,5 @@
 const App = getApp();
+import validHelper from "./valid-helper.js";
 import ValidHelper from "./valid-helper.js"
 Component(App.BC({ 
   externalClasses: ['ext-class','ext-placeholder-class'],
@@ -30,6 +31,14 @@ Component(App.BC({
       type:Boolean,
       value:true
     },
+    alwaysEmbed:{
+      type:Boolean,
+      value:true
+    },
+    cursorSpacing:{
+      type:Number,
+      value:20
+    },
     key:String,
     password:Boolean,
     disabled:Boolean,
@@ -57,26 +66,37 @@ Component(App.BC({
         value
       })
     },
-    onFocus() {
-      this.triggerEvent('focus');
+    onFocus(e) {
+      this.triggerEvent('focus',e,{ 
+        bubbles:true,
+        composed:true,
+        capturePhase:true,
+      });
     },
-    onBlur() {
-      this.triggerEvent('blur');
+    onBlur(e) {
+      this.triggerEvent('blur',e,{
+        bubbles:true,
+        composed:true,
+        capturePhase:true,
+      },);
     },
     onTap() {
       this.triggerEvent('tap');
     },
-    checkValid(){
+    checkValid(index,isShowError){
       return new Promise((rs,rj)=>{
         let validArray = this.properties.validArray||[];
         if(validArray.length>0){
-          let arr = [];
+          let ruleArr = [];
           validArray.forEach(item=>{
             if(ValidHelper[item] && typeof(ValidHelper[item]) == 'function'){
-              arr.push(ValidHelper[item](this.data.value));
+              ruleArr.push(ValidHelper[item](this.data.value));
             }
           })
-          Promise.all(arr).then(list=>{
+          if(this.properties.type == 'digit'){
+            ruleArr.push(validHelper.NUMBER_VALID(this.data.value,2))
+          }
+          Promise.all(ruleArr).then(list=>{
             let inValid = "";
             for(let i = 0,len=list.length;i<len;i++){
               let res = list[i];
@@ -85,22 +105,16 @@ Component(App.BC({
                 break;
               }
             }
-            inValid && this.showError(inValid); 
-            return inValid ? rj(inValid) : rs()
+            isShowError && inValid && this.showErrorAnim(inValid,index); 
+            return inValid ? rj({err:inValid,index,key:"checkValid"}) : rs()
           })
         }else{
           return rs();
         }
       })
     },
-    showError(msg){
-      // console.log('showError',msg);
-      if(this.animateShowing)return
-      this.animateShowing = true;
-      this.animate('.ori-input',ValidHelper.ERR_KEY_FRAMES,250,() => {
-        this.clearAnimation('.ori-input', { backgroundColor: true, translate: true }); 
-        this.animateShowing = false;
-      })
+    showErrorAnim(){
+      wx.MyAnims.error(this,'.ori-input');
     },
   }
 }))

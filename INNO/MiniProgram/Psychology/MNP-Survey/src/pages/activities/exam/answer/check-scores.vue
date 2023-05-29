@@ -134,7 +134,6 @@
     methods: {
       checkInit(){
         this.loadData(1, 0).then(() => {
-          // this.searchTargetQuestion(0, 0)
           this.getBoxH();
         });
       },
@@ -166,27 +165,7 @@
           })
         }
       },
-      // getActInfo() {
-      //   return this.$Http(this.$Apis.getExamModel, {
-      //     data: {
-      //       modelId : this.options.modelId ,
-      //     },
-      //   }).then((res) => {
-      //     if (res.code == 1) {
-      //       let data = res.data || {};
-      //       // 判断剩余题目
-      //       if (!data.answerCount) {
-      //         this.restQuestions = data.questionCount;
-      //       } else if (!data.lastQuestion.nextQuestionId && data.lastQuestion.questionId) {
-      //         this.restQuestions = 0
-      //       } else {
-      //         this.restQuestions = data.lastQuestion.restQuestions;
-      //       }
-      //       this.answerCount = data.answerCount||0;
-      //       this.acInfo = data;
-      //     }
-      //   });
-      // },
+    
       loadData(pageIndex = 0, pageSize = 0) {
         if (!this.hasMore) {
           return Promise.reject();
@@ -245,90 +224,18 @@
           
 
         this.restQuestions = item.restQuestions;
-        // 答题完成
-        // if (this.isFinish || item.restQuestions == 0 || optionItem.nextQuestionId == 0) {
-        //   this.setSubmitBtn();
-        //   this.restQuestions = 0;
-        //   list.map((item, i) => {
-        //     if (i > index) {
-        //       item.questionIndex = 0;
-        //       item.selectOptionId = 0;
-        //     }
-        //   })
-        //   this.list = list;
-        //   return
-        // } else {
-        //   this.setSubmitBtn(false);
-        // }
+
         if (item.restQuestions > 0) {
           console.log('itemitem',item)
           this.searchTargetQuestion(optionItem.nextQuestionId, item.questionId)
           this.answerCount += 1
-          // if (
-          //   this.isFinish ||
-          //   (optionItem.nextQuestionId == 0 &&
-          //     this.list[this.current] &&
-          //     this.list[this.current].selectOptionId > 0)
-          // ) {
-          //   this.setSubmitBtn();
-          // }
+
         }
         setTimeout(() => {
           this.answerIng = false;
         }, 300)
       },
 
-      // submit(index) {
-      //   let item = this.list[index] || {};
-      //   if (item.selectOptionId <= 0) {
-      //     SMH.showToast({
-      //       title: `第${index + 1}道题目答案异常`,
-      //     });
-      //     return;
-      //   }
-      //   let answerList = [{
-      //     optionId: item.selectOptionId || 0,
-      //     questionId: item.questionId || 0,
-      //   }, ];
-      //   return this.$Http(this.$Apis.submitExam, {
-      //     data: {
-      //       contentId: this.options.contentId || 0,
-      //       courseId: this.options.courseId || 0,
-      //       answerList,
-      //     },
-      //     other: {
-      //       isShowLoad: true,
-      //     },
-      //   }).then((res) => {
-      //     if (res.code == 1) {
-      //       let data = res.data || {};
-      //       this.examRecordId = data.examRecordId||0;
-      //       this.isFinish = data.isFinish || false;
-      //       return Promise.resolve(res);
-      //     } else {
-      //       return Promise.reject(res);
-      //     }
-      //   });
-      // },
-      
-      // setSubmitBtn(bool = true) {
-      //   if (bool) {
-      //     if (this.submitShow) return;
-      //     this.submitShow = true;
-      //     setTimeout(() => {
-      //       this.btnDismiss = false;
-      //       this.btnActive = true;
-      //     }, 50);
-      //   } else {
-      //     if (this.btnDismiss) return;
-      //     this.btnActive = false;
-      //     this.btnDismiss = true;
-      //     setTimeout(() => {
-      //       this.submitShow = false;
-      //       this.btnDismiss = false;
-      //     }, 400);
-      //   }
-      // },
       last() {
         if (this.current == 0) return
         //  !this.isFinish && this.submitShow && this.setSubmitBtn(false);
@@ -345,7 +252,6 @@
         this.searchTargetQuestion(this.list[this.current].fromQuestionId);
       },
       next(){
-        // if (this.current == this.list.length-1) return;
         console.log('this.list',this.list,this.current)
         let item = this.list[this.current] || {};
         let index = item.optionList.findIndex(i=>{console.log(i,item);return i.optionId == item.selectOptionId})
@@ -376,11 +282,6 @@
         return Number((cur / len).toFixed(2)) * 100;
       },
       submitFinish() {
-        // let index = -1;
-        // let check = this.list.every((item, i) => {
-        //   index = i;
-        //   return item.selectOptionId > 0;
-        // });
         if (!this.isFinish) {
           SMH.showToast({
             title: `还有未打完的题目，请检查`,

@@ -11,6 +11,12 @@
   background-color:#fff;
   padding:10rpx 30rpx;
 }
+.main.customTab{
+  bottom: 90rpx;
+}
+.main.customTab.isIphoneX{
+  bottom: 158rpx;
+}
 .main_tip{
   line-height:55rpx;
   font-size:30rpx;

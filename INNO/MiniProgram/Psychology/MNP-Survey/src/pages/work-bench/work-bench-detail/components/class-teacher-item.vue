@@ -12,7 +12,7 @@
     <view class="eval-detail">
       <view class="eval-detail-title flex-b-c">
         <view class="flex-s-c flex1">
-          <image class="eval-icon f-shrink-0" @error="imgerror()" :src="logo || requireStatic(activityIcon)"
+          <oriImage class="eval-icon f-shrink-0" customStyle="border-radius:8rpx;" @error="imgerror()" :src="logo || requireStatic(activityIcon)"
             mode="aspectFill" />
           <view class="flex1 clamp">
             <view class="font-26 m-b-10 flex1 clamp">{{itemInfo.activityName}}</view>
@@ -64,9 +64,10 @@
 </template>
 
 <script>
+  import oriImage from "@/components/ori-comps/image/ori-image"
   const pageOption = Page.BasePage({
     name: "class-teacher-item",
-    components: {},
+    components: {oriImage},
     props: {
       itemInfo: {
         type: Object,
@@ -74,14 +75,6 @@
           return {}
         }
       }
-      // index: {
-      //   type: Number,
-      //   default: 0
-      // },
-      // pageIndex: {
-      //   type: Number,
-      //   default: 0
-      // }
     },
     data() {
       return {
@@ -184,7 +177,6 @@
         .eval-icon {
           width: 61rpx;
           height: 61rpx;
-          border-radius: 8rpx;
           margin-right: 16rpx;
         }
 
@@ -220,10 +212,6 @@
             line-height: 62rpx;
             color: $uni-main-color;
           }
-        }
-
-        .count-item-psyc {
-          width: 300rpx !important;
         }
       }
 

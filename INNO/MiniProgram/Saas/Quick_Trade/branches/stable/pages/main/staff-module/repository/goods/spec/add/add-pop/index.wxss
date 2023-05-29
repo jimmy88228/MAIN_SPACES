@@ -1,0 +1,43 @@
+@import "/common/base/component/default-wxss/index.wxss";
+.custom-pop-box{
+  position: fixed;
+  left: 50%;
+  top: 40%;
+  transform: translate(-50%,-50%);
+  width: 660rpx;
+  min-height: 360rpx;
+  background-color: #fff;
+  border-radius: 24rpx;
+  overflow: hidden;
+  font-size: 28rpx;
+  padding-bottom: 110rpx;
+  padding-top: 40rpx;
+  box-sizing: border-box;
+}
+.confirm-box{
+  width: 100%;
+  position: absolute;
+  left: 0;
+  bottom: 0;
+}
+.add-spec-box{
+  width: 100%;
+  margin-bottom: 30rpx;
+}
+.confirm-btn,.cancel-btn{
+  height: 100rpx;
+  color: #fff;
+  background-color: var(--main-color);
+}
+.cancel-btn{
+  background-color: #dfdfdf;
+}
+.add-spec-input{
+  width: 450rpx;
+  height: 80rpx;
+}
+.add-spec-title{
+  font-size: 30rpx;
+  margin-bottom: 30rpx;
+  font-weight: bold;
+}

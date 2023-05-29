@@ -20,12 +20,12 @@ export const LogMap = {
 
   // 报表
   ["pages/report/report-list/report-list"]: "REPORT_REPORT_LIST",
-  ["pages/report/report-info/report-info"]: "REPORT_REPORT_INFO",
+  ["pages/report-info/report-info"]: "REPORT_REPORT_INFO",
 
   //资源详情
-  ["pages/audio-detail/audio-detail"]: "PUBLIC_AUDIO_DETAIL",
-  ["pages/video-detail/video-detail"]: "PUBLIC_VIDEO_DETAIL",
-  ["pages/article-detail/article-detail"]: "PUBLIC_ARTICLE_DETAIL",
+  ["pages/content-library/audio-detail/audio-detail"]: "PUBLIC_AUDIO_DETAIL",
+  ["pages/content-library/video-detail/video-detail"]: "PUBLIC_VIDEO_DETAIL",
+  ["pages/content-library/article-detail/article-detail"]: "PUBLIC_ARTICLE_DETAIL",
   
   // 量表测评
   ["pages/activities/evaluating/detail/detail"]: "ACTIVITIES_EVALUATING_DETAIL",
@@ -73,6 +73,9 @@ export const LogMap = {
   ["pages/activities/exam/answer/exam-record"]:"COURSE_EXAM_RECORD", 
   ["pages/activities/exam/answer/check-scores"]:"COURSE_CHECK_SCORES", 
   ["pages/activities/exam/answer/answer"]:"COURSE_COURSE_ANSWER", 
+  ["pages/activities/exam-lecture/answer/exam-record"]:"COURSE_EXAM_RECORD", 
+  ["pages/activities/exam-lecture/answer/check-scores"]:"COURSE_CHECK_SCORES", 
+  ["pages/activities/exam-lecture/answer/answer"]:"COURSE_COURSE_ANSWER", 
 
   // 404
   ["pages/public/404"]:"PUBLIC_404"
@@ -259,10 +262,10 @@ export const KeyParamName = {
   ["pages/startup/startup"]:["scene"], //启动页
   ["pages/psychology/resume/resume"]:["consultantId"], //导师简历
   ["pages/psychology/reserve/reserve"]:["consultantId"], //预约资讯
-  ["pages/report/report-info/report-info"]:["recordId"], //测评详情
-  ["pages/audio-detail/audio-detail"]:["id"], //音乐详情
-  ["pages/video-detail/video-detail"]:["id"], //视频详情
-  ["pages/article-detail/article-detail"]:["id"], //文章详情
+  ["pages/report-info/report-info"]:["recordId"], //测评详情
+  ["pages/content-library/audio-detail/audio-detail"]:["id"], //音乐详情
+  ["pages/content-library/video-detail/video-detail"]:["id"], //视频详情
+  ["pages/content-library/article-detail/article-detail"]:["id"], //文章详情
   ["pages/custom/page/page"]:["page_id","type"], //自定义页
   ["pages/web-view/web-view"]:["url"], //web-view
   ["pages/activities/evaluating/detail/detail"]:["activityId"], //测评详情
@@ -303,5 +306,4 @@ export const NotNeedLoginPage = {
   'pages/startup/startup':true,
   'pages/information/information':true,
   'pages/register/register':true,
-  'pages/user-switch/user-switch':true,
 }

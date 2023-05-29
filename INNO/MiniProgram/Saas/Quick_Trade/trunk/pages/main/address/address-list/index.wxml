@@ -6,14 +6,14 @@
   <view class="add_address_btns">
     <view class="add_address_btn">
       <button class="add_wx_addr_btn add_btn" hover-class="active" catchtap="getWxAddress">
-        <ori-image ext-class="addr_icon" src="{{brand_info.icon_url}}micro_mall/wechat_logo.png" mode="aspectFit" />
+        <ori-image ext-class="addr_icon" src="{{iconWeChat}}" mode="aspectFit" />
         <text class="new_addr_txt">获取微信地址</text>
       </button>
     </view>
     <view class="btns_stay"></view>
     <view class="add_address_btn">
       <button class="add_addr_btn add_btn" hover-class="active" bindtap="addNewAddress">
-        <ori-image ext-class="addr_icon add_addr_icon" src="{{brand_info.icon_url}}micro_mall/address/add_new.png" mode="aspectFit" />
+        <ori-image ext-class="addr_icon add_addr_icon" src="{{iconAdd}}" mode="aspectFit" />
         <text class="new_addr_txt">添加新地址</text>
       </button>
     </view>
@@ -41,11 +41,11 @@
         <view class="addr_operation">
           <view class="addr_operation_l">
             <view class="edit_addr" data-index="{{index}}" catchtap="editAddress">
-              <ori-image ext-class="img-op" src="{{edit}}" mode="widthFix" />
+              <ori-image ext-class="img-op" src="{{iconEdit}}" mode="widthFix" />
               <text>编辑</text>
             </view>
             <view class="del_addr" data-addr_id="{{item.address_id}}" catchtap="delAddress">
-              <ori-image ext-class="img-op" src="{{del}}" mode="widthFix" />
+              <ori-image ext-class="img-op" src="{{iconDel}}" mode="widthFix" />
               <text>删除</text>
             </view>
           </view>

@@ -1,7 +1,7 @@
 import brandConfig from "./brand.config.js";
 import setConfig from "./setConfig.js";
 let config = {
-	env: 'prod', // 环境，分 dev, prod, test （h5的环境下，只填写dev 就可以，可以根据域名来判断）
+	env: 'dev', // 环境，分 dev, prod, test （h5的环境下，只填写dev 就可以，可以根据域名来判断）
 	log: true,
 	clickLimitTime: 2000, // 连续点击 毫秒
 	PAGE_SIZE:20,

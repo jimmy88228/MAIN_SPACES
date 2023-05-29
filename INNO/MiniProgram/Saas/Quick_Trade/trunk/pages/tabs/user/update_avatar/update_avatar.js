@@ -39,7 +39,7 @@ Page(App.BP({
       });
     }else{
       return BindPhoneHelper.getPhoneNumber(e).then(()=>{
-        App.SMH.showToast({title: "已绑定手机号码"})
+        App.SMH.showToast({title: "手机号绑定成功"})
         updatePageUserProfile.call(this);
       });
     }
@@ -97,8 +97,8 @@ function modifyUserPortrait(){
       }
       return Promise.reject(res)
     })
-    .catch(err => {
-      console.log("提交失败", err);
-      App.SMH.showToast({title: `保存失败: ${err && err.msg || err}`});
-    })
+    // .catch(err => {
+    //   console.log("提交失败", err);
+    //   App.SMH.showToast({title: `保存失败: ${err && err.msg || err}`});
+    // })
 }

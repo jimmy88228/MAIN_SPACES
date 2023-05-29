@@ -5,7 +5,7 @@ import LM from "../manager/login-manager.js";
 import MyStr from "../support/utils/string-util.js";
 import WxApi from "../helper/wx-api-helper.js";
 import {TabKeys} from "../manager/log-map.js";
-
+let loadingObj = {};
 export default {
     noAction() {},
     addPageLog(name, path, options, _isBack) {
@@ -122,12 +122,15 @@ export default {
     }, 
     checkLoginAsync(){
       return this._checkUserLogin();
-    },
-    _checkUserLogin(callback){
-      return LM.loginAsync().finally(()=>{
-          this._setUserLogin(callback);
-          return Promise.resolve(LM.isLogin);
-      })
+    },  
+    _checkUserLogin(callback){ 
+      return LM.loginAsync().then(()=>{
+        this._setUserLogin(callback);
+        return LM.isLogin;  
+      }).catch(()=>{
+        this._setUserLogin(callback);
+        return Promise.resolve(LM.isLogin);  
+      }) 
     },
     _setUserLogin(callback){
       if(this.data.isLogin != LM.isLogin){
@@ -137,8 +140,8 @@ export default {
       }
       typeof(callback) == "function" && callback(LM.isLogin)
     },
-    trimSysConfig(arr) {
-      return GetSystemConfig.trimSysConfig(arr);
+    trimConfigs(arr) {
+      return GetSystemConfig.trimConfigs(arr);
     },
     _imgLoad(e) { 
       let key = this.getDataset(e,"key") || "";
@@ -195,6 +198,61 @@ export default {
         }
       }
       return false
+    },
+    _showModal(params){
+      return WxApi.showModal({
+        title: params.title || "提示",
+        content: params.content || "",
+        showCancel: params.showCancel || true,
+        cancelText: params.cancelText || "取消",
+        confirmText: params.confirmText || "确定",
+      }).then(res=>{
+        if (res.confirm) {
+          return Promise.resolve(res);
+        }
+        return Promise.reject(res);
+      })
+    }, 
+    _throttle(key="normal",time=800,fromType){
+      let pageData = getCurrentPages().pop();
+      let page = pageData.route;
+      !loadingObj[page] && (loadingObj[page] = {});
+      if(loadingObj[page][key]){
+        throw (key+'---throttle');
+      }
+      loadingObj[page][key] = true;
+      if(fromType != 'api'){
+        let timer = setTimeout(() => {
+          clearTimeout(timer);
+          delete loadingObj[page][key];
+        }, time);
+      }
+      return page
+    },
+    _throttleApi(key="normal",fromType,page){
+      key = key + '_API'; 
+      if(fromType == 'release'){
+        setTimeout(() => {
+          // this.hideLoading();
+          loadingObj[page] && delete loadingObj[page][key];
+        }, 500);
+        return false;
+      }else{
+        // this.showLoading();
+        return this._throttle(key,800,'api'); 
+      }
+    },
+    setWarehouse(list,extend={}){
+      let inventory_model_config = extend && extend.inventory_model_config; // 2：库存=仓库库存 else: 库存=库存+仓库库存
+      if (inventory_model_config == 2){
+        list.forEach(item => {
+          item.product_number = item.warehouse_product_number || 0;
+        })
+      } else {
+        list.forEach(item => {
+          item.product_number += item.warehouse_product_number || 0;
+        })
+      }
     }
 };
 

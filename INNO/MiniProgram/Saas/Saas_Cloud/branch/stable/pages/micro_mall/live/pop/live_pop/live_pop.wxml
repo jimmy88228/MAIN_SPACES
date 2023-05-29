@@ -1,0 +1,33 @@
+  <wxs module="moveTool" src="./live_pop.wxs"></wxs>
+  <view>
+    <view 
+    class="join_live" 
+    data-win-w="{{winW}}"
+    data-win-h="{{winH}}"
+    data-item-w="{{itemW}}"
+    data-item-h="{{itemH}}"
+    data-item-x="{{itemX}}"
+    data-item-y="{{itemY}}"
+    style="top:{{itemY}}px;left:{{itemX}}px;"
+    bindtouchstart="{{moveTool.touchstart}}"
+    catchtouchmove="{{moveTool.touchmove}}"
+    catchtouchend="{{moveTool.touchend}}">
+        <view>
+          <view class="lines">
+            <text class="_line line_3"></text>
+            <text class="_line line_1"></text>
+            <text class="_line line_2"></text>
+          </view>
+          <view>直播间</view>
+        </view>
+        <btns 
+          isLogin="{{isLogin}}"
+          btnType="justLogin"
+          bindclickcallback="joinLiveBtn"
+          class="get_number_btn"
+          >
+        </btns>
+      </view>
+    </view>
+
+

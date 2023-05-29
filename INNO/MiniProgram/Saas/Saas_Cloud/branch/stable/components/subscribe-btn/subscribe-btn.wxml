@@ -1,0 +1,5 @@
+<!--components/subscribe-btn/subscribe-btn.wxml-->
+<view class="btn-box">
+    <slot></slot>
+    <button form-type="submit" class="subscribe-btn" bindtap='subscribe' hover-class='none'></button>
+</view>

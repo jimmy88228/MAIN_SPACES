@@ -5,6 +5,7 @@
   "disableScroll": true,
   "usingComponents": {
     "list":"/components/list/list",
-    "pageHome": "/components/sceneOperate/pageHome"
+    "pageHome": "/components/sceneOperate/pageHome",
+    "mp-scroll-view":"/components/mp-module/mp-scroll-view/mp-scroll-view"
   }
 }

@@ -10,6 +10,7 @@ import linkMap from '../common/manager/link-map.js';
 import stringUtil from '@/common/support/utils/string-util.js'
 import brandM from "@/common/manager/brand-manager.js";
 import entryM from '@/common/manager/entry-manager.js';
+import formatCrypto from '@/common/support/tools/format-crypto.js'
 export default {
 	data() {
 		return {
@@ -74,10 +75,11 @@ export default {
 				console.log(url, "url获得")
 				url && url.slice(0, 1) != '/' && (url = '/' + url);
 				url = brandM._setAppCodeUrl(url)
+				url = formatCrypto.encryptAES(url)
 				if (!url) {
-					SMH.showToast({
-						title: "敬请期待"
-					})
+					// SMH.showToast({
+					// 	title: "敬请期待"
+					// })
 					return;
 				}
 				UniApi.navigateTo({
@@ -96,6 +98,7 @@ export default {
 		redirectAction(e) {
 			let url = typeof (e) == 'object' ? this.getDataset(e).url || '' : e;
 			url = brandM._setAppCodeUrl(url)
+			url = formatCrypto.encryptAES(url)
 			console.log('url', url)
 			UniApi.redirectTo({
 				url: url
@@ -108,6 +111,7 @@ export default {
 		reLaunchAction(e) {
 			let url = typeof (e) == 'object' ? this.getDataset(e).url || '' : e;
 			url = brandM._setAppCodeUrl(url)
+			url = formatCrypto.encryptAES(url)
 			console.log('url', url)
 			UniApi.reLaunch({
 				url: url

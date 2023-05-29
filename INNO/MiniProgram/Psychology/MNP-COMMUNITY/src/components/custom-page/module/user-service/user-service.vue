@@ -2,12 +2,14 @@
   <view class="service-box">
     <view class="service-item flex-s-c" @click="jump(item.code)" v-for="(item, index) in serviceList" :key="index"
       v-if="item.is_enable == 1" :alt="item.type_name">
-      <image class="icon" :src="item.icon || staticAddress+imgPath[item.code]" mode="aspectFit" />
+      <oriImage :showLoading="false" customStyle="margin: 0 64rpx;width: 55rpx; height: 55rpx;" :src="item.icon || imgPath[item.code]" mode="aspectFit" />
+      <!-- <image class="icon" :src="item.icon || staticAddress+imgPath[item.code]" mode="aspectFit" /> -->
       <view class="title">{{ item.name }}</view>
       <view class="arrow"></view>
     </view>
     <view class="service-item flex-s-c" v-if="isCommissioner" @click="showOrganizeLsit" :key="index">
-      <image class="icon" :src="staticAddress+imgPath['WORK-BENCH']" mode="aspectFit" />
+      <oriImage :showLoading="false" customStyle="margin: 0 64rpx;width: 55rpx; height: 55rpx;" :src="staticAddress+imgPath['WORK-BENCH']" mode="aspectFit" />
+      <!-- <image class="icon" :src="staticAddress+imgPath['WORK-BENCH']" mode="aspectFit" /> -->
       <view class="title">工作台</view>
       <view class="arrow"></view>
     </view>
@@ -17,6 +19,7 @@
 
 <script>
 import workBench from "@/components/custom-page/work-bench/work-bench"
+import oriImage from "@/components/ori-comps/image/ori-image"
   const pageOption = Page.BasePage({
     name: "user-service",
     props: {
@@ -30,7 +33,8 @@ import workBench from "@/components/custom-page/work-bench/work-bench"
       }
     },
     components:{
-      workBench
+      workBench,
+      oriImage,
     },
     computed: {
       serviceList() {
@@ -58,15 +62,15 @@ import workBench from "@/components/custom-page/work-bench/work-bench"
           case "SURVEY-RECORD":
             url = "/pages/activities/evaluating/record-list/record-list";
             break;
-          case "BIND-INFO":
-            url = `/pages/user-switch/user-switch?type=user`;
-            break;
           case "USERINFO-EDIT":
             url = "/pages/information/information";
             break
           case "MY-SUBSCRIBE":
             url = "/pages/psychology/my-reserve/my-reserve";
             break
+          case "COURSE-TASK":
+            url = "/pages/course/course-list/course-list";
+            break;
           default:
             break;
         }

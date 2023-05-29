@@ -10,11 +10,6 @@
           <view>请授权手机号进入</view>
         </view>
         <view class="font-26 C_B2 p-b-20">教师手机号需匹配后台录入的手机号</view>
-        <!-- <view class="item">
-          <view class="label">账号/手机号</view>
-          <ori-input maxlength="32" @onInput="e=>onInput(e,'account')" placeholder="请输入账号/手机号"
-            placeholderClass="hold-style" class="input content" boxStyle="padding:25rpx 0;"></ori-input>
-        </view> -->
         <view class="item relative">
           <view class="content p-t-25 p-b-25">
             <text :style="{ opacity: `${mobilePhone}` ? '1' : '0.1' }">{{mobilePhone ? mobilePhone : "授权手机号"}}</text>
@@ -23,15 +18,9 @@
             </auth-button>
           </view>
         </view>
-        <!-- <view class="item">
-          <view class="label">密码</view>
-          <ori-input maxlength="32" :password="true" @onInput="e=>onInput(e,'password')" placeholder="请输入密码"
-            placeholderClass="hold-style" class="input content" boxStyle="padding:25rpx 0;"></ori-input>
-        </view> -->
         <view class="tips C_7f7f7f font-20">{{tips}}</view>
         <view class="btn-box flex-c-s">
           <view class="btn flex-c-c relative">
-            <!-- <view class="btn flex-c-c relative" @click="confirm"> -->
             授权手机号
             <auth-button class="authorized_phone absolute" :auth="true" :openType="openType"
               @getphonenumber="getPhoneNumber">
@@ -102,7 +91,6 @@
       getPhoneNumber({
         e
       }) {
-        // console.log(e,app.LM.sessionId)
         return this.$Http(this.$Apis.getPhoneNumber, {
           data: {
             code: e.detail.code || "",

@@ -1,0 +1,67 @@
+page{
+  --main-color:rgba(255,58,0,1);
+}
+.sign{ 
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  height: 100%;  
+}
+.sign_btn_box{
+min-width:128rpx;
+/* min-width:220rpx; */
+position: relative;
+/* height:90rpx; */
+/* font-size:32rpx; */
+} 
+.userCenter._mt{
+  margin-top: 38rpx;
+}
+.sign_btn_box.normal{
+  height: 66rpx;
+  font-size:28rpx;
+}
+.sign_btn_box.large{
+  height:90rpx;
+  font-size:32rpx;
+}
+.sign_btn_box.signPage{
+  min-width: 320rpx;
+}
+.sign_tip_box .arrow{
+position: absolute;
+z-index: 1;
+left: 50%;
+bottom: 0;
+width: 16rpx;
+height: 16rpx;
+transform: rotate(45deg) translate(-50%,100%);
+background: linear-gradient(176deg, #FFEFB4 0%, #FFDB7C 100%);
+}
+.sign_tip_box{
+position: absolute;
+top: -16rpx;
+left: 50%;
+transform: translate(-50%,-50%);
+}
+.sign_tip{
+font-size: 20rpx;
+line-height: 20rpx;
+color: #682100;
+padding: 8rpx 12rpx;
+border-radius: 20rpx;
+background: linear-gradient(176deg, #FFEFB4 0%, #FFDB7C 100%);
+white-space: nowrap;
+word-wrap: break-word;
+position: relative;
+z-index: 2;
+}
+.sign_btn,
+.sign_btn>.sign_in_btn{
+width: 100%;
+height: 100%;
+border-radius:45px;
+color: #fff;
+background-color: var(--main-color);
+}

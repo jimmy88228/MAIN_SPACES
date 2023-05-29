@@ -1,0 +1,17 @@
+<include src="/common/base/component/index.wxml" />
+<scroll-view 
+    class="ext-class" 
+    scroll-x="{{scrollType == 'x'}}" 
+    scroll-y="{{scrollType == 'y'}}" 
+    bindscroll="{{setScroll?scroll:''}}"
+    bindscrolltolower="scrolltolower"
+    bindscrolltoupper="scrolltoupper"
+    bindrefresherrefresh="refresherrefresh"
+    refresher-enabled="{{refresherEnabled}}"
+    refresher-triggered="{{refresherTriggered}}"
+    scroll-with-animation="{{scrollWithAnimation}}"
+    scroll-into-view="{{curScrollToView}}"
+    scroll-top="{{scrollTop}}"
+    >
+    <slot></slot>
+</scroll-view>

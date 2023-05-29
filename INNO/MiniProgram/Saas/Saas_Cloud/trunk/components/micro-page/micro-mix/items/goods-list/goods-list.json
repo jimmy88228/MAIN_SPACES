@@ -3,6 +3,7 @@
   "usingComponents": {
     "swiper-mod":"/components/micro-page/micro-mix/items/component/goods-swiper/swiper",
     "group-head":"/components/micro-page/micro-mix/items/component/group-head/group-head",
-    "promotionLabel":"/components/promotionLabel/promotionLabel"
+    "promotionLabel":"/components/promotionLabel/promotionLabel",
+    "tab":"/pages/micro_mall/category/tab/tab"
   }
 }

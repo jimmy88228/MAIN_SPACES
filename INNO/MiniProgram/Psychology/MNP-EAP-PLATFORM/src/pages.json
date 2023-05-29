@@ -424,6 +424,32 @@
 					"enablePullDownRefresh": false
 				}
 			}]
+		},
+		{
+			"root": "pages/questionnaire",
+			"pages": [
+				{
+					"path": "answer/answer",
+					"style": { 
+						"navigationBarTitleText": "调查问卷",
+						"enablePullDownRefresh": false
+					}
+				},
+				{
+					"path": "detail/detail",
+					"style": { 
+						"navigationBarTitleText": "问卷详情",
+						"enablePullDownRefresh": false
+					}
+				},
+				{
+					"path": "result/result",
+					"style": { 
+						"navigationBarTitleText": "提交成功",
+						"enablePullDownRefresh": false
+					}
+				}
+			]
 		}
 	],
 	"tabBar": {

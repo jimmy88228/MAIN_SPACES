@@ -275,3 +275,7 @@ button.goods-info-purchase-btn{
 .goods-info-purchase-btn.active{
   opacity: 0.7;
 }
+.t-pd{
+  padding-left: 5rpx;
+  padding-right: 5rpx;
+}

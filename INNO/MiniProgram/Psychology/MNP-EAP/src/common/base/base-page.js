@@ -1,5 +1,7 @@
 import LgMg from "../manager/log-manager.js";
 import storageH from "@/common/helper/storage-handler.js";
+import strH from "@/common/support/utils/string-util.js";
+import CryptoJS from "crypto-js";
 const BasePage = function (pageOption) {
 	let po = pageOption || {};
 	let pageParams = {};
@@ -107,6 +109,12 @@ function getPageState(process) {
 function decodeOption(ops) {
 	ops = {
 		...ops
+	}
+	if(ops.paramsKey){
+		let paramsKey = decodeURIComponent(ops.paramsKey)
+		let paramsStr = CryptoJS.AES.decrypt(paramsKey, 'paramsKey').toString(CryptoJS.enc.Utf8);
+		let params = strH.getUrlParam(paramsStr.replace(/\"/g, ''));
+		ops = params;
 	}
 	for (let i in ops) {
 		ops[i] = decodeURIComponent(ops[i]);

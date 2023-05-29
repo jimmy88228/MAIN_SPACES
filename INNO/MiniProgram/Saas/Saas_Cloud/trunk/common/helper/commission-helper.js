@@ -59,24 +59,26 @@ export function checkCommissionOpenConfig(){ // 检查店铺分销配置，如�
       return Promise.reject(res);
     }).then(res => {
       checkCommission = () => {
-        console.log("因为开启了店铺分销，所以关闭掉旧分销佣金的显示")
+        console.log("分销配置 因为开启了店铺分销，所以关闭掉旧分销佣金的显示")
         return Promise.reject()
       }
       LM.checkIfStaffDstbEvent = () => {
-        console.log("因为开启了店铺分销，所以原判断是否分销员方法固定返回空对象Promise")
+        console.log("分销配置 因为开启了店铺分销，所以原判断是否分销员方法固定返回空对象Promise")
         return Promise.resolve({})
       }
       LM.setStaffInfo({});
       StorageH.set("STAFFINFO", {})
       openShareConfig = "store_staff";
+      console.log("分销配置 开启了店铺分销 store_staff")
       return Promise.resolve(res);
     })
     .catch(err => {
-      console.log("获取店铺分销配置失败，原因: ", err)
+      console.log("分销配置 获取店铺分销配置失败，原因: ", err)
       return Promise.reject()
     })
     .finally(() => {
       !openShareConfig && (openShareConfig = "staff");
+      console.log('分销配置 openShareConfig',openShareConfig)
     })
 }
 

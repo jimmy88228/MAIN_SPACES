@@ -41,10 +41,10 @@ class RegisterCoupondHandle {
   }
 
   checkDisplayCoupons(componentInstance, data = {}, validate = true){
-    return hadBindPhoneOrRegisterSucceedInThisCircle()
+    return hadBindPhoneOrRegisterSucceedInThisCircle() //检测是否注册完或绑定手机
       .then(() => validate ? appletAuthRequired.call(this) : Promise.reject("validate = ", validate))
       .then(checkAccomplished)
-      .then(() => initializeCouponPop(componentInstance, data))
+      .then(() => initializeCouponPop(componentInstance, data)) //检测优惠券弹窗,that.getCouponsPop
       .catch((err) => {
         console.log("不用弹出优惠券列表弹窗, 原因: ", err)
         return Promise.resolve(false)

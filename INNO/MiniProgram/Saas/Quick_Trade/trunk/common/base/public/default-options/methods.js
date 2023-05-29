@@ -1,5 +1,6 @@
 import WxApi from "../../../utils/wxapi/index";
 import SMH from "../../../helper/show-message-helper/index";
+import Conf from "../../../../config/index"
 let loadingObj = {};
 export default {
   getPublicComponent(id) {
@@ -8,9 +9,29 @@ export default {
     return component
   },
 
-  showLoading() {
+  getComponent(id,instance){
+    console.log('getComponent',id,this,)
+    return instance || this.selectComponent(id);
+  },
+
+  findView(id, key) {
+    let v = this.selectComponent(id);
+    if (v) return v;
+    else if (key) {
+        this.setData({ [key]: true });
+        v = this.selectComponent(id);
+    }
+    console.log('findView',id,v)
+    return v;
+  },
+
+  setView(viewData){
+    Object.defineProperties(this, viewData);
+  },
+  
+  showLoading(isFull=false) {
     let loadingComponent = this.getPublicComponent("loading");
-    return loadingComponent ? loadingComponent.showLoading() : Promise.reject("showLoadingError") 
+    return loadingComponent ? loadingComponent.showLoading(isFull) : Promise.reject("showLoadingError") 
   },
 
   hideLoading() {
@@ -25,6 +46,7 @@ export default {
   },
 
   jumpAction(e){
+    console.log('jumpAction',e)
     let url=e;
     if(e && typeof(e) == 'object'){
       url = this.getDataset(e,'url')||"";
@@ -33,13 +55,24 @@ export default {
     if(url){
       wx.navigateTo({
         url,
-        fail:()=>{
+        fail:(e)=>{
+          console.log('e',e)
           wx.reLaunch({
             url,
           })
         }
       })
     } 
+  },
+  backAction(delta){
+    wx.navigateBack({
+      delta:delta||1,
+      fail:()=>{
+        wx.reLaunch({
+          url:'/' + Conf.navConfig.INDEX_PATH,
+        })
+      }
+    });
   },
   tabBarToggle(show = undefined) {
     let pages = getCurrentPages() || [],
@@ -57,6 +90,8 @@ export default {
       }) 
   },
   _showModal(modalInfo={}){
+    if(modalInfo.validType == 'resolve')return Promise.resolve();
+    if(modalInfo.validType == 'reject')return Promise.reject();
     modalInfo.title = modalInfo.title || "提示";
     return WxApi.showModal(modalInfo||{}).then(res=>{
       if(res && res.confirm){
@@ -68,28 +103,51 @@ export default {
   },
   _checkAllValid(isShowErr=true){ 
     this.oriInputArr = this.selectAllComponents('.ori-label');
-    let arr = this.oriInputArr.map(item=>item.checkValid());
-    return Promise.all(arr).then(()=>{
+    let prmArr = this.oriInputArr.map((item,index)=>item.checkValid(index));
+    return Promise.all(prmArr).then(()=>{
       return true
     }).catch(e=>{
-      e && isShowErr && SMH.showToast({title:e});
       console.log('catch',e);
+      if(e && e.err){
+        isShowErr && SMH.showToast({title:e.err});
+        let cmpt = this.oriInputArr[e.index]||{};
+        if(typeof(cmpt.showErrorAnim == 'function')){
+          cmpt.showErrorAnim(); //第一个非法input的报错动画
+        }
+      }
       return Promise.reject(e);
     })
   },
-  _setPageLoading(key="normal",time=500){
-    let page = getCurrentPages().pop();
+  _throttle(key="normal",time=800,fromType){
+    let pageData = getCurrentPages().pop();
+    let page = pageData.route;
     !loadingObj[page] && (loadingObj[page] = {});
     if(loadingObj[page][key]){
-      throw false;
+      throw (key+'---throttle');
     }
     loadingObj[page][key] = true;
-    let timer = setTimeout(() => {
-      clearTimeout(timer);
-      delete loadingObj[page][key];
-    }, time);
+    if(fromType != 'api'){
+      let timer = setTimeout(() => {
+        clearTimeout(timer);
+        delete loadingObj[page][key];
+      }, time);
+    }
+    return page
   },
-  _selectQuery(id,fromType='page',selectType=""){
+  _throttleApi(key="normal",fromType,page){
+    key = key + '_API'; 
+    if(fromType == 'release'){
+      setTimeout(() => {
+        this.hideLoading();
+        loadingObj[page] && delete loadingObj[page][key];
+      }, 500);
+      return false;
+    }else{
+      this.showLoading();
+      return this._throttle(key,800,'api'); 
+    }
+  },
+  _selectQuery(id,fromType='page',selectType=""){ //标识,页面/组件,是否all类型
     return new Promise((rs,rj)=>{
       if(!id)return rj();
       const query = fromType=='page'?wx.createSelectorQuery():wx.createSelectorQuery().in(this);
@@ -105,4 +163,7 @@ export default {
       )  
     })
   },
+  noAction(){
+    return false
+  }
 }

@@ -56,7 +56,6 @@ Page(app.BP({
     remarks_focus: false,
     remarks_h: 0,
     /**/
-    sys_config: {},
     user_recharge: 0,
     is_user_recharge: 0,
     /**
@@ -75,7 +74,8 @@ Page(app.BP({
     identityName: '',
     marskValue: false,
     valetConf:{}, 
-    isUseRedpack: 0,
+    isUseRedpack: 0, 
+    chooseDiscountGoods: [],
   },
   subConfig: {
     type: 'ORDER',
@@ -104,11 +104,12 @@ Page(app.BP({
     })
     initParam.call(this, false);
     loadPayMode.call(this);
+    this.initConf();
   },
   onUnload() {
-    app.EB.unListen('storesForA', this.storesForAId);
-    clearTimeout(this.checkTimeOutLocation);
-    clearTimeout(this.checkTimeOutLock);
+    // app.EB.unListen('storesForA', this.storesForAId);
+    // clearTimeout(this.checkTimeOutLocation);
+    // clearTimeout(this.checkTimeOutLock);
     app.StorageH.remove("userChoiceData");
     app.StorageH.remove("select_store");
     app.StorageH.remove("store_data");
@@ -117,26 +118,13 @@ Page(app.BP({
   },
   onHide() {
     this.jumpAlready = true;
-    app.EB.unListen('storesForA', this.storesForAId);
-    resetLoading.call(this);
-    clearTimeout(this.checkTimeOutLocation);
-    clearTimeout(this.checkTimeOutLock);
+    // resetLoading.call(this);
+    // app.EB.unListen('storesForA', this.storesForAId);
+    // clearTimeout(this.checkTimeOutLocation);
+    // clearTimeout(this.checkTimeOutLock);
   },
   onShow: function () {
     this.jumpAlready = false;
-    app.sysTemConfig("disable_cash_bonus").then(data => {
-      if (data.Value == "0") {
-        this.setData({
-          canUseCashCoupon: true
-        })
-      }
-    })
-    //erp积分
-    app.sysTemConfig("is_erp_point").then(data => {
-      this.is_erp_point = data.Value
-    })
-
-    // checkStoresForAFn.call(this);
     if (this.reqData.recIds) {
       this.getCheckOut();
     } else {
@@ -144,12 +132,16 @@ Page(app.BP({
         "title": "非法购物车"
       })
     }
-
   },
-  getCheckOut: function (type) { //增加type类型，判断用户操作优惠类型
+  recoverReqData(){
+    this.assignData(this._lastReturnData,'');
+    setTimeout(() => {
+      this.getCheckOut('',true);
+    }, 800);
+  },
+  getCheckOut: function (type,isRecover) { //增加type类型，判断用户操作优惠类型
     let storeData = app.StorageH.get('store_data') || {};
     let userChoiceData = app.StorageH.get('userChoiceData') || {};
-    //
     let use_integral = this.data.use_integral;
     let use_balance = this.data.use_balance;
     let use_prepaid = this.data.use_prepaid;
@@ -158,6 +150,10 @@ Page(app.BP({
     this.reqData.isUseOfflineSurplus = use_prepaid ? 1 : 0;
     this.reqData.isUseIntegral = use_integral ? 1 : 0;
     this.reqData.isUseRedpack = this.data.isUseRedpack;
+    this.reqData.discountBuyGoods = this.data.chooseDiscountGoods.map(item=>({
+      activityProductId:item.activityProductId||0,
+      number:item.number||0
+    }))||[]; 
     type != "valet" && initReqShippingInfo.call(this, storeData, userChoiceData);
     initReqBonus.call(this, userChoiceData.use_coupon);
     console.log('reqData:', JSON.parse(JSON.stringify(this.reqData)))
@@ -176,26 +172,17 @@ Page(app.BP({
       } else if(e.code == 0){ // 可返回数据 异常
         this.assignData(data, type);
         app.SMH.showToast({
-          title: e.msg
+          title: e.msg,
+          duration:3000,
         })
         return Promise.resolve(e);
+      }else{
+        app.SMH.showToast({
+          title: e.msg,
+          duration:3000,
+        })
+        !isRecover && this.recoverReqData();
       }
-      app.SMH.showToast({
-        title: e.msg
-      })
-      // this.pageDialog = this.pageDialog || this.selectComponent("#pageDialog");
-      // this.pageDialog.setTitle("温馨提示");
-      // this.pageDialog.setTouchCancel(false);
-      // this.pageDialog.setCentent(e.msg);
-      // this.pageDialog.setSingleBtn({
-      //   name: "确定",
-      //   tap: function () {
-      //     wx.navigateBack();
-      //   }
-      // })
-      // wx.nextTick(() => {
-      //   this.pageDialog.show();
-      // })
       return Promise.reject();
     }).finally(() => {
       this.checkingOut = false
@@ -205,140 +192,7 @@ Page(app.BP({
    * 选择更新数据状态
    */
   assignData: function (returnData, type) {
-    //注释：用最外层code 状态 来判断 
-    // //验证
-    // let validateEntity = returnData.validateEntity || {
-    //   code: 0,
-    //   msg: "1001 异常"
-    // };
-    // if (validateEntity.code != 1) {
-    //   if (validateEntity.code == 0){
-        
-    //   }else{
-    //     this.pageDialog = this.pageDialog || this.selectComponent("#pageDialog");
-    //     this.pageDialog.setTitle("温馨提示");
-    //     this.pageDialog.setTouchCancel(false);
-    //     this.pageDialog.setCentent(validateEntity.msg);
-    //     this.pageDialog.setSingleBtn(
-    //       {
-    //         name: "确定",
-    //         tap: function () {
-    //           wx.navigateBack();
-    //         }
-    //       }
-    //     )
-    //     wx.nextTick(() => {
-    //       this.pageDialog.show();
-    //     })
-    //   }
-    // }
-    // let userChoiceData = app.StorageH.get('userChoiceData') || {};
-    
-    // let promotionInfo = returnData.promotionInfo || {};
-    // let ruleList = promotionInfo.ruleList || [];
-    // let giftList = promotionInfo.giftList || [];
-    // //促销优惠
-    // // let isUsePromote = this.data.isUsePromote || 0;
-    // let promoteList = [], secPromoteList = [];
-    // for (let i = 0; i < ruleList.length; i++) {
-    //   //全场促销
-    //   if (ruleList[i].rule_type == 1) {
-    //     secPromoteList.push(ruleList[i]);
-    //   } else {
-    //     promoteList.push(ruleList[i]);
-    //   }
-    // }
-    
-    // if (this.reqData.isUsePromote == 1 && promoteList.length > 0) {
-    //   isUsePromote = 1;
-    // } else {
-    //   isUsePromote = 0;
-    //   this.reqData.isUsePromote = 0;
-    // }
-    // this.reqData.isUsePromote = promotionInfo.isUsePromote || 0;
-    //选择地址
-    // let address_data = returnData.shippingInfo || {};
-    
-    // let shipping = this.data.shipping || {};
-    // let store_data = app.StorageH.get('store_data') || {};
-    // let select_store = store_data.select_store;
-    // if (shipping.way_id == "2") {
-    //   if (userChoiceData.selectAddr){
-    //     address_data = userChoiceData.selectAddr;
-    //     address_data.districtAddress = address_data.province_str + address_data.city_str + address_data.district_str + address_data.address
-    //   }
-    // } else if (shipping.way_id == "1") {
-    //   if (select_store && select_store.id || shippingWay.shippingStoreId) {
-    //     select_store = select_store || {}
-    //     shipping.contact = store_data.contact || "";
-    //     shipping.mob_phone = store_data.mob_phone || "";
-    //     shipping.store_id = select_store.id || shippingWay.shippingStoreId || '';
-    //     shipping.store_name = select_store.name || shippingWay.shippingName || '';
-    //     address_data.name = select_store.name || shippingWay.shippingName || '';
-    //     address_data.consignee = store_data.contact || "";
-    //     address_data.mobile = store_data.mob_phone || "";
-    //     address_data.address = select_store.address || "";
-    //     address_data.address_id = select_store.id || shippingWay.shippingStoreId || '';
-    //     address_data.districtAddress = address_data.address || "";
-    //   }
-    // } else {
-    //   shipping.contact = '';
-    //   shipping.mob_phone = '';
-    //   shipping.store_id = 0;
-    //   shipping.store_name = '';
-    // }
-    // shipping.way_id = shippingWay.shippingStoreId && shippingWay.shippingStoreId != 0 ? 1 : 2;
-    // this.reqData.consignee = shippingInfo.consignee || "";
-    // this.reqData.mobile = shippingInfo.mobile || "";
-    // //缓存收货时间
-    // if (userChoiceData.goods_receipt_time) {
-    //   returnData.payEntity.receTimeId = userChoiceData.goods_receipt_time.id || 1;
-    //   returnData.payEntity.receTimeName = userChoiceData.goods_receipt_time.rectime || "不限收货时间";
-    // }
-    // let pay_mode = {};
-    // let pay_type = app.StorageH.get("pay_type") || {};
-    // if (pay_type) {
-    //   pay_mode.pay_id = pay_type.pay_id;
-    //   pay_mode.pay_name = pay_type.pay_name;
-    // }
-    //使用优惠券
-    // if (userChoiceData.use_coupon) {
-    //   if (returnData.bonusInfo) {
-    //     returnData.bonusInfo.use_coupon = userChoiceData.use_coupon;
-    //   }
-    // }
-    // //积分
-    // let exchangeRate_money = 0;
-    // if (returnData.pointEntity) {
-    //   let pointEntity = returnData.pointEntity;
-    //   let allowPoint = parseFloat(pointEntity.allowPoint);
-    //   let exchangeRate = parseFloat(pointEntity.exchangeRate);
-    //   exchangeRate_money = parseFloat(allowPoint * exchangeRate).toFixed(2);
-    //   returnData.pointEntity.exchangeRate_money = exchangeRate_money;
-    // }
-    // let redpackInfo = this.redpackInfo||{};
-    //红包
-    // if(redpackSumary.allow_redpack==1){
-    //   redpackInfo.use = redpackSumary.sel_redpack || 0;
-    //   if(redpackSumary.allow_use_redpack > 0 && redpackList.length>0){
-    //     for(let i=0,len=redpackList.length;i<len;i++){
-    //       // redpackList[i].from_date_str = MyDate.format(MyDate.parse(redpackList[i].from_date||""),'yyyy.MM.dd')
-    //       // redpackList[i].to_date_str = MyDate.format(MyDate.parse(redpackList[i].to_date||""),'MM.dd')
-    //       dateFormat.call(this,redpackList[i]);
-    //     }
-    //   }
-    // }else{
-    //   redpackSumary.sel_redpack = 0;
-    //   redpackInfo.use = 0;
-    // }
-    // let redpackInfo = returnData.redpackInfo || {};
-    // let redpackList = redpackInfo.redpackList || [];
-    // if(redpackInfo.allowUseRedpack && redpackList.length > 0){
-    //   for(let i = 0, len = redpackList.length; i < len; i++){
-    //     dateFormat.call(this, redpackList[i]);
-    //   }
-    // }
-    // this.pay_mode = pay_mode || {};
+    this._lastReturnData = JSON.parse(JSON.stringify(returnData || {}));
     let userChoiceData = app.StorageH.get('userChoiceData') || {};
     let storeData = app.StorageH.get('store_data') || {};
     let redpackInfo = redpackHandleByReq.call(this, returnData.redpackInfo);
@@ -356,17 +210,13 @@ Page(app.BP({
       secPromoteList: promotionInfo.secPromoteList,
       shippingInfo: returnData.shippingInfo || {},
       orderInfo: returnData.orderInfo,
-      // address_data: address_data,
+      checkoutDiscount: returnData.checkoutDiscount,
       integralData: returnData.integralInfo,
       surplusData: returnData.surplusInfo,
       prepaidData: returnData.storedValueInfo || {},
       validate_data: returnData.validateEntity,
       signOrderActivityReward: returnData.signOrderActivityReward || {},
-      // user_recharge: returnData.user_recharge || {},
       valetOrderInfo: valetOrderInfo,
-      // use_condition_ids: use_condition_ids,
-      // isUsePromote: isUsePromote,
-      // redpackSumary,
       surplusInfo: returnData.surplusInfo || {},
       redpackInfo
     })
@@ -398,12 +248,14 @@ Page(app.BP({
   },
   //使用现金券
   cashTicketInputBlur: function (e) {
+    this._throttle('cashTicketInputBlur')
     var val = e.detail.value;
     this.setData({
       cashCoupon_input: val
     })
   },
   cashCouponScan() {
+    this._throttle('cashCouponScan')
     let that = this;
     wx.scanCode({
       success(res) {
@@ -419,6 +271,7 @@ Page(app.BP({
   },
   //使用现金券
   useCashTicket: function () {
+    this._throttle('useCashTicket')
     let iserror = false;
     //没有输入现金券
     let cashCoupon_input = this.data.cashCoupon_input;
@@ -522,6 +375,7 @@ Page(app.BP({
     this.getCheckOut("cashCoupon");
   },
   useGiftCard: function (e) {
+    this._throttle('useGiftCard')
     if (this.checkingOut) return
     let isUsePromote = this.data.isUsePromote || 0;
     isUsePromote = isUsePromote == 1 ? 0 : 1;
@@ -566,6 +420,7 @@ Page(app.BP({
     this.getCheckOut("promote");
   },
   useSecPromote() {
+    this._throttle('useSecPromote')
     let isUseSecPromote = this.data.isUseSecPromote || 0;
     this.setData({
       isUseSecPromote: isUseSecPromote == 1 ? 0 : 1
@@ -575,13 +430,13 @@ Page(app.BP({
   },
   //优惠券跳转
   jumpToCoupon() {
+    this._throttle('jumpToCoupon')
     let couponData = this.data.couponData || {};
     if (parseInt(couponData.usableBonusCount) <= 0) return;
     this.ToCoupon(); 
   },
   onTapRed(){
-    if(this.lockTime)return;
-    throttle.call(this);
+    this._throttle('onTapRed')
     this.redPopup = this.redPopup || this.selectComponent('#redPopup');
     this.redPopup.setTouchCancel(false);
     this.redPopup.show();
@@ -608,6 +463,7 @@ Page(app.BP({
       bonusIds: this.reqData.bonusIds,
       recIds: this.reqData.recIds,
       addressId: this.reqData.addressId,
+      isUseRedpack:this.reqData.isUseRedpack
     } 
     let data = {
       couponOption
@@ -625,6 +481,7 @@ Page(app.BP({
   },
   //使用积分
   UseIntegral: function () {
+    this._throttle('UseIntegral')
     let integralData = this.data.integralData;
     let allowPoint = integralData.allowPoint;
     let exchangeRate = integralData.exchangeRate;
@@ -637,7 +494,7 @@ Page(app.BP({
       this.reqData.isUseIntegral = 0;
     } else {
       use_integral = true;
-      if (this.is_erp_point) { //使用erp积分
+      if (this.data.is_erp_point) { //使用erp积分
         this.reqData.points = integralData.totalPoints;
       } else {
         this.reqData.points = 0;
@@ -653,6 +510,7 @@ Page(app.BP({
   },
   //使用默认储值卡 
   UsePrepaid: function () {
+    this._throttle('UsePrepaid')
     let use_prepaid = this.data.use_prepaid;
     if (use_prepaid) {
       this.reqData.isUseOfflineSurplus = 0
@@ -678,6 +536,7 @@ Page(app.BP({
   selectPrepaid: function (e) { },
   // 使用余额
   UseBalance: function () {
+    this._throttle('UseBalance')
     var use_balance = this.data.use_balance;
     if (use_balance) {
       use_balance = false;
@@ -694,6 +553,7 @@ Page(app.BP({
   },
   //使用充值卡
   UseRecharge: function () {
+    this._throttle('UseRecharge')
     var is_user_recharge = this.data.is_user_recharge;
     if (is_user_recharge) {
       is_user_recharge = false;
@@ -742,35 +602,6 @@ Page(app.BP({
     if (this.checking && (this.checking == true)) {
       return
     }
-    // if (this.isLoading_storesForA) {
-    //   setTimeout(() => {
-    //     that.isLoading_storesForA = false
-    //   }, 2500);
-    //   return;
-    // }
-    // let params = {};
-    // let address_data = this.data.address_data || {};
-    // params.address_data = address_data;
-    // params.orderInfo = this.data.orderInfo; //收货时间
-    // params.pay_mode = this.payMode[0] || this.pay_mode; //支付方式
-    // params.cashCouponData = this.data.cashCouponData; //现金券
-    // params.isUsePromote = this.data.isUsePromote || 0; //使用促销
-    // params.isUseSecPromote = this.data.isUseSecPromote || 0;
-    // params.isUseOfflineSurplus = this.data.use_prepaid || false,
-    // params.prepaidData = this.data.prepaidData || {};
-    // params.couponData = this.data.couponData;
-    // params.userChoiceData = app.StorageH.get('userChoiceData') || {};
-    // params.remarks_val = this.data.remarks_val;
-    // params.IsUseRecharge = this.data.is_user_recharge;
-    // params.shipping = this.data.shipping || {};
-    // params.user_recharge = this.data.user_recharge;
-    // params.integralData = this.data.integralData;
-    // params.use_integral = this.data.use_integral;
-    // params.use_balance = this.data.use_balance;
-    // params.isUseLocation = this.isUseLocation || 0;
-    // params.lat = this.latitude || 0;
-    // params.lon = this.longitude || 0;
-    // this.params = params;
     let shippingInfo = this.data.shippingInfo || {};
     let paymentList = this.data.paymentList || [];
     let valetOrderInfo = this.data.valetOrderInfo || {};
@@ -799,12 +630,15 @@ Page(app.BP({
         "title": tip
       })
       return;
-    }
-    checkGiftGoods.call(this, this.reqData.isUsePromote, this.reqData.isUseSecPromote, function (isForGetGiftInventory){
-      addNewOrderInfo.call(that, that.identityCheck, isForGetGiftInventory)
-    })
+    } 
+    if(beforeNewOrderCheck.call(this)){
+      checkGiftGoods.call(this, this.reqData.isUsePromote, this.reqData.isUseSecPromote, function (isForGetGiftInventory){
+        addNewOrderInfo.call(that, that.identityCheck, isForGetGiftInventory)
+      })
+    } 
   },
   confirmChangeShipping() {
+    this._throttle('confirmChangeShipping')
     // let that = this;
     // let shipping = this.data.shipping;
     let shippingInfo = this.data.shippingInfo || {};
@@ -969,6 +803,23 @@ Page(app.BP({
     }else{
       this.reqData.paymentId = paymentList[index] && paymentList[index].pay_id || 0;
     }
+  },
+  initConf(){
+    return this.trimConfigs(['disable_cash_bonus','is_erp_point','close_order_remark']).then(list=>{  
+      let _setData={};
+      list && list.forEach(item=>{
+        let key = item.Key||"";
+        if(key == 'disable_cash_bonus'){
+          _setData.canUseCashCoupon = !!(item.Value == "0");
+        }else if(key == 'is_erp_point'){
+          _setData.is_erp_point = item.Value||0;
+        }else if(key == 'close_order_remark'){
+          _setData.isShowRemark = !!(item.Value != 1);
+        }
+      })
+      this.setData({..._setData})
+      return list
+    })
   }
 }))
 
@@ -1325,19 +1176,16 @@ function goPay(identity, isForGetGiftInventory) {
     "cashCouponList": this.reqData.cashCouponList,
     "isUseOfflineSurplus": this.reqData.isUseOfflineSurplus,
     "isUseIntegral": this.reqData.isUseIntegral,
-    "paymentId": (paymentList[this.data.cur_pay_index] ||{}).pay_id, //支付方式
-    // "offline_surplus": params.isUseOfflineSurplus ? params.prepaidData.canuse_storedvalue : 0,
-    // "brandCode": app.Conf.BRAND_CODE,
-    // "storeId": shipping.store_id && shipping.store_id || 0,
-    // "isUseLocation": params.isUseLocation || 0,
-    // "lat": params.lat || 0,
-    // "lon": params.lon || 0,
-    // "fromUserToken": "",
+    "paymentId": (paymentList[this.data.cur_pay_index] ||{}).pay_id, //支付方式 
     "isIgnoreGiftStock": isForGetGiftInventory || 0,
     "clientSessionId": LgMg.channel && LgMg.channel.clientSessionId || "",
     "isUseRedpack": this.reqData.isUseRedpack, //
     "needSignAward": getSignSelect(this,'isSelect'),
     "staffId": app.PH && (typeof app.PH.paramsJson === "function") && app.PH.paramsJson("storeStaffCode", true) && app.PH.paramsJson("store_staff_id") || 0, // 店员staff_id
+    "discountBuyGoods": this.data.chooseDiscountGoods.map(item=>({
+      activityProductId:item.activityProductId||0,
+      number:item.number||0
+    }))||[],
   }
   
   if (identity) {
@@ -1516,7 +1364,7 @@ function goPay(identity, isForGetGiftInventory) {
 //         typeof callBack == "function" && callBack.call(that, reqParams);
 //         return
 //       }
-//     }, 3500);
+//     }, 3000);
 //   };
 
 //   app.AS.checkAuthorize("scope.userLocation", successBackFn, failBackFn);
@@ -1659,6 +1507,7 @@ function autoSetSecPromote(secPromoteList,operateType){
   if (!secPromoteList.length || secPromoteList.length == 0) {
     initUserOperate.call(this,"secPromote");
   } else {
+    if(!this.reqData.isUseSecPromote)return
     this.reqData.isUseSecPromote = 1;
     this.setData({
       isUseSecPromote: 1
@@ -1669,13 +1518,6 @@ function autoSetSecPromote(secPromoteList,operateType){
 function checkDisplayNextPromotion(data = {}){
   this.promoteAssistance = this.promoteAssistance || this.selectComponent("#promoteAssistance");
   this.promoteAssistance && this.promoteAssistance.loadData({...data})
-}
-
-function throttle(time=500) {
-  this.lockTime = true;
-  this.throttleId = setTimeout(()=>{
-    this.lockTime = false;
-  },time)
 }
  
 function dateFormat(item={}) {
@@ -1699,4 +1541,38 @@ function getSignSelect(that,key){
   let result = info;
   key && (result = info[key] || 0);
   return result
+}
+
+function beforeNewOrderCheck(){
+  let verify = true;
+  let list = this.data.cartList||[]; 
+  let needCheckIsTimeout = list.some(item=>{
+    if(item.goodsType == '10'){
+      return true;
+    }
+  })
+  if(needCheckIsTimeout){
+    let checkIsTimeout = app.StorageH.checkIsTimeout({key:'packageGoodsNewOrder',type:"get"});
+    if(checkIsTimeout){
+      let that = this;
+      this.pageDialog = this.pageDialog || this.selectComponent("#pageDialog");
+      this.pageDialog.setTitle("温馨提示");
+      this.pageDialog.setTouchCancel(false);
+      this.pageDialog.setCentent("套餐搭配商品若产生售后，只支持整单退款，不支持单件退款");
+      this.pageDialog.setSingleBtn(
+        {
+          name: "确定",
+          tap: function () {
+            app.StorageH.checkIsTimeout({key:'packageGoodsNewOrder',type:"set",value:true,t:24*60});
+            that.pageDialog.dismiss();
+            that.order_createOrder();//再调一次
+          }
+        }
+      )
+      this.pageDialog.show();
+      verify = false;
+      return verify
+    }
+  }
+  return verify
 }

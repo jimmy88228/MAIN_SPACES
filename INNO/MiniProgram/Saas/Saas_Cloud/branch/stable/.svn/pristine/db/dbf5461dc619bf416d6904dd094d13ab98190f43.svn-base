@@ -1,0 +1,41 @@
+page {
+  --theme_color: #1697ee;
+} 
+.cr_main{
+  margin-top: calc(98rpx + 100rpx);
+  height: calc(100vh - 98rpx - 100rpx);
+  box-sizing: border-box;
+}
+.cr_header{
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 10;
+}
+.setting_row{
+  box-sizing: border-box;
+  padding: 0 20rpx 10rpx 20rpx;
+}
+.bo_item{
+  padding: 36rpx 36rpx 41rpx 36rpx;
+}
+.bo_row{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20rpx;
+}
+.bo_row:last-of-type{
+  margin-bottom: 0;
+}
+.stay_line {
+  height: 20rpx;
+  width: 100%;
+  background: #f5f5f5;
+}
+
+.cr_tc.no_data_tc{
+  color: #999999;
+}
+

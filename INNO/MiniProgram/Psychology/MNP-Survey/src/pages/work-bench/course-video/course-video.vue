@@ -72,12 +72,9 @@
             <view class="bold font-28">课程目录</view>
             <image @click="hideBench" :src="requireStatic('/course-video/close_popup.png')" mode="aspectFit" />
           </view>
-          <!-- <scroll-view :scroll-into-view="'ids'+scrollIds" class="course-scroll-view"
-            :style="{height:`calc(${popupHeight}px - 450rpx)`}" scroll-y> -->
           <courseModule :light-id="contentDetail.id" :scroll-height="scrollHeightCom"
             :scroll-into-view="'ids'+scrollIds" @clickItem="clickItem" :courseDetail="courseDetail" ref="course">
           </courseModule>
-          <!-- </scroll-view> -->
         </view>
       </template>
     </ori-popup>
@@ -123,7 +120,6 @@
     },
     onLoad(options) {
       this.options = options
-      // this.initSubsectionsList()
       this.caculatePopupHeight()
     },
 
@@ -148,7 +144,6 @@
     methods: {
       getItemQuery() {
         this._getQuery(".course-catalog-item").then(res => {
-          // console.log(res, "item的长宽")
           this.scrollItemWidth = res[0].width
         })
       },
@@ -171,7 +166,6 @@
         })
       },
       caculatePopupHeight() {
-        // console.log(app.SIH.safeAreaInsets, "safeAreaInsets")
         let topHeight = app.SIH.getConvert(500, "PX")
         this.popupHeight = app.SIH.screenHeight - app.SIH.navPlace - topHeight;
         this.scrollHeightCom = app.SIH.screenHeight - app.SIH.navPlace - app.SIH.navHeight - topHeight;
@@ -180,7 +174,8 @@
         return this.$Http(this.$Apis.getCourseContent, {
           data: {
             activityId: this.options.activityId,
-            id: contentId
+            id: contentId,
+            recordId:courseManage.recordId
           }
         }).then(res => {
           this.isFinish = res.data.isFinish;
@@ -192,13 +187,11 @@
           } else {
             clearInterval(this.autoPunchInterval);
           }
-          // console.log(res, "内容详情")
         })
       },
       // 滑动更换标题
       scrollHorList(e) {
         if (!this.scrollItemWidth) return
-        // console.log(parseInt(e.detail.scrollLeft/this.scrollItemWidth), "滑动")
         let subsections = this.subsections;
         let index = Math.round(e.detail.scrollLeft / this.scrollItemWidth)
         this.videoTitle = subsections[index].title
@@ -253,7 +246,6 @@
               }
             }
             this.courseDetail = [];
-            // console.log(res, "formataData")
             this.$nextTick(() => {
               this.courseDetail = res;
               this.isFinish = 1
@@ -284,7 +276,6 @@
         detail
       }) {
         this.stopAudio()
-        // console.log(detail, "视频在播放")
         let checkTime = this.checkTime;
         this.videoProgress = detail.currentTime;
         if (parseInt(detail.currentTime) == checkTime) return
@@ -304,8 +295,6 @@
           this.punchOrder(true,0);
           clearInterval(this.autoPunchInterval);
         }
-        // console.log(this.playedTime, "this.playedTime")
-        // console.log(this.timeStr, "this.timeStr")
 
       },
       getVideo(id) {
@@ -374,15 +363,6 @@
               this.scrollIds = courseManage.scrollIds || 0;
             }, 350)
           })
-          // setTimeout(() => {
-          //   this.courseDetail = courseManage.courseList
-          //   setTimeout(() => {
-          //     this.$nextTick(() => {
-          //       this.scrollIds = courseManage.scrollIds || 0;
-          //     })
-          //   }, 2000);
-
-          // }, 500);
         }
       },
       hideBench() {
@@ -456,7 +436,6 @@
             ...ops
           }
 
-          // console.log("video", chaptersIndex, sIndex, cIndex)
           this.getSubInfo(ops)
           this.loadContentDetail(clickItem.id, true)
           this.playedTime = 0;

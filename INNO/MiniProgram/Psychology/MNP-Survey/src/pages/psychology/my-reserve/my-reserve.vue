@@ -251,53 +251,6 @@
         }
       }
     }
-
-    // .reserve-item {
-    //   margin: 17rpx 0;
-
-    //   .reserve-item-info {
-    //     width: 100%;
-    //     height: 290rpx;
-    //     box-sizing: border-box;
-    //     padding: 32rpx;
-    //     border-radius: 20rpx;
-    //     background: #ffffff;
-    //     position: relative;
-
-    //     &>view:first-child {
-    //       width: 100%;
-    //       font-size: 26rpx;
-    //       font-family: PingFangSC-Regular, PingFang SC;
-    //       font-weight: 400;
-    //       color: #8e8e8e;
-    //       line-height: 50rpx;
-    //       overflow: hidden;
-    //       text-overflow: ellipsis;
-    //     }
-    //   }
-
-    //   .status {
-    //     position: absolute;
-    //     bottom: 32rpx;
-    //     right: 32rpx;
-    //     // width: 100%;
-    //     box-sizing: border-box;
-    //     padding-top: 15rpx;
-    //     display: flex;
-
-    //     &>view {
-    //       border-radius: 33rpx;
-    //       width: 80rpx;
-    //       height: 34rpx;
-    //       display: flex;
-    //       align-items: center;
-    //       justify-content: center;
-    //       font-size: 18rpx;
-    //       border-width: 2rpx;
-    //       border-style: solid;
-    //     }
-    //   }
-    // }
   }
 
   .status-padding {

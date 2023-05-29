@@ -1,0 +1,1 @@
+exports.wxParser = require("./wxParser.core")['default'];

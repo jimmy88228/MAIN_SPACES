@@ -1,6 +1,7 @@
-page{
+page {
   font-size: 26rpx;
   background:#F2F2F2;
+  color:#333;
 }
 view, text, scroll-view {
   margin: 0;

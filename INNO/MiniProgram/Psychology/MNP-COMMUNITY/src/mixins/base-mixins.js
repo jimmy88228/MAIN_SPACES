@@ -139,19 +139,20 @@ export default {
 			})
 		},
 		// 登录
-		_checkLogin(callback){
+		_checkLogin(callback,onlyCheck){
 			return LM.loginAsync().then(()=>{
 					this._setLogin(callback);
 					return LM.isLogin;
 			})
-			.catch(e=>{ // 未登录,跳转登录界面
+			.catch(e=>{ 
+				// 未登录,跳转登录界面
 				let loginAuth = StorageH.get("LOGIN_AUTH");
 				let page = getCurrentPages().slice(-1)[0] || {};
 				let targetRoute = !!loginAuth?"pages/register/register":"pages/login/login";
 				// #ifdef H5
 				targetRoute = `pages/startup/startup?id=${PM.getParams('initId')||0}`
 				// #endif
-				if(page.route != targetRoute){
+				if(page.route != targetRoute && !onlyCheck){
 					this.jumpAction("/" + targetRoute);
 				}
         return Promise.resolve(false)

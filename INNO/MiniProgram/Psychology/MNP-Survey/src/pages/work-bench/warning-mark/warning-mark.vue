@@ -63,7 +63,6 @@
   import oriPopup from "@/components/ori-comps/popup/ori-popup";
   import oriPicker from "@/components/ori-comps/picker/ori-picker.vue";
   import SMH from "@/common/helper/show-msg-handler.js";
-  // import OriScrollView from "@/components/ori-comps/scroll/ori-scroll-view.vue"
   import oriScrollView from "@/components/ori-comps/scroll/ori-scroll-view.vue"
 
   const app = getApp();
@@ -203,7 +202,6 @@
     background-color: #F7F7F7;
 
     .form-list {
-      // padding: 30rpx 25rpx calc(env(safe-area-inset-bottom) + 165rpx);
       padding: 30rpx 25rpx 165rpx;
 
       .input-panel {

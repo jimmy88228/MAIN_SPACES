@@ -8,6 +8,7 @@
 	import LoadingView from '@/components/css3/loading/loading.vue';
 	import ScanCode from '@/common/helper/scan-code-handler.js';
 	import utils from '@/common/support/utils.js';
+	import loginExclude from '@/common/manager/login-exclude-path.js';
 	const app = getApp();
 	const pageOption = Page.BasePage({
 		components:{
@@ -39,25 +40,19 @@
 
 				// #ifdef MP
 				ScanCode.scan().then((data)=>{
-					this.initLogin(data);
+					// 检查扫码页面是否在登录白名单中
+					let loginExcludePath = loginExclude.EXCLUDE_PATH;
+					if(data && data.pagePath && loginExcludePath.includes(data.pagePath)){
+						console.log(data.pagePath,loginExcludePath,loginExcludePath.includes(data.pagePath),123213213213213213)
+						this.redirectAction("/" + data.pagePath + "?" + utils.paramsByJson(data.sceneOption))
+					}else{
+						this.initLogin(data);
+					}
 				})
 				// #endif
 			},
 			initLogin(data){
 				return this._checkLogin().then((login)=>{
-					// let isCheck = !!ScanCode.scene;
-					// app.LM.loginBsnAsync(false, isCheck).then(()=>{
-					// 	if(app.LM.recordId){
-					// 		if(data && data.pagePath){
-					// 			this.redirectAction("/" + data.pagePath + "?" + utils.paramsByJson(data.sceneOption))
-					// 		} else {
-					// 			this.redirectAction('/pages/index/index');
-					// 		}
-					// 		ScanCode.clearData(); // 二维码流程走完释放扫码信息
-					// 	} else {
-					// 		this.jumpAction('/pages/user-switch/user-switch');
-					// 	}
-					// })
 					if(!login) return
 					console.log(data,"扫码数据")
 					if(data && data.pagePath){

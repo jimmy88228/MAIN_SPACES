@@ -73,6 +73,11 @@ export const LogMap = {
   ["pages/activities/exam/answer/exam-record"]:"COURSE_EXAM_RECORD", 
   ["pages/activities/exam/answer/check-scores"]:"COURSE_CHECK_SCORES", 
   ["pages/activities/exam/answer/answer"]:"COURSE_COURSE_ANSWER", 
+  
+  // 调查问卷
+  ["pages/questionnaire/answer/answer"]:"QUESTIONNAIRE_ANSWER", 
+  ["pages/questionnaire/detail/detail"]:"QUESTIONNAIRE_DETAIL", 
+  ["pages/questionnaire/result/result"]:"QUESTIONNAIRE_result", 
 
   // 404
   ["pages/public/404"]:"PUBLIC_404"
@@ -286,6 +291,8 @@ export const KeyParamName = {
   ["pages/activities/exam/answer/exam-record"]:["activityId","contentId","courseId","modelId"], //答题课程得分
   ["pages/activities/exam/answer/check-scores"]:["activityId","examRecordId"], //答题课程查看对错
   ["pages/activities/exam/answer/answer"]:["activityId","contentId","courseId","modelId"], //答题课程
+  ["pages/questionnaire/answer/answer"]:["id"], 
+  ["pages/questionnaire/detail/detail"]:["id"], 
 
 }
 

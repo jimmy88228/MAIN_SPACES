@@ -16,6 +16,10 @@ Component(app.BTAB({
       type: Boolean,
       value: false
     },
+    isLogin: {
+      type: Boolean,
+      value: false
+    },
   },
   attached() {
     this.isAttached = true;
@@ -37,6 +41,11 @@ Component(app.BTAB({
         isInited:true
       })
       this.mcItemRefresh();
+    },
+    activeCustomerService(e){
+      console.log('企微 activeCustomerService',e)
+      this.contactStaff = this.contactStaff || this.selectComponent("#contactStaff");
+      this.contactStaff.initData();
     },
   }
 }))

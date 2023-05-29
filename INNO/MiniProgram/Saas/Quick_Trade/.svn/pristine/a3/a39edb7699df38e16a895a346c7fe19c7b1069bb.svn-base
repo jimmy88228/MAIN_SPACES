@@ -1,0 +1,6 @@
+/* app 公共样式 */
+@import "./element.wxss";
+@import "./size.wxss"; 
+@import "./ori-cpts.wxss";
+/* public */
+@import "/common/base/public/default-wxss/index.wxss";

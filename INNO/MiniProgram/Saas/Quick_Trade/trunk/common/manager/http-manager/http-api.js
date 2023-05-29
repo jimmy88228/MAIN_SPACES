@@ -18,7 +18,8 @@ const barCodeApi = Conf.barCodeApiType ? BARCODE_APICONF[Conf.barCodeApiType] : 
 const BrandApiList = {
   getMenuList: "/api/Brand/Get_MenuList?brandCode={brandCode}",
   //支付方式
-  getPaymentList: "/api/Brand/GetPaymentList?brandCode={brandCode}"
+  getPaymentList: "/api/Brand/GetPaymentList?brandCode={brandCode}",
+  getShippingList:"/api/Brand/GetShippingList?brandCode={brandCode}",
 }
 // 用户
 export const UserApiList = {
@@ -394,4 +395,10 @@ export const BarCodeApiList = {
     u: `${barCodeApi}/api/WXBarCode/ScanWXCodeLog`,
     m: "post"
   }
+}
+
+//支付
+export const PayApiList = {
+  unifiedCloudShopOrder:"/api/Pay/UnifiedQuickTradeOrder?payType={payType}&orderId={orderId}&brandCode={brandCode}",
+  unifiedCloudShopOrderByCode: "/api/Pay/UnifiedQuickTradeOrderByCode?payType={payType}&orderId={orderId}&brandCode={brandCode}"
 }

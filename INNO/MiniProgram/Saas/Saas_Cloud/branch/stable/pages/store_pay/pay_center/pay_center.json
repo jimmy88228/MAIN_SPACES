@@ -1,0 +1,10 @@
+{
+  "navigationBarTitleText": "会员支付",
+  "backgroundColor": "#f5f5f5",
+  "usingComponents": {
+    "btns": "/components/buttons/btns",
+    "pay_code":"/pages/store_pay/pay_code/pay_code",
+    "micro-page": "/components/micro-page/micro-mix/micro-page/micro-page",
+    "agreementPop": "/components/pop/agreementPop"
+  }
+}

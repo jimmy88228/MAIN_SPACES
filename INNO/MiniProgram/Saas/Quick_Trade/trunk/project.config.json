@@ -2,42 +2,35 @@
   "compileType": "miniprogram",
   "setting": {
     "urlCheck": true,
+    "coverView": true,
     "es6": true,
-    "enhance": true,
     "postcss": true,
+    "lazyloadPlaceholderEnable": false,
     "preloadBackgroundData": false,
     "minified": true,
-    "newFeature": false,
-    "coverView": true,
-    "nodeModules": false,
     "autoAudits": false,
-    "showShadowRootInWxmlPanel": true,
-    "scopeDataCheck": false,
     "uglifyFileName": true,
-    "checkInvalidKey": true,
-    "checkSiteMap": true,
     "uploadWithSourceMap": true,
-    "compileHotReLoad": true,
-    "lazyloadPlaceholderEnable": false,
+    "enhance": true,
     "useMultiFrameRuntime": true,
-    "useApiHook": true,
-    "useApiHostProcess": true,
+    "showShadowRootInWxmlPanel": true,
+    "packNpmManually": false,
+    "packNpmRelationList": [],
+    "minifyWXSS": true,
+    "useStaticServer": true,
+    "showES6CompileOption": false,
+    "checkInvalidKey": true,
     "babelSetting": {
       "ignore": [],
       "disablePlugins": [],
       "outputPath": ""
     },
-    "enableEngineNative": false,
-    "useIsolateContext": true,
-    "userConfirmedBundleSwitch": false,
-    "packNpmManually": false,
-    "packNpmRelationList": [],
-    "minifyWXSS": true,
     "disableUseStrict": false,
+    "useCompilerPlugins": false,
     "minifyWXML": true,
-    "showES6CompileOption": false,
-    "useCompilerPlugins": false
+    "ignoreUploadUnusedFiles": true
   },
+  "condition": {},
   "editorSetting": {
     "tabIndent": "insertSpaces",
     "tabSize": 2
@@ -47,8 +40,5 @@
     "ignore": [],
     "include": []
   },
-  "appid": "wxa56746a47caa8f38",
-  "projectname": "Quick_Trade",
-  "libVersion": "2.29.0",
-  "condition": {}
+  "appid": "wxa56746a47caa8f38"
 }

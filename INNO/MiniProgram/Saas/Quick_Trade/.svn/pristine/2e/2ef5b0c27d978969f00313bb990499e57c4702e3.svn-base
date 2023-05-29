@@ -1,0 +1,28 @@
+<!--pages/main/staff-module/activity/index.wxml-->
+<include src="/common/base/page/index.wxml" />
+<view class="activity flex flex-col">
+    <page-nav isCatch bindnavClick="navClick">创建活动</page-nav>
+    <view class="box">
+        <view class="time-box flex-b-c">
+            <view>开始时间</view>
+            <time-picker bindchange="onTimeChange" data-key="start_time_show" value="{{acInfo.start_time_show}}" >
+                <view wx:if="{{(acInfo.start_time_show)}}" class="bold">{{acInfo.start_time_show}}</view>
+                <view wx:else class="setting">设置</view>
+            </time-picker> 
+        </view>
+        <view class="time-box flex-b-c">
+            <view>结束时间</view> 
+            <time-picker bindchange="onTimeChange" data-key="end_time_show" value="{{acInfo.end_time_show}}" >
+                <view wx:if="{{(acInfo.end_time_show)}}" class="bold">{{acInfo.end_time_show}}</view>
+                <view wx:else class="setting">设置</view>
+            </time-picker>
+        </view>
+    </view>
+    <view class="goods-list flex-1">
+        <goods-list id="goods-list" catchproductSave="checkSet" bindcheckSetTime="checkSetTime" bindchange="onChangeList" bindonDelete="onDelete" domainPath="{{domainPath}}" list="{{acGoodsInfo.goods_Infos||[]}}" activity_id="{{acInfo.id||0}}" inited="{{inited}}"></goods-list>
+    </view>
+    <view class="footer flex-e-e">
+        <!-- <view class="preview-btn flex-c-c">预览</view> -->
+        <view class="save-btn flex-c-c" bindtap="save">保存</view>
+    </view>
+</view>

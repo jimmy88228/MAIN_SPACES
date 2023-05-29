@@ -79,7 +79,6 @@
     },
     methods: {
       loadData() {
-        // console.log('当天：', dateUtil.getDate(null, 0), "第三十天：", dateUtil.getDate(null, 30))
         let startDateObj = dateUtil.getDate(null, 0) || {}
         let endDateObj = dateUtil.getDate(null, 30) || {}
         let startDate = startDateObj.year + '-' + startDateObj.date
@@ -102,6 +101,9 @@
                 })
                 !!scheduleInfo.noExistExpired && (noExistExpired = true)
               })
+              if(!noExistExpired){
+                  consultantScheduleInfos = []
+                }
               this.timeData = {
                 loading: false,
                 timeData: consultantScheduleInfos

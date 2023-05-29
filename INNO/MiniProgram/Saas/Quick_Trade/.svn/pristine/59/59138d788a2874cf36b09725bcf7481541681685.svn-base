@@ -1,0 +1,76 @@
+@import "/common/base/component/default-wxss/index.wxss";
+.custom-nav-container{
+  padding-top: var(--status-bar-height);
+}
+.nav-box{
+  height: var(--nav-bar-height);
+}
+/* 普通样式类型 */
+.normal-nav{
+  height: 100%;
+}
+.icon-arrow.left{
+  transform: rotate(-135deg);
+  width: 24rpx;
+  height: 24rpx;
+  margin-left: 36rpx;
+  color: var(--deep-text-color);
+  line-height: 36rpx;
+}
+.normal-nav{
+  display: flex;
+  align-items: center;
+}
+.c-n-left,
+.c-n-right,
+.c-n-center{
+  flex: 1;
+}
+.c-n-center{
+  text-align: center;
+}
+
+/* 有店铺的那种样式类型 */
+.store-like-nav{
+  display: flex;
+  align-items: center;
+  height: 100%;
+  padding-left: 12rpx;
+} 
+.store-logo-image{
+  width: 72rpx;
+  height: 72rpx;
+  border-radius: 50%;
+  margin-right: 20rpx;
+}
+.store-like-nav .store-name{
+  color: #ffffff;
+  font-size: 28rpx;
+  max-width: 360rpx;
+}
+.store-like-nav .store-staff-name{
+  color: #9D1628;
+  font-size: 22rpx;
+}
+
+/* 订单详情导航样式 */
+.custom-nav-container.style-type-2{
+  background-color: var(--main-color);
+}
+.order-nav{
+  height: 100%;
+  background-color: var(--main-color);
+  display: flex;
+  align-items: center;
+}
+.order-nav .c-n-left{
+  display: flex;
+  align-items: center;
+}
+.order-nav .icon-arrow{
+  margin-right: 48rpx;
+}
+.order-nav .order-status{
+  color: #ffffff;
+  font-size: 36rpx;
+}

@@ -64,13 +64,6 @@
   const pageOption = Page.BasePage({
     data() {
       return {
-        // formData: {
-        //   name: "谢海树",
-        //   mobilePhone: "13545545687",
-        //   serviceId: "",
-        //   fieldId: "",
-        //   remark: ""
-        // },
         formData: {
           "fieldId": "",
           "mobilePhone": "",
@@ -111,7 +104,6 @@
         let userInfo = app.IM.bsnUserInfo;
         console.log('userInfo',userInfo,app.IM.authUserInfo)
         this.$set(this.formData, "name", userInfo.name)
-        // this.$set(this.formData, "mobilePhone", userInfo.mobilePhone)
         this.loadconsultDirection()
         this.getConsultantGroup()
       },
@@ -188,7 +180,6 @@
     background-color: #F7F7F7;
 
     .form-list {
-      // padding: 30rpx 25rpx calc(env(safe-area-inset-bottom) + 165rpx);
       padding: 30rpx 25rpx 165rpx;
 
       .input-panel {

@@ -1,6 +1,8 @@
 {
   "component": true,
   "usingComponents": {
-    "list":"/components/list/list"
+    "list":"/components/list/list",
+    "contactStaff": "/components/pop/contactStaff/contactStaff",
+    "btns":"/components/buttons/btns"
   }
 }

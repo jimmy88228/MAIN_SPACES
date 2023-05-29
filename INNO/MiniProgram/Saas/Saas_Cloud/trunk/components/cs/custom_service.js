@@ -1,18 +1,17 @@
 import StrH from "../../common/support/utils/string-util" 
 import {
   LogMap
-} from "../../common/manager/log-map.js";
+} from "../../common/manager/log-map.js"; 
+import WxApi from "../../common/helper/wx-api-helper"
+import StorageH from "../../common/helper/handle/storageHandle.js" 
+import FISH from "../../common/helper/seven-fish-helper";
+
 const app = getApp();
 Component(app.BTAB({
   properties: {
     posType:{
       value: "right",
       type: String
-    },
-    sysConf:{
-      value:{},
-      type:Object,
-      observer(o,n){}
     },
     goods_id:{
       value:0,
@@ -24,7 +23,7 @@ Component(app.BTAB({
       observer(n,o){
         setCardInfo.call(this, n);
       }
-    },
+    }, 
     customTab:{
       type:Boolean,
       value:false,
@@ -35,7 +34,8 @@ Component(app.BTAB({
     isCustomNav:{
       type:Boolean,
       value:false, 
-    }
+    },
+    isSevenFishBubbles:Boolean
   },
   data: {
     brand_info:{},
@@ -44,59 +44,87 @@ Component(app.BTAB({
     isLogin:app.LM.isLogin,
     // style:""
     winW: app.SIH.windowWidth,
-    winH: app.SIH.screenHeight,
-    navH:app.SIH.navPlace,
+    winH: app.SIH.windowHeight,
     itemX: 645,
     itemY: 550,
     itemW: 90,
     itemH: 90,
-    b_extra_h:0,
-    _cardInfo:{}
+    _cardInfo:{},
+    configList: {}, // 客服配置
   },
   ready(){
     this.baseW = app.SIH.screenWidth / 750;
-    this.phoneInfo = {
-      width: app.SIH.windowWidth,
-      height: app.SIH.windowHeight
-    }
-    console.log('app.SIH',app.SIH)
     this.initData();
+    this.initConfig();
   },
   pageLifetimes:{
     show(){
       checkLimit.call(this).then(res => {
+        console.log('noLimit',res)
         this.setData({
           noLimit: !res
         })
       }).catch(() => {
+        console.log('noLimit2',)
         this.setData({
           noLimit: true
         })
       });
-      app.sysTemConfig().then(sysConf => {
-        this.setData({
-          sysConf: sysConf
-        })
-        this.initSessionFrom();
-      });
+      // app.sysTemConfig().then(sysConf => {
+      //   this.setData({
+      //     sysConf: sysConf
+      //   })
+      //   this.initSessionFrom();
+      // });
+      this.initSessionFrom();
       setCardInfo.call(this);
     },
-    hide(){}
+    hide(){
+      app.EB.unListen("LoginStateChange", this.listenLoginStatuId);
+    }
   },
   methods: {
-    initSessionFrom(){
-      this._checkUserLogin().finally(()=>{
-        app.LM.getUserSimpleInfo().then(user_info=>{
-          let source = user_info.mobilePhone ? `${user_info.cardNum}/${user_info.mobilePhone}` : user_info.cardNum || "";
-          let sessionFrom = `${source}|${user_info.realName}|${user_info.portrait_path}`;
+    initConfig(){
+      return Promise.all([getConf.call(this,'cloud_qiyu'),getConfigList.call(this)]).then(res=>{
+        console.log(res,'客服配置');
+        let sevenFishRes = res&&res[0]||false;
+        let configList = res&&res[1]||{};
+        if(!sevenFishRes){
           this.setData({
-            sessionFrom: sessionFrom
+            configList,
           })
-          console.log('sessionFrom',sessionFrom)
-        })
+        }
       })
     },
+    initSessionFrom(){
+      let that = this;
+      console.log("检测用户授权",app.LM.isLogin);
+      let user_info = app.LM.isLogin && app.StorageH.get("USER_INFOS") || null;
+      if(!user_info){
+        console.log("检测用户授权2",app.LM.isLogin);
+        this.listenLoginStatuId = app.EB.listen("LoginStateChange", () => {
+          // app.EB.unListen("LoginStateChange", this.listenLoginStatuId);
+          this.setData({
+            isLogin: app.LM.isLogin
+          })
+          this.initSessionFrom();
+        });
+        return;
+      }else{
+        this.setData({
+          isLogin: app.LM.isLogin
+        })
+        // app.EB.unListen("LoginStateChange", this.listenLoginStatuId);
+      }
+      let source = user_info.mobilePhone ? `${user_info.cardNum}/${user_info.mobilePhone}` : user_info.cardNum || "";
+      let sessionFrom = `${source}|${user_info.realName}|${user_info.portrait_path}`;
+      this.setData({
+        sessionFrom: sessionFrom
+      })
+      console.log('sessionFrom',sessionFrom)
+    },
     setShow(){
+      let page = getCurrentPages().pop();
       this.setData({
         always:true,
       })
@@ -117,6 +145,11 @@ Component(app.BTAB({
         itemH: parseFloat(itemH * this.baseW),
       })
     },
+    authorizeUserInfo(){
+      this.setData({
+        isLogin: app.LM.isLogin
+      })
+    },  
     getContact(e){
       let dataset = e.currentTarget.dataset;
       let url = dataset.url || e.detail.url || "/pages/micro_mall/customer_service/contact_page";
@@ -128,6 +161,34 @@ Component(app.BTAB({
     },
     getWxContact(){
       this.addActionLog("CONTACT_CLICK", null, null)
+    },
+    getQyWxContact() {
+      console.log('点击企业微信客服')
+      let {extInfo, corpId} = this.data.configList;
+      let {title: sendMessageTitle, path: sendMessagePath, img: sendMessageImg, showCard: showMessageCard } = this.data._cardInfo || {};
+      let cardInfo = {
+        sendMessageTitle,
+        sendMessagePath: sendMessagePath && StrH.appendHtml(sendMessagePath),
+        sendMessageImg,
+        showMessageCard
+      }
+      this.addActionLog("CONTACT_CLICK", null, null)
+      WxApi.openCustomerServiceChat({
+        extInfo,
+        corpId,
+        ...cardInfo
+      }).then(res => {
+        console.log('跳转企业微信:', res)
+      }).catch(err => {
+        let tips = ''
+        if ((err.msg || '').indexOf("url") != '-1') tips = '客服链接异常' 
+        else if ((err.msg || '').indexOf("bind") != '-1') tips = '企业ID异常'
+        else tips = '客服配置异常'
+        console.log("客服配置异常err", err)
+        app.SMH.showToast({
+          title: tips
+        })
+      })
     },
     contactCallback(e){
       console.log("客服回调",e);
@@ -156,6 +217,14 @@ Component(app.BTAB({
           }
         })
       }
+    },
+    onSevenFish(){
+      this.triggerEvent('onSevenFish',{},{ 
+        bubbles:true,
+        composed:true,
+        capturePhase:true,
+      })
+      !this.properties.isSevenFishBubbles && (FISH.jump());
     }
   }
 }))
@@ -169,9 +238,10 @@ function checkLimit(){
     let params = {
       path: page.route,
       assembly_type: 'service',
+      brandCode:app.Conf.BRAND_CODE
     }
-    return app.RunApi.go('GoodsApi', 'limit_page_show_assembly', params,{diy:false}).then(res=>{
-      if(res.code == '1'){
+    return app.RunApi.go('GoodsApi', 'limit_page_show_assembly', params,{diy:true}).then(res=>{
+      if(res.code == '1'){ // 客服是否显示
         app.CDateH.setCacheData(key, res.data == 1);
         return Promise.resolve(res.data == 1);
       }
@@ -180,6 +250,45 @@ function checkLimit(){
   }).catch(() => {
     let data = app.CDateH.getResult(key);
     return Promise.resolve(data);
+  })
+}
+
+// 获取客服配置
+function getConfigList(){
+  return app.BrandApi.getCustomerServiceConfigList({
+    params: {
+      brandCode: app.Conf.BRAND_CODE,
+    },
+    other: {
+      isShowLoad: false
+    }
+  }).then(res => {
+    let configList = res.data && res.data[0] || {}
+    switch (configList.type) {
+      case "ENTERPRISE_WECHAT":
+        let corpId = configList.param_field1;
+        let extInfo = { url: configList.url };
+        configList = { ...configList, corpId, extInfo };
+        break;
+      case "THIRD_PARTY":
+        break;
+      case "H5":
+        configList.url = ""
+        break
+      default:
+        break;
+    }
+    StorageH.set("CustomerServiceConf", configList)
+    return configList
+  })
+}
+
+function getConf(key) {
+  return app.sysTemConfig(key).then(data=>{
+    this.setData({
+      sevenFishIsShow: data.Value == 1 || false
+    })
+    return !!(data && data.Value == 1);
   })
 }
 function setCardInfo(cardInfo){

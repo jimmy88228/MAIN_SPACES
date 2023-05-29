@@ -9,10 +9,12 @@
             <view class="evaluating-bg-area-cover"
               :style="{'background-color':`${acInfo.evaluateActivitySetting.detailBgColor}`}"
               v-if="detailBg || ( acInfo.evaluateActivitySetting && acInfo.evaluateActivitySetting.detailBgColor)">
-              <image class="evaluating-bg-area-cover-image" mode="widthFix" :src="detailBg" />
+              <!-- <image class="evaluating-bg-area-cover-image" mode="widthFix" :src="detailBg" /> -->
+              <oriImage :showLoading="false" class="evaluating-bg-area-cover-image" mode="widthFix" :src="detailBg" />
             </view>
             <view class="evaluating-bg-area" v-else>
-              <image class="evaluating-bg" :src="requireStatic('/green-bg.png')" mode="widthFix" />
+              <!-- <image class="evaluating-bg" :src="requireStatic('/green-bg.png')" mode="widthFix" /> -->
+              <oriImage :showLoading="false" class="evaluating-bg" :src="requireStatic('/green-bg.png')" mode="widthFix" />
             </view>
             <!-- #endif -->
             <view class="evaluating-index flex-col-1">
@@ -90,13 +92,15 @@
 </template>
 
 <script>
-  import SMH from "@/common/helper/show-msg-handler.js"
+  import SMH from "@/common/helper/show-msg-handler.js";
+  import oriImage from "@/components/ori-comps/image/ori-image";
   import LoadingView from '@/components/css3/loading/loading.vue';
 
   const app = getApp();
   const pageOption = Page.BasePage({
     components: {
-      LoadingView
+      LoadingView,
+      oriImage,
     },
     data() {
       return {
@@ -378,7 +382,7 @@
       }
 
       &.invalid-green {
-        color: rgb(230 255 240);
+        color: rgb(230, 255, 240);
       }
     }
 

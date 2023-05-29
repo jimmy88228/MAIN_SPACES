@@ -1,0 +1,74 @@
+<!--pages/micro_mall/inviteAward/inviteAward.wxml-->
+<page-nav bindgetNavH="getNavH"></page-nav>
+<view class="main" hidden="{{!showPage}}">
+  <block hidden="{{empty}}">
+    <view class="bg_box">
+      <view class="rule" style="top:{{ruleH}}px;" catchtap="onTap" data-type="rule" data-id="{{acData.activityRule}}">活动说明</view>
+      <image src="{{acData.bgImg}}" bindload="imgLoad" class="img_bg" mode="widthFix" />
+      <btns class="btn_share flex_global flex_c flex_al_c" isLogin="{{isLogin}}" bindclickcallback="inviteShare">
+        <image src="{{acShare}}" mode="aspectFit" class="img_share"></image>
+        <view>立即邀请好友</view>
+      </btns>
+    </view>
+    <image wx:if="{{acData.rewardImg}}" src="{{acData.rewardImg}}" mode="widthFix" class="img_reward"></image>
+    <view class="content" hidden="{{hideContent}}">
+      <view class="fri_bg_box">
+        <view class="friTitle">我邀请的好友</view>
+        <image src="{{friHead}}" mode="widthFix" class="friHead"></image>
+        <view class="fri_msg_box" wx:if="{{friData.totalCount > 0}}">
+          <block wx:for="{{friData.list}}" wx:key="index">
+            <view class="fri_item flex_global flex_al_c">
+              <image class="f_shrink img_user" mode="aspectFit" src="{{item.portraitPath}}"></image>
+              <view class="f_shrink fri_name">{{item.realName}}</view>
+              <view class="fri_i_right flex_global flex_al_c">
+                <view class="reward_box flex_global flex_al_c">
+                  <image class="img_coupon" mode="aspectFit" src="{{item.registerStatus == '未关注'?invite:inviteAc}}"></image>
+                  <view class="fri_coupon flex_col flex_c">
+                    <view>{{item.registerStatus}}</view>
+                    <view wx:if="{{item.registerBenefit}}" class="fri_reward">{{item.registerBenefit}}</view>
+                  </view>
+                </view>
+                <view class="reward_box flex_global flex_al_c">
+                  <image class="img_red_pack" mode="aspectFit" src="{{item.orderStatus == '未下单'?buy:buyAc}}"></image>
+                  <view class="fri_buy flex_col flex_c">
+                    <view class="">{{item.orderStatus}}</view>
+                    <view wx:if="{{item.orderBenefit}}" class="fri_reward">{{item.orderBenefit}}</view>
+                  </view>
+                </view>
+              </view>
+            </view>
+          </block>
+        </view>
+        <view class="friEmpty bold flex_global flex_al_c flex_c" wx:elif="{{friData.totalCount == 0}}">
+          暂无好友关注
+        </view>
+        <view class="fri_more flex_global flex_al_c" wx:if="{{friData.totalCount>3}}" catchtap="onTap" data-type="moreJump">
+          <text class="more_text">更多</text>
+          <view class="fri_arrow"></view>
+        </view>
+      </view>
+    </view>
+
+    <view class="top" wx:if="{{mid}}"  style="top:{{mid}}px;">
+      <swiper wx:if="{{carouselData.list.length>0}}" class="swiper_box" current-item-id="{{index}}" circular="{{circular}}"
+        vertical="{{vertical}}" autoplay="{{autoplay}}" interval="{{interval}}" duration="{{duration}}"
+        bindchange="toogle">
+        <block wx:for="{{carouselData.list}}" wx:key="userName">
+          <swiper-item catchtouchmove="stopTouchMove" class="test2">
+            <image src="{{item.portraitPath}}" mode="widthFit" class="user_icon"
+              style="{{currentSwiper==index?opacity_1:opacity_0}}"></image>
+            <view class="top_content {{item.portraitPath?'padding_left':''}}"
+              style="{{currentSwiper==index?opacity_1:opacity_0}}">
+              <view class="text">{{item.msg}}</view>
+            </view>
+          </swiper-item>
+        </block>
+      </swiper>
+    </view>
+  </block>
+  <view hidden="{{!empty}}" class="empty_state">
+    {{msg}}
+  </view>
+</view>
+
+<shareImg theme_color="#FF9F00" id="shareImg" allData="{{allData}}"></shareImg>

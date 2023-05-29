@@ -1,9 +1,0 @@
-.btns_hold,
-button.handle_btn{
-  line-height: unset;
-  display: inline-block;
-  width: 100%;
-  height: 100%;
-  color: currentColor;
-  font-size: inherit;
-}

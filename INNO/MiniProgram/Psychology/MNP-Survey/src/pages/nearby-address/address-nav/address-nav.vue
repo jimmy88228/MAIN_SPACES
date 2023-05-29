@@ -58,10 +58,7 @@
   import UniApi from "@/common/support/tools/uni-api-promise.js"
 
   const app = getApp()
-  const pageOption = Page.BaseComp({
-    props: {
-
-    },
+  const pageOption = Page.BasePage({
     data() {
       return {
         showImg: 1,
@@ -86,8 +83,6 @@
     methods: {
       getStoreData(searchName, isInit) {
         let hasPaging = true;
-        let select_store = this.select_store;
-        let ops = this.options || {};
         let pageIndex = isInit ? 1 : (this.pageIndex + 1 || 1);
         let reqParams = {
           search: searchName || "",
@@ -249,7 +244,6 @@
         return;
       }
       if (this.hasMore) {
-        let ops = this.options || {};
         let keyword = this.keyword;
         this.getStoreData.call(this, keyword, false);
       } else {

@@ -1,22 +1,19 @@
 <template>
-  <view class="evaluating-list">
+  <view class="evaluating-list text-wrap">
     <page-nav>
       <view slot="custom-content">心理测评记录</view>
     </page-nav>
     <view class="content-box" :style="isEmpty ? 'background-color: #fff;' : ''">
       <template v-if="!isEmpty">
-        <!-- <view class="title bold">测评量表</view> -->
         <view class="content-scroll">
           <scroll-view scroll-y class="scroll-box" id="scrollId" @scrolltolower="scrolltolower">
-            <view class="item-page" v-for="(pItem, pIndex) in list" :key="pIndex">
-              <view v-for="(item, index) in pItem" :key="item.activityId">
-                <!-- <view class="wrap m-b-25" v-if="pIndex == finishPage - 1 && index == finishIndex">已结束测评</view> -->
-
-                <view class="item">
+            <view class="item-page p-l-20 p-r-20" v-for="(pItem, pIndex) in list" :key="pIndex">
+                <view class="item" :class="item.canSelect != 1 ? 'unselect' : ''" v-for="(item, index) in pItem" :key="item.activityId">
                   <view class="msg-box flex-s-c">
                     <view class="relative">
-                      <image :lazy-load="true" :src="item.logo.trim() ? item.logo : staticAddress+activityIcon"
-                        @error="imgerror($event, index, pIndex)" class="img" mode="aspectFill" />
+                      <ori-image :lazy-load="true" :src="item.logo.trim() ? item.logo : staticAddress+activityIcon"
+                        @error="imgerror($event, index, pIndex)" customStyle="width: 180rpx;height: 180rpx;border-radius: 12rpx;" class="shrink0" mode="aspectFill" ></ori-image>
+                      <!-- <image/> -->
                     </view>
                     <view class="content flex1 flex flex-col flex-b-s">
                       <view>
@@ -60,19 +57,18 @@
                     </view>
                   </view>
 
-                  <view class="btn flex-e-c font-28 m-r-32"
+                  <view class="btn flex-e-c font-28"
                     v-if="item.joinState == 'joining' || (item.joinState == 'finished' && item.recordId != 0)">
-                    <view v-if="item.joinState == 'finished'" class="active-btn" @click="report"
+                    <view v-if="item.joinState == 'finished'" class="active-btn m-r-32" @click="report"
                       :data-state="item.joinState" data-p-index="pIndex"
-                      :data-url="`pages/report/report-info/report-info?recordId=${item.recordId}`">查看报告</view>
-                    <view v-else-if="item.joinState == 'joining'" class="active-btn" @click="jump"
+                      :data-url="`pages/report-info/report-info?recordId=${item.recordId}`">查看报告</view>
+                    <view v-else-if="item.joinState == 'joining'" class="active-btn m-r-32" @click="jump"
                       :data-state="item.joinState" data-p-index="pIndex" :data-url="
                       '/pages/activities/evaluating/detail/detail?activityId=' +
                       item.activityId
                     ">继续测评</view>
                   </view>
                 </view>
-              </view>
             </view>
           </scroll-view>
         </view>
@@ -87,9 +83,12 @@
 
 <script>
   import SMH from "@/common/helper/show-msg-handler";
-
+  import oriImage from "@/components/ori-comps/image/ori-image"
   const app = getApp();
   const pageOption = Page.BasePage({
+    components:{
+      oriImage
+    },
     data() {
       return {
         activityIcon: "/activity-icon.jpg",
@@ -99,7 +98,6 @@
         pageSize: app.Conf.PAGE_SIZE,
         clickPage: 0,
         isEmpty: false,
-        // finishPage: "",
         finishIndex: "",
       };
     },
@@ -123,16 +121,6 @@
             let data = res.data || {};
             this.pageIndex = pageIndex;
             let currPage = pageIndex - 1 ? pageIndex - 1 : 0;
-            // 添加已结束/已完成折线
-            // if (!this.finishPage) {
-            //   data.list.some((item, i) => {
-            //     if (item.joinState == "end" || item.joinState == "finished") {
-            //       this.finishPage = pageIndex;
-            //       this.finishIndex = i;
-            //     }
-            //     return item.joinState == "end" || item.joinState == "finished";
-            //   });
-            // }
             this.list[currPage] = data.list || [];
             this.hasMore = this.pageIndex * this.pageSize < data.totalCount;
             this.setEmpty(this.list);
@@ -144,16 +132,6 @@
         console.log(cur, len, "百分比")
         return Number((cur / len).toFixed(2)) * 100;
       },
-      // progressItemStyle() {
-      //   let acInfo = this.acInfo;
-      //   let modelIds = acInfo.modelIds || [];
-      //   let count = modelIds.length;
-      //   let width = 100
-      //   if (count > 1) {
-      //     width = (100 / count).toFixed(0) - 1
-      //   }
-      //   return `width:${width}%`
-      // },
       jump(e) {
         let dataset = e.currentTarget.dataset || {};
         if (dataset.state == "cannot_join") {
@@ -206,12 +184,10 @@
     display: flex;
     flex-direction: column;
     box-sizing: border-box;
-    // background-color: rgb(247, 247, 247);
     height: 100vh;
   }
 
   .content-box {
-    // padding: 0 20rpx;
     flex: 1;
     display: flex;
     flex-direction: column;
@@ -219,10 +195,6 @@
     background-color: #f7f7f7;
   }
 
-  // .title {
-  //   font-size: 38rpx;
-  //   padding: 40rpx 0 40rpx 40rpx;
-  // }
   .content-scroll {
     flex: 1;
     padding-top: 23rpx;
@@ -240,25 +212,13 @@
       position: relative;
       border-radius: 20rpx;
       background-color: #fff;
-      margin: 20rpx;
-      // border: 1px solid rgba($color: #EFEFEF, $alpha: 0.8);
+      margin-bottom: 20rpx;
       box-shadow: 0px 0px 17rpx 0 rgba(0, 0, 0, 0.09);
-
-      // &:last-child{
-      //   margin-bottom: 0;
-      // }
-      &:first-child {
-        margin-top: 0;
-      }
-
-      &>view:nth-child(2) {
-        // border-top: 1px solid rgba($color: #979797, $alpha: 0.2);
-      }
+      transition: all 0.2s;
 
       .msg-box {
         padding: 25rpx;
         box-sizing: border-box;
-        border-bottom: 1px solid rgba($color: #979797, $alpha: 0.2);
       }
 
       .img {
@@ -285,7 +245,10 @@
       }
 
       .btn {
+        border-top: 1px solid rgba($color: #979797, $alpha: 0.2);
         height: 100rpx;
+        width: 100%;
+        box-sizing: border-box;
       }
 
       .active-btn {
@@ -298,7 +261,6 @@
         display: flex;
         justify-content: center;
         align-items: center;
-        // color: $uni-main-color;
       }
 
       .invalid-btn {

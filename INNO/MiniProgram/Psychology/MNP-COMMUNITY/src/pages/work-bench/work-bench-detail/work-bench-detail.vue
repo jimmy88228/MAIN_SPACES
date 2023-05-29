@@ -10,19 +10,25 @@
     </page-nav>
     <view class="bench-top-area flex-s-c" :style="{'top':navTop+'px'}">
       <view class="bench-top-item" @click="turnPage" data-mode="caring-staff">
-        <image :src="staticAddress+caringStaffIcon" mode="widthFix" />
+        <view class="bench-top-item-icon">
+          <oriImage :src="staticAddress+caringStaffIcon" mode="widthFix" />
+        </view>
         <view class="C_7f font-22">
           关爱人员
         </view>
       </view>
       <view class="bench-top-item" @click="turnPage" data-mode="reserve-supervise-list">
-        <image :src="staticAddress+reserveSuperviseIcon" mode="widthFix" />
+        <view class="bench-top-item-icon">
+          <oriImage :src="staticAddress+reserveSuperviseIcon" mode="widthFix" />
+        </view>
         <view class="C_7f font-22">
           预约督导
         </view>
       </view>
       <view class="bench-top-item" @click="jumpAction('/pages/custom/page/page?type=psycHandbook')">
-        <image :src="staticAddress+psychologyBookIcon" mode="widthFix" />
+        <view class="bench-top-item-icon">
+          <oriImage :src="staticAddress+psychologyBookIcon" mode="widthFix" />
+        </view>
         <view class="C_7f font-22">
           心理手册
         </view>
@@ -41,8 +47,11 @@
             <view class="eval-detail">
               <view class="eval-detail-title flex-b-c">
                 <view class="flex-s-c flex1">
-                  <image class="eval-icon f-shrink-0" @error="imgerror($event, i, pageIndex)" :src="item.logo"
-                    mode="aspectFill" />
+                  <view class="eval-icon f-shrink-0">
+                    <oriImage @error="imgerror($event, i, pageIndex)" :src="item.logo" mode="aspectFill" />
+                  </view>
+                  <!-- <image class="eval-icon f-shrink-0" @error="imgerror($event, i, pageIndex)" :src="item.logo"
+                    mode="aspectFill" /> -->
                   <view class="flex1 clamp">
                     <view class="font-26 m-b-10 flex1 clamp">{{item.activityName}}</view>
                     <template v-if="item.limitTime != 0">
@@ -104,11 +113,13 @@
   import structureManage from '@/common/manager/structure-manage.js'
   import poster from '@/components/poster/index.vue';
   import psychologyProtocol from '@/components/psychology-protocol/psychology-protocol.vue';
+  import oriImage from "@/components/ori-comps/image/ori-image"
   const app = getApp();
   const pageOption = Page.BasePage({
     components: {
       poster,
-      psychologyProtocol
+      psychologyProtocol,
+      oriImage
     },
     data() {
       return {
@@ -397,12 +408,12 @@
         align-items: center;
         margin-right: 68rpx;
 
-        &>image {
+        .bench-top-item-icon {
           width: 80rpx;
           height: 80rpx;
-          background: #ECB8A0;
           border-radius: 12rpx;
           margin-bottom: 16rpx;
+          overflow: hidden;
         }
       }
     }
@@ -455,6 +466,7 @@
               height: 61rpx;
               border-radius: 8rpx;
               margin-right: 16rpx;
+              overflow: hidden;
             }
 
             .activity-code {

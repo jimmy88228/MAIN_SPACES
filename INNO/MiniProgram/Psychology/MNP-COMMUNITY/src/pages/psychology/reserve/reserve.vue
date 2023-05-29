@@ -1,5 +1,6 @@
 <template>
   <view>
+    <template v-if="!showLoading">
     <view class="reserve-page">
       <page-nav></page-nav>
       <view class="text-edit flex-col-1">
@@ -15,23 +16,31 @@
         <view class="edit-item-title m-r-30 font-28 bold">联系方式</view>
         <input type="number" maxlength="11" class="font-28 bold" v-model="formData.mobilePhone" />
       </view>
-      <ori-picker @pickerChange="(e) => pickerChange(e, 'sonsultType')" range-key="serviceName" mode="selector"
-        :range="pickGroup" :pickerValue="picker_value">
-        <template v-slot:content>
-          <view class="user-edit-item flex-b-c">
-            <view class="edit-item-title m-r-30 font-28 bold">咨询方式</view>
-            <view class="edit-disable font-28 C_333 bold flex-1">{{
+      <template v-if="pickGroup.length > 0">
+        <ori-picker @pickerChange="(e) => pickerChange(e, 'sonsultType')" range-key="serviceName" mode="selector"
+          :range="pickGroup" :pickerValue="picker_value">
+          <template v-slot:content>
+            <view class="user-edit-item flex-b-c">
+              <view class="edit-item-title m-r-30 font-28 bold">咨询方式</view>
+              <view class="font-28 C_333 bold flex-1">{{
               pickGroup[picker_value].serviceName
             }}</view>
-            <view class="edit-disable font-28 C_21b014 bold f-shrink-0">选择</view>
-          </view>
-        </template>
-      </ori-picker>
+              <view class="font-28 C_21b014 bold f-shrink-0">选择</view>
+            </view>
+          </template>
+        </ori-picker>
+      </template>
+      <template v-else>
+            <view class="user-edit-item flex-b-c">
+              <view class="edit-item-title m-r-30 font-28 bold">咨询方式</view>
+              <view class="font-28 bold C_8E f-shrink-0">暂无可选</view>
+            </view>
+          </template>
       <view class="user-edit-item flex-b-c" @click="selectReserveTime">
         <view class="edit-item-title m-r-30 font-28 bold">咨询时段</view>
-        <view class="edit-disable font-28 C_333 bold flex-1">{{selectDateTime.fullTime || ""}}</view>
-        <!-- <view class="edit-disable font-28 C_333 bold flex-1">{{}}</view> -->
-        <view class="edit-disable font-28 C_21b014 bold f-shrink-0">选择</view>
+        <view class="font-28 C_333 bold flex-1">{{selectDateTime.fullTime || ""}}</view>
+        <!-- <view class="font-28 C_333 bold flex-1">{{}}</view> -->
+        <view class="font-28 C_21b014 bold f-shrink-0">选择</view>
       </view>
       <view class="user-edit-item pay-type-box">
         <view class="font-28 bold C_7f">资费方式</view>
@@ -63,17 +72,23 @@
         <view class="agree-icon">
           <view class="select-switch" :class="{ selected: selectAgree }"></view>
         </view>
-        <view>同意
-          <view class="agree-link" @click.stop="jumpAction('')" data-type="service">《心理咨询服务协议》</view>
-          、
-          <view class="agree-link" @click.stop="jumpAction('pages/psychology/service-agree/service-agree')">《知情同意书》</view>
+        <view class="flex-s-c">同意
+          <!-- <view class="agree-link" @click.stop="jumpAction('')" data-type="service">《心理咨询服务协议》</view>
+          、 -->
+          <view class="agree-link" @click.stop="jumpAction('pages/psychology/service-agree/service-agree')">《知情同意书》
+          </view>
         </view>
       </view>
     </view>
+    </template>
+    <view class="reserve-page flex-c-c" v-else>
+		<loading-view></loading-view>
+	</view>
   </view>
 </template>
 
 <script>
+	import LoadingView from '@/components/css3/loading/loading.vue';
   import oriPicker from "@/components/ori-comps/picker/ori-picker.vue";
   import SMH from "@/common/helper/show-msg-handler.js";
   import WxSubscribe from '@/common/manager/wxSubscribe.js'
@@ -81,6 +96,7 @@
   const pageOption = Page.BasePage({
     data() {
       return {
+        showLoading:true,
         wxSubscribeList: [],
         options: {},
         textareaValue: "",
@@ -118,6 +134,7 @@
     },
     components: {
       oriPicker,
+      LoadingView
     },
     onLoad(options) {
       this.options = options;
@@ -194,7 +211,8 @@
             reject();
           } else if (!this.selectAgree) {
             SMH.showToast({
-              title: "请先勾选心理咨询服务协议和知情同意书！",
+              title: "请先勾选知情同意书！",
+              // title: "请先勾选心理咨询服务协议和知情同意书！",
             });
             reject();
           } else {
@@ -227,7 +245,10 @@
             this.picker_value = picker_value;
             this.formData = formData
           }
-        });
+        }).finally(()=>{
+          this.showLoading = false
+          
+        })
       },
       getRemainingCount() {
         return this.$Http(this.$Apis.getRemainingCount).then((res) => {

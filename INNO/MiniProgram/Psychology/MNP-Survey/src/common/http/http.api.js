@@ -36,6 +36,11 @@ export const WechatApiList = {
 		u: "/wechat/updateUserProfile",
 		m: "post"
 	},
+	
+	uploadWxAvatarUrl: {
+		u: "/wechat/uploadWxAvatarUrl",
+		m: "post"
+	},
 	createActivityAppletCode: {
 		u: "/wechat/createActivityAppletCode",
 		m: "post"
@@ -46,7 +51,9 @@ export const EduApiList = {
 	getSchoolClassList: "/edu/getSchoolClassList?schoolId={schoolId}",
 	getSchoolClassListWithActivity: "/edu/getSchoolClassListWithActivity?schoolId={schoolId}&activityId={activityId}&campusId={campusId}",
 	getSchoolList: "/edu/getSchoolList",
+	getSchoolListInfo: "/edu/getSchoolListInfo",
 	getRelateStudentList: "/edu/getRelateStudentList",
+	getSchoolClassInfo: "/edu/getSchoolClassInfo",
 	getUserInfo: "/user/getUserInfo",
 	getUserInfoByToken: "/edu/getUserInfoByToken",
 	bindStudent: {
@@ -101,10 +108,13 @@ export const EvaluateApiList = {
 	updateEvaluateUsedTime: {
 		u: "/evaluate/updateEvaluateUsedTime",
 		m: "post"
-	}
+	},
+	getEvaluateRecordList: "/evaluate/getEvaluateRecordList"
+
 }
 
 export const pageManageApiList = {
+	getGameResultPage: "/page/getGameResultPage",
 	getPageDetail: "/page/getHomePage",
 	getMinePageDetail: "/page/getMinePage",
 	getTargetDetail: "/page/getTargetPage",
@@ -196,7 +206,8 @@ export const teacherApiList = {
 export const reportApiList = {
 	// 获取报告列表
 	getReportList: "/report/getReportList",
-	getReportDetail: "/report/getReportDetail"
+	getReportDetail: "/report/getReportDetail",
+	getReportDetailByAdmin: "/report/getReportDetailByAdmin"
 }
 
 export const examApiList = {
@@ -204,6 +215,10 @@ export const examApiList = {
 	getCourseExamRecordInfo: "/course/exam/getCourseExamRecordInfo",
 	getExamModel: "/course/exam/getExamModel",
 	getExamQuestionList: "/course/exam/getQuestionList",
+	createExamRecord: {
+		u: "/course/exam/createExamRecord",
+		m: "post"
+	},
 	submitExam: {
 		u: "/course/exam/submitExam",
 		m: "post"
@@ -218,6 +233,10 @@ export const courseApiList = {
 	getCourse: "/course/getCourse",
 	getCourseContent: "/course/getCourseContent",
 	selectCourseListByPage: "/course/selectCourseListByPage",
+	createCourseUserRecord: {
+		u: "/course/createCourseUserRecord",
+		m: "post"
+	},
 	punchCard: {
 		u: "/course/punchCard",
 		m: "post"
@@ -278,6 +297,32 @@ export const logApiList = {
 	},
 	uploadLogVisitList: {
 		u: "/log/uploadLogVisitList",
+		m: "post"
+	},
+}
+
+export const gameApiList = {
+	getGameActivityBaseInfo: "/game/getGameActivityBaseInfo",
+	getGameMainInfo: "/game/getGameMainInfo",
+	getUserNickName: "/game/getUserNickName",
+	selectRankingListByPage: "/game/selectRankingListByPage",
+	setGameLike: {
+		u: "/game/like",
+		m: "post"
+	},
+	saveGameUserInfo: {
+		u: "/game/saveGameUserInfo",
+		m: "post"
+	},
+	submitResult: {
+		u: "/game/submitResult",
+		m: "post"
+	},
+}
+
+export const authApiList = {
+	createRsaKey: {
+		u: "/auth/createRsaKey",
 		m: "post"
 	},
 }

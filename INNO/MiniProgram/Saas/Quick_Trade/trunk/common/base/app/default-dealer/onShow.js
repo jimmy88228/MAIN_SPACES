@@ -15,10 +15,9 @@ function theFrontPart(appOnShow, appQuery, next) { // onShow的前半部分(全�
   WxApi.showLoading();
   LM.loginAsync(false)
   .ignore(() => PH.initParam(appQuery))
-  .then(options => (appQuery = options))
+  .ignore(() => (appQuery = PH.paramsJson('options')))
+  .ignore(() => storeH.getVisitStore())
   .ignore(() => LM.checkIfStore(false))
-  .ignore(() => storeH.changeVisitStore())
-  .ignore(() => storeH.getVisitStore(false))
   .ignore(() => {
     appOnShow && appOnShow.call(this);
     this.inLifeCycle = "afterOnShow";

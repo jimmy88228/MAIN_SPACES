@@ -1,0 +1,231 @@
+.bold{
+    font-weight: bold;
+} 
+.triangle-top{  
+    width: 0;
+    height: 0;
+    margin-top: -8rpx;
+    border: 10rpx solid transparent;
+    border-bottom-color:#000; 
+}
+.triangle-bottom{   
+    width: 0;
+    height: 0;
+    border: 10rpx solid transparent;
+    margin-bottom: -8rpx;
+    border-top-color:#000; 
+}
+
+.m-5 {
+  margin: 5px;
+}
+
+.m-b-10 {
+  margin-bottom: 10rpx;
+}
+
+.m-b-15 {
+  margin-bottom: 15rpx;
+}
+
+.m-b-20 {
+  margin-bottom: 20rpx;
+}
+
+.m-b-25 {
+  margin-bottom: 25rpx;
+}
+
+.m-r-5 {
+  margin-right: 5rpx;
+}
+
+.m-r-10 {
+  margin-right: 10rpx;
+}
+
+.m-r-15 {
+  margin-right: 15rpx;
+}
+
+.m-r-20 {
+  margin-right: 20rpx;
+}
+.m-r-30{
+  margin-right: 30rpx;
+}
+
+.m-l-5 {
+  margin-left: 5rpx;
+}
+
+.m-l-10 {
+  margin-left: 10rpx;
+}
+
+.m-l-15 {
+  margin-left: 15rpx;
+}
+
+.m-l-20 {
+  margin-left: 20rpx;
+}
+
+.m-l-30 {
+  margin-left: 30rpx;
+}
+
+.m-t-5 {
+  margin-top: 5rpx;
+}
+
+.m-t-10 {
+  margin-top: 10rpx;
+}
+
+.m-t-15 {
+  margin-top: 15rpx;
+}
+
+.m-t-20 {
+  margin-top: 20rpx;
+}
+
+.m-b-5 {
+  margin-bottom: 5rpx;
+}
+
+.m-b-10 {
+  margin-bottom: 10rpx;
+}
+
+.m-b-15 {
+  margin-bottom: 15rpx;
+}
+
+.p-t-5 {
+  padding-top: 5rpx;
+}
+
+.p-t-10 {
+  padding-top: 10rpx;
+}
+
+.p-t-15 {
+  padding-top: 15rpx;
+}
+
+.p-t-20 {
+  padding-top: 20rpx;
+}
+
+.p-b-5 {
+  padding-bottom: 5rpx;
+}
+
+.p-b-10 {
+  padding-bottom: 10rpx;
+}
+
+.p-b-15 {
+  padding-bottom: 15rpx;
+}
+
+.p-b-20 {
+  padding-bottom: 20rpx;
+}
+.p-b-30 {
+  padding-bottom: 30rpx;
+}
+
+.p-l-5 {
+  padding-left: 5rpx;
+}
+
+.p-l-10 {
+  padding-left: 10rpx;
+}
+
+.p-l-15 {
+  padding-left: 15rpx;
+}
+
+.p-l-20 {
+  padding-left: 20rpx;
+}
+
+.p-r-5 {
+  padding-right: 5rpx;
+}
+
+.p-r-10 {
+  padding-right: 10rpx;
+}
+
+.p-r-15 {
+  padding-right: 15rpx;
+}
+
+.p-r-20 {
+  padding-right: 20rpx;
+}
+
+.p-r-30 {
+  padding-right: 30rpx;
+}
+
+.C_fff {
+  color: #fff;
+}
+
+.C_7f {
+  color: #7f7f7f;
+}
+
+.text-flow{
+  word-break: break-all;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 1;
+  -webkit-box-orient: vertical;
+  letter-spacing: 0;
+}
+.text-flow2,.text-flow3 {
+  word-break: break-all;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  letter-spacing: 0;
+}
+.text-flow3 {
+  -webkit-line-clamp: 3;
+}
+.common-empty-tip{
+  width: 100%;
+  height: 80%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: #7f7f7f; 
+  box-sizing: border-box;
+}
+.full-height{
+  height: 100%;
+}
+.full-width-center{
+  width: 100%;
+  display: flex;
+  justify-content: center;
+} 
+/* 此处设置editor富文本编辑器 placeholder 样式 */
+.ql-editor.ql-blank:before {
+  color: #666666;
+  font-style: normal;
+}
+
+.disabled{
+  pointer-events: none;
+}

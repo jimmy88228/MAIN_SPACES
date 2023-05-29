@@ -11,7 +11,8 @@
 						<view class="item-page" v-for="(pItem, pIndex) in list" :key="pIndex">
 							<view class="item" v-for="(item,index) in pItem" :key="item.activityId">
 								<view class="msg-box flex-s-c">
-									<image :src="item.logo ? item.logo : requireStatic(activityIcon)" @error="imgerror($event, index, pIndex)" class="img" mode="aspectFit" />
+									<oriImage :lazy-load="true" customStyle="width: 180rpx; height: 180rpx; border-radius: 12rpx;" :src="item.logo ? item.logo : requireStatic(activityIcon)" @error="imgerror($event, index, pIndex)" class="shrink0" mode="aspectFill"></oriImage>
+									<!-- <image :lazy-load="true" :src="item.logo ? item.logo : requireStatic(activityIcon)" @error="imgerror($event, index, pIndex)" class="img" mode="aspectFill" /> -->
 									<view class="content">
 										<view class="tips font-22 C_B2"><text class="p-r-10">题目{{item.questionCount}}</text><text>约{{item.estimatedTime}}分钟</text></view>
 										<view class="tip-title font-32">{{item.activityName}}</view>
@@ -39,8 +40,12 @@
 </template>
 
 <script>
+  import oriImage from "@/components/ori-comps/image/ori-image";
   const app = getApp();
 	const pageOption = Page.BasePage({
+		components:{
+			oriImage
+		},
     data() {
       return {
         list:[],
@@ -119,11 +124,9 @@
 	display: flex;
 	flex-direction: column;
   box-sizing: border-box;
-  // background-color: rgb(247, 247, 247);
 	height: 100vh;
 }
 .content-box{
-  // padding: 0 20rpx;
 	flex: 1;
 	display: flex;
 	flex-direction: column;
@@ -147,11 +150,7 @@
 	  border-radius: 20rpx;
 	  background-color: #fff;
 	  margin: 30rpx;
-		// border: 1px solid rgba($color: #EFEFEF, $alpha: 0.8);
 		box-shadow: 0px 0px 17rpx 0 rgba(0, 0, 0, 0.09);
-	  // &:last-child{
-			//   margin-bottom: 0;
-	  // }
 		&:first-child{
 			margin-top: 0;
 		}

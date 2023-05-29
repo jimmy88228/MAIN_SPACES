@@ -1,5 +1,5 @@
 <template>
-  <frame-box :showPage="mixShowPage">
+  <frame-box :showPage="mixShowPage" :loginOutCallback="loginOutCallback">
     <template v-slot:body>
       <view class="answer flex-s-s flex-col" :class="[popupH5Bool ? 'blur' : '']">
         <!-- #ifdef MP -->
@@ -19,33 +19,23 @@
           <loading-view></loading-view>
         </view>
         <view class="evaluating-bg-area-cover" v-if="answerBgImg && !isH5 && !showLoading">
-          <image class="evaluating-bg-area-cover-image" @load="getBgSize" :style="{height:bgHeight,width:bgWidth}"
-            :src="answerBgImg" />
+          <oriImage :showLoading="false" @load="getBgSize" customStyle="{height:bgHeight,width:bgWidth}" :src="answerBgImg" ></oriImage>
         </view>
         <view v-show="!showLoading" class="box flex-col-1 flex-s-c" :style="!isH5?'padding-bottom: 180rpx':''">
-          <view class="tips" style="padding: 0px 80rpx" v-if="acInfo.modelInstruction">
-            {{ acInfo.modelInstruction }}</view>
+          <view class="tips" style="padding: 0px 80rpx">
+            {{ (list[current] && list[current].instruction) || acInfo.modelInstruction }}</view>
           <view id="swiperId" class="swiper flex1" :class="[isFinish?'showSubmit':'']">
             <view class="swiper-item-box flex-s-s" :style="'transform:translateX(-' + current * 100 + '%);'">
               <view v-for="(item, index) in list" :key="index" class="swiper-item flex-s-s"
                 :class="{'swiper-item-action':current == index}">
                 <scroll-view class="flex1" scroll-y>
                   <view class="item-box">
-                    <view class="title bold">
-                      {{ item.question || "" }}
-                    </view>
-                    <view class="answer-box flex-c-c flex-col" v-if="item.optionList">
-                      <button :class="[
-                        'answer-item',
-                        'bold',
-                        'flex-c-c',
-                        item.selectOptionId == c_item.optionId
-                          ? 'active'
-                          : 'unactive',
-                      ]" @click="onAnswer(c_item.optionId, index,c_item)" v-for="(c_item, c_index) in item.optionList"
-                        :key="c_index">
-                        {{ c_item.optionContent }}
-                      </button>
+                    <view class="title bold"> {{ item.question || "" }} </view>
+                    <view :class="['answer-box','flex-c-c','flex-col']" v-if="item.optionList">
+                       <!-- 选择器样式 -->
+                       <answerPicker v-if="item.optionList.length>7" :showNext="index < list.length - 1" :disableNext="disableNext" :questionDetail="item" @pickerChange="pickerChange" @selectPicker="selectPicker" :buttonAnimation="current == index ? buttonAnimation : 'animate-fade-out-down'"></answerPicker>
+                       <!-- 一般样式 -->
+                       <answerNormal v-else-if="item.optionList.length<=7" :index="index" :current="current" :questionDetail="item" :buttonAnimation="current == index ? buttonAnimation : 'animate-fade-out-down'" @onAnswer="onAnswer"></answerNormal>
                     </view>
                   </view>
                 </scroll-view>
@@ -117,11 +107,19 @@
 </template>
 
 <script>
+  import LoadingView from '@/components/css3/loading/loading.vue';
+  import utils from '@/common/support/utils.js'
   import sysInfosHandler from "@/common/helper/sys-infos-handler";
   import SMH from "@/common/helper/show-msg-handler";
+  import oriPicker from "@/components/ori-comps/picker/ori-picker.vue";
   import oriPopup from "@/components/ori-comps/popup/ori-popup";
   import safeArea from "@/components/safe-area/index.vue";
+  import oriImage from "@/components/ori-comps/image/ori-image";
   import stagePopup from "./components/stage-popup/stage-popup.vue"
+  // 回答题目的样式
+  import answerNormal from "./components/answer-normal/answer-normal.vue"
+  import answerPicker from "./components/answer-picker/answer-picker.vue"
+  import animateCustom from "@/components/animate-custom/animate-custom.vue"
   // 小程序答题进度条（多量表、单量表通用）
   import mpAnswerProgress from "./components/mp-answer-progress/mp-answer-progress.vue"
   // h5答题进度条（多量表、单量表通用）
@@ -132,9 +130,15 @@
     components: {
       oriPopup,
       safeArea,
+      oriImage,
+      oriPicker,
       stagePopup,
       mpAnswerProgress,
-      h5AnswerProgress
+      h5AnswerProgress,
+      LoadingView,
+      animateCustom,
+      answerNormal,
+      answerPicker,
     },
     data() {
       return {
@@ -146,6 +150,8 @@
         bgHeight: 0,
         bgWidth: 0,
         //********/
+        disableNext: false,
+        buttonAnimation: 'animate-fade-in-right',
         beginAnswer: false,
         showLoading: true,
         scaleInfo: {},
@@ -157,7 +163,7 @@
         current: 0,
         pageIndex: 0,
         pageSize: 5,
-        preview: 5, //提前X道题预加载题目
+        // preview: 5, //提前X道题预加载题目
         btnActive: false,
         btnDismiss: false,
         list: [],
@@ -171,7 +177,7 @@
         answerIng: false,
 
         // 跳题
-        totalCount: 0,
+        totalCount: 0, 
         questionIndex: 0,
         restQuestions: 0,
         answerCount: 0,
@@ -181,6 +187,7 @@
     },
     onLoad(options) {
       this.options = options;
+
     },
     onReady() {
       this.getActInfo().then(() => {
@@ -190,6 +197,7 @@
     onShow() {
       // 开始计算答题时间
       !this.answerTimer && this.initTiming()
+      app.LM.userToken || ''
     },
     onHide() {
       // 如果有时间则上传答题时间
@@ -200,9 +208,9 @@
       this.totalTime && this.uploadAnswerTime()
     },
     computed: {
-      CurPreviewNum() {
-        return this.current + this.preview;
-      },
+      // CurPreviewNum() {
+      //   return this.current + this.preview;
+      // },
       answerBgImg() {
         let acInfo = this.acInfo;
         let evaluateActivitySetting = acInfo.evaluateActivitySetting || {};
@@ -240,7 +248,7 @@
         }
       },
       uploadAnswerTime(upload = true) {
-        if (!this.beginAnswer) return
+        if (!this.beginAnswer || !app.LM.userToken) return;
         if (this.answerTimer) {
           clearInterval(this.answerTimer)
           this.answerTimer = null
@@ -248,7 +256,7 @@
         if (upload) {
           return this.$Http(this.$Apis.updateEvaluateUsedTime, {
             customUrl: this.$Apis.updateEvaluateUsedTime.u +
-              `?usedTime=${this.totalTime}&modelId=${this.modelId}&activityId=${this.acInfo.activityId}`,
+              `?usedTime=${this.totalTime}&modelId=${this.modelId}&activityId=${this.acInfo.activityId}`
           }).then(res => {
             if (res.code) {
               this.totalTime = 0;
@@ -259,6 +267,12 @@
           this.totalTime = 0;
           return Promise.resolve()
         }
+      },
+      loginOutCallback(){
+        if(this.totalTime){
+          return this.uploadAnswerTime();
+        }
+        return true;
       },
       init() {
         let allCount = parseInt(this.acInfo.questionCount || 0);
@@ -276,6 +290,7 @@
             this.searchTargetQuestion(this.acInfo.lastQuestion.questionId, this.acInfo.lastQuestion
               .fromQuestionId)
             this.isFinish = true;
+            console.log(this.checkLastScale(),"this.checkLastScale()")
             if (!this.checkLastScale()) {
               this.setSubmitBtn();
             } else {
@@ -287,10 +302,7 @@
           }
 
           this.pageIndex = lastPageIndex;
-          this.getBoxH();
-          // if (this.CurPreviewNum >= this.pageIndex * this.pageSize) {
-          //   this.loadData();
-          // }
+          // this.getBoxH();
         }).finally(() => {
           setTimeout(() => {
             this.showLoading = false
@@ -310,9 +322,7 @@
           return item.questionId == nextQuestionId
         })
         if (question && question.length > 0) {
-          console.log(this.list[current], fromQuestionId)
           this.restQuestions = question[0]?.restQuestions;
-          // if(fromQuestionId) this.$set(this.list[current],"fromQuestionId",fromQuestionId)
           if (fromQuestionId) this.list[current].fromQuestionId = fromQuestionId;
           this.current = current
         } else {
@@ -371,6 +381,23 @@
             let list = data.questionList.list || [];
             this.totalCount = data.totalCount || 0;
             this.hasMore = pageIndex * pageSize < this.totalCount;
+
+             list.forEach((item) => {
+              let optionList = item.optionList;
+              let selectOptionId = item.selectOptionId;
+              // 适配选择器样式
+              if (selectOptionId == 0) {
+                item.pickerValue = -1
+              } else {
+                for (let i = 0; i < optionList.length; i++) {
+                  if (optionList[i].optionId == selectOptionId) {
+                    item.pickerValue = i
+                    continue;
+                  }
+                }
+              }
+            })
+
             this.list = this.list.concat(list);
             this.mixShowPage = true;
           }
@@ -380,23 +407,110 @@
       getBgSize({
         detail
       }) {
-        console.log(detail, "获取图片的大小")
-        uni.getSystemInfo({
-          success: res => {
-            console.log(res.windowHeight, detail.height, res.windowWidth, detail.width)
-            // this.bgWidth = res.windowWidth + 'px';
-            let imgW = res.windowWidth;
-            let imgH = (res.windowWidth * detail.height) / detail.width;
-            if (imgH < res.windowHeight) {
-              imgH = res.windowHeight;
-              imgW = (res.windowHeight * detail.width) / detail.height;
-            }
-            this.bgWidth = imgW + "px"
-            this.bgHeight = imgH + "px"
-          }
+        let width = detail.width;
+        let height = detail.height;
+        utils.getBgSize(width, height).then(res => {
+          this.bgWidth = res.imgW + "px"
+          this.bgHeight = res.imgH + "px"
         })
       },
-      onAnswer(id, index, optionItem) {
+      pickerChange({
+        detail
+      }) {
+        let selectIndex = detail.value;
+        let index = this.current;
+        let list = this.list;
+        let currentItem = list[this.current];
+        let optionList = currentItem.optionList;
+        let optionItem = optionList[selectIndex];
+        let id = optionItem.optionId;
+        if (this.answerPadding) return;
+        if (index != this.totalCount - 1) {
+          let check = this._clickHold("answer", 400);
+          if (!check) return;
+        }
+        // 答案上传中
+        this.answerPadding = true;
+        // 如果后续题目路线不一样，清空后续选项
+        let lastSelectItem = currentItem.optionList.filter(optionChild => {
+          return optionChild.optionId == currentItem.selectOptionId
+        });
+        if (lastSelectItem.length > 0 && (lastSelectItem[0].nextQuestionId != optionItem.nextQuestionId)) {
+          list.map((item, i) => {
+            if (i > index) {
+              item.questionIndex = 0;
+              item.selectOptionId = 0;
+            }
+          })
+          this.list = list;
+        }
+        currentItem.pickerValue = selectIndex;
+        currentItem.selectOptionId = id;
+        this.submit(index, currentItem).then((res) => {
+          // 答题完成
+          if (this.isFinish || currentItem.restQuestions == 0 || optionItem.nextQuestionId == 0) {
+            this.restQuestions = 0;
+            if (!this.checkLastScale()) {
+              this.setSubmitBtn();
+            } else {
+              this.setFinishBtn()
+            }
+            return
+          }
+
+        }).catch((err) => {
+          if (err.msg == '参与次数已达上限') {
+            this.disableNext = true
+          }
+        }).finally(() => {
+          setTimeout(() => {
+            this.answerPadding = false;
+          }, 300);
+        })
+      },
+       selectPicker() {
+        let list = this.list;
+        let index = this.current;
+        let currentItem = list[index];
+        let optionList = currentItem.optionList;
+        let optionItem = optionList.filter((item) => {
+          return item.optionId == currentItem.selectOptionId
+        })[0];
+        if (this.disableNext) {
+          SMH.showToast({
+            title: "参与次数已达上限"
+          })
+          return
+        }
+        if (currentItem.selectOptionId == 0 || currentItem.pickerValue == -1) {
+          SMH.showToast({
+            title: "请先选择选项"
+          })
+          return
+        }
+
+        if (
+          this.isFinish ||
+          (optionItem.nextQuestionId == 0 &&
+            this.list[this.current] &&
+            this.list[this.current].selectOptionId > 0)
+        ) {
+          this.restQuestions = 0;
+          if (!this.checkLastScale()) {
+            this.setSubmitBtn();
+          } else {
+            this.setFinishBtn()
+          }
+        } else if (currentItem.restQuestions > 0) {
+          this.searchTargetQuestion(optionItem.nextQuestionId, currentItem.questionId)
+          this.answerCount += 1
+          if (this.submitShow) this.setSubmitBtn(false);
+          if (this.shinishShow) this.setFinishBtn(false);
+          if (this.isFinish) this.isFinish = false;
+        }
+
+      },
+      onAnswer({id, index, optionItem}) {
         if (this.list[this.current].questionId != this.list[index].questionId) return
         if (index != this.totalCount - 1) {
           let check = this._clickHold("answer", 400);
@@ -420,7 +534,7 @@
           this.list = list;
         }
         questionItem.selectOptionId = id;
-        this.submit(index,questionItem).then(() => {
+        this.submit(index, questionItem).then(() => {
           // 答题完成
           if (this.isFinish || questionItem.restQuestions == 0 || optionItem.nextQuestionId == 0) {
             this.restQuestions = 0;
@@ -466,14 +580,13 @@
         let modelId = this.modelId;
         let modelIds = this.acInfo.modelIds;
         let modelIdIdx = modelIds.indexOf(modelId)
-        console.log(modelId, modelIds, modelIdIdx)
         if (modelIdIdx < modelIds.length - 1) {
           return false
         } else {
           return true
         }
       },
-      submit(index,item) {
+      submit(index, item) {
         if (item.selectOptionId <= 0) {
           SMH.showToast({
             title: `第${index + 1}道题目答案异常`,
@@ -535,6 +648,7 @@
           this.shinishShow = true;
           this.restQuestions = 0;
           setTimeout(() => {
+            console.log(this.btnDismiss,this.btnActive,"his.btnDismiss this.btnActive")
             this.btnDismiss = false;
             this.btnActive = true;
           }, 50);
@@ -603,16 +717,10 @@
         })
       },
       submitFinish() {
-        // let index = -1;
-        // let check = this.list.every((item, i) => {
-        //   index = i;
-        //   return item.selectOptionId > 0;
-        // });
         if (!this.isFinish) {
           SMH.showToast({
             title: `还有未打完的题目，请检查`,
           });
-          // this.current = index;
           return;
         }
         return this.$Http(this.$Apis.finishSurvey, {
@@ -647,19 +755,29 @@
           this.htmlPopupShow = false
         }
       },
-      getBoxH() {
-        return this._getQuery("#swiperId,#btnBox", "all").then((res) => {
-          let swiperInfo = (res[0] && res[0][0]) || {};
-          let footerInfo = (res[0] && res[0][1]) || {};
-          let height =
-            footerInfo.top - swiperInfo.top > 0 ?
-            footerInfo.top - swiperInfo.top + "px" :
-            "70vh";
-          this.swiperStyle = `height:${height};`;
-          console.log("_getQuery", res, this, this.swiperStyle);
-          return this.swiperStyle;
-        });
-      },
+      // getBoxH() {
+      //   return this._getQuery("#swiperId,#btnBox", "all").then((res) => {
+      //     let swiperInfo = (res[0] && res[0][0]) || {};
+      //     let footerInfo = (res[0] && res[0][1]) || {};
+      //     let height =
+      //       footerInfo.top - swiperInfo.top > 0 ?
+      //       footerInfo.top - swiperInfo.top + "px" :
+      //       "70vh";
+      //     this.swiperStyle = `height:${height};`;
+      //     return this.swiperStyle;
+      //   });
+      // },
+    },
+    watch: {
+      current: {
+        handler(nV, oV) {
+          if (nV < oV) {
+            this.buttonAnimation = "animate-fade-in-left"
+          } else {
+            this.buttonAnimation = "animate-fade-in-right"
+          }
+        }
+      }
     },
   });
   export default pageOption;
@@ -765,7 +883,31 @@
       text-align: center;
       padding-bottom: 90rpx;
     }
+    .answer-select {
+      width: 558rpx;
+      height: 120rpx;
+      background: #FAFAFA;
+      border-radius: 10rpx;
+      padding: 0 30rpx 0 40rpx;
+    }
+    .answer-confirm {
+      animation-duration: 0.5s;
+      margin-top: 26rpx;
+      width: 325rpx;
+      height: 100rpx;
+      border-radius: 10rpx;
+      margin: 26rpx auto 0;
+      transition: 0.5s all;
+    }
+     .primary-button {
+      color: #FFFFFF;
+      background-color: $uni-main-color;
+    }
 
+    .grey-button {
+      color: #000000;
+      background-color: #FAFAFA;
+    }
     .answer-item {
       border-radius: 58rpx;
       font-size: 32rpx;
@@ -925,44 +1067,43 @@
       margin-left: 28rpx;
     }
   }
-
   @keyframes activeAnim {
-    0% {
-      border-radius: 50%;
-      opacity: 0;
-      transform: scale3d(0.15, 1, 1);
-    }
-
-    50% {
-      border-radius: 58rpx;
-      opacity: 1;
-    }
-
-    100% {
-      border-radius: 58rpx;
-      opacity: 1;
-      transform: scale3d(1, 1, 1);
-    }
+  0% {
+    border-radius: 50%;
+    opacity: 0;
+    transform: scale3d(0.15, 1, 1);
   }
 
-  @keyframes dismissAnim {
-    0% {
-      border-radius: 58rpx;
-      opacity: 1;
-      transform: scale3d(1, 1, 1);
-    }
-
-    20% {
-      border-radius: 58rpx;
-      color: transparent;
-    }
-
-    100% {
-      border-radius: 50%;
-      box-shadow: 0 9rpx 44rpx 0 transparent;
-      font-size: 0;
-      opacity: 0;
-      transform: scale3d(0.15, 1, 1);
-    }
+  50% {
+    border-radius: 58rpx;
+    opacity: 1;
   }
+
+  100% {
+    border-radius: 58rpx;
+    opacity: 1;
+    transform: scale3d(1, 1, 1);
+  }
+}
+
+@keyframes dismissAnim {
+  0% {
+    border-radius: 58rpx;
+    opacity: 1;
+    transform: scale3d(1, 1, 1);
+  }
+
+  20% {
+    border-radius: 58rpx;
+    color: transparent;
+  }
+
+  100% {
+    border-radius: 50%;
+    box-shadow: 0 9rpx 44rpx 0 transparent;
+    font-size: 0;
+    opacity: 0;
+    transform: scale3d(0.15, 1, 1);
+  }
+}
 </style>

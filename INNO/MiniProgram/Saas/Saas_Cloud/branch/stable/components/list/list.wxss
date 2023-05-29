@@ -1,0 +1,19 @@
+.main{
+  width: 100%;
+  height: 100%;
+  box-sizing: border-box;
+  /* padding:30rpx 20rpx; */
+}
+.swiper_area{
+  width:100%;
+  height:100%;
+}
+.swiper_item{
+  width:100%;
+  height:100%;
+  /* padding:30rpx 20rpx;
+  box-sizing: border-box; */
+}
+.scroll_box{
+  height: 100%;
+}

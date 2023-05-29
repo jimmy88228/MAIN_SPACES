@@ -6,6 +6,7 @@
 				:duration="moveTime.duration" easing-function="linear" :current="swiperCurrent" @change="changeSwiper">
 				<swiper-item class="swiper-item" @click="jumpAction(item.link)" v-for="(item, index) in viewData.images" :key="index">
 					<view class="img-item">
+						<view class="img-icon-bg" :style="'background-image:url(' + item.img + ');'"></view>
 						<image @load="(data)=>handleLoad(data,index)" class="img-icon" mode="widthFix" :src="item.img" />
 					</view>
 				</swiper-item>
@@ -162,12 +163,30 @@
 				.img-item {
 					width: 100%;
 					height: 100%;
-
-					.img-icon {
-						width: 100%;
+					position: relative;
+					.img-icon{
+						opacity: 0;
+						width:100%;
 						height: 100%;
-						box-sizing: border-box;
+						position:relative;
 					}
+					.img-icon-bg{
+						position: absolute;
+						width: 200%;
+						height:200%;
+						top:0px;
+						left:0px;
+						transform: scale(0.5);
+						transform-origin: top left;
+						background-repeat: no-repeat;
+						background-position: top left;
+						background-size: 100% 100%;
+					}
+					// .img-icon {
+					// 	width: 100%;
+					// 	height: 100%;
+					// 	box-sizing: border-box;
+					// }
 				}
 			}
 		}

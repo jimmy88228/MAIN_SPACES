@@ -1,4 +1,4 @@
-import {tabBarList} from "./tabBar";
+import {tabBarList} from "../config/tabBar";
 const App = getApp();
 Component(App.BC({
   data: {
@@ -21,6 +21,7 @@ Component(App.BC({
       let url = e.currentTarget.dataset.url || "";
       url.indexOf('/') !== 0 && (url = '/' + url);
       url = url.replace(".html", "");
+      console.log('url',url)
       wx.switchTab({url});
     }
   }

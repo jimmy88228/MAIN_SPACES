@@ -2,7 +2,6 @@
   "navigationBarTitleText": "首页",
   "navigationStyle": "custom",
   "usingComponents": {
-    "custom-nav": "/components/common/view/custom-nav/index",
-    "goods-list": "./goods-list/goods-list"
+    "act":"/pages/tabs/index/act/index"
   }
 }

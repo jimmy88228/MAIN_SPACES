@@ -1,0 +1,7 @@
+{
+  "component": true,
+  "usingComponents": {
+    "custom-nav": "/components/common/view/custom-nav/index",
+    "goods-list": "../goods-list/goods-list"
+  }
+}

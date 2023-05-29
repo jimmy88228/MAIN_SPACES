@@ -1,0 +1,36 @@
+<view class="custom-nav-container style-type-{{styleType}}">
+  <view class="nav-box style-type-{{styleType}}">
+    <!-- 普通样式 -->
+    <block wx:if="{{styleType == 0}}">
+      <view class="normal-nav">
+        <view class="c-n-left">
+          <view class="icon-arrow left" wx-if="{{showBack}}"></view>
+        </view>
+        <view class="c-n-center" style="color:{{navColor}};">{{title}}</view>
+        <view class="c-n-right"></view>
+      </view>
+    </block>
+    <!-- 首页那个导航样式 -->
+    <block wx:elif="{{styleType == 1}}">
+      <view class="store-like-nav">
+        <ori-image ext-class="store-logo-image" src="{{brand_info.logo_path}}micro_mall/login/login_logo.png" />
+        <view class="store-info-con">
+          <view class="store-name text-flow">{{storeInfo.storeName||''}}</view>
+          <view class="store-staff-name" wx:if="{{storeInfo.staffName}}">店员{{storeInfo.staffName||''}}</view>
+        </view>
+      </view>
+    </block>
+    <!-- 订单中心 -->
+    <block wx:elif="{{styleType == 2}}">
+      <view class="order-nav">
+        <view class="c-n-left">
+          <view class="icon-arrow left" bindtap="naviBack"></view>
+          <view class="order-status">{{title}}</view>
+        </view>
+        <view class="c-n-right"></view>
+      </view>
+    </block>
+  </view>
+</view>
+<!-- public -->
+<include src="/common/base/component/index.wxml" />

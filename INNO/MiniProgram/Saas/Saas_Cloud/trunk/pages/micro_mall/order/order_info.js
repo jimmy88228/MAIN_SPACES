@@ -7,7 +7,8 @@ import {
 import {
   barcode
 } from "../../../common/helper/utils/goComplete/index.js"
-import Polling from '../../../common/helper/polling.js'
+// import Polling from '../../../common/helper/polling.js'
+import FISH from "../../../common/helper/seven-fish-helper"
 var app = getApp();
 Page(app.BP({
 
@@ -147,26 +148,22 @@ Page(app.BP({
           'package': pay_info.package,
           'signType': pay_info.signType,
           'paySign': pay_info.sign,
-        }).then(e => {
-          // this.setData({
-          //   btn_follow_must_show: 1,
-          //   // show_pay_load: true
-          // })
-          // this.orderSync = this.orderSync || this.selectComponent("#orderSync"); 
-          // this.pageDialog = this.pageDialog || this.selectComponent("#pageDialog");
-          // let extra = {
-          //     orderSync:this.orderSync,
-          //     dialog:this.pageDialog,
-          //     type:"mall",
-          // }
-          // Polling.setPolling(()=>getPayStatus.call(this),()=>pollingSucc.call(this),()=>pollingFail.call(this),"",extra); 
-          //旧
+        }).then(e => { 
+          let orderInfo = this.data.order_info||{},goodsList = this.data.goodsList||[];
+          console.log('requestPaymentrequestPayment',e);
+          app.WeReportHelper.setOrderStatus({orderInfo,goodsList,order_status:11});
           this.setData({
             btn_follow_must_show: 1,
             show_pay_load: true
           })
           setAdsPop.call(this);
           getOrderPayStatus.call(this);
+        }).catch(e=>{
+          console.log('requestPaymentrequestPayment 取消',e);
+          if(e && e.errMsg && e.errMsg.indexOf('fail cancel') != -1){
+            let orderInfo = this.data.order_info||{},goodsList = this.data.goodsList||[];
+            app.WeReportHelper.setOrderStatus({orderInfo,goodsList,order_status:9001});
+          }
         })
         this.bg = this.bg || this.selectComponent("#bg");
         this.bg.dismiss(); 
@@ -195,11 +192,11 @@ Page(app.BP({
     let cancel_reson_sel_id = parseInt(e.detail.value);
     console.log(cancel_reson_sel_id,e)
     if (!isNaN(cancel_reson_sel_id)) {
-      if (type == 'good') {
-        this.opType = dataset.opType || 0;
-      } else {
-        this.opType = dataset.opType || 1;
-      }
+      // if (type == 'good') {
+      //   this.opType = dataset.opType || 0;
+      // } else {
+      //   this.opType = dataset.opType || 1;
+      // }
       let cancel_reason_id = this.order_cancel_reason_list[cancel_reson_sel_id].reasonId;
       let orderId = this.orderId;
       let api = 'cancelOrder';
@@ -207,15 +204,23 @@ Page(app.BP({
         "orderId": parseInt(orderId || 0),
         "reasonId":cancel_reason_id,
       };
-      if (type == 'good') {
+      let goodsNum = this.data.goodsList.filter(item=>item.giftType!=99).length;
+      if (type == 'good' && goodsNum>1) {
         api = 'cancelOrderGoods';
         data['groupIndex'] = groupIndex || 0;
       }
-      console.log('datadata',data,this.order_cancel_reason_list)
+      console.log('取消',goodsNum,data,this.order_cancel_reason_list)
       return app.RunApi.go('post', 'CL_BuyApi', api, data,{diy:true}).then(res => {
         app.SMH.showToast({
           "title": "操作成功"
         })
+        let orderInfo = this.data.order_info||{};
+        let goodsList = this.data.goodsList||{};
+        if(this.data.menuInfo.needPay == 1){
+          app.WeReportHelper.setOrderStatus({orderInfo,goodsList,order_status:250});
+        }else{ 
+          app.WeReportHelper.setOrderRefund({orderInfo,goodsList:type == 'good'?goodsList.filter(item=>item.groupIndex == groupIndex):goodsList});
+        } 
         getOrderInfo.call(this);
         return Promise.resolve(e); 
       }).catch(e=>{
@@ -224,6 +229,35 @@ Page(app.BP({
         })
       })
     }
+  },
+  revokeCancel(){
+    return WxApi.showModal({
+      title:"提示",
+      content:"确定要撤销取消吗"
+    }).then((res)=>{
+      if(res.confirm){
+        let params = {
+          orderId:this.options.order_id || 0,
+          orderSn:this.data.order_info.orderSn||"",
+          refundId:0, //整单
+        }
+        this._throttleApi('updateOrderAction');
+        return updateOrderAction(params).then(res=>{
+          let title = "撤销失败";
+          if(res.code == 1 && res.data == 1){
+            title = "撤销成功";
+          }
+          app.SMH.showToast({
+            title,
+            duration: 2500
+          })
+          this.onShow();
+          return res;
+        }).finally(()=>{
+          this._throttleApi('updateOrderAction','release','pages/micro_mall/order/order_info');
+        })
+      }
+    })
   },
   jump_order: function (e) {
     let dataset = e.currentTarget.dataset || {};
@@ -515,7 +549,38 @@ Page(app.BP({
   },
   extendReceive(){
     extendReceiveConfirm.call(this);
-  }
+  },
+  onSevenFish(){
+    let {order_info:data,addressInfo,goodsList,} = this.data||{};
+    let order = {
+      cardType:1,
+      title: data.orderSn||"",
+      desc:getDesc(data,addressInfo),
+      note: `订单金额：¥${data.orderAmount||0}（${data.payStatus||""}）`, 
+      picture: goodsList[0] && goodsList[0].thumbUrl||"", 
+      isShow: 1,
+      sendByUser: 1,
+      actionText:"发送订单",
+      extraParam:{
+        param1:addressInfo.address||"",
+        param2:data.goodsNumber||0,
+        param3:data.goodsAmount||0,
+        param4:data.goodsDiscount||0,
+        param5:data.shippingFee||0,
+        param6:data.orderAmount||0,
+        param7:"微信支付",
+        param8:data.payStatus||"",
+        param9: data.show_invoice_no[0]||"",
+        param10: data.show_invoice_no[0]||"",
+        param11: data.show_invoice_no[0]||"",
+        param12: data.show_invoice_no[1]||"",
+        param13: data.show_invoice_no[1]||"",
+        param14: data.show_invoice_no[1]||"",
+        url:`/pages/micro_mall/order/order_info?order_id=${this.options.order_id||0}`,
+      }
+    };
+    FISH.jump({order});
+  },
 }))
 //
 function getOrderInfo() {
@@ -544,16 +609,17 @@ function getOrderInfo() {
       let sub_order_list = data.subOrderList || [];
       let sub_order = data.sub_order ? data.sub_order : "";
       let goodsList = data.goodsList || [];
+      let isOrderCancell = !!(data.isOrderCancell == 1);
       checkBtnStatus.call(this,order_info,goodsList); 
       batchInfoInit.call(this,goodsList);
       if (menuInfo.needPay && MyDate.parse(order_info.autoCancelTime) > MyDate.parse(order_info.serverTime)) {
-        this.data.showTimeOut = true;
         this.setData({
           showTimeOut: true
         })
         startCountDown.call(this, order_info.serverTime, order_info.autoCancelTime)
       } else if (order_info && (order_info.orderStatus == '待付款')) {
         this.setData({
+          showTimeOut: false,
           endOrder: true
         })
       } 
@@ -563,12 +629,15 @@ function getOrderInfo() {
       //   this.toPay();
       // }
       console.log('检测支付',menuInfo.needPay,this.first_time_topay);
+      this.first_time_topay == 1 && app.WeReportHelper.setOrderStatus({orderInfo:order_info,goodsList,order_status:3});
       if (menuInfo.needPay && this.first_time_topay > 0 && this.data.showTimeOut) {
         this.first_time_topay = 0;
         this.firstTimePayByCode = 0;
         if (this.options && this.firstTimePayByCode) this.toPayByQrCode();
         else this.toPay();
       } else if (this.first_time_topay > 0 && !this.checkedAdsPop && order_info.payStatus == '已付款'){
+        this.first_time_topay == 1 && app.WeReportHelper.setOrderStatus({orderInfo:order_info,goodsList,order_status:11});
+        this.first_time_topay = 0;
         this.checkedAdsPop = true;
         setAdsPop.call(this);
       }
@@ -595,7 +664,8 @@ function getOrderInfo() {
         menuInfo: menuInfo,
         show_invoice_btn: show_invoice_btn,
         show_pay_load: false,
-        storeInfo: data.storeInfo
+        storeInfo: data.storeInfo,
+        isOrderCancell
         // gift_list: gift_list,
       })
       asyncGetConfig.call(this);  //读按钮的系统配置
@@ -690,9 +760,7 @@ function startCountDown(startTime, endTime) {
     this.countDown.start(e => {
       if (e.value <= 0) {
         stopCountDown.call(this);
-        wx.navigateBack({
-          delta: 1
-        })
+        this.onShow();
       }
       setTime.call(this, e);
     });
@@ -721,32 +789,32 @@ function setTime(e) {
   });
 }
 
-function checkForPay() {
-  let page = '';
-  page = getCurrentPages().pop() || '';
-  return app.sysTemConfig('is_close_paid').then(res => {
-    console.log('is_close_paid:', res)
-    let value = res.Value || 0;
-    if (value == 1) {
-      console.log('开启了亲密付'); 
-      page.onShareAppMessage = function () {
-        console.log('_this', this);
-        let orderSn = this.options.order_sn;
-        let orderId = this.options.order_id;
-        let title = '帮我付款才是真友谊';
-        console.log('分享', orderId, 'this:', this);
-        return {
-          path: `pages/micro_mall/order/for_pay_order?order_sn=${orderSn}&order_id=${orderId}`,
-          title: title,
-        };
-      }
-      return Promise.resolve(value);
-    }
-    return Promise.resolve(); 
-  }).catch(e => {
-    return Promise.resolve(value);
-  })
-}
+// function checkForPay() {
+//   let page = '';
+//   page = getCurrentPages().pop() || '';
+//   return app.sysTemConfig('is_close_paid').then(res => {
+//     console.log('is_close_paid:', res)
+//     let value = res.Value || 0;
+//     if (value == 1) {
+//       console.log('开启了亲密付'); 
+//       page.onShareAppMessage = function () {
+//         console.log('_this', this);
+//         let orderSn = this.options.order_sn;
+//         let orderId = this.options.order_id;
+//         let title = '帮我付款才是真友谊';
+//         console.log('分享', orderId, 'this:', this);
+//         return {
+//           path: `pages/micro_mall/order/for_pay_order?order_sn=${orderSn}&order_id=${orderId}`,
+//           title: title,
+//         };
+//       }
+//       return Promise.resolve(value);
+//     }
+//     return Promise.resolve(); 
+//   }).catch(e => {
+//     return Promise.resolve(value);
+//   })
+// }
 
 function checkModifyAddress(){
   return app.sysTemConfig('allow_order_modify_address').then(res => {
@@ -1029,16 +1097,16 @@ function updateBtnContainer(){
       "status": menuInfo.canCancel == 1 && menuInfo.isApplyCancel == 1//this.data.showCancelAll && !this.data.sub_order && (order_info.cancleActionStatus==2 && this.data.close_apply_cancel_btn != 1) && order_info.order_type != 8
     },
     {
+      "key":'revoke_cancel',
+      "tap":'revokeCancel',
+      "name":"撤销申请",
+      "status": this.data.isOrderCancell
+    }, 
+    {
       "key":'comment',
       "tap":'toComment',
       "name":"去评价",
       "status": menuInfo.canComment == 1
-    },
-    {
-      "key":'back',
-      "tap":'onTurnBack',
-      "name":"返回首页",
-      "status": !(menuInfo.needPay)//order_info.paystatus_Id != 2
     },
     {
       "key":'pay_qrcode',
@@ -1144,7 +1212,14 @@ function updateBtnContainer(){
       }
     }
   }
-  unfoldBtnArr.length>0 && unfoldBtnArr.reverse();
+  unfoldBtnArr.length<=3 && unfoldBtnArr.push(
+  {
+    "key":'back',
+    "tap":'onTurnBack',
+    "name":"返回首页",
+    "status": true
+  });
+  unfoldBtnArr.reverse();
   this.setData({  
     unfoldBtnArr,
     foldBtnArr
@@ -1153,69 +1228,57 @@ function updateBtnContainer(){
 }
 
 function asyncGetConfig(){
-  let arr = []; 
-  let order_info = this.data.order_info||{}; 
-  let i = 1;
-  this[`p${i}`] = checkForPay.call(this);
-  arr.push(this[`p${i}`]); 
-  i+=1;
+  // let i = 1;
+  // this[`p${i}`] = checkForPay.call(this);
+  // arr.push(this[`p${i}`]); 
+  // i+=1;
+  // if(order_info.isReceived == 0 && !this.data.earlyApplyRefund && !this.earlyApplyRefundInit){
+  //   this.earlyApplyRefundInit = true;
+  //   this[`p${i}`] = app.sysTemConfig("apply_after_sales_in_advance").then(e => {
+  //     this.setData({
+  //       earlyApplyRefund: e.Value || 0
+  //     })
+  //   })
+  //   arr.push(this[`p${i}`]);
+  //   i+=1;
+  // }else if(this.data.earlyApplyRefund == 1){
+  //   this.setData({
+  //     earlyApplyRefund: 0
+  //   })
+  // } 
+  let order_info = this.data.order_info||{},_setData={}; 
+  let confArr = ['is_close_paid','close_order_remark'];
   if(order_info.isReceived == 0 && !this.data.earlyApplyRefund && !this.earlyApplyRefundInit){
     this.earlyApplyRefundInit = true;
-    this[`p${i}`] = app.sysTemConfig("apply_after_sales_in_advance").then(e => {
-      this.setData({
-        earlyApplyRefund: e.Value || 0
-      })
-    })
-    arr.push(this[`p${i}`]);
-    i+=1;
+    confArr.push('apply_after_sales_in_advance')
   }else if(this.data.earlyApplyRefund == 1){
     this.setData({
       earlyApplyRefund: 0
     })
   }
-  // if (order_info.cancleActionStatus == 1){
-  //   let p4 = app.sysTemConfig("is_close_cancel_order_btn").then(e => {
-  //     this.setData({
-  //       close_cancel_btn: e.Value || 0
-  //     })
-  //   })
-  //   arr.push(p4); 
-  // } else if (order_info.cancleActionStatus == 2){
-  //   let p4 = app.sysTemConfig("is_close_apply_cancel_order_btn").then(e => {
-  //     this.setData({
-  //       close_apply_cancel_btn: e.Value || 0
-  //     })
-  //   })
-  //   arr.push(p4);
-  // }
-  // let p5 = app.sysTemConfig("open_single_goods_cancel").then(e => {
-  //   this.setData({
-  //     single_cancel_btn: e.Value || 0
-  //   })
-  // })
-  // arr.push(p5);
-  // let p6 = app.sysTemConfig("activate_electric_kp").then(e=>{
-  //   this.setData({
-  //     showElectricBtn: e.Value||0
-  //   })
-  // })
-  // arr.push(p6);
-  // let p7 = app.sysTemConfig("open_single_goods_cancel").then(e=>{
-  //     this.setData({ 
-  //       single_cancel_btn: e.Value || 0
-  //     })
-  // })
-  // arr.push(p7);
-  let p = new Promise((rs, rj) => {
-    return Promise.all(arr).then(res => {
-      rs(res);
-    }).catch(e=>{
-      rj(e);
-    });
-  });
-  return p.finally((res)=>{
-    // updateBtnContainer.call(this);
-    return Promise.resolve();
+  return this.trimConfigs(confArr).then(list=>{
+    list&&list.forEach(item=>{
+      if(item.Key == 'is_close_paid'){
+        if (item.Value == 1) {
+          this.onShareAppMessage = function () {
+            console.log('亲密付',this.options)
+            let orderSn = this.options.order_sn;
+            let orderId = this.options.order_id;
+            let title = '帮我付款才是真友谊';
+            return {
+              path: `pages/micro_mall/order/for_pay_order?order_sn=${orderSn}&order_id=${orderId}`,
+              title: title,
+            };
+          }
+        }
+      }else if(item.Key == 'apply_after_sales_in_advance'){
+        _setData.earlyApplyRefund = item.Value || 0
+      }else if(item.Key == 'close_order_remark'){
+        _setData.isShowRemark = !!(item.Value != 1)
+      }
+    })
+    this.setData({..._setData})
+    return list
   }) 
 }
 
@@ -1295,4 +1358,16 @@ function setAdsPop(){
       }
     })
   }, 500);
+}
+
+function getDesc(data,addressInfo) { 
+  let result = (data.show_invoice_no && data.show_invoice_no[0] ? `物流单号：${data.show_invoice_no && data.show_invoice_no[0]||""}（${data.shippingName && data.shippingName[0] || ''}）   ` : '') + (`收货人：${addressInfo.consignee||"--"}（${addressInfo.mobile||"--"}）  收货地址：${addressInfo.address||"--"}   运费：${data.shippingFee||0}   订单下单时间：${data.createTime||""}   商品件数：${data.goodsNumber||0}`)
+  console.log('resultresult',result)
+  return result;
+}
+
+function updateOrderAction(params){
+  return app.CL_BuyApi.applyCancelOrder({
+    params 
+  })
 }

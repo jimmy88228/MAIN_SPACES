@@ -1,0 +1,13 @@
+<view wx:if="{{liveState.isNormal}}">
+	<view wx:if="{{liveState.isNormal == 1}}" class="live-info">
+		<image class="live-info-icon" src="{{liveInfo.headUrl}}" mode="widthFix" />
+		<button wx:if="{{liveInfo.status}}" class="live-operate" style="background-color:{{brandStyle.bg_color}};" catchtap="goJump">
+			<block wx:if="{{liveInfo.status == 2}}">直播中</block>
+			<block wx:if="{{liveInfo.status == 3}}">直播已结束</block>
+			<block wx:else>进入直播</block>
+		</button>
+	</view>
+	<view wx:else>
+		<view class="empty_state">{{liveState.txt}}</view>
+	</view>
+</view>

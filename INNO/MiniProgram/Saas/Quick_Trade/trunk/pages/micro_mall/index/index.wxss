@@ -1,0 +1,4 @@
+@import "/common/base/page/default-wxss/index.wxss";
+page{
+  height: 100%;
+}

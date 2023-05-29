@@ -1,0 +1,3 @@
+<confirm-pop id="confirm-pop" confirmText="保存" title="{{type=='add'?'添加':'修改'}}名称" isCatchConfirm bindconfirm="onconfirm">
+  <ori-input slot="content" ext-class="ccpm-input" ext-placeholder-class="ccpm-input-placeholder" bindinput="handleInput" type="text" placeholder="请输入分类名称" maxlength="20" value="{{cateName}}" />
+</confirm-pop>

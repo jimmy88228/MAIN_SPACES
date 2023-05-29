@@ -1,0 +1,9 @@
+{
+  "component": true,
+  "disableScroll": true,
+  "usingComponents": {
+    "search": "/components/search/s_view",
+    "list":"/components/list/list",
+    "act-count-down":"/components/act-count-down/act-count-down"
+  }
+}

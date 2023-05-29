@@ -9,7 +9,6 @@
 	import ScanCode from '@/common/helper/scan-code-handler.js';
 	import utils from '@/common/support/utils.js';
 	import entryM from '@/common/manager/entry-manager.js';
-	import LgMg from "@/common/manager/log-manager.js";
 	const app = getApp();
 	const pageOption = Page.BasePage({
 		components: {
@@ -56,13 +55,6 @@
 					let isCheck = true; /*!!ScanCode.scene;*/
 					app.LM.loginBsnAsync(false, isCheck).then((res) => {
 						if (app.LM.recordId) {
-							// let ops = this.options;
-							// if (!(LgMg.channel && LgMg.channel.clientSessionId)) {
-							// 	LgMg.setBaseChannel(ops);
-							// 	LgMg.addPageLog(null, ops.path, ops.query, 0)
-							// }
-							// LgMg.setChannel(ops);
-
 							if (data && data.pagePath) {
 								this.redirectAction("/" + data.pagePath + "?" + utils.paramsByJson(data.sceneOption))
 							} else {

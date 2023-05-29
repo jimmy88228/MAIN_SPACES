@@ -1,0 +1,24 @@
+<transition show="{{show}}">
+  <view class="sku-selector">
+    <view class="sku-con">
+      <view class="sku-type-list">
+        <view class="sku-type-item" wx:for="{{skuList}}" wx:for-item="skuType" wx:for-index="typeIndex" wx:key="index">
+          <view class="sku-type-header">{{skuType.cat_name}}</view>
+          <view class="sku-list">
+            <block wx:for="{{skuType.specinfo_list}}" wx:for-item="skuItem" wx:key="index">
+              <!-- data-disabled="{{!availablePrimeRef[(valueInLabel[skuItem.spec_id])]}}" -->
+              <view 
+                class="sku-item {{availablePrimeRef[(valueInLabel[skuItem.spec_id])] ? '': 'disabled'}} {{selectedRef[skuItem.spec_id] ? 'selected' : ''}}" 
+                data-spec-item="{{skuItem}}"
+                data-prime="{{valueInLabel[skuItem.spec_id]}}"
+                data-prime-index="{{typeIndex}}"
+                catchtap="onClickSelType"
+              >{{skuItem.name}}</view>
+            </block>
+          </view>
+        </view>
+      </view>
+    </view>
+  </view>
+</transition>
+<include src="/common/base/component/index.wxml" />

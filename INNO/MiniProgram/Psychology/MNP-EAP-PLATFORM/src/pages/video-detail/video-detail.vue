@@ -1,7 +1,7 @@
 <template>
   <view>
     <view v-if="!showLoading" class="video-detail-page"
-      :style="{'background-color':backgroundShow?'transparent':'#9AB9B2'}">
+      :style="{'background':(!isTest && showVideo) && videoDetail.videoUrl?'#000000':'#FFFFFF'}">
       <!-- <image @load="getBgSize" :style="{height:bgHeight,width:bgWidth}" class="video-detail-background"
         v-if="videoDetail.videoBgPic" @error="backgroundError" :src="videoDetail.videoBgPic" mode="widthFix" /> -->
       <page-nav :isTransparent="true" mode="Close" :full="true"></page-nav>
@@ -153,6 +153,8 @@
               }else{
                 rj(data);
               }
+            }).catch(err=>{
+               rj(err);
             })
           }else if(item.path){ 
             data = {
@@ -231,10 +233,12 @@
 
 <style lang="scss" scoped>
   .video-detail-page {
-    width: 100%;
+   width: 100%;
     height: 100vh;
-    overflow: hidden;
     position: relative;
+    padding-bottom:constant(safe-area-inset-bottom); /*  兼容iOS < 11.2 */
+    padding-bottom:env(safe-area-inset-bottom); /*  兼容iOS > 11.2 */
+    box-sizing: border-box;
 
     .video-content {
       position: relative;
@@ -243,15 +247,17 @@
 
       .videoInfo {
         width: 100%;
-        height: 100vh;
+        height: 100%;
       }
 
       .video-detail-info {
         position: fixed;
-        bottom: 60rpx;
+        bottom: calc(60rpx + constant(safe-area-inset-bottom));/*  兼容iOS < 11.2 */
+        bottom: calc(60rpx + env(safe-area-inset-bottom));/*  兼容iOS > 11.2 */
         width: 100%;
         box-sizing: border-box;
-        padding: 0rpx 36rpx 24rpx;
+        padding: 0rpx 36rpx;
+        margin-bottom: 24rpx;
         z-index: 99;
       }
 

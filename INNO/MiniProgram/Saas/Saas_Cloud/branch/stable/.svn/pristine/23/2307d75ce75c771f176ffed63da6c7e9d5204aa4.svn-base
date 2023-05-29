@@ -1,0 +1,129 @@
+import {
+  BrandApi,
+  MemberCardApi
+} from "../../manager/http-manager.js"
+import Conf from "../../../conf.js"
+import SMH from "../show-msg-helper.js"
+import StorageH from "./storageHandle"
+class CardManager {
+  static getInstance() {
+    if (!CardManager.instance) {
+      CardManager.instance = new CardManager();
+    }
+    return CardManager.instance;
+  }
+  constructor() {
+    this._card_id = "";
+    this._card_info = {};
+  }
+  getWxCard(){
+    return getWxMemberCard.call(this);
+  } 
+  addCard(){
+    this.openCardJump();
+  }
+  openCardJump(){
+    getOpenCardParams.call(this).then(data=>{
+      data.outer_str = data.outer_str || "";
+      wx.navigateToMiniProgram({
+        appId: Conf.OPEN_CARD_APPID,
+        extraData: data,
+        success: function () {
+          console.log("调用成功");
+        }
+      })
+    })
+  }
+  getOpenCardParams(extraData){
+   return getOpenCardParams.call(this, extraData);
+  }
+  //开卡,激活回调
+  submitInfoCallback(opts = {}){
+    let referrerInfo = opts.referrerInfo || {};
+    if (referrerInfo.appId && referrerInfo.extraData){//开卡返回
+      if (referrerInfo.appId !== Conf.OPEN_CARD_APPID){
+        return;
+      }
+      if (typeof referrerInfo.extraData !== "object"){
+        return;
+      }
+      this._card_info = opts;
+      let pages = getCurrentPages() || [];
+      let user_infos = StorageH.get("USER_INFOS") || {};
+      if ((pages.pop().route != "pages/micro_mall/memberCard/activiteCard/activiteCard") && !user_infos.isOpenCard) {
+        wx.navigateTo({
+          url: '/pages/micro_mall/memberCard/activiteCard/activiteCard'
+        })
+      } 
+      return;
+    }
+  }
+  get card_info(){
+    return this._card_info;
+  }
+  updateCardInfo(key,value){
+    this._card_info[key] = value;
+    return this._card_info;
+  }
+}
+export default CardManager.getInstance();
+
+//检测会员卡状态
+function getWxMemberCard(){
+  return BrandApi.getWxMemberCard({
+    params:{
+      brandCode:Conf.BRAND_CODE
+    },
+    other:{
+      isShowLoad:true
+    }
+  }).then( res=>{
+    if(res.code == 1){
+      this._card_id = res.data || "";
+      return Promise.resolve(res);
+    }
+    return Promise.reject(res);
+  })
+}
+//获取开卡参数
+function getOpenCardParams(card_id){
+  if (!this._card_id){
+    SMH.showToast({
+      "title":"卡号异常"
+    })
+    return Promise.reject();
+  }
+  return MemberCardApi.getOpenCardParams({
+    data:{
+      card_id: card_id,
+      brandCode: Conf.BRAND_CODE
+    },
+    other:{
+      isShowLoad:true
+    }
+  }).then(res=>{
+    if(res.code == 1){
+      let data = res.data || "";
+      if(!data){
+        return Promise.reject(res);
+      }
+      let paramStr = data.split("&&")[1];
+      let params = paramStr.split("&");
+      let json = {}
+      for (let i = 0; i < params.length; i++){
+        // console.log(params[i]);
+        let item = params[i].split("=");
+        json[item[0]] = decodeURIComponent(item[1])
+      }
+      json.outer_str = json.outer_str || "";
+      if (!json.encrypt_card_id){
+        SMH.showToast({
+          "title": "返回的卡号异常"
+        })
+        return Promise.reject(res);
+      }
+      return Promise.resolve(json);
+    }
+    return Promise.reject(res);
+  })
+}

@@ -1,0 +1,49 @@
+@import "/common/base/component/default-wxss/index.wxss";
+.pop-box{
+  border-radius: 20rpx 20rpx 0 0;
+  position: fixed;
+  left: 50%;
+  top: 42%;
+  transform: translate(-50%,-50%);
+  width: 600rpx;
+  overflow: hidden;
+}
+.msg-box{
+  padding: 35rpx;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  align-items: center;
+  background: #FFFFFF;
+}
+.pop-title{
+  font-size: 28rpx;
+  font-weight: bold;
+}
+.pop-title.mb{
+  margin-bottom: 30rpx;
+}
+.content-title{
+  font-size: 26rpx; 
+}
+.footer-box{
+  border-top: 1px solid rgba(151, 151, 151, 0.1);
+  height: 102rpx;
+  border-radius: 0 0 20rpx 20rpx;
+  background: #FFFFFF;
+  position: relative;
+}
+.footer-box::after{
+  content:"";
+  position: absolute;
+  height: 46rpx;
+  width: 1px;
+  background-color: rgba(151,151,151,0.1);
+}
+.btn{
+  font-size: 28rpx;
+  height: 100%;
+}
+.confirm{
+  color: var(--main-color);
+} 

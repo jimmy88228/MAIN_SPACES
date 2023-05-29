@@ -1,6 +1,0 @@
-{
-  "usingComponents": {
-    "dialog": "/components/ui/cps/dialog/dialog",
-    "orderSync": "/components/pop/order-sync/order-sync"
-  }
-}

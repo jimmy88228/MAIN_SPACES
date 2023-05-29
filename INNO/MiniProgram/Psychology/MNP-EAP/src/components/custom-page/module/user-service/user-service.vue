@@ -68,7 +68,7 @@
             url = "/pages/psychology/my-reserve/my-reserve";
             break
           case "COURSE-TASK":
-            url = "/pages/course-list/course-list";
+            url = "/pages/course/course-list/course-list";
             break;
           default:
             break;

@@ -41,3 +41,33 @@
   right: 10rpx;
   margin-top: -25rpx;
 }
+
+.btn_link {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  opacity: 0;
+  z-index: 2;
+}
+/*联系导购*/
+.btn_link .plugin-private-wx104a1a20c3f81ec2-components-cell-cell-2--wrapper {
+  width: 100% !important;
+  height: 100% !important;
+  position: relative;
+}
+
+.btn_link functional-page-navigator {
+  width: 100% !important;
+  height: 100% !important;
+  position: absolute;
+  top: 0px !important;
+  left: 0px !important;
+}
+
+.btn_link .plugin-private-wx104a1a20c3f81ec2-components-cell-cell-2--bubble {
+  width: 100% !important;
+  height: 100% !important;
+  background: none !important;
+}

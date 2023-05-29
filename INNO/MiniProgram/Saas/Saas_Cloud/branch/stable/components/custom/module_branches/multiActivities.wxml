@@ -1,0 +1,148 @@
+<!--components/custom/module_ branches/multiActivities.wxml-->
+
+<!-- 活动列表 秒杀 拼团 -- 模块 -->
+<form bindsubmit="formAction" report-submit="true">
+	<view class="activity_module  {{showInit?'mb_10':''}}" wx:if="{{(page_module_list.bindType == 9)}}">
+		<block wx:if="{{m_item}}">
+			<!--模块 背景 -->
+			<view class="act_module_bg" wx:if="{{page_module_list.bgImg}}">
+				<image src="{{page_module_list.bgImg?img_url + page_module_list.bgImg:''}}" mode="scaleToFill" class="act_m_img_bg" lazy-load="{{true}}" />
+			</view>
+			<!--模块 title -->
+			<view class="activity_module_stay">
+				<view class="act_title table" wx:if="{{page_module_list.showActivityTime == '1'}}">
+					<view style="height:90rpx;" class="table_cell v_m t_l bold font_30" data-module_type="{{page_module_list.bindType}}" data-activity_id="{{current_acty}}" data-group_id="{{page_module_list.this_group_id}}" data-tag="{{page_module_list.tag}}" catchtap="{{page_module_list.showActivityTime != '2' && page_module_list.showMore!='0'?'goLink':''}}">
+						<text style="line-height:30rpx;" class="inline_b v_m hold_cell activity_name" wx:if="{{page_module_list.showActivityTitle == '1'}}">{{page_module_list.activityTitleName}}</text>
+						<view style="background:{{l_bg_color}};" class="act_count_down inline_b v_m font_22 hold_cell" wx:if="{{page_module_list.showActivityTime != '0' && page_module_list.showActivityTime == '1'}}">
+							<block wx:if="{{page_module_list.showActivityTime == '1'}}">
+								<view class="c_d_t_box" style="background:{{d_bg_color}};">
+									<image src="{{sk_logo}}" lazy-load="{{true}}" class="img_c_d_t" mode="aspectFit" />
+									<text class="time_down_txt" style="color:{{ac_conf.theme_color}};">{{detailListObj[current_mod_sort].status}}</text>
+								</view>
+								<block wx:if="{{detailListObj[current_mod_sort].state!=4}}">
+									<view class="c_d_t_msg_box" style="color:{{ac_conf.theme_color}};" wx:if="{{detailListObj[current_mod_sort].timeDown == 1}}">
+										<text class="day_down" wx:if="{{actCountDown[current_acty].day != 0}}">{{actCountDown[current_acty].day}}天</text>
+										<text class="time_down">{{actCountDown[current_acty].hour || '00'}}</text> :
+										<text class="time_down">{{actCountDown[current_acty].min || '00'}}</text> :
+										<text class="time_down">{{actCountDown[current_acty].sec || '00'}}</text>
+									</view>
+									<view class="c_d_t_msg_box" style="color:{{ac_conf.theme_color}};" wx:elif="{{detailListObj[current_mod_sort].showDate}}">
+										<text class="time_down">{{detailListObj[current_mod_sort].showDate}}</text>
+									</view>
+								</block>
+							</block>
+						</view>
+					</view>
+					<image wx:if="{{page_module_list.showActivityTime!='2' && page_module_list.showMore=='1'}}" class="img_right" src="{{rightbutton}}" lazy-load="{{true}}" mode="aspectFit" />
+				</view>
+
+				<scroll-view class='time_box' style="{{page_module_list.showActivityTime == '1' || page_module_list.showActivityTime == '0' ?'margin-bottom:20rpx;':''}}" scroll-x wx:if="{{detailListObj.length>1}}">
+					<view class="time_msg_box">
+						<view catchtap='handle_change' data-type="time_item" wx:for="{{detailListObj}}" data-activity_id="{{time_item.activity_id}}" data-m_sort="{{m_index}}" data-index_sort="{{time_index}}" wx:key="goods_id" wx:for-index="time_index" wx:for-item="time_item" wx:key="activity_id" class='time_item C_7f' style='{{time_item.activity_id==current_acty? "color:" + ac_conf.theme_color +";background:#fff;font-weight:bold;" :""}}'>
+							<view class='activityTitleName'>{{time_item.activity_title_name}}</view>
+						</view>
+					</view>
+				</scroll-view>
+
+				<view class="act_title_two" wx:if="{{page_module_list.showActivityTime == '2'}}" data-module_type="{{page_module_list.bindType}}" data-activity_id="{{current_acty}}" data-group_id="{{page_module_list.this_group_id}}" data-tag="{{page_module_list.tag}}" catchtap="{{page_module_list.showMore=='1'?'goLink':''}}">
+					<view class="act_title_box" style="color:{{ac_conf.theme_color}};">
+						<text class="c_t_d_text" style="margin-right:10rpx;color:#7F7F7F;">{{detailListObj[current_mod_sort].status}}</text>
+						<block wx:if="{{detailListObj[current_mod_sort].state!=4}}">
+							<block wx:if="{{detailListObj[current_mod_sort].timeDown == 1}}">
+								<block wx:if="{{actCountDown[current_acty].day != 0}}">
+									<text class="c_t_d_time">{{actCountDown[current_acty].day}}</text>
+									<text class="c_t_d_text" style="color:#7F7F7F;">天</text>
+								</block>
+								<text class="c_t_d_time">{{actCountDown[current_acty].hour || '00'}}</text>
+								<text class="c_t_d_text" style="color:#7F7F7F;">时</text>
+								<text class="c_t_d_time">{{actCountDown[current_acty].min || '00'}}</text>
+								<text class="c_t_d_text" style="color:#7F7F7F;">分</text>
+								<text class="c_t_d_time">{{actCountDown[current_acty].sec || '00'}}</text>
+								<text class="c_t_d_text" style="color:#7F7F7F;">秒</text>
+							</block>
+							<block wx:elif="{{detailListObj[current_mod_sort].showDate}}">
+								<!-- <text class="c_t_d_time" style="color:{{ac_conf.theme_color}};">{{detailListObj[current_mod_sort].showDate}}</text> -->
+								<block wx:for="{{detailListObj[current_mod_sort].showDate}}" wx:key="index" wx:for-index="showDateIndex">
+									<text class="c_t_d_time">{{item || '00'}}</text>
+									<text class="c_t_d_text" style="color:#7F7F7F;">{{showDateIndex==0?"月":showDateIndex==1?"日":showDateIndex==2?"时":showDateIndex==3?"分":""}}</text>
+								</block>
+							</block>
+						</block>
+					</view>
+					<image wx:if="{{page_module_list.showMore=='1'}}" src="{{rightbutton}}" lazy-load="{{true}}" class="img_right" mode="aspectFit" />
+				</view>
+
+				<swiper easing-function="linear" duration="350" bindchange='handle_change' data-type="swiper" current="{{current_mod_sort}}" data-module-id="{{moduleId}}" data-m_sort="{{m_index}}" style='{{"height:" + mod_height_box + "px"}}' class='_siwperStyle {{showInit?"initStyle":""}}' wx:if="{{page_module_list.moduleStyles != '8'}}">
+					<swiper-item wx:for="{{detailListObj}}" wx:for-item="swiperItem" wx:for-index="siwper_index" wx:key="siwper_index" wx:key="goods_id">
+						<block wx:if="{{m_item[swiperItem.activity_id] && m_item[swiperItem.activity_id].length<=0}}">
+							<view class="_empty">
+								<view class="_empty_txt">暂无秒杀商品</view>
+							</view>
+						</block>
+						<block wx:elif="{{page_module_list.moduleStyles != '7'}}">
+							<view id="marquee_{{siwper_index}}" class="act_list font_0 m_s_list{{page_module_list.moduleStyles}} {{page_module_list.showBuyButtom == '1' ? '' : 'no_show_btn'}}">
+								<view class="act_item font_22" wx:for="{{showInit? initArr : m_item[swiperItem.activity_id]}}" wx:for-item="act_item" wx:for-index="act_index" wx:key="act_index" data-module_type="{{page_module_list.bindType}}" data-activity_id="{{act_item.activityId || 0}}" data-goods_id="{{act_item.goodsId || 0}}" data-issue_id="{{swiperItem.activity_id || 0}}" data-type="detail" data-group_id="{{page_module_list.this_group_id}}" data-tag="{{page_module_list.tag}}" catchtap="goLink">
+									<view class="act_img_view">
+										<view class="act_img_view_stay {{showInit?'initStyle':''}} {{sysConf.goods_image_size == '4-3' ? 'ratio_3_4':''}}">
+											<image src="{{act_item.picture}}" lazy-load="{{true}}" class="" mode="aspectFit" />
+										</view>
+									</view>
+
+									<view class="act_goods_info">
+										<block wx:if="{{!showInit && (page_module_list.moduleStyles!='6')}}">
+											<view class="ac_price_box" wx:if="{{page_module_list.showGoodsPrice=='1' || page_module_list.market_price_conf=='1'}}">
+												<view wx:if="{{page_module_list.showGoodsPrice=='1'}}" class="ac_price bold" style="color:{{ac_conf.theme_color || default_bg}}">¥{{act_item.price}}</view>
+												<view wx:if="{{page_module_list.market_price_conf=='1' && act_item.marketPrice != 0 && act_item.marketPrice != act_item.price}}" class="ac_market_price">¥{{act_item.marketPrice}}</view>
+											</view>
+											<view class="act_goods_name {{showInit?'textInit initStyle':''}}" wx:if="{{page_module_list.showGoodsName == '1'}}">{{act_item.goodsName}}</view>
+											<view wx:if="{{detailListObj[current_mod_sort].state!=4 && page_module_list.volume_conf=='1'}}" class="progress_box">
+												<view class="progress_small">
+													<progress_bar percent="{{detailListObj[current_mod_sort].state==3?act_item.percent:100}}"></progress_bar>
+												</view>
+												<text class="progress_text font_18 C_7f">剩余{{detailListObj[current_mod_sort].state==3?act_item.percent:100}}%</text>
+											</view>
+										</block>
+
+										<block wx:if="{{page_module_list.moduleStyles=='6'}}">
+											<view class="act_goods_name {{showInit?'textInit initStyle':''}}">{{page_module_list.showGoodsName == '1'?act_item.goodsName:''}}</view>
+											<!-- <view class="act_goods_name {{showInit?'textInit initStyle':''}}" wx:if="{{page_module_list.showGoodsName == '1'}}">{{act_item.goodsName}}</view> -->
+											<view class="act_p_box">
+												<view class="act_p_box_l">
+													<view class="act_p_l" style="color:{{ac_conf.theme_color}};" wx:if="{{page_module_list.showGoodsPrice == '1'}}">
+														<text>秒杀价</text>
+														<text class="act_p_l_price bold">{{act_item.price}}</text>
+													</view>
+													<view class="act_p_m_l" wx:if="{{page_module_list.market_price_conf == '1'}}">¥{{act_item.marketPrice}}</view>
+												</view>
+												<view class="act_p_box_r">
+													<button hover-class="none" class="act_p_r" style="background:{{ac_conf.theme_color}};">立即秒杀</button>
+													<view wx:if="{{detailListObj[current_mod_sort].state!=4 && page_module_list.volume_conf=='1'}}" class="progress_box">
+														<view class="progress_small">
+															<progress_bar percent="{{detailListObj[current_mod_sort].state==3?act_item.percent:100}}"></progress_bar>
+														</view>
+														<text class="progress_text font_18 C_7f">剩余{{detailListObj[current_mod_sort].state==3?act_item.percent:100}}%</text>
+													</view>
+												</view>
+											</view>
+										</block>
+									</view>
+
+								</view>
+							</view>
+						</block>
+
+						<!--左右滑块-->
+						<block wx:else>
+							<marqueeView marqueeData="{{m_item[current_acty]}}" cur_ac_id="{{current_acty}}" baseInfo="{{page_module_list}}" sysConf="{{sysConf}}" id="marquee_{{siwper_index}}"></marqueeView>
+						</block>
+					</swiper-item>
+				</swiper>
+				<view wx:else>
+					<view class="sk_ad" catchtap="goLink" data-func_type="{{item.func_type}}" data-module_type="{{page_module_list.bindType}}" data-activity_id="{{item.related_id}}" data-group_id="{{page_module_list.this_group_id}}" data-tag="{{page_module_list.tag}}" wx:for="{{itemList}}" wx:key="index">
+						<image class="sk_ad_img" src="{{img_url}}{{item.img_path}}" mode="widthFix" />
+					</view>
+				</view>
+			</view>
+		</block>
+	</view>
+</form>

@@ -56,7 +56,7 @@ class sysConfigManager {
   getSysConfig(params){
     return this.confBeforeReqHandle(params);
   }
-  trimSysConfig(cfg){
+  trimConfigs(cfg){
     let cfgProps = "";
     if(cfg && Array.isArray(cfg)){
       cfgProps = cfg.join(',');
@@ -71,17 +71,8 @@ class sysConfigManager {
         brandCode:Conf.BRAND_CODE
       }
     }).then(res=>{
-      console.log('trimSysConfig then',res);
-      return res;
+      return res && res.data||[];
     })
-    // let apiArr = [];
-    // for(let i = 0,len=arr.length;i<len;i++){
-    //   apiArr.push(this.getSysConfig(arr[i]));
-    // } 
-    // return Promise.all(apiArr).then(res=>{
-    //   console.log('trimSysConfig then',res);
-    //   return res;
-    // })
   }
 }
 

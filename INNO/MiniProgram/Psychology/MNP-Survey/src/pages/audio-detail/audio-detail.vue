@@ -1,7 +1,7 @@
 <template>
   <view>
     <view v-if="!showLoading" class="audio-detail-page" :style="{'background-color':backgroundColor}">
-      <page-nav :isTransparent="true" full="false" isClose="true"></page-nav>
+      <page-nav :isTransparent="true" full="false"  mode="Close"></page-nav>
       <template v-if="!isTest && audioDetail.audioUrl">
         <view class="background-container">
           <image @load="getBgSize" :style="{height:bgHeight,width:bgWidth}" v-if="audioDetail.audioBgPic"
@@ -34,9 +34,9 @@
 </template>
 
 <script>
+  import utils from '@/common/support/utils.js'
   import SMH from "@/common/helper/show-msg-handler";
   import LoadingView from '@/components/css3/loading/loading.vue';
-  import UniApi from "@/common/support/tools/uni-api-promise.js";
 
   const app = getApp();
   const pageOption = Page.BasePage({
@@ -124,20 +124,11 @@
       getBgSize({
         detail
       }) {
-        console.log(detail, "获取图片的大小")
-        uni.getSystemInfo({
-          success: res => {
-            console.log(res.windowHeight, detail.height, res.windowWidth, detail.width)
-            // this.bgWidth = res.windowWidth + 'px';
-            let imgW = res.windowWidth;
-            let imgH = (res.windowWidth * detail.height) / detail.width;
-            if (imgH < res.windowHeight) {
-              imgH = res.windowHeight;
-              imgW = (res.windowHeight * detail.width) / detail.height;
-            }
-            this.bgWidth = imgW + "px"
-            this.bgHeight = imgH + "px"
-          }
+      let width = detail.width;
+        let height = detail.height;
+        utils.getBgSize(width, height).then(res => {
+          this.bgWidth = res.imgW + "px"
+          this.bgHeight = res.imgH + "px"
         })
       },
       getAudioDetail() { 
@@ -196,9 +187,6 @@
           that.bgAudioMannage.coverImgUrl = that.audioDetail.audioCoverPic || that.audioDetail.audioBgPic || "";
           that.bgAudioMannage.src = that.audioDetail.audioUrl;
         }
-        //音频地址（模拟）
-        // "http://devimgtest.innourl.com/EAP/audio.mp3";
-        // "https://bjetxgzv.cdn.bspapp.com/VKCEYUGU-hello-uniapp/2cc220e0-c27a-11ea-9dfb-6da8e309e0d8.mp3";
         //   ..音频可以播放 取音频时常并计算
         that.bgAudioMannage.onCanplay(() => {
           that.$nextTick(() => {
@@ -207,19 +195,13 @@
               if (that.sliderDisable == true) that.sliderDisable = false;
               // 如果没有这一步onTimeUpdate()不会触发回调
               that.bgAudioMannage.duration.toFixed(0);
-              // that.getDuration();
             }, 300);
           });
         });
         //监听播放时间 及 计算播放进度
         that.bgAudioMannage.onTimeUpdate(() => {
-          // console.log(123)
+          
           if (that.sliderDisable == true) that.sliderDisable = false;
-
-          // if(that.audioStatus) that.audioStatus = false
-
-          // 如果onCanplay的时候获取不到Duration，播放开始的时候再获取一次
-          // if (that.duration === "00:00") that.getDuration();
 
           //播放时间
           var time = that.bgAudioMannage.currentTime.toFixed(0);
@@ -290,16 +272,6 @@
         SMH.showToast({
           title: toast,
         });
-      },
-      // 获取音乐长度
-      getDuration() {
-        var time = this.bgAudioMannage.duration.toFixed(0);
-        var min = Math.floor(time / 60);
-        var second = time % 60;
-        this.duration =
-          (min > 10 ? min : "0" + min) +
-          ":" +
-          (second > 10 ? second : "0" + second);
       },
       // 调整进度
       seek(time) {

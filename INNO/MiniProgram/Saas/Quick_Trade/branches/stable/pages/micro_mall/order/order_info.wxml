@@ -1,0 +1,215 @@
+<!-- public 必须是第一个元素 -->
+<include src="/common/base/page/index.wxml" />
+<wxs src="./filter.wxs" module="f" />
+<view class="order-info-page">
+  <!-- 自定义导航栏 -->
+  <page-nav class="full-width" isTransparent boxStyle="{{'background:' + (mainColor)}}" customPlace="{{isShowNavMsg?'height:200rpx;':''}}">
+    <view slot="custom-content">
+      <view class="C_fff">
+        {{orderInfo.orderStatus}}{{valetInfo.isValetOrder == 1 ? '(代客单)': ''}}
+      </view>
+      <block wx:if="{{isShowNavMsg}}">
+        <view class="extend-nav-view"
+          wx:if="{{((orderInfo.orderStatus == '待付款' && staff_type == 1) || (menuInfo.needPay == 1 || menuInfo.canQrcodePay == 1)) && orderInfo.serverTime < orderInfo.autoCancelTime}}">
+          <view class="order-status-row">还剩{{f.countDownObjToStr(count_down)}}自动取消</view>
+        </view>
+        <view class="extend-nav-view" wx:elif="{{orderInfo.autoReceiveTime}}">
+          <view class='order-status-row'>
+            预计 {{orderInfo.autoReceiveTime}} 自动收货
+          </view>
+        </view>
+      </block>
+    </view>
+  </page-nav> 
+
+  <view class="order-info-main">
+    <!-- 门店信息 -->
+    <view class="order-info-view">
+      <view class="order-info-view-main order-info-store-con">
+        <view class="oisc-order-sn">
+          <view class="oisc-order-sn-text">订单号 {{orderInfo.orderSn}}</view>
+          <view class="oisc-order-sn-copy icon-copy" hover-class="active" bindtap="handleCopyTap"
+            data-text="{{orderInfo.orderSn}}">复制</view>
+        </view>
+        <view>
+          <view class="oisc-order-time">
+            下单时间： {{orderInfo.createTime}}
+          </view>
+        </view>
+        <!-- 订单记录 -->
+        <view class="order-info-store-info" wx:if="{{storeInfo.storeCode}}">
+          <view class="oisi-store-name">下单店铺： {{storeInfo.storeName}}</view>
+          <view class="oisi-store-address">{{storeInfo.storeAreaName}}/{{storeInfo.storeAddr}}</view>
+          <view class="oisi-store-detail">
+            <view class="oisi-staff">店员：{{storeInfo.staffName}}</view>
+            <view class="oisi-line"></view>
+            <view class="oisi-store-phone">
+              门店电话：{{!storeInfo.storePhone || storeInfo.storePhone == "" ? '无' : storeInfo.storePhone}}</view>
+          </view>
+          <view class="oisi-store-detail">
+            <text class="oisi-name">下单会员昵称：{{userInfo.userName||"--"}}</text>
+            <text class="oisi-line"></text>
+            <text class="oisi-phone">电话：{{userInfo.userPhone||"--"}}</text>
+          </view>
+        </view>
+        <view class="order-info-record-list" wx:if="{{recordList.length>0}}">
+          <block wx:for="{{recordList}}" wx:for-item="recordItem"
+          wx:for-index="recordIndex" wx:key="recordIndex">
+            <view class="order-info-record-item" wx:if="{{recordIndex < 2 || allRecord}}">
+            <view class="order-info-record-mark  {{recordIndex == 0 && 'active' || ''}}">
+              <view class="{{recordIndex == 0?'order-info-record-mark-circle-active':'order-info-record-mark-circle'}}"></view>
+              <view wx:if="{{recordList.length != 1}}" class="order-info-record-mark-dashed"></view>
+            </view>
+            <view>
+              <view class="order-info-record-message {{recordIndex == 0 && 'active' || ''}}">{{recordItem.actionNote}}</view>
+              <view class="order-info-record-time">{{recordItem.time}}</view>
+            </view>
+          </view>
+        </block>
+          <view wx:if="{{recordList.length>2 && !allRecord}}" bindtap="handleMoreRecordTap" class="order-info-record-show"></view>
+        </view>
+      </view>
+    </view>
+
+    <!-- 快递配送信息 -->
+    <view class="order-info-view" wx:if="{{addressInfo && addressInfo.isInstore == 0}}">
+      <view class="order-info-view-main order-info-package-container">
+        <view class="oiac-row" wx:if="{{orderInfo.invoiceNo}}">
+          <view class="circle-icon iconfont icon-a-package1-fill"></view>
+          <view class="oiac-package">
+            <view class="oiac-package-header">
+              <view class="oiac-package-title">你购买的商品已发出</view>
+              <!-- <view class="oiac-package-right-arrow icon-arrow"></view> -->
+            </view>
+            <view class="oiac-package-list">
+              <view class="oiac-package-item">
+                <view class="oiac-pi-left">
+                  <view class="oiac-pi-icon">包裹</view>
+                  <view class="oiac-pi-number">{{orderInfo.invoiceNo}}</view>
+                </view>
+                <view class="oiac-pi-right">
+                  <view class="oiac-pi-copy icon-copy" bindtap="handleCopyTap" data-text="{{orderInfo.invoiceNo}}">复制
+                  </view>
+                </view>
+              </view>
+            </view>
+          </view>
+        </view>
+        <view class="oiac-row">
+          <view class="circle-icon iconfont icon-location"></view>
+          <view class="oiac-delivery-info">
+            <view class="oiac-consignee-info">
+              <view class="oiac-consignee">{{addressInfo.consignee}}</view>
+              <view class="oiac-phone">{{addressInfo.mobile}}</view>
+            </view>
+            <view class="oiac-address">
+              {{addressInfo.address}}
+            </view>
+          </view>
+        </view>
+      </view>
+    </view>
+
+    <!-- 取货码 -->
+    <view class="order-info-view" wx:if="{{addressInfo.isInstore > 0}}" hidden="{{orderInfo.payStatus == '待付款'}}">
+      <view class="order-info-view-main">
+        <view class="pick-code-container">
+          <view class="pick-code-title">取货码</view>
+          <view class="pick-code-text">{{orderInfo.pickCode}}</view>
+        </view>
+      </view>
+    </view>
+
+    <!-- 订单商品列表 -->
+    <view class="order-info-view">
+      <view class="order-info-view-main order-info-goods-cost-con">
+        <view class="order-info-goods-container">
+          <view class="order-info-goods-list">
+            <view class="order-info-goods-item" wx:for="{{goodsList}}" wx:key="goodsId">
+              <view class="oigi-left">
+                <mode-image ext-class="oigi-image" src="{{item.thumbUrl}}" />
+              </view>
+              <view class="oigi-middle">
+                <view class="oigi-name text-flow2">{{item.goodsName}}</view>
+                <view class="oigi-spec">
+                  <text>{{item.goodsAttr}}</text>
+                </view>
+                <view class="oigi-price">￥{{item.salePrice}}</view>
+              </view>
+              <view class="oigi-right">
+                <view class="oigi-goods-number">x{{item.goodsNumber}}</view>
+              </view>
+            </view>
+          </view>
+        </view>
+        <view class="order-info-cost-container">
+          <view class="oicc-row">
+            <view class="oicc-left">商品总价</view>
+            <view class="oicc-right">￥{{orderInfo.goodsMarketPrice}}</view>
+          </view>
+          <view class="oicc-row">
+            <view class="oicc-left">优惠金额</view>
+            <view class="oicc-right">-￥{{orderInfo.goodsDiscount}}</view>
+          </view>
+          <view class="oicc-row black-font">
+            <view class="oicc-left">订单总价</view>
+            <view class="oicc-right">￥{{orderInfo.orderAmount}}</view>
+          </view>
+        </view>
+      </view>
+    </view>
+
+    <!-- 订单备注 -->
+    <view class="order-info-view" wx:if="{{orderInfo.remark}}">
+      <view class="order-info-view-main">
+        <view class="o-i-remark-container">
+          <view class="remark-title">备注</view>
+          <view class="remark-text">{{orderInfo.remark}}</view>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <view class="order-info-footer">
+    <view class="order-info-f-left">
+      <view class="order-info-f-more-btn-con" hover-class="active" wx:if="{{foldBtnArr && foldBtnArr.length}}"
+        catchtap="handleMoreBtnTap">
+        <view class="iconfont icon-list oif-more-icon"></view>
+        <button class="oif-more-btn">更多</button>
+      </view>
+      <transition show="{{foldBtnActive}}">
+        <view class="fold_fix_bg" bindtap="handleMoreBtnTap" data-type="fold_btn_toggle"></view>
+        <view class="oif-fold-btn-list">
+          <block wx:for="{{foldBtnArr}}" wx:key="key">
+            <block wx:if="{{item.key == 'return_cancel'}}">
+              <picker class="cancel_order_picker" bindchange="applyReason" value="{{index}}" range="{{order_cancel_reason}}">
+                <button class="oif-fold-btn {{item.className}}" hover-class="none" open-type="{{item.openType}}" form-type="submit">{{item.name}}</button>
+              </picker>
+            </block>
+            <button class="oif-fold-btn {{item.className}}" open-type="{{item.openType}}" hover-class="active"
+              wx:elif="{{item.status}}" bindtap="{{item.tap}}">{{item.name}}</button>
+          </block>
+        </view>
+      </transition>
+    </view>
+    <view class="order-info-f-right">
+      <view class="oifr-btn-group">
+        <block wx:for="{{unfoldBtnArr}}" wx:key="key"> 
+          <block wx:if="{{(item.key == 'return_cancel')}}">
+            <view class="btn_box">
+              <picker class="cancel_order_picker" bindchange="applyReason" value="{{index}}" range="{{order_cancel_reason}}">
+                <button hover-class="none" form-type="submit" class="oifr-btn {{item.className}}" open-type="{{item.openType}}">{{item.name}}</button>
+              </picker>
+            </view>
+          </block>
+          <button class="oifr-btn {{item.className}}" hover-class="active" wx:elif="{{item.status}}"
+            open-type="{{item.openType}}" bindtap="{{item.tap}}">{{item.name}}</button>
+        </block>
+      </view>
+    </view>
+  </view>
+</view>
+
+<change-order-status-pop id="change-order-status-pop" bind:confirm="handleChangeOrderStatusConfirm" />
+<pay-qrcode id="pay-qrcode" />
+<confirm-pop id="confirm-pop" ext-title-class="return-title" title="订单将进入售后流程"></confirm-pop>

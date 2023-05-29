@@ -1,0 +1,115 @@
+<!-- public 必须是第一个元素 -->
+<include src="/common/base/page/index.wxml" />
+<view class="order-return-apply">
+  <view class="return_page" >
+      <view class="page_tab return_row padding_0" >
+          <block>
+              <view 
+              class="page_tab_item tab_item_right" 
+              wx:for="{{returnTab.tab}}" 
+              wx:key="index"
+              data-select_id="{{item.id}}" 
+              data-txt="{{item.txt}}" 
+              bindtap="singleSelect">
+                  <view class="select_radio inline_b">
+                    <view class="common-cir-sel {{returnTab.curr == item.id?'active':''}}"></view>
+                  </view>
+                  <text class="tab_txt" style="min-width:110rpx;">{{item.txt}}</text>
+                  <text class="tab_txt" style="color:#7f7f7f;">{{item.tip}}</text>
+              </view>
+          </block>
+      </view>
+      <view class="return_tip">为了更快处理您的售后申请，建议先联系店员哦</view>
+      <view>
+          <view class="orderGoods orderBox p_b_0" wx:for="{{goodsList}}" wx:key="index">
+          <!-- 商品信息 -->
+              <view class="orderGood">
+                  <!-- <view class="goods_detail_img" catchtap='jump_detail' data-color-id="{{item.img_color}}" data-id="{{item.goodsId}}"> -->
+                  <view class="goods_detail_img" data-color-id="{{item.img_color}}" data-id="{{item.goodsId}}">
+                      <ori-image src="{{item.thumbUrl}}" ext-class="goods_detail_img_stay" />
+                  </view>
+                  <view class="good_msg">
+                      <view class='good_top'>
+                          <view class="good_name text-flow2">{{item.goodsName}}</view>
+                          <view class="good_info">
+                              <view class="csName" wx:if="{{item.goodsAttr}}">{{item.goodsAttr}}</view>
+                          </view> 
+                      </view>
+                      <view class='money_bottom'>
+                          <view class="font_w font_28 price_bottom">
+                              <block wx:if="{{item.salePrice && item.salePrice > 0}}">
+                                  <view class="font_28 RMB">¥ </view>
+                                  <text class="">{{item.salePrice}}</text>
+                              </block>
+                              <view class="originalPrice" wx:if="{{ (item.marketPrice != item.salePrice) && item.marketPrice > 0}}">
+                                <view class="RMB_line">¥ </view>
+                                <view style='display:inline-flex;text-decoration:line-through'>{{item.marketPrice}}</view>
+                              </view>
+                          </view>
+                          <view class="good_count">购买数量 <text class="bold">{{item.goodsNumber}}</text></view>
+                          <view class="send_count">发货数量 <text class="bold">{{item.goodsNumber}}</text></view>
+                      </view>
+                  </view>
+              </view>
+              <!-- 申请数量 -->
+              <view class="orderBox box_inline">
+                <view class="cont table flex-b-c">
+                  <view class="table_cell C_7f">
+                    申请数量
+                  </view>
+                  <view class="table_cell">
+                    <view class="count_operation flex-c-c">
+                        <view class="reduce_btn" catchtap="reduceGoodsNum" data-op="reduce">
+                            <view class="common-reduce {{item.curReturnNumber > 1?'active':''}}"></view>
+                        </view>
+                        <text class="count_input">{{item.curReturnNumber}}</text>
+                        <view class="add_btn" catchtap="addGoodsNum" data-op="add">
+                            <view class="common-add {{(item.curReturnNumber < item.canReturnNumber)?'active':''}}"></view>
+                        </view>
+                    </view>
+                  </view>
+                </view>
+              </view>
+          </view>
+          <view class="mb_16"></view>
+          <view class="orderBox">
+            <view class="cont table flex-b-c">
+              <view class="table_cell C_7f">{{returnTab.curr == 2?'退货':'退款'}}原因</view>
+              <view class="table_cell">
+                <picker class="full_w reason_picker" bindchange="returnReason" range="{{return_reason_list}}">
+                      <view  
+                      class="return_row_stay" 
+                      wx:if="{{formData.reason}}">{{formData.reason}}</view>
+                      <view wx:else class="return_row_stay C_7f padding_22">选择{{returnTab.curr == 2?'退货':'退款'}}原因</view>
+                      <image src="{{rightbutton}}" class="r_arrow" mode="widthFix" />
+                  </picker>
+              </view>
+            </view>
+          </view>
+          <view class="orderBox">
+            <view class="cont min_h">
+              <view class="remark_area_box {{show_remarks_val ? '' : 'hide' }}">
+                <view class="custom_remark_area C_7f" catchtap="ShowRemarksVal">{{formData['explain'] ? formData['explain'] : '填写具体原因'}}</view>
+              </view>
+              <textarea 
+              focus="{{remarks_focus}}"
+              class="remark_area {{show_remarks_val ? 'hide' : '' }}" 
+              placeholder-class="remark_area" 
+              placeholder='填写具体原因' 
+              data-key="explain" 
+              bindinput="SetRemark"
+              bindblur="ShowRemarksVal"
+              maxlength="{{limitNum}}"
+              ></textarea>
+              <view class="remark_num">{{explainNum}}/{{limitNum}}</view>
+            </view>
+          </view>
+      </view>
+  </view>
+  <view class="page_btn_area">
+      <button 
+      form-type='true'
+      class="confrim_btn C_fff font_26" 
+      bindtap="confirmReturn">确定提交</button>
+  </view>
+</view>

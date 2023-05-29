@@ -7,13 +7,19 @@
 			</button>
 		</template>
 		<template v-else-if="openType == 'getPhoneNumber'">
-			<button class="custom-auth-btn" :style="customStyle" :disabled="disabled" @getphonenumber="onGetphonenumber" :open-type="openType" :type="type" >
+			<button class="custom-auth-btn" :style="customStyle" :disabled="disabled" @click="onClick" @getphonenumber="onGetphonenumber" :open-type="openType" :type="type" >
 				<!-- <slot></slot> -->
 			</button>
 		</template>
 		<template v-else-if="openType == 'getUserInfo'" >
 			<!-- <slot></slot> -->
 			<button class="custom-auth-btn" :style="customStyle" :disabled="disabled" :loading="isLoading" :open-type="openType" :type="type" @click="onAuth">
+				
+			</button>
+		</template>
+		<template v-else-if="openType == 'chooseAvatar'" >
+			<!-- <slot></slot> -->
+			<button class="custom-auth-btn" :style="customStyle" :disabled="disabled" :loading="isLoading" :open-type="openType" :type="type" @chooseavatar="chooseavatar">
 				
 			</button>
 		</template>
@@ -26,6 +32,7 @@
 </template>
 
 <script>
+  import UniApi from "@/common/support/tools/uni-api-promise.js";
 	import appUtil from "../../common/support/utils.js";
 	import Conf from "../../config/config.js";
 	import SMH from "@/common/helper/show-msg-handler.js"
@@ -51,6 +58,10 @@
 			disabled: {//失效按钮
 				type: Boolean,
 				default: false
+			},
+			onlyPath:{
+				type:Boolean,
+				default:false
 			},
 			limitTime: {
 				type: Number | String,
@@ -85,7 +96,49 @@
 				// 	})
 				// 	return
 				// }
-				e.detail.iv && this.$emit("getphonenumber", { openType: this.openType,e })
+				if(e.detail.iv){
+					this.$emit("getphonenumber", { openType: this.openType,e })
+				}else{
+					this.$emit("getphonenumberErr",{e})
+				}
+			},
+			// 头像选择功能
+			chooseavatar({detail}){
+				// console.log(detail.avatarUrl,this.$Apis.uploadWxAvatarUrl,"获取用户头像")
+				let imageUrl = {
+					path:'',
+					url:''
+				}
+
+				let params = {
+						url:this.$Apis.uploadWxAvatarUrl.u,
+						filePath:detail.avatarUrl,
+						name:'image',
+            header:{
+							'content-type':'multipart/form-data',
+              userToken:app.LM.userToken||"",
+              platformType:Conf.platformSrc||"",
+              appCode:Conf.brandCode||""
+            },
+						formData:{
+							sessionId: app.LM.sessionId || 0
+						}
+				}
+
+				UniApi.uploadFile({
+					...params
+				}).then(res=>{
+					imageUrl = JSON.parse(res.data).data || ""
+					if(!this.onlyPath){
+						appUtil.throttle(()=>{
+							app.LM.updateUserProfile(true,imageUrl.path).then((res)=>{
+								this.$emit("authed", { res, openType: this.openType,url:imageUrl.url });
+							})
+							
+						}, this.limitTime)()
+					}
+					this.$emit("chooseavatar",imageUrl)
+				})
 			},
 			onAuth(e){
 				appUtil.throttle(()=>{

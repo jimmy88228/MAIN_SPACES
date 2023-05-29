@@ -1,0 +1,8 @@
+<view class="article_page">
+  <view class="art_title">
+    <text space="nbsp">{{article.article_title}}</text>
+  </view>
+  <view class="art_cont">
+    <rich-text space="nbsp" nodes="{{article.article_content}}"></rich-text>
+  </view>
+</view>

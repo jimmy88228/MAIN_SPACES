@@ -7,7 +7,7 @@
       <view class="select-user-title">请先选择身份进入</view>
       <view class="select-section">
         <view class="select-item " @click="selectAction" data-type="none">
-          <image :src="requireStatic('/user-type-select/type-student.png')" mode="scaleToFill" />
+          <oriImage :showLoading="false" class="select-item-image" :src="requireStatic('/user-type-select/type-student.png')" mode="scaleToFill" />
           <view class="select-action">
             <view>我是学生</view>
             <view class="action-button action-student">
@@ -17,7 +17,7 @@
           </view>
         </view>
         <view class="select-item " @click="selectAction" data-type="child">
-          <image :src="requireStatic('/user-type-select/type-parents.png')" mode="scaleToFill" />
+          <oriImage :showLoading="false" class="select-item-image" :src="requireStatic('/user-type-select/type-parents.png')" mode="scaleToFill" />
           <view class="select-action">
             <view>我是家长</view>
             <view class="action-button action-parents">
@@ -27,7 +27,7 @@
           </view>
         </view>
         <view class="select-item " @click="selectAction" data-type="teacher" v-if="showTeacher">
-          <image :src="requireStatic('/user-type-select/type-teacher.png')" mode="scaleToFill" />
+          <oriImage :showLoading="false" class="select-item-image" :src="requireStatic('/user-type-select/type-teacher.png')" mode="scaleToFill" />
           <view class="select-action">
             <view>我是老师</view>
             <view class="action-button action-teacher">
@@ -53,12 +53,13 @@
   import workBench from "@/components/custom-page/work-bench/work-bench"
   import ScanCode from '@/common/helper/scan-code-handler.js';
 	import entryM from '@/common/manager/entry-manager.js';
-
+  import oriImage from "@/components/ori-comps/image/ori-image"
 
   const app = getApp();
   const pageOption = Page.BasePage({
     components: {
-      workBench
+      workBench,
+      oriImage,
     },
     data() {
       return {
@@ -196,7 +197,7 @@
         justify-content: flex-end;
         align-items: center;
 
-        &>image {
+        .select-item-image {
           position: absolute;
           left: 0;
           top: 0;

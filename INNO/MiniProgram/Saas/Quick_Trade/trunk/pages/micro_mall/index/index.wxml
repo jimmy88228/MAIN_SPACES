@@ -1,0 +1,5 @@
+<!-- public 必须是第一个元素 -->
+<include src="/common/base/page/index.wxml" />
+<view class="full-height o-h">
+  <act id="act" class="full-height o-h"></act>
+</view> 

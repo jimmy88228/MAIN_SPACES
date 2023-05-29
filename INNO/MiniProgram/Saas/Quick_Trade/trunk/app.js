@@ -1,4 +1,3 @@
-import "./common/support/polyfill/promise";
+import "./common/init/index";
 import {createMainApp} from "./common/base/app/index";
-App(createMainApp({
-}))
+App(createMainApp({}))

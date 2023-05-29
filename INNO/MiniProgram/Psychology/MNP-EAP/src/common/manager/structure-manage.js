@@ -8,6 +8,7 @@ import IM from "./identity-manager";
 import StorageH from "../helper/storage-handler";
 
 const STORAGE_STRUCTURE_KEY = "STORAGE_STRUCTURE_KEY"
+const STORAGE_CUSTOMERINFO_KEY = "STORAGE_CUSTOMERINFO_KEY"
 
 //structureManager记录组织列表 组织id 
 class structureManager {
@@ -25,6 +26,30 @@ class structureManager {
     return this._structureInfo || {}
   }
 
+  get customerInfo() {
+    return this._customerInfo || {}
+  }
+
+  getCustomerInfo() {
+    if (JSON.stringify(this._customerInfo) === '{}') {
+      return Http(Apis.getCustomerInfo).then((res) => {
+        if (res.code) {
+          let getCustomerInfo = res.data || {};
+          this._customerInfo = getCustomerInfo;
+          StorageH.set(STORAGE_CUSTOMERINFO_KEY, getCustomerInfo)
+          return getCustomerInfo
+        }
+      }).catch(err => {
+        return Promise.reject(err)
+      });
+    } else {
+      return new Promise((rs, rj) => {
+        rs(this._customerInfo)
+      })
+    }
+
+
+  }
 
   getStructureList() {
     return Http(Apis.getAdminStructureList, {
@@ -62,15 +87,15 @@ class structureManager {
   }
 
   saveStructureInfo(structureInfo) {
-    if(structureInfo && structureInfo.structureId){
+    if (structureInfo && structureInfo.structureId) {
       this._structureInfo = structureInfo || {};
       StorageH.set(STORAGE_STRUCTURE_KEY, structureInfo)
     }
   }
 
-  removeStructureInfo(){
-    console.log(this._structureInfo,"this._structureInfo")
-    if(this._structureInfo && this._structureInfo.structureId){
+  removeStructureInfo() {
+    console.log(this._structureInfo, "this._structureInfo")
+    if (this._structureInfo && this._structureInfo.structureId) {
       delete this._structureInfo;
       StorageH.remove(STORAGE_STRUCTURE_KEY)
     }
@@ -80,6 +105,7 @@ class structureManager {
 const Func = {
   _initStorage() {
     this._structureInfo = StorageH.get(STORAGE_STRUCTURE_KEY) || {};
+    this._customerInfo = StorageH.get(STORAGE_CUSTOMERINFO_KEY) || {};
   },
 }
 

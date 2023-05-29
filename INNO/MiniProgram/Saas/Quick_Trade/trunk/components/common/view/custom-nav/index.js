@@ -22,17 +22,17 @@ Component(App.BC({
   },
   pageLifetimes:{
     show(){
-      this.setStoreInfo();
+      this.getStoreInfo();
       if(!App.LM.isLogin && !this._listenId){ 
           this._listenId = EB.listen('LOGIN_EB',()=>{
-            // console.log('EB CALL LOGIN_EB',this._listenId)
+            console.log('EB CALL LOGIN_EB',this._listenId)
             App.LM.loginAsync().ignore(()=>{
               EB.unListen('LOGIN_EB',this._listenId);
-              App.StoreH.changeVisitStore()
-              .ignore(()=>App.StoreH.getVisitStore(false))
-              .ignore(()=>this.setStoreInfo())
+              App.StoreH.getVisitStore()
+              .ignore(()=>this.getStoreInfo())
             }) 
           })
+          console.log('EB LISTEN LOGIN_EB',this._listenId);
         }
       }
   },
@@ -40,7 +40,7 @@ Component(App.BC({
     storeInfo:{}
   },
   methods: {
-    setStoreInfo(){
+    getStoreInfo(){
       let storeInfo = App.StoreH.storeInfo||{};
       console.log('storeInfo',storeInfo)
       this.setData({

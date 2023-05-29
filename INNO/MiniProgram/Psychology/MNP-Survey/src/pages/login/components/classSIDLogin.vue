@@ -140,13 +140,37 @@
         }).then(res => {
           if (res.code == 1) {
             let data = res.data || [];
+
+            // 是否有同年级存在多个学年 && 检查一个学校是否拥有多个校区
+            let campusArr = []
+            let hasDiferentGrade = false
+            for(let i = 0;i<data.length;i++){
+              if(!hasDiferentGrade){
+                for(let j = 0;j<data.length;j++){
+                  if((data[i].gradeName == data[j].gradeName) && (data[i].schoolYear != data[j].schoolYear)){
+                    hasDiferentGrade = true
+                    break
+                  }
+              }}
+              data[i].classList.forEach(classItem=>{
+                campusArr.push(classItem.campus)
+              })
+            }
+            let campusArrSet = new Set(campusArr);
+            campusArr = Array.from(campusArrSet);
+
+            // 格式化数据
             let oriClassArr = data.map((item, index) => {
               item.className = item.gradeName || '';
-              item.campusClassName = item.gradeName || '';
+              item.campusClassName = (hasDiferentGrade ? `${item.gradeName}(${item.schoolYear})` : item.gradeName) || '';
               let classList = item.classList || []
               for (let cI = 0; cI < classList.length; cI++) {
-                classList[cI].campusClassName = classList[cI].campus ? classList[cI].className + "[" +
-                  classList[cI].campus + "]" : classList[cI].className;
+                if(campusArr.length > 1){
+                  classList[cI].campusClassName = classList[cI].campus ? classList[cI].className + "[" +
+                    classList[cI].campus + "]" : classList[cI].className;
+                }else{
+                   classList[cI].campusClassName = classList[cI].className
+                }
                 if (classList[cI].classId == ops.classId && Number(ops.classId)) {
                   this.picker_value = [index, cI];
                 }

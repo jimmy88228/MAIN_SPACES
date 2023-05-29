@@ -75,9 +75,9 @@ export default {
 				url && url.slice(0,1) != '/' && (url = '/' + url);
 				console.log(url,"url")
 				if(!url){
-					SMH.showToast({
-						title: "敬请期待"
-					})
+					// SMH.showToast({
+					// 	title: "敬请期待"
+					// })
 					return;
 				}
 					UniApi.navigateTo({

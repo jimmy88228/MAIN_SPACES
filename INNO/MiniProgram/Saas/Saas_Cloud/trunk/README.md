@@ -1,3 +1,10 @@
-INNO_CLOUD
-版本功能同步日期：2021/9/14 18:00
-新版云店对接程度:登录注册,商品详情
+开发
+测试环境 wxd07eb942e77828c5
+GOSO:   wx8487f3a922f34d84
+SANSE:  wx0c55158ed6731c70
+
+打版
+测试环境 wxd07eb942e77828c5
+正式环境
+GOSO:   wx509464751b8514c2
+SAAS:   wx6ff6e9eac3e4e9f0

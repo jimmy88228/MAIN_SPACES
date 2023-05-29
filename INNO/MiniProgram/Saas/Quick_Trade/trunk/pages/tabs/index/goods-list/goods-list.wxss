@@ -1,6 +1,8 @@
 @import "/common/base/component/default-wxss/index.wxss";
 page{
   --background-color: #ffffff;
+  --discount-bg:#FFE9EC;
+  --btn-unstart-bg:#FFF8F9;
 }
 .i-goods-list-container{
   position: relative;
@@ -69,7 +71,7 @@ page{
 .i-goods-cliff{
   display: inline-flex;
   align-items: center;
-  background-color: var(--second-color);
+  background-color: var(--discount-bg);
   min-width: 140rpx;
   height: 36rpx;
   padding: 4rpx 12rpx;
@@ -133,6 +135,10 @@ button.i-goods-purchase-btn{
 }
 .i-goods-purchase-btn.active{
   opacity: 0.6;
+}
+.i-goods-purchase-btn.unstart{
+  background: var(--btn-unstart-bg);
+  color: var(--main-color); 
 }
 .i-g-purchase-tips{
   margin-top: 16rpx;

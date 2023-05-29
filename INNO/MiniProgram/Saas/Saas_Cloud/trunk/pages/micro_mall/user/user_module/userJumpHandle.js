@@ -4,6 +4,7 @@ import Conf from "../../../../conf.js";
 import { DistributionApi } from "../../../../common/manager/http-manager.js";
 import wxSubscribe from "../../../../common/helper/handle/wxSubscribe.js";
 import StorageH from "../../../../common/helper/handle/storageHandle.js";
+import FISH from "../../../../common/helper/seven-fish-helper";
 const subConfig = {
   COUPON: {
     type: 'GLOBAL',
@@ -159,6 +160,10 @@ class userJumpManager {
         appId: "wx101250e441594925",
         path: "pages/micro_mall/distribution_center/activity/activity?type=activity",
       })
+    }
+    else if (key === 'sevenFish' && sysConf.sevenFishIsShow == 1){ 
+      FISH.jump();
+      return;
     }
     else if (key === 'thirdCs' && sysConf.third_cs_open){
       app.LM.getUserSimpleInfo(app.LM.userKey).then(userInfo=>{

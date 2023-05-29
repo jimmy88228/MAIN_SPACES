@@ -20,9 +20,9 @@ class IdentityManager {
     get authUserInfo() {
         return this._authUserInfo || StorageH.get(STORAGE_USER_INFOS_KEY);
     }
-    getAuthUserInfo() {
+    getAuthUserInfo(refresh) {
         if (!LM.userToken) return Promise.reject();
-        if (this._authUserHold) return this._authUserHold;
+        if (this._authUserHold && !refresh) return this._authUserHold;
         this._authUserHold = Func._getAuthUserInfo.call(this).then((data) => {
             this.saveIdentityInfo({ authUserInfo: data });
             return data;

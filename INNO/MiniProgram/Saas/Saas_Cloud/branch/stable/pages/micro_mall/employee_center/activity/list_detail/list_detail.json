@@ -1,0 +1,8 @@
+{
+    "component": true,
+    "usingComponents": {
+      "tipToast": "/pages/micro_mall/employee_center/activity/tip_toast/tip_toast",
+      "alert":"/pages/micro_mall/employee_center/activity/succ_toast/alert",
+      "shareImg": "/pages/micro_mall/goods/popup/shareImg"
+    }
+}

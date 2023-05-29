@@ -1,31 +1,48 @@
 @import "/common/base/page/default-wxss/index.wxss";
 page{
+  height: 100%;
   --category-footer-height: calc(152rpx + env(safe-area-inset-bottom));
 }
 .goods-category-edit-page{
-  width: 100vw;
-  height: 100vh;
+  width: 100%;
+  height: 100%;
+  padding: 20rpx;
+}
+.edit-btn{
+  width: 150rpx;
+  height: 64rpx;
+  background: #FFFFFF;
+  border-radius: 10rpx;
+  margin-bottom: 20rpx;
+  transition: background-color 0.3s linear;
+}
+.edit-btn.isEdit{
+  background-color:var(--main-color);
+  color: #fff;
+}
+.scroll-box{
+  overflow: hidden;
 }
 .goods-category-edit-main{
   width: 100%;
   height: 100%;
 }
 .gce-list{
-  padding: 20rpx;
   padding-bottom: var(--category-footer-height);
 }
 .gce-item{
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 24rpx;
+  padding: 24rpx 10rpx 24rpx 38rpx;
   background-color: #ffffff;
   font-size: 28rpx;
   color: #333333;
   margin-bottom: 20rpx;
-  border-radius: 8rpx;
-  box-shadow: 0px 1px 2px 0px rgba(255, 255, 255, 0.8);
   transition: opacity 0.1s ease;
+  /* box-shadow: 0px 1px 2px 0px rgba(255, 255, 255, 0.8); */
+  background: #FFFFFF;
+  border-radius: 20rpx;
 }
 .gce-item:last-of-type{
   margin-bottom: 0;
@@ -35,6 +52,36 @@ page{
 }
 .gce-item-left{
   flex: 1;
+}
+.item-right {
+  opacity: 0;
+}
+.item-right.show{
+  animation: opacityAnim 300ms 10ms linear forwards;
+}
+.item-right.hide{
+  animation: opacityAnim 300ms 10ms linear alternate forwards;
+}
+@keyframes opacityAnim {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+.padding-box{
+  padding: 14rpx 26rpx;
+}
+.gce-item .gcei-arrow{
+  border: 1px solid;
+  border-color: currentColor currentColor transparent transparent;
+  margin-right: 20rpx;
+}
+.gcei-name-text{
+  font-size: 28rpx;
+  font-weight: bold;
+  margin-bottom: 8rpx;
 }
 .goods-catefory-edit-footer{
   position: fixed;
@@ -46,6 +93,10 @@ page{
   padding-bottom: calc(32rpx + env(safe-area-inset-bottom));
   background-color: #fff;
 }
+.gcei-name-quantity{
+  font-size: 20rpx; 
+  color: #B2B2B2;
+}
 .gcef-btn-group{
   width: 100%;
   height: 100%;
@@ -55,7 +106,28 @@ page{
 button.gcef-btn{
   width: 600rpx;
   height: 100%;
-  background-color: #42B0CA;
-  border-radius: 10rpx;
+  background-color: var(--main-color);
+  border-radius: 20rpx;
   color: #ffffff;
+}
+.category-edit{
+  width: 44rpx;
+  height: 44rpx;
+}
+.del-box{
+  width: 40rpx;
+  height: 40rpx;
+  background: #FF6E6E;
+  position: relative;
+  border-radius: 50%;
+}
+.del-box.del-disabled{
+  background: #E2E2E2;
+}
+.del-box::after{
+  content: "";
+  width: 22rpx;
+  height: 4rpx;
+  background: #FFFFFF;
+  border-radius: 4rpx; 
 }

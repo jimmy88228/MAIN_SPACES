@@ -1,9 +1,0 @@
-{
-  "navigationBarTitleText": "会员中心",
-  "usingComponents": {
-    "user-header": "./modules/header/header",
-    "order-bar": "./modules/order-bar/order-bar",
-    "user-service": "./modules/user-service/user-service",
-    "staff-service": "./modules/staff-service/staff-service"
-  }
-}

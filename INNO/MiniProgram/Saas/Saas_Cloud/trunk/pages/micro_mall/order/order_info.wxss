@@ -407,6 +407,7 @@ image {
     bottom: 0px;
     display: flex;
     align-items: center;
+    z-index: 99;
 }
 
 .order_opreate_btns_stay {

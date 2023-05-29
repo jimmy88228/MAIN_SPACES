@@ -1,0 +1,8 @@
+{
+  "navigationBarTitleText": "创建活动",
+  "navigationStyle": "custom",
+  "usingComponents": {
+    "goods-list":"./cps/goods-list/index",
+    "time-picker":"/components/common/view/time-picker/index"
+  }
+}

@@ -1,7 +1,7 @@
 <template>
   <view>
     <view v-if="!showLoading" class="article-detail-page">
-      <page-nav isClose="true"></page-nav>
+      <page-nav  mode="Close"></page-nav>
       <template v-if="!articleDetail.articleUrl && articleDetail.articleContent">
         <view class="clamp2 bold font-40 m-b-25">{{
         articleDetail.articleTitle

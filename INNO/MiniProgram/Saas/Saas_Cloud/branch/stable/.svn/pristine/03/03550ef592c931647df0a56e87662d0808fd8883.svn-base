@@ -1,0 +1,20 @@
+<view class="main">
+    <view class='header'>
+        <!-- <image src='{{}}' class="img_search" mode="aspectFit"></image>
+        <input class='input' bindconfirm='handle_confirm' data-type="search_value" placeholder='请输入关键字' placeholder-class='placeholder_style'> </input> -->
+        <search id="search"  searchType="{{search_type}}"  bindsearchCallback="searchCallback"></search>
+    </view>
+    <scroll-view hidden="{{none}}" scroll-y class='scroll' bindscrolltolower="handle_scroll">
+        <view wx:for="{{data_list}}" wx:for-index="sort_num" catchtap='handle_select' data-id="{{item.id}}" data-name="{{item.name}}" data-num="{{sort_num}}"  wx:key='{{item.id}}'  class='data_list_item'>
+            <view class='text font_28 bold C_333'>{{item.name}}</view>
+            <image class='img_select' mode="aspectFit" src="{{item.isSelect?ls_icon2:ls_icon1}}"></image>
+         </view> 
+    </scroll-view> 
+    <view class='no_data_area' hidden="{{!none}}">暂时还没有数据</view>
+</view>
+<view class='fix_bottom'>
+    <view class='fix_bottom_box'>
+        <view class='bottom_text C_333 font_28'><text>共选择</text><text class='bold'>{{selectedNum}}</text><text>个{{showTitle}}</text><text class='font_24 C_7f'>(最多选择{{maxNum}}个)</text></view>
+    <button class='button_confirm ' style='background:{{brand_info.style.bg_color}};' catchtap='button_confirm'>确定</button>
+    </view>
+</view>

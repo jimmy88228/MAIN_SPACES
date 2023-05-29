@@ -8,7 +8,11 @@ Page(App.BP({
     showImg: true,
     edit: "",
     del: "",
-    isEmpty: false
+    isEmpty: false,
+    iconWeChat:App.SH.base64['addr-weChat'],
+    iconAdd:App.SH.base64['addr-add'],
+    iconEdit:App.SH.base64['addr-edit'],
+    iconDel:App.SH.base64['addr-del'],
   },
   page:0,
   hasMore: true,
@@ -56,6 +60,7 @@ Page(App.BP({
    * 新增地址
   */
   addNewAddress:function(){
+    this._throttle('addNewAddress');
     App.StorageH.remove("editAddr");
     if(this.options.userToken){
       wx.navigateTo({
@@ -68,6 +73,7 @@ Page(App.BP({
     })
   },
   getWxAddress(){
+    this._throttle('getWxAddress');
     let that = this;
     App.AS.checkAuthorize('scope.address', function(bool) {
       retainSessionH.saveRetainSession({
@@ -92,6 +98,7 @@ Page(App.BP({
    * 删除地址
    */
   delAddress:function(e){
+    this._throttle('delAddress');
     let that = this;
     let addr_id = e.currentTarget.dataset.addr_id;
     wx.showModal({
@@ -109,6 +116,7 @@ Page(App.BP({
    * 编辑地址
    */
   editAddress: function (e) {
+    this._throttle('editAddress');
     let dataset = e.currentTarget.dataset;
     let index = dataset.index;
     let addr_data = this.data.addr_list[index];
@@ -122,10 +130,9 @@ Page(App.BP({
     wx.navigateTo({
       url: '/pages/main/address/address-edit/index',
     })
-  },
-
+  }, 
   setDafaultAddr:function(e){
-    let that = this;
+    this._throttle('setDafaultAddr')
     let is_default = e.currentTarget.dataset.is_default;
     let addr_id = e.currentTarget.dataset.addr_id;
     let storage = App.StorageH.get('userChoiceData') ||{};
@@ -289,7 +296,7 @@ function bindWxAddress(address){
         return Promise.resolve(e);
       }
     }
-    App.SMH.showToast({
+    App.SMH.showToast({ //保留--多了e.data的判断
       "title": e && e.msg || "操作失败"
     })
     return Promise.reject(e);

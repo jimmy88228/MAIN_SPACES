@@ -28,13 +28,14 @@
                 <view class="item">
                   <view class="msg-box flex-s-c">
                     <view class="relative">
-                      <image
-                      :lazy-load="true"
-                        :src="item.logo.trim() ? item.logo : staticAddress+activityIcon"
+                      <ori-image
+                        :lazy-load="true"
+                        :src="item.logo.trim() ? item.logo : setStaticAddress(activityIcon)"
                         @error="imgerror($event, index, pIndex)"
-                        class="img"
+                        customStyle=" width: 180rpx; height: 180rpx; border-radius: 12rpx;"
+                        class="f-shrink-0"
                         mode="aspectFill"
-                      />
+                      ></ori-image>
                       <view
                         class="subscript"
                         v-if="
@@ -101,7 +102,7 @@
                     @click="report"
                     :data-state="item.joinState"
                     data-p-index="pIndex"
-                    :data-url="`pages/report/report-info/report-info?recordId=${item.recordId}`"
+                    :data-url="`pages/report-info/report-info?recordId=${item.recordId}`"
                   >
                     <view class="active-btn">查看报告</view>
                   </view>
@@ -121,9 +122,12 @@
 
 <script>
 import SMH from "@/common/helper/show-msg-handler";
-
+import oriImage from "@/components/ori-comps/image/ori-image";
 const app = getApp();
 const pageOption = Page.BasePage({
+  components:{
+    oriImage
+  },
   data() {
     return {
       activityIcon: "/activity-icon.jpg",
@@ -268,12 +272,6 @@ export default pageOption;
       padding: 25rpx;
       box-sizing: border-box;
       // border-bottom: 1px solid rgba($color: #979797, $alpha: 0.2);
-    }
-    .img {
-      width: 180rpx;
-      height: 180rpx;
-      border-radius: 12rpx;
-      flex-shrink: 0;
     }
     .content {
       padding-left: 25rpx;

@@ -94,13 +94,16 @@
 </template>
 
 <script>
-  import oriPopup from "@/components/ori-comps/popup/ori-popup";
   import SMH from "@/common/helper/show-msg-handler.js"
   import courseManage from "@/common/manager/course-manage.js";
 
   const app = getApp();
   const pageOption = Page.BasePage({
     props: {
+      activityId:{
+        type: Number,
+        default: 0
+      },
       courseDetail: {
         type: Object,
         default: {}
@@ -120,9 +123,6 @@
     },
     data() {
       return {};
-    },
-    components: {
-      oriPopup
     },
     computed: {
       ids() {
@@ -158,6 +158,9 @@
             title: '请按顺序解锁课题噢'
           })
           return
+        }
+        if(!courseManage.recordId){
+          courseManage.getRecordId(this.activityId)
         }
         console.log("currentTarget", currentTarget);
         let chaptersIndex = String(currentTarget.dataset.chaptersIndex) || "";

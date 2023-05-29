@@ -5,63 +5,72 @@ Page(App.BP({
     list: [],
     nomore: false,
     sysScroll:true,
+    isEdit:false,
+    curSel:{}
   },
   onLoad() {
     this.requestParams = {
       pageSize: 20,
       pageIndex: 1
     }
-    this.refresh();
+    this.setView({ 
+      createPopRef: { get: () => this.findView("#create-pop") }, 
+    })
+    this.loadData();
   }, 
   onfocus() {
     console.log("focus")
     this.setData({sysScroll: false})
   },
   onblur () {
-    console.log("blure")
-
+    console.log("blure") 
     this.setData({sysScroll: true})
   },
-  handleAddCateBtnTap() {
-    this.createPop = this.createPop || this.selectComponent("#create-pop");
-    this.createPop.showModal()
+  handleAddCateBtnTap(e) {
+    let {item={},type} = this.getDataset(e)||{};
+    let {catName:name="",id=0} = item;
+    this.createPopRef.showModal(name,type)
     .then(catName => {
       this.showLoading();
-      return createOrUpdateCategoryInfo({catName, id: 0})
+      return createOrUpdateCategoryInfo({catName, id})
     })
     .then(() => {
-      App.SMH.showToast({title: "添加商品分类成功"});
-      this.refresh();
+      App.SMH.showToast({title:`${id?'编辑':'添加'}分类成功`});
+      this.tempRefresh();
     })
     .finally(() => {
       this.hideLoading();
     })
     .catch(() => {})
   },
-  refresh() {
+  tempRefresh(){
+    this.setData({nomore:false});
+    let {pageIndex, pageSize} = this.requestParams || {};
+    this.requestParams.tempPageIndex = pageIndex;
+    this.requestParams.tempPageSize = pageSize;
+    this.requestParams.pageSize = Math.max(pageIndex-1,1) * pageSize;
     this.requestParams.pageIndex = 1;
-    this.setData({
-      nomore: false
+    return this.loadData().finally(()=>{
+      this.requestParams.pageIndex = Math.max(2,this.requestParams.tempPageIndex);
+      this.requestParams.pageSize = this.requestParams.tempPageSize;
+      // console.log('恢复',this.requestParams);
     })
-    this.getGoodsCategoryInfo()
   },
-  getGoodsCategoryInfo() {
-    if (this.data.nomore) return Promise.reject("没有更多数据了哦");
+  loadData() {
     let {pageIndex, pageSize} = this.requestParams || {};
     let _list = this.data.list || [];
     this.showLoading();
-    getGoodsCategoryInfo({pageIndex, pageSize})
+    return getGoodsCategoryInfo({pageIndex, pageSize})
       .then(data => {
         let {count, goodsCategoryInfoResps: dataList} = data || {};
         let list = pageIndex === 1 ? dataList : [..._list, ...dataList];
         let nomore = list.length >= count;
+        this.requestParams.pageIndex += 1;
         this.setData({
           list,
           nomore
         })
-      })
-      .catch(err => {
-        App.SMH.showToast({title: err});
+        return data;
       })
       .finally(() => {
         this.hideLoading();
@@ -72,13 +81,28 @@ Page(App.BP({
       App.SMH.showToast({title: "已经到底啦"});
       return 
     }
-    this.requestParams.pageIndex++;
-    this.getGoodsCategoryInfo();
-  }
+    this.loadData();
+  },
+  toggle(){
+    let isEdit = this.data.isEdit; 
+    this.setData({isEdit:!isEdit});
+  },
+  del(e){
+    let catId = this.getDataset(e,'id')||{};
+    this._showModal({content:"确定要删除该分类吗?"}).then(()=>{
+      return deleteCategoryInfo({catId}).then(res=>{
+        if(res.code == 1){
+          return this.tempRefresh().then(()=>{
+            App.SMH.showToast({title:"删除成功"});
+          });
+        }
+        return res;
+      })
+    })
+  },
 }))
 
 function getGoodsCategoryInfo(params) {
-
   return App.Http.QT_GoodsApi.getGoodsCategoryInfo({
     params
   })
@@ -100,4 +124,9 @@ function createOrUpdateCategoryInfo(data) {
       }
       return Promise.reject(res.msg || "添加商品分类失败")
     })
+}
+function deleteCategoryInfo(data) {
+  return App.Http.QT_GoodsApi.deleteCategoryInfo({
+    data
+  })
 }

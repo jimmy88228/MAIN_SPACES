@@ -477,12 +477,18 @@ export default {
   .msg-box{
     margin-top: 45rpx;
   }
-  .title{
+   .title{
+    height: 30rpx;
     color: #7f7f7f;
     margin-right: 60rpx;
     text-align: justify;
-    text-align-last:justify;
-    min-width:125rpx;
+    // text-align-last:justify;
+    width:125rpx;
+    &:after{  
+      content: '';
+      display: inline-block;
+      width: 100%;
+    }
   }
   .title,.msg{
     display: inline-block;

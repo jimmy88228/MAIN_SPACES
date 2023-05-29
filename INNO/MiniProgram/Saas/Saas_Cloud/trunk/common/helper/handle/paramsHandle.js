@@ -167,10 +167,11 @@ function getStaffIdByStoreStaffCode(storeStaffCode){
     }
   }).then(e=>{
     if(e.code == 1){
-      if(e.data){
-        this.saveParams({store_staff_id:e.data.staff_id || 0});
+      let data = e.data||{};
+      if(data){
+        this.saveParams({store_staff_id:data.staff_id || 0});
       }
-      return Promise.resolve(e.data.staff_id);
+      return Promise.resolve(data.staff_id||0);
     }
     return Promise.reject(e)
   })
@@ -202,7 +203,7 @@ function bindFromStore(p_scene) {
   let store_id = p_scene.store_id || p_scene.storeId || 0;
   let store_code = p_scene.store_code || p_scene.storeCode || 0;
   store_id = parseInt(store_id);
-  if (!LM.userToken || (!store_id && !store_code)) return;
+  if (!LM.userToken || (!store_id && !store_code)) return Promise.reject();
   return UserApi.bindFromStore({
     data: {
       "storeCode": store_code,
@@ -218,7 +219,7 @@ function bindFromStore(p_scene) {
     if (e.code == 1) {
       return Promise.resolve();
     }
-    return Promise.reject("")
+    return Promise.reject()
   })
 }
 

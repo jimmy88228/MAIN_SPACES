@@ -17,6 +17,9 @@ Page(App.BP({
   },
   onLoad: function (options) {
     this.options = options;
+    this.setView({
+      areaSelectRef:{ get: () => this.findView("#areaSelect") }, 
+    })
   },
   onShow(){
     getEditAdress.call(this,this.options);
@@ -53,8 +56,7 @@ Page(App.BP({
   showRegionSelect:function(){
     let that = this;
     let address_data = this.data.address_data;
-    this.areaSelect = this.areaSelect || this.selectComponent("#areaSelect");
-    this.areaSelect.SwitchAreaSelect(address_data, function (info) {
+    this.areaSelectRef.SwitchAreaSelect(address_data, function (info) {
       confirmRegionSelect.call(that,info);
     });
   },
@@ -109,6 +111,7 @@ Page(App.BP({
     })
   },
   saveAddress:function(){
+    this._throttle('saveAddress');
     var address_data = this.data.address_data;
     var check_null = this.data.check_null;
     var error_txt='';

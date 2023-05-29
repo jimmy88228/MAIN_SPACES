@@ -1,0 +1,9 @@
+{ 
+  "navigationBarTitleText": "物流公司",
+  "disableScroll":true,
+  "usingComponents": {
+    "quick_find":"/components/common/business/quick-find/index",
+    "list":"/components/common/business/quick-find/module/list",
+    "quick":"/components/common/business/quick-find/module/quick"
+  }
+}

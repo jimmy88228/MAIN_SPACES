@@ -1,5 +1,6 @@
 import CDateH from "../../../common/helper/handle/cacheDateHandle.js"
 import ShakingHelp from "../../../common/helper/shakingHelp.js"
+import FISH from "../../../common/helper/seven-fish-helper"
 const PAGE_TYPE = "CUSTOM_INDEX";
 var app = getApp();
 const SerH = 90;

@@ -1,0 +1,10 @@
+{
+  "navigationStyle": "custom",
+  "usingComponents": {
+    "custom-nav": "/components/common/view/custom-nav/index",
+    "user-header": "./modules/header/header",
+    "order-bar": "./modules/order-bar/order-bar",
+    "user-service": "./modules/user-service/user-service",
+    "staff-service": "./modules/staff-service/staff-service"
+  }
+}

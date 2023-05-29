@@ -32,19 +32,21 @@ Component(App.BC({
       state:1,
       title:"待付款",
       key:'wait_to_pay',
-      img:"http://devimgtest.innourl.com/SAAS_IMAGE/image/show/assets-icons-cargo_unpaid.png",
-      url:"/pages/micro_mall/order/order_list?orderType=wait_to_pay"
+      url:"/pages/micro_mall/order/order_list?orderType=wait_to_pay",
     },{
       state:2,
       title:"发货中",
       key:'wait_to_shipping',
-      img:"http://devimgtest.innourl.com/SAAS_IMAGE/image/show/assets-icons-cargo_deliver.png",
       url:"/pages/micro_mall/order/order_list?orderType=wait_to_shipping"
     },{
       state:3,
-      title:"已发货",
+      title:"待提货",
+      key:'wait_to_pickupgoods',
+      url:"/pages/micro_mall/order/order_list?orderType=wait_to_pickupgoods"
+    },{
+      state:4,
+      title:"已完成",
       key:'wait_to_receiving',
-      img:"http://devimgtest.innourl.com/SAAS_IMAGE/image/show/assets-icons-cargo_receive.png",
       url:"/pages/micro_mall/order/order_list?orderType=wait_to_receiving"
     },],
     baseInfo:{

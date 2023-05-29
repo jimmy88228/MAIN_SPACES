@@ -79,17 +79,19 @@ height:110rpx;
 margin:0 auto;
 position: relative;
 z-index: 1;
+display: block;
 }
 .user_code_txt{
-padding:10rpx;
-text-align:center;
+  padding:0 10rpx;
+  height: 50rpx;
+  text-align:center;
 }
 .user_code_cover{
   position: absolute;
   top: 0;
   left: 50%;
   transform: translateX(-50%);
-  width: 669rpx;
+  width: 670rpx;
   height: 100%;
   z-index: 10;
 }

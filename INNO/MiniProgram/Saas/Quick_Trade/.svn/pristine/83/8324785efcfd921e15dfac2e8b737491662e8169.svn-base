@@ -1,0 +1,8 @@
+@import "/common/base/page/default-wxss/index.wxss";
+.order-list-box{
+  opacity: 0;
+  transition: all 0.3s;
+}
+.order-list-box.inited{
+  opacity: 1;
+}

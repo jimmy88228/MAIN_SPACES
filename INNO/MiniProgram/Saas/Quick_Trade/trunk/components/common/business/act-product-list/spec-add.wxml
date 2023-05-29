@@ -1,0 +1,6 @@
+<template name="spec-add"> 
+  <view class="spec-add flex-c-c C_7f" hover-class="active" bindtap="specAdd" data-cat-id="{{specCatId}}">
+    <span>+</span>
+    <span>添加规格</span>
+  </view>
+</template>

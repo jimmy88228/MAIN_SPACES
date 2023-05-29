@@ -11,7 +11,7 @@
         <swiper class="swiper" :current="current" circular :indicator-dots="imgSwiperOpts.indicatorDots"
           :autoplay="imgSwiperOpts.autoplay" :interval="imgSwiperOpts.interval" :duration="imgSwiperOpts.duration">
           <swiper-item v-for="(item,i) in acInfo.pictureList" :key="i">
-            <image class="cover-image" :src="item.picture" mode="aspectFill" />
+            <oriImage class="cover-image" :src="item.picture" mode="aspectFill" />
           </swiper-item>
         </swiper>
       </view>
@@ -59,6 +59,7 @@
 <script>
   import mpHtml from '@/common/support/mp-html/mp-html'
   import SIH from "@/common/helper/sys-infos-handler"
+  import oriImage from "@/components/ori-comps/image/ori-image"
   import LoadingView from '@/components/css3/loading/loading.vue';
 
   const app = getApp();
@@ -66,7 +67,7 @@
     components: {
       mpHtml,
       LoadingView,
-
+      oriImage,
     },
     data() {
       return {
@@ -108,7 +109,7 @@
     // onShareAppMessage(e){},
     methods: {
       loadData() {
-        this._getUserInfo().then((res) => {
+        this._getAuthUserInfo().then((res) => {
           this.userInfo = res;
         });
         this.userInfo = {

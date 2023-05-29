@@ -8,6 +8,12 @@
 			:loading="isLoading" :open-type="openType" :type="type" @click="onAuth">
 			<slot></slot>
 		</button>
+		<template v-else-if="openType == 'chooseAvatar'" >
+			<button class="custom-auth-btn" :style="customStyle" :disabled="disabled" :loading="isLoading" :open-type="openType" :type="type" @chooseavatar="chooseavatar">
+			<slot></slot>
+				
+			</button>
+		</template>
 		<template v-else-if="openType == 'getPhoneNumber'">
 			<button class="custom-auth-btn" :style="customStyle" :disabled="disabled" @getphonenumber="onGetphonenumber"
 				:open-type="openType" :type="type">
@@ -22,6 +28,7 @@
 </template>
 
 <script>
+  import UniApi from "@/common/support/tools/uni-api-promise.js";
 	import appUtil from "../../common/support/utils.js";
 	import Conf from "../../config/config.js";
 	import SMH from "@/common/helper/show-msg-handler.js"
@@ -88,6 +95,45 @@
 				// 	e
 				// });
 				e.detail.iv && this.$emit("getphonenumber", { openType: this.openType,e })
+			},
+				// 头像选择功能
+			chooseavatar({detail}){
+				// console.log(detail.avatarUrl,this.$Apis.uploadWxAvatarUrl,"获取用户头像")
+				let imageUrl = {
+					path:'',
+					url:''
+				}
+
+				let params = {
+						url:this.$Apis.uploadWxAvatarUrl.u,
+						filePath:detail.avatarUrl,
+						name:'image',
+            header:{
+							'content-type':'multipart/form-data',
+							appType:Conf.appType||"",
+							recordId:app.LM.recordId || "",
+              userToken:app.LM.userToken||"",
+              platformType:Conf.platformSrc||"",
+              appCode:Conf.appCode||"",
+							authUserToken:app.LM.userToken || ""
+            },
+						formData:{
+							sessionId: app.LM.sessionId || 0
+						}
+				}
+
+				UniApi.uploadFile({
+					...params
+				}).then(res=>{
+					imageUrl = JSON.parse(res.data).data || ""
+						appUtil.throttle(()=>{
+							app.LM.updateUserProfile(true,imageUrl.path).then((res)=>{
+								this.$emit("authed", { res, openType: this.openType,url:imageUrl.url });
+							})
+							
+						}, this.limitTime)()
+					this.$emit("chooseavatar",imageUrl)
+				})
 			},
 			onAuth(e) {
 				appUtil.throttle(() => {

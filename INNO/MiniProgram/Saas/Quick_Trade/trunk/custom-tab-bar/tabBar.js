@@ -1,6 +1,6 @@
 const tabBarList = [ // 这里调整了，记得在app.json里也调整一下，给超低版本微信兼容
   {
-    "pagePath": "pages/tabs/index/index",
+    "pagePath": "pages/micro_mall/index/index",
     "text": "首页",
     "iconPath": "/assets/images/tabBar/hot.png",
     "selectedIconPath": "/assets/images/tabBar/hot-active.png",
@@ -16,7 +16,7 @@ const tabBarList = [ // 这里调整了，记得在app.json里也调整一下，
 ]
 
 let tabKeys = {};
-tabBarList.forEach(item => {tabKeys[item.pagePath] = item.name}); // {"pages/tabs/index/index": "userCenter"}
+tabBarList.forEach(item => {tabKeys[item.pagePath] = item.name}); // {"pages/micro_mall/index/index": "userCenter"}
 
 export {
   tabBarList,

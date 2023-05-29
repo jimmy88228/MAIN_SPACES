@@ -515,6 +515,7 @@ export const OpKind = {
   ["STAFF_COUPON"]:"STAFF_COUPON", //分销派券
   ["FRIEND_INVITE"]:"FRIEND_INVITE", //分销派券
   ["BONUS_ACTIVITY"]:"BONUS_ACTIVITY", //付费购券
+  ["STAFF_WECHAT"]:"STAFF_WECHAT"
 }
 
 export const ShareType = {
@@ -530,7 +531,9 @@ export const ShareConf = {
   ["pages/micro_mall/user/user"]:"user_center",
   ["pages/micro_mall/index/index"]:"custom_page",
   ["pages/micro_mall/custom_page/custom_page"]: "custom_page",
-  ["pages/micro_mall/guide_point/guide_point"]:"custom_page"
+  ["pages/micro_mall/guide_point/guide_point"]:"custom_page",
+  ["pages/micro_mall/point/point_goods_list/point_goods_list"]:"point_mall",
+  ["pages/store_pay/pay_center/pay_center"]:"smart_pay",
 }
 
 export const PageLogin = {

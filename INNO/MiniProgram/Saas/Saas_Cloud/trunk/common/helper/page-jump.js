@@ -14,6 +14,7 @@ import {
 import WxGH from "./handle/wxGroupHandle.js";
 import ChannelsLiveH from "./handle/channelsLiveHandle.js";
 import wxSubscribe from "./handle/wxSubscribe.js";
+import StringUtl from "../support/utils/string-util.js";
 
 const subConfig = {
   COUPON: {
@@ -299,9 +300,18 @@ export const FuncType = {
     type: "goodsBrandUrl",
     action: "BRAND_GOODS",
   },
+  newRecommend: { //新品推荐
+    type: "newRecommend",
+    action: "NEW_Recommend",
+  },
+  contactStaff: { //新品推荐
+    type: "contactStaff",
+    action: "contactStaff",
+  },
+
 }; 
 
-function PageJump(params) {
+function PageJump(params,that) {
   console.log('进来',params)
   params = initObj(params);
   let obj = params.link || params;
@@ -394,7 +404,11 @@ function PageJump(params) {
       link_url = obj.sn;
       actionParams = 'link_url=' + encodeURIComponent(link_url)
       handleCustomChannel(link_url, FuncType.customUrl.action); // 对于自定义链接，可能需要调多一个接口记录一下
-      if (link_url.indexOf("http") != -1) {
+      if (link_url.indexOf("func://pageJump") != -1 && !obj.rePageJump) { // 特殊的路径，可以再调用pageJump
+        let params = StringUtl.getUrlParam(link_url) || {};
+        params.rePageJump = 1; // 防止被恶意无限调用
+        return PageJump(params);
+      }else if (link_url.indexOf("http") != -1) {
         url = "";
         navigateToWebView(link_url);
       } else {
@@ -532,18 +546,23 @@ function PageJump(params) {
     case FuncType.couponUrl.type:
       //一点领券
       if (!obj.id) return
-      actionParams = 'bonus_type_id=' + obj.id
-      beforeReceiveBonus(obj.id).then(() => {
-        postUserReceiveBonus({
-          related_id: obj.id,
-          page_id: obj.page_id
-        });
-      })
+      actionParams = 'bonus_type_id=' + obj.id;
+      obj.cb = couponCB;
+      postUserReceiveBonus({
+        related_id: obj.id,
+        page_id: obj.page_id,
+        cb:obj.cb,
+        check_qw_group:obj.check_qw_group||0
+      });
       break;
     case FuncType.goodsBrandUrl.type:
       //品牌模块
       actionParams = 'related_id=' + obj.id
       url = `/pages/micro_mall/category/category?func_type=BRANDCODE&${actionParams}`; //目前先写死BRANDCODE
+      break;
+    case FuncType.newRecommend.type:
+      //品牌模块 
+      url = `/pages/micro_mall/category/category?func_type=${FuncType.newRecommend.type}&days=${obj.day||0}`;
       break;
 
     
@@ -743,7 +762,8 @@ function PageJump(params) {
       url = "";
       if (!obj.related_id) return;
       actionParams = "bonus_type_id=" + obj.related_id;
-      beforeReceiveBonus(obj.related_id).then(() => {postUserReceiveBonus.call(this, obj);})
+      obj.cb = couponCB;
+      postUserReceiveBonus.call(this, obj)
       break;
     case FuncType.BRANDGOODS.type:
       if (obj.goods_id) {
@@ -833,7 +853,11 @@ function PageJump(params) {
       link_url = obj.link_url || obj.related_id;
       actionParams = 'link_url=' + encodeURIComponent(link_url);
       handleCustomChannel(link_url, FuncType.customUrl.action); // 对于自定义链接，可能需要调多一个接口记录一下
-      if (link_url.indexOf("http") != -1) {
+      if (link_url.indexOf("func://pageJump") != -1 && !obj.rePageJump) { // 特殊的路径，可以再调用pageJump
+        let params = StringUtl.getUrlParam(link_url) || {};
+        params.rePageJump = 1; // 防止被恶意无限调用
+        return PageJump(params);
+      } else if (link_url.indexOf("http") != -1) {
         url = "";
         navigateToWebView(link_url);
       } else {
@@ -856,6 +880,10 @@ function PageJump(params) {
     case FuncType.GOODSPACKAGE.type:
       actionParams = 'package_id=' + obj.related_id;
       url = '/pages/micro_mall/goods_collocation/goods_collocation?' + actionParams
+      break;
+    case FuncType.contactStaff.type: 
+      that.activeCustomerService && that.activeCustomerService();
+      !that.activeCustomerService && that.triggerEvent('contactStaff',);
       break;
     default:
       if (obj.goods_id && obj.goods_id != 0) {
@@ -1003,40 +1031,45 @@ function navigateToWebView(link){
   })
 }
 
-function beforeReceiveBonus(relatedId){
-  return wxSubscribe.subscribeGlobal({...subConfig['COUPON'], relatedId, extendId1: Math.ceil(Math.random() * 10000)})
-    .catch(err => {
-      if (err === "invokedError") {
-        SMH.showToast({title: '登录成功，请重新点击领取'})
-        return Promise.reject()
-      } else return Promise.resolve()
-    })
-}
-
 function postUserReceiveBonus(obj = {}) {
-  UserApi.postUserReceiveBonus({
-    data: {
-      userToken: LM.userKey,
-      brandCode: Conf.BRAND_CODE,
-      bonus_type_id: obj.related_id,
-      pageId: obj.page_id || 0,
-      wxGroupId: WxGH.groupId || ""
-    },
-    other: {
-      isShowLoad: true
-    }
-  }).then(e => {
-    let msg = "";
-    if (e.code == 1) {
-      msg = "领取成功，可到个人中心查看或直接下单用券";
-    } else {
-      msg = e.msg;
-    }
-    SMH.showToast({
-      title: msg,
-      duration: 3000
-    });
-  });
+  let p = Promise.resolve(0);
+  if (obj.check_qw_group == 1) p = getUserIsGroupChatWeChat(obj);
+  return p
+    .then((wxGroupType) => {
+      return UserApi.postUserReceiveBonus({
+        data: {
+          userToken: LM.userKey,
+          brandCode: Conf.BRAND_CODE,
+          bonus_type_id: obj.related_id,
+          pageId: obj.page_id || 0,
+          wxGroupId: WxGH.groupId || "",
+          wxGroupType,
+        },
+        other: {
+          isShowLoad: true
+        }
+      }).then(e => {
+        let msg = "";
+        if (e.code == 1) {
+          msg = "领取成功，可到个人中心查看或直接下单用券";
+          obj.cb && typeof(obj.cb) == 'function' && obj.cb(e.data,obj.curStatus);
+        } else {
+          msg = e.msg;
+        }
+        SMH.showToast({
+          title: msg,
+          duration: 3000
+        });
+        return e
+      }); 
+    })
+    .catch(err => {
+      console.log("postUserReceiveBonus error", err);
+      SMH.showToast({
+        title: err && err.msg || err || "领取失败",
+        duration:3000
+      });
+    })
 }
 
 function toMiniProgram(appId, path, envVersion) {
@@ -1055,6 +1088,31 @@ function toMiniProgram(appId, path, envVersion) {
   })
 }
 
+let couponCB = (relatedId,curStatus)=>{
+  if(curStatus != 'register'){
+    console.log('领券成功,开始订阅');
+    wxSubscribe.subscribeGlobal({...subConfig['COUPON'], relatedId, extendId1: Math.ceil(Math.random() * 10000)});
+    // wxSubscribe.subscribeGlobal({...BonusInfo,relatedId});
+  }else{
+    console.log('注册并领券成功,但无法自动调起订阅');
+  }
+}
 
+function getUserIsGroupChatWeChat(obj){
+  return UserApi.getUserIsGroupChatWeChat({
+    params: {
+      userToken: LM.userKey,
+      brandCode: Conf.BRAND_CODE,
+      bonusTypeId: obj.related_id,
+    },
+    other: {
+      isShowLoad: true
+    }
+  })
+  .then(res => {
+    if (res.code == "1" && res.data == "1") return Promise.resolve(1)
+    else return Promise.reject("领取失败，点击添加企微社群后即可领取")
+  })
+}
 
 export default PageJump; 

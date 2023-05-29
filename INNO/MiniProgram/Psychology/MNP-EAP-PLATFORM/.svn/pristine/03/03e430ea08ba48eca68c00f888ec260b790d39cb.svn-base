@@ -1,9 +1,0 @@
-export default {
-  EXCLUDE_PATH: [
-      "pages/index/index",
-      "pages/platform-index/platform-index",
-      "pages/user/user"
-  ],
-  INDEX_PATH: "pages/index/index",
-  PLATFORM_INDEX_PATH:"pages/platform-index/platform-index"
-};

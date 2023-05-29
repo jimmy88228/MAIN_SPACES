@@ -26,8 +26,8 @@
       </view>
       <view class="edit_item flex-b-c">
         <view class="font-28 shrink0 m-r-45">学年</view>
-        <view class="font-28 bold">
-          <ori-input :value="formData.schoolYear" @onInput="e=>onInput(e,'schoolYear')" placeholder="请输入"
+        <view class="font-28 bold C_B2">
+          <ori-input :disabled="true" :value="formData.schoolYear" @onInput="e=>onInput(e,'schoolYear')" placeholder="请输入"
             placeholderClass="hold-style" class="input content" maxlength="4" type="number"
             boxStyle="padding:5rpx 0;height: calc(1.4rem + 40rpx);text-align: right;">
           </ori-input>

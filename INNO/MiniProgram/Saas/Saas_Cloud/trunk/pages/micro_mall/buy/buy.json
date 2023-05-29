@@ -7,6 +7,7 @@
         "redPopup":"/pages/micro_mall/buy/modules/redPopup/redPopup",
         "choose-coupon":"/pages/micro_mall/buy/modules/chooseCoupon/buy_coupon",
         "signTip":"/pages/micro_mall/buy/modules/signTip/signTip",
-        "promoteAssistance":"/components/promote-assistance/promote-assistance"
+        "promoteAssistance":"/components/promote-assistance/promote-assistance",
+        "discountTip":"/pages/micro_mall/buy/modules/discountTip/discountTip"
   }
 }

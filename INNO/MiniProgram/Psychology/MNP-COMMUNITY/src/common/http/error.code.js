@@ -32,41 +32,7 @@ export const checkTokenValid = function (e) {
 		})
 		return Promise.resolve();
 		//#endif
-	}
-	// else if(e.code == -40001){ // 刷新子token
-	// 	return LM.logout('bsnUserToken').loginBsnAsync()
-	// }else if(e.code == -40004 || e.code == -40005){
-	// 	let page = getCurrentPages().slice(-1)[0] || {};
-	// 	let route = page.route || '';
-	// 	let params = Tools.paramsByJson(page.options);
-	// 	let fromRoute = params ? encodeURIComponent(route + "?" + params) : encodeURIComponent(route);
-	// 	LM.logout('bsnUserToken');
-	// 	fromRoute = '/' + fromRoute;
-	// 	if(route == loginPage) fromRoute = "";
-	// 	if(e.code == -40004 ){ //-40004 需要重新选择子用户
-	// 		let targetRoute = 'pages/user-switch/user-switch';
-	// 		if(route != targetRoute){
-	// 			setTimeout(()=>{
-	// 				uni.navigateTo({
-	// 					url:`/${targetRoute}?fromRoute=${fromRoute}`
-	// 				})
-	// 			}, 1500)
-	// 		}
-	// 	} else { //  -40005 需要绑定测评子用户
-	// 		Sysm.getSysConf('applet_login_type').finally(()=>{ // 检测登录方式
-	// 			let targetRoute = Sysm.sysConf['applet_login_type'] == 'password' ? 'pages/login/login' : 'pages/information/information'
-	// 			if(route != targetRoute){
-	// 				setTimeout(()=>{
-	// 					uni.navigateTo({
-	// 						url:`/${targetRoute}?fromRoute=${fromRoute}`
-	// 					})
-	// 				})
-	// 			}
-	// 		})
-	// 	}
-	// 	return Promise.reject(e);
-	// }
-	else if (e.code == -40006) {
+	}else if (e.code == -40006) {
 		setTimeout(() => {
 			uni.navigateBack()
 		}, 1500)

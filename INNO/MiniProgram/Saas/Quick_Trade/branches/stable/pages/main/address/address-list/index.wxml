@@ -1,0 +1,64 @@
+<!-- public 必须是第一个元素 -->
+<include src="/common/base/page/index.wxml" />
+
+<!--pages/micro_mall/address/address_list.wxml-->
+<view class="address_page">
+  <view class="add_address_btns">
+    <view class="add_address_btn">
+      <button class="add_wx_addr_btn add_btn" hover-class="active" catchtap="getWxAddress">
+        <ori-image ext-class="addr_icon" src="{{iconWeChat}}" mode="aspectFit" />
+        <text class="new_addr_txt">获取微信地址</text>
+      </button>
+    </view>
+    <view class="btns_stay"></view>
+    <view class="add_address_btn">
+      <button class="add_addr_btn add_btn" hover-class="active" bindtap="addNewAddress">
+        <ori-image ext-class="addr_icon add_addr_icon" src="{{iconAdd}}" mode="aspectFit" />
+        <text class="new_addr_txt">添加新地址</text>
+      </button>
+    </view>
+  </view>
+  <block hidden="{{showImg}}">
+    <view class="address_list" >
+      <view class="addr_item {{item.is_default == 1 ? 'selected' : ''}}" data-addr_id="{{item.address_id}}" data-is_default="{{item.is_default}}" bindtap="setDafaultAddr"  wx:for="{{addr_list}}" wx:key="index">
+        <view class="item_info">
+          <text class="tit">收 件  人 ：</text>
+          <text class="val">{{item.consignee}}</text>
+        </view>
+        <view class="item_info">
+          <text class="tit">所在地区：</text>
+          <text class="val" data-province="{{item.province}}" data-district="{{item.district}}" data-city="{{item.city}}">{{item.province_str}}-{{item.city_str}}-{{item.district_str}}</text>
+        </view>
+        <view class="item_info">
+          <text class="tit">详细地址：</text>
+          <text class="val">{{item.address}}</text>
+        </view>
+        <view class="item_info">
+          <text class="tit">手机号码：</text>
+          <text class="val">{{item.mobile}}</text>
+        </view>
+
+        <view class="addr_operation">
+          <view class="addr_operation_l">
+            <view class="edit_addr" data-index="{{index}}" catchtap="editAddress">
+              <ori-image ext-class="img-op" src="{{iconEdit}}" mode="widthFix" />
+              <text>编辑</text>
+            </view>
+            <view class="del_addr" data-addr_id="{{item.address_id}}" catchtap="delAddress">
+              <ori-image ext-class="img-op" src="{{iconDel}}" mode="widthFix" />
+              <text>删除</text>
+            </view>
+          </view>
+          <view class="addr_operation_r">
+            <view class="set_default_btn" hover-class="active" wx:if="{{ visit_type == 'check' }}">设置默认</view>
+            <view  class="select_addr_btn" wx:else>选择地址</view>
+          </view>
+        </view>
+      </view>
+    </view>
+    <view class="empty_state" wx:if="{{addr_list.length == 0 && isEmpty}}">
+      <image src="empty_icon" mode=""/>
+      <view class="empty_txt">暂无地址</view>
+    </view>
+  </block>
+</view>

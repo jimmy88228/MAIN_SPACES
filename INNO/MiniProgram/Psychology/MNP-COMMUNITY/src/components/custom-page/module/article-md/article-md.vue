@@ -99,7 +99,7 @@ const pageOption = Page.BasePage({
     articleDetail({ currentTarget }) {
       let id = currentTarget.dataset.id;
       console.log(currentTarget)
-      this.jumpAction(`/pages/article-detail/article-detail?id=${id}`);
+      this.jumpAction(`/pages/content-library/article-detail/article-detail?id=${id}`);
     },
     coverBackground(coverUrl){
       if(coverUrl == "" || coverUrl == "errorCover"){

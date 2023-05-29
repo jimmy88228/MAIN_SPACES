@@ -75,9 +75,9 @@ export default {
 				url = url.indexOf('http')>-1 && url.indexOf('http')<=1 && `/pages/web-view/web-view?url=${encodeURIComponent(url)}` || url;
 				url && url.slice(0,1) != '/' && (url = '/' + url);
 				if(!url){
-					SMH.showToast({
-						title: "敬请期待"
-					})
+					// SMH.showToast({
+					// 	title: "敬请期待"
+					// })
 					return;
 				}
 					UniApi.navigateTo({

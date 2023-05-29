@@ -57,25 +57,24 @@ function userRegister(showLoading, iData = {}) {
       return e.data;
     }
     return Promise.reject(e);
-  }).catch((error) => {
-    SMH.showToast({
-      title: error && error.errMsg || error.msg
-    })
-    return Promise.reject(error);
   })
+  // .catch((error) => {
+  //   SMH.showToast({
+  //     title: error && error.errMsg || error.msg
+  //   })
+  //   return Promise.reject(error);
+  // })
 }
 
 //登录请求
-function userLogin(sessionId, showLoading) {
-  return WxApi.login().then(e => {
-      return QT_RegApi.login({
-        data: {
-          sessionId
-        },
-        other: {
-          isShowLoad: showLoading
-        }
-      })
+function userLogin(sessionId, showLoading) { 
+    return QT_RegApi.login({
+      data: {
+        sessionId
+      },
+      other: {
+        isShowLoad: showLoading
+      }
     })
     .then(e => {
       if(e.code == 1){
@@ -90,6 +89,31 @@ function userLogin(sessionId, showLoading) {
       this._isCheckLogin = true;
     });
 }
+// function userLogin(sessionId, showLoading) {
+//   return WxApi.login().then(e => {
+//     console.log('原生login',e);
+//       return QT_RegApi.login({
+//         data: {
+//           sessionId
+//         },
+//         other: {
+//           isShowLoad: showLoading
+//         }
+//       })
+//     })
+//     .then(e => {
+//       if(e.code == 1){
+//         e.data = e.data || {};
+//         return e;
+//       }
+//       return Promise.reject(e)
+//     }).catch(error => {
+//       this.removeLoginData();
+//       return Promise.reject(error);
+//     }).finally(() => {
+//       this._isCheckLogin = true;
+//     });
+// }
 
 //获取用户信息
 function getUserExtraInfos(shareCode, isShowLoad = true) {
@@ -134,8 +158,8 @@ function createSession(showLoading, code) {
 //检查session
 function checkSession(showLoading, sessionId) {
   console.log('进来 checkSession')
-  return WxApi.checkSession().then(() => {
-    console.log("检测 checkWXSession");
+  return WxApi.checkSession().then((res) => {
+    console.log("检测 checkWXSession",res);
     return QT_RegApi.checkSession({
       params: {
         // brandCode: Conf.BRAND_CODE,
@@ -150,7 +174,7 @@ function checkSession(showLoading, sessionId) {
       }
       return Promise.reject(e);
     });
-  }).catch(error => {
+  }).catch(error => { //保留--多了e.data判断
     SMH.showToast({
       title: error.errMsg || error.msg
     })
@@ -192,7 +216,7 @@ function getUserProfile(desc = "", noAuthHandlerF) {
     }).catch(e => {
       console.log('进来 getUserProfile catch', e)
       let msg = e.errMsg || e.msg || "";
-      if(msg.indexOf('fail auth deny') == -1){
+      if(msg.indexOf('fail auth deny') == -1){ //非手动取消
         SMH.showToast({
           title: msg
         })
@@ -292,20 +316,22 @@ class LoginManager {
   //创建sessionId
   createWxSessionId(showLoading) {
     return WxApi.login()
-      .then(e => {
+    .then(e => {
+        console.log('微信Login',e);
         this.removeSessionId();
         return createSession.call(this, showLoading, e.code);
       }).then(sessionId => {
         console.log('createSession then',sessionId)
         this.saveSessionId(sessionId);
         return sessionId;
-      }).catch(error => {
-        console.log("createSession", error);
-        SMH.showToast({
-          title: error.errMsg || error.msg || "授权失败，请重试"
-        })
-        return Promise.reject();
-      });
+      })
+      // .catch(error => {
+      //   console.log("createSession", error);
+      //   SMH.showToast({
+      //     title: error.errMsg || error.msg || "授权失败，请重试"
+      //   })
+      //   return Promise.reject();
+      // });
   }
   //检测sessionId
   getWxSessionIdAsync(showLoading, isReject = false) {
@@ -463,10 +489,8 @@ class LoginManager {
       return h
     };
     this._csfh = h = CDateH.setCatchDate("checkStaff", 2).then(() => {
-      console.log('setCatchDate then')
       return checkIfStaffDstb.call(this);
     }).catch(() => {
-      console.log('setCatchDate catch')
       return Promise.resolve(this.staffInfo||{});
     }).finally(() => {
       this._csfh && delete this._csfh;
@@ -475,7 +499,6 @@ class LoginManager {
   }
   
   checkIfStore(checkCache = true) {
-    console.log('检测店员',this.storeInfo);
     if (!this.userToken) {
       return Promise.resolve({});
     }
@@ -489,11 +512,10 @@ class LoginManager {
     if (h) {
       return h
     };
-    this._csth = h = CDateH.setCatchDate("checkStore", 2).then(() => {
-      console.log('setCatchDate2 then')
+    console.log('检测店员',this.storeInfo);
+    this._csth = h = CDateH.setCatchDate("checkStore", 2).then(() => { //无缓存/缓存结束
       return getStoreStaffInfo.call(this);
-    }).catch(() => {
-      console.log('setCatchDate2 catch')
+    }).catch(() => { //缓存时间内
       return Promise.resolve(this.storeInfo||{});
     }).finally(() => {
       this._csth && delete this._csth;
@@ -602,7 +624,8 @@ class LoginManager {
 
   //get数据
   get isLogin() {
-    return !!this.userToken && !!this.userKey && !!this.openId;
+    return !!this.userToken && !!this.userKey;
+    // return !!this.userToken && !!this.userKey && !!this.openId;
   }
   get isCheckLogin() {
     return this._isCheckLogin || false;

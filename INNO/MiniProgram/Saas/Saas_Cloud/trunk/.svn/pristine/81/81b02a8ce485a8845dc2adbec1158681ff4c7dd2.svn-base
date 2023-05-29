@@ -1,0 +1,13 @@
+var checkIfNeedLogin = function(link = {}) { // 判断点击事件是否需要登录
+  if (link.code == 'couponUrl') return true; // 一点领券
+  else if (link.code == "customUrl" && typeof link.sn === "string" && link.sn.indexOf("thirdapi.3dic.cn") != -1) return true; // 仙库量体H5(goso在用)
+  else if (link.code == "LINKURL" && typeof link.link_url === "string" && link.link_url.indexOf("thirdapi.3dic.cn") != -1) return true; // 仙库量体H5(goso在用)
+  else if (link.code == "LINKURL" && typeof link.link_url === "string" && link.link_url.indexOf("func://pageJump") != -1) return true; // 进企微群领券
+  else if (link.code == "customUrl" && typeof link.sn === "string" && link.sn.indexOf("func://pageJump") != -1) return true; // 进企微群领券
+  else if (link.code == "contactStaff") return true; // 进企微群领券
+  else return false
+}
+
+module.exports = {
+  checkIfNeedLogin:checkIfNeedLogin,
+}

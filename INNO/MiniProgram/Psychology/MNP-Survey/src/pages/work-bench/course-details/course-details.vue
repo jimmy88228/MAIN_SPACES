@@ -26,12 +26,10 @@
             </view>
           </view>
         </view>
-        <!-- <scroll-view :scroll-into-view="'ids'+scrollIds" class="course-scroll-view" scroll-y> -->
         <view class="p-t-40">
-          <courseModule :scroll-height="scrollHeight" :scroll-into-view="'ids'+scrollIds" @clickItem="clickItem"
+          <courseModule :activityId="options.courseActivityId" :scroll-height="scrollHeight" :scroll-into-view="'ids'+scrollIds" @clickItem="clickItem"
             :courseDetail="courseDetail" ref="course"></courseModule>
         </view>
-        <!-- </scroll-view> -->
       </template>
       <template v-else>
         <view class="has-no-data flex-c-c flex-col">

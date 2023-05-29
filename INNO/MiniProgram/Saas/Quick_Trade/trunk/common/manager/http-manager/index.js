@@ -6,10 +6,9 @@ import WxApi from "../../utils/wxapi/index";
 import StoreH from "../../helper/store-helper/index"
 import {
   UserApiList,
-  DstbApiList,
-  // RegApiList, 
-  // VSlogApiList,
+  DstbApiList, 
   BarCodeApiList,
+  PayApiList,
 } from "./http-api";
 import {
   QT_UserApiList,
@@ -19,10 +18,11 @@ import {
   QT_GoodsApiList,
   QT_BuyApiList,
   QT_PayApiList,
+  QT_OrderReturnApiList
 } from "./qt-api";
 
 const apiDomain = Conf.api_domain || {};
-const platform_src = "WXAPP";
+// const platform_src = "QUICK_TRADE";
 
 /***********************************全局请求配置*************************************/
 EasyHttp.setRequestHandler(req => {
@@ -44,7 +44,7 @@ EasyHttp.setRequestHandler(req => {
   //默认请求头
   .setHeaders({
     "content-type": "application/json",
-    "platform_src": platform_src,
+    "platform_src": Conf.PLATFORM && Conf.PLATFORM.TYPE,
     "platformSrc": Conf.PLATFORM && Conf.PLATFORM.TYPE,
     "userToken": LM && LM.userToken || "",
     "brandCode": Conf.BRAND_CODE,
@@ -52,49 +52,53 @@ EasyHttp.setRequestHandler(req => {
   })
   //LOG拦截器
   .addInterceptor((req, proceed) => {
-    return proceed(req).catch(err => {
+    return proceed(req).then(resp => {
+      let other = req.other||{},msg=resp.msg||resp.errMsg||"";
+      if(resp.code != 1 && msg && !other.hideError){
+        SMH.showToast({title:msg})
+      }
+      return resp;
+    }).catch(err => {
       console.warn("请求错误", "Error:", req.url, "\n", {
         req,
         err
       });
       return Promise.reject(err);
-    });
+    }); 
   })
     //session，token自动更新拦截器
-    .addInterceptor((req, proceed) => {
-      return proceed(req).then(resp => {
-          let data = resp;
-          // let other = req.other;
-          if(data.code == 1001){//token失效
-            console.log('token失效')
-            LM.pastLogout();
-            return LM.loginAsync(false).then(()=>{
-              if (LM.isLogin && req.headers["userToken"] != LM.userToken){
-                req.headers["userToken"] = LM.userToken;
-                console.log("重新登录成功, 触发重发");
-                return proceed(req); //重发
-              }
-              return Promise.reject({ code: 1001, msg: "登录授权已过期，请刷新重试",});
+  .addInterceptor((req, proceed) => {
+    return proceed(req).then(resp => {
+        let data = resp;
+        if(data.code == 1001){//token失效
+          console.log('token失效')
+          LM.pastLogout();
+          return LM.loginAsync(false).then(()=>{
+            if (LM.isLogin && req.headers["userToken"] != LM.userToken){
+              req.headers["userToken"] = LM.userToken;
+              console.log("重新登录成功, 触发重发");
+              return proceed(req); //重发
+            }
+            return Promise.reject({ code: 1001, msg: "登录授权已过期，请刷新重试",});
+          })
+        } else if(data.code == 1002){ //未注册
+          
+        } else if(data.code == 10000){ // WxSessionKey已过期
+          LM.createWxSessionId(false).then(() => {
+            SMH.showToast({
+              title: "状态已过期，请重新授权",
+              duration: 3000,
             })
-          } else if(data.code == 1002){ //未注册
-            
-          } else if(data.code == 10000){ // WxSessionKey已过期
-            LM.createWxSessionId(false).then(() => {
-              SMH.showToast({
-                title: "状态已过期，请重新授权",
-                duration: 3000,
-              })
-            });
-            return Promise.reject({ ...data });
-          }
-          return data;
-      });
+          });
+          return Promise.reject({ ...data });
+        }
+        return data;
+    });
   })
   //数据预处理拦截器
   .addInterceptor((req, proceed) => {
-    console.log('reqreq',LM.userToken,req)
     req.headers && (req.headers.userToken = LM.userToken);
-    req.headers && (req.headers.storeId = StoreH.storeInfo && StoreH.storeInfo.storeId||0);
+    req.headers && (req.headers.storeId = (req.other && req.other.customStoreId) || (StoreH.storeInfo && StoreH.storeInfo.storeId) || 0);
     return proceed(req).then(resp => {
       if (resp.statusCode != 200) {
         return Promise.reject(resp);
@@ -119,9 +123,10 @@ EasyHttp.setRequestHandler(req => {
   .addInterceptor((req, proceed) => {
     let other = req.other;
     let showLoading = false;
-    if (other && other.isShowLoad) {
+    // if (!other || (other && (other.isShowLoad || other.isShowLoad != false))) {
+    if ((other && (other.isShowLoad || other.isShowLoad != false))) {
       showLoading = true;
-      SMH.showLoading({title: req.other.title || "加载中"});
+      SMH.showLoading({title: req.other && req.other.title || "加载中"});
     }
     return proceed(req).finally(() => {
       showLoading && SMH.hideLoading();
@@ -131,6 +136,7 @@ EasyHttp.setRequestHandler(req => {
 // 商城用户
 export const UserApi = new EasyHttp().setBaseUrl(apiDomain.USERAPI).addRequests(UserApiList);
 export const DstbApi = new EasyHttp().setBaseUrl(apiDomain.USERAPI).addRequests(DstbApiList);
+export const NewPayApi = new EasyHttp().setBaseUrl(apiDomain.NEWPAYAPI).addRequests(PayApiList);
 // 商城 码
 export const BarCodeApi = new EasyHttp().setBaseUrl(apiDomain.BARCODEAPI).addRequests(BarCodeApiList); 
 // 用户
@@ -146,11 +152,13 @@ export const QT_GoodsApi = new EasyHttp().setBaseUrl(apiDomain.QT_GOODSAPI).addR
 export const QT_BuyApi = new EasyHttp().setBaseUrl(apiDomain.QT_BUYAPI).addRequests(QT_BuyApiList);
 // 支付
 export const QT_NewPayApi = new EasyHttp().setBaseUrl(apiDomain.QT_NEWPAYAPI).addRequests(QT_PayApiList);
+export const QT_OrderReturnApi = new EasyHttp().setBaseUrl(apiDomain.QT_USERAPI).addRequests(QT_OrderReturnApiList);
 
 export default {
   UserApi,
   DstbApi,
   BarCodeApi,
+  NewPayApi,
   QT_UserApi,
   QT_RegApi,
   QT_DstbApi,
@@ -158,4 +166,5 @@ export default {
   QT_GoodsApi,
   QT_BuyApi,
   QT_NewPayApi,
+  QT_OrderReturnApi
 }

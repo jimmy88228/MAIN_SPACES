@@ -419,12 +419,8 @@ export const QT_GoodsApiList = {
     u: "/api/Goods/CreateOrUpdateCategoryInfo",
     m: "post"
   },
-  createOrUpdateSpecCategory: {
-    u: "/api/Goods/CreateOrUpdateSpecCategory",
-    m: "post"
-  },
-  createOrUpdateSpecInfo: {
-    u: "/api/Goods/CreateOrUpdateSpecInfo",
+  createOrUpdateSpecCategoryAll: {
+    u: "/api/Goods/CreateOrUpdateSpecCategoryAll",
     m: "post"
   },
   deleteSpecInfo: "/api/Goods/DeleteSpecInfo?specId={specId}",
@@ -441,6 +437,8 @@ export const QT_GoodsApiList = {
   getGoodsCategoryInfoDetail: "/api/Goods/GetGoodsCategoryInfoDetail?catId={catId}&pageIndex={pageIndex}&pageSize={pageSize}",
   checkProductInfo: "/api/Activity/CheckProductInfo?goodsId={goodsId}&activityId={activityId}&insert={insert}",
   deleteActivityGoods: "/api/Activity/DeleteActivityGoods?goodsId={goodsId}&activityId={activityId}",
+  deleteCategoryInfo:"/api/Goods/DeleteCategoryInfo?catId={catId}",
+  createOrUpdateSpec:"/api/Goods/CreateOrUpdateSpec?id={id}&specName={specName}",
 }
 
 //订单
@@ -476,6 +474,7 @@ export const QT_BuyApiList = {
   getInvoiceList:"/api/Order/GetInvoiceList?orderId={orderId}",
   getInvoiceInfo:"/api/Order/GetInvoiceInfo?orderId={orderId}&shippingId={shippingId}&invoiceNo={invoiceNo}",
   checkOrderPay:"/api/Order/CheckOrderPay?orderId={orderId}",
+  getOrderStatusRecord:"/api/Order/GetOrderStatusRecord?orderId={orderId}",
 
   /* 
   Checkout
@@ -530,4 +529,23 @@ export const QT_BuyApiList = {
 export const QT_PayApiList = {
   unifiedCloudShopOrder:"/api/Pay/UnifiedQuickTradeOrder?payType={payType}&orderId={orderId}&brandCode={brandCode}",
   unifiedCloudShopOrderByCode: "/api/Pay/UnifiedQuickTradeOrderByCode?payType={payType}&orderId={orderId}&brandCode={brandCode}"
+}
+
+export const QT_OrderReturnApiList = {
+  get_OrderCancelReasonList:"/api/AfterSale/Get_OrderCancelReasonList",
+  get_Order_Return_ReasonList:"/api/AfterSale/Get_Order_Return_ReasonList",
+  getApplyCancelOrder:"/api/AfterSale/GetApplyCancelOrder?orderId={orderId}&actionNote={actionNote}",
+  getCheckAfterSale:"/api/AfterSale/GetCheckAfterSale?Id={Id}&check={check}",
+  getRefund:"/api/AfterSale/GetRefund?Id={Id}&refundKind={refundKind}",
+  getUploadShipping:"/api/AfterSale/GetUploadShipping?Id={Id}&shippingId={shippingId}&refundType={refundType}&shippingName={shippingName}&shippingType={shippingType}&invoiceNo={invoiceNo}",
+  applyAfterSale:{
+    u:"/api/AfterSale/ApplyAfterSale",
+    m:'post',
+  },
+  getAfterSaleOrderDetail:"/api/AfterSale/GetAfterSaleOrderDetail?alterSaleId={alterSaleId}",
+  getAfterSaleList:"/api/AfterSale/GetAfterSaleList?refundType={refundType}&staffType={staffType}&searchStr={searchStr}&pageIndex={pageIndex}&pageSize={pageSize}",
+  get_User_AfterSaleOrderCount:"/api/AfterSale/Get_User_AfterSaleOrderCount",
+  get_Staff_AfterSaleOrderCount :"/api/AfterSale/Get_Staff_AfterSaleOrderCount",
+  getAfterSaleStatusRecord :"/api/AfterSale/GetAfterSaleStatusRecord",
+  
 }

@@ -5,6 +5,7 @@
     "swiper-mod":"/components/micro-page/micro-mix/items/component/ad-swiper/swiper",
     "group-head":"/components/micro-page/micro-mix/items/component/group-head/group-head",
     "mp-video":"/components/mp-module/mp-video/mp-video",
-    "btns":"/components/buttons/btns"
+    "btns":"/components/buttons/btns",
+    "contactStaff": "/components/pop/contactStaff/contactStaff"
   }
 }

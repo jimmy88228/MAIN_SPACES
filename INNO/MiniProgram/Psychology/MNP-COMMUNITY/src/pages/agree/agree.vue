@@ -1,6 +1,6 @@
 <template>
 	<view class="agree-page">
-		<view>本指引是心理测评小程序开发者“广州市白云区精神卫生中心”（以下简称“开发者”）为处理你的个人信息而制定。</view>
+		<view>本指引是心理测评小程序开发者“{{loginData.agreementCustomer || ''}}”（以下简称“开发者”）为处理你的个人信息而制定。</view>
 		<!-- <view>本指引是心理测评小程序开发者“广东英朗信息技术”（以下简称“开发者”）为处理你的个人信息而制定。</view> -->
 		<view class="agree-row">开发者处理的信息</view>
 		<view class="agree-row">· 为了便于你快捷设置平台个人信息，开发者将在获取你的明示同意后，收集你的微信昵称、头像。</view>
@@ -24,7 +24,13 @@
 	export default {
 		data() {
 			return {
+				loginData:{}
 			}
+		},
+		onReady(){
+			this.$Http(this.$Apis.getCustomerInfo).then((res) => {
+          this.loginData = res.data
+        });
 		},
 		methods: {
 			

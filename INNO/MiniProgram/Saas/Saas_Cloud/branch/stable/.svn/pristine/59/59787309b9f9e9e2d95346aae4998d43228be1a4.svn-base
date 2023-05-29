@@ -1,0 +1,6 @@
+<import src="../../../../../components/thirdParty/wxParse/wxParse.wxml" />
+
+<view class="" wx:if="{{agreement}}">
+    <!--调用富文本-->
+    <template is="wxParse" data="{{wxParseData:article.nodes}}" />
+</view>

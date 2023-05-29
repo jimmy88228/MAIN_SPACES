@@ -87,7 +87,6 @@ import StorageH from "@/common/helper/storage-handler.js";
     // onShareAppMessage(e){},
     methods: {
       init(){
-        // let storage = StorageH.get('BSN_USER_INFOS') || {};
         let name = app.IM.bsnUserInfo.name || "水印";
         this.watermarkArr = new Array(120).fill(name);
       },
@@ -209,10 +208,6 @@ import StorageH from "@/common/helper/storage-handler.js";
           margin-left: 15rpx;
         }
 
-        // .warn-level-warning {
-            
-        // }
-
         .warn-level-normal {
           color: #4F902C;
           background: #EAF6E4;
@@ -223,7 +218,6 @@ import StorageH from "@/common/helper/storage-handler.js";
         }
 
         .organization-type {
-          // max-width: 200rpx;
           position: relative;
           word-break: break-all;
           font-size: 20rpx;

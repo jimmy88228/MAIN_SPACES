@@ -40,6 +40,11 @@
       i: "nav-back",
       c: "back-i"
     },
+    Close: {
+      m: "Back",
+      i: "close",
+      c: "back-close"
+    },
     Home: {
       m: "Home",
       i: "nav-home",

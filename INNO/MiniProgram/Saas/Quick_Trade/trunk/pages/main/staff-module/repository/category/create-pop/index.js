@@ -4,39 +4,30 @@ Component(App.BC({
     show: false,
     cateName: ""
   },
-  methods: {
-    onfocus() {
-      this.triggerEvent('onfocus')
-    },
-    onblur() {
-      this.triggerEvent('onblur')
-    },
+  ready(){
+    this.setView({ 
+      confirmPopRef: { get: () => this.findView("#confirm-pop") }, 
+    })
+  },
+  methods: { 
     handleInput(e) {
       let value = e.detail.value || "";
       this.setData({cateName: value})
     },
-    showModal() {
-      this.setData({show: true, cateName: ""});
+    showModal(name,type="") {
+      this.setData({show: true, cateName: name||"",type});
       return new Promise((rs, rj) => {
-        this.resolveF = rs;
-        this.rejectF = rj;
+        this.confirmPopRef.showModal(rs,rj);
       })
-    },
-    dismiss() {
-      if (typeof this.rejectF === "function") this.rejectF();
-      this.resolveF = this.rejectF = null;
-      this.setData({show: false})
-    },
-    handlePopItemTap(e) {
+    }, 
+    onconfirm(e) {
+      let detail = e.detail||null;
       let cateName = this.data.cateName || "";
       if (!cateName.trim()) {
         App.SMH.showToast({title: "请输入商品分类名称"});
         return 
       }
-      this.setData({show: false}, () => {
-        typeof this.resolveF === "function" && this.resolveF(this.data.cateName);
-        this.resolveF = this.rejectF = null;
-      })
+      detail && typeof(detail) == 'function' && detail(cateName); 
     }
   }
 }))

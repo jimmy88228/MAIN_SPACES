@@ -102,13 +102,13 @@ Component(app.BTAB({
       })
     },
     scroll(top){
-      if(top==0 && this.isInitData && !this.scrolled){
-        console.log('再次初始化');
-        this.scrolled = true;
-        this.nodeLoad = {};
-        this.initData();
-        return
-      }
+      // if(top==0 && this.isInitData && !this.scrolled){
+      //   console.log('再次初始化');
+      //   this.scrolled = true;
+      //   this.nodeLoad = {};
+      //   this.initData();
+      //   return
+      // }
       this.curTop = top;
       let arr = this.nodeInfo[0] || [],sclInfo = this.nodeInfo[1] || {};
       arr.every((item,i)=>{

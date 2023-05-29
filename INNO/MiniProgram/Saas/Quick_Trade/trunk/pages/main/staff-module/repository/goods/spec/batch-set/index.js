@@ -1,7 +1,14 @@
 const App = getApp();
 Component(App.BC({
   properties:{
-    fromType:String
+    fromType:String,
+    setBlur:Boolean,
+    setFocus:Boolean,
+  },
+  ready(){
+    this.setView({ 
+      customPopRef: { get: () => this.findView("#custom-pop") }, 
+    })
   },
   methods: { 
     onBatchInput(e) {
@@ -10,8 +17,7 @@ Component(App.BC({
       this.triggerEvent('onBatchInput',{key,value}); 
     },
     showModal() {
-      this.customPop = this.customPop || this.selectComponent('#custom-pop');
-      this.customPop.showModal();
+      this.customPopRef.showModal();
     },
     confirm() {
       this._checkAllValid().then(()=>{
@@ -23,7 +29,7 @@ Component(App.BC({
       )
     },
     dismiss() {
-      this.customPop.dismiss();
-    },
+      this.customPopRef.dismiss();
+    }
   },
 }))

@@ -1,0 +1,67 @@
+<!--会员卡片组件-->
+<form bindsubmit="formAction" report-submit="true" class="intersection_observe">
+	<view class="ad_module" hidden="{{(module_data.loginStatus != 2 && !isLogin)}}" style="background-color:#fff;{{module_data.bg_style ? module_data.bg_style : ''}}">
+		<!---登录状态 + 未登录状态 显示-->
+		<view class="bind_type_13" wx:if="{{module_data.loginStatus == 2}}">
+			<view class="type13_v1 {{module_data.moduleItem.itemList.length == 4 ? 'type13_v1_flex' : ''}}">
+				<!--登录状态-->
+				<block wx:if="{{isLogin}}">
+                    <block wx:for="{{module_data.moduleItem.itemList}}" wx:key="mItem_login" wx:if="{{index <= (module_data.moduleItem.itemList.length == 4 ? 1 : 0)}}">
+                        <view class="type13_info" catchtap="goLink" data-link_url="{{item.link_url}}" data-func_type="{{item.func_type}}" data-related_id="{{item.related_id}}" data-extent_id="{{item.extent_id}}" data-page_id="{{item.page_id}}" data-tag="{{item.tag}}">
+                            <view class="type13_img_box">
+                                <image src="{{item.img_path ? img_url + item.img_path:''}}" mode="aspectFill" class="type13_img {{module_data.moduleItem.itemList.length <= 2?'p_0':''}}"></image>
+                            </view>
+                            <view class="type13_userinfo" wx:if="{{index==0}}">
+                                <view class="type13_mainInfo">
+                                    <open-data wx:if="{{openData}}" type="userAvatarUrl" class="type13_avatar"></open-data>
+                                    <image wx:else src="{{user_info.portrait_path}}" class="type13_avatar"></image>
+                                    <view class="type13_user">
+                                        <view class="type13_userRank">{{user_info.rankName||""}}</view>
+                                        <view>{{user_info.mobilePhone || user_info.cardNum||""}}</view>
+                                    </view>
+                                </view>
+                            </view>
+                        </view>
+                    </block>
+				</block>
+				<!--未登录状态-->
+				<block wx:else>
+					<block wx:for="{{module_data.moduleItem.itemList}}" wx:key="mItem_nologin" wx:if="{{index >= (module_data.moduleItem.itemList.length == 4 ? 2 : 1)}}">
+
+                        <view class="type13_info" catchtap="goLink" data-link_url="{{item.link_url}}" data-func_type="{{item.func_type}}" data-related_id="{{item.related_id}}" data-extent_id="{{item.extent_id}}" data-page_id="{{item.page_id}}" data-tag="{{item.tag}}">
+                            <view class="type13_img_box">
+                                <image src="{{item.img_path ? img_url + item.img_path:''}}" mode="aspectFill" class="type13_img {{module_data.moduleItem.itemList.length <= 2?'p_0':''}}"></image>
+                            </view>
+                            <view class="type13_tipLogin">
+                                    <image class="type13_loginBtn" src="{{brand_info.icon_url + 'micro_mall/user_card_login.png'}}" mode="widthFix"></image>
+                            </view>
+                        </view>
+
+					</block>
+				</block>
+			</view>
+		</view>
+		<!---仅登录状态显示-->
+		<view class="bind_type_13" wx:else>
+			<view class="type13_v1 mItem_justLogin {{module_data.moduleItem.itemList.length >= 2 ? 'type13_v1_flex' : ''}}" wx:if="{{isLogin}}">
+				<block wx:for="{{module_data.moduleItem.itemList}}" wx:if="{{index <= 1}}" wx:key="mItem_justLogin">
+					<view class="type13_info" catchtap="goLink" data-link_url="{{item.link_url}}" data-func_type="{{item.func_type}}" data-related_id="{{item.related_id}}" data-extent_id="{{item.extent_id}}" data-page_id="{{item.page_id}}" data-tag="{{item.tag}}">
+                        <view class="type13_img_box">
+                            <image src="{{item.img_path ? img_url + item.img_path:''}}" mode="aspectFill" class="type13_img {{module_data.moduleItem.itemList.length <= 2?'p_0':''}}"></image>
+                        </view>
+						<view class="type13_userinfo" wx:if="{{index==0}}">
+							<view class="type13_mainInfo">
+							    <open-data wx:if="{{openData}}" type="userAvatarUrl" class="type13_avatar"></open-data>
+                                <image wx:else src="{{user_info.portrait_path}}" class="type13_avatar"></image>
+								<view class="type13_user">
+                                    <view class="type13_userRank">{{user_info.rankName||""}}</view>
+                                    <view>{{user_info.mobilePhone || user_info.cardNum||""}}</view>
+                                </view>
+                                </view>
+						</view>
+					</view>
+				</block>
+			</view>
+		</view>
+	</view>
+</form>

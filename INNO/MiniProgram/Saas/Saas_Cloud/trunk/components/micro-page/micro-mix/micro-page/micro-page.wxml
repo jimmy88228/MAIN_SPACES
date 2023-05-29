@@ -82,7 +82,7 @@
   </block>
   <!-- 客服 -->
   <block wx:if="{{!isHideContact}}">
-    <cs  microPageBool="{{navList[tabCurr].isShowCs}}"></cs>
+    <cs microPageBool="{{navList[tabCurr].isShowCs}}"></cs>
   </block>
 
   <!-- 分享按钮 -->

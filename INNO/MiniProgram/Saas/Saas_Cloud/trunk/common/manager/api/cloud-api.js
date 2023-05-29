@@ -101,6 +101,7 @@ export const CL_UserApiList = {
   getPopupAdvert: "/api/PopupAdvert/GetPopupAdvert?pageId={pageId}&pageType={pageType}",
   searchUserInfo:"/api/User/SearchUserInfo?mobilePhone={mobilePhone}", // 查询会员信息
   get_XianKuH5: "/api/User/Get_XianKuH5", // 获取仙库量体url(目前GOSO用)
+  get_UserInfo: "/api/User/Get_UserInfo", 
 }
 //订单
 export const CL_BuyApiList = {
@@ -178,7 +179,7 @@ export const CL_BuyApiList = {
   */
  getRefundOrderList:"/api/RefundOrder/GetRefundOrderList?searchStr={searchStr}&pageIndex={pageIndex}&pageSize={pageSize}",
  getRefundOrderDetail:"/api/RefundOrder/GetRefundOrderDetail?refundId={refundId}",
-
+ applyCancelOrder:"/api/Order/ApplyCancelOrder?orderId={orderId}",
 }
 //商品
 export const CL_GoodsApiList = {
@@ -194,7 +195,11 @@ export const CL_GoodsApiList = {
   getPromotionGoodsList: "/api/Goods/GetPromotionGoodsList?ruleId={ruleId}&pageIndex={pageIndex}&pageSize={pageSize}",
   getGoodsDefaultImage: "/api/Goods/GetGoodsDefaultImage?goodsId={goodsId}",
   getSumaryALLGoodsList: "/api/Goods/Get_Sumary_ALLGoodsList?functype={functype}&cate_Id={cate_Id}&strWhere={strWhere}&pageSize={pageSize}&pageIndex={pageIndex}&sort_field={sort_field}&sort_by={sort_by}&goods_brand_ids={goods_brand_ids}",
-  searchGoodsList: "/api/Goods/Get_Sumary_SearchGoodsList?functype={functype}&catId={catId}&strAttrId={strAttrId}&strAttrValue={strAttrValue}&colorCatId={colorCatId}&startPrice={startPrice}&endPrice={endPrice}&strWhere={strWhere}&pageSize={pageSize}&pageIndex={pageIndex}&sortField={sortField}&sortBy={sortBy}&goods_brand_ids={goods_brand_ids}&storeId={storeId}",
+  searchGoodsList: {
+    u:"/api/Goods/Get_Sumary_SearchGoodsList",
+    // u:"/api/Goods/Get_Sumary_SearchGoodsList?functype={functype}&catId={catId}&strAttrId={strAttrId}&strAttrValue={strAttrValue}&colorCatId={colorCatId}&startPrice={startPrice}&endPrice={endPrice}&strWhere={strWhere}&pageSize={pageSize}&pageIndex={pageIndex}&sortField={sortField}&sortBy={sortBy}&goods_brand_ids={goods_brand_ids}&storeId={storeId}",
+    m:"post"
+  },
   getSearchGoodsListBySkip: "/api/Goods/GetSearchGoodsListBySkip?functype={functype}&catId={catId}&strAttrId={strAttrId}&strAttrValue={strAttrValue}&colorCatId={colorCatId}&startPrice={startPrice}&endPrice={endPrice}&strWhere={strWhere}&pageSize={pageSize}&skipCount={skipCount}&sortField={sortField}&sortBy={sortBy}&goods_brand_ids={goods_brand_ids}&storeId={storeId}",
   getALLGoodsListByGoodsIds:
   {
@@ -245,6 +250,10 @@ export const CL_GoodsApiList = {
   },
   createBuyCarInsert: {
     u: "/api/ShoppingCart/Create_BuyCar_Insert",
+    m: "post"
+  },
+  createBuyCarInserts: {
+    u: "/api/ShoppingCart/Create_BuyCar_Inserts",
     m: "post"
   },
   getShoppingCartList: "/api/ShoppingCart/GetShoppingCartList",
@@ -312,6 +321,22 @@ export const CL_GoodsApiList = {
   getGoodsCommissionAmount: "/api/goods/Get_GoodsCommissionAmount?brandCode={brandCode}&byStore={byStore}", // goodsIds={goodsIds}&goodsId={goodsId}
   getGoodsCommissionAmountByType: "/api/goods/Get_GoodsCommissionAmountByType?goodsId={goodsId}&brandCode={brandCode}&goodsType={goodsType}&relatedId={relatedId}", //goodsType = COLLAGEGROUP(拼团) , PRESALE(预售) , NORMAL(正常商品) , SKILL(秒杀),POINTMKT(积分商城)
   getGoodsCommissionAmountByTypeAll: "/api/Goods/Get_GoodsCommissionAmountByType?goodsIds={goodsIds}&goodsType={goodsType}&relatedId={relatedId}&brandCode={brandCode}", //goodsType = COLLAGEGROUP(拼团) , PRESALE(预售) , NORMAL(正常商品) , SKILL(秒杀),POINTMKT(积分商城)
+  getVirtualGoodsShare:"/api/Goods/Get_VirtualGoodsShare?catId={catId}",
+  getGoodsStyle:{
+    u:"/api/Goods/GetGoodsStyle",
+    m:"post"
+  },
+  getActivityGoodsList:"/api/DiscountBuy/GetActivityGoodsList?activityId={activityId}&orderAmount={orderAmount}",
+  getActivityGoodsDetail:"/api/DiscountBuy/GetActivityGoodsDetail?activityId={activityId}&goodsId={goodsId}",
+  getActivityGoodsProduct:"/api/DiscountBuy/GetActivityGoodsProduct?activityId={activityId}&goodsId={goodsId}&colorId={colorId}",
+
+  get_GoodsPackageList:"/api/GoodsPackage/Get_GoodsPackageList?goodsId={goodsId}&pageIndex={pageIndex}&pageSize={pageSize}",
+  get_GoodsPackageInfo:"/api/GoodsPackage/Get_GoodsPackageInfo?packageId={packageId}",
+  get_UserGoodsPackageDetail:"/api/GoodsPackage/Get_UserGoodsPackageDetail?packageId={packageId}",
+  get_GoodsPackageProductInfo:"/api/GoodsPackage/Get_GoodsPackageProductInfo?packageId={packageId}&goodsId={goodsId}&shippingStoreId={shippingStoreId}",
+  get_ValidGoodsPackageList:"/api/GoodsPackage/Get_ValidGoodsPackageList?activityIds={activityIds}&searchStr={searchStr}",
+  // get_ValidGoodsPackageList:"/api/GoodsPackage/Get_ValidGoodsPackageList?activityIds={activityIds}&searchStr={searchStr}&pageIndex={pageIndex}&pageSize={pageSize}",
+  get_CustomPageShareActivity:"/api/Page/Get_CustomPageShareActivity?pageId={pageId}"
 }
 //日志
 export const CL_VSlogApiList = {
@@ -353,7 +378,11 @@ export const CL_VSlogApiList = {
   postCustomPageVisitRecord:{
     u: `${visitApi}/log/Post_CustomPageVisitRecord`,
     m:"post"
-  }
+  },
+  get_CustomPageShareActivity:{
+    u: `${visitApi}/log/get_CustomPageShareActivity`,
+    m:"post"
+  },
 }
 //支付
 export const CL_PayApiList = {
@@ -650,6 +679,8 @@ export const CL_DistributionApiList = {
     m:"post"
   },
   pay_Result:"/api/StaffDstb/Get_ApplyStaffDstb_Pay_Result?orderId={orderId}&brandCode={brandCode}",
+  getStaffDstbRankReport:"/api/StaffDstb/GetStaffDstbRankReport?type={type}&pageIndex={pageIndex}&pageSize={pageSize}&isStore={isStore}",
+  getStaffDstbUserReport:"/api/StaffDstb/GetStaffDstbUserReport?isToday={isToday}&begin={begin}&end={end}",
 }
 
 // 抽奖
@@ -667,5 +698,6 @@ export const CL_LotteryApiList = {
   },
   lotteryWinningRecordDetail: "/api/Lottery/Get_LotteryWinningRecordDetail?activityId={activityId}&winningRecordId={winningRecordId}",
   getLotteryShippingInfo: "/api/Lottery/Get_LotteryShippingInfo?winningRecordId={winningRecordId}&invoiceNo={invoiceNo}&isBackground={isBackground}&isForce={isForce}",
-  getLotteryAdSlot:"/api/Lottery/Get_LotteryAdSlot?activityId={activityId}"
+  getLotteryAdSlot:"/api/Lottery/Get_LotteryAdSlot?activityId={activityId}",
+  get_UserIsGroupChatWeChat:"/api/Lottery/Get_UserIsGroupChatWeChat?lotteryId={lotteryId}",
 }

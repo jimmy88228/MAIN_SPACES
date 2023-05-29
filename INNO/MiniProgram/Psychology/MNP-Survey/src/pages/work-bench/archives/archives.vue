@@ -12,7 +12,7 @@
           <view class="structure flex-c-c C_fff">
             <image class="img-structure" :src="staticAddress+'/structure.png'" mode="aspectFit" />
             <span class="p-l-5" style="padding-right:8rpx;">所在班级</span>
-            <span>{{userInfo.structureName}}</span>
+            <span>{{userInfo.structureName || ""}}({{userInfo.schoolYear || ''}})</span>
           </view>
         </view>
         <view class="care-box f-shrink-0" v-if="userInfo.isCare == 1">
@@ -71,13 +71,8 @@
                 </template>
                 <template v-if="tabIndex == 2">
                   <view class="scale-msg-box flex1">
-                    <view class="scale-title p-b-20 font-22">{{lItem.modelName?'量表：':''}}{{lItem.modelName||""}}</view>
-                    <view class="scale-date C_7f font-18">{{getTimeFormat(lItem.createTime||'')}}</view>
-                  </view>
-                  <view class="scale-line"></view>
-                  <view class="scale-score flex-c-c flex-col">
-                    <view class="score font-40">{{lItem.points||0}}</view>
-                    <view class="C_b2 C_B2 font-16">报告得分</view>
+                    <view class="scale-date C_7f font-22 m-b-20">{{getTimeFormat(lItem.createTime||'')}}</view>
+                    <view class="scale-title font-22">{{lItem.modelName?'量表：':''}}{{lItem.modelName||""}}</view>
                   </view>
                 </template>
                 <template v-if="tabIndex == 3">
@@ -87,14 +82,21 @@
                       <view class="title">性别</view>
                       <view class="msg">{{lItem.gender==1?"男":lItem.gender==2?"女":"未知"}}</view>
                     </view>
-                    <!-- <view class="msg-box">
-                      <view class="title">婚姻状况</view>
-                      <view class="msg">{{ marriageInfo[lItem.marriage] }}</view>
-                    </view> -->
-                    <!-- <view class="msg-box">
-                      <view class="title">联系方式</view>
-                      <view class="msg">{{lItem.mobilePhone||""}}</view>
-                    </view> -->
+                    <view class="msg-box">
+                      <view class="title">所在学校</view>
+                      <view class="msg">{{lItem.schoolName || ""}}</view>
+                    </view>
+                    <view class="msg-box">
+                      <view class="title">学年</view>
+                      <view class="msg">{{lItem.schoolYear || ""}}</view>
+                    </view>
+                    <view class="msg-box">
+                      <view class="title">所在班级</view>
+                      <view class="flex-s-c">
+                        <view class="msg">{{lItem.structureName || ""}}</view>
+                        <view class="graduate flex-c-c" v-if="Object.keys(graduateInfo).includes(String(lItem.state))">{{graduateInfo[lItem.state]}}</view>
+                      </view>
+                    </view>
                     <view class="msg-box">
                       <view class="title">风险等级</view>
                       <view class="msg">{{lItem.warningLevelStr||""}}</view>
@@ -122,17 +124,20 @@
 const app = getApp();
 import swiperScroll from "@/components/swiper-scroll/swiper-scroll.vue";
 import poster from "@/components/poster/index.vue";
-import StorageH from "@/common/helper/storage-handler.js";
 import structureManage from '@/common/manager/structure-manage.js'
 import utils from '@/common/support/utils.js';
 import dateUtil from '@/common/support/utils/date-util.js';
-export default {
+const pageOption = Page.BasePage({
   components: {
     swiperScroll,
     poster,
   },
   data() {
     return {
+      graduateInfo:{
+        2:"已毕业",
+        3:"已转校"
+      },
       marriageInfo:{
         "0":"保密",
         "1":"未婚",
@@ -192,7 +197,6 @@ export default {
   },
   methods: {
     init(){
-      // let storage = StorageH.get('BSN_USER_INFOS') || {};
       let name = app.IM.bsnUserInfo.name || "水印";
       this.watermarkArr = new Array(120).fill(name);
       this.getPersonalInfo();
@@ -302,7 +306,8 @@ export default {
       }
     },
   },
-};
+})
+export default pageOption
 </script>
 
 <style lang="scss" scoped>
@@ -399,7 +404,7 @@ export default {
     background: #fff;
     margin-bottom: 26rpx;
     &.list-item-2{
-      padding: 50rpx 40rpx;
+      padding: 30rpx 40rpx;
       display: flex;
       justify-content: center;
       align-items: center;
@@ -488,7 +493,7 @@ export default {
     margin-right: 60rpx;
     text-align: justify;
     // text-align-last:justify;
-    width:125rpx;
+    width:115rpx;
     &:after{  
       content: '';
       display: inline-block;
@@ -499,6 +504,17 @@ export default {
     display: inline-block;
     vertical-align: middle;
   }
+  .graduate{
+    width: 66rpx;
+    height: 24rpx;
+    background: #F6F6F6;
+    border: 1px solid #D1D1D1;
+    font-size: 18rpx;
+    font-family: PingFangSC-Regular, PingFang SC;
+    color: #7F7F7F;
+    line-height: 25rpx;
+    margin-left: 15rpx;
+   }
 }
 </style> 
 

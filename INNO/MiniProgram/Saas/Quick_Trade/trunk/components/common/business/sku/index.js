@@ -122,7 +122,7 @@ function initSku() { // 初始化sku数据(不会重置已选择的数据)
     ...item
   }))
   // 筛选可选的 SKU
-  const canChooseProduct = sku.filter(item => item.goods_number);
+  const canChooseProduct = sku.filter(item => item.goods_number>0);
   // 初始化规格展示内容
   this.pathFinder = this.pathFinder || new PathFinder(way, canChooseProduct.map(item => item.skuPrime));
   // 获取不可选规格内容

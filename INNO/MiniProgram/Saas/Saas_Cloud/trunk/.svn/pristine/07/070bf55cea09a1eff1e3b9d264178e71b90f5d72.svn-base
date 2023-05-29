@@ -1,0 +1,75 @@
+<template name="ac-gds-list-tpl">
+  <view 
+    id="listItemId{{index}}" 
+    class="list-item list-item-{{_data.layout}} list-item-{{_data.layout}}-{{arrLen}}" 
+    catchtap="linkJump" 
+    data-code="{{_data.code}}" 
+    data-type="{{_data.code}}" 
+    data-item="{{_data}}"
+    data-goods-item="{{listGoods}}" 
+    data-group-id="{{_data.group_id}}" 
+    >
+    <view class="list-img-box">
+      <view wx:if="{{isInited}}" class="act_tip" style="background-color:{{main_bg_color}};">{{_data.tipText||""}}</view>
+      <image src="{{listGoods.goods_thumb}}" mode="aspectFit" class="list-img"></image> 
+    </view>
+    <view class="list-msg-box">
+      <view class="msg-detail-box {{listGoods.market_price!=listGoods.price?'large':'small'}}">
+        <view class="list-msg-name" wx:if="{{_data.content_switch.show_goods_name}}">{{listGoods.goods_name}}</view>
+      </view>
+      <view class="price-flex-box">
+        
+        <view class="price-box" wx:if="{{_data.content_switch.show_price}}"> 
+          <view class="list-msg-sale-price" style="color:{{main_bg_color}};">
+            <text class="char">{{listGoods.price}}</text>
+            <block wx:if="{{listGoods.max_price>listGoods.price}}">
+              <text style="padding:0 6rpx;">-</text>
+              <text class="char">{{listGoods.max_price}}</text> 
+            </block>
+            <text style="white-space:pre;" wx:if="{{ listGoods.integral > 0 }}"> + {{listGoods.integral || listGoods.old_integral}}积分</text>
+          </view>
+          <view wx:if="{{listGoods.market_price && listGoods.market_price!=listGoods.price}}" class="list-msg-market-price char">
+          <!-- <view wx:if="{{listGoods.market_price!=listGoods.price && (!listGoods.max_price || (listGoods.max_price && listGoods.market_price!=listGoods.max_price))}}" class="list-msg-market-price char"> -->
+            {{listGoods.market_price}}
+          </view>
+        </view>
+
+        <view class="ac-msg-box">
+          <view class="ac-msg-btn-box"  wx:if="{{_data.content_switch.show_button}}" style="background-color:{{main_bg_color}};">
+            <view class="ac-msg-title">
+              <block wx:if="{{_data.code == 'integralSale'}}">积分兑换</block>
+              <block wx:elif="{{_data.code == 'pinSale'}}">立即拼团</block>
+              <block wx:elif="{{_data.code == 'kanSale'}}">参与砍价</block>
+              <block wx:elif="{{_data.code == 'preSale'}}">参与预售</block>
+              <block wx:elif="{{_data.code == 'packageSale'}}">马上抢</block>
+              <block wx:elif="{{_data.code == 'secKill' || _data.code == 'limitTimeSale'}}">马上秒</block>
+              <block wx:else>去购买</block>
+            </view>
+            <block wx:if="{{!_data.activityGroup}}" >
+              <block wx:if="{{timeManager.aCs[listGoods.activity_id].active==2}}">
+                已结束
+              </block>
+              <view wx:elif="{{_data.content_switch.show_time && timeManager.countType == 'goods' && timeManager.aCs[listGoods.activity_id].active>=0}}" class="ac-msg-time"> 
+                <text>距{{timeManager.aCs[listGoods.activity_id].active == '0'?'开始':'结束'}}</text>
+                <block wx:if="{{timeManager.aCs[listGoods.activity_id].day>=7}}">
+                  <text style="padding-left:3rpx;">{{timeManager.aCs[listGoods.activity_id].day}}天</text>
+                </block>
+                <block wx:else>
+                  <text style="padding-left:3rpx;">{{timeManager.aCs[listGoods.activity_id].day>=1?timeManager.aCs[listGoods.activity_id].day + '天':''}}{{timeManager.aCs[listGoods.activity_id].hour}}:{{timeManager.aCs[listGoods.activity_id].min}}:{{timeManager.aCs[listGoods.activity_id].sec}}</text>
+                </block>
+              </view>
+            </block>
+          </view>
+          <view wx:if="{{isInited && _data.code == 'secKill' && _data.content_switch.show_time && timeManager.aCs[listGoods.activity_id].active != -1}}" class="progress_box">
+            <view class="progress_small">
+              <progress_bar acBg="{{main_bg_color}}" percent="{{timeManager.aCs[listGoods.activity_id].active==1?listGoods.percent:100}}"></progress_bar>
+            </view>
+            <text class="progress_text font_18 C_7f">剩余{{timeManager.aCs[listGoods.activity_id].active==1?listGoods.percent:100}}%</text>
+          </view>
+        </view>
+        
+
+      </view>
+    </view>
+  </view>
+</template> 

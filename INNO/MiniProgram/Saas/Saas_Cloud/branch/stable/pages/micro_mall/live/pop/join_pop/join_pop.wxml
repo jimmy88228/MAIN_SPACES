@@ -1,0 +1,19 @@
+<!--pages/component/login/login_by_phone.wxml-->
+<form bindsubmit="formAction" report-submit="true">
+<window class="window" ext-class="window-ext">
+    <view class="login_page" style="{{boxStyle}}">
+      <form bindsubmit="formAction" report-submit="true">
+        <view class="help_title">已邀请{{joinData.length}}位好友</view>
+        <scroll-view class="join_user_list" scroll-y="{{true}}">
+          <view class="list_stay">
+            <view class="join_user_item" wx:for="{{joinData}}" wx:key="index">
+              <image src="{{item.portraitPath}}" class="user_icon" mode="aspectFill"/>
+              <view class="user_name">{{item.realName}}</view>
+            </view>
+          </view>
+        </scroll-view>
+      </form>
+      <view class="component_close" bindtap="dismiss"></view>
+    </view>
+</window>
+</form>

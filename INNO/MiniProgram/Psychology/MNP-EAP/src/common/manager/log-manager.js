@@ -188,7 +188,8 @@ class LogManager {
           clientTime: new Date().getTime()
         },
         other: {
-          isShowLoad: false
+          isShowLoad: false,
+          isHideMsg:true,
         }
       }).catch(error => {
         return Promise.reject(error);

@@ -7,10 +7,10 @@
         <view class="evaluating-bg-area-cover"
           :style="{'background-color':`${acInfo.evaluateActivitySetting.detailBgColor}`}"
           v-if="detailBg || ( acInfo.evaluateActivitySetting && acInfo.evaluateActivitySetting.detailBgColor)">
-          <image class="evaluating-bg-area-cover-image" mode="widthFix" :src="detailBg" />
+          <oriImage :showLoading="false" class="evaluating-bg-area-cover-image" mode="widthFix" :src="detailBg" />
         </view>
         <view class="evaluating-bg-area" v-else>
-          <image class="evaluating-bg" :src="staticAddress+'/activity-detail-bg.jpg'" mode="widthFix"></image>
+          <oriImage :showLoading="false" class="evaluating-bg" :src="staticAddress+'/activity-detail-bg.jpg'" mode="widthFix"></oriImage>
         </view>
         <!-- #endif -->
         <view class="evaluating-index flex-col-1">
@@ -54,7 +54,7 @@
             <template>
               <view class="btn flex-c-c fixed-X-50 invalid C_B2" v-if="acInfo.joinState == 'cannotjoin'" @click="jump">
                 开始测评</view>
-              <view class="btn flex-c-c fixed-X-50 invalid-blue" v-else-if="acInfo.joinState == 'notstart'"
+              <view class="btn flex-c-c fixed-X-50 invalid-green" v-else-if="acInfo.joinState == 'notstart'"
                 @click="jump">活动未开始</view>
               <view class="btn flex-c-c fixed-X-50" v-else-if="acInfo.joinState == 'unjoin'" @click="jump">
                 开始测评</view>
@@ -76,10 +76,10 @@
 
 <script>
   import SMH from "@/common/helper/show-msg-handler";
-
+  import oriImage from "@/components/ori-comps/image/ori-image";
   const app = getApp();
   const pageOption = Page.BasePage({
-    components: {},
+    components: {oriImage},
     data() {
       return {
         activitySuccessIcon: "/activity-success.png",
@@ -296,8 +296,8 @@
         box-shadow: unset;
       }
 
-      &.invalid-blue {
-        color: rgb(76, 129, 183);
+      &.invalid-green {
+        color: rgb(148, 206, 151);
       }
 
       .activity-success-icon {

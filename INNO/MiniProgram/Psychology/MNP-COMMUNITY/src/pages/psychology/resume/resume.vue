@@ -5,16 +5,18 @@
       <view class="user-avatar-info-area" @click="previewImage" :style="{'top':navplace+'px'}">
         <view class="user-avatar-info" :style="{ 'background-image': `url(${tutorInfo.profilePicture})` }">
         </view>
-        <image class="user-avatar" :src="tutorInfo.profilePicture" mode="aspectFill" />
+        <view class="user-avatar">
+          <oriImage :src="tutorInfo.profilePicture" mode="aspectFill" />
+        </view>
       </view>
-      <view class="user-info" :style="{'min-height': `calc(100vh - 421rpx - ${navplace}px)`}" v-if="!!tutorInfo">
+      <view :class="['user-info',loadSuccess && 'animate-fading-out']" :style="{'min-height': `calc(100vh - 421rpx - ${navplace}px)`}" v-if="!!tutorInfo && loadSuccess">
         <view class="user-info-top">
           <view class="m-b-40 flex-s-c flex-wrap">
             <view class="font-38 bold m-r-20 clamp" style="max-width:50%;">{{ tutorInfo.name?tutorInfo.name:"" }}</view>
             <view class="font-24 C_7f p-t-15 clamp">{{ tutorInfo.qualification?tutorInfo.qualification:"" }}</view>
           </view>
           <view class="flex-b-c user-exp">
-            <view class="inline-block">
+            <view class="inline-block" v-if="tutorInfo.experienceHour||tutorInfo.experienceYear">
               <view class="exp-item">
                 <view class="flex-s-c">
                   <image :src="staticAddress+timeIcon" mode="widthFix" />
@@ -51,16 +53,24 @@
       </view>
     </view>
     <view class="bottom-area flex flex-c-c">
-      <view class="bottom-button flex flex-c-c C_fff font-30 bold" @click="reserve">预约咨询</view>
+      <view v-if="tutorInfo.existsService" class="bottom-button flex flex-c-c C_fff font-30 bold" @click="reserve">预约咨询
+      </view>
+      <view v-else class="bottom-button-disabled flex flex-c-c C_fff font-30 bold">暂不接预约咨询</view>
     </view>
+    <!-- <view v-else class="bottom-area-disabled flex-col flex-c-c">
+        <view class="C_B1 m-b-10">暂不接预约咨询</view>
+        <view class="bottom-button-disabled flex flex-c-c C_fff font-30 bold">预约咨询</view>
+      </view> -->
   </view>
 </template>
 
 <script>
   import SIH from "@/common/helper/sys-infos-handler"
+  import oriImage from "@/components/ori-comps/image/ori-image";
 
   const app = getApp();
   const pageOption = Page.BasePage({
+    components:{oriImage},
     data() {
       return {
         timeIcon: "/time.png",
@@ -68,7 +78,8 @@
         options: {},
         value: "",
         tutorInfo: {},
-        navplace: SIH.navPlace
+        navplace: SIH.navPlace,
+        loadSuccess:false
       };
     },
     onLoad(options) {
@@ -90,7 +101,8 @@
             if (item.info) detailList.push(item)
           })
           data.detailList = detailList;
-          this.tutorInfo = res.data
+          this.tutorInfo = res.data;
+          this.loadSuccess = true
         });
       },
       reserve() {
@@ -152,6 +164,7 @@
       width: 100%;
       background: #ffffff;
       border-radius: 21rpx 21rpx 0 0;
+
 
       .user-info-top {
         padding: 40rpx;
@@ -269,6 +282,51 @@
       height: 100rpx;
       background: $uni-main-color;
       border-radius: 16rpx;
+    }
+
+     .bottom-button-disabled {
+      width: 660rpx;
+      height: 100rpx;
+      background:  rgba($color: #8e8e8e, $alpha: 0.3);
+      border-radius: 16rpx;
+    }
+
+  }
+
+  .bottom-area-disabled {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    width: 750rpx;
+    height: 200rpx;
+    background: #ffffff;
+    box-sizing: border-box;
+
+
+    .bottom-button-disabled {
+      width: 660rpx;
+      height: 100rpx;
+      background:  rgba($color: #8e8e8e, $alpha: 0.3);
+      border-radius: 16rpx;
+    }
+  }
+  .animate-fading-out{
+    opacity: 0;
+    animation-duration: 0.6s;
+    animation-name: fading-out;
+    animation-iteration-count: 1;
+    animation-fill-mode: forwards;
+  }
+  @keyframes fading-out {
+    0%{
+      opacity: 0;
+      transform: translateY(10rpx);
+    }
+
+    100%{
+      opacity: 1;
+      transform: translateY(0rpx);
     }
   }
 </style>

@@ -1,0 +1,83 @@
+<import src="./module/carousel-item.wxml" />
+<form bindsubmit="formAction" report-submit="true" class="intersection_observe"> 
+  <view class="swiper_module {{!m_data[0].module_id ? 'mb_10' : ''}}" style="{{page_module_list.bgImg ? 'background-image: url(' + img_url + page_module_list.bgImg + ');' : ''}}">
+    <!--普通轮播-->
+    <!--层叠轮播-->
+    <block wx:if="{{page_module_list.moduleType == 3}}">
+      <view 
+      class="float_swiper"
+      data-current="{{swiper_current}}"
+      bindtouchstart="swiperTouchS"
+      bindtouchend="swiperTouchE"
+      style="height: {{swiper_heights.swiper_h}}rpx"
+      >
+        <view
+        class="float_swiper_item"
+        wx:for="{{m_data}}" 
+        wx:for-item="s_item" 
+        wx:for-index="s_index" 
+        data-index="{{s_index}}"
+        style="{{styleList[s_index].style}}"
+        wx:key="s_index"
+        >
+        <template is="carousel-item" data="{{s_item: s_item, s_index: s_index, isLogin: isLogin, img_url: img_url}}"/>
+        </view>
+      </view>
+    </block>
+    <block wx:elif="{{page_module_list.moduleType == 2}}">
+      <scroll-view 
+      class="scroll_swiper"
+      style="height: {{swiper_heights.swiper_h}}rpx"
+      scroll-x
+      >
+      <view class="scroll_long">
+          <view
+          class="scroll_swiper_item"
+          wx:for="{{m_data}}" 
+          wx:for-item="s_item" 
+          wx:for-index="s_index" 
+          data-index="{{s_index}}"
+          style="{{swiper_heights.swiper_ws[s_index] ? 'width:' + swiper_heights.swiper_ws[s_index] + 'rpx' : ''}}"
+          wx:key="s_index"
+          >
+          <template is="carousel-item" data="{{s_item: s_item, s_index: s_index, isLogin: isLogin, img_url: img_url}}"/>
+          </view>
+        </view>
+      </scroll-view>
+    </block>
+    <block wx:else>
+      <swiper 
+        class="swiper_box {{!m_data[0].module_id ? 'initStyle' : ''}}{{hasVideo ? 'video_swiper' : ''}} module_type{{page_module_list.moduleType}}" 
+        style="height:{{!m_data[0].module_id? 500 : swiper_heights.swiper_h }}rpx;" 
+        bindchange="changeSwiper" 
+        duration="{{duration}}"
+        circular
+        autoplay="{{!v_noScroll}}"
+        display-multiple-items="{{(page_module_list.moduleType == 2 && m_data.length > 1) ? '2' : multiple}}"
+        next-margin="{{page_module_list.moduleType == 2 ? '100rpx' : ''}}"
+        >
+        <swiper-item 
+        class="custom_swiper_item {{swiper_current == s_index ? 'active' : ''}} "  
+        wx:for="{{m_data}}" 
+        wx:for-item="s_item" 
+        wx:for-index="s_index" 
+        data-index="{{s_index}}"
+        wx:key="s_index"
+        >
+          <view class="s_item_view">
+            <template is="carousel-item" data="{{s_item: s_item, s_index: s_index, isLogin: isLogin, img_url: img_url}}"/>
+          </view>
+        </swiper-item>
+      </swiper>
+      <view class="switch_point" hidden="{{multiple >= 5 || page_module_list.moduleType == 2}}">
+        <text 
+        class="point" 
+        style="{{'border-color:'+ brand_info.style.bg_color +';'}}{{ swiper_current == index ?'background:' + brand_info.style.bg_color + ';':''}}" 
+        wx:for="{{m_data}}" 
+        wx:for-index="index" 
+        wx:key="index"></text>
+      </view>
+    </block>
+    
+  </view>
+</form>

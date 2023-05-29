@@ -201,8 +201,9 @@ export const GoodsApiList = {
     // 优惠购
     getActivityGoodsList:"/api/DiscountBuy/GetActivityGoodsList?activityId={activityId}&orderAmount={orderAmount}&userToken={userToken}&brandCode={brandCode}",
     getActivityGoodsProduct:"/api/DiscountBuy/GetActivityGoodsProduct?activityId={activityId}&goodsId={goodsId}&userToken={userToken}&brandCode={brandCode}&needGallery={needGallery}",
-    getActivityGoodsDetail:"/api/DiscountBuy/GetActivityGoodsDetail?activityId={activityId}&goodsId={goodsId}&brandCode={brandCode}"
-} 
+    getActivityGoodsDetail:"/api/DiscountBuy/GetActivityGoodsDetail?activityId={activityId}&goodsId={goodsId}&brandCode={brandCode}",
+    getVirtualGoodsShare:"/api/Goods/Get_VirtualGoodsShare?catId={catId}",
+}
 // 用户
 export const UserApiList = {
 
@@ -413,6 +414,8 @@ export const UserApiList = {
     },
     // 店员代码转店员id
     getStoreStaffByCode: "/api/StoreStaff/GetStoreStaffByCode?staffCode={staffCode}&brandCode={brandCode}",
+    getWechatWorkerQrCode: "/api/StoreStaff/GetWechatWorkerQrCode?workerNo={workerNo}&brandCode={brandCode}",
+
     //获取
     getUserBarcodeBackground:"/api/User/GetUserBarcodeBackground?brandCode={brandCode}",
     getPopupAdvert: "/api/PopupAdvert/GetPopupAdvert?userToken={userToken}&pageId={pageId}&isIndex={isIndex}&brandCode={brandCode}",
@@ -459,7 +462,13 @@ export const UserApiList = {
       u: "/api/user/PostThirdPpartyChannelActivityLog",
       m: "post"
     },
-
+    //查询用户是否关注企微
+    checkUserIsSubscribeEnterpriseWechat: "/api/User/CheckUserIsSubscribeEnterpriseWechat?userToken={userToken}&brandCode={brandCode}",
+    getUserIsGroupChatWeChat: "/api/User/GetUserIsGroupChatWeChat?userToken={userToken}&brandCode={brandCode}&bonusTypeId={bonusTypeId}",
+    getWechatSchemeShort: {
+      u: "/api/Wechat/GetWechatSchemeShort",
+      m: "post"
+    },
 }
 // 注册登录
 export const RegApiList = {
@@ -1079,7 +1088,8 @@ export const BrandApiList = {
       m: "post"
     },
     // 获取注册后得到的优惠券列表
-    getRegisterGiftCoupon: "/api/Brand/Get_RegisterGiftCoupon?brandCode={brandCode}"
+    getRegisterGiftCoupon: "/api/Brand/Get_RegisterGiftCoupon?brandCode={brandCode}",
+    getCustomerServiceConfigList: "/api/Brand/Get_CustomerServiceConfigList?brandCode={brandCode}",
 }
 // 会员卡
 export const MemberCardList={

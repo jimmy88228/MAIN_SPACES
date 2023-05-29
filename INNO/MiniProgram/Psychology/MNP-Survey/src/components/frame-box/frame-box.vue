@@ -1,57 +1,57 @@
 <template>
   <view class="frame-box" :class="[platform]">
-    <loading-box :showPage="showPage" :isShowLoad="isShowLoad">
-      <!-- #ifdef H5 -->
-      <view class="H5-box H5 flex-s-s flex-col">
-        <view class="header flex-b-c" v-if="isShowH5Header">
-          <view class="msg flex1 flex-s-c" :class="[isMobile?'font-18':'font-24']"
-            :style="screenWidth <= 960?'padding-right:0;':''">
-            <image class="login-logo" :src="studentInfo.schoolLogo || ''" mode="aspectFit"></image>
-            <template v-if="screenWidth > 960">
-              <view v-for="(item) in msgList" :key="item.key" class="flex-c-c item flex1">
-                <view class="C_7f p-r-10 p-t-5">{{item.title || ""}}</view>
-                <view class="content font-30 p-r-10 bold">{{studentInfo[item.key] || ""}}</view>
+    <!-- <loading-box :showPage="showPage" :isShowLoad="isShowLoad"> -->
+    <!-- #ifdef H5 -->
+    <view class="H5-box H5 flex-s-s flex-col">
+      <view class="header flex-b-c" v-if="isShowH5Header">
+        <view class="msg flex1 flex-s-c" :class="[isMobile?'font-18':'font-24']"
+          :style="screenWidth <= 960?'padding-right:0;':''">
+          <image class="login-logo" :src="studentInfo.schoolLogo || ''" mode="aspectFit"></image>
+          <template v-if="screenWidth > 960">
+            <view v-for="(item) in msgList" :key="item.key" class="flex-c-c item flex1">
+              <view class="C_7f p-r-10 p-t-5">{{item.title || ""}}</view>
+              <view class="content font-30 p-r-10 bold">{{studentInfo[item.key] || ""}}</view>
+            </view>
+          </template>
+          <template v-if="screenWidth <= 960">
+            <view class="left-box">
+              <view class="flex-c-c item flex1">
+                <view class="C_7f p-r-10">姓名</view>
+                <view class="content bold ">{{studentInfo.name || ""}}</view>
               </view>
-            </template>
-            <template v-if="screenWidth <= 960">
-              <view class="left-box">
-                <view class="flex-c-c item flex1">
-                  <view class="C_7f p-r-10">姓名</view>
-                  <view class="content bold ">{{studentInfo.name || ""}}</view>
+            </view>
+            <view class="right-box">
+              <template v-for="(item,index) in msgList">
+                <view :key="item.key" v-if="index != 0" class="flex-c-c item flex1">
+                  <view class="C_7f p-r-10">{{item.title || ""}}</view>
+                  <view class="content bold ">{{studentInfo[item.key] || ""}}</view>
                 </view>
-              </view>
-              <view class="right-box">
-                <template v-for="(item,index) in msgList">
-                  <view :key="item.key" v-if="index != 0" class="flex-c-c item flex1">
-                    <view class="C_7f p-r-10">{{item.title || ""}}</view>
-                    <view class="content bold ">{{studentInfo[item.key] || ""}}</view>
-                  </view>
-                </template>
-              </view>
-            </template>
-          </view>
-          <button class="logout C_7f flex-c-c" :class="[isMobile?'font-18':'font-24']" @click="logout">退出登录</button>
+              </template>
+            </view>
+          </template>
         </view>
-        <view class="body flex1">
-          <slot name="body"></slot>
-        </view>
-        <view class="footer">
-          <slot name="footer"></slot>
-        </view>
+        <button class="logout C_7f flex-c-c" :class="[isMobile?'font-18':'font-24']" @click="logout">退出登录</button>
       </view>
-      <!-- #endif -->
+      <view class="body flex1">
+        <slot name="body"></slot>
+      </view>
+      <view class="footer">
+        <slot name="footer"></slot>
+      </view>
+    </view>
+    <!-- #endif -->
 
-      <!-- #ifdef MP -->
-      <view class="MP-box MP">
-        <view class="body">
-          <slot name="body"></slot>
-        </view>
-        <view class="footer">
-          <slot name="footer"></slot>
-        </view>
+    <!-- #ifdef MP -->
+    <view class="MP-box MP">
+      <view class="body">
+        <slot name="body"></slot>
       </view>
-      <!-- #endif -->
-    </loading-box>
+      <view class="footer">
+        <slot name="footer"></slot>
+      </view>
+    </view>
+    <!-- #endif -->
+    <!-- </loading-box> -->
 
     <view class="common-box" :class="[platform]">
       <slot name="common"></slot>
@@ -62,6 +62,7 @@
 <script>
   import StorageH from "@/common/helper/storage-handler.js";
   import utils from '@/common/support/utils.js';
+  import brandM from '@/common/manager/brand-manager.js';
   const app = getApp();
   const pageOption = Page.BaseComp({
     props: {
@@ -77,6 +78,7 @@
         type: Boolean,
         default: false
       },
+      loginOutCallback: Function
     },
     data() {
       return {
@@ -109,8 +111,23 @@
     },
     methods: {
       logout() {
+        if (typeof (this.loginOutCallback) == 'function') {
+          let result = this.loginOutCallback;
+          if (result && result.then) {
+            result().finally(() => {
+             this.logoutAfter()
+            })
+          } else {
+            if (result()) {
+             this.logoutAfter()
+            }
+          }
+        } else {
+             this.logoutAfter()
+        }
+      },
+      logoutAfter() {
         app.LM.logout().logout('bsnUserToken');
-        // let startUpUrlParams = utils.paramsByJson(app.PM.getParams('startUp')||{});
         this.reLaunchAction(
           `/pages/startup/startup?id=${app.PM.getParams('initId')||0}&schoolId=${app.PM.getParams('schoolId')||0}&campusId=${app.PM.getParams('campusId')||0}&classId=${app.PM.getParams('classId')||0}`
         )

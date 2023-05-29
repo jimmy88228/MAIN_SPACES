@@ -1,0 +1,48 @@
+/* pages/micro_mall/stores/scan_jump/scan_jump.wxss */
+page{
+  background: #efefef;
+}
+.img_explain,.img_method{
+  width: 100%;
+  display: block;
+}
+.img_explain{ 
+  min-height: 100vh;
+}
+.main{
+  position: relative;
+}
+.img_scan {
+  width: 46rpx;
+  height: 46rpx;
+}
+.img_scan_box{
+  background-color: rgba(0, 0, 0, 0.5);
+  border-radius: 40rpx;
+  min-width: 200rpx;
+  height: 65rpx;
+  color: #fff;
+  font-size: 24rpx;
+}
+.scan_click_area{
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: calc(50% - 40rpx);
+  background:transparent;
+  z-index: 2;
+}
+.method_title_box{
+  width: 100%;
+  height: 160rpx;
+  display: flex;
+  justify-content: center;
+  box-sizing: border-box;
+  padding-top: 30rpx;
+}
+.method_title{
+  width: 80%;
+  height: 80rpx;
+  background-color: #fff;
+}

@@ -16,11 +16,11 @@
           </text>
           满{{rItem.ruleCondition}}元，可换购商品
         </view>
-        <view class="rule-item-goods" wx:for="{{rItem.goodsList}}" wx:key="index" data-goods-id="{{item.goodsId}}" data-rule-index="{{rIndex}}" data-goods-index="{{index}}"  data-is-fit="{{rItem.isFit}}" data-mix-num="{{item.mixNum}}" catchtap="getGoodsDetail">
+        <view class="rule-item-goods" wx:for="{{rItem.goodsList}}" wx:key="index" data-goods-id="{{item.goodsId}}" data-rule-index="{{rIndex}}" data-goods-index="{{index}}"  data-is-fit="{{rItem.isFit}}" data-mix-num="{{item.mixNum}}" data-rule-id="{{item.rule_id}}" catchtap="getGoodsDetail">
           <view class="s_flex goods-item">
             <view class="rule-goods mr_10 flex_shrink_0">
               <image class="r-g-img" src="{{item.goodsImg}}" mode="aspectFit"/>
-              <view class="r-g-tip" wx:if="{{idGoodsChoose[item.goodsId].number > 0}}">已换购{{idGoodsChoose[item.goodsId].number}}件</view>
+              <view class="r-g-tip" wx:if="{{idGoodsChoose[item.rule_id+'_'+item.goodsId].number > 0}}">已换购{{idGoodsChoose[item.rule_id+'_'+item.goodsId].number}}件</view>
             </view>
             <view class="pl_10 rule-goods-detail">
               <view class="">
@@ -32,7 +32,7 @@
                   换购价 <text class="font_22">¥ </text> <text class="font_28 bold">{{item.minPrice}}</text> <text class="line-through C_90 font_22 ml_5" wx:if="{{item.minMarketPrice}}"> ¥ {{item.minMarketPrice}}</text>
                 </view>
                 <view>
-                  <text class="iconfont  icon-fill-add" data-rule-index="{{rIndex}}" data-goods-index="{{index}}" data-goods-id="{{item.goodsId}}" data-is-fit="{{rItem.isFit}}" data-mix-num="{{item.mixNum}}" catchtap="showProduct" style="color:{{ rItem.isFit && (item.mixNum > 0) ? brandStyle.font_color : '#b2b2b2'}};"></text>
+                  <text class="iconfont  icon-fill-add" data-rule-index="{{rIndex}}" data-goods-index="{{index}}" data-goods-id="{{item.goodsId}}" data-is-fit="{{rItem.isFit}}" data-mix-num="{{item.mixNum}}" data-rule-id="{{item.rule_id}}" catchtap="showProduct" style="color:{{ rItem.isFit && (item.mixNum > 0) ? brandStyle.font_color : '#b2b2b2'}};"></text>
                 </view>
               </view>
             </view>

@@ -42,5 +42,8 @@ export const Apis = {
 	...addRequests(ApisList.funTestApiList,apiDomain.FUNTESTAPI),
 	...addRequests(ApisList.specialSectionApiList,apiDomain.SPECIALSECTIONAPI),
 	...addRequests(ApisList.wxSubscribeApiList,apiDomain.WXSUBSCRIBEAPI),
+	...addRequests(ApisList.lectureApiList,apiDomain.LECTUREAPI),
+	...addRequests(ApisList.examApiList,apiDomain.EXAMAPI),
+	...addRequests(ApisList.courseApiList,apiDomain.COURSEAPI),
 }
 console.log("install", Apis)

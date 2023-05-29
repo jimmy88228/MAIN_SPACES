@@ -7,7 +7,12 @@ Component(App.BC({
   properties:{
     scrollType:{
       type:String,
-      value:"y"
+      value:""
+    },
+    scrollX:Boolean,
+    scrollY:{
+      type:Boolean,
+      value:true
     },
     refresherEnabled:{
         type:Boolean,
@@ -22,6 +27,7 @@ Component(App.BC({
   },
   data:{
     scrollTop:0,
+    refresherTriggered:false
   }, 
   methods: {
     scroll(e){
@@ -36,21 +42,39 @@ Component(App.BC({
     refresherrefresh(){
       clearTimeout(this.refreshTimer);
       this.refreshTimer = setTimeout(() => {
-        this.triggerEvent('refresherrefresh');
+        this.triggerEvent('refresherrefresh',{},{
+          bubbles:true,
+          composed:true,
+          capturePhase:true,
+        });
       }, 300);
     },
     refreshEnd(){
+      console.log('refreshEnd')
       this.refreshShow();
-      wx.showToast({
+      App.SMH.showToast({
         title: '已刷新',
       })
       setTimeout(()=>{
-        this.refreshTriggered = false;
+        this.setData({
+          refresherTriggered:false
+        })
       },200)
     },
     refreshShow(){
-      this.refreshTriggered = true;
+      
+      this.setData({
+        refresherTriggered:true
+      })
     }, 
+    setScrollTopQuery(that,ids,fromType='page'){ 
+      return that._selectQuery(ids,fromType,'all').then(res=>{
+        let arr = res && res[0] || []; 
+        console.log(arr)
+        let top = arr.length < ids.split(',').length ? 0 : ((arr[1] && arr[1].top || 0) - (arr[0] && arr[0].top || 0));
+        return this.setScrollTop(top)
+      });
+    },
     setScrollTop(top){
       return new Promise((rs)=>{
         this.setData({scrollTop:top||0},()=>{

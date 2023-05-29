@@ -3,7 +3,7 @@ import {
   Rect
 } from "../../../../../common/support/wx-canvas-2d/index";
 import appletCode from "../../../../../common/helper/applet-code-helper/index";
-
+import Conf from "../../../../../config/index";
 const fetchPosterData = data => {
   let fetchQrCodeP = appletCode(data);
   let promiseArray = [fetchQrCodeP];
@@ -15,7 +15,7 @@ export default (data = {}) => {
   let {info, scene} = data;
   return fetchPosterData({
     info: {
-      path: "pages/tabs/index/index",
+      path: Conf.navConfig.INDEX_PATH,
       is_White_Bg: 1,
       ...info
     },

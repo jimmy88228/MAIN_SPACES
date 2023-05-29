@@ -1,0 +1,92 @@
+@import "/common/base/page/default-wxss/index.wxss";
+
+.self_get_page{
+  padding:20rpx;
+}
+.page_main_btn{
+  margin:70rpx;
+  text-align:center;
+}
+.page_main_btn .l_default_btn{
+  width:260rpx;
+  height:80rpx;
+  color:#fff;
+  border-radius:6rpx;
+  margin:0 auto;
+  background-color: var(--main-color);
+  transition: opacity 0.1s ease;
+}
+.l_default_btn.active{
+  opacity: 0.7;
+}
+.input_item{
+  position:relative;
+}
+.quick_get{
+  position:absolute;
+  top:50%;
+  right:0px;
+  background:#000;
+  color:#fff;
+  border-radius:200rpx;
+  display:flex;
+  justify-content: center;
+  align-items: center;
+  min-width:144rpx;
+  height:54rpx;
+  transform: translateY(-50%);
+  z-index:10;
+}
+.select_store{
+  background:#000;
+  color:#fff;
+  border-radius:200rpx;
+  display:flex;
+  justify-content: center;
+  align-items: center;
+  min-width:144rpx;
+  height:54rpx;
+}
+.store_input{
+  position:relative;
+}
+.store_input .select_store{
+  position:absolute;
+  top:50%;
+  right:0px;
+  transform: translateY(-50%);
+  -moz-transform: translateY(-50%);
+}
+.d_flex {
+  display: -webkit-box;
+  display: -moz-box;
+  display: -ms-flexbox;
+  display: -webkit-flex;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.inline_b {
+  display: inline-block;
+  vertical-align: middle;
+}
+.flex1 {
+  -webkit-box-flex: 1;
+  -moz-box-flex: 1;
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+}
+.input_box{
+  border:1px solid #e6e6e6;
+  border-radius:10rpx;
+  padding:0px 20rpx;
+  margin-bottom:20rpx;
+  background:#fff;
+  height:100rpx;
+}
+.input_box .limit_w{/*五个字符宽度*/
+  padding-left:20rpx;
+  padding-right:14rpx;
+  width:160rpx;
+}

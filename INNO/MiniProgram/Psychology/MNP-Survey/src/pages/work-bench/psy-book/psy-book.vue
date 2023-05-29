@@ -30,7 +30,6 @@ const pageOption = Page.BasePage({
         })
         .catch((err) => {
           setTimeout(() => {
-            // this.jumpAction("/pages/index/index");
             this.backAction();
           }, 1500);
         });

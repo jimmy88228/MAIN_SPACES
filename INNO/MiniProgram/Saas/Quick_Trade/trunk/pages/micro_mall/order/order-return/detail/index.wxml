@@ -1,0 +1,216 @@
+<!-- public 必须是第一个元素 -->
+<include src="/common/base/page/index.wxml" />
+<view class="order_exchange_page">
+  <view class='head_status'>
+    <block wx:if="{{options.staff_type == 0}}">
+      <block wx:if="{{afterSaleDetail.statusDesc == '未确认'}}">
+        <view class='bold font_30 p_10'>{{afterSaleDetail.refundType}}申请</view>
+      </block>
+      <block wx:else>
+        <view class='bold font_30 p_10'>{{afterSaleDetail.statusDesc}}</view>
+      </block>
+      <view class='C_7f font_24 p_t_6' wx:if="{{afterSaleDetail.statusDesc == '已确认待退回' && !afterSaleDetail.invoiceNo}}">申请已确认，需完善退货信息</view>
+      <view class='C_7f font_24 p_t_6' wx:elif="{{afterSaleDetail.statusDesc == '已确认待退回' && afterSaleDetail.invoiceNo}}">待商家收到退货</view>
+      <view class='C_7f font_24 p_t_6' wx:elif="{{afterSaleDetail.statusDesc == '未确认'}}">待商家确认中</view>
+      <view class='C_7f font_24 p_t_6' wx:elif="{{afterSaleDetail.statusDesc == '已收货'}}">商家已收到退货，待退款</view>
+    </block> 
+    <view wx:else class='bold font_30 p_10'>{{afterSaleDetail.statusDesc}}</view> 
+  </view>
+
+  <view class="padding_box border_0 m_b_0 flex-col flex-c-s" wx:if="{{options.staff_type == 0 && afterSaleDetail.statusDesc == '已确认待退回' && !afterSaleDetail.invoiceNo}}">
+    <block>
+      <view class="b_box_row table" wx:if="{{returnAddress.copyText}}">
+        <view class="adress_title font_24 C_7f">退货地址</view>
+        <view class="flex-b-c">
+          <text class="adress_name b_box_cont v_t" user-select="{{true}}" space="nbsp">{{returnAddress.copyText}}</text>
+          <text class="copy-btn s_flex" catchtap="copy" data-value="{{returnAddress.copyText}}">复制</text>
+        </view>
+      </view>
+      <my-radio-group ext-class="radio-group-box" catchradioSel="radioSel" arr="{{returnMethodsArr}}" color="{{mainColor}}" ext-radio-class="m-r-50" ext-name-class="p-l-10" curValue="{{curReturnType}}"></my-radio-group>
+      <view class="b_box_row table padding_0" hidden="{{curReturnType == 'store'}}">
+        <view class="returnInfo_operate">
+          <view>
+            <input type="text" class="return_order_num_input" placeholder-class="phcolor" placeholder='输入快递单号' value="{{shipping_num}}" data-key="shipping_num" bindinput="changeVal" />
+          </view>
+          <view class="order_num_tip" wx:if="{{afterSaleDetail.refundType=='退货'}}">请规范填写退货物流单号，避免影响你的退款（仅支持数字、字母）</view>
+          <view class="shipping_box">
+            <input catchtap="onShipping" type="text" class="return_order_num_input shipping_name" placeholder-class="phcolor" disabled placeholder='选择快递公司' value="{{shipping_Company.shippingName || ''}}" data-key="shipping_name" />
+            <text class="save_order_input C_fff" wx:if="{{afterSaleDetail.refundType=='退货'}}" bindtap="saveOrderNum">提交</text>
+          </view>
+        </view>
+      </view>
+      <block wx:if="{{afterSaleDetail.refundType=='退货'}}">
+        <view class="store-return-box flex-c-c" hidden="{{curReturnType != 'store'}}">
+          <input class="return_order_num_input shipping_name" placeholder-class="phcolor" disabled placeholder='到门店退货,无需填写信息' data-key="shipping_name" />
+          <view class="save_order_input C_fff extra" bindtap="saveOrderNum">提交</view>
+        </view>
+      </block>
+    </block>
+  </view>
+
+  <!--分割-->
+  <view class="line"></view>
+  <view class="padding_box border_0">
+    <view class="flex_style title_p">商品详情</view>
+    <view class="return_goods_list">
+      <view class="return_goods_item table flex" wx:for="{{goodsList}}" wx:key="index">
+        <view class="table_cell img_box">
+          <mode-image ext-class="img_box_stay" src="{{item.thumbUrl}}" />
+        </view>
+        <view class="table_cell cell_top flex-1">
+          <view class="goodsName C_000 font_24 text-flow2">{{item.goodsName}}</view>
+          <view class=" C_7f font_24 goodsColor" wx:if="{{item.goodsAttr}}">{{item.goodsAttr}} </view>
+          <view class="goodsNum  C_7f font_24">x{{item.afterSaleNumber}}</view>
+          <view class="goodsPrice C_7f font_28 ">¥{{item.salePrice}}</view>
+        </view>
+      </view>
+    </view>
+  </view>
+  <view class="line"></view>
+  <block wx:if="{{!(menuInfo.canRefund == 1 && options.staff_type == 1) && (afterSaleDetail.statusDesc != '退款中' && afterSaleDetail.statusDesc != '已退款')}}">
+    <view class="m_b_0 padding_box staff_return_box"  wx:if="{{options.staff_type == 1}}">
+      <view class="flex_style">
+        <text class="b_box_tit  msg_content">退款金额</text>
+        <text class="b_box_cont main-color">¥{{afterSaleDetail.altersaleTotalAmount}}</text>
+      </view>
+      <view class="flex_style">
+        <text class="b_box_tit  msg_content">{{afterSaleDetail.refundType}}件数</text>
+        <text class="b_box_cont ">{{afterSaleDetail.altersaleGoodsNum}}件</text>
+      </view>
+      <view class="flex_style" wx:for="{{goodsList}}" wx:key="index">
+        <text class="b_box_tit  msg_content">{{afterSaleDetail.refundType}}商品</text>
+        <text class="b_box_cont ">{{item.goodsName}}</text>
+      </view>
+    </view>
+    <view class='padding_box m_b_0'>
+      <view class="flex_style">
+        <text class="b_box_tit  msg_content">申请数量</text>
+        <text class="b_box_cont ">{{afterSaleDetail.altersaleGoodsNum}}件</text>
+      </view>
+      <view class="flex_style">
+        <text class="b_box_tit  msg_content">申请原因</text>
+        <text class="b_box_cont ">{{afterSaleDetail.altersaleReason}}</text>
+      </view>
+      <view class="flex_style">
+        <text class="b_box_tit  msg_content">备注</text>
+        <text class="b_box_cont break p_t_5">{{afterSaleDetail.altersaleRemark}}</text>
+      </view>
+    </view>
+  </block> 
+  <block wx:else>
+    <view class='bold padding_box m_b_0 refund-msg-all'>  
+      <view class="flex_style">
+        <text class="b_box_tit  msg_content">商品名称</text>
+        <text class="b_box_cont text-flow2" wx:for="{{goodsList}}" wx:key="index">{{item.goodsName}}</text>
+      </view>
+      <view class="flex_style">
+        <text class="b_box_tit  msg_content main-color">申请退款数量</text>
+        <text class="b_box_cont">{{afterSaleDetail.altersaleGoodsNum}}</text>
+      </view>
+      <view class="flex_style">
+        <text class="b_box_tit  msg_content">订单购买数量</text>
+        <text class="b_box_cont">{{afterSaleDetail.orderInfoGoodsNum}}</text>
+      </view>
+      <view class="flex_style">
+        <text class="b_box_tit  msg_content">已退款数量</text>
+        <text class="b_box_cont">{{afterSaleDetail.refundNum}}</text>
+      </view>
+    </view>
+    <view class='bold padding_box m_b_0 refund-msg-all'>   
+      <view class="flex_style">
+        <text class="b_box_tit  msg_content main-color">申请退款金额</text>
+        <text class="b_box_cont">{{afterSaleDetail.altersaleTotalAmount}}</text>
+      </view>
+      <view class="flex_style">
+        <text class="b_box_tit  msg_content">订单实付金额</text>
+        <text class="b_box_cont">{{afterSaleDetail.realRefundAmount}}</text>
+      </view>
+      <view class="flex_style">
+        <text class="b_box_tit  msg_content">已退款金额</text>
+        <text class="b_box_cont">{{afterSaleDetail.refundMoney}}</text>
+      </view>
+    </view>
+  </block> 
+  <view class="padding_box m_b_0"> 
+    <view class="flex_style">
+      <text class="b_box_tit  msg_content">{{afterSaleDetail.refundType}}单号</text>
+      <text class="b_box_cont ">{{afterSaleDetail.altersaleSn}}</text>
+    </view>
+    <view class="flex_style">
+      <text class="b_box_tit  msg_content">原订单号</text>
+      <text class="b_box_cont ">{{afterSaleDetail.relatedOrderSn}}</text>
+      
+      <view class="oisc-order-sn-copy icon-copy m-l-15" hover-class="active" bindtap="handleCopyTap"
+            data-text="{{afterSaleDetail.relatedOrderSn}}">复制</view> 
+    </view>
+    <view class="flex_style">
+      <text class="b_box_tit  msg_content">申请日期</text>
+      <text class="b_box_cont ">{{afterSaleDetail.createdAt}}</text>
+    </view>
+    <!-- <view class="flex_style" wx:if="{{afterSaleDetail.invoiceNo}}">
+              <text class="b_box_tit  msg_content">快递单号</text>
+              <text class="b_box_cont ">{{afterSaleDetail.invoiceNo}}</text>
+          </view>
+          <view class="flex_style" wx:if="{{afterSaleDetail.statusDesc == '已结算'}}">
+              <text class="b_box_tit  msg_content">退货地址</text>
+              <text class="b_box_cont ">{{returnAddress.returnAddress || sys_return_address}}</text>
+          </view>
+          <view class="flex_style" wx:if="{{afterSaleDetail.statusDesc == '已结算'}}">
+              <text class="b_box_tit  msg_content">退货物流单号</text>
+              <text class="b_box_cont ">{{afterSaleDetail.invoiceNo}}</text>
+          </view> -->
+  </view>  
+  <view class='padding_box p_t_30' wx:if="{{recordList.length>0}}"> 
+    <operation-log list="{{recordList}}"></operation-log>
+  </view> 
+
+  <view class="orderBox" wx:if="{{menuInfo.canRefund == 1 && options.staff_type == 1}}">
+    <view class="m-b-20 bold">
+      退款备注
+    </view>
+    <view class="cont min_h">
+      <view class="remark_area_box {{show_remarks_val ? '' : 'hide' }}">
+        <view class="custom_remark_area C_7f" catchtap="ShowRemarksVal">{{formData['explain'] ? formData['explain'] : '输入商家内部信息标注'}}</view>
+      </view>
+      <textarea 
+      focus="{{remarks_focus}}"
+      class="remark_area {{show_remarks_val ? 'hide' : '' }}" 
+      placeholder-class="remark_area" 
+      placeholder='输入商家内部信息标注' 
+      data-key="explain" 
+      bindinput="SetRemark"
+      bindblur="ShowRemarksVal"
+      maxlength="{{limitNum}}"
+      ></textarea>
+      <view class="remark_num">{{explainNum}}/{{limitNum}}</view>
+    </view>
+  </view> 
+</view>
+<view class="order_opreate_btns bg_fff font_0 t_r b_t" wx:if="{{isInited}}">
+  <view class="order_opreate_btns_stay">
+    <view class="btn_box flex-e-c">
+      <block wx:if="{{options.staff_type == 1}}">
+        <block wx:if="{{menuInfo.canRefund == 1}}">
+          <view class="refund-box flex-e-c">
+            <view class="refund-msg">
+              <span>共退款:</span>
+              <span class="main-color refund-price">¥{{afterSaleDetail.altersaleTotalAmount||0}}</span>
+            </view>  
+            <button class="oifr-btn refund" bindtap="refund" hover-class="none" form-type="submit">退款</button>
+          </view>
+        </block>
+        <block wx:else>
+          <button class="oifr-btn" bindtap="back" hover-class="none" form-type="submit">返回首页</button> 
+          <button wx:if="{{menuInfo.refuseApply == 1}}" class="oifr-btn refuse" bindtap="onTap" data-op="2" hover-class="none" form-type="submit">拒绝申请</button>
+          <button wx:if="{{menuInfo.consentApply == 1}}" class="oifr-btn consent" bindtap="onTap" data-op="1" hover-class="none" form-type="submit">同意申请</button>
+          <button wx:if="{{menuInfo.canReceive == 1}}" class="oifr-btn receive" bindtap="onTap" data-op="1" hover-class="none" form-type="submit">确认收货</button>  
+        </block>
+      </block>
+      <button wx:else class="oifr-btn" bindtap="back" hover-class="none" form-type="submit">返回首页</button> 
+    </view>
+  </view>
+</view>
+
+<confirm-pop class="confirm-pop" id="confirmPop" title="退款方式" > 
+  <my-radio-group slot="content" ext-class="refund-radio-group-box" catchradioSel="refundSel" arr="{{refundMethodsArr}}" color="{{mainColor}}" ext-radio-class="m-r-20" ext-name-class="p-l-15" curValue="{{curRefundType}}"></my-radio-group>
+</confirm-pop>

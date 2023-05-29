@@ -3,6 +3,7 @@
   "usingComponents": {
     "window":"/components/ui/cps/window/window",
     "dialog": "/components/ui/cps/dialog/dialog",
-    "list": "/components/list/list"
+    "list": "/components/list/list",
+    "mp-scroll-view":"/components/mp-module/mp-scroll-view/mp-scroll-view"
   }
 }

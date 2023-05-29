@@ -1,0 +1,22 @@
+<window show="{{show}}" bind:masktap="dismiss">
+  <transition show="{{show}}" class="share-pop-container" name="slide-from-bottom">
+    <view class="share-pop-main">
+      <view class="share-pop-list">
+        <block wx:for="{{list}}" wx:key="shareId">
+          <view class="share-pop-item" hover-class="active" wx:if="{{item.showed}}" bindtap="handlePopItemTap" data-item="{{item}}">
+            <button
+              wx:if="{{item.shareId == 1}}"
+              open-type='share'
+              class="share-item-btn"
+            >{{item.shareTip}}</button>
+            <view wx:else class="share-item-btn">{{item.shareTip}}</view>
+          </view>
+        </block>
+        <view class="share-pop-item" hover-class="active" bindtap="dismiss">
+          <view class="share-item-btn">取消</view>
+        </view>
+      </view>
+    </view>
+  </transition>
+</window>
+<include src="/common/base/component/index.wxml" />

@@ -1,0 +1,77 @@
+<window show="{{show}}" bindmasktap="toggle" name="slide-from-bottom">
+  <transition show="{{show}}" name="slide-from-bottom" class="goods-spec-container" customStyle="width: 100%;height: 100%">
+    <view class="goods-spec-main" catchtap="noFn">
+      <view class="g-s-spec-detail">
+        <mode-image ext-class="g-s-spec-image" src="{{goodsImg}}" />
+        <view class="g-d-spec-info">
+          <view class="g-d-s-i-price">
+            <block wx:if="{{selectSkuFinished}}">
+              <text class="gdsi-price-rmb">￥</text>
+              <text class="gdsi-price-text">{{selectedProductInfo.sale_price}}</text>
+            </block>
+            <text class="gdsi-price-rmb" wx:else>--</text>
+          </view>
+          <view class="already-chosen">
+            <text class="already-chosen-text">已选<block wx:for="{{selectedSku}}" wx:key="index">"{{item.name}}" </block></text>
+          </view>
+          <view class="gdsi-goods-sn">
+            <text class="gdsi-prefix">商品编码 </text>
+            <text class="gdsi-goods-sn-text">{{selectedProductInfo.product_sn}}</text>
+          </view>
+        </view>
+      </view>
+      <view class="g-s-sku-container">
+        <scroll-view scroll-y class="g-s-sku-main">
+          <sku id="sku" show bind:select="handleSkuSelect" />
+        </scroll-view>
+      </view>
+      <view class="g-s-purchase-count-con">
+        <view class="gspcc-prefix">购买数量</view>
+        <view class="gspcc-main">
+          <!-- <view class="gspcc-tips">每人限购1件</view> -->
+          <view class="gspcc-number-control">
+            <view class="gspcc-minus icon-minus {{!selectSkuFinished || selectedProductNumber <= 1 ? 'disabled' : ''}}" 
+            hover-class="active" data-disabled="{{!selectSkuFinished || selectedProductNumber <= 1 ? 'disabled' : ''}}" bindtap="handleProductNumberResize" data-num="-1"></view>
+            <input class="gspcc-number-input" type="number" value="{{selectedProductNumber}}" disabled="{{!selectSkuFinished}}" bindinput="handleProductNumberInput" />
+            <view class="gspcc-plus icon-plus {{!selectSkuFinished || selectedProductNumber >= selectedProductInfo.goods_number ? 'disabled' : ''}}" hover-class="active" data-disabled="{{!selectSkuFinished || selectedProductNumber >= selectedProductInfo.goods_number ? 'disabled' : ''}}" bindtap="handleProductNumberResize" data-num="1"></view>
+          </view>
+        </view>
+      </view>
+      <view class="g-s-delivery-type-con">
+        <view class="gsdtc-main">
+          <radio-group class="gsdtc-radio-group" bindchange="handleShippingWayRadioChange">
+            <radio class="spec-radio" color="#F5475F" checked="{{shippingWay === 0}}" value="{{0}}">
+              <text class="spec-shipping">快递配送</text>
+            </radio>
+            <radio class="spec-radio" color="#F5475F" checked="{{shippingWay === 1}}" value="{{1}}">
+              <text class="spec-shipping">门店自提</text>
+            </radio>
+          </radio-group>
+        </view>
+      </view>
+
+      <view class="g-s-footer">
+        <view class="g-s-purchase-btn-group">
+          <btns class="g-s-purchase-btn-con" disabled="{{!selectSkuFinished}}" bind:clickcallback="handlePurchaseButtonTap">
+            <block wx:if="{{!hasInventory}}">
+              <view class="g-s-purchase-btn disabled" hover-class="active">已售罄</view>
+            </block>
+            <block wx:else>
+              <view class="g-s-purchase-btn {{!selectSkuFinished ? 'disabled': ''}}" hover-class="active">立即购买</view>
+            </block>
+          </btns>
+        </view>
+      </view>
+    </view>
+    <view class="goods-spec-short-cut">
+      <view class="gssc-left" wx:if="{{showShortCut}}" bindtap="handleShortCutTap">
+        <view class="gscc-menu-icon iconfont icon-list"></view>
+        <view class="gscc-entry">商品详情</view>
+      </view>
+      <view class="gssc-right" catchtap="toggle">
+        <view class="gssc-close icon-close"></view>
+      </view>
+    </view>
+  </transition>
+</window>
+<include src="/common/base/component/index.wxml" />

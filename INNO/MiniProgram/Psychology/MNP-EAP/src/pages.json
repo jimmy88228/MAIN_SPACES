@@ -52,37 +52,6 @@
 				"enablePullDownRefresh": false
 			}
 		}, {
-			"path": "pages/psychology/tutor/tutor",
-			"style": {
-				"navigationBarTitleText": "选择心理导师",
-				"enablePullDownRefresh": false
-			}
-		}, {
-			"path": "pages/psychology/resume/resume",
-			"style": {
-				"navigationBarTitleText": "导师简历",
-				"enablePullDownRefresh": false
-			}
-		}, {
-			"path": "pages/psychology/reserve/reserve",
-			"style": {
-				"navigationBarTitleText": "预约资讯",
-				"enablePullDownRefresh": false
-			}
-		}, {
-			"path": "pages/psychology/reserve-result/reserve-result",
-			"style": {
-				"navigationBarTitleText": "预约结果",
-				"enablePullDownRefresh": false,
-				"disableScroll": true
-			}
-		}, {
-			"path": "pages/psychology/my-reserve/my-reserve",
-			"style": {
-				"navigationBarTitleText": "我的预约",
-				"enablePullDownRefresh": false
-			}
-		}, {
 			"path": "pages/report/report-list/report-list",
 			"style": {
 				"navigationBarTitleText": "测评报告",
@@ -331,6 +300,42 @@
 			]
 		},
 		{
+			"root": "pages/psychology",
+			"pages": [ {
+				"path": "tutor/tutor",
+				"style": {
+					"navigationBarTitleText": "选择心理导师",
+					"enablePullDownRefresh": false
+				}
+			}, {
+				"path": "resume/resume",
+				"style": {
+					"navigationBarTitleText": "导师简历",
+					"enablePullDownRefresh": false
+				}
+			}, {
+				"path": "reserve/reserve",
+				"style": {
+					"navigationBarTitleText": "预约资讯",
+					"enablePullDownRefresh": false
+				}
+			}, {
+				"path": "reserve-result/reserve-result",
+				"style": {
+					"navigationBarTitleText": "预约结果",
+					"enablePullDownRefresh": false,
+					"disableScroll": true
+				}
+			}, {
+				"path": "my-reserve/my-reserve",
+				"style": {
+					"navigationBarTitleText": "我的预约",
+					"enablePullDownRefresh": false
+				}
+			}
+			]
+		},
+		{
 			"root": "pages/tree-hole",
 			"pages": [{
 				"path": "index",
@@ -410,8 +415,44 @@
 					"enablePullDownRefresh": false
 				}
 			}]
+		},
+		{
+			"root": "pages/questionnaire",
+			"pages": [
+				{
+					"path": "answer/answer",
+					"style": { 
+						"navigationBarTitleText": "调查问卷",
+						"enablePullDownRefresh": false
+					}
+				},
+				{
+					"path": "detail/detail",
+					"style": { 
+						"navigationBarTitleText": "问卷详情",
+						"enablePullDownRefresh": false
+					}
+				},
+				{
+					"path": "result/result",
+					"style": { 
+						"navigationBarTitleText": "提交成功",
+						"enablePullDownRefresh": false
+					}
+				}
+			]
 		}
 	],
+	"preloadRule": {
+		"pages/index/index": {
+			"network": "all",
+			"packages": ["pages/activities", "pages/psychology", "pages/game", "pages/nearby-address","pages/questionnaire"]
+		},
+		"pages/user/user": {
+			"network": "all",
+			"packages": ["pages/activities"]
+		}
+	},
 	"tabBar": {
 		"color": "#E2E2E2",
 		"selectedColor": "#06509B",

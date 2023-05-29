@@ -1,0 +1,4 @@
+<!--pages/goods/popup/service.wxml-->
+<window class="window" ext-class="window-ext">
+
+</window>

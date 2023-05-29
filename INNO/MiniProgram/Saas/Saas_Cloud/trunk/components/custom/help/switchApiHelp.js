@@ -186,7 +186,7 @@ function SwitchApi({bindType,data,index,extend,sr_t,Limit_S}) {
       case 14:
         try {
           api = 'GoodsApi';
-          url = 'getValidGoodsPackageList';
+          url = 'get_ValidGoodsPackageList';
           params = initParams({index, bindType, data, extend});
         } catch (e) {
           initMsg.hide = true;

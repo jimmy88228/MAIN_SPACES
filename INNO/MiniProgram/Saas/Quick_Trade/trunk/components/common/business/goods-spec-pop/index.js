@@ -6,7 +6,8 @@ Component(App.BC({
     showShortCut: { // 是否显示"商品详情"捷径
       type: Boolean,
       value: false
-    }
+    },
+    activity_status:Number
   },
   data: {
     activityId: 0, // 活动id
@@ -21,6 +22,11 @@ Component(App.BC({
     selectedProductNumber: 1, // 已选产品数量
     shippingWay: 0, // 0快递配送、1门店自提
     hasInventory: 0, // 所有产品数量总和
+  },
+  ready(){
+    this.setView({ 
+      skuRef: { get: () => this.findView("#sku") }, 
+    })
   },
   methods: {
     showModal({skuList = [], productList = [], goodsId = 0, goodsImg = "", activityId = 0}) {
@@ -70,10 +76,9 @@ Component(App.BC({
      */
     initSkuCompnent(skuData, options = {isRefresh: false, autoSelect: false}) {
       let {isRefresh, autoSelect} = options;
-      this.sku = this.sku || this.selectComponent("#sku");
-      if (isRefresh) this.sku.reset();
-      this.sku.initData(skuData);
-      if (isRefresh && autoSelect) this.sku.autoSelectFirstAvailableProduct(skuData);
+      if (isRefresh) this.skuRef.reset();
+      this.skuRef.initData(skuData);
+      if (isRefresh && autoSelect) this.skuRef.autoSelectFirstAvailableProduct(skuData);
     },
     handleSkuSelect(e) {
       const {finished = false, productInfo = {}, selectedSku = []} = e.detail;
@@ -108,6 +113,7 @@ Component(App.BC({
       this.setData({shippingWay: Number(shippingWay)})
     },
     handlePurchaseButtonTap() {
+      this._throttle('handlePurchaseButtonTap');
       WxApi.navigateTo({url: `/pages/main/cart/checkout/checkout?activity_product_id=${this.data.selectedProductInfo.activity_product_id}&goods_number=${this.data.selectedProductNumber}&shippingWay=${this.data.shippingWay}`}).then(this.toggle())
     },
     previewImage(e) {

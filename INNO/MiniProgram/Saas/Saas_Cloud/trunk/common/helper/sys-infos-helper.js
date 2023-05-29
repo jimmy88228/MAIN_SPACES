@@ -28,12 +28,12 @@ export default {
       return this.systemInfo.system;
   },
   get osType() {
-      this.systemInfo.system.split(" ");
-      return systemInfoArr[0];
+      let arr = this.systemInfo.system.split(" ")||[];
+      return arr[0];
   },
   get osVersion() {
-      this.systemInfo.system.split(" ");
-      return systemInfoArr.length > 1 ? systemInfoArr[1] : "";
+      let arr = this.systemInfo.system.split(" ")||[];
+      return arr.length > 1 ? arr[1] : "";
   },
   get model() {
       return this.systemInfo.model;

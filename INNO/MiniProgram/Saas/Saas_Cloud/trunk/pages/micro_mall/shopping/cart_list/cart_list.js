@@ -145,7 +145,7 @@ Component(app.BTAB({
       console.log('singleC',fromPrm,e);
       if (typeof (index) == "undefined") return;
       if(recId && goodsJson[recId] && !select){
-        if(checkInvalid.call(this,recId)){
+        if(checkInvalid.call(this,recId,true)){
           return
         }
       }
@@ -213,10 +213,7 @@ Component(app.BTAB({
     },
     delectShoppingCart: function (e) {
       let that = this;
-      let dataset = e.currentTarget.dataset || {};
-      let recId = dataset.recId || 0;
-      // let key = dataset.key;
-      // let index = dataset.index;
+      let {recId,data={},moduleIndex=0,cartsIndex=0,type=""} = this.getDataset(e); 
       let total_count = this.data.total_count;
       if (!recId && total_count.cart_num == 0) {
         app.SMH.showToast({
@@ -225,11 +222,29 @@ Component(app.BTAB({
         return;
       }
       wx.showModal({
-        title: '',
-        content: (recId || !this.data.select_all) ? '确定删除选中商品' : '确定清空购物车',
-        success: function (res) {
-          if (res.confirm) {
-
+        title: '提示',
+        content: '确定删除选中商品',
+        success: (res) => {
+          if (res.confirm) { 
+            let isBackage = data.isBackage || ""; 
+            if(isBackage){ 
+              let cartArr = that.data.cartArr||[];
+              // let editItems = cartArr[moduleIndex].items[cartsIndex];
+              if(type == 'single'){
+                recId = checkCartsBackage.call(this,cartArr[moduleIndex] && cartArr[moduleIndex].items || [],isBackage,'delete',false);
+              } 
+            }
+            console.log('recIdrecId',recId,',',total_count.rec_str,total_count,this.selectCarts)
+            let goodsJson = this.data.goodsJson || {};
+            let arr = this.selectCarts.split(',').filter(item=>!!item);
+            arr = arr.length>0 ? arr : String(recId).split(',').filter(item=>!!item);
+            if(arr.length>0){
+              arr.forEach(key=>{
+                app.WeReportHelper.setGoodsPurchase({goodsInfo:goodsJson[key],action_type:1,action_num:goodsJson[key].number,is_goods_page:0});
+              })
+            }else{
+              app.WeReportHelper.setGoodsPurchase({goodsInfo:goodsJson[recId],action_type:1,action_num:goodsJson[recId].number,is_goods_page:0});
+            }
             return app.CL_GoodsApi.delCartStroage({
               data: {
                 "rectIds": recId || total_count.rec_str,
@@ -241,6 +256,7 @@ Component(app.BTAB({
               }
             }).then(e => {
               if (e.code == "1") {
+                this.selectCarts = "";
                 getBuyCarGoodList.call(that);
               }
             })
@@ -407,7 +423,6 @@ function getBuyCarGoodList(jumpInit) {
       let goodsList = data.goodsList || [];
       let promList = data.promList || [];
       let cartArr = [],goodsJson = {},cartKeys = {},promJson={},edit_states={};
-      // console.log('购物车 list',data)
       //促销拼装
       for(let i = 0,lenI=promList.length;i<lenI;i++){
         let promItem = promList[i]||{};
@@ -435,7 +450,6 @@ function getBuyCarGoodList(jumpInit) {
           storeId: key,
           items:[]
         }
-        console.log('item',goods.store_id,item)
         //检测当前商品所属ruleId
         let thisRuleId = 0;
         for(let j = 0;j < promList.length; j++){
@@ -482,13 +496,24 @@ function getBuyCarGoodList(jumpInit) {
           isBackage: goods.extend_field1,
           ruleList:goods.ruleList,
           recId: goods.rec_id,
+          is_invalid:goods.is_invalid
         })
+        this.isBackage = this.isBackage||{};
+        this.isBackage[goods.extend_field1] = this.isBackage.hasOwnProperty(goods.extend_field1) ? !!(this.isBackage[goods.extend_field1] && goods.is_invalid == 0 && !(goods.number > goods.product_number || goods.product_number == 0)) : !!(goods.is_invalid==0  && !(goods.number > goods.product_number || goods.product_number == 0));
+        console.log('isBackage',this.isBackage)
+        let exist = false;
+        let bool = cartArr[cartKeys[key]].items[cartKeys[key_thisRuleId]].items.every(e_item=>{
+          let bool = !!(e_item.select||e_item.is_invalid==1); 
+          bool && (exist = true)
+          return bool
+        });
+        cartArr[cartKeys[key]].items[cartKeys[key_thisRuleId]].select = bool && exist
         // console.log('购物车 最后push',key,key_thisRuleId,cartKeys[key],cartKeys[key_thisRuleId],cartKeys,JSON.parse(JSON.stringify(cartArr[cartKeys[key]].items[cartKeys[key_thisRuleId]])),goods.goods_name)
         goodsJson[goods.rec_id] = goods;
         edit_states[goods.rec_id] = {
           eidt: false
         }
-      }
+      } 
       this.cartKeys = cartKeys;
       console.log('购物车 cartKeys',cartKeys)
       console.log('购物车 goodsJson',goodsJson)
@@ -552,7 +577,7 @@ function setSelectCarts(recId, select) {
       selectCarts = selectCarts.replace(new RegExp(',' + recId + ',', 'g'), ",");
     }
   }
-  console.log('当前购物车',selectCarts);
+  console.log('当前购物车',selectCarts,select);
   this.selectCarts = selectCarts
 }
 //
@@ -587,6 +612,7 @@ function totalNumHandle(type,isSelect) {
     let editItem = goodsJson[i];
     let rec_id = editItem.rec_id;
     if (selectCarts.indexOf(',' + rec_id + ',') != -1 || (type == "all" && isSelect)) {//已选
+      console.log('goodsJson',editItem)
       let s_store_id = editItem.shipping_store_id;
       let store_id = editItem.store_id;
       let is_invalid = editItem.is_invalid;
@@ -633,10 +659,11 @@ function totalNumHandle(type,isSelect) {
     }
   }
   let warn = "";
+  // console.log('isStore',isStore , isSelfget,noSelfget)
   if (isStore && isSelfget) {//不同线
-    warn = "自提商品请单独下单";
+    warn = "自提商品请单独下单。";
   } else if (isStore && noSelfget) {//不同店铺
-    warn = "自提商品请单独下单";
+    warn = "自提商品请单独下单~";
   } else if (isSelfget && noSelfget) {//不同门店类型
     warn = "配送方式不一致请区分下单";
   } else if (is_invalid_num > 0) {//存在失效
@@ -741,6 +768,9 @@ function changeGoodsNum(e, change_type) {
       this.setData({
         [dataKey]: goodsData
       })
+      console.log('goodsData',goodsData)
+      console.log('goodsJsongoodsJson 刷新',change_type,recId,this.data.goodsJson);
+      app.WeReportHelper.setGoodsPurchase({goodsInfo:goodsData,action_type:isAdd?0:1,action_num:number,is_goods_page:0});
       totalNumHandle.call(this);
       return Promise.resolve(e);
     }
@@ -837,8 +867,12 @@ function countPromotion(rec_str = '', total_count) {
       this.setData({
         total_count
       })
+      return res
     }
-    return Promise.resolve();
+    return Promise.reject(res);
+  }).catch(e=>{
+    app.SMH.showToast({title:e.msg||"存在异常商品"})
+    return Promise.reject(e);
   })
 }
 
@@ -847,24 +881,23 @@ function setClickStatus(dataset = {},check_type="",status={}){
   let cartsIndex = dataset.cartsIndex;
   let index = dataset.index;
   let isBackage = dataset.isBackage || false;
+  let select = dataset.select || false;
   let cartArr = this.data.cartArr || [];
   let editItems = [],editItem = {};
   let setDataName = "";
   if (check_type == 'single'){
-    editItems = cartArr[moduleIndex].items[cartsIndex];
-    editItem = editItems.items[index];
-    editItem.select = status ? status.bool: !editItem.select; //点击处按钮状态改变
     let selectAllItem = true;
-    if (isBackage) {//套餐商品
-      for (let i = 0; i < editItems.items.length; i++) {
-        if(index != i && editItems.items[i].isBackage == isBackage){
-          editItems.items[i].select = editItem.select;
-        }
-        let recId = editItems.items[i].recId || 0;
-        setSelectCarts.call(this, recId, editItem.select)
-      }
+    if (isBackage) {//套餐商品 
+      editItems = cartArr[moduleIndex];
+      editItem.select = status ? status.bool: !select; //点击处按钮状态改变
+      setDataName = 'cartArr[' + moduleIndex + ']';
+      checkCartsBackage.call(this,editItems.items||[],isBackage,'select',editItem.select);
       selectAllItem = editItem.select;
-    } else {  //普通商品、门店自提  
+    } else {  //普通商品、门店自提
+      editItems = cartArr[moduleIndex].items[cartsIndex];
+      editItem = editItems.items[index];
+      editItem.select = status ? status.bool: !editItem.select; //点击处按钮状态改变
+      setDataName = 'cartArr[' + moduleIndex + '].items[' + cartsIndex + ']';
       if(editItem.select){
         for (let i = 0; i < editItems.items.length; i++) {
           let recId = editItems.items[i].recId || 0;
@@ -884,7 +917,6 @@ function setClickStatus(dataset = {},check_type="",status={}){
       setSelectCarts.call(this, recId, editItem.select)
     }
     editItems.select = selectAllItem;  //控制套餐、自提的外按钮状态 （普通商品在这里无作用）
-    setDataName = 'cartArr[' + moduleIndex + '].items[' + cartsIndex + ']';
   } else if (check_type == "all"){
     if (typeof (cartsIndex) != "undefined") { //促销、套餐商品全选，目前不开放
       editItems = cartArr[moduleIndex].items[cartsIndex];
@@ -919,6 +951,7 @@ function setClickStatus(dataset = {},check_type="",status={}){
       [`${setDataName}`]: editItems //（点击处以及外按钮和总按钮的更新）
     })
   }
+  console.log('cartArr',this.data.cartArr)
 }
 
 //更新套餐、自提外按钮状态 和 快递配送总按钮状态 （除了默认选中，其他情况都只更新快递配送总按钮状态）
@@ -1000,10 +1033,18 @@ function checkDefaultSelect(type="get"){
   }
 }
 
-function checkInvalid(recId){  //true是非法,false是正常
+function checkInvalid(recId,showToast=false){  //true是非法,false是正常
   let goodsJson = this.data.goodsJson||{};
-  if(goodsJson[recId].is_invalid != 0 || (goodsJson[recId].number > goodsJson[recId].product_number || goodsJson[recId].product_number == 0)){
-    return true
+  let err = "";
+  if((goodsJson[recId].extend_field1 && !this.isBackage[goodsJson[recId].extend_field1])){
+    err = "该搭配套餐存在不能购买的商品"
+  }
+  if(goodsJson[recId].is_invalid != 0 || (goodsJson[recId].number > goodsJson[recId].product_number || goodsJson[recId].product_number == 0)){ 
+    err = "失效商品无法选中"
+  }
+  if(err){
+    showToast && app.SMH.showToast({title:err})
+    return true;
   }
   return false
 }
@@ -1034,4 +1075,28 @@ function checkSignReward(){
     app.StorageH.set('curSignActInfo', storage);
     return curSignActInfo;
   })
+}
+
+function checkCartsBackage(item,isBackage,fromType='select',select){
+// function checkCartsBackage(item,isBackage,fromType='select',select,_recId){
+  // _recId = _recId || "";
+  let _recId = "";
+  // console.log('进来 checkCartsBackage',_recId,item)
+  item && item.forEach && item.forEach(i_item=>{
+    if(i_item.items){
+      let newRecId = checkCartsBackage.call(this,i_item.items,isBackage,fromType,select);
+      // console.log('出来',newRecId,'--',_recId)
+      newRecId && (_recId = _recId + (_recId?",":"") + newRecId);
+    }else if(i_item.isBackage == isBackage){
+      let recId = i_item.recId || 0; 
+      if(fromType == 'select'){
+        i_item.select = select;
+        setSelectCarts.call(this, recId, select);
+      }
+      // _recId = recId
+      _recId = _recId + (_recId?",":"") + recId;
+    }
+  })
+  console.log('递归',_recId,item)
+  return _recId
 }

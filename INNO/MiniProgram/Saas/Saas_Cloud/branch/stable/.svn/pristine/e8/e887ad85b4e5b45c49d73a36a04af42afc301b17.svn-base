@@ -1,0 +1,2 @@
+/* components/micro-page/micro-mix/items/component/group-head/group-head.wxss */
+@import '../template/gds-list-css.wxss';

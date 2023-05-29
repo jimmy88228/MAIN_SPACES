@@ -44,8 +44,7 @@ class ShopGuideManager {
         data = {
           ...data,
           ...locat
-        }
-        console.log("this.data", data)
+        } 
         return getCustomerServiceInfo.call(this, data)
       })
     }else{
@@ -53,7 +52,7 @@ class ShopGuideManager {
     }
   }
   startmessage(e){
-    console.log("startmessage", e);
+    console.log("企微 startmessage", e);
     SMH.showLoading(null,0);
     this.loadTime && clearTimeout(this.loadTime);
     this.loadTime = setTimeout(()=>{
@@ -63,9 +62,9 @@ class ShopGuideManager {
     },3000)
   }
   completemessage(e,staff){
-    console.log("completemessage", e);
     SMH.hideLoading(0);
     let detail = e.detail || {};
+    console.log("企微 completemessage", detail.errcode,e,staff);
     let dataset = e.target.dataset || {};
     let index = dataset.index;
     let p = new Promise(function(rs,rj){
@@ -80,7 +79,7 @@ class ShopGuideManager {
         }
         rs(data);
       } else {
-        app.SMH.showToast({
+        SMH.showToast({
           title: "触发失败"
         });
         rj();
@@ -109,6 +108,7 @@ function getCustomerServiceInfo(params = {}) {
       isShowLoad: false
     }
   }).then(res=>{
+    console.log("企微 导购信息",res);
     if(res.code == 1){
       let data = res.data || {};
       if (data.storeInfo){
@@ -116,12 +116,6 @@ function getCustomerServiceInfo(params = {}) {
       }
       return Promise.resolve(data);
     }
-    console.log('resres',res)
-    // if(!params.isAutoLoad){
-    //   SMH.showToast({
-    //     title: res.msg
-    //   })
-    // }
     return Promise.reject({});
   })
 }

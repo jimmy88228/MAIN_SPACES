@@ -1,0 +1,14 @@
+/* pages/preload/index.wxss */
+/* pages/startup/startup_page.wxss */
+@import '/components/css3/loading/loading-around/loading-around.wxss';
+.start_up_tip {
+  position: fixed;
+  top: 36%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+.tip{
+  text-align: center;
+  padding-top: 30rpx;
+  color: #7f7f7f;
+} 

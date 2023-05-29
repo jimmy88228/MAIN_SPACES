@@ -5,7 +5,7 @@
         <mode-image ext-class="g-s-spec-image" src="{{goodsImg}}" />
         <view class="g-d-spec-info">
           <view class="g-d-s-i-price">
-            <block wx:if="{{selectedProductInfo.sale_price>0}}">
+            <block wx:if="{{selectSkuFinished}}">
               <text class="gdsi-price-rmb">￥</text>
               <text class="gdsi-price-text">{{selectedProductInfo.sale_price}}</text>
             </block>
@@ -52,12 +52,12 @@
 
       <view class="g-s-footer">
         <view class="g-s-purchase-btn-group">
-          <btns class="g-s-purchase-btn-con" disabled="{{!selectSkuFinished}}" bind:clickcallback="handlePurchaseButtonTap">
+          <btns class="g-s-purchase-btn-con" disabled="{{!selectSkuFinished || activity_status == 0}}" bind:clickcallback="handlePurchaseButtonTap">
             <block wx:if="{{!hasInventory}}">
               <view class="g-s-purchase-btn disabled" hover-class="active">已售罄</view>
             </block>
             <block wx:else>
-              <view class="g-s-purchase-btn {{!selectSkuFinished ? 'disabled': ''}}" hover-class="active">立即购买</view>
+              <view class="g-s-purchase-btn {{!selectSkuFinished || activity_status == 0 ? 'disabled': ''}}" hover-class="active">立即购买</view>
             </block>
           </btns>
         </view>

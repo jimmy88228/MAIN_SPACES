@@ -1,0 +1,8 @@
+{
+    "navigationBarTitleText": "预售活动-结算",
+    "usingComponents": {
+        "dialog": "/components/ui/cps/dialog/dialog",
+        "choose-coupon":"/components/orders/chooseCoupon/buy_coupon",
+        "orderSync": "/components/pop/order-sync/order-sync"
+    }
+}

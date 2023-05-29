@@ -8,6 +8,8 @@
     password="{{password}}"
     disabled="{{disabled}}"
     maxlength="{{maxlength}}"
+    always-embed="{{alwaysEmbed}}"
+    cursor-spacing="{{cursorSpacing}}"
     bindtap="onTap" 
     bindinput="onInput"
     bindfocus="{{setFocus?'onFocus':''}}"

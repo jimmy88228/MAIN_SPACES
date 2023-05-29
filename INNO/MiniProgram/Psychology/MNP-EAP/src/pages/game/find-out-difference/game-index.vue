@@ -15,8 +15,7 @@
         </template>
       </page-nav>
       <template v-if="!noData">
-        <image @load="getBgSize" v-show="isLoadBg" :style="{height:bgHeight,width:bgWidth}" class="game-index-bg"
-          :src="bgImg" mode="widthFix">
+        <fullScreenImg :src="bgImg"></fullScreenImg>
           <view class="operate-area">
             <view class="operate-btn" @click="startGame">
               <image class="operate-icon" :src="staticAddress + '/game/different/game-start.png'" mode="widthFix">
@@ -31,20 +30,19 @@
 </template>
 
 <script>
+  import fullScreenImg from "@/components/full-screen-img/full-screen-img.vue"
   import LoadingView from '@/components/css3/loading/loading.vue';
   import utils from '@/common/support/utils.js'
   const app = getApp();
   const pageOption = Page.BasePage({
     components: {
+      fullScreenImg,
       LoadingView
     },
     data() {
       return {
         showLoading: true,
         noData: true,
-        bgWidth: "100%",
-        bgHeight: 0,
-        isLoadBg: false,
         info: []
       };
     },
@@ -84,17 +82,6 @@
           this.showLoading = false
         })
       },
-      getBgSize({
-        detail
-      }) {
-        let width = detail.width;
-        let height = detail.height;
-        utils.getBgSize(width, height).then(res => {
-          this.bgWidth = res.imgW + "px"
-          this.bgHeight = res.imgH + "px"
-          this.isLoadBg = true;
-        })
-      },
       getRank() {
         this.jumpAction(
           `/pages/game/find-out-difference/rank/list?gameActivityId=${this.options.gameActivityId || 1}`);
@@ -116,14 +103,6 @@
     .game-rank-icon {
       width: 90rpx;
       height: 90rpx;
-    }
-
-    .game-index-bg {
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      width: 100%;
-      transform: translate(-50%, -50%);
     }
 
     .operate-area {

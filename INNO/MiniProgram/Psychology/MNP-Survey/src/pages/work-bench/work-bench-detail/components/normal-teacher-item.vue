@@ -1,11 +1,8 @@
 <template>
   <view class="eval-item bg_fff">
     <view class="eval-item-top">
-      <!-- <view class="bold font-24">
-        课程任务
-      </view> -->
       <view class="class-info flex-b-c">
-        <image @error="imgerror()" :src="logo || requireStatic(activityIcon)" class="class-info-image shrink0" mode="aspectFill"></image>
+        <oriImage @error="imgerror()" customStyle="border-radius:8rpx;" :src="logo || requireStatic(activityIcon)" class="class-info-image shrink0" mode="aspectFill"></oriImage>
         <view class="class-info-detail flex1">
           <view class="font-22 C_7f m-b-10">课程任务</view>
           <view class="font-26 m-b-35 clamp2">{{dataInfo.activityName}}</view>
@@ -30,9 +27,10 @@
 </template>
 
 <script>
+  import oriImage from "@/components/ori-comps/image/ori-image"
   const pageOption = Page.BasePage({
     name: "normal-teacher-item",
-    components: {},
+    components: {oriImage},
     props: {
       itemInfo: {
         type: Object,
@@ -70,7 +68,6 @@
           initEndTime,
           learningPrecent
         }
-        // console.log(dataInfo, "dataInfo")
         return dataInfo
       }
     },
@@ -109,7 +106,6 @@
         .class-info-image {
           width: 193rpx;
           height: 145rpx;
-          background: #D8D8D8;
           border-radius: 8rpx;
         }
 

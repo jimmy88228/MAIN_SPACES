@@ -1,9 +1,9 @@
-const BrandConf = {
-  INNOVATION:{
-    iconFileName:"INNO",
-  }
-}
-const TESTCONFIG = {
+const BrandEnv = {
+  TEST:[{brandCode:"INNOVATION",iconFileName:"INNO"}],
+  NEW_SAAS:[{brandCode:"YNKS",iconFileName:"YNKS"}],
+}  
+
+const INNOVATION = {
   "UseBrandBgColor": 1,
   "brand_name": "英朗测试",
   "brand_name_en": "INNOVATION",
@@ -64,7 +64,7 @@ const TESTCONFIG = {
   },
   "tabbar_list":[
     {
-      "pagePath": "pages/tabs/index/index",
+      "pagePath": "pages/micro_mall/index/index",
       "text": "首页",
       "iconPath": "/assets/images/tabBar/hot.png",
       "selectedIconPath": "/assets/images/tabBar/hot-active.png"
@@ -153,17 +153,193 @@ const TESTCONFIG = {
   },
 }
 
+const YNKS = {
+  "UseBrandBgColor": 1,
+  "brand_name": "英弩快速交易",
+  "brand_name_en": "YNKS",
+  "BRAND_CODE": "YNKS",
+  "is_onlyUserCenter": 0,
+  "icon_url": "https://innoimage.innourl.cn/wechat_applet_image/icon//",
+  "logo_path": "https://innoimage.innourl.cn/wechat_applet_image/icon//",
+  "default_icon_url": "https://innoimage.innourl.cn/wechat_applet_image/icon/default/",
+  "uploadImgUrl": "https://innoimage.innourl.cn/ImgManager/ImgUpload/UploadImage",
+  "uploadMvUrl": "https://innoimage.innourl.cn/ImgManager/ImgUpload/UploadMv",
+  "videoUrl": "https://innovideo.innourl.cn/",
+  "webViewUrl": "https://innoadmin.innourl.cn",
+  "webMh5Url":"https://devweb01.innourl.com/mh5/pages/home/jump",
+  "webContactUrl":"http://devweb01.innourl.com/mobile/customer_service.php",
+  "webSatffContactUrl":"http://devweb01.innourl.com/staff_wap/cs_service.php",
+  "style": {
+    "font_color": "#F19234",
+    "bg_color": "#F19234",
+    "nav_bg_color": "#fff",
+    "nav_border_color": "#222222",
+    "comment_bg_color": "#fff",
+    "pro_color": "#d61c2d",
+    "bargain_color": {
+      "theme_color": "rgba(225, 27, 27, 1)",
+      "to_color": "#FF4F4B",
+      "from_color": "#E11425"
+    },
+    "pre_color": {
+      "to_color": "#d61c2d",
+      "from_color": "#f03408",
+      "tag_color": "#fe3333"
+    },
+    "pt_color": {
+      "to_color": "#d61c2d",
+      "from_color": "#f03408"
+    },
+    "p_color": {
+      "to_color": "#d61c2d",
+      "from_color": "#f03408"
+    },
+    "sk_color": {
+      "to_color": "#d61c2d",
+      "from_color": "#f03408"
+    },
+    "n_sk_color": {
+      "theme_color": "rgba(248, 81, 9, 1)",
+      "to_color": "#F85109",
+      "from_color": "#EA3800"
+    },
+    "bc_color": {
+      "font_color": "#DE0016"
+    },
+  },
+  "tabbar_list":[
+    {
+      "pagePath": "pages/micro_mall/index/index",
+      "text": "首页",
+      "iconPath": "/assets/images/tabBar/hot.png",
+      "selectedIconPath": "/assets/images/tabBar/hot-active.png"
+    },
+    {
+      "pagePath": "pages/tabs/user/user",
+      "text": "个人中心",
+      "iconPath": "/assets/images/tabBar/user.png",
+      "selectedIconPath": "/assets/images/tabBar/user-active.png"
+    },
+  ],
+  "api_domain": { 
+    ACTAPI: "https://innoactapi.innourl.cn/BuyBonus",
+    BARCODEAPI: "https://innovslogapi.innourl.cn",
+    BARGAINAPI: "https://innoptapi.innourl.cn/BargainApi",
+    BUYAPI: "https://innobuyapi.innourl.cn",
+    COLLAGEAPI: "https://innoptapi.innourl.cn/CollageGroupApi",
+    ELECTRICAPI: "",
+    GOODSAPI: "https://innogoodsapi.innourl.cn",
+    GRASSAPI: "https://innoactapi.innourl.cn/GrassApi",
+    LIVEAPI: "",
+    LOTTERYAPI: "https://innoactapi.innourl.cn/LotteryApi",
+    MAINAPI: "",
+    MAPAPI: "https://restapi.amap.com",
+    MEMBERCARDAPI: "https://innouserapi.innourl.cn",
+    NEWPAYAPI: "https://innopayapi.innourl.cn/InnoPayApi",
+    PAYAPI: "https://innopayapi.innourl.cn",
+    PDAAPI: "https://innobuyapi.innourl.cn",
+    POINTAPI: "https://innoprsapi.innourl.cn/PointMktApi",
+    PRESALEAPI: "https://innoprsapi.innourl.cn/PresaleApi",
+    REGAPI: "https://innoregapi.innourl.cn",
+    SECKILLAPI: "https://innoskapi.innourl.cn/SeckillApi",
+    SMKTPAYAPI: "https://innosmktpay.innourl.cn/SmktPayApi",
+    STAFFAPI: "https://innouserapi.innourl.cn",
+    USERAPI: "https://innouserapi.innourl.cn",
+    VIDEOSHOPAPI: "https://INNOGOODSAPI.innourl.cn",
+    VOTEAPI: "",
+    VSLOGAPI: "https://innovslogapi.innourl.cn",
+
+    CL_ACTAPI: "",
+    CL_BARCODEAPI: "https://cloudbarcode.innourl.cn",
+    CL_BARGAINAPI: "https://innocloudseckill.innourl.cn/CsBargainApi",
+    CL_BUYAPI: "https://cloudbuyapi.innourl.cn",
+    CL_COLLAGEAPI: "https://innocloudseckill.innourl.cn/CsCollageGroupApi",
+    CL_ELECTRICAPI: "https://clouduserapi.innourl.cn",
+    CL_GOODSAPI: "https://cloudgoodsapi.innourl.cn",
+    CL_GRASSAPI: "",
+    CL_LIVEAPI: "https://clouduserapi.innourl.cn",
+    CL_LOTTERYAPI: "https://innocloudact.innourl.cn/CsLotteryApi",
+    CL_MAPAPI: "https://clouduserapi.innourl.cn",
+    CL_MEMBERCARDAPI: "https://clouduserapi.innourl.cn",
+    CL_NEWPAYAPI: "https://innopayapi.innourl.cn/InnoPayApi",
+    CL_PAYAPI: "https://innopayapi.innourl.cn",
+    CL_PDAAPI: "https://clouduserapi.innourl.cn",
+    CL_POINTAPI: "https://innocloudprs.innourl.cn/CsIntegralMallApi",
+    CL_PRESALEAPI: "https://innocloudprs.innourl.cn/CsPresaleApi",
+    CL_REGAPI: "https://cloudregapi.innourl.cn",
+    CL_SECKILLAPI: "https://innocloudseckill.innourl.cn/CsSeckillApi",
+    CL_SMKTPAYAPI: "https://clouduserapi.innourl.cn",
+    CL_STAFFAPI: "https://clouduserapi.innourl.cn",
+    CL_USERAPI: "https://clouduserapi.innourl.cn",
+    CL_VIDEOSHOPAPI: "https://clouduserapi.innourl.cn",
+    CL_VOTEAPI: "https://clouduserapi.innourl.cn",
+    CL_VSLOGAPI: "https://cloudvisitlog.innourl.cn/VisitLogApi",
+
+    QT_VSLOGAPI: "https://innoykjapi.innourl.cn",
+    QT_GOODSAPI: "https://innoykjapi.innourl.cn",
+    QT_USERAPI: "https://innoykjapi.innourl.cn",
+    QT_BUYAPI: "https://innoykjapi.innourl.cn",
+    QT_REGAPI: "https://innoykjapi.innourl.cn",
+    QT_PAYAPI: "https://innoykjapi.innourl.cn",
+    QT_NEWPAYAPI: "https://innoykjapi.innourl.cn/InnoPayApi",
+    QT_BARCODEAPI: "https://innoykjapi.innourl.cn",
+    QT_SECKILLAPI:"https://innoykjapi.innourl.cn/CsSeckillApi",
+    QT_ACTAPI:"https://innoykjapi.innourl.cn",
+    QT_BARGAINAPI:"https://innoykjapi.innourl.cn/CsBargainApi",
+    QT_PRESALEAPI: "https://innoykjapi.innourl.cn/CsPresaleApi",
+    QT_STAFFAPI: "https://innoykjapi.innourl.cn",
+    QT_POINTAPI: "https://innoykjapi.innourl.cn/CsIntegralMallApi",
+    QT_COLLAGEAPI: "https://innoykjapi.innourl.cn/CsCollageGroupApi",
+    QT_LOTTERYAPI: "https://innoykjapi.innourl.cn/CsLotteryApi",
+  },
+  
+  //全部显示
+  staffConf: {
+    commission: {
+      isOpen: 1,
+      cashOutTip: 0
+    },
+    service: {
+      isOpen: 1,
+      fans: 1,
+      hotGoods: 1,
+      hotAct: 1,
+      share: 1,
+      newGuide: 1,
+      guestFollows: 1,
+      dataWeb:1,
+      storesWeb:1,
+      staffCoupon: 1
+    },
+    orderList: {
+      commAmount: 1,
+      allSale: 1,
+      singleSale: 1
+    },
+    orderDetail: {
+      commAmount: 1
+    }
+  },
+}
+
 function getSetConfig(config = {}){
   let brandConfig = config
-  brandConfig= { // 测试环境-英朗体验
-    ...config,
-    ...TESTCONFIG
+  if (checkEnv(config.BRAND_CODE).key == "TEST") { // 测试环境
+    brandConfig= {
+      ...config,
+      ...INNOVATION
+    }
+  }else if(checkEnv(config.BRAND_CODE).key == "NEW_SAAS"){ // 新SAAS 
+    brandConfig= {
+      ...config,
+      ...YNKS
+    }
   }
   if (config.BRAND_CODE){
-    let defaultConf = BrandConf[brandConfig.BRAND_CODE];
+    let defaultConf = checkEnv(config.BRAND_CODE).item || {};
     brandConfig.brand_name_en = config.BRAND_CODE;
     brandConfig.BRAND_CODE = config.BRAND_CODE;
-    config.iconFileName = config.iconFileName || defaultConf && defaultConf.iconFileName || "";
+    config.iconFileName = config.iconFileName || defaultConf.iconFileName || "";
   }
   if (config.iconFileName){
     brandConfig.iconFileName = config.iconFileName;
@@ -177,4 +353,21 @@ function getSetConfig(config = {}){
   }
   return brandConfig;
 }
+
+function checkEnv(brandCode){
+  let result = {item:null,key:null};
+  for(let key in BrandEnv){
+    let arr = BrandEnv[key] || [];
+    for(let i = 0,len=arr.length;i<len;i++){
+      let item = arr[i];
+      if(item.brandCode == brandCode){
+        result.item = item;
+        result.key = key;
+        break;
+      } 
+    }
+  }
+  return result
+}
+
 export default getSetConfig;

@@ -28,7 +28,7 @@
           <view class="agree-icon">
             <view class="select-switch" :class="{ selected: selectAgree }"></view>
           </view>
-          <view>我同意广州市白云区精神卫生中心使用我所提交的信息用于快捷登录，查看
+          <view>我同意{{loginData.agreementCustomer || ''}}使用我所提交的信息用于快捷登录，查看
             <view class="agree-link" @click.stop="checkAgree">用户隐私保护指引</view>
           </view>
         </view>
@@ -58,7 +58,7 @@
           <view class="agree-icon">
             <view class="select-switch" :class="{ selected: selectAgree }"></view>
           </view>
-          <view>已阅读并同意广州市白云区精神卫生中心
+          <view>已阅读并同意{{loginData.agreementCustomer || ''}}
             <view class="agree-link" @click.stop="checkAgree">用户隐私保护指引</view>
           </view>
           <!-- <view>已阅读并同意白云心理 <view class="agree-link" @click.stop="checkAgree">用户隐私保护指引</view></view> -->
@@ -72,16 +72,14 @@
 </template>
 
 <script>
-  import utils from '@/common/support/utils.js'
+  import utils from '@/common/support/utils/utils.js'
   import SIH from "@/common/helper/sys-infos-handler";
-  import AuthButton from "@/components/auth-button/auth-button.vue";
   import oriInput from "@/components/ori-comps/input/ori-input.vue";
   import scanCode from "@/common/helper/scan-code-handler.js";
   import StorageH from "@/common/helper/storage-handler.js";
   const app = getApp();
   const pageOption = Page.BasePage({
     components: {
-      AuthButton,
       oriInput,
     },
     data() {

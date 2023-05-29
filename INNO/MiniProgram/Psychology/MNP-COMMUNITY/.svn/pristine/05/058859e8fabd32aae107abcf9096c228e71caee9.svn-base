@@ -1,0 +1,172 @@
+<template>
+  <view>
+    <view v-for="(groupItem, groupIndex) in audiosGroup" :key="groupIndex">
+      <view class="audio-list-between" v-if="dynamicSetting.type == 'row'">
+        <view
+          class="audio-item"
+          v-for="(audioItem, audioIndex) in groupItem.audios"
+          :key="audioIndex"
+          :style="styleSet"
+          :data-id="audioItem.id"
+          :data-item="audioItem"
+          @click="enjoyAudio"
+        >
+          <view
+            class="audio-icon m-b-20"
+            :style="{ 'background-color': coverBackground(audioItem.cover) }"
+          >
+            <image
+              class=""
+              @error="imgerror($event, audioIndex, groupIndex)"
+              :src="audioItem.cover"
+              mode="widthFix"
+            ></image>
+          </view>
+          <view class="audio-info">
+            <view class="C_333 clamp bold font-28 m-b-10" v-if="dynamicSetting.showTitle == 1">{{
+              audioItem.title
+            }}</view>
+            <view class="font-22 C_B2" v-if="dynamicSetting.showMsg == 1">{{ audioItem.duration_str }}</view>
+          </view>
+        </view>
+      </view>
+
+      <view class="audio-list-column" v-else>
+        <view
+          class="audio-item"
+          v-for="(audioItem, audioIndex) in groupItem.audios"
+          :key="audioIndex"
+          :data-id="audioItem.id"
+          :data-item="audioItem"
+          @click="enjoyAudio"
+        >
+          <image
+            :src="audioItem.cover"
+            :style="{ 'background-color': coverBackground(audioItem.cover) }"
+            @error="imgerror($event, audioIndex, groupIndex)"
+            mode="aspectFill"
+          />
+          <view class="audio-info clamp">
+            <view class="C_333 clamp bold font-28 m-b-10" v-if="dynamicSetting.showTitle == 1">{{
+              audioItem.title
+            }}</view>
+            <view class="font-22 C_B2" v-if="dynamicSetting.showMsg == 1">{{ audioItem.duration_str }}</view>
+          </view>
+        </view>
+      </view>
+    </view>
+  </view>
+</template>
+
+<script>
+const pageOption = Page.BasePage({
+  name: "audio-md",
+  props: {
+    moduleInfo: {
+      type: Object,
+      default: () => {},
+    },
+  },
+  computed: {
+    dynamicSetting() {
+      return this.moduleInfo.dynamicSetting || {};
+    },
+    audiosGroup() {
+      let moduleInfo = this.moduleInfo || {};
+      let moduleData = moduleInfo.moduleData || {};
+      return moduleData.audiosGroup || [];
+    },
+    styleSet() {
+      console.log(this.dynamicSetting.row, 3333);
+      let row = this.dynamicSetting.row;
+      let removeSplit = 100 - (row - 1) * 3.5;
+      let width = removeSplit / row + "%";
+      let style = `width:${width}`;
+      return style;
+    },
+  },
+  data() {
+    return {
+    };
+  },
+  onReady() {
+    this.dynamicSetting.row = 2;
+  },
+  methods: {
+    enjoyAudio({ currentTarget }) {
+      let id = currentTarget.dataset.id;
+      let item = currentTarget.dataset.item;
+      item = encodeURIComponent(JSON.stringify(item));
+      this.jumpAction(`/pages/content-library/audio-detail/audio-detail?id=${id}&item=${item}`);
+    },
+    coverBackground(coverUrl) {
+      if (coverUrl == "" || coverUrl == "errorCover") {
+        return "#EFEFEF";
+      } else {
+        return "transparent";
+      }
+    },
+    imgerror(e, img_index, index) {
+      var _this = this;
+      var imgChildList = _this.audiosGroup[index].audios;
+      if (imgChildList.length > 0) {
+        console.log(imgChildList, img_index);
+        imgChildList[img_index].cover = "errorCover";
+      }
+      this.$forceUpdate();
+    },
+  },
+});
+export default pageOption;
+</script>
+
+<style lang="less" scoped>
+.audio-list-between {
+  display: flex;
+  justify-content: space-between;
+  flex-flow: wrap;
+  width: 100%;
+  .audio-item {
+    // 后端传回来的row进行计算获得
+    // width: 47%;
+    margin-bottom: 30rpx;
+    .audio-icon {
+      position: relative;
+      width: 100%;
+      height: 0;
+      padding-bottom: 92%;
+      overflow: hidden;
+      border-radius: 12rpx;
+      image {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        width: 100%;
+      }
+    }
+    .audio-info {
+      width: 100%;
+    }
+  }
+}
+.audio-list-column {
+  width: 100%;
+  .audio-item {
+    display: flex;
+    align-items: center;
+    margin-bottom: 30rpx;
+    width: 100%;
+    image {
+      border-radius: 12rpx;
+      flex-shrink: 0;
+      width: 120rpx;
+      height: 120rpx;
+      margin-right: 20rpx;
+    }
+    .audio-info {
+      flex: 1;
+    }
+  }
+}
+</style>

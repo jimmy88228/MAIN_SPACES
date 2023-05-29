@@ -37,6 +37,7 @@
 
 <script>
   import SMH from "@/common/helper/show-msg-handler.js"
+  import courseManage from "@/common/manager/course-manage.js";
 
   const app = getApp();
   const pageOption = Page.BasePage({
@@ -52,8 +53,9 @@
       loadData(){
         return this.$Http(this.$Apis.getCourseExamRecordInfo, {
           data: {
-            activityId: this.options.activityId || 0,
-            contentId : this.options.contentId  || 0
+            // activityId: this.options.activityId || 0,
+            contentId : this.options.contentId  || 0,
+            recordId:courseManage.recordId
           },
         }).then(res=>{
           if(res.code){

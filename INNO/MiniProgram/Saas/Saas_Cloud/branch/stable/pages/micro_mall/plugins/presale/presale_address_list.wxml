@@ -1,0 +1,51 @@
+<!--pages/micro_mall/address/address_list.wxml-->
+<view class="address_page">
+  <view class="add_addr_btn" bindtap="addNewAddress" style="background:{{brand_info.style.bg_color}};">
+    <text class="addr_icon" style="background-image:url({{brand_info.icon_url}}micro_mall/address/add_new.png?23);"></text>
+    <text>添加新地址</text>
+  </view>
+  <view class="address_list">
+    <view class="addr_item {{item.is_default == 1 ? 'selected' : ''}}" data-address_id="{{item.address_id}}" data-is_default="{{item.is_default}}" bindtap="setDafaultAddr"  style="border:{{item.is_default == 1 ? '2px solid '+brand_info.style.bg_color : ''}}" wx:for="{{address_list}}" wx:key="index">
+      
+      <view class="item_info">
+        <text class="tit">收 件  人 :</text>
+        <text class="val">{{item.consignee}}</text>
+      </view>
+      <view class="item_info">
+        <text class="tit">所在地区:</text>
+        <text class="val" data-province="{{item.province}}" data-district="{{item.district}}" data-city="{{item.city}}">{{item.province_str}}-{{item.district_str}}-{{item.city_str}}</text>
+      </view>
+      <view class="item_info">
+        <text class="tit">详细地址:</text>
+        <text class="val">{{item.address}}</text>
+      </view>
+      <view class="item_info">
+        <text class="tit">手机号码:</text>
+        <text class="val">{{item.mobile}}</text>
+      </view>
+
+      <view class="addr_operation">
+        <view class="addr_operation_l">
+          <view class="edit_addr" data-addr_id="{{item.address_id}}" catchtap="editAddress">
+            <image src="{{brand_info.icon_url}}micro_mall/address/address_edit.png" mode="widthFix" />
+            <text>编辑</text>
+          </view>
+          <view class="del_addr" data-addr_id="{{item.address_id}}" catchtap="delAddress">
+            <image src="{{brand_info.icon_url}}micro_mall/address/address_del.png" mode="widthFix" />
+            <text>删除</text>
+          </view>
+        </view>
+        <view class="addr_operation_r">
+          <view class="set_default_btn" wx:if="{{ visit_type == 'check' }}" style="background:{{brand_info.style.bg_color}}">设为默认</view>
+          <view  class="select_addr_btn" wx:else data-address_index="{{index}}" catchtap="choiceAddress" style="background:{{brand_info.style.bg_color}}">选择地址</view>
+          
+        </view>
+        
+      </view>
+      <icon type="success" size="16" class="select_icon" wx:if="{{item.is_default == 1}}"  color="{{brand_info.style.bg_color}}"/>
+    </view>
+
+  </view>
+</view>
+
+<view class="no_data_area" wx:if="{{address_list.length == 0}}">还没有地址！</view>

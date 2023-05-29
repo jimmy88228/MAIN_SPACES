@@ -101,3 +101,15 @@ Promise.prototype.ignore = function (onContinue) {
     return this.then(() => onContinue && onContinue()
         , () => onContinue && onContinue());
 };
+//nextTick
+Promise.nextTick = function () {
+  return new Promise(rs => wx.nextTick(() => rs()))
+}
+//nextTick prototype
+Promise.prototype.nextTick = function () {
+  return this.then(() => Promise.nextTick());
+}
+//showError
+Promise.prototype.showError = function (msg) {
+  return this.catch(err => {Smm.showToast({ title: msg || err });return Promise.reject(err)});
+};

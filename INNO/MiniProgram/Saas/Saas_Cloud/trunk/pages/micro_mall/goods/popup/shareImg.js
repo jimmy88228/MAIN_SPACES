@@ -362,139 +362,149 @@ Component(
 
 //灵活canvas画布
 function adaptiveDrawCanvas(canvasId = '', res = [], multiple = 1, callback) {
-  console.log("DrawCanvas++", res, this.data.allData);
-  let that = this;
-  let allData = this.data.allData || {};
-  let draw = allData.draw || {};
-  let baseInfo = draw.baseInfo || {};
-  let ctx = wx.createCanvasContext(canvasId, this);
-  let canvasConf = JSON.parse(JSON.stringify(this.data.canvasConf));
-  let saveCanvasConf = JSON.parse(JSON.stringify(this.data.saveCanvasConf));
-  let canvasW = baseInfo.canvasW || canvasConf.width;
-  let canvasH = baseInfo.canvasH || canvasConf.height;
-  canvasConf.width = canvasW;
-  canvasConf.height = canvasH;
-  saveCanvasConf.width = canvasW;
-  saveCanvasConf.height = canvasH;
-  let textTopLine = 0;
-  let textBottomLine = canvasH;
-  let base = 30;
-  let scale = 1;
-  console.log("res", res);
-  if (allData.draw && allData.draw.template == 'custom') {
-    let temp = res && res[0] && res[0].downMsg || {};
-    let postW = temp.width || 0;
-    let postH = temp.height || 0;
-    if (canvasId == "saveShareCanvas"){
-      canvasW = postW;
-      canvasH = postH;
-      saveCanvasConf.width = canvasW; 
-      saveCanvasConf.height = canvasH; 
-    } else {
-      canvasH = (canvasW * postH) / postW;
-      canvasH = canvasH <= 900 ? canvasH : 900;
-      scale = postH / canvasH;
-      canvasConf.height = canvasH; 
-    } 
-  };
-  this.setData({
-    allData,
-    canvasConf,
-    saveCanvasConf
-  })
-  let baseW = SIH.screenWidth / 750 * multiple;
-  let baseW_H = SIH.screenWidth / 750 * multiple * scale;
-  ctx.setFillStyle(baseInfo.background || '#fff');
-  ctx.fillRect(0, 0, canvasW * baseW, canvasH * baseW);
-  res && res.forEach((item, index) => {
-    if (item.category == 'image') {
-    //图片
-      if (!baseInfo.codeDiy && (item.type == 'userHead' || item.type == 'code')) return
-      let downMsg = item.downMsg || {};
-      if (item.type == 'userHead') { //头像
-        item.baseW = baseW;
-        DrawTemplate.drawCircle('circle', ctx, item);
-      }else if(item.mode=='fitORfill'){ //当高>宽==(aspectFit)，当宽<高==(aspectFill)
-        if(downMsg.width<downMsg.height){
+  try{ 
+    console.log("DrawCanvas++", res, this.data.allData);
+    let that = this;
+    let allData = this.data.allData || {};
+    let draw = allData.draw || {};
+    let baseInfo = draw.baseInfo || {};
+    let ctx = wx.createCanvasContext(canvasId, this);
+    let canvasConf = JSON.parse(JSON.stringify(this.data.canvasConf));
+    let saveCanvasConf = JSON.parse(JSON.stringify(this.data.saveCanvasConf));
+    let canvasW = baseInfo.canvasW || canvasConf.width;
+    let canvasH = baseInfo.canvasH || canvasConf.height;
+    canvasConf.width = canvasW;
+    canvasConf.height = canvasH;
+    saveCanvasConf.width = canvasW;
+    saveCanvasConf.height = canvasH;
+    let textTopLine = 0;
+    // let textBottomLine = canvasH;
+    let base = 30;
+    let scale = 1;
+    let template = allData.draw && allData.draw.template || "";
+    if (template == 'custom'||template == 'restoreSave') {
+      let temp = res && res[0] && res[0].downMsg || {};
+      let postW = temp.width || 0;
+      let postH = temp.height || 0; 
+      if(template == 'restoreSave'){
+        if(canvasId == 'saveShareCanvas'){ 
+          scale = Math.max(postW / canvasW , canvasW / postW);
+          saveCanvasConf.width = postW; 
+          saveCanvasConf.height = postH; 
+        }
+      }else{
+        if (canvasId == "saveShareCanvas"){
+         canvasW = postW;
+         canvasH = postH;
+         saveCanvasConf.width = canvasW; 
+         saveCanvasConf.height = canvasH; 
+       } else {
+         canvasH = (canvasW * postH) / postW;
+         canvasH = canvasH <= 900 ? canvasH : 900;
+         canvasConf.height = canvasH; 
+       }
+      }
+    }; 
+    this.setData({
+      allData,
+      canvasConf,
+      saveCanvasConf
+    })
+    let baseW = SIH.screenWidth / 750 * multiple * scale;
+    ctx.setFillStyle(baseInfo.background || '#fff');
+    ctx.fillRect(0, 0, canvasW * baseW, canvasH * baseW);
+    res && res.forEach(item => {
+      if (item.category == 'image') {
+      //图片
+        if (!baseInfo.codeDiy && (item.type == 'userHead' || item.type == 'code')) return
+        let downMsg = item.downMsg || {};
+        if (item.type == 'userHead') { //头像
+          item.baseW = baseW;
+          DrawTemplate.drawCircle('circle', ctx, item);
+        }else if(item.mode=='fitORfill'){ //当高>宽==(aspectFit)，当宽<高==(aspectFill)
+          if(downMsg.width<downMsg.height){
+            //aspectFit
+            let scale_img = parseFloat((downMsg.width / downMsg.height).toFixed(3));
+            downMsg.path && ctx.drawImage(
+              downMsg.path, 
+              0,0, 
+              downMsg.width, 
+              downMsg.height,
+              item.x * baseW + (item.w * baseW  - item.w * baseW * scale_img)/2, item.y * baseW,
+              item.w * baseW * scale_img, item.h * baseW  
+            );
+          }else{
+            //aspectFill
+            let scale = parseFloat((item.w / item.h).toFixed(3));
+            downMsg.path && ctx.drawImage(downMsg.path, item.x * baseW, (downMsg.height - parseInt(downMsg.width / scale)) / 2, downMsg.width, parseInt(downMsg.width / scale), 0, item.y * baseW, item.w * baseW, item.h * baseW);
+          }
+        }else if (item.mode == 'aspectFit') { //等高缩放
           //aspectFit
           let scale_img = parseFloat((downMsg.width / downMsg.height).toFixed(3));
           downMsg.path && ctx.drawImage(
             downMsg.path, 
-            0,0, 
+            0,0,
             downMsg.width, 
             downMsg.height,
             item.x * baseW + (item.w * baseW  - item.w * baseW * scale_img)/2, item.y * baseW,
             item.w * baseW * scale_img, item.h * baseW  
           );
-        }else{
+        } else if (item.mode == 'aspectFill') { //居中裁剪
           //aspectFill
           let scale = parseFloat((item.w / item.h).toFixed(3));
           downMsg.path && ctx.drawImage(downMsg.path, item.x * baseW, (downMsg.height - parseInt(downMsg.width / scale)) / 2, downMsg.width, parseInt(downMsg.width / scale), 0, item.y * baseW, item.w * baseW, item.h * baseW);
+        }else if (item.mode == 'widthFix') { //宽度撑满，高度自适应
+          //widthFix
+          downMsg.path && ctx.drawImage(downMsg.path, item.x * baseW, item.y * baseW, canvasW * baseW, canvasH * baseW);
+        }else if(item.mode == 'normal'){
+          downMsg.path && ctx.drawImage(downMsg.path, item.x * baseW, item.y * baseW, item.w * baseW, item.h * baseW);
         }
-      }else if (item.mode == 'aspectFit') { //等高缩放
-        //aspectFit
-        let scale_img = parseFloat((downMsg.width / downMsg.height).toFixed(3));
-        downMsg.path && ctx.drawImage(
-          downMsg.path, 
-          0,0,
-          downMsg.width, 
-          downMsg.height,
-          item.x * baseW + (item.w * baseW  - item.w * baseW * scale_img)/2, item.y * baseW,
-          item.w * baseW * scale_img, item.h * baseW  
-        );
-      } else if (item.mode == 'aspectFill') { //居中裁剪
-        //aspectFill
-        let scale = parseFloat((item.w / item.h).toFixed(3));
-        downMsg.path && ctx.drawImage(downMsg.path, item.x * baseW, (downMsg.height - parseInt(downMsg.width / scale)) / 2, downMsg.width, parseInt(downMsg.width / scale), 0, item.y * baseW, item.w * baseW, item.h * baseW);
-      }else if (item.mode == 'widthFix') { //宽度撑满，高度自适应
-        //widthFix
-        downMsg.path && ctx.drawImage(downMsg.path, item.x * baseW, item.y * baseW, canvasW * baseW, canvasH * baseW);
-      }else if(item.mode == 'normal'){
-        downMsg.path && ctx.drawImage(downMsg.path, item.x * baseW, item.y * baseW, item.w * baseW, item.h * baseW);
-      }
-    }else if (item.category == 'text') {
-    //文字
-      base = item.size * 1;
-      ctx.setTextAlign(item.align || 'left');
-      ctx.setFillStyle(item.color || '#000')
-      ctx.setFontSize(item.size * baseW);
-    if (item.position == 'absolute') {
-        textTopLine = item.y || textTopLine;
-        if (item.ellipsis > 0) {
-          textTopLine = DrawTemplate.wrapMsg(ctx, baseW, item.y, item, allData);
-        } else {
-          fillText.call(this, item.text, item.x, item.y, baseW, item, ctx);
-          textTopLine += base;
-        }
-      } else if (item.position == 'relative') {
-        textTopLine = (item.y || textTopLine) + item.extraH;
-        if (item.ellipsis > 0) {
-          textTopLine = DrawTemplate.wrapMsg(ctx, baseW, textTopLine, item, allData);
-        } else {
-          fillText.call(this, item.text, item.x, textTopLine, baseW, item, ctx);
-          textTopLine += base;
-        }
-      } else if (item.position == 'fixed') {
-        let extra = item.extra || {};
-        if (extra.type == 'column_middle') { //自定义extra 竖向居中
-          let metrics = ctx.measureText(item.text || '').width / baseW;
-          let x_middle = (item.x - ((metrics - extra.codeW) / 2));
-          fillText.call(this, item.text, x_middle, item.y, baseW, item, ctx);
+      }else if (item.category == 'text') {
+      //文字
+        base = item.size * 1;
+        ctx.setTextAlign(item.align || 'left');
+        ctx.setFillStyle(item.color || '#000')
+        ctx.setFontSize(item.size * baseW);
+      if (item.position == 'absolute') {
+          textTopLine = item.y || textTopLine;
+          if (item.ellipsis > 0) {
+            textTopLine = DrawTemplate.wrapMsg(ctx, baseW, item.y, item, allData);
+          } else {
+            fillText.call(this, item.text, item.x, item.y, baseW, item, ctx);
+            textTopLine += base;
+          }
+        } else if (item.position == 'relative') {
+          textTopLine = (item.y || textTopLine) + item.extraH;
+          if (item.ellipsis > 0) {
+            textTopLine = DrawTemplate.wrapMsg(ctx, baseW, textTopLine, item, allData);
+          } else {
+            fillText.call(this, item.text, item.x, textTopLine, baseW, item, ctx);
+            textTopLine += base;
+          }
+        } else if (item.position == 'fixed') {
+          let extra = item.extra || {};
+          if (extra.type == 'column_middle') { //自定义extra 竖向居中
+            let metrics = ctx.measureText(item.text || '').width / baseW;
+            let x_middle = (item.x - ((metrics - extra.codeW) / 2));
+            fillText.call(this, item.text, x_middle, item.y, baseW, item, ctx);
+          }
         }
       }
-    }
-  })
-  codeInitDraw.call(this, ctx, baseW, res, baseInfo,canvasId);
-  setTimeout(() => {
-    ctx.draw(false, () => {
-      toTempFn.call(that, canvasId, function () {
-        typeof (callback) == "function" && callback();
-      })
-      if (multiple == 1) {
-        triggerActionLog.call(that, allData, "show");
-      }
-    });
-  }, 500)
+    })
+    codeInitDraw.call(this, ctx, baseW, res, baseInfo,canvasId);
+    setTimeout(() => {
+      ctx.draw(false, () => {
+        toTempFn.call(that, canvasId, function () {
+          typeof (callback) == "function" && callback();
+        })
+        if (multiple == 1) {
+          triggerActionLog.call(that, allData, "show");
+        }
+      });
+    }, 500)
+  }catch(e){
+    console.log('catch',e)
+  }
 }
 
 //默认码样式
@@ -1099,7 +1109,7 @@ function toTempFn(canvasId, callback) {
   }
   if (canvasId == 'saveShareCanvas') {
     wx.canvasToTempFilePath({
-      canvasId: canvasId || 'saveShareCanvas',
+      canvasId,
       success(res) {
         that.savePathCurrent = res.tempFilePath || '';
       },

@@ -4,13 +4,15 @@ Component(App.BC({
     value:""
   },
   ready(){
+    this.setView({ 
+      customPopRef: { get: () => this.findView("#custom-pop") }, 
+    })
   },
   methods:{ 
     showModal() {
       console.log('batchSet');
       this.setData({value:""},()=>{
-        this.customPop = this.customPop || this.selectComponent('#custom-pop');
-        this.customPop.showModal();
+        this.customPopRef.showModal();
       })
     },
     onInput(e){
@@ -18,14 +20,14 @@ Component(App.BC({
       this.setData({value})
     },
     confirm(){
-      this._setPageLoading('add');
+      this._throttle('add');
       this._checkAllValid().then(()=>{
         this.dismiss();
         this.triggerEvent('confirm',this.data.value);
       })
     },
     dismiss(){
-      this.customPop.dismiss();
+      this.customPopRef.dismiss();
     },
   },
 }))

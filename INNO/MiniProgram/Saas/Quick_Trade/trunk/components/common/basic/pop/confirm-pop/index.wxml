@@ -1,0 +1,19 @@
+<!-- <include src="/common/base/component/index.wxml" /> -->
+<custom-pop id="custom-pop" transitionName="{{transitionName}}" show="{{showBool}}">
+  <view class="pop-box">
+    <view class="msg-box">
+      <view class="pop-title {{content?'mb':''}} ext-title-class" style="{{titleStyle}}" wx:if="{{title}}">{{title}}</view>
+      <view class="pop-content ext-content-class" style="{{contentStyle}}" wx:if="{{content}}">{{content}}</view>
+      <slot name="content"></slot>
+    </view>
+    <view class="footer-box flex-c-c">
+      <view class="cancel flex-1 btn flex-c-c" bindtap="dismiss" hidden="{{hideCancel}}">
+        {{cancelText}}
+      </view>
+      <view class="confirm flex-1 btn flex-c-c" bindtap="confirm" hidden="{{hideConfim}}">
+        {{confirmText}}
+      </view>
+    </view>
+    <slot name="footer"></slot>
+  </view>
+</custom-pop>

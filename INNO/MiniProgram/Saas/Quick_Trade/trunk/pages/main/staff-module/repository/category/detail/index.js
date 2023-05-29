@@ -37,9 +37,6 @@ Page(App.BP({
           nomore
         })
       })
-      .catch(err => {
-        App.SMH.showToast({title: err});
-      })
       .finally(() => {
         this.hideLoading();
       })

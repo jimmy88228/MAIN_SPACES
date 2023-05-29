@@ -44,7 +44,7 @@ Component(app.BTAB({
       });
       return 300;
     },
-    checkLogin(params, needCheckBind, showMsgBool, extraData) {
+    checkLogin(params, needCheckBind, showMsgBool=true) {
       // if (needCheckBind == "need") {
       //   return app.sysTemConfig("constraint_mobile").then(data => {
       //     if (data.Value == 1) {
@@ -76,6 +76,7 @@ Component(app.BTAB({
       // }
       // extraData && (this.extraData = extraData);
       this.params = params || {};
+      this.showMsgBool = showMsgBool||false;
       if (needCheckBind == "need"){
         MobileM.checkBindMobileResult().then(bindResult => {
           if (bindResult == 1) {
@@ -135,7 +136,7 @@ function bindWxPhone(params) {
           this.setData({
             canBindPhone: false,
           })
-          app.SMH.showToast({
+          this.showMsgBool && app.SMH.showToast({
             "title": "绑定成功"
           })
         }, 300);

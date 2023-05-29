@@ -1,0 +1,62 @@
+.couponGivePage{
+  text-align:center;
+}
+.pageTit{
+  font-size:32rpx;
+  margin-top:100rpx;
+  margin-bottom:30rpx;
+}
+.pageLine{
+  margin-bottom:100rpx;
+}
+.shareCoupon{
+  position:relative;
+  width:680rpx;
+  min-height:220rpx;
+  margin:0 auto;
+}
+.couponTxt{
+  position:absolute;
+  bottom:20rpx;
+  left:20rpx;
+  color:#fff;
+}
+.couponValue{
+  font-size:100rpx;
+  display:inline-block;
+  vertical-align: middle;
+  font-weight:bold;
+  margin:0px 20rpx;
+}
+.valueUnit{
+  font-size:50rpx;
+  display:inline-block;
+  vertical-align: middle;
+  margin-top:30rpx;
+}
+.couponImage{
+  margin:0 auto;
+  width:640rpx;
+  height:250rpx;
+}
+.send_bonus_tip{
+  color:#7f7f7f;
+  font-size:24rpx;
+  margin-top:20rpx;
+}
+.send_bonus_btns{
+  width:100%;
+  margin-top:50rpx;
+  text-align:center;
+}
+
+.send_btns{
+  width:300rpx;
+  line-height:88rpx;
+  text-align:center;
+  color:#fff;
+  background:#d2d2d2;
+  border-radius:6rpx;
+  font-size:26rpx;
+  margin:0 auto;
+}

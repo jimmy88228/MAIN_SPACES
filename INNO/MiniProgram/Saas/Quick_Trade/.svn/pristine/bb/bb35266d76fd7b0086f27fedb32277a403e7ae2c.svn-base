@@ -1,0 +1,52 @@
+<!-- public 必须是第一个元素 -->
+<include src="/common/base/page/index.wxml" />
+
+<view class="goods-category-edit-page flex flex-col">
+  <view class="flex-e-c">
+    <view class="edit-btn flex-c-c {{isEdit?'isEdit':''}}" bindtap="toggle">
+      {{isEdit?'返回':'编辑'}}
+    </view>
+  </view>
+  <view class="scroll-box flex-1">
+    <scroll-view class="goods-category-edit-main flex-1"  scroll-y="{{sysScroll}}" bindscrolltolower="handleScrollToLower" >
+      <view class="gce-list">
+        <block wx:for="{{list}}" wx:key="index">
+          <view class="gce-item" bindtap="{{isEdit?'':'jumpAction'}}" data-url="/pages/main/staff-module/repository/category/detail/index?id={{item.id}}">
+            <view class="gce-item-left">
+              <view class="gcei-name">
+                <view class="gcei-name-text text-flow2">{{item.catName}}</view>
+                <view class="gcei-name-quantity">
+                  <block wx:if="{{item.catGoodsNum>0}}">
+                    共{{item.catGoodsNum}}个商品
+                  </block>
+                  <block wx:else="">
+                  未配商品
+                  </block>
+                </view>
+              </view>
+            </view>
+            <view class="gce-item-right">
+              <view hidden="{{!isEdit}}" class="item-right icon-box flex-c-c {{!isEdit?'hide':'show'}}">
+                <view class="padding-box m-r-10" catchtap="handleAddCateBtnTap" data-type="edit" data-item="{{item}}">
+                  <ori-image ext-class="category-edit" src="/assets/images/common/category-edit.png"/>
+                </view>
+                <view class="padding-box m-r-5" catchtap="{{item.catGoodsNum>0?'noAction':'del'}}" data-id="{{item.id}}">
+                  <view class="del-box flex-c-c {{item.catGoodsNum>0?'del-disabled':''}}"></view>
+                </view>
+              </view>
+              <view hidden="{{isEdit}}" class="item-right icon-arrow gcei-arrow {{isEdit?'hide':'show'}}"></view>
+            </view>
+          </view>
+        </block>
+      </view>
+    </scroll-view>
+  </view>
+
+  <view class="goods-catefory-edit-footer">
+    <view class="gcef-btn-group">
+      <button class="gcef-btn" catchtap="handleAddCateBtnTap" data-type="add">添加分类</button>
+    </view>
+  </view>
+</view>
+
+<create-pop id="create-pop" bindonfocus="onfocus" bindonblur="onblur"/>

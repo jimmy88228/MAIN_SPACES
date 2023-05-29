@@ -1,18 +1,28 @@
 const App = getApp();
 
-Component(App.BC({
+Component(App.BC({ 
   data: {
-    show: false
+    show: false,
+    isFull:false,
   },
   methods: {
-    showLoading(){
+    showLoading(isFull=false){
       return new Promise(rs => {
-        this.setData({show: true}, rs)
+        this.setData({isFull:!!isFull})
+        if(!this.data.show){
+          this.setData({show: true}, rs)
+        }else{
+          rs();
+        }
       })
     },
     hideLoading(){
       return new Promise(rs => {
-        this.setData({show: false}, rs)
+        if(this.data.show){
+          this.setData({show: false}, rs)
+        }else{
+          rs();
+        }
       })
     }
   }

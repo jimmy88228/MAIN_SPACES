@@ -1,0 +1,30 @@
+<window class="window" ext-class="window-ext" catchtap="dismiss">
+	<view class="main" style="{{boxStyle}}" catchtap="_noFn">
+    <view class="header">店员列表</view>
+    <scroll-view class="employee_list" scroll-y bindscrolltolower="handleScrollToLower">
+      <block wx:if="{{list && list.length}}">
+        <block wx:for="{{list}}" wx:key="index" >
+          <view 
+            class="employee_item {{selectedEmployees[item.staff_id] ? 'active' : ''}}" 
+            style="color: {{brand_info.style.bg_color}}"
+            data-id="{{item.staff_id}}"
+            data-name="{{item.staff_name}}"
+            bindtap="handleEmployeeSelect"
+          >
+            <view class="employee_name">{{item.staff_name}}</view>
+            <view class="e_radio">
+              <image src="{{ls_icon2}}" class="radio_icon" mode="widthFix" wx:if="{{selectedEmployees[item.staff_id]}}"/>
+              <image src="{{ls_icon1}}" class="radio_icon" mode="widthFix" wx:else/>
+            </view>
+          </view>
+        </block>
+      </block>
+      <block wx:else>
+        <view class="no_data_area">暂无数据</view>
+      </block>
+    </scroll-view>
+    <view class="footer">
+      <button style="background-color:{{brand_info.style.bg_color}}" hover-class="active" bindtap="handleSelectConfirm">确定</button>
+    </view>
+  </view>
+</window>

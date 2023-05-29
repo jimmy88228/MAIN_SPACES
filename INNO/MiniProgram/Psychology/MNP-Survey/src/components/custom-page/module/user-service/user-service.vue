@@ -2,30 +2,26 @@
   <view class="service-box">
     <view class="service-item flex-s-c" @click="jump(item.code)" v-for="(item, index) in serviceList" :key="index"
       v-if="item.is_enable == 1" :alt="item.type_name">
-      <image class="icon" :src="item.icon || imgPath[item.code]" mode="aspectFit" />
+      <!-- <image class="icon" :src="item.icon || imgPath[item.code]" mode="aspectFit" /> -->
+      <oriImage :showLoading="false" customStyle="margin: 0 64rpx;width: 55rpx; height: 55rpx;" :src="item.icon || imgPath[item.code]" mode="aspectFit" />
       <view class="title">{{ item.name }}</view>
       <view class="arrow"></view>
     </view>
-    <!-- <view class="service-item flex-s-c" v-if="true||isCommissioner" @click="showOrganizeLsit" :key="index">
-      <image class="icon" :src="staticAddress+imgPath['WORK-BENCH']" mode="aspectFit" />
-      <view class="title">工作台</view>
-      <view class="arrow"></view>
-    </view> -->
     <view class="service-item flex-s-c" @click="logOut">
-      <image class="icon" :src="requireStatic(imgPath['LOG-OUT'])" mode="aspectFit" />
+      <oriImage :showLoading="false" customStyle="margin: 0 64rpx;width: 55rpx; height: 55rpx;" :src="requireStatic(imgPath['LOG-OUT'])" mode="aspectFit" />
+      <!-- <image class="icon" :src="requireStatic(imgPath['LOG-OUT'])" mode="aspectFit" /> -->
       <view class="title">退出登录</view>
       <view class="arrow"></view>
     </view>
-    <work-bench ref="workBench" @loadSuccess="loadOrganizeSuccess" @selected="jumpDetail"></work-bench>
   </view>
 </template>
 
 <script>
-  import workBench from "@/components/custom-page/work-bench/work-bench";
+  import oriImage from "@/components/ori-comps/image/ori-image"
   const pageOption = Page.BasePage({
     name: "user-service",
     components: {
-      workBench,
+      oriImage,
     },
     props: {
       moduleInfo: {
@@ -71,7 +67,6 @@
         imgPath: {
           "SURVEY-RECORD": "/user-record.png",
           "BIND-INFO": "/user-msg.png",
-          "WORK-BENCH": "/work-bench.png",
           "LOG-OUT": "/logout.png",
         },
       };
@@ -81,8 +76,11 @@
         console.log('jump', code);
         let url = "";
         switch (code) {
-          case "SURVEY-RECORD":
+          case "SURVEY-ACTIVITY":
             url = "/pages/activities/evaluating/list/ac-list";
+            break;
+          case "SURVEY-RECORD":
+            url = "/pages/activities/evaluating/record-list/record-list";
             break;
           case "BIND-INFO":
             url = `/pages/user-switch/user-switch?type=user`;
@@ -101,18 +99,11 @@
         }
         this.jumpAction(url);
       },
-      showOrganizeLsit() {
-        let ref = "workBench";
-        this.$refs[ref].loadData();
-      },
       jumpDetail(id) {
         console.log(id);
         this.jumpAction(
           `/pages/work-bench/work-bench-detail/work-bench-detail?id=${id}`
         );
-      },
-      loadOrganizeSuccess(e) {
-        console.log(e, "获得的列表");
       },
       logOut() {
         this._logout();

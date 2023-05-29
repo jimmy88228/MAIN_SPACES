@@ -1,11 +1,12 @@
 @import "/common/base/component/default-wxss/index.wxss";
 @import "./assets/iconfont.wxss";
-
-.container {
-  /* position: absolute; 
-  top: 0; 
-  left: 0;  */
+.editor-box{
+  position: relative;
+  overflow: hidden;
+}
+.container { 
   width: 100%;
+  height: 100%;
 }
 
 .ql-container {
@@ -15,7 +16,7 @@
   font-size: 16px;
   line-height: 1.5;
   overflow: unset;
-  padding: 10px 10px 100px 10px;
+  padding: 140rpx 20rpx 160rpx 20rpx;
   /* border: 1px solid #ECECEC; */
 }
 
@@ -25,29 +26,33 @@
 
 .iconfont {
   display: inline-block;
-  width: 30px;
-  height: 30px;
+  width: 60rpx;
+  height: 60rpx;
   cursor: pointer;
-  font-size: 20px;
+  font-size: 40rpx;
+  margin-top: 14rpx;
 }
-
-.toolbar {
-  box-sizing: border-box;
-  padding: 0 10px;
-  height: 50px;
-  width: 100%;
-  padding: 0 40rpx;
+.toolbar-box{ 
   position: fixed;
-  left: 0;
-  right: 100%;
-  bottom: 0;
+  z-index: 1;
+  width: 690rpx;
+  height: 130rpx;
+  left: 30rpx;
+  top: 0;
+  background-color: #F2F2F2;
+  padding-top: 30rpx;
+}
+.toolbar {
+  box-sizing: border-box; 
+  width: 100%;
+  height: 100%;
+  padding: 0 40rpx;  
   display: flex;
   align-items: center;
   justify-content: space-between;
   border: 1px solid #ECECEC;
   border-left: none;
   border-right: none;
-  transition: bottom 0.1s;
-  background-color: #fff;
+  background: #fff;
 }
 

@@ -1,35 +1,43 @@
 <template>
   <view>
-
-    <view class="time-select">
-      <template v-for="(item,i) in formatData">
-        <view class="flex" v-if="item.noExistExpired" :key="i">
-          <view class="flex-col-1 flex-c-c">
-            <view class="font-24">{{item.timeGroup}}</view>
-            <view class="font-20 C_B1 m-t-15" v-if="item.scheduleInfos.length>0 && item.existAppointment">已约满</view>
-          </view>
-          <view class="time-select-group" :style="i == formatData.length-1 && 'border-bottom:none;padding-bottom:0'">
-            <template v-if="item.scheduleInfos <= 0">
-              <view class="time-select-item flex-col  flex flex-c-c time-rest">
-                <view>休息</view>
-              </view>
-            </template>
-            <template v-else>
-              <template v-for="(timeItem,timeIndex) in item.scheduleInfos">
-                <view :style="timeItem.existAppointment && 'pointer-events: none;'"
-                  :class="['time-select-item','flex-col', 'flex','flex-c-c',timeItem.existAppointment && 'time-full',selecedtScheduleId === timeItem.scheduleId && 'time-select-item-act']"
-                  :key="timeIndex" :data-item="timeItem" @click="selectTime" v-if="!timeItem.existExpired">
-                  <view>{{timeItem.beginTime}}</view>
-                  <view>-</view>
-                  <view>{{timeItem.endTime}}</view>
-                  <view class="time-full-tips" v-if="timeItem.existAppointment">约满</view>
+    <template v-if="formatData.length > 0">
+      <view class="time-select">
+        <template v-for="(item,i) in formatData">
+          <view class="flex" v-if="item.noExistExpired" :key="i">
+            <view class="flex-col-1 flex-c-c">
+              <view class="font-24">{{item.timeGroup}}</view>
+              <view class="font-20 C_B1 m-t-15" v-if="item.scheduleInfos.length>0 && item.existAppointment">已约满</view>
+            </view>
+            <view class="time-select-group" :style="i == formatData.length-1 && 'border-bottom:none;padding-bottom:0'">
+              <template v-if="item.scheduleInfos <= 0">
+                <view class="time-select-item flex-col  flex flex-c-c time-rest">
+                  <view>休息</view>
                 </view>
               </template>
-            </template>
+              <template v-else>
+                <template v-for="(timeItem,timeIndex) in item.scheduleInfos">
+                  <view :style="timeItem.existAppointment && 'pointer-events: none;'"
+                    :class="['time-select-item','flex-col', 'flex','flex-c-c',timeItem.existAppointment && 'time-full',selecedtScheduleId === timeItem.scheduleId && 'time-select-item-act']"
+                    :key="timeIndex" :data-item="timeItem" @click="selectTime" v-if="!timeItem.existExpired">
+                    <view>{{timeItem.beginTime}}</view>
+                    <view>-</view>
+                    <view>{{timeItem.endTime}}</view>
+                    <view class="time-full-tips" v-if="timeItem.existAppointment">约满</view>
+                  </view>
+                </template>
+              </template>
+            </view>
           </view>
-        </view>
-      </template>
+        </template>
+      </view>
+    </template>
+    <view class="time-select-tmpty" v-else>
+      <view class="absolute empty-time">
+        <image :src="staticAddress+emptyIcon" class="empty-icon" mode="scaleToFill" />
+        <view class="C_B2 font-32">暂无可选时段哦~</view>
+      </view>
     </view>
+
   </view>
 </template>
 
@@ -40,7 +48,8 @@
         type: Object,
         default: {
           refreshData: true,
-          timeData: []
+          timeData: [],
+          emptyIcon: "/list-empty.png",
         }
       }
     },
@@ -51,11 +60,11 @@
         selecedtScheduleId: "",
         showLoading: true,
         selectedItem: {
-          beginTime:"",
-          endTime:"",
-          existAppointment:"",
-          existExpired:"",
-          scheduleId:""
+          beginTime: "",
+          endTime: "",
+          existAppointment: "",
+          existExpired: "",
+          scheduleId: ""
         },
         formatData: []
       }
@@ -70,14 +79,14 @@
         this.selectedItem = item;
         this.$emit("selectedTime", item)
       },
-      initSelected(){
+      initSelected() {
         this.selecedtScheduleId = "";
         this.selectedItem = {
-          beginTime:"",
-          endTime:"",
-          existAppointment:"",
-          existExpired:"",
-          scheduleId:""
+          beginTime: "",
+          endTime: "",
+          existAppointment: "",
+          existExpired: "",
+          scheduleId: ""
         };
         this.$emit("selectedTime", this.selectedItem)
       }
@@ -87,8 +96,13 @@
         handler(nV) {
           this.$nextTick(() => {
             if (!nV.refreshData) {
-              this.formatData = nV.timeData
+              if(Object.prototype.toString.call(nV.timeData).indexOf('Array') != -1){
+              let formatData = nV.timeData.filter(item => {
+                return item.noExistExpired
+              })
+              this.formatData = formatData;
               this.timeData.refreshData = false
+              }
             } else {
               this.selecedtScheduleId = ""
               this.selectedItem = {}
@@ -120,6 +134,7 @@
 
   .time-select {
     width: 100%;
+    position: relative;
     padding: 26rpx;
     box-sizing: border-box;
     transition: height 0.5s;
@@ -187,5 +202,29 @@
   .loading-view {
     width: 100%;
     height: 100%;
+  }
+
+  // 暂无数据
+
+  .time-select-tmpty {
+    width: 100%;
+    min-height: 700rpx;
+    position: relative;
+    padding: 26rpx;
+    box-sizing: border-box;
+
+    .empty-time {
+
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      text-align: center;
+
+      .empty-icon {
+        width: 254rpx;
+        height: 254rpx;
+        margin-bottom: 47rpx;
+      }
+    }
   }
 </style>

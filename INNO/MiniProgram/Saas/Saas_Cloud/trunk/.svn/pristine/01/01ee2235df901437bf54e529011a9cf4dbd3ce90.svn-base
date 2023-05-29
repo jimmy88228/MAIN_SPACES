@@ -1,0 +1,131 @@
+.main{
+  width: 100%;
+  border-radius: 20rpx;
+  border-bottom-left-radius: 0px;
+  border-bottom-right-radius: 0px;
+  bottom: 0px;
+  left: 0px;
+  transform: translateY(100%);
+  position: fixed;
+  box-sizing: border-box;
+  background-color:#fff;
+  padding:10rpx 30rpx;
+}
+.main.customTab{
+  bottom: 90rpx;
+}
+.main.customTab.isIphoneX{
+  bottom: 158rpx;
+}
+.main_tip{
+  line-height:55rpx;
+  font-size:30rpx;
+  font-family:PingFangSC-Medium,PingFang SC;
+  font-weight:500;
+}
+.main_cont{
+  padding-top:30rpx;
+  padding-bottom:40rpx;
+  text-align:center;
+}
+.store_detail{
+  padding:40rpx 0px;
+  border-bottom:1px solid #efefef;
+  display:flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.change_store{
+  padding-left:3em;
+}
+.change_s_icon{
+  width:80rpx;
+  height:80rpx;
+  display:block;
+}
+.s_name{
+  padding-bottom:23rpx;
+  font-size:28rpx;
+  font-family:PingFangSC-Medium,PingFang SC;
+  font-weight:500;
+  color:rgba(23,23,23,1);
+  line-height:40rpx;
+}
+.s_address{
+  font-size:24rpx;
+  font-family:PingFangSC-Regular,PingFang SC;
+  font-weight:400;
+  color:rgba(127,127,127,1);
+  line-height:33rpx;
+}
+.contact_staff{
+  padding:30rpx 0px;
+}
+.c_s_tip{
+  font-size:24rpx;
+  font-family:PingFangSC-Medium,PingFang SC;
+  font-weight:500;
+  color:rgba(23,23,23,1);
+  line-height:33rpx;
+  /* padding-top:20rpx; */
+  padding-bottom:20rpx;
+}
+.c_s_list{
+  padding:20rpx 0px;
+  font-size:0;
+  width:100%;
+  box-sizing: border-box;
+  overflow-x:auto;
+  white-space:nowrap;
+}
+.c_s_item{
+  text-align:center;
+  display:inline-block;
+  vertical-align: top;
+  padding:0px 24rpx;
+  margin-left:-24rpx;
+  position:relative;
+}
+.c_s_head{
+  width:100rpx;
+  height:100rpx;
+  display:block;
+  border-radius:100%;
+  background-color:#efefef;
+  overflow: hidden;
+  margin-bottom:16rpx;
+}
+.c_s_name{
+  font-size:24rpx;
+  font-family:PingFangSC-Regular,PingFang SC;
+  font-weight:400;
+  color:rgba(127,127,127,1);
+  line-height:33rpx;
+}
+.CS_icon{
+  position:absolute;
+  left:50%;
+  top:0;
+  transform: translate(-50%,0);
+  width:100rpx;
+  height:100rpx;
+}
+.CS_btn{
+  opacity: 0;
+  position:relative;
+  z-index:4;
+}
+.chat_icon{
+  position:absolute;
+  right:0px;
+  bottom:0px;
+  width:40rpx;
+  height:40rpx;
+  display:block;
+}
+.has_no_data{
+  width:100%;
+  color:#b2b2b2;
+  text-align:center;
+  padding:40rpx 0px;
+}

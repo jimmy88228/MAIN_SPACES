@@ -1,0 +1,11 @@
+/* 带tabBar的页面容器 */
+.tab-bar-page-container{
+  width: 100vw;
+  height: 100%;
+  position: relative;
+  padding-bottom: var(--tab-bar-page-bottom);
+}
+/* 带tabBar且带自定义导航栏的页面容器 */
+/* .tab-bar-page-container.had-custom-nav{
+  height: calc(100vh - var(--status-bar-height) - var(--nav-bar-height));
+} */

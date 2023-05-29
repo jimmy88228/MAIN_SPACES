@@ -12,11 +12,12 @@
     <view class="eval-detail">
       <view class="eval-detail-title flex-b-c">
         <view class="flex-s-c flex1">
-          <image class="eval-icon f-shrink-0" @error="imgerror()" :src="logo || requireStatic(activityIcon)"
+          <!-- <image class="eval-icon f-shrink-0" @error="imgerror()" :src="logo || requireStatic(activityIcon)"
+            mode="aspectFill" /> -->
+          <oriImage class="eval-icon f-shrink-0" customStyle="border-radius:8rpx;" @error="imgerror()" :src="logo || requireStatic(activityIcon)"
             mode="aspectFill" />
           <view class="flex1 clamp">
             <view class="font-26 m-b-10 flex1 clamp">{{itemInfo.activityName}}</view>
-            <!-- <view class="C_B2 font-20">使用量表：{{itemInfo.modelName}}</view> -->
             <template v-if="itemInfo.limitTime != 0">
               <view class="font-22 C_B2 flex1 clamp" v-if="itemInfo.status == 0">活动开始日期
                 {{formatDate(itemInfo.startTime)}}
@@ -48,9 +49,10 @@
 </template>
 
 <script>
+  import oriImage from "@/components/ori-comps/image/ori-image"
   const pageOption = Page.BasePage({
     name: "psyc_teacher-item",
-    components: {},
+    components: {oriImage},
     props: {
       itemInfo: {
         type: Object,
